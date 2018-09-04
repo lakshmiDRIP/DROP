@@ -71,7 +71,6 @@ package org.drip.simm20.margin;
 
 public class RiskFactorAggregateIR
 {
-	private double _sensitivityMargin = java.lang.Double.NaN;
 	private double _concentrationRiskFactor = java.lang.Double.NaN;
 	private java.util.Map<java.lang.String, java.lang.Double> _oisSensitivityMargin = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _primeSensitivityMargin = null;
@@ -91,7 +90,7 @@ public class RiskFactorAggregateIR
 	 * @param libor12MSensitivityMargin The LIBOR 12M Sensitivity Margin
 	 * @param primeSensitivityMargin The PRIME Sensitivity Margin
 	 * @param municipalSensitivityMargin The Municipal Sensitivity Margin
-	 * @param sensitivityMargin The Bucket Sensitivity Margin
+	 // * @param sensitivityMargin The Bucket Sensitivity Margin
 	 * @param concentrationRiskFactor The Currency's Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -105,12 +104,10 @@ public class RiskFactorAggregateIR
 		final java.util.Map<java.lang.String, java.lang.Double> libor12MSensitivityMargin,
 		final java.util.Map<java.lang.String, java.lang.Double> primeSensitivityMargin,
 		final java.util.Map<java.lang.String, java.lang.Double> municipalSensitivityMargin,
-		final double sensitivityMargin,
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		 if (!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||
-			null == (_oisSensitivityMargin = oisSensitivityMargin) || 0 == _oisSensitivityMargin.size() ||
+		if (null == (_oisSensitivityMargin = oisSensitivityMargin) || 0 == _oisSensitivityMargin.size() ||
 			null == (_libor1MSensitivityMargin = libor1MSensitivityMargin) ||
 				0 == _libor1MSensitivityMargin.size() ||
 			null == (_libor3MSensitivityMargin = libor3MSensitivityMargin) ||
@@ -204,17 +201,6 @@ public class RiskFactorAggregateIR
 	public java.util.Map<java.lang.String, java.lang.Double> municipalSensitivityMargin()
 	{
 		return _municipalSensitivityMargin;
-	}
-
-	/**
-	 * Retrieve the Bucket Sensitivity Margin
-	 * 
-	 * @return The Bucket Sensitivity Margin
-	 */
-
-	public double sensitivityMargin()
-	{
-		return _sensitivityMargin;
 	}
 
 	/**

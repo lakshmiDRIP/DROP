@@ -72,47 +72,47 @@ package org.drip.simm20.product;
 
 public class BucketSensitivityIR
 {
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _oisTenorSensitivity = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _prime = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor1M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor3M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor6M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor12M = null;
-	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipal = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _oisTenorDeltaSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _primeTenorDeltaSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor1MTenorDeltaSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor3MTenorDeltaSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor6MTenorDeltaSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _libor12MTenorDeltaSensitivity = null;
+	private org.drip.simm20.product.RiskFactorTenorSensitivity _municipalTenorDeltaSensitivity = null;
 
 	/**
-	 * Generate a Standard Instance of BucketSensitivityIR from the Sensitivity Maps
+	 * Generate a Standard Instance of BucketSensitivityIR from the Tenor Delta Sensitivity Maps
 	 * 
-	 * @param oisTenorSensitivity OIS Tenor Sensitivity Map
-	 * @param libor1M LIBOR 1M Unweighted Sensitivity Map
-	 * @param libor3M LIBOR 3M Unweighted Sensitivity Map
-	 * @param libor6M LIBOR 6M Unweighted Sensitivity Map
-	 * @param libor12M LIBOR 12M Unweighted Sensitivity Map
-	 * @param prime Prime Unweighted Sensitivity Map
-	 * @param municipal Municipal Unweighted Sensitivity Map
+	 * @param oisTenorDeltaSensitivity OIS Tenor Delta Sensitivity Map
+	 * @param libor1MTenorDeltaSensitivity LIBOR1M Tenor Delta Sensitivity Map
+	 * @param libor3MTenorDeltaSensitivity LIBOR3M Tenor Delta Sensitivity Map
+	 * @param libor6MTenorDeltaSensitivity LIBOR6M Tenor Delta Sensitivity Map
+	 * @param libor12MTenorDeltaSensitivity LIBOR 12M Tenor Delta Sensitivity Map
+	 * @param primeTenorDeltaSensitivity Prime Tenor Delta Sensitivity Map
+	 * @param municipalTenorDeltaSensitivity Municipal Tenor Delta Sensitivity Map
 	 * 
 	 * @return Standard Instance of IRCurveDeltaSensitivity from the Sensitivity Maps
 	 */
 
 	public static final BucketSensitivityIR Standard (
-		final java.util.Map<java.lang.String, java.lang.Double> oisTenorSensitivity,
-		final java.util.Map<java.lang.String, java.lang.Double> libor1M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor3M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor6M,
-		final java.util.Map<java.lang.String, java.lang.Double> libor12M,
-		final java.util.Map<java.lang.String, java.lang.Double> prime,
-		final java.util.Map<java.lang.String, java.lang.Double> municipal)
+		final java.util.Map<java.lang.String, java.lang.Double> oisTenorDeltaSensitivity,
+		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorDeltaSensitivity,
+		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaSensitivity,
+		final java.util.Map<java.lang.String, java.lang.Double> libor6MTenorDeltaSensitivity,
+		final java.util.Map<java.lang.String, java.lang.Double> libor12MTenorDeltaSensitivity,
+		final java.util.Map<java.lang.String, java.lang.Double> primeTenorDeltaSensitivity,
+		final java.util.Map<java.lang.String, java.lang.Double> municipalTenorDeltaSensitivity)
 	{
 		try
 		{
 			return new BucketSensitivityIR (
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (oisTenorSensitivity),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor1M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor3M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor6M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor12M),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (prime),
-				new org.drip.simm20.product.RiskFactorTenorSensitivity (municipal)
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (oisTenorDeltaSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor1MTenorDeltaSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor3MTenorDeltaSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor6MTenorDeltaSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (libor12MTenorDeltaSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (primeTenorDeltaSensitivity),
+				new org.drip.simm20.product.RiskFactorTenorSensitivity (municipalTenorDeltaSensitivity)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -126,194 +126,195 @@ public class BucketSensitivityIR
 	/**
 	 * BucketSensitivityIR Constructor
 	 * 
-	 * @param oisTenorSensitivity The OIS Risk Factor Tenor Sensitivity
-	 * @param libor1M The LIBOR-1M Risk Factor Sensitivity
-	 * @param libor3M The LIBOR-3M Risk Factor Sensitivity
-	 * @param libor6M The LIBOR-6M Risk Factor Sensitivity
-	 * @param libor12M The LIBOR-12M Risk Factor Sensitivity
-	 * @param prime The PRIME Risk Factor Sensitivity
-	 * @param municipal The MUNICIPAL Risk Factor Sensitivity
+	 * @param oisTenorDeltaSensitivity The OIS Risk Factor Tenor Delta Sensitivity
+	 * @param libor1MTenorDeltaSensitivity The LIBOR1M Risk Factor Tenor Delta Sensitivity
+	 * @param libor3MTenorDeltaSensitivity The LIBOR3M Risk Factor Tenor Delta Sensitivity
+	 * @param libor6MTenorDeltaSensitivity The LIBOR6M Risk Factor Tenor Delta Sensitivity
+	 * @param libor12MTenorDeltaSensitivity The LIBOR12M Risk Factor Tenor Delta Sensitivity
+	 * @param primeTenorDeltaSensitivity The PRIME Risk Factor Tenor Delta Sensitivity
+	 * @param municipalTenorDeltaSensitivity The MUNICIPAL Risk Factor Tenor Delta Sensitivity
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketSensitivityIR (
-		final org.drip.simm20.product.RiskFactorTenorSensitivity oisTenorSensitivity,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor1M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor3M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor6M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity libor12M,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity prime,
-		final org.drip.simm20.product.RiskFactorTenorSensitivity municipal)
+		final org.drip.simm20.product.RiskFactorTenorSensitivity oisTenorDeltaSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor1MTenorDeltaSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor3MTenorDeltaSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor6MTenorDeltaSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity libor12MTenorDeltaSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity primeTenorDeltaSensitivity,
+		final org.drip.simm20.product.RiskFactorTenorSensitivity municipalTenorDeltaSensitivity)
 		throws java.lang.Exception
 	{
-		if (null == (_oisTenorSensitivity = oisTenorSensitivity) ||
-			null == (_libor1M = libor1M) ||
-			null == (_libor3M = libor3M) ||
-			null == (_libor6M = libor6M) ||
-			null == (_libor12M = libor12M) ||
-			null == (_prime = prime) ||
-			null == (_municipal = municipal))
+		if (null == (_oisTenorDeltaSensitivity = oisTenorDeltaSensitivity) ||
+			null == (_libor1MTenorDeltaSensitivity = libor1MTenorDeltaSensitivity) ||
+			null == (_libor3MTenorDeltaSensitivity = libor3MTenorDeltaSensitivity) ||
+			null == (_libor6MTenorDeltaSensitivity = libor6MTenorDeltaSensitivity) ||
+			null == (_libor12MTenorDeltaSensitivity = libor12MTenorDeltaSensitivity) ||
+			null == (_primeTenorDeltaSensitivity = primeTenorDeltaSensitivity) ||
+			null == (_municipalTenorDeltaSensitivity = municipalTenorDeltaSensitivity))
 		{
 			throw new java.lang.Exception ("BucketSensitivityIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the OIS Risk Factor Tenor Sensitivity
+	 * Retrieve the OIS Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The OIS Risk Factor Tenor Sensitivity
+	 * @return The OIS Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity oisTenorSensitivity()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity oisTenorDeltaSensitivity()
 	{
-		return _oisTenorSensitivity;
+		return _oisTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Retrieve the LIBOR-1M Risk Factor Sensitivity
+	 * Retrieve the LIBOR1M Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The LIBOR-1M Risk Factor Sensitivity
+	 * @return The LIBOR1M Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor1M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor1MTenorDeltaSensitivity()
 	{
-		return _libor1M;
+		return _libor1MTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Retrieve the LIBOR-3M Risk Factor Sensitivity
+	 * Retrieve the LIBOR3M Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The LIBOR-3M Risk Factor Sensitivity
+	 * @return The LIBOR3M Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor3M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor3MTenorDeltaSensitivity()
 	{
-		return _libor3M;
+		return _libor3MTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Retrieve the LIBOR-6M Risk Factor Sensitivity
+	 * Retrieve the LIBOR6M Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The LIBOR-6M Risk Factor Sensitivity
+	 * @return The LIBOR6M Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor6M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor6MTenorDeltaSensitivity()
 	{
-		return _libor6M;
+		return _libor6MTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Retrieve the LIBOR-12M Risk Factor Sensitivity
+	 * Retrieve the LIBOR12M Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The LIBOR-12M Risk Factor Sensitivity
+	 * @return The LIBOR12M Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity libor12M()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity libor12MTenorDeltaSensitivity()
 	{
-		return _libor12M;
+		return _libor12MTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Retrieve the PRIME Risk Factor Sensitivity
+	 * Retrieve the PRIME Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The PRIME Risk Factor Sensitivity
+	 * @return The PRIME Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity prime()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity primeTenorDeltaSensitivity()
 	{
-		return _prime;
+		return _primeTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Retrieve the MUNICIPAL Risk Factor Sensitivity
+	 * Retrieve the MUNICIPAL Risk Factor Tenor Delta Sensitivity
 	 * 
-	 * @return The MUNICIPAL Risk Factor Sensitivity
+	 * @return The MUNICIPAL Risk Factor Tenor Delta Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskFactorTenorSensitivity municipal()
+	public org.drip.simm20.product.RiskFactorTenorSensitivity municipalTenorDeltaSensitivity()
 	{
-		return _municipal;
+		return _municipalTenorDeltaSensitivity;
 	}
 
 	/**
-	 * Generate the Cumulative Tenor Sensitivity
+	 * Generate the Cumulative Tenor Delta Sensitivity
 	 * 
-	 * @return The Cumulative Tenor Sensitivity
+	 * @return The Cumulative Tenor Delta Sensitivity
 	 */
 
-	public double cumulative()
+	public double cumulativeTenorDeltaSensitivity()
 	{
-		return _oisTenorSensitivity.cumulativeTenorDelta() +
-			_libor1M.cumulativeTenorDelta() +
-			_libor3M.cumulativeTenorDelta() +
-			_libor6M.cumulativeTenorDelta() +
-			_libor12M.cumulativeTenorDelta() +
-			_prime.cumulativeTenorDelta() +
-			_municipal.cumulativeTenorDelta();
+		return _oisTenorDeltaSensitivity.cumulativeDelta() +
+			_libor1MTenorDeltaSensitivity.cumulativeDelta() +
+			_libor3MTenorDeltaSensitivity.cumulativeDelta() +
+			_libor6MTenorDeltaSensitivity.cumulativeDelta() +
+			_libor12MTenorDeltaSensitivity.cumulativeDelta() +
+			_primeTenorDeltaSensitivity.cumulativeDelta() +
+			_municipalTenorDeltaSensitivity.cumulativeDelta();
 	}
 
 	/**
-	 * Compute the Concentration Risk Factor
+	 * Compute the Delta Concentration Risk Factor
 	 * 
-	 * @param concentrationThreshold The Concentration Threshold
+	 * @param deltaConcentrationThreshold The Delta Concentration Threshold
 	 * 
-	 * @return The Concentration Risk Factor
+	 * @return The Delta Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double concentrationRiskFactor (
-		final double concentrationThreshold)
+	public double deltaConcentrationRiskFactor (
+		final double deltaConcentrationThreshold)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (concentrationThreshold))
+		if (!org.drip.quant.common.NumberUtil.IsValid (deltaConcentrationThreshold))
 		{
-			throw new java.lang.Exception ("BucketSensitivityIR::concentrationRiskFactor => Invalid Inputs");
+			throw new java.lang.Exception
+				("BucketSensitivityIR::deltaConcentrationRiskFactor => Invalid Inputs");
 		}
 
 		return java.lang.Math.max (
 			java.lang.Math.sqrt (
 				java.lang.Math.max (
-					cumulative(),
+					cumulativeTenorDeltaSensitivity(),
 					0.
-				) / concentrationThreshold
+				) / deltaConcentrationThreshold
 			),
 			1.
 		);
 	}
 
 	/**
-	 * Generate the OIS Sensitivity Margin
+	 * Generate the OIS Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS Sensitivity Margin
+	 * @return The OIS Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> oisSensitivityMargin (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings)
+	public java.util.Map<java.lang.String, java.lang.Double> oisTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> oisTenorSensitivityMargin =
-			_oisTenorSensitivity.tenorDeltaSensitivityMargin
-				(curveTenorSensitivitySettings.oisTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> oisTenorDeltaMargin =
+			_oisTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.oisTenorRiskWeight());
 
-		if (null == oisTenorSensitivityMargin)
+		if (null == oisTenorDeltaMargin)
 		{
-			return oisTenorSensitivityMargin;
+			return oisTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -322,52 +323,51 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisTenorSensitivityMarginEntry :
-			oisTenorSensitivityMargin.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisTenorDeltaMarginEntry :
+			oisTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = oisTenorSensitivityMarginEntry.getKey();
+			java.lang.String tenor = oisTenorDeltaMarginEntry.getKey();
 
-			oisTenorSensitivityMargin.put (
+			oisTenorDeltaMargin.put (
 				tenor,
-				oisTenorSensitivityMargin.get (tenor) * concentrationRiskFactor
+				oisTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return oisTenorSensitivityMargin;
+		return oisTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net LIBOR 1M Sensitivity Map
+	 * Generate the LIBOR1M Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net LIBOR 1M Sensitivity Map
+	 * @return The LIBOR1M Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor1MNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> libor1MTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor1MNet = _libor1M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor1MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor1MTenorDeltaMargin =
+			_libor1MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor1MTenorRiskWeight());
 
-		if (null == libor1MNet || !weighted)
+		if (null == libor1MTenorDeltaMargin)
 		{
-			return libor1MNet;
+			return libor1MTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -376,51 +376,51 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MNetEntry : libor1MNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MTenorDeltaMarginEntry :
+			libor1MTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = libor1MNetEntry.getKey();
+			java.lang.String tenor = libor1MTenorDeltaMarginEntry.getKey();
 
-			libor1MNet.put (
+			libor1MTenorDeltaMargin.put (
 				tenor,
-				libor1MNet.get (tenor) * concentrationRiskFactor
+				libor1MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return libor1MNet;
+		return libor1MTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net LIBOR 3M Sensitivity Map
+	 * Generate the LIBOR3M Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net LIBOR 3M Sensitivity Map
+	 * @return The LIBOR3M Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor3MNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor3MNet = _libor3M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor3MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaMargin =
+			_libor3MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor3MTenorRiskWeight());
 
-		if (null == libor3MNet || !weighted)
+		if (null == libor3MTenorDeltaMargin)
 		{
-			return libor3MNet;
+			return libor3MTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -429,51 +429,51 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MNetEntry : libor3MNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MTenorDeltaMarginEntry :
+			libor3MTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = libor3MNetEntry.getKey();
+			java.lang.String tenor = libor3MTenorDeltaMarginEntry.getKey();
 
-			libor3MNet.put (
+			libor3MTenorDeltaMargin.put (
 				tenor,
-				libor3MNet.get (tenor) * concentrationRiskFactor
+				libor3MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return libor3MNet;
+		return libor3MTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net LIBOR 6M Sensitivity Map
+	 * Generate the LIBOR6M Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net LIBOR 6M Sensitivity Map
+	 * @return The LIBOR6M Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor6MNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> libor6MTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor6MNet = _libor6M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor6MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor6MTenorDeltaMargin =
+			_libor6MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor6MTenorRiskWeight());
 
-		if (null == libor6MNet || !weighted)
+		if (null == libor6MTenorDeltaMargin)
 		{
-			return libor6MNet;
+			return libor6MTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -482,51 +482,51 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MNetEntry : libor6MNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MTenorDeltaMarginEntry :
+			libor6MTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = libor6MNetEntry.getKey();
+			java.lang.String tenor = libor6MTenorDeltaMarginEntry.getKey();
 
-			libor6MNet.put (
+			libor6MTenorDeltaMargin.put (
 				tenor,
-				libor6MNet.get (tenor) * concentrationRiskFactor
+				libor6MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return libor6MNet;
+		return libor6MTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net LIBOR 12M Sensitivity Map
+	 * Generate the LIBOR12M Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net LIBOR 12M Sensitivity Map
+	 * @return The LIBOR12M Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor12MNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> libor12MTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> libor12MNet = _libor12M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor12MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor12MTenorDeltaMargin =
+			_libor12MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor12MTenorRiskWeight());
 
-		if (null == libor12MNet || !weighted)
+		if (null == libor12MTenorDeltaMargin)
 		{
-			return libor12MNet;
+			return libor12MTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -535,51 +535,51 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MNetEntry : libor12MNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MTenorDeltaMarginEntry :
+			libor12MTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = libor12MNetEntry.getKey();
+			java.lang.String tenor = libor12MTenorDeltaMarginEntry.getKey();
 
-			libor12MNet.put (
+			libor12MTenorDeltaMargin.put (
 				tenor,
-				libor12MNet.get (tenor) * concentrationRiskFactor
+				libor12MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return libor12MNet;
+		return libor12MTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net PRIME Sensitivity Map
+	 * Generate the PRIME Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net PRIME Sensitivity Map
+	 * @return The PRIME Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> primeNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> primeTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> primeNet = _prime.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.primeTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> primeTenorDeltaMargin =
+			_primeTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.primeTenorRiskWeight());
 
-		if (null == primeNet || !weighted)
+		if (null == primeTenorDeltaMargin)
 		{
-			return primeNet;
+			return primeTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -588,52 +588,51 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeNetEntry : primeNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeTenorDeltaMarginEntry :
+			primeTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = primeNetEntry.getKey();
+			java.lang.String tenor = primeTenorDeltaMarginEntry.getKey();
 
-			primeNet.put (
+			primeTenorDeltaMargin.put (
 				tenor,
-				primeNet.get (tenor) * concentrationRiskFactor
+				primeTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return primeNet;
+		return primeTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net MUNICIPAL Sensitivity Map
+	 * Generate the MUNICIPAL Tenor Delta Sensitivity Margin Map
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net MUNICIPAL Sensitivity Map
+	 * @return The MUNICIPAL Tenor Delta Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> municipalNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public java.util.Map<java.lang.String, java.lang.Double> municipalTenorDeltaMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> municipalNet =
-			_municipal.tenorDeltaSensitivityMargin
-				(curveTenorSensitivitySettings.municipalTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> municipalTenorDeltaMargin =
+			_municipalTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.municipalTenorRiskWeight());
 
-		if (null == municipalNet || !weighted)
+		if (null == municipalTenorDeltaMargin)
 		{
-			return municipalNet;
+			return municipalTenorDeltaMargin;
 		}
 
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -642,94 +641,81 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalNetEntry : municipalNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalTenorDeltaMarginEntry :
+			municipalTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = municipalNetEntry.getKey();
+			java.lang.String tenor = municipalTenorDeltaMarginEntry.getKey();
 
-			municipalNet.put (
+			municipalTenorDeltaMargin.put (
 				tenor,
-				municipalNet.get (tenor) * concentrationRiskFactor
+				municipalTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
-		return municipalNet;
+		return municipalTenorDeltaMargin;
 	}
 
 	/**
-	 * Generate the Weighted/Unweighted Net Curve Sensitivity Map
+	 * Generate the IR Margin Factor Aggregate
 	 * 
-	 * @param curveTenorSensitivitySettings The Curve Tenor Sensitivity Settings
-	 * @param weighted TRUE - Generate the Weighted Sensitivity Map
+	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The Weighted/Unweighted Net Curve Sensitivity Map
+	 * @return The IR Margin Factor Aggregate
 	 */
 
-	public org.drip.simm20.margin.IRFactorAggregate curveNet (
-		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSensitivitySettings,
-		final boolean weighted)
+	public org.drip.simm20.margin.IRFactorAggregate aggregate (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
-		if (null == curveTenorSensitivitySettings)
+		if (null == bucketDeltaSensitivitySettings)
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> oisNet =
-			_oisTenorSensitivity.tenorDeltaSensitivityMargin
-				(curveTenorSensitivitySettings.oisTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> oisTenorDeltaMargin =
+			_oisTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.oisTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor1MNet = _libor1M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor1MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor1MTenorDeltaMargin =
+			_libor1MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor1MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor3MNet = _libor3M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor3MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaMargin =
+			_libor3MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor3MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor6MNet = _libor6M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor6MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor6MTenorDeltaMargin =
+			_libor6MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor6MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> libor12MNet = _libor12M.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.libor12MTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> libor12MTenorDeltaMargin =
+			_libor12MTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.libor12MTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> primeNet = _prime.tenorDeltaSensitivityMargin
-			(curveTenorSensitivitySettings.primeTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> primeTenorDeltaMargin =
+			_primeTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.primeTenorRiskWeight());
 
-		java.util.Map<java.lang.String, java.lang.Double> municipalNet =
-			_municipal.tenorDeltaSensitivityMargin
-				(curveTenorSensitivitySettings.municipalTenorRiskWeight());
+		java.util.Map<java.lang.String, java.lang.Double> municipalTenorDeltaMargin =
+			_municipalTenorDeltaSensitivity.deltaSensitivityMargin
+				(bucketDeltaSensitivitySettings.municipalTenorRiskWeight());
 
-		if (null == oisNet || null == libor1MNet || null == libor3MNet || null == libor6MNet ||
-			null == libor12MNet || null == primeNet || null == municipalNet)
+		if (null == oisTenorDeltaMargin ||
+			null == libor1MTenorDeltaMargin ||
+			null == libor3MTenorDeltaMargin ||
+			null == libor6MTenorDeltaMargin ||
+			null == libor12MTenorDeltaMargin ||
+			null == primeTenorDeltaMargin ||
+			null == municipalTenorDeltaMargin)
 		{
 			return null;
 		}
 
-		if (!weighted)
-		{
-			try
-			{
-				return new org.drip.simm20.margin.IRFactorAggregate (
-					oisNet,
-					libor1MNet,
-					libor3MNet,
-					libor6MNet,
-					libor12MNet,
-					primeNet,
-					municipalNet,
-					1.
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
-			}
-		}
-		double concentrationRiskFactor = java.lang.Double.NaN;
+		double deltaConcentrationRiskFactor = java.lang.Double.NaN;
 
 		try
 		{
-			concentrationRiskFactor = concentrationRiskFactor
-				(curveTenorSensitivitySettings.concentrationThreshold());
+			deltaConcentrationRiskFactor = deltaConcentrationRiskFactor
+				(bucketDeltaSensitivitySettings.concentrationThreshold());
 		}
 		catch (java.lang.Exception e)
 		{
@@ -738,57 +724,58 @@ public class BucketSensitivityIR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalNetEntry : municipalNet.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalTenorDeltaMarginEntry :
+			municipalTenorDeltaMargin.entrySet())
 		{
-			java.lang.String tenor = municipalNetEntry.getKey();
+			java.lang.String tenor = municipalTenorDeltaMarginEntry.getKey();
 
-			oisNet.put (
+			oisTenorDeltaMargin.put (
 				tenor,
-				oisNet.get (tenor) * concentrationRiskFactor
+				oisTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 
-			libor1MNet.put (
+			libor1MTenorDeltaMargin.put (
 				tenor,
-				libor1MNet.get (tenor) * concentrationRiskFactor
+				libor1MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 
-			libor3MNet.put (
+			libor3MTenorDeltaMargin.put (
 				tenor,
-				libor3MNet.get (tenor) * concentrationRiskFactor
+				libor3MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 
-			libor6MNet.put (
+			libor6MTenorDeltaMargin.put (
 				tenor,
-				libor6MNet.get (tenor) * concentrationRiskFactor
+				libor6MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 
-			libor12MNet.put (
+			libor12MTenorDeltaMargin.put (
 				tenor,
-				libor3MNet.get (tenor) * concentrationRiskFactor
+				libor12MTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 
-			primeNet.put (
+			primeTenorDeltaMargin.put (
 				tenor,
-				primeNet.get (tenor) * concentrationRiskFactor
+				primeTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 
-			municipalNet.put (
+			municipalTenorDeltaMargin.put (
 				tenor,
-				municipalNet.get (tenor) * concentrationRiskFactor
+				municipalTenorDeltaMargin.get (tenor) * deltaConcentrationRiskFactor
 			);
 		}
 
 		try
 		{
 			return new org.drip.simm20.margin.IRFactorAggregate (
-				oisNet,
-				libor1MNet,
-				libor3MNet,
-				libor6MNet,
-				libor12MNet,
-				primeNet,
-				municipalNet,
-				concentrationRiskFactor
+				oisTenorDeltaMargin,
+				libor1MTenorDeltaMargin,
+				libor3MTenorDeltaMargin,
+				libor6MTenorDeltaMargin,
+				libor12MTenorDeltaMargin,
+				primeTenorDeltaMargin,
+				municipalTenorDeltaMargin,
+				deltaConcentrationRiskFactor
 			);
 		}
 		catch (java.lang.Exception e)

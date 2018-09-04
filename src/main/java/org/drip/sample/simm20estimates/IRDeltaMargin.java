@@ -1,8 +1,8 @@
 
 package org.drip.sample.simm20estimates;
 
-import java.util.HashMap;
-import java.util.Map;
+// import java.util.HashMap;
+// import java.util.Map;
 
 import org.drip.service.env.EnvManager;
 
@@ -77,7 +77,7 @@ import org.drip.service.env.EnvManager;
 public class IRDeltaMargin
 {
 
-	private static final Map<String, Double> TenorSensitivityMap (
+	/* private static final Map<String, Double> TenorSensitivityMap (
 		final double[] tenorSensitivities)
 		throws Exception
 	{
@@ -144,7 +144,7 @@ public class IRDeltaMargin
 		);
 
 		return oisTenorSensitivities;
-	}
+	} */
 
 	public static final void main (
 		final String[] inputArray)

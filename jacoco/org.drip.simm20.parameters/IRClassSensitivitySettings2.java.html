@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IRClassSensitivitySettings2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.parameters</a> &gt; <span class="el_source">IRClassSensitivitySettings2.java</span></div><h1>IRClassSensitivitySettings2.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.parameters;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IRClassSensitivitySettings holds the Constituent IR Currency Bucket Curve Tenor Settings and the
+ *  corresponding Cross-Bucket Correlations. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class IRClassSensitivitySettings2
+{
+<span class="nc" id="L74">	private double _crossBucketCorrelation = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR&gt;</span>
+		_irBucketSensitivitySettingsMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm20.parameters.BucketSensitivitySettingsIR&gt;();
+
+	/**
+	 * Construct the ISDA Standard IRClassSensitivitySettings
+	 * 
+	 * @return The ISDA Standard IRClassSensitivitySettings
+	 */
+
+	public static final IRClassSensitivitySettings2 ISDA()
+	{
+		try
+		{
+<span class="nc" id="L90">			return new IRClassSensitivitySettings2</span>
+				(org.drip.simm20.rates.IRSystemics.CROSS_CURRENCY_CORRELATION);
+		}
+<span class="nc" id="L93">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L95">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L98">		return null;</span>
+	}
+
+	/**
+	 * IRClassSensitivitySettings Constructor
+	 * 
+	 * @param crossBucketCorrelation The Cross Currency Bucket Correlation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public IRClassSensitivitySettings2 (
+		final double crossBucketCorrelation)
+		throws java.lang.Exception
+<span class="nc" id="L112">	{</span>
+<span class="nc bnc" id="L113" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_crossBucketCorrelation = crossBucketCorrelation) ||</span>
+			1. &lt; _crossBucketCorrelation || -1. &gt; crossBucketCorrelation)
+		{
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;IRClassSensitivitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L118">	}</span>
+
+	/**
+	 * Retrieve the Cross Currency Bucket Correlation
+	 * 
+	 * @return The Cross Currency Bucket Correlation
+	 */
+
+	public double crossBucketCorrelation()
+	{
+<span class="nc" id="L128">		return _crossBucketCorrelation;</span>
+	}
+
+	/**
+	 * Add the specified Curve Tenor Settings Instance
+	 * 
+	 * @param currency The Currency
+	 * @param curveTenorSettings The specified Curve Tenor Settings Instance
+	 * 
+	 * @return TRUE - The specified Curve Tenor Settings Instance successfully added
+	 */
+
+	public boolean addCurveTenorSettings (
+		final java.lang.String currency,
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSettings)
+	{
+<span class="nc bnc" id="L144" title="All 6 branches missed.">		if (null == currency || currency.isEmpty() || null == curveTenorSettings)</span>
+		{
+<span class="nc" id="L146">			return false;</span>
+		}
+
+<span class="nc" id="L149">		_irBucketSensitivitySettingsMap.put (</span>
+			currency,
+			curveTenorSettings
+		);
+
+<span class="nc" id="L154">		return true;</span>
+	}
+
+	/**
+	 * Indicate if the Currency is available in the Map
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return TRUE - The Currency is available in the Map
+	 */
+
+	public boolean containsCurrency (
+		final java.lang.String currency)
+	{
+<span class="nc bnc" id="L168" title="All 6 branches missed.">		return null != currency &amp;&amp; !currency.isEmpty() &amp;&amp; _irBucketSensitivitySettingsMap.containsKey (currency);</span>
+	}
+
+	/**
+	 * Retrieve the Curve Tenor Settings for the Currency
+	 * 
+	 * @param currency The Currency
+	 * 
+	 * @return The Curve Tenor Settings for the Currency
+	 */
+
+	public org.drip.simm20.parameters.BucketSensitivitySettingsIR curveTenorSettings (
+		final java.lang.String currency)
+	{
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		return containsCurrency (currency) ? _irBucketSensitivitySettingsMap.get (currency) : null;</span>
+	}
+
+	/**
+	 * Retrieve the IR Bucket Sensitivity Settings Map
+	 * 
+	 * @return The IR Bucket Sensitivity Settings Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR&gt;
+		irBucketSensitivitySettingsMap()
+	{
+<span class="nc" id="L194">		return _irBucketSensitivitySettingsMap;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

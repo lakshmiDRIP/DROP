@@ -279,10 +279,7 @@ public class IRNetSensitivityGroup
 			TenorSensitivityMap (municipalTenorSensitivities)
 		);
 
-		IRFactorAggregate irNetSensitivity = irSensitivity.curveNet (
-			curveTenorSensitivitySettings,
-			true
-		);
+		IRFactorAggregate irNetSensitivity = irSensitivity.aggregate (curveTenorSensitivitySettings);
 
 		IRDeltaAggregate irNetMarginCovariance = irNetSensitivity.marginCovariance
 			(curveTenorSensitivitySettings);

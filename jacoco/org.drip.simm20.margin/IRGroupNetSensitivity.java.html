@@ -71,8 +71,8 @@ package org.drip.simm20.margin;
 
 public class IRGroupNetSensitivity
 {
-<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, org.drip.simm20.margin.IRNetSensitivity&gt; _netSensitivityMap =</span>
-		new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm20.margin.IRNetSensitivity&gt;();
+<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, org.drip.simm20.margin.IRFactorAggregate&gt; _netSensitivityMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm20.margin.IRFactorAggregate&gt;();
 
 	/**
 	 * Hollow IRGroupNetSensitivity Constructor
@@ -94,7 +94,7 @@ public class IRGroupNetSensitivity
 
 	public boolean addNetSensitivity (
 		final java.lang.String currency,
-		final org.drip.simm20.margin.IRNetSensitivity netSensitivity)
+		final org.drip.simm20.margin.IRFactorAggregate netSensitivity)
 	{
 <span class="nc bnc" id="L99" title="All 6 branches missed.">		if (null == currency || currency.isEmpty() || null == netSensitivity)</span>
 		{
@@ -120,22 +120,22 @@ public class IRGroupNetSensitivity
 <span class="nc" id="L120">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; gBCMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRNetSensitivity&gt;
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRFactorAggregate&gt;
 <span class="nc bnc" id="L124" title="All 2 branches missed.">			netSensitivityMapEntryOuter : _netSensitivityMap.entrySet())</span>
 		{
 <span class="nc" id="L126">			java.lang.String currencyOuter = netSensitivityMapEntryOuter.getKey();</span>
 
-<span class="nc" id="L128">			org.drip.simm20.margin.IRNetSensitivity irNetSensitivityOuter =</span>
+<span class="nc" id="L128">			org.drip.simm20.margin.IRFactorAggregate irNetSensitivityOuter =</span>
 <span class="nc" id="L129">				netSensitivityMapEntryOuter.getValue();</span>
 
 <span class="nc" id="L131">			double concentrationRiskFactorOuter = irNetSensitivityOuter.concentrationRiskFactor();</span>
 
-			for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRNetSensitivity&gt;
+			for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRFactorAggregate&gt;
 <span class="nc bnc" id="L134" title="All 2 branches missed.">				netSensitivityMapEntryInner : _netSensitivityMap.entrySet())</span>
 			{
 <span class="nc" id="L136">				java.lang.String currencyInner = netSensitivityMapEntryInner.getKey();</span>
 
-<span class="nc" id="L138">				org.drip.simm20.margin.IRNetSensitivity irNetSensitivityInner =</span>
+<span class="nc" id="L138">				org.drip.simm20.margin.IRFactorAggregate irNetSensitivityInner =</span>
 <span class="nc" id="L139">					netSensitivityMapEntryInner.getValue();</span>
 
 <span class="nc" id="L141">				double concentrationRiskFactorInner = irNetSensitivityInner.concentrationRiskFactor();</span>
@@ -174,7 +174,7 @@ public class IRGroupNetSensitivity
 	 */
 
 	public double deltaMargin (
-		final org.drip.simm20.parameters.IRGroupSettings groupSettings)
+		final org.drip.simm20.parameters.IRClassSensitivitySettings2 groupSettings)
 		throws java.lang.Exception
 	{
 <span class="nc bnc" id="L180" title="All 2 branches missed.">		if (null == groupSettings)</span>
@@ -195,7 +195,7 @@ public class IRGroupNetSensitivity
 <span class="nc" id="L195">				throw new java.lang.Exception (&quot;IRGroupNetSensitivity::deltaMargin =&gt; Invalid Inputs&quot;);</span>
 			}
 
-<span class="nc" id="L198">			org.drip.simm20.margin.IRMarginCovariance marginCovariance = _netSensitivityMap.get</span>
+<span class="nc" id="L198">			org.drip.simm20.margin.IRDeltaAggregate marginCovariance = _netSensitivityMap.get</span>
 <span class="nc" id="L199">				(currency).marginCovariance (groupSettings.curveTenorSettings (currency));</span>
 
 <span class="nc bnc" id="L201" title="All 2 branches missed.">			if (null == marginCovariance)</span>
@@ -218,9 +218,9 @@ public class IRGroupNetSensitivity
 
 <span class="nc" id="L219">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; gBC = gBC();</span>
 
-<span class="nc" id="L221">		double crossCurrencyCorrelation = groupSettings.crossCurrencyCorrelation();</span>
+<span class="nc" id="L221">		double crossCurrencyCorrelation = groupSettings.crossBucketCorrelation();</span>
 
-		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRNetSensitivity&gt;
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRFactorAggregate&gt;
 <span class="nc bnc" id="L224" title="All 2 branches missed.">			netSensitivityMapEntryOuter : _netSensitivityMap.entrySet())</span>
 		{
 <span class="nc" id="L226">			java.lang.String currencyOuter = netSensitivityMapEntryOuter.getKey();</span>
@@ -229,7 +229,7 @@ public class IRGroupNetSensitivity
 
 <span class="nc" id="L230">			double adjustedNetThresholdedOuter = adjustedNetThresholdMap.get (currencyOuter);</span>
 
-			for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRNetSensitivity&gt;
+			for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.margin.IRFactorAggregate&gt;
 <span class="nc bnc" id="L233" title="All 2 branches missed.">				netSensitivityMapEntryInner : _netSensitivityMap.entrySet())</span>
 			{
 <span class="nc" id="L235">				java.lang.String currencyInner = netSensitivityMapEntryInner.getKey();</span>
@@ -267,7 +267,7 @@ public class IRGroupNetSensitivity
 	 * @return The IR Net Sensitivity Group for the specified Currency
 	 */
 
-	public org.drip.simm20.margin.IRNetSensitivity netSensitivity (
+	public org.drip.simm20.margin.IRFactorAggregate netSensitivity (
 		final java.lang.String currency)
 	{
 <span class="nc bnc" id="L273" title="All 2 branches missed.">		return !ContainsNetSensitivity (currency) ? null : _netSensitivityMap.get (currency);</span>
@@ -279,7 +279,7 @@ public class IRGroupNetSensitivity
 	 * @return The IR Net Sensitivity Currency Map
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.simm20.margin.IRNetSensitivity&gt; netSensitivityMap()
+	public java.util.Map&lt;java.lang.String, org.drip.simm20.margin.IRFactorAggregate&gt; netSensitivityMap()
 	{
 <span class="nc" id="L284">		return _netSensitivityMap;</span>
 	}

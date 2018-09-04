@@ -85,20 +85,20 @@ import org.drip.simm20.product.RiskClassSensitivity;
 <span class="nc" id="L85">public class FXDeltaMargin</span>
 {
 
-	private static final Map&lt;Integer, Map&lt;String, Double&gt;&gt; CategorySensitivityMap (
+	private static final Map&lt;String, Map&lt;String, Double&gt;&gt; CategorySensitivityMap (
 		final String[] currencyArray,
 		final double notional)
 		throws Exception
 	{
-<span class="nc" id="L93">		Map&lt;Integer, Map&lt;String, Double&gt;&gt; currencySentivityMap = new TreeMap&lt;Integer, Map&lt;String, Double&gt;&gt;();</span>
+<span class="nc" id="L93">		Map&lt;String, Map&lt;String, Double&gt;&gt; currencySentivityMap = new TreeMap&lt;String, Map&lt;String, Double&gt;&gt;();</span>
 
 <span class="nc bnc" id="L95" title="All 2 branches missed.">		for (String currency : currencyArray)</span>
 		{
 <span class="nc" id="L97">			int categoryIndex = FXRiskThresholdContainer.CurrencyCategory (currency);</span>
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">			if (currencySentivityMap.containsKey (categoryIndex))</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			if (currencySentivityMap.containsKey (&quot;&quot; + categoryIndex))</span>
 			{
-<span class="nc" id="L101">				Map&lt;String, Double&gt; riskFactorSensitivityMap = currencySentivityMap.get (categoryIndex);</span>
+<span class="nc" id="L101">				Map&lt;String, Double&gt; riskFactorSensitivityMap = currencySentivityMap.get (&quot;&quot; + categoryIndex);</span>
 
 <span class="nc" id="L103">				riskFactorSensitivityMap.put (</span>
 					currency,
@@ -115,7 +115,7 @@ import org.drip.simm20.product.RiskClassSensitivity;
 				);
 
 <span class="nc" id="L117">				currencySentivityMap.put (</span>
-<span class="nc" id="L118">					categoryIndex,</span>
+					&quot;&quot; + categoryIndex,
 					riskFactorSensitivityMap
 				);
 			}
@@ -125,7 +125,7 @@ import org.drip.simm20.product.RiskClassSensitivity;
 	}
 
 	private static final void CategoryRiskFactorSensitivity (
-		final Map&lt;Integer, Map&lt;String, Double&gt;&gt; categorySensitivityMap)
+		final Map&lt;String, Map&lt;String, Double&gt;&gt; categorySensitivityMap)
 		throws Exception
 	{
 <span class="nc" id="L131">		System.out.println (&quot;\t|-------------------||&quot;);</span>
@@ -144,10 +144,10 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L145">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-		for (Map.Entry&lt;Integer, Map&lt;String, Double&gt;&gt; categorySensitivityMapEntry :
+		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; categorySensitivityMapEntry :
 <span class="nc bnc" id="L148" title="All 2 branches missed.">			categorySensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L150">			int categoryIndex = categorySensitivityMapEntry.getKey();</span>
+<span class="nc" id="L150">			String categoryIndex = categorySensitivityMapEntry.getKey();</span>
 
 <span class="nc" id="L152">			Map&lt;String, Double&gt; riskFactorSensitivityMap = categorySensitivityMapEntry.getValue();</span>
 
@@ -208,14 +208,14 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L209">		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX();</span>
 
-<span class="nc" id="L211">		Map&lt;Integer, Map&lt;String, Double&gt;&gt; categorySensitivityMap = CategorySensitivityMap (</span>
+<span class="nc" id="L211">		Map&lt;String, Map&lt;String, Double&gt;&gt; categorySensitivityMap = CategorySensitivityMap (</span>
 			currencyArray,
 			notional
 		);
 
 <span class="nc" id="L216">		CategoryRiskFactorSensitivity (categorySensitivityMap);</span>
 
-<span class="nc" id="L218">		Map&lt;Integer, BucketSensitivity&gt; bucketSensitivityMap = new TreeMap&lt;Integer, BucketSensitivity&gt;();</span>
+<span class="nc" id="L218">		Map&lt;String, BucketSensitivity&gt; bucketSensitivityMap = new TreeMap&lt;String, BucketSensitivity&gt;();</span>
 
 <span class="nc" id="L220">		System.out.println (&quot;\t|--------------------||&quot;);</span>
 
@@ -233,16 +233,16 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L234">		System.out.println (&quot;\t|--------------------||&quot;);</span>
 
-		for (Map.Entry&lt;Integer, Map&lt;String, Double&gt;&gt; categorySensitivityMapEntry :
+		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; categorySensitivityMapEntry :
 <span class="nc bnc" id="L237" title="All 2 branches missed.">			categorySensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L239">			int bucketIndex = categorySensitivityMapEntry.getKey();</span>
+<span class="nc" id="L239">			String bucketIndex = categorySensitivityMapEntry.getKey();</span>
 
 <span class="nc" id="L241">			BucketSensitivity bucketSensitivity = new BucketSensitivity</span>
 <span class="nc" id="L242">				(categorySensitivityMapEntry.getValue());</span>
 
 <span class="nc" id="L244">			bucketSensitivityMap.put (</span>
-<span class="nc" id="L245">				bucketIndex,</span>
+				&quot;&quot; + bucketIndex,
 				bucketSensitivity
 			);
 
@@ -251,8 +251,8 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L252">			System.out.println (&quot;\t| &quot; +</span>
 				bucketIndex + &quot; =&gt; &quot; +
-<span class="nc" id="L254">				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.weightedSensitivityVariance()), 4, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L255">				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivity(), 4, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L254">				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.sensitivityMarginVariance()), 4, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L255">				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + &quot; ||&quot;</span>
 			);
 <span class="nc" id="L257">		}</span>
 

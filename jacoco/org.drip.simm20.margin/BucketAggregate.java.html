@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketAggregate holds the Augmented Risk Factor Sensitivities and the Weighted Aggregate Sensitivity for a
- *  Single Bucket. The References are:
+ * BucketAggregate holds the Single Bucket Sensitivity Margin, the Cumulative Bucket Risk Factor Sensitivity
+ *  Margin, as well as the Aggregate Risk Factor Maps. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -71,89 +71,88 @@ package org.drip.simm20.margin;
 
 public class BucketAggregate
 {
-<span class="nc" id="L74">	private double _weightedSensitivityVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _cumulativeRiskFactorSensitivity = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _sensitivityMarginVariance = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;</span>
 <span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, org.drip.simm20.margin.RiskFactorAggregate&gt;</span>
-		_augmentedRiskFactorSensitivityMap = null;
+		_riskFactorAggregateMap = null;
 
 	/**
 	 * BucketAggregate Constructor
 	 * 
-	 * @param augmentedRiskFactorSensitivityMap The Augmented Risk Factor Sensitivity Map
-	 * @param weightedSensitivityVariance The Bucket's Weighted Sensitivity Variance
-	 * @param cumulativeRiskFactorSensitivity The Cumulative Risk Factor Sensitivity
+	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
+	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
+	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketAggregate (
 		final java.util.Map&lt;java.lang.String, org.drip.simm20.margin.RiskFactorAggregate&gt;
-			augmentedRiskFactorSensitivityMap,
-		final double weightedSensitivityVariance,
-		final double cumulativeRiskFactorSensitivity)
+			riskFactorAggregateMap,
+		final double sensitivityMarginVariance,
+		final double cumulativeRiskFactorSensitivityMargin)
 		throws java.lang.Exception
 <span class="nc" id="L95">	{</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (null == (_augmentedRiskFactorSensitivityMap = augmentedRiskFactorSensitivityMap) ||</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">				0 == _augmentedRiskFactorSensitivityMap.size() ||</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_weightedSensitivityVariance =</span>
-				weightedSensitivityVariance) ||
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivity =</span>
-				cumulativeRiskFactorSensitivity))
+<span class="nc bnc" id="L96" title="All 4 branches missed.">		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =</span>
+				sensitivityMarginVariance) ||
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =</span>
+				cumulativeRiskFactorSensitivityMargin))
 		{
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;BucketAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;BucketAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L105">	}</span>
+<span class="nc" id="L104">	}</span>
 
 	/**
-	 * Retrieve the Augmented Risk Factor Sensitivity Map
+	 * Retrieve the Risk Factor Aggregate Map
 	 * 
-	 * @return The Augmented Risk Factor Sensitivity Map
+	 * @return The Risk Factor Aggregate Map
 	 */
 
 	public java.util.Map&lt;java.lang.String, org.drip.simm20.margin.RiskFactorAggregate&gt;
-		augmentedRiskFactorSensitivityMap()
+		riskFactorAggregateMap()
 	{
-<span class="nc" id="L116">		return _augmentedRiskFactorSensitivityMap;</span>
+<span class="nc" id="L115">		return _riskFactorAggregateMap;</span>
 	}
 
 	/**
-	 * Retrieve the Bucket's Weighted Sensitivity Variance
+	 * Retrieve the Bucket's Sensitivity Margin Variance
 	 * 
-	 * @return The Bucket's Weighted Sensitivity Variance
+	 * @return The Bucket's Sensitivity Margin Variance
 	 */
 
-	public double weightedSensitivityVariance()
+	public double sensitivityMarginVariance()
 	{
-<span class="nc" id="L127">		return _weightedSensitivityVariance;</span>
+<span class="nc" id="L126">		return _sensitivityMarginVariance;</span>
 	}
 
 	/**
-	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity
+	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity Margin
 	 * 
-	 * @return The Bucket's Cumulative Risk Factor Sensitivity
+	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
 	 */
 
-	public double cumulativeRiskFactorSensitivity()
+	public double cumulativeRiskFactorSensitivityMargin()
 	{
-<span class="nc" id="L138">		return _cumulativeRiskFactorSensitivity;</span>
+<span class="nc" id="L137">		return _cumulativeRiskFactorSensitivityMargin;</span>
 	}
 
 	/**
-	 * Compute the Bounded Weighted Sensitivity
+	 * Compute the Bounded Sensitivity Margin
 	 * 
-	 * @return The Bounded Weighted Sensitivity
+	 * @return The Bounded Sensitivity Margin
 	 */
 
-	public double boundedWeightedSensitivity()
+	public double boundedSensitivityMargin()
 	{
-<span class="nc" id="L149">		double weightedSensitivity = java.lang.Math.sqrt (_weightedSensitivityVariance);</span>
+<span class="nc" id="L148">		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);</span>
 
-<span class="nc" id="L151">		return java.lang.Math.max (</span>
-<span class="nc" id="L152">			java.lang.Math.min (</span>
-				_cumulativeRiskFactorSensitivity,
-				weightedSensitivity
+<span class="nc" id="L150">		return java.lang.Math.max (</span>
+<span class="nc" id="L151">			java.lang.Math.min (</span>
+				_cumulativeRiskFactorSensitivityMargin,
+				sensitivityMargin
 			),
-			-1. * weightedSensitivity
+			-1. * sensitivityMargin
 		);
 	}
 }
