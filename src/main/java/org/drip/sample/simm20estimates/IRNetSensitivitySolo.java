@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.IRFactorAggregate;
+import org.drip.simm20.margin.RiskFactorAggregateIR;
 import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
 
 /*
@@ -266,7 +266,7 @@ public class IRNetSensitivitySolo
 			0.000
 		};
 
-		IRFactorAggregate irNetSensitivity = new IRFactorAggregate (
+		RiskFactorAggregateIR irNetSensitivity = new RiskFactorAggregateIR (
 			TenorSensitivityMap (oisTenorSensitivities),
 			TenorSensitivityMap (libor1MTenorSensitivities),
 			TenorSensitivityMap (libor3MTenorSensitivities),

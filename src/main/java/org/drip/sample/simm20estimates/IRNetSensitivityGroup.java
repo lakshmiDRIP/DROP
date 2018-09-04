@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.IRDeltaAggregate;
-import org.drip.simm20.margin.IRFactorAggregate;
+import org.drip.simm20.margin.RiskFactorAggregateIR;
 import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
 
@@ -279,9 +279,9 @@ public class IRNetSensitivityGroup
 			TenorSensitivityMap (municipalTenorSensitivities)
 		);
 
-		IRFactorAggregate irNetSensitivity = irSensitivity.aggregate (curveTenorSensitivitySettings);
+		RiskFactorAggregateIR irNetSensitivity = irSensitivity.aggregate (curveTenorSensitivitySettings);
 
-		IRDeltaAggregate irNetMarginCovariance = irNetSensitivity.marginCovariance
+		IRDeltaAggregate irNetMarginCovariance = irNetSensitivity.deltaMargin
 			(curveTenorSensitivitySettings);
 
 		System.out.println ("\t|------------------------------------------------------||");

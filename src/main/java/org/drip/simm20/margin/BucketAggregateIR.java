@@ -81,6 +81,7 @@ public class BucketAggregateIR
 	 * BucketAggregateIR Constructor
 	 * 
 	 * @param riskFactorAggregateMap The Risk Factor Aggregate IR Map
+	 * @param irDeltaAggregate The IR Delta Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 

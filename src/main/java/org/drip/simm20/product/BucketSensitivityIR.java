@@ -663,7 +663,7 @@ public class BucketSensitivityIR
 	 * @return The IR Margin Factor Aggregate
 	 */
 
-	public org.drip.simm20.margin.IRFactorAggregate aggregate (
+	public org.drip.simm20.margin.RiskFactorAggregateIR aggregate (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
 		if (null == bucketDeltaSensitivitySettings)
@@ -767,7 +767,7 @@ public class BucketSensitivityIR
 
 		try
 		{
-			return new org.drip.simm20.margin.IRFactorAggregate (
+			return new org.drip.simm20.margin.RiskFactorAggregateIR (
 				oisTenorDeltaMargin,
 				libor1MTenorDeltaMargin,
 				libor3MTenorDeltaMargin,

@@ -1,10 +1,16 @@
 
 package org.drip.sample.simm20estimates;
 
-// import java.util.HashMap;
-// import java.util.Map;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.simm20.margin.IRDeltaAggregate;
+import org.drip.simm20.margin.RiskFactorAggregateIR;
+import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
+import org.drip.simm20.product.BucketSensitivityIR;
+import org.drip.simm20.product.RiskFactorTenorSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,80 +83,382 @@ import org.drip.service.env.EnvManager;
 public class IRDeltaMargin
 {
 
-	/* private static final Map<String, Double> TenorSensitivityMap (
-		final double[] tenorSensitivities)
+	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
+		final double notional)
 		throws Exception
 	{
-		Map<String, Double> oisTenorSensitivities = new HashMap<String, Double>();
+		Map<String, Double> tenorSensitivityMap = new HashMap<String, Double>();
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"2W",
-			tenorSensitivities[0]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"1M",
-			tenorSensitivities[1]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"3M",
-			tenorSensitivities[2]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"6M",
-			tenorSensitivities[3]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"1Y",
-			tenorSensitivities[4]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"2Y",
-			tenorSensitivities[5]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"3Y",
-			tenorSensitivities[6]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"5Y",
-			tenorSensitivities[7]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"10Y",
-			tenorSensitivities[8]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"15Y",
-			tenorSensitivities[9]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"20Y",
-			tenorSensitivities[10]
+			notional * (Math.random() - 0.5)
 		);
 
-		oisTenorSensitivities.put (
+		tenorSensitivityMap.put (
 			"30Y",
-			tenorSensitivities[11]
+			notional * (Math.random() - 0.5)
 		);
 
-		return oisTenorSensitivities;
-	} */
+		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+	}
+
+	private static final void DisplayBucketSensitivityIR (
+		final BucketSensitivityIR bucketSensitivityIR)
+		throws Exception
+	{
+		Map<String, Double> oisTenorSensitivity = bucketSensitivityIR.oisTenorDeltaSensitivity().deltaMap();
+
+		Map<String, Double> libor1MTenorSensitivity =
+			bucketSensitivityIR.libor1MTenorDeltaSensitivity().deltaMap();
+
+		Map<String, Double> libor3MTenorSensitivity =
+			bucketSensitivityIR.libor3MTenorDeltaSensitivity().deltaMap();
+
+		Map<String, Double> libor6MTenorSensitivity =
+			bucketSensitivityIR.libor6MTenorDeltaSensitivity().deltaMap();
+
+		Map<String, Double> libor12MTenorSensitivity =
+			bucketSensitivityIR.libor12MTenorDeltaSensitivity().deltaMap();
+
+		Map<String, Double> primeTenorSensitivity = bucketSensitivityIR.primeTenorDeltaSensitivity().deltaMap();
+
+		Map<String, Double> municipalTenorSensitivity =
+			bucketSensitivityIR.municipalTenorDeltaSensitivity().deltaMap();
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                             INTEREST CURVE TENOR SENSITIVITY                            ||");
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                                                                                         ||");
+
+		System.out.println ("\t||    L -> R:                                                                              ||");
+
+		System.out.println ("\t||            - Curve Type                                                                 ||");
+
+		System.out.println ("\t||            - OIS Tenor Delta Sensitivity                                                ||");
+
+		System.out.println ("\t||            - LIBOR1M Tenor Delta Sensitivity                                            ||");
+
+		System.out.println ("\t||            - LIBOR3M Tenor Delta Sensitivity                                            ||");
+
+		System.out.println ("\t||            - LIBOR6M Tenor Delta Sensitivity                                            ||");
+
+		System.out.println ("\t||            - LIBOR12M Tenor Delta Sensitivity                                           ||");
+
+		System.out.println ("\t||            - PRIME Tenor Delta Sensitivity                                              ||");
+
+		System.out.println ("\t||            - MUNICIPAL Tenor Delta Sensitivity                                          ||");
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||    OIS    |  LIBOR1M   |  LIBOR3M   |  LIBOR6M   |  LIBOR12M  |   PRIME    | MUNICIPAL  ||");
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
+
+		for (String tenor : oisTenorSensitivity.keySet())
+		{
+			System.out.println (
+				"\t||  " +
+				FormatUtil.FormatDouble (oisTenorSensitivity.get (tenor), 2, 2, 1.) + "   |   " +
+				FormatUtil.FormatDouble (libor1MTenorSensitivity.get (tenor), 2, 2, 1.) + "   |   " +
+				FormatUtil.FormatDouble (libor3MTenorSensitivity.get (tenor), 2, 2, 1.) + "   |   " +
+				FormatUtil.FormatDouble (libor6MTenorSensitivity.get (tenor), 2, 2, 1.) + "   |   " +
+				FormatUtil.FormatDouble (libor12MTenorSensitivity.get (tenor), 2, 2, 1.) + "   |   " +
+				FormatUtil.FormatDouble (primeTenorSensitivity.get (tenor), 2, 2, 1.) + "   |   " +
+				FormatUtil.FormatDouble (municipalTenorSensitivity.get (tenor), 2, 2, 1.) + "   ||"
+			);
+		}
+
+		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void DeltaMarginCovarianceEntry (
+		final IRDeltaAggregate irDeltaAggregate)
+		throws Exception
+	{
+		double marginCovariance_OIS_OIS = irDeltaAggregate.marginCovariance_OIS_OIS();
+
+		double marginCovariance_OIS_LIBOR1M = irDeltaAggregate.marginCovariance_OIS_LIBOR1M();
+
+		double marginCovariance_OIS_LIBOR3M = irDeltaAggregate.marginCovariance_OIS_LIBOR3M();
+
+		double marginCovariance_OIS_LIBOR6M = irDeltaAggregate.marginCovariance_OIS_LIBOR6M();
+
+		double marginCovariance_OIS_LIBOR12M = irDeltaAggregate.marginCovariance_OIS_LIBOR12M();
+
+		double marginCovariance_OIS_PRIME = irDeltaAggregate.marginCovariance_OIS_PRIME();
+
+		double marginCovariance_OIS_MUNICIPAL = irDeltaAggregate.marginCovariance_OIS_MUNICIPAL();
+
+		double marginCovariance_LIBOR1M_LIBOR1M = irDeltaAggregate.marginCovariance_LIBOR1M_LIBOR1M();
+
+		double marginCovariance_LIBOR1M_LIBOR3M = irDeltaAggregate.marginCovariance_LIBOR1M_LIBOR3M();
+
+		double marginCovariance_LIBOR1M_LIBOR6M = irDeltaAggregate.marginCovariance_LIBOR1M_LIBOR6M();
+
+		double marginCovariance_LIBOR1M_LIBOR12M = irDeltaAggregate.marginCovariance_LIBOR1M_LIBOR12M();
+
+		double marginCovariance_LIBOR1M_PRIME = irDeltaAggregate.marginCovariance_LIBOR1M_PRIME();
+
+		double marginCovariance_LIBOR1M_MUNICIPAL = irDeltaAggregate.marginCovariance_LIBOR1M_MUNICIPAL();
+
+		double marginCovariance_LIBOR3M_LIBOR3M = irDeltaAggregate.marginCovariance_LIBOR3M_LIBOR3M();
+
+		double marginCovariance_LIBOR3M_LIBOR6M = irDeltaAggregate.marginCovariance_LIBOR3M_LIBOR6M();
+
+		double marginCovariance_LIBOR3M_LIBOR12M = irDeltaAggregate.marginCovariance_LIBOR3M_LIBOR12M();
+
+		double marginCovariance_LIBOR3M_PRIME = irDeltaAggregate.marginCovariance_LIBOR3M_PRIME();
+
+		double marginCovariance_LIBOR3M_MUNICIPAL = irDeltaAggregate.marginCovariance_LIBOR3M_MUNICIPAL();
+
+		double marginCovariance_LIBOR6M_LIBOR6M = irDeltaAggregate.marginCovariance_LIBOR6M_LIBOR6M();
+
+		double marginCovariance_LIBOR6M_LIBOR12M = irDeltaAggregate.marginCovariance_LIBOR6M_LIBOR12M();
+
+		double marginCovariance_LIBOR6M_PRIME = irDeltaAggregate.marginCovariance_LIBOR6M_PRIME();
+
+		double marginCovariance_LIBOR6M_MUNICIPAL = irDeltaAggregate.marginCovariance_LIBOR6M_MUNICIPAL();
+
+		double marginCovariance_LIBOR12M_LIBOR12M = irDeltaAggregate.marginCovariance_LIBOR12M_LIBOR12M();
+
+		double marginCovariance_LIBOR12M_PRIME = irDeltaAggregate.marginCovariance_LIBOR12M_PRIME();
+
+		double marginCovariance_LIBOR12M_MUNICIPAL = irDeltaAggregate.marginCovariance_LIBOR12M_MUNICIPAL();
+
+		double marginCovariance_PRIME_PRIME = irDeltaAggregate.marginCovariance_PRIME_PRIME();
+
+		double marginCovariance_PRIME_MUNICIPAL = irDeltaAggregate.marginCovariance_PRIME_MUNICIPAL();
+
+		double marginCovariance_MUNICIPAL_MUNICIPAL = irDeltaAggregate.marginCovariance_MUNICIPAL_MUNICIPAL();
+
+		System.out.println (
+			"\t|| OIS       - OIS       => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_OIS, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| OIS       - LIBOR1M   => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR1M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| OIS       - LIBOR3M   => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR3M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| OIS       - LIBOR6M   => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR6M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| OIS       - LIBOR12M  => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR12M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| OIS       - PRIME     => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_PRIME, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| OIS       - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_OIS_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR1M   - LIBOR1M   => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR1M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR1M   - LIBOR3M   => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR3M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR1M   - LIBOR6M   => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR6M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR1M   - LIBOR12M  => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR12M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR1M   - PRIME     => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_PRIME, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR1M   - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR3M   - LIBOR3M   => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR3M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR3M   - LIBOR6M   => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR6M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR3M   - LIBOR12M  => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR12M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR3M   - PRIME     => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_PRIME, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR3M   - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR6M   - LIBOR6M   => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_LIBOR6M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR6M   - LIBOR12M  => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_LIBOR12M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR6M   - PRIME     => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_PRIME, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR6M   - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR12M  - LIBOR12M  => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_LIBOR12M, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR12M  - PRIME     => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_PRIME, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| LIBOR12M  - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| PRIME     - PRIME     => " +
+			FormatUtil.FormatDouble (marginCovariance_PRIME_PRIME, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| PRIME     - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_PRIME_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| MUNICIPAL - MUNICIPAL => " +
+			FormatUtil.FormatDouble (marginCovariance_MUNICIPAL_MUNICIPAL, 9, 0, 1.) + " ||"
+		);
+
+		System.out.println();
+	}
 
 	public static final void main (
 		final String[] inputArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
+
+		double notional = 100.;
+		String currency = "USD";
+
+		BucketSensitivitySettingsIR bucketSensitivitySettingsIR = BucketSensitivitySettingsIR.ISDA
+			(currency);
+
+		BucketSensitivityIR bucketSensitivityIR = new BucketSensitivityIR (
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional)
+		);
+
+		DisplayBucketSensitivityIR (bucketSensitivityIR);
+
+		RiskFactorAggregateIR riskFactorAggregateIR = bucketSensitivityIR.aggregate
+			(bucketSensitivitySettingsIR);
+
+		IRDeltaAggregate irDeltaAggregate = riskFactorAggregateIR.deltaMargin (bucketSensitivitySettingsIR);
+
+		DeltaMarginCovarianceEntry (irDeltaAggregate);
 
 		EnvManager.TerminateEnv();
 	}
