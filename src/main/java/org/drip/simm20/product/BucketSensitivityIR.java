@@ -656,14 +656,14 @@ public class BucketSensitivityIR
 	}
 
 	/**
-	 * Generate the IR Margin Factor Aggregate
+	 * Generate the IR Margin Factor Curve Tenor Aggregate
 	 * 
 	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The IR Margin Factor Aggregate
+	 * @return The IR Margin Factor Curve Tenor Aggregate
 	 */
 
-	public org.drip.simm20.margin.RiskFactorAggregateIR aggregate (
+	public org.drip.simm20.margin.RiskFactorAggregateIR curveAggregate (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
 		if (null == bucketDeltaSensitivitySettings)
@@ -776,6 +776,45 @@ public class BucketSensitivityIR
 				primeTenorDeltaMargin,
 				municipalTenorDeltaMargin,
 				deltaConcentrationRiskFactor
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Bucket IR Sensitivity Margin Aggregate
+	 * 
+	 * @param bucketSensitivitySettingsIR The IR Bucket Sensitivity Settings
+	 * 
+	 * @return The Bucket IR Sensitivity Margin Aggregate
+	 */
+
+	public org.drip.simm20.margin.BucketAggregateIR aggregate (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
+	{
+		org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR = curveAggregate
+			(bucketSensitivitySettingsIR);
+
+		org.drip.simm20.margin.IRDeltaAggregate deltaMargin = riskFactorAggregateIR.deltaMargin
+			(bucketSensitivitySettingsIR);
+
+		if (null == deltaMargin)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.simm20.margin.BucketAggregateIR (
+				riskFactorAggregateIR,
+				deltaMargin,
+				deltaMargin.cumulativeMarginCovariance(),
+				riskFactorAggregateIR.cumulativeSensitivityMargin()
 			);
 		}
 		catch (java.lang.Exception e)

@@ -76,6 +76,72 @@ public class RiskClassSensitivitySettingsIR
 		_bucketSensitivitySettingsMap = null;
 
 	/**
+	 * Generate the Standard ISDA Instance of RiskClassSensitivitySettingsIR
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The Standard ISDA Instance of RiskClassSensitivitySettingsIR
+	 */
+
+	public static final RiskClassSensitivitySettingsIR ISDA (
+		final java.util.List<java.lang.String> currencyList)
+	{
+		if (null == currencyList)
+		{
+			return null;
+		}
+
+		int currencyListSize = currencyList.size();
+
+		if (0 == currencyListSize)
+		{
+			return null;
+		}
+
+		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
+
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
+			bucketSensitivitySettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm20.parameters.BucketSensitivitySettingsIR>();
+
+		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		{
+			java.lang.String currency = currencyList.get (currencyListIndex);
+
+			bucketSensitivitySettingsMap.put (
+				currency,
+				org.drip.simm20.parameters.BucketSensitivitySettingsIR.ISDA (currency)
+			);
+
+			for (int currencyListInnerIndex = 0;
+				currencyListInnerIndex < currencyListSize;
+				++currencyListInnerIndex)
+			{
+				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
+					currencyListIndex == currencyListInnerIndex ? 1. :
+						org.drip.simm20.rates.IRSystemics.CROSS_CURRENCY_CORRELATION;
+			}
+		}
+
+		try
+		{
+			return new RiskClassSensitivitySettingsIR (
+				bucketSensitivitySettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					currencyList,
+					crossCurrencyCorrelation
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * RiskClassSensitivitySettingsIR Constructor
 	 * 
 	 * @param bucketSensitivitySettingsMap The IR Bucket Sensitivity Settings Map

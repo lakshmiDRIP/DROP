@@ -6,8 +6,9 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.simm20.margin.BucketAggregateIR;
 import org.drip.simm20.margin.IRDeltaAggregate;
-import org.drip.simm20.margin.RiskFactorAggregateIR;
+import org.drip.simm20.margin.RiskClassAggregateIR;
 import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
 import org.drip.simm20.product.RiskFactorTenorSensitivity;
@@ -58,8 +59,8 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
  */
 
 /**
- * IRDeltaMargin illustrates the Computation of the IR Delta Margin for across a Group of IR Currency Bucket
- *  Exposure Sensitivities. The References are:
+ * IRCurrencyDeltaMarginFlow illustrates the Steps in the Computation of the IR Delta Margin for a Currency
+ *  Bucket's IR Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -80,7 +81,7 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRDeltaMargin
+public class IRCurrencyDeltaMarginFlow
 {
 
 	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
@@ -286,6 +287,24 @@ public class IRDeltaMargin
 
 		double marginCovariance_MUNICIPAL_MUNICIPAL = irDeltaAggregate.marginCovariance_MUNICIPAL_MUNICIPAL();
 
+		System.out.println ("\t||-------------------------------------||");
+
+		System.out.println ("\t||  IR RISK FACTOR MARGIN COVARIANCE   ||");
+
+		System.out.println ("\t||-------------------------------------||");
+
+		System.out.println ("\t||                                     ||");
+
+		System.out.println ("\t||    - L -> R:                        ||");
+
+		System.out.println ("\t||        - Curve #1                   ||");
+
+		System.out.println ("\t||        - Curve #2                   ||");
+
+		System.out.println ("\t||        - Covariance                 ||");
+
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| OIS       - OIS       => " +
 			FormatUtil.FormatDouble (marginCovariance_OIS_OIS, 9, 0, 1.) + " ||"
@@ -321,6 +340,8 @@ public class IRDeltaMargin
 			FormatUtil.FormatDouble (marginCovariance_OIS_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
 
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| LIBOR1M   - LIBOR1M   => " +
 			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR1M, 9, 0, 1.) + " ||"
@@ -351,6 +372,8 @@ public class IRDeltaMargin
 			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
 
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| LIBOR3M   - LIBOR3M   => " +
 			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR3M, 9, 0, 1.) + " ||"
@@ -376,6 +399,8 @@ public class IRDeltaMargin
 			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
 
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| LIBOR6M   - LIBOR6M   => " +
 			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_LIBOR6M, 9, 0, 1.) + " ||"
@@ -396,6 +421,8 @@ public class IRDeltaMargin
 			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
 
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| LIBOR12M  - LIBOR12M  => " +
 			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_LIBOR12M, 9, 0, 1.) + " ||"
@@ -411,6 +438,8 @@ public class IRDeltaMargin
 			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
 
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| PRIME     - PRIME     => " +
 			FormatUtil.FormatDouble (marginCovariance_PRIME_PRIME, 9, 0, 1.) + " ||"
@@ -421,10 +450,44 @@ public class IRDeltaMargin
 			FormatUtil.FormatDouble (marginCovariance_PRIME_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
 
+		System.out.println ("\t||-------------------------------------||");
+
 		System.out.println (
 			"\t|| MUNICIPAL - MUNICIPAL => " +
 			FormatUtil.FormatDouble (marginCovariance_MUNICIPAL_MUNICIPAL, 9, 0, 1.) + " ||"
 		);
+
+		System.out.println ("\t||-------------------------------------||");
+
+		System.out.println();
+	}
+
+	private static final void DisplayRiskClassAggregate (
+		final RiskClassAggregateIR riskClassAggregateIR)
+		throws Exception
+	{
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println ("\t||   IR RISK CLASS AGGREGATE MARGIN METRICS   ||");
+
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println (
+			"\t|| Core Delta SBA Variance     => " +
+			FormatUtil.FormatDouble (riskClassAggregateIR.coreDeltaSBAVariance(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Residual Delta SBA Variance => " +
+			FormatUtil.FormatDouble (riskClassAggregateIR.residualDeltaSBAVariance(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Delta SBA                   => " +
+			FormatUtil.FormatDouble (riskClassAggregateIR.deltaSBA(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println ("\t||--------------------------------------------||");
 
 		System.out.println();
 	}
@@ -453,12 +516,27 @@ public class IRDeltaMargin
 
 		DisplayBucketSensitivityIR (bucketSensitivityIR);
 
-		RiskFactorAggregateIR riskFactorAggregateIR = bucketSensitivityIR.aggregate
+		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);
+
+		IRDeltaAggregate irDeltaAggregate = bucketAggregateIR.riskFactorAggregateIR().deltaMargin
 			(bucketSensitivitySettingsIR);
 
-		IRDeltaAggregate irDeltaAggregate = riskFactorAggregateIR.deltaMargin (bucketSensitivitySettingsIR);
-
 		DeltaMarginCovarianceEntry (irDeltaAggregate);
+
+		Map<String, BucketAggregateIR> bucketAggregateIRMap = new HashMap<String, BucketAggregateIR>();
+
+		bucketAggregateIRMap.put (
+			currency,
+			bucketAggregateIR
+		);
+
+		RiskClassAggregateIR riskClassAggregateIR = new RiskClassAggregateIR (
+			bucketAggregateIRMap,
+			irDeltaAggregate.cumulativeMarginCovariance(),
+			0.
+		);
+
+		DisplayRiskClassAggregate (riskClassAggregateIR);
 
 		EnvManager.TerminateEnv();
 	}

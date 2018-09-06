@@ -104,4 +104,96 @@ public class RiskClassSensitivityIR
 	{
 		return _bucketSensitivityMap;
 	}
+
+	/**
+	 * Generate the Risk Class Aggregate
+	 * 
+	 * @param riskClassSensitivitySettings The Risk Class Sensitivity Settings
+	 * 
+	 * @return The Risk Class Aggregate
+	 */
+
+	public org.drip.simm20.margin.RiskClassAggregateIR aggregate (
+		final org.drip.simm20.parameters.RiskClassSensitivitySettingsIR riskClassSensitivitySettings)
+	{
+		if (null == riskClassSensitivitySettings)
+		{
+			return null;
+		}
+
+		double coreDeltaSBAVariance = 0.;
+
+		java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateMap = new
+			java.util.TreeMap<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>();
+
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
+			bucketSensitivitySettingsMap = riskClassSensitivitySettings.bucketSensitivitySettingsMap();
+
+		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =
+			riskClassSensitivitySettings.crossBucketCorrelation();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.product.BucketSensitivityIR>
+			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())
+		{
+			java.lang.String bucketIndex = bucketSensitivityMapEntry.getKey();
+
+			org.drip.simm20.product.BucketSensitivityIR bucketSensitivity =
+				bucketSensitivityMapEntry.getValue();
+
+			org.drip.simm20.margin.BucketAggregateIR bucketAggregate = bucketSensitivity.aggregate
+				(bucketSensitivitySettingsMap.get (bucketIndex));
+
+			if (null == bucketAggregate)
+			{
+				return null;
+			}
+
+			bucketAggregateMap.put (
+				"" + bucketIndex,
+				bucketAggregate
+			);
+		}
+
+		try
+		{
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())
+			{
+				java.lang.String outerKey = bucketAggregateMapOuterEntry.getKey();
+
+				org.drip.simm20.margin.BucketAggregateIR bucketAggregateOuter =
+					bucketAggregateMapOuterEntry.getValue();
+
+				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();
+
+				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedSensitivityMargin();
+
+				for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())
+				{
+					java.lang.String innerKey = bucketAggregateMapInnerEntry.getKey();
+
+					coreDeltaSBAVariance = coreDeltaSBAVariance + (outerKey.equalsIgnoreCase (innerKey) ?
+						weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (
+							outerKey,
+							innerKey
+						) * boundedWeightedSensitivityOuter *
+						bucketAggregateMapInnerEntry.getValue().boundedSensitivityMargin()
+					);
+				}
+			}
+
+			return new org.drip.simm20.margin.RiskClassAggregateIR (
+				bucketAggregateMap,
+				coreDeltaSBAVariance,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

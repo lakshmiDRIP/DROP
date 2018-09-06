@@ -106,7 +106,7 @@ public class IRDeltaAggregate
 
 	private double _marginCovariance_MUNICIPAL_MUNICIPAL = java.lang.Double.NaN;
 
-	private double _cumulativeMarginCovariance = java.lang.Double.NaN;
+	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;
 
 	/**
 	 * @param marginCovariance_OIS_OIS The OIS - OIS Margin Co-variance
@@ -137,7 +137,7 @@ public class IRDeltaAggregate
 	 * @param marginCovariance_PRIME_PRIME The PRIME - PRIME Margin Co-variance
 	 * @param marginCovariance_PRIME_MUNICIPAL The PRIME - MUNICIPAL Margin Co-variance
 	 * @param marginCovariance_MUNICIPAL_MUNICIPAL The MUNICIPAL - MUNICIPAL Margin Co-variance
-	 * @param cumulativeMarginCovariance The Cumulative Margin Co-variance
+	 * @param cumulativeMarginSensitivity The Cumulative Margin Sensitivity
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -171,7 +171,7 @@ public class IRDeltaAggregate
 		final double marginCovariance_PRIME_PRIME,
 		final double marginCovariance_PRIME_MUNICIPAL,
 		final double marginCovariance_MUNICIPAL_MUNICIPAL,
-		final double cumulativeMarginCovariance)
+		final double cumulativeMarginSensitivity)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_OIS =
@@ -230,8 +230,8 @@ public class IRDeltaAggregate
 				marginCovariance_PRIME_MUNICIPAL) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_MUNICIPAL_MUNICIPAL =
 				marginCovariance_MUNICIPAL_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginCovariance =
-				cumulativeMarginCovariance))
+			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
+				cumulativeMarginSensitivity))
 		{
 			throw new java.lang.Exception ("IRDeltaAggregate Constructor => Invalid Inputs");
 		}
@@ -551,7 +551,7 @@ public class IRDeltaAggregate
 	 * @return The Cumulative Margin Covariance
 	 */
 
-	public double cumulative()
+	public double cumulativeMarginCovariance()
 	{
 		return _marginCovariance_OIS_OIS +
 			_marginCovariance_OIS_PRIME +
@@ -584,43 +584,24 @@ public class IRDeltaAggregate
 	}
 
 	/**
-	 * Compute the Margin Variance
+	 * Compute the Cumulative Sensitivity Margin
 	 * 
-	 * @return The Margin Variance
+	 * @return The Cumulative Sensitivity Margin
 	 */
 
-	public double variance()
+	public double cumulativeMargin()
 	{
-		return java.lang.Math.sqrt (cumulative());
+		return java.lang.Math.sqrt (cumulativeMarginCovariance());
 	}
 
 	/**
-	 * Retrieve the Cumulative Margin Covariance
+	 * Retrieve the Cumulative Margin Sensitivity
 	 * 
-	 * @return The Cumulative Margin Covariance
+	 * @return The Cumulative Margin Sensitivity
 	 */
 
-	public double cumulativeMarginCovariance()
+	public double cumulativeMarginSensitivity()
 	{
-		return _cumulativeMarginCovariance;
-	}
-
-	/**
-	 * Calculate the Adjusted Net Thresholded Margin
-	 * 
-	 * @return The Adjusted Net Thresholded Margin
-	 */
-
-	public double adjustedNetThresholded()
-	{
-		double kb = variance();
-
-		return java.lang.Math.max (
-			java.lang.Math.min (
-				_cumulativeMarginCovariance,
-				kb
-			),
-			-kb
-		);
+		return _cumulativeMarginSensitivity;
 	}
 }

@@ -74,13 +74,12 @@ public class BucketAggregateIR
 	private double _sensitivityMarginVariance = java.lang.Double.NaN;
 	private org.drip.simm20.margin.IRDeltaAggregate _irDeltaAggregate = null;
 	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR>
-		_riskFactorAggregateMap = null;
+	private org.drip.simm20.margin.RiskFactorAggregateIR _riskFactorAggregateIR = null;
 
 	/**
 	 * BucketAggregateIR Constructor
 	 * 
-	 * @param riskFactorAggregateMap The Risk Factor Aggregate IR Map
+	 * @param riskFactorAggregateIR The Risk Factor Aggregate IR
 	 * @param irDeltaAggregate The IR Delta Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
@@ -89,15 +88,13 @@ public class BucketAggregateIR
 	 */
 
 	public BucketAggregateIR (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR>
-			riskFactorAggregateMap,
+		final org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR,
 		final org.drip.simm20.margin.IRDeltaAggregate irDeltaAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeRiskFactorSensitivityMargin)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) ||
-				0 == _riskFactorAggregateMap.size() ||
+		if (null == (_riskFactorAggregateIR = riskFactorAggregateIR) ||
 			null == (_irDeltaAggregate = irDeltaAggregate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
@@ -109,15 +106,14 @@ public class BucketAggregateIR
 	}
 
 	/**
-	 * Retrieve the Risk Factor Aggregate IR Map
+	 * Retrieve the Risk Factor Aggregate IR
 	 * 
-	 * @return The Risk Factor Aggregate IR Map
+	 * @return The Risk Factor Aggregate IR
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR>
-		riskFactorAggregateMap()
+	public org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR()
 	{
-		return _riskFactorAggregateMap;
+		return _riskFactorAggregateIR;
 	}
 
 	/**
@@ -151,5 +147,24 @@ public class BucketAggregateIR
 	public double cumulativeRiskFactorSensitivityMargin()
 	{
 		return _cumulativeRiskFactorSensitivityMargin;
+	}
+
+	/**
+	 * Compute the Bounded Sensitivity Margin
+	 * 
+	 * @return The Bounded Sensitivity Margin
+	 */
+
+	public double boundedSensitivityMargin()
+	{
+		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
+
+		return java.lang.Math.max (
+			java.lang.Math.min (
+				_cumulativeRiskFactorSensitivityMargin,
+				sensitivityMargin
+			),
+			-1. * sensitivityMargin
+		);
 	}
 }
