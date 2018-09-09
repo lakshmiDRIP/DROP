@@ -61,7 +61,7 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
  */
 
 /**
- * IRCurrencyDeltaMargin illustrates the Computation of the IR Delta Margin for a Currency Bucket's IR
+ * IRDeltaMargin illustrates the Computation of the IR Delta Margin for a Bucket of Currency's IR
  *  Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -83,7 +83,7 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRCurrencyDeltaMargin
+public class IRDeltaMargin
 {
 
 	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
@@ -227,36 +227,6 @@ public class IRCurrencyDeltaMargin
 		}
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
-
-		System.out.println();
-	}
-
-	private static final void DisplayRiskClassAggregate (
-		final RiskClassAggregateIR riskClassAggregateIR)
-		throws Exception
-	{
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println ("\t||   IR RISK CLASS AGGREGATE MARGIN METRICS   ||");
-
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println (
-			"\t|| Core Delta SBA Variance     => " +
-			FormatUtil.FormatDouble (riskClassAggregateIR.coreDeltaSBAVariance(), 10, 0, 1.) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Delta SBA Variance => " +
-			FormatUtil.FormatDouble (riskClassAggregateIR.residualDeltaSBAVariance(), 10, 0, 1.) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Delta SBA                   => " +
-			FormatUtil.FormatDouble (riskClassAggregateIR.deltaSBA(), 10, 0, 1.) + " ||"
-		);
-
-		System.out.println ("\t||--------------------------------------------||");
 
 		System.out.println();
 	}
@@ -497,22 +467,11 @@ public class IRCurrencyDeltaMargin
 		System.out.println();
 	}
 
-	public static final void main (
-		final String[] inputArray)
+	private static final BucketSensitivityIR CurrencyBucketSensitivity (
+		final String currency,
+		final double notional)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
-
-		double notional = 100.;
-		String currency = "USD";
-
-		List<String> currencyList = new ArrayList<String>();
-
-		currencyList.add (currency);
-
-		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =
-			RiskMeasureSensitivitySettingsIR.ISDA_DELTA (currencyList);
-
 		BucketSensitivityIR bucketSensitivityIR = new BucketSensitivityIR (
 			CurveTenorSensitivityMap (notional),
 			CurveTenorSensitivityMap (notional),
@@ -528,22 +487,96 @@ public class IRCurrencyDeltaMargin
 			bucketSensitivityIR
 		);
 
-		Map<String, BucketSensitivityIR> bucketSensitivityMap = new HashMap<String, BucketSensitivityIR>();
+		return bucketSensitivityIR;
+	}
 
-		bucketSensitivityMap.put (
-			currency,
-			bucketSensitivityIR
+	private static final void DisplayRiskClassAggregate (
+		final RiskClassAggregateIR riskClassAggregateIR)
+		throws Exception
+	{
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println ("\t||   IR RISK CLASS AGGREGATE MARGIN METRICS   ||");
+
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println (
+			"\t|| Core Delta SBA Variance     => " +
+			FormatUtil.FormatDouble (riskClassAggregateIR.coreDeltaSBAVariance(), 10, 0, 1.) + " ||"
 		);
 
+		System.out.println (
+			"\t|| Residual Delta SBA Variance => " +
+			FormatUtil.FormatDouble (riskClassAggregateIR.residualDeltaSBAVariance(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Delta SBA                   => " +
+			FormatUtil.FormatDouble (riskClassAggregateIR.deltaSBA(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println();
+	}
+
+	public static final void main (
+		final String[] inputs)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		String[] currencyArray = {
+			"USD",
+			"EUR",
+			"CNY",
+			"INR",
+			"JPY"
+		};
+
+		double[] notionalArray = {
+			100.,
+			108.,
+			119.,
+			 49.,
+			 28.
+		};
+
+		Map<String, BucketSensitivityIR> bucketSensitivityMap = new HashMap<String, BucketSensitivityIR>();
+
+		for (int currencyIndex = 0; currencyIndex < currencyArray.length; ++currencyIndex)
+		{
+			bucketSensitivityMap.put (
+				currencyArray[currencyIndex],
+				CurrencyBucketSensitivity (
+					currencyArray[currencyIndex],
+					notionalArray[currencyIndex]
+				)
+			);
+		}
+
+		List<String> currencyList = new ArrayList<String>();
+
+		for (String currency : currencyArray)
+		{
+			currencyList.add (currency);
+		}
+
 		RiskClassSensitivityIR riskClassSensitivityIR = new RiskClassSensitivityIR (bucketSensitivityMap);
+
+		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =
+			RiskMeasureSensitivitySettingsIR.ISDA_DELTA (currencyList);
 
 		RiskClassAggregateIR riskClassAggregateIR = riskClassSensitivityIR.aggregate
 			(riskMeasureSensitivitySettingsIR);
 
-		DeltaMarginCovarianceEntry (
-			currency,
-			riskClassAggregateIR.bucketAggregateMap().get (currency).irDeltaAggregate()
-		);
+		for (String currency : currencyArray)
+		{
+			DeltaMarginCovarianceEntry (
+				currency,
+				riskClassAggregateIR.bucketAggregateMap().get (currency).irDeltaAggregate()
+			);
+		}
 
 		DisplayRiskClassAggregate (riskClassAggregateIR);
 

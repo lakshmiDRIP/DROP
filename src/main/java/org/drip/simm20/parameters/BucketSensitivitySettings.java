@@ -71,13 +71,13 @@ package org.drip.simm20.parameters;
 
 public class BucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
 {
-	private double _deltaRiskWeight = java.lang.Double.NaN;
+	private double _riskWeight = java.lang.Double.NaN;
 	private double _memberCorrelation = java.lang.Double.NaN;
 
 	/**
 	 * BucketSensitivitySettings Constructor
 	 * 
-	 * @param deltaRiskWeight The Delta Risk Weight
+	 * @param riskWeight The Risk Factor Weight
 	 * @param concentrationFactor The Concentration Factor
 	 * @param memberCorrelation The Bucket Member Correlation
 	 * 
@@ -85,14 +85,14 @@ public class BucketSensitivitySettings extends org.drip.simm20.parameters.Liquid
 	 */
 
 	public BucketSensitivitySettings (
-		final double deltaRiskWeight,
+		final double riskWeight,
 		final double concentrationFactor,
 		final double memberCorrelation)
 		throws java.lang.Exception
 	{
 		super (concentrationFactor);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
+		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
 				1. < _memberCorrelation || -1. > _memberCorrelation)
 		{
@@ -101,20 +101,20 @@ public class BucketSensitivitySettings extends org.drip.simm20.parameters.Liquid
 	}
 
 	/**
-	 * Retrieve the FX Bucket Delta Risk Weight
+	 * Retrieve the Bucket Risk Factor Weight
 	 * 
-	 * @return The FX Bucket Delta Risk Weight
+	 * @return The Bucket Risk Factor Weight
 	 */
 
-	public double deltaRiskWeight()
+	public double riskWeight()
 	{
-		return _deltaRiskWeight;
+		return _riskWeight;
 	}
 
 	/**
 	 * Retrieve the Correlation between the Basket Members
 	 * 
-	 * @return The FX Correlation between the Basket Members
+	 * @return The Correlation between the Basket Members
 	 */
 
 	public double memberCorrelation()

@@ -9,7 +9,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.BucketAggregate;
 import org.drip.simm20.margin.RiskClassAggregate;
-import org.drip.simm20.parameters.RiskClassSensitivitySettings;
+import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
 import org.drip.simm20.product.RiskClassSensitivity;
 
@@ -288,7 +288,8 @@ public class CTDeltaMargin
 
 		double notional = 100.;
 
-		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_CT();
+		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
+			RiskMeasureSensitivitySettings.ISDA_CT_DELTA();
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
@@ -326,13 +327,13 @@ public class CTDeltaMargin
 				bucketSensitivity
 			);
 
-			BucketAggregate bucketDigest = bucketSensitivity.aggregate
-				(riskClassSensitivitySettings.bucketSensitivitySettingsMap().get (bucketIndex));
+			BucketAggregate bucketAggregate = bucketSensitivity.aggregate
+				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketIndex));
 
 			System.out.println ("\t| " +
 				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
 			);
 		}
 
@@ -341,7 +342,7 @@ public class CTDeltaMargin
 		System.out.println();
 
 		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate
-			(riskClassSensitivitySettings);
+			(riskMeasureSensitivitySettings);
 
 		System.out.println ("\t|-----------------------------------------------------||");
 

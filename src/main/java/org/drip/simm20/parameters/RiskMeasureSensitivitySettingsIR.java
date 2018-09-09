@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * RiskClassSensitivitySettingsIR holds the Settings that govern the Generation of the ISDA SIMM Bucket
- *  Sensitivities across Individual IR Class Risk Factor Buckets. The References are:
+ * RiskMeasureSensitivitySettingsIR holds the Settings that govern the Generation of the ISDA SIMM Bucket
+ *  Sensitivities across Individual IR Class Risk Measure Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,21 +69,21 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassSensitivitySettingsIR
+public class RiskMeasureSensitivitySettingsIR
 {
 	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;
 	private java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
 		_bucketSensitivitySettingsMap = null;
 
 	/**
-	 * Generate the Standard ISDA Instance of RiskClassSensitivitySettingsIR
+	 * Generate the Standard ISDA DELTA Instance of RiskMeasureSensitivitySettingsIR
 	 * 
 	 * @param currencyList The Currency List
 	 * 
-	 * @return The Standard ISDA Instance of RiskClassSensitivitySettingsIR
+	 * @return The Standard ISDA DELTA Instance of RiskMeasureSensitivitySettingsIR
 	 */
 
-	public static final RiskClassSensitivitySettingsIR ISDA (
+	public static final RiskMeasureSensitivitySettingsIR ISDA_DELTA (
 		final java.util.List<java.lang.String> currencyList)
 	{
 		if (null == currencyList)
@@ -101,14 +101,14 @@ public class RiskClassSensitivitySettingsIR
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
 		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
-			bucketSensitivitySettingsMap = new java.util.HashMap<java.lang.String,
+			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
 				org.drip.simm20.parameters.BucketSensitivitySettingsIR>();
 
 		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
 		{
 			java.lang.String currency = currencyList.get (currencyListIndex);
 
-			bucketSensitivitySettingsMap.put (
+			bucketDeltaSettingsMap.put (
 				currency,
 				org.drip.simm20.parameters.BucketSensitivitySettingsIR.ISDA (currency)
 			);
@@ -125,8 +125,8 @@ public class RiskClassSensitivitySettingsIR
 
 		try
 		{
-			return new RiskClassSensitivitySettingsIR (
-				bucketSensitivitySettingsMap,
+			return new RiskMeasureSensitivitySettingsIR (
+				bucketDeltaSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
@@ -142,7 +142,7 @@ public class RiskClassSensitivitySettingsIR
 	}
 
 	/**
-	 * RiskClassSensitivitySettingsIR Constructor
+	 * RiskMeasureSensitivitySettingsIR Constructor
 	 * 
 	 * @param bucketSensitivitySettingsMap The IR Bucket Sensitivity Settings Map
 	 * @param crossBucketCorrelation The Cross Bucket Correlation
@@ -150,7 +150,7 @@ public class RiskClassSensitivitySettingsIR
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskClassSensitivitySettingsIR (
+	public RiskMeasureSensitivitySettingsIR (
 		final java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
 			bucketSensitivitySettingsMap,
 		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
@@ -160,7 +160,7 @@ public class RiskClassSensitivitySettingsIR
 				0 == _bucketSensitivitySettingsMap.size() ||
 			null == (_crossBucketCorrelation = crossBucketCorrelation))
 		{
-			throw new java.lang.Exception ("RiskClassSensitivitySettingsIR Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskMeasureSensitivitySettingsIR Constructor => Invalid Inputs");
 		}
 	}
 

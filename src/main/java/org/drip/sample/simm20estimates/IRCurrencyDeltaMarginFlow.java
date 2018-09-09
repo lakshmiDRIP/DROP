@@ -171,7 +171,8 @@ public class IRCurrencyDeltaMarginFlow
 		Map<String, Double> libor12MTenorSensitivity =
 			bucketSensitivityIR.libor12MTenorDeltaSensitivity().deltaMap();
 
-		Map<String, Double> primeTenorSensitivity = bucketSensitivityIR.primeTenorDeltaSensitivity().deltaMap();
+		Map<String, Double> primeTenorSensitivity =
+			bucketSensitivityIR.primeTenorDeltaSensitivity().deltaMap();
 
 		Map<String, Double> municipalTenorSensitivity =
 			bucketSensitivityIR.municipalTenorDeltaSensitivity().deltaMap();

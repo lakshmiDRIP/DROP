@@ -114,7 +114,7 @@ public class RiskClassSensitivityIR
 	 */
 
 	public org.drip.simm20.margin.RiskClassAggregateIR aggregate (
-		final org.drip.simm20.parameters.RiskClassSensitivitySettingsIR riskClassSensitivitySettings)
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR riskClassSensitivitySettings)
 	{
 		if (null == riskClassSensitivitySettings)
 		{

@@ -323,7 +323,7 @@ public class IRThresholdContainer
 		final java.lang.String currency)
 	{
 		return ContainsThreshold (currency) ? s_ThresholdMap.get (s_CurrencyThresholdMap.get (currency)) :
-			null;
+			s_ThresholdMap.get (1);
 	}
 
 	/**

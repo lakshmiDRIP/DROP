@@ -122,7 +122,7 @@ public class BucketSensitivity
 
 		double memberCorrelation = bucketSensitivitySettings.memberCorrelation();
 
-		double bucketDeltaRiskWeight = bucketSensitivitySettings.deltaRiskWeight();
+		double bucketDeltaRiskWeight = bucketSensitivitySettings.riskWeight();
 
 		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
 

@@ -113,7 +113,7 @@ public class RiskClassSensitivity
 	 */
 
 	public org.drip.simm20.margin.RiskClassAggregate aggregate (
-		final org.drip.simm20.parameters.RiskClassSensitivitySettings riskClassSensitivitySettings)
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettings riskClassSensitivitySettings)
 	{
 		if (null == riskClassSensitivitySettings)
 		{
@@ -126,7 +126,7 @@ public class RiskClassSensitivity
 			java.util.TreeMap<java.lang.String, org.drip.simm20.margin.BucketAggregate>();
 
 		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings>
-			bucketSensitivitySettingsMap = riskClassSensitivitySettings.bucketSensitivitySettingsMap();
+			bucketSensitivitySettingsMap = riskClassSensitivitySettings.bucketSettingsMap();
 
 		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =
 			riskClassSensitivitySettings.crossBucketCorrelation();

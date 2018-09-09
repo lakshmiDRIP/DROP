@@ -10,7 +10,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.simm20.fx.FXRiskThresholdContainer;
 import org.drip.simm20.margin.BucketAggregate;
 import org.drip.simm20.margin.RiskClassAggregate;
-import org.drip.simm20.parameters.RiskClassSensitivitySettings;
+import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
 import org.drip.simm20.product.RiskClassSensitivity;
 
@@ -206,7 +206,8 @@ public class FXDeltaMargin
 			"IDR"
 		};
 
-		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX();
+		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
+			RiskMeasureSensitivitySettings.ISDA_FX_DELTA();
 
 		Map<String, Map<String, Double>> categorySensitivityMap = CategorySensitivityMap (
 			currencyArray,
@@ -246,13 +247,13 @@ public class FXDeltaMargin
 				bucketSensitivity
 			);
 
-			BucketAggregate bucketDigest = bucketSensitivity.aggregate
-				(riskClassSensitivitySettings.bucketSensitivitySettingsMap().get (bucketIndex));
+			BucketAggregate bucketAggregate = bucketSensitivity.aggregate
+				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketIndex));
 
 			System.out.println ("\t| " +
 				bucketIndex + " => " +
-				FormatUtil.FormatDouble (Math.sqrt (bucketDigest.sensitivityMarginVariance()), 4, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketDigest.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 4, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + " ||"
 			);
 		}
 
@@ -261,7 +262,7 @@ public class FXDeltaMargin
 		System.out.println();
 
 		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate
-			(riskClassSensitivitySettings);
+			(riskMeasureSensitivitySettings);
 
 		System.out.println ("\t|--------------------------------------------------||");
 
