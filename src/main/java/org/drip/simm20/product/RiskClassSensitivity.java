@@ -187,9 +187,12 @@ public class RiskClassSensitivity
 
 			return new org.drip.simm20.margin.RiskClassAggregate (
 				bucketAggregateMap,
+				null,
 				coreDeltaSBAVariance,
+				0.,
 				bucketAggregateMap.containsKey ("-1") ?
-					bucketAggregateMap.get ("-1").sensitivityMarginVariance() : 0.
+					bucketAggregateMap.get ("-1").sensitivityMarginVariance() : 0.,
+				0.
 			);
 		}
 		catch (java.lang.Exception e)

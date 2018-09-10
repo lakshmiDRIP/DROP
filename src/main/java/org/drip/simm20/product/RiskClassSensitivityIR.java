@@ -185,7 +185,10 @@ public class RiskClassSensitivityIR
 
 			return new org.drip.simm20.margin.RiskClassAggregateIR (
 				bucketAggregateMap,
+				null,
 				coreDeltaSBAVariance,
+				0.,
+				0.,
 				0.
 			);
 		}

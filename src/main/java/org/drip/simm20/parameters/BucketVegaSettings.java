@@ -1,5 +1,5 @@
 
-package org.drip.simm20.margin;
+package org.drip.simm20.parameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * BucketAggregateIR holds the Single Bucket IR Sensitivity Margin, the Cumulative Bucket Risk Factor
- *  Sensitivity Margin, as well as the IR Aggregate Risk Factor Maps. The References are:
+ * BucketVegaSettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Single Bucket Vega
+ *  Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,102 +69,70 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketAggregateIR
+public class BucketVegaSettings extends org.drip.simm20.parameters.BucketSensitivitySettings
 {
-	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private org.drip.simm20.margin.IRSensitivityAggregate _irDeltaAggregate = null;
-	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
-	private org.drip.simm20.margin.RiskFactorAggregateIR _riskFactorAggregateIR = null;
+	private double _impliedVolatility = java.lang.Double.NaN;
 
 	/**
-	 * BucketAggregateIR Constructor
+	 * BucketVegaSettings Constructor
 	 * 
-	 * @param riskFactorAggregateIR The Risk Factor Aggregate IR
-	 * @param irDeltaAggregate The IR Delta Aggregate
-	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
-	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
+	 * @param riskWeight The Vega Risk Weight
+	 * @param concentrationFactor The Concentration Factor
+	 * @param memberCorrelation The Member Correlation
+	 * @param impliedVolatility The Implied Volatility
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BucketAggregateIR (
-		final org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR,
-		final org.drip.simm20.margin.IRSensitivityAggregate irDeltaAggregate,
-		final double sensitivityMarginVariance,
-		final double cumulativeRiskFactorSensitivityMargin)
+	public BucketVegaSettings (
+		final double riskWeight,
+		final double concentrationFactor,
+		final double memberCorrelation,
+		final double impliedVolatility)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorAggregateIR = riskFactorAggregateIR) ||
-			null == (_irDeltaAggregate = irDeltaAggregate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
-				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
-				cumulativeRiskFactorSensitivityMargin))
+		super (
+			riskWeight,
+			concentrationFactor,
+			memberCorrelation
+		);
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility))
 		{
-			throw new java.lang.Exception ("BucketAggregateIR Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketVegaSettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Risk Factor Aggregate IR
+	 * Retrieve the Raw Vega Risk Weight
 	 * 
-	 * @return The Risk Factor Aggregate IR
+	 * @return The Raw Vega Risk Weight
 	 */
 
-	public org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR()
+	public double rawRiskWeight()
 	{
-		return _riskFactorAggregateIR;
+		return riskWeight();
 	}
 
 	/**
-	 * Retrieve the IR Delta Aggregate
+	 * Retrieve the Vega Risk Weight
 	 * 
-	 * @return The IR Delta Aggregate
+	 * @return The Vega Risk Weight
 	 */
 
-	public org.drip.simm20.margin.IRSensitivityAggregate irDeltaAggregate()
+	public double riskWeight()
 	{
-		return _irDeltaAggregate;
+		return riskWeight() * _impliedVolatility;
 	}
 
 	/**
-	 * Retrieve the Bucket's Sensitivity Margin Variance
+	 * Retrieve the Implied Volatility
 	 * 
-	 * @return The Bucket's Sensitivity Margin Variance
+	 * @return The Implied Volatility
 	 */
 
-	public double sensitivityMarginVariance()
+	public double impliedVolatility()
 	{
-		return _sensitivityMarginVariance;
-	}
-
-	/**
-	 * Retrieve the Bucket's Cumulative Risk Factor Sensitivity Margin
-	 * 
-	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
-	 */
-
-	public double cumulativeRiskFactorSensitivityMargin()
-	{
-		return _cumulativeRiskFactorSensitivityMargin;
-	}
-
-	/**
-	 * Compute the Bounded Sensitivity Margin
-	 * 
-	 * @return The Bounded Sensitivity Margin
-	 */
-
-	public double boundedSensitivityMargin()
-	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
-
-		return java.lang.Math.max (
-			java.lang.Math.min (
-				_cumulativeRiskFactorSensitivityMargin,
-				sensitivityMargin
-			),
-			-1. * sensitivityMargin
-		);
+		return _impliedVolatility;
 	}
 }

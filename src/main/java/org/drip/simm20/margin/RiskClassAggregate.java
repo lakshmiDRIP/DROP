@@ -71,44 +71,72 @@ package org.drip.simm20.margin;
 
 public class RiskClassAggregate
 {
+	private double _coreVegaSBAVariance = java.lang.Double.NaN;
 	private double _coreDeltaSBAVariance = java.lang.Double.NaN;
+	private double _residualVegaSBAVariance = java.lang.Double.NaN;
 	private double _residualDeltaSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> _bucketAggregateMap =
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> _vegaBucketAggregateMap =
+		null;
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> _deltaBucketAggregateMap =
 		null;
 
 	/**
 	 * RiskClassAggregate Constructor
 	 * 
-	 * @param bucketAggregateMap The Bucket Aggregate Map
+	 * @param deltaBucketAggregateMap The Delta Bucket Aggregate Map
+	 * @param vegaBucketAggregateMap The Vega Bucket Aggregate Map
 	 * @param coreDeltaSBAVariance The SBA Based Risk Class Core Delta Variance
+	 * @param coreVegaSBAVariance The SBA Based Risk Class Core Vega Variance
 	 * @param residualDeltaSBAVariance The SBA Based Risk Class Residual Delta Variance
+	 * @param residualVegaSBAVariance The SBA Based Risk Class Residual Vega Variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap,
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate>
+			deltaBucketAggregateMap,
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate>
+			vegaBucketAggregateMap,
 		final double coreDeltaSBAVariance,
-		final double residualDeltaSBAVariance)
+		final double coreVegaSBAVariance,
+		final double residualDeltaSBAVariance,
+		final double residualVegaSBAVariance)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketAggregateMap = bucketAggregateMap) || 0 == _bucketAggregateMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_coreVegaSBAVariance = coreVegaSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance)
+			||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualVegaSBAVariance = residualVegaSBAVariance))
 		{
 			throw new java.lang.Exception ("RiskClassAggregate Constructor => Invalid Inputs");
 		}
+
+		_vegaBucketAggregateMap = vegaBucketAggregateMap;
+		_deltaBucketAggregateMap = deltaBucketAggregateMap;
 	}
 
 	/**
-	 * Retrieve the Bucket Aggregate Map
+	 * Retrieve the Delta Bucket Aggregate Map
 	 * 
-	 * @return The Bucket Aggregate Map
+	 * @return The Delta Bucket Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap()
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> deltaBucketAggregateMap()
 	{
-		return _bucketAggregateMap;
+		return _deltaBucketAggregateMap;
+	}
+
+	/**
+	 * Retrieve the Vega Bucket Aggregate Map
+	 * 
+	 * @return The Vega Bucket Aggregate Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> vegaBucketAggregateMap()
+	{
+		return _vegaBucketAggregateMap;
 	}
 
 	/**
@@ -123,6 +151,17 @@ public class RiskClassAggregate
 	}
 
 	/**
+	 * Retrieve the Risk Class Core Vega Margin Variance
+	 * 
+	 * @return The Risk Class Core Vega Margin Variance
+	 */
+
+	public double coreVegaSBAVariance()
+	{
+		return _coreVegaSBAVariance;
+	}
+
+	/**
 	 * Retrieve the Risk Class Residual Delta Margin Variance
 	 * 
 	 * @return The Risk Class Residual Delta Margin Variance
@@ -134,6 +173,17 @@ public class RiskClassAggregate
 	}
 
 	/**
+	 * Retrieve the Risk Class Residual Vega Margin Variance
+	 * 
+	 * @return The Risk Class Residual Vega Margin Variance
+	 */
+
+	public double residualVegaSBAVariance()
+	{
+		return _residualVegaSBAVariance;
+	}
+
+	/**
 	 * Retrieve the Risk Class SBA Based Delta Margin
 	 * 
 	 * @return The Risk Class SBA Based Delta Margin
@@ -142,5 +192,16 @@ public class RiskClassAggregate
 	public double deltaSBA()
 	{
 		return java.lang.Math.sqrt (_coreDeltaSBAVariance) + java.lang.Math.sqrt (_residualDeltaSBAVariance);
+	}
+
+	/**
+	 * Retrieve the Risk Class SBA Based Vega Margin
+	 * 
+	 * @return The Risk Class SBA Based Vega Margin
+	 */
+
+	public double vegaSBA()
+	{
+		return java.lang.Math.sqrt (_coreVegaSBAVariance) + java.lang.Math.sqrt (_residualVegaSBAVariance);
 	}
 }

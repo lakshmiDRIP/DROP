@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.BucketAggregateIR;
-import org.drip.simm20.margin.IRDeltaAggregate;
+import org.drip.simm20.margin.IRSensitivityAggregate;
 import org.drip.simm20.margin.RiskClassAggregateIR;
 import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
@@ -229,7 +229,7 @@ public class IRCurrencyDeltaMarginFlow
 	}
 
 	private static final void DeltaMarginCovarianceEntry (
-		final IRDeltaAggregate irDeltaAggregate)
+		final IRSensitivityAggregate irDeltaAggregate)
 		throws Exception
 	{
 		double marginCovariance_OIS_OIS = irDeltaAggregate.marginCovariance_OIS_OIS();
@@ -502,7 +502,7 @@ public class IRCurrencyDeltaMarginFlow
 		double notional = 100.;
 		String currency = "USD";
 
-		BucketSensitivitySettingsIR bucketSensitivitySettingsIR = BucketSensitivitySettingsIR.ISDA
+		BucketSensitivitySettingsIR bucketSensitivitySettingsIR = BucketSensitivitySettingsIR.ISDA_DELTA
 			(currency);
 
 		BucketSensitivityIR bucketSensitivityIR = new BucketSensitivityIR (
@@ -519,7 +519,7 @@ public class IRCurrencyDeltaMarginFlow
 
 		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);
 
-		IRDeltaAggregate irDeltaAggregate = bucketAggregateIR.riskFactorAggregateIR().deltaMargin
+		IRSensitivityAggregate irDeltaAggregate = bucketAggregateIR.riskFactorAggregateIR().margin
 			(bucketSensitivitySettingsIR);
 
 		DeltaMarginCovarianceEntry (irDeltaAggregate);
@@ -533,7 +533,10 @@ public class IRCurrencyDeltaMarginFlow
 
 		RiskClassAggregateIR riskClassAggregateIR = new RiskClassAggregateIR (
 			bucketAggregateIRMap,
+			null,
 			irDeltaAggregate.cumulativeMarginCovariance(),
+			0.,
+			0.,
 			0.
 		);
 

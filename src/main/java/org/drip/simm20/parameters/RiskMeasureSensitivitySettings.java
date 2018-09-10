@@ -94,20 +94,11 @@ public class RiskMeasureSensitivitySettings
 		java.util.Map<java.lang.Integer, org.drip.simm20.equity.EQBucket> bucketMap =
 			org.drip.simm20.equity.EQSettingsContainer.BucketMap();
 
-		org.drip.simm20.equity.EQBucket residualEquityBucket = bucketMap.get (-1);
+		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
 
 		try
 		{
-			bucketDeltaSettingsMap.put (
-				"" + -1,
-				new org.drip.simm20.parameters.BucketSensitivitySettings (
-					residualEquityBucket.deltaRiskWeight(),
-					eqConcentrationThresholdMap.get (-1).delta(),
-					residualEquityBucket.memberCorrelation()
-				)
-			);
-
-			for (int bucketIndex = 1; bucketIndex <= 12; ++bucketIndex)
+			for (int bucketIndex : bucketKeySet)
 			{
 				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);
 
@@ -123,6 +114,59 @@ public class RiskMeasureSensitivitySettings
 
 			return new RiskMeasureSensitivitySettings (
 				bucketDeltaSettingsMap,
+				org.drip.simm20.equity.EQSettingsContainer.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_VEGA()
+	{
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings>
+			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm20.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
+			eqConcentrationThresholdMap =
+				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.equity.EQBucket> bucketMap =
+			org.drip.simm20.equity.EQSettingsContainer.BucketMap();
+
+		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+
+		try
+		{
+			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /
+				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);
+
+			for (int bucketIndex : bucketKeySet)
+			{
+				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);
+
+				bucketVegaSettingsMap.put (
+					"" + bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						equityBucket.vegaRiskWeight() * vegaScaler,
+						eqConcentrationThresholdMap.get (bucketIndex).vega(),
+						equityBucket.memberCorrelation()
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
 				org.drip.simm20.equity.EQSettingsContainer.CrossBucketCorrelation()
 			);
 		}
@@ -153,9 +197,11 @@ public class RiskMeasureSensitivitySettings
 		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
 			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
 
+		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+
 		try
 		{
-			for (int bucketIndex = 1; bucketIndex <= 17; ++bucketIndex)
+			for (int bucketIndex : bucketKeySet)
 			{
 				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);
 
@@ -171,6 +217,56 @@ public class RiskMeasureSensitivitySettings
 
 			return new RiskMeasureSensitivitySettings (
 				bucketDeltaSettingsMap,
+				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_VEGA()
+	{
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings>
+			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm20.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
+			ctConcentrationThresholdMap =
+				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();
+
+		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
+			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
+
+		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);
+
+				bucketVegaSettingsMap.put (
+					"" + bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT,
+						ctConcentrationThresholdMap.get (bucketIndex).vega(),
+						commodityBucket.memberCorrelation()
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
 				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()
 			);
 		}
@@ -209,9 +305,6 @@ public class RiskMeasureSensitivitySettings
 
 		try
 		{
-			/* double vegaScaler = java.lang.Math.sqrt (365. / 14.) /
-				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99); */
-
 			for (int deltaCategoryIndex : fxConcentrationCategoryDeltaKey)
 			{
 				deltaCategoryList.add ("" + deltaCategoryIndex);
@@ -237,6 +330,75 @@ public class RiskMeasureSensitivitySettings
 				bucketDeltaSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					deltaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_VEGA()
+	{
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings>
+			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm20.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
+			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryVegaMap();
+
+		java.util.Set<java.lang.String> fxConcentrationCategoryVegaKey =
+			fxConcentrationCategoryVegaMap.keySet();
+
+		java.util.List<java.lang.String> vegaCategoryList = new java.util.ArrayList<java.lang.String>();
+
+		int fxConcentrationCategoryVegaCount = fxConcentrationCategoryVegaKey.size();
+
+		int vegaCategoryIndexOuter = 0;
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryVegaCount][fxConcentrationCategoryVegaCount];
+
+		try
+		{
+			for (java.lang.String vegaCategoryOuter : fxConcentrationCategoryVegaKey)
+			{
+				vegaCategoryList.add (vegaCategoryOuter);
+
+				bucketVegaSettingsMap.put (
+					vegaCategoryOuter,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT,
+						fxConcentrationCategoryVegaMap.get (vegaCategoryOuter),
+						org.drip.simm20.fx.FXSystemics.CORRELATION
+					)
+				);
+
+				for (int vegaCategoryIndexInner = 0;
+					vegaCategoryIndexInner < fxConcentrationCategoryVegaCount;
+					++vegaCategoryIndexInner)
+				{
+					crossBucketCorrelationMatrix[vegaCategoryIndexOuter][vegaCategoryIndexInner] =
+						vegaCategoryIndexOuter == vegaCategoryIndexInner ? 1. :
+						org.drip.simm20.fx.FXSystemics.CORRELATION;
+				}
+
+				++vegaCategoryIndexOuter;
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					vegaCategoryList,
 					crossBucketCorrelationMatrix
 				)
 			);

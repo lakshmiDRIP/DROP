@@ -47,8 +47,9 @@ package org.drip.simm20.margin;
  */
 
 /**
- * IRDeltaAggregate holds the IM Delta Margin Co-variances within a single Currency for each of the IR Risk
- *  Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References are:
+ * IRSensitivityAggregate holds the IM Margin Sensitivity Co-variances within a single Currency for each of
+ *  the IR Risk Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,7 +70,7 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRDeltaAggregate
+public class IRSensitivityAggregate
 {
 	private double _marginCovariance_OIS_OIS = java.lang.Double.NaN;
 	private double _marginCovariance_OIS_PRIME = java.lang.Double.NaN;
@@ -109,6 +110,8 @@ public class IRDeltaAggregate
 	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;
 
 	/**
+	 * IRSensitivityAggregate Constructor
+	 * 
 	 * @param marginCovariance_OIS_OIS The OIS - OIS Margin Co-variance
 	 * @param marginCovariance_OIS_LIBOR1M The OIS - LIBOR1M Margin Co-variance
 	 * @param marginCovariance_OIS_LIBOR3M The OIS - LIBOR3M Margin Co-variance
@@ -142,7 +145,7 @@ public class IRDeltaAggregate
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public IRDeltaAggregate (
+	public IRSensitivityAggregate (
 		final double marginCovariance_OIS_OIS,
 		final double marginCovariance_OIS_LIBOR1M,
 		final double marginCovariance_OIS_LIBOR3M,
@@ -233,7 +236,7 @@ public class IRDeltaAggregate
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
 				cumulativeMarginSensitivity))
 		{
-			throw new java.lang.Exception ("IRDeltaAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("IRSensitivityAggregate Constructor => Invalid Inputs");
 		}
 	}
 

@@ -135,7 +135,6 @@ public class RiskFactorTenorSensitivity
 		return null;
 	}
 
-
 	/**
 	 * Construct the Standard Credit Non-Qualifying ISDA Bucket Sensitivity
 	 * 

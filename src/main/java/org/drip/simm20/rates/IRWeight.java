@@ -73,25 +73,38 @@ public class IRWeight
 {
 	private java.lang.String _volatilityType = "";
 
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorWeightMap = new
+	private java.util.Map<java.lang.String, java.lang.Double> _tenorVega = new
+		java.util.HashMap<java.lang.String, java.lang.Double>();
+
+	private java.util.Map<java.lang.String, java.lang.Double> _tenorDelta = new
 		java.util.HashMap<java.lang.String, java.lang.Double>();
 
 	/**
 	 * IRWeight Constructor
 	 * 
 	 * @param volatilityType The Volatility Type
-	 * @param tenorWeightMap The Map of Tenor Risk Weights
+	 * @param tenorDelta The Map of Tenor Delta Risk Weights
+	 * @param tenorVega The Map of Tenor Vega Risk Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IRWeight (
 		final java.lang.String volatilityType,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap)
+		final java.util.Map<java.lang.String, java.lang.Double> tenorDelta,
+		final java.util.Map<java.lang.String, java.lang.Double> tenorVega)
 		throws java.lang.Exception
 	{
 		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
-			null == (_tenorWeightMap = tenorWeightMap) || 0 == _tenorWeightMap.size())
+			null == (_tenorDelta = tenorDelta) ||
+			null == (_tenorVega = tenorVega))
+		{
+			throw new java.lang.Exception ("IRWeight Constructor => Invalid Inputs");
+		}
+
+		int tenorCount = _tenorDelta.size();
+
+		if (0 == tenorCount || tenorCount != _tenorVega.size())
 		{
 			throw new java.lang.Exception ("IRWeight Constructor => Invalid Inputs");
 		}
@@ -109,14 +122,25 @@ public class IRWeight
 	}
 
 	/**
-	 * Retrieve the Tenor Weight Map
+	 * Retrieve the Tenor Delta Weight Map
 	 * 
-	 * @return The Tenor Weight Map
+	 * @return The Tenor Delta Weight Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap()
+	public java.util.Map<java.lang.String, java.lang.Double> tenorDelta()
 	{
-		return _tenorWeightMap;
+		return _tenorDelta;
+	}
+
+	/**
+	 * Retrieve the Tenor Vega Weight Map
+	 * 
+	 * @return The Tenor Vega Weight Map
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> tenorVega()
+	{
+		return _tenorVega;
 	}
 
 	/**
@@ -127,6 +151,6 @@ public class IRWeight
 
 	public java.util.Set<java.lang.String> tenors()
 	{
-		return _tenorWeightMap.keySet();
+		return _tenorDelta.keySet();
 	}
 }

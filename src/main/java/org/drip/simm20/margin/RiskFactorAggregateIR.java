@@ -1770,19 +1770,19 @@ public class RiskFactorAggregateIR
 	}
 
 	/**
-	 * Compute the Complete Net Sensitivity Delta Margin Co-variance
+	 * Compute the Complete Net Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The Complete Net Sensitivity Delta Margin Co-variance
+	 * @return The Complete Net Sensitivity Margin Co-variance
 	 */
 
-	public org.drip.simm20.margin.IRDeltaAggregate deltaMargin (
+	public org.drip.simm20.margin.IRSensitivityAggregate margin (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 	{
 		try
 		{
-			return new org.drip.simm20.margin.IRDeltaAggregate (
+			return new org.drip.simm20.margin.IRSensitivityAggregate (
 				marginCovariance_OIS_OIS (bucketSensitivitySettingsIR),
 				marginCovariance_OIS_LIBOR1M (bucketSensitivitySettingsIR),
 				marginCovariance_OIS_LIBOR3M (bucketSensitivitySettingsIR),

@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.IRDeltaAggregate;
+import org.drip.simm20.margin.IRSensitivityAggregate;
 import org.drip.simm20.margin.RiskClassAggregateIR;
 import org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
@@ -233,7 +233,7 @@ public class IRDeltaMargin
 
 	private static final void DeltaMarginCovarianceEntry (
 		final String currency,
-		final IRDeltaAggregate irDeltaAggregate)
+		final IRSensitivityAggregate irDeltaAggregate)
 		throws Exception
 	{
 		double marginCovariance_OIS_OIS = irDeltaAggregate.marginCovariance_OIS_OIS();
@@ -574,7 +574,7 @@ public class IRDeltaMargin
 		{
 			DeltaMarginCovarianceEntry (
 				currency,
-				riskClassAggregateIR.bucketAggregateMap().get (currency).irDeltaAggregate()
+				riskClassAggregateIR.deltaBucketAggregateMap().get (currency).irDeltaAggregate()
 			);
 		}
 

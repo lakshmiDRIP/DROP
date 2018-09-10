@@ -800,7 +800,7 @@ public class BucketSensitivityIR
 		org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR = curveAggregate
 			(bucketSensitivitySettingsIR);
 
-		org.drip.simm20.margin.IRDeltaAggregate deltaMargin = riskFactorAggregateIR.deltaMargin
+		org.drip.simm20.margin.IRSensitivityAggregate deltaMargin = riskFactorAggregateIR.margin
 			(bucketSensitivitySettingsIR);
 
 		if (null == deltaMargin)

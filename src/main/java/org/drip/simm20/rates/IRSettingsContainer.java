@@ -151,191 +151,254 @@ public class IRSettingsContainer
 		java.util.Map<java.lang.String, java.lang.Double> zeroIRWeight = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorWeightMapLowVolatility = new
+		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaWeightLowVolatility = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorWeightMapHighVolatility = new
+		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaWeightHighVolatility = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorWeightMapRegularVolatility = new
+		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaWeightRegularVolatility = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
-		tenorWeightMapRegularVolatility.put (
+		java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight = new
+			java.util.HashMap<java.lang.String, java.lang.Double>();
+
+		tenorVegaRiskWeight.put (
+			"2W",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"1M",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"3M",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"6M",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"1Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"2Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"3Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"5Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"10Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"15Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"20Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorVegaRiskWeight.put (
+			"30Y",
+			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT
+		);
+
+		tenorDeltaWeightRegularVolatility.put (
 			"2W",
 			113.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"1M",
 			113.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"3M",
 			98.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"6M",
 			69.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"1Y",
 			56.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"2Y",
 			52.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"3Y",
 			51.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"5Y",
 			51.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"10Y",
 			51.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"15Y",
 			53.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"20Y",
 			56.
 		);
 
-		tenorWeightMapRegularVolatility.put (
+		tenorDeltaWeightRegularVolatility.put (
 			"30Y",
 			64.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"2W",
 			21.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"1M",
 			21.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"3M",
 			10.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"6M",
 			11.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"1Y",
 			15.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"2Y",
 			20.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"3Y",
 			22.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"5Y",
 			21.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"10Y",
 			19.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"15Y",
 			20.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"20Y",
 			23.
 		);
 
-		tenorWeightMapLowVolatility.put (
+		tenorDeltaWeightLowVolatility.put (
 			"30Y",
 			27.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"2W",
 			93.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"1M",
 			93.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"3M",
 			90.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"6M",
 			94.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"1Y",
 			97.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"2Y",
 			103.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"3Y",
 			101.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"5Y",
 			103.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"10Y",
 			102.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"15Y",
 			101.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"20Y",
 			102.
 		);
 
-		tenorWeightMapHighVolatility.put (
+		tenorDeltaWeightHighVolatility.put (
 			"30Y",
 			101.
 		);
@@ -404,22 +467,26 @@ public class IRSettingsContainer
 		{
 			regularVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
-				tenorWeightMapRegularVolatility
+				tenorDeltaWeightRegularVolatility,
+				tenorVegaRiskWeight
 			);
 
 			lowVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_LOW,
-				tenorWeightMapLowVolatility
+				tenorDeltaWeightLowVolatility,
+				tenorVegaRiskWeight
 			);
 
 			highVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_HIGH,
-				tenorWeightMapHighVolatility
+				tenorDeltaWeightHighVolatility,
+				tenorVegaRiskWeight
 			);
 
 			ZERO_RISK_WEIGHT = new org.drip.simm20.rates.IRWeight (
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_NULL,
-				zeroIRWeight
+				zeroIRWeight,
+				tenorVegaRiskWeight
 			);
 		}
 		catch (java.lang.Exception e)

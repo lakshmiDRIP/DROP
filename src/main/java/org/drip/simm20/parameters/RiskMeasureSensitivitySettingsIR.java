@@ -110,7 +110,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 			bucketDeltaSettingsMap.put (
 				currency,
-				org.drip.simm20.parameters.BucketSensitivitySettingsIR.ISDA (currency)
+				org.drip.simm20.parameters.BucketSensitivitySettingsIR.ISDA_DELTA (currency)
 			);
 
 			for (int currencyListInnerIndex = 0;

@@ -71,44 +71,73 @@ package org.drip.simm20.margin;
 
 public class RiskClassAggregateIR
 {
+	private double _coreVegaSBAVariance = java.lang.Double.NaN;
 	private double _coreDeltaSBAVariance = java.lang.Double.NaN;
+	private double _residualVegaSBAVariance = java.lang.Double.NaN;
 	private double _residualDeltaSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> _bucketAggregateIRMap =
-		null;
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+		_vegaBucketAggregateMap = null;
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+		_deltaBucketAggregateMap = null;
 
 	/**
 	 * RiskClassAggregateIR Constructor
 	 * 
-	 * @param bucketAggregateIRMap The IR Bucket Aggregate Map
-	 * @param coreDeltaSBAVariance The SBA Based IR Class Core Delta Variance
-	 * @param residualDeltaSBAVariance The SBA Based IR Class Residual Delta Variance
+	 * @param deltaBucketAggregateMap The IR Delta Bucket Aggregate Map
+	 * @param vegaBucketAggregateMap The IR Vega Bucket Aggregate Map
+	 * @param coreDeltaSBAVariance The SBA Based Risk Class Core IR Delta Variance
+	 * @param coreVegaSBAVariance The SBA Based Risk Class Core IR Vega Variance
+	 * @param residualDeltaSBAVariance The SBA Based Risk Class Residual IR Delta Variance
+	 * @param residualVegaSBAVariance The SBA Based Risk Class Residual IR Vega Variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregateIR (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateIRMap,
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+			deltaBucketAggregateMap,
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+			vegaBucketAggregateMap,
 		final double coreDeltaSBAVariance,
-		final double residualDeltaSBAVariance)
+		final double coreVegaSBAVariance,
+		final double residualDeltaSBAVariance,
+		final double residualVegaSBAVariance)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketAggregateIRMap = bucketAggregateIRMap) || 0 == _bucketAggregateIRMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_coreVegaSBAVariance = coreVegaSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance)
+			||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualVegaSBAVariance = residualVegaSBAVariance))
 		{
-			throw new java.lang.Exception ("RiskClassAggregateIR Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassAggregate Constructor => Invalid Inputs");
 		}
+
+		_vegaBucketAggregateMap = vegaBucketAggregateMap;
+		_deltaBucketAggregateMap = deltaBucketAggregateMap;
 	}
 
 	/**
-	 * Retrieve the IR Bucket Aggregate Map
+	 * Retrieve the IR Delta Bucket Aggregate Map
 	 * 
-	 * @return The IR Bucket Aggregate Map
+	 * @return The IR Delta Bucket Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateMap()
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+		deltaBucketAggregateMap()
 	{
-		return _bucketAggregateIRMap;
+		return _deltaBucketAggregateMap;
+	}
+
+	/**
+	 * Retrieve the IR Vega Bucket Aggregate Map
+	 * 
+	 * @return The IR Vega Bucket Aggregate Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> vegaBucketAggregateMap()
+	{
+		return _vegaBucketAggregateMap;
 	}
 
 	/**
@@ -123,6 +152,17 @@ public class RiskClassAggregateIR
 	}
 
 	/**
+	 * Retrieve the Risk Class Core Vega Margin Variance
+	 * 
+	 * @return The Risk Class Core Vega Margin Variance
+	 */
+
+	public double coreVegaSBAVariance()
+	{
+		return _coreVegaSBAVariance;
+	}
+
+	/**
 	 * Retrieve the Risk Class Residual Delta Margin Variance
 	 * 
 	 * @return The Risk Class Residual Delta Margin Variance
@@ -134,6 +174,17 @@ public class RiskClassAggregateIR
 	}
 
 	/**
+	 * Retrieve the Risk Class Residual Vega Margin Variance
+	 * 
+	 * @return The Risk Class Residual Vega Margin Variance
+	 */
+
+	public double residualVegaSBAVariance()
+	{
+		return _residualVegaSBAVariance;
+	}
+
+	/**
 	 * Retrieve the Risk Class SBA Based Delta Margin
 	 * 
 	 * @return The Risk Class SBA Based Delta Margin
@@ -142,5 +193,16 @@ public class RiskClassAggregateIR
 	public double deltaSBA()
 	{
 		return java.lang.Math.sqrt (_coreDeltaSBAVariance) + java.lang.Math.sqrt (_residualDeltaSBAVariance);
+	}
+
+	/**
+	 * Retrieve the Risk Class SBA Based Vega Margin
+	 * 
+	 * @return The Risk Class SBA Based Vega Margin
+	 */
+
+	public double vegaSBA()
+	{
+		return java.lang.Math.sqrt (_coreVegaSBAVariance) + java.lang.Math.sqrt (_residualVegaSBAVariance);
 	}
 }

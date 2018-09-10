@@ -105,7 +105,7 @@ public class InterestRateSettings
 
 		String tenorWeightSequence = "\t|| ";
 
-		for (Map.Entry<String, Double> tenorWeightEntry : usdRiskWeight.tenorWeightMap().entrySet())
+		for (Map.Entry<String, Double> tenorWeightEntry : usdRiskWeight.tenorDelta().entrySet())
 		{
 			tenorWeightSequence = tenorWeightSequence + " " + tenorWeightEntry.getKey() + " => " +
 				FormatUtil.FormatDouble (tenorWeightEntry.getValue(), 1, 0, 1.) + " |";
@@ -142,7 +142,7 @@ public class InterestRateSettings
 
 		String tenorWeightSequence = "\t|| ";
 
-		for (Map.Entry<String, Double> tenorWeightEntry : jpyRiskWeight.tenorWeightMap().entrySet())
+		for (Map.Entry<String, Double> tenorWeightEntry : jpyRiskWeight.tenorDelta().entrySet())
 		{
 			tenorWeightSequence = tenorWeightSequence + " " + tenorWeightEntry.getKey() + " => " +
 				FormatUtil.FormatDouble (tenorWeightEntry.getValue(), 1, 0, 1.) + " |";
@@ -179,7 +179,7 @@ public class InterestRateSettings
 
 		String tenorWeightSequence = "\t|| ";
 
-		for (Map.Entry<String, Double> tenorWeightEntry : inrRiskWeight.tenorWeightMap().entrySet())
+		for (Map.Entry<String, Double> tenorWeightEntry : inrRiskWeight.tenorDelta().entrySet())
 		{
 			tenorWeightSequence = tenorWeightSequence + " " + tenorWeightEntry.getKey() + " => " +
 				FormatUtil.FormatDouble (tenorWeightEntry.getValue(), 1, 0, 1.) + " |";
