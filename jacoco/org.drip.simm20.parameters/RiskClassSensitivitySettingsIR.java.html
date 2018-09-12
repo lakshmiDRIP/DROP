@@ -48,7 +48,7 @@ package org.drip.simm20.parameters;
 
 /**
  * RiskClassSensitivitySettingsIR holds the Settings that govern the Generation of the ISDA SIMM Bucket
- *  Sensitivities across Individual IR Class Risk Factor Buckets. The References are:
+ *  Sensitivities across Individual IR Risk Class Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -71,54 +71,50 @@ package org.drip.simm20.parameters;
 
 public class RiskClassSensitivitySettingsIR
 {
-<span class="nc" id="L74">	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;</span>
-<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR&gt;</span>
-		_bucketSensitivitySettingsMap = null;
+<span class="nc" id="L74">	private org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR _vega = null;</span>
+<span class="nc" id="L75">	private org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR _delta = null;</span>
 
 	/**
 	 * RiskClassSensitivitySettingsIR Constructor
 	 * 
-	 * @param bucketSensitivitySettingsMap The IR Bucket Sensitivity Settings Map
-	 * @param crossBucketCorrelation The Cross Bucket Correlation
+	 * @param delta The IR Risk Class Delta Sensitivity Settings
+	 * @param vega The IR Risk Class Vega Sensitivity Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivitySettingsIR (
-		final java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR&gt;
-			bucketSensitivitySettingsMap,
-		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR delta,
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR vega)
 		throws java.lang.Exception
-<span class="nc" id="L92">	{</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||</span>
-<span class="nc bnc" id="L94" title="All 4 branches missed.">				0 == _bucketSensitivitySettingsMap.size() ||</span>
-			null == (_crossBucketCorrelation = crossBucketCorrelation))
+<span class="nc" id="L90">	{</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (null == (_delta = delta) ||</span>
+			null == (_vega = vega))
 		{
-<span class="nc" id="L97">			throw new java.lang.Exception (&quot;RiskClassSensitivitySettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L94">			throw new java.lang.Exception (&quot;RiskClassSensitivitySettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L99">	}</span>
+<span class="nc" id="L96">	}</span>
 
 	/**
-	 * Retrieve the Cross Bucket Correlation
+	 * Retrieve the IR Risk Class Delta Sensitivity Settings
 	 * 
-	 * @return The Cross Bucket Correlation
+	 * @return The IR Risk Class Delta Sensitivity Settings
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation()
+	public org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR delta()
 	{
-<span class="nc" id="L109">		return _crossBucketCorrelation;</span>
+<span class="nc" id="L106">		return _delta;</span>
 	}
 
 	/**
-	 * Retrieve the IR Bucket Sensitivity Settings Map
+	 * Retrieve the IR Risk Class Vega Sensitivity Settings
 	 * 
-	 * @return The IR Bucket Sensitivity Settings Map
+	 * @return The IR Risk Class Vega Sensitivity Settings
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR&gt;
-		bucketSensitivitySettingsMap()
+	public org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR vega()
 	{
-<span class="nc" id="L121">		return _bucketSensitivitySettingsMap;</span>
+<span class="nc" id="L117">		return _vega;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

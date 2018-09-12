@@ -72,10 +72,10 @@ public class FXSystemics
 {
 
 	/**
-	 * FX Risk Class Risk Weight
+	 * FX Risk Class Delta Risk Weight
 	 */
 
-	public static final double RISK_WEIGHT = 8.2;
+	public static final double DELTA_RISK_WEIGHT = 8.2;
 
 	/**
 	 * FX Risk Class Historical Volatility Ratio (HVR)

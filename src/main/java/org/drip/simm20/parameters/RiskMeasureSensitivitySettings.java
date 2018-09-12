@@ -158,7 +158,7 @@ public class RiskMeasureSensitivitySettings
 				bucketVegaSettingsMap.put (
 					"" + bucketIndex,
 					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						equityBucket.vegaRiskWeight() * vegaScaler,
+						equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight() * vegaScaler,
 						eqConcentrationThresholdMap.get (bucketIndex).vega(),
 						equityBucket.memberCorrelation()
 					)
@@ -251,6 +251,9 @@ public class RiskMeasureSensitivitySettings
 
 		try
 		{
+			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /
+				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);
+
 			for (int bucketIndex : bucketKeySet)
 			{
 				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);
@@ -258,7 +261,8 @@ public class RiskMeasureSensitivitySettings
 				bucketVegaSettingsMap.put (
 					"" + bucketIndex,
 					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT,
+						org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT *
+							commodityBucket.deltaRiskWeight() * vegaScaler,
 						ctConcentrationThresholdMap.get (bucketIndex).vega(),
 						commodityBucket.memberCorrelation()
 					)
@@ -312,7 +316,7 @@ public class RiskMeasureSensitivitySettings
 				bucketDeltaSettingsMap.put (
 					"" + deltaCategoryIndex,
 					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						org.drip.simm20.fx.FXSystemics.RISK_WEIGHT,
+						org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
 						fxConcentrationCategoryDeltaMap.get (deltaCategoryIndex),
 						org.drip.simm20.fx.FXSystemics.CORRELATION
 					)
@@ -370,6 +374,9 @@ public class RiskMeasureSensitivitySettings
 
 		try
 		{
+			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /
+				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);
+
 			for (java.lang.String vegaCategoryOuter : fxConcentrationCategoryVegaKey)
 			{
 				vegaCategoryList.add (vegaCategoryOuter);
@@ -377,7 +384,8 @@ public class RiskMeasureSensitivitySettings
 				bucketVegaSettingsMap.put (
 					vegaCategoryOuter,
 					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT,
+						org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT *
+							org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT * vegaScaler,
 						fxConcentrationCategoryVegaMap.get (vegaCategoryOuter),
 						org.drip.simm20.fx.FXSystemics.CORRELATION
 					)

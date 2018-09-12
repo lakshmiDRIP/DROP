@@ -151,365 +151,432 @@ package org.drip.simm20.rates;
 <span class="fc" id="L151">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; zeroIRWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L154">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMapLowVolatility = new</span>
+<span class="fc" id="L154">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaWeightLowVolatility = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L157">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMapHighVolatility = new</span>
+<span class="fc" id="L157">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaWeightHighVolatility = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L160">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMapRegularVolatility = new</span>
+<span class="fc" id="L160">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaWeightRegularVolatility = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L163">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L163">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeight = new</span>
+			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+<span class="fc" id="L166">		tenorVegaRiskWeight.put (</span>
 			&quot;2W&quot;,
-<span class="fc" id="L165">			113.</span>
+<span class="fc" id="L168">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L168">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L171">		tenorVegaRiskWeight.put (</span>
 			&quot;1M&quot;,
-<span class="fc" id="L170">			113.</span>
+<span class="fc" id="L173">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L173">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L176">		tenorVegaRiskWeight.put (</span>
 			&quot;3M&quot;,
-<span class="fc" id="L175">			98.</span>
+<span class="fc" id="L178">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L178">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L181">		tenorVegaRiskWeight.put (</span>
 			&quot;6M&quot;,
-<span class="fc" id="L180">			69.</span>
+<span class="fc" id="L183">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L183">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L186">		tenorVegaRiskWeight.put (</span>
 			&quot;1Y&quot;,
-<span class="fc" id="L185">			56.</span>
+<span class="fc" id="L188">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L188">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L191">		tenorVegaRiskWeight.put (</span>
 			&quot;2Y&quot;,
-<span class="fc" id="L190">			52.</span>
+<span class="fc" id="L193">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L193">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L196">		tenorVegaRiskWeight.put (</span>
 			&quot;3Y&quot;,
-<span class="fc" id="L195">			51.</span>
+<span class="fc" id="L198">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L198">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L201">		tenorVegaRiskWeight.put (</span>
 			&quot;5Y&quot;,
-<span class="fc" id="L200">			51.</span>
+<span class="fc" id="L203">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L203">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L206">		tenorVegaRiskWeight.put (</span>
 			&quot;10Y&quot;,
-<span class="fc" id="L205">			51.</span>
+<span class="fc" id="L208">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L208">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L211">		tenorVegaRiskWeight.put (</span>
 			&quot;15Y&quot;,
-<span class="fc" id="L210">			53.</span>
+<span class="fc" id="L213">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L213">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L216">		tenorVegaRiskWeight.put (</span>
 			&quot;20Y&quot;,
-<span class="fc" id="L215">			56.</span>
+<span class="fc" id="L218">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L218">		tenorWeightMapRegularVolatility.put (</span>
+<span class="fc" id="L221">		tenorVegaRiskWeight.put (</span>
 			&quot;30Y&quot;,
-<span class="fc" id="L220">			64.</span>
+<span class="fc" id="L223">			org.drip.simm20.rates.IRSystemics.VEGA_RISK_WEIGHT</span>
 		);
 
-<span class="fc" id="L223">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L226">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;2W&quot;,
-<span class="fc" id="L225">			21.</span>
+<span class="fc" id="L228">			113.</span>
 		);
 
-<span class="fc" id="L228">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L231">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;1M&quot;,
-<span class="fc" id="L230">			21.</span>
+<span class="fc" id="L233">			113.</span>
 		);
 
-<span class="fc" id="L233">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L236">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;3M&quot;,
-<span class="fc" id="L235">			10.</span>
+<span class="fc" id="L238">			98.</span>
 		);
 
-<span class="fc" id="L238">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L241">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;6M&quot;,
-<span class="fc" id="L240">			11.</span>
+<span class="fc" id="L243">			69.</span>
 		);
 
-<span class="fc" id="L243">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L246">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;1Y&quot;,
-<span class="fc" id="L245">			15.</span>
+<span class="fc" id="L248">			56.</span>
 		);
 
-<span class="fc" id="L248">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L251">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;2Y&quot;,
-<span class="fc" id="L250">			20.</span>
+<span class="fc" id="L253">			52.</span>
 		);
 
-<span class="fc" id="L253">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L256">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;3Y&quot;,
-<span class="fc" id="L255">			22.</span>
+<span class="fc" id="L258">			51.</span>
 		);
 
-<span class="fc" id="L258">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L261">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;5Y&quot;,
-<span class="fc" id="L260">			21.</span>
+<span class="fc" id="L263">			51.</span>
 		);
 
-<span class="fc" id="L263">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L266">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;10Y&quot;,
-<span class="fc" id="L265">			19.</span>
+<span class="fc" id="L268">			51.</span>
 		);
 
-<span class="fc" id="L268">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L271">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;15Y&quot;,
-<span class="fc" id="L270">			20.</span>
+<span class="fc" id="L273">			53.</span>
 		);
 
-<span class="fc" id="L273">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L276">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;20Y&quot;,
-<span class="fc" id="L275">			23.</span>
+<span class="fc" id="L278">			56.</span>
 		);
 
-<span class="fc" id="L278">		tenorWeightMapLowVolatility.put (</span>
+<span class="fc" id="L281">		tenorDeltaWeightRegularVolatility.put (</span>
 			&quot;30Y&quot;,
-<span class="fc" id="L280">			27.</span>
+<span class="fc" id="L283">			64.</span>
 		);
 
-<span class="fc" id="L283">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L286">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;2W&quot;,
-<span class="fc" id="L285">			93.</span>
+<span class="fc" id="L288">			21.</span>
 		);
 
-<span class="fc" id="L288">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L291">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;1M&quot;,
-<span class="fc" id="L290">			93.</span>
+<span class="fc" id="L293">			21.</span>
 		);
 
-<span class="fc" id="L293">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L296">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;3M&quot;,
-<span class="fc" id="L295">			90.</span>
+<span class="fc" id="L298">			10.</span>
 		);
 
-<span class="fc" id="L298">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L301">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;6M&quot;,
-<span class="fc" id="L300">			94.</span>
+<span class="fc" id="L303">			11.</span>
 		);
 
-<span class="fc" id="L303">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L306">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;1Y&quot;,
-<span class="fc" id="L305">			97.</span>
+<span class="fc" id="L308">			15.</span>
 		);
 
-<span class="fc" id="L308">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L311">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;2Y&quot;,
-<span class="fc" id="L310">			103.</span>
+<span class="fc" id="L313">			20.</span>
 		);
 
-<span class="fc" id="L313">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L316">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;3Y&quot;,
-<span class="fc" id="L315">			101.</span>
+<span class="fc" id="L318">			22.</span>
 		);
 
-<span class="fc" id="L318">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L321">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;5Y&quot;,
-<span class="fc" id="L320">			103.</span>
+<span class="fc" id="L323">			21.</span>
 		);
 
-<span class="fc" id="L323">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L326">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;10Y&quot;,
-<span class="fc" id="L325">			102.</span>
+<span class="fc" id="L328">			19.</span>
 		);
 
-<span class="fc" id="L328">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L331">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;15Y&quot;,
-<span class="fc" id="L330">			101.</span>
+<span class="fc" id="L333">			20.</span>
 		);
 
-<span class="fc" id="L333">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L336">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;20Y&quot;,
-<span class="fc" id="L335">			102.</span>
+<span class="fc" id="L338">			23.</span>
 		);
 
-<span class="fc" id="L338">		tenorWeightMapHighVolatility.put (</span>
+<span class="fc" id="L341">		tenorDeltaWeightLowVolatility.put (</span>
 			&quot;30Y&quot;,
-<span class="fc" id="L340">			101.</span>
+<span class="fc" id="L343">			27.</span>
 		);
 
-<span class="fc" id="L343">		zeroIRWeight.put (</span>
+<span class="fc" id="L346">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;2W&quot;,
-<span class="fc" id="L345">			0.</span>
+<span class="fc" id="L348">			93.</span>
 		);
 
-<span class="fc" id="L348">		zeroIRWeight.put (</span>
+<span class="fc" id="L351">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;1M&quot;,
-<span class="fc" id="L350">			0.</span>
+<span class="fc" id="L353">			93.</span>
 		);
 
-<span class="fc" id="L353">		zeroIRWeight.put (</span>
+<span class="fc" id="L356">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;3M&quot;,
-<span class="fc" id="L355">			0.</span>
+<span class="fc" id="L358">			90.</span>
 		);
 
-<span class="fc" id="L358">		zeroIRWeight.put (</span>
+<span class="fc" id="L361">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;6M&quot;,
-<span class="fc" id="L360">			0.</span>
+<span class="fc" id="L363">			94.</span>
 		);
 
-<span class="fc" id="L363">		zeroIRWeight.put (</span>
+<span class="fc" id="L366">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;1Y&quot;,
-<span class="fc" id="L365">			0.</span>
+<span class="fc" id="L368">			97.</span>
 		);
 
-<span class="fc" id="L368">		zeroIRWeight.put (</span>
+<span class="fc" id="L371">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;2Y&quot;,
-<span class="fc" id="L370">			0.</span>
+<span class="fc" id="L373">			103.</span>
 		);
 
-<span class="fc" id="L373">		zeroIRWeight.put (</span>
+<span class="fc" id="L376">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;3Y&quot;,
-<span class="fc" id="L375">			0.</span>
+<span class="fc" id="L378">			101.</span>
 		);
 
-<span class="fc" id="L378">		zeroIRWeight.put (</span>
+<span class="fc" id="L381">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;5Y&quot;,
-<span class="fc" id="L380">			0.</span>
+<span class="fc" id="L383">			103.</span>
 		);
 
-<span class="fc" id="L383">		zeroIRWeight.put (</span>
+<span class="fc" id="L386">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;10Y&quot;,
-<span class="fc" id="L385">			0.</span>
+<span class="fc" id="L388">			102.</span>
 		);
 
-<span class="fc" id="L388">		zeroIRWeight.put (</span>
+<span class="fc" id="L391">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;15Y&quot;,
-<span class="fc" id="L390">			0.</span>
+<span class="fc" id="L393">			101.</span>
 		);
 
-<span class="fc" id="L393">		zeroIRWeight.put (</span>
+<span class="fc" id="L396">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;20Y&quot;,
-<span class="fc" id="L395">			0.</span>
+<span class="fc" id="L398">			102.</span>
 		);
 
-<span class="fc" id="L398">		zeroIRWeight.put (</span>
+<span class="fc" id="L401">		tenorDeltaWeightHighVolatility.put (</span>
 			&quot;30Y&quot;,
-<span class="fc" id="L400">			0.</span>
+<span class="fc" id="L403">			101.</span>
+		);
+
+<span class="fc" id="L406">		zeroIRWeight.put (</span>
+			&quot;2W&quot;,
+<span class="fc" id="L408">			0.</span>
+		);
+
+<span class="fc" id="L411">		zeroIRWeight.put (</span>
+			&quot;1M&quot;,
+<span class="fc" id="L413">			0.</span>
+		);
+
+<span class="fc" id="L416">		zeroIRWeight.put (</span>
+			&quot;3M&quot;,
+<span class="fc" id="L418">			0.</span>
+		);
+
+<span class="fc" id="L421">		zeroIRWeight.put (</span>
+			&quot;6M&quot;,
+<span class="fc" id="L423">			0.</span>
+		);
+
+<span class="fc" id="L426">		zeroIRWeight.put (</span>
+			&quot;1Y&quot;,
+<span class="fc" id="L428">			0.</span>
+		);
+
+<span class="fc" id="L431">		zeroIRWeight.put (</span>
+			&quot;2Y&quot;,
+<span class="fc" id="L433">			0.</span>
+		);
+
+<span class="fc" id="L436">		zeroIRWeight.put (</span>
+			&quot;3Y&quot;,
+<span class="fc" id="L438">			0.</span>
+		);
+
+<span class="fc" id="L441">		zeroIRWeight.put (</span>
+			&quot;5Y&quot;,
+<span class="fc" id="L443">			0.</span>
+		);
+
+<span class="fc" id="L446">		zeroIRWeight.put (</span>
+			&quot;10Y&quot;,
+<span class="fc" id="L448">			0.</span>
+		);
+
+<span class="fc" id="L451">		zeroIRWeight.put (</span>
+			&quot;15Y&quot;,
+<span class="fc" id="L453">			0.</span>
+		);
+
+<span class="fc" id="L456">		zeroIRWeight.put (</span>
+			&quot;20Y&quot;,
+<span class="fc" id="L458">			0.</span>
+		);
+
+<span class="fc" id="L461">		zeroIRWeight.put (</span>
+			&quot;30Y&quot;,
+<span class="fc" id="L463">			0.</span>
 		);
 
 		try
 		{
-<span class="fc" id="L405">			regularVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (</span>
+<span class="fc" id="L468">			regularVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (</span>
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
-				tenorWeightMapRegularVolatility
+				tenorDeltaWeightRegularVolatility,
+				tenorVegaRiskWeight
 			);
 
-<span class="fc" id="L410">			lowVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (</span>
+<span class="fc" id="L474">			lowVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (</span>
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_LOW,
-				tenorWeightMapLowVolatility
+				tenorDeltaWeightLowVolatility,
+				tenorVegaRiskWeight
 			);
 
-<span class="fc" id="L415">			highVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (</span>
+<span class="fc" id="L480">			highVolatilityRiskWeight = new org.drip.simm20.rates.IRWeight (</span>
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_HIGH,
-				tenorWeightMapHighVolatility
+				tenorDeltaWeightHighVolatility,
+				tenorVegaRiskWeight
 			);
 
-<span class="fc" id="L420">			ZERO_RISK_WEIGHT = new org.drip.simm20.rates.IRWeight (</span>
+<span class="fc" id="L486">			ZERO_RISK_WEIGHT = new org.drip.simm20.rates.IRWeight (</span>
 				org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_NULL,
-				zeroIRWeight
+				zeroIRWeight,
+				tenorVegaRiskWeight
 			);
 		}
-<span class="nc" id="L425">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L492">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L427">			e.printStackTrace();</span>
+<span class="nc" id="L494">			e.printStackTrace();</span>
 
-<span class="nc" id="L429">			return false;</span>
-<span class="fc" id="L430">		}</span>
+<span class="nc" id="L496">			return false;</span>
+<span class="fc" id="L497">		}</span>
 
-<span class="fc" id="L432">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L499">		s_RiskWeightMap.put (</span>
 			&quot;AUD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L437">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L504">		s_RiskWeightMap.put (</span>
 			&quot;CAD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L442">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L509">		s_RiskWeightMap.put (</span>
 			&quot;CHF&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L447">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L514">		s_RiskWeightMap.put (</span>
 			&quot;DKK&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L452">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L519">		s_RiskWeightMap.put (</span>
 			&quot;EUR&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L457">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L524">		s_RiskWeightMap.put (</span>
 			&quot;GBP&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L462">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L529">		s_RiskWeightMap.put (</span>
 			&quot;HKD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L467">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L534">		s_RiskWeightMap.put (</span>
 			&quot;JPY&quot;,
 			lowVolatilityRiskWeight
 		);
 
-<span class="fc" id="L472">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L539">		s_RiskWeightMap.put (</span>
 			&quot;KRW&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L477">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L544">		s_RiskWeightMap.put (</span>
 			&quot;NOK&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L482">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L549">		s_RiskWeightMap.put (</span>
 			&quot;OTHER&quot;,
 			highVolatilityRiskWeight
 		);
 
-<span class="fc" id="L487">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L554">		s_RiskWeightMap.put (</span>
 			&quot;USD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L492">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L559">		s_RiskWeightMap.put (</span>
 			&quot;SEK&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L497">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L564">		s_RiskWeightMap.put (</span>
 			&quot;SGD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L502">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L569">		s_RiskWeightMap.put (</span>
 			&quot;TWD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L507">		s_RiskWeightMap.put (</span>
+<span class="fc" id="L574">		s_RiskWeightMap.put (</span>
 			&quot;USD&quot;,
 			regularVolatilityRiskWeight
 		);
 
-<span class="fc" id="L512">		return TenorCorrelation();</span>
+<span class="fc" id="L579">		return TenorCorrelation();</span>
 	}
 
 	/**
@@ -520,7 +587,7 @@ package org.drip.simm20.rates;
 
 	public static final java.util.Set&lt;java.lang.String&gt; TenorSet()
 	{
-<span class="nc" id="L523">		return s_RiskWeightMap.get (&quot;USD&quot;).tenors();</span>
+<span class="nc" id="L590">		return s_RiskWeightMap.get (&quot;USD&quot;).tenors();</span>
 	}
 
 	/**
@@ -536,27 +603,27 @@ package org.drip.simm20.rates;
 		final java.lang.String currency,
 		final java.lang.String subCurve)
 	{
-<span class="nc bnc" id="L539" title="All 6 branches missed.">		if (null == currency || currency.isEmpty() || null == subCurve)</span>
+<span class="nc bnc" id="L606" title="All 6 branches missed.">		if (null == currency || currency.isEmpty() || null == subCurve)</span>
 		{
-<span class="nc" id="L541">			return false;</span>
+<span class="nc" id="L608">			return false;</span>
 		}
 
-<span class="nc bnc" id="L544" title="All 2 branches missed.">		if (org.drip.simm20.rates.IRSystemics.SUB_CURVE_OIS.equalsIgnoreCase (subCurve) ||</span>
-<span class="nc bnc" id="L545" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_1M.equalsIgnoreCase (subCurve) ||</span>
-<span class="nc bnc" id="L546" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_3M.equalsIgnoreCase (subCurve) ||</span>
-<span class="nc bnc" id="L547" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_6M.equalsIgnoreCase (subCurve) ||</span>
-<span class="nc bnc" id="L548" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_12M.equalsIgnoreCase (subCurve))</span>
+<span class="nc bnc" id="L611" title="All 2 branches missed.">		if (org.drip.simm20.rates.IRSystemics.SUB_CURVE_OIS.equalsIgnoreCase (subCurve) ||</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_1M.equalsIgnoreCase (subCurve) ||</span>
+<span class="nc bnc" id="L613" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_3M.equalsIgnoreCase (subCurve) ||</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_6M.equalsIgnoreCase (subCurve) ||</span>
+<span class="nc bnc" id="L615" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_12M.equalsIgnoreCase (subCurve))</span>
 		{
-<span class="nc" id="L550">			return true;</span>
+<span class="nc" id="L617">			return true;</span>
 		}
 
-<span class="nc bnc" id="L553" title="All 2 branches missed.">		if (org.drip.simm20.rates.IRSystemics.SUB_CURVE_PRIME.equalsIgnoreCase (subCurve) ||</span>
-<span class="nc bnc" id="L554" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_MUNICIPAL.equalsIgnoreCase (subCurve))</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">		if (org.drip.simm20.rates.IRSystemics.SUB_CURVE_PRIME.equalsIgnoreCase (subCurve) ||</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">			org.drip.simm20.rates.IRSystemics.SUB_CURVE_MUNICIPAL.equalsIgnoreCase (subCurve))</span>
 		{
-<span class="nc" id="L556">			return &quot;USD&quot;.equalsIgnoreCase (currency);</span>
+<span class="nc" id="L623">			return &quot;USD&quot;.equalsIgnoreCase (currency);</span>
 		}
 
-<span class="nc" id="L559">		return false;</span>
+<span class="nc" id="L626">		return false;</span>
 	}
 
 	/**
@@ -567,7 +634,7 @@ package org.drip.simm20.rates;
 
 	public static final java.util.Set&lt;java.lang.String&gt; CurrencySet()
 	{
-<span class="nc" id="L570">		return s_RiskWeightMap.keySet();</span>
+<span class="nc" id="L637">		return s_RiskWeightMap.keySet();</span>
 	}
 
 	/**
@@ -581,23 +648,23 @@ package org.drip.simm20.rates;
 	public static final java.util.Set&lt;java.lang.String&gt; VolatilityTypeCurrencySet (
 		final java.lang.String volatilityType)
 	{
-<span class="nc bnc" id="L584" title="All 4 branches missed.">		if (null == volatilityType || volatilityType.isEmpty())</span>
+<span class="nc bnc" id="L651" title="All 4 branches missed.">		if (null == volatilityType || volatilityType.isEmpty())</span>
 		{
-<span class="nc" id="L586">			return null;</span>
+<span class="nc" id="L653">			return null;</span>
 		}
 
-<span class="nc" id="L589">		java.util.Set&lt;java.lang.String&gt; currencySet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L656">		java.util.Set&lt;java.lang.String&gt; currencySet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm20.rates.IRWeight&gt; irRiskWeightMapEntry :
-<span class="nc bnc" id="L592" title="All 2 branches missed.">			s_RiskWeightMap.entrySet())</span>
+<span class="nc bnc" id="L659" title="All 2 branches missed.">			s_RiskWeightMap.entrySet())</span>
 		{
-<span class="nc bnc" id="L594" title="All 2 branches missed.">			if (irRiskWeightMapEntry.getValue().volatilityType().equalsIgnoreCase (volatilityType))</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">			if (irRiskWeightMapEntry.getValue().volatilityType().equalsIgnoreCase (volatilityType))</span>
 			{
-<span class="nc" id="L596">				currencySet.add (irRiskWeightMapEntry.getKey());</span>
+<span class="nc" id="L663">				currencySet.add (irRiskWeightMapEntry.getKey());</span>
 			}
-<span class="nc" id="L598">		}</span>
+<span class="nc" id="L665">		}</span>
 
-<span class="nc" id="L600">		return currencySet;</span>
+<span class="nc" id="L667">		return currencySet;</span>
 	}
 
 	/**
@@ -608,7 +675,7 @@ package org.drip.simm20.rates;
 
 	public static final java.util.Set&lt;java.lang.String&gt; RegularVolatilityCurrencySet()
 	{
-<span class="nc" id="L611">		return VolatilityTypeCurrencySet (org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_REGULAR);</span>
+<span class="nc" id="L678">		return VolatilityTypeCurrencySet (org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_REGULAR);</span>
 	}
 
 	/**
@@ -619,7 +686,7 @@ package org.drip.simm20.rates;
 
 	public static final java.util.Set&lt;java.lang.String&gt; LowVolatilityCurrencySet()
 	{
-<span class="nc" id="L622">		return VolatilityTypeCurrencySet (org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_LOW);</span>
+<span class="nc" id="L689">		return VolatilityTypeCurrencySet (org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_LOW);</span>
 	}
 
 	/**
@@ -630,7 +697,7 @@ package org.drip.simm20.rates;
 
 	public static final java.util.Set&lt;java.lang.String&gt; HighVolatilityCurrencySet()
 	{
-<span class="nc" id="L633">		return VolatilityTypeCurrencySet (org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_HIGH);</span>
+<span class="nc" id="L700">		return VolatilityTypeCurrencySet (org.drip.simm20.rates.IRSystemics.VOLATILITY_TYPE_HIGH);</span>
 	}
 
 	/**
@@ -644,7 +711,7 @@ package org.drip.simm20.rates;
 	public static final boolean ContainsRiskWeight (
 		final java.lang.String currency)
 	{
-<span class="nc bnc" id="L647" title="All 6 branches missed.">		return null != currency &amp;&amp; !currency.isEmpty() &amp;&amp; s_RiskWeightMap.containsKey (currency);</span>
+<span class="nc bnc" id="L714" title="All 6 branches missed.">		return null != currency &amp;&amp; !currency.isEmpty() &amp;&amp; s_RiskWeightMap.containsKey (currency);</span>
 	}
 
 	/**
@@ -660,10 +727,10 @@ package org.drip.simm20.rates;
 		final java.lang.String currency,
 		final java.lang.String subCurve)
 	{
-<span class="nc bnc" id="L663" title="All 2 branches missed.">		return SubCurveSupported (</span>
+<span class="nc bnc" id="L730" title="All 2 branches missed.">		return SubCurveSupported (</span>
 			currency,
 			subCurve
-<span class="nc bnc" id="L666" title="All 2 branches missed.">		) &amp;&amp; s_RiskWeightMap.containsKey (currency);</span>
+<span class="nc bnc" id="L733" title="All 2 branches missed.">		) &amp;&amp; s_RiskWeightMap.containsKey (currency);</span>
 	}
 
 	/**
@@ -677,8 +744,8 @@ package org.drip.simm20.rates;
 	public static final org.drip.simm20.rates.IRWeight RiskWeight (
 		final java.lang.String currency)
 	{
-<span class="nc bnc" id="L680" title="All 2 branches missed.">		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get</span>
-<span class="nc" id="L681">			(&quot;OTHER&quot;);</span>
+<span class="nc bnc" id="L747" title="All 2 branches missed.">		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get</span>
+<span class="nc" id="L748">			(&quot;OTHER&quot;);</span>
 	}
 
 	/**
@@ -694,16 +761,16 @@ package org.drip.simm20.rates;
 		final java.lang.String currency,
 		final java.lang.String subCurve)
 	{
-<span class="nc bnc" id="L697" title="All 2 branches missed.">		if (!SubCurveSupported (</span>
+<span class="nc bnc" id="L764" title="All 2 branches missed.">		if (!SubCurveSupported (</span>
 			currency,
 			subCurve
 		))
 		{
-<span class="nc" id="L702">			return ZERO_RISK_WEIGHT;</span>
+<span class="nc" id="L769">			return ZERO_RISK_WEIGHT;</span>
 		}
 
-<span class="nc bnc" id="L705" title="All 2 branches missed.">		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get</span>
-<span class="nc" id="L706">			(&quot;OTHER&quot;);</span>
+<span class="nc bnc" id="L772" title="All 2 branches missed.">		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get</span>
+<span class="nc" id="L773">			(&quot;OTHER&quot;);</span>
 	}
 
 	/**
@@ -714,7 +781,7 @@ package org.drip.simm20.rates;
 
 	public static final org.drip.measure.stochastic.LabelCorrelation SingleCurveTenorCorrelation()
 	{
-<span class="nc" id="L717">		return s_SingleCurveTenorCorrelation;</span>
+<span class="nc" id="L784">		return s_SingleCurveTenorCorrelation;</span>
 	}
 
 	/**
@@ -725,7 +792,7 @@ package org.drip.simm20.rates;
 
 	public static final java.util.Map&lt;java.lang.String, org.drip.simm20.rates.IRWeight&gt; RiskWeight()
 	{
-<span class="nc" id="L728">		return s_RiskWeightMap;</span>
+<span class="nc" id="L795">		return s_RiskWeightMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

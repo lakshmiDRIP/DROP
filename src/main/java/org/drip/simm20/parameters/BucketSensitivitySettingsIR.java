@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * BucketSensitivitySettingsIR holds the Risk Weights, Concentration Thresholds, and Cross-Tenor/Cross-Curve
- *  Correlations for each Currency Curve and its Tenor. The References are:
+ * BucketSensitivitySettingsIR holds the Delta Risk Weights, Concentration Thresholds, and
+ *  Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -156,91 +156,6 @@ public class BucketSensitivitySettingsIR extends org.drip.simm20.parameters.Liqu
 					org.drip.simm20.rates.IRSettingsContainer.SingleCurveTenorCorrelation(),
 					org.drip.simm20.rates.IRSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 					irThreshold.deltaVega().delta()
-				);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the ISDA Standard IR Vega Sensitivity Settings for the Currency
-	 * 
-	 * @param currency Currency
-	 * 
-	 * @return The ISDA Standard IR Vega Sensitivity Settings for the Currency
-	 */
-
-	public static final BucketSensitivitySettingsIR ISDA_VEGA (
-		final java.lang.String currency)
-	{
-		org.drip.simm20.rates.IRThreshold irThreshold = org.drip.simm20.rates.IRThresholdContainer.Threshold
-			(currency);
-
-		org.drip.simm20.rates.IRWeight oisRiskWeight = org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-			currency,
-			org.drip.simm20.rates.IRSystemics.SUB_CURVE_OIS
-		);
-
-		org.drip.simm20.rates.IRWeight libor1MRiskWeight =
-			org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-				currency,
-				org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_1M
-			);
-
-		org.drip.simm20.rates.IRWeight libor3MRiskWeight =
-			org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-				currency,
-				org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_3M
-			);
-
-		org.drip.simm20.rates.IRWeight libor6MRiskWeight =
-			org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-				currency,
-				org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_6M
-			);
-
-		org.drip.simm20.rates.IRWeight libor12MRiskWeight =
-			org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-				currency,
-				org.drip.simm20.rates.IRSystemics.SUB_CURVE_LIBOR_12M
-			);
-
-		org.drip.simm20.rates.IRWeight primeRiskWeight =
-			org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-				currency,
-				org.drip.simm20.rates.IRSystemics.SUB_CURVE_PRIME
-			);
-
-		org.drip.simm20.rates.IRWeight municipalRiskWeight =
-			org.drip.simm20.rates.IRSettingsContainer.RiskWeight (
-				currency,
-				org.drip.simm20.rates.IRSystemics.SUB_CURVE_MUNICIPAL
-			);
-
-		try
-		{
-			return null == irThreshold ||
-				null == libor1MRiskWeight ||
-				null == libor1MRiskWeight ||
-				null == libor3MRiskWeight ||
-				null == libor6MRiskWeight ||
-				null == libor12MRiskWeight ||
-				null == primeRiskWeight ||
-				null == municipalRiskWeight ? null : new BucketSensitivitySettingsIR (
-					oisRiskWeight.tenorVega(),
-					libor1MRiskWeight.tenorVega(),
-					libor3MRiskWeight.tenorVega(),
-					libor6MRiskWeight.tenorVega(),
-					libor12MRiskWeight.tenorVega(),
-					primeRiskWeight.tenorVega(),
-					municipalRiskWeight.tenorVega(),
-					org.drip.simm20.rates.IRSettingsContainer.SingleCurveTenorCorrelation(),
-					org.drip.simm20.rates.IRSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
-					irThreshold.deltaVega().vega()
 				);
 		}
 		catch (java.lang.Exception e)

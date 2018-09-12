@@ -72,15 +72,15 @@ package org.drip.simm20.margin;
 public class BucketAggregateIR
 {
 	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private org.drip.simm20.margin.IRSensitivityAggregate _irDeltaAggregate = null;
 	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
 	private org.drip.simm20.margin.RiskFactorAggregateIR _riskFactorAggregateIR = null;
+	private org.drip.simm20.margin.IRSensitivityAggregate _irSensitivityAggregate = null;
 
 	/**
 	 * BucketAggregateIR Constructor
 	 * 
 	 * @param riskFactorAggregateIR The Risk Factor Aggregate IR
-	 * @param irDeltaAggregate The IR Delta Aggregate
+	 * @param irSensitivityAggregate The IR Sensitivity Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
@@ -89,13 +89,13 @@ public class BucketAggregateIR
 
 	public BucketAggregateIR (
 		final org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR,
-		final org.drip.simm20.margin.IRSensitivityAggregate irDeltaAggregate,
+		final org.drip.simm20.margin.IRSensitivityAggregate irSensitivityAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeRiskFactorSensitivityMargin)
 		throws java.lang.Exception
 	{
 		if (null == (_riskFactorAggregateIR = riskFactorAggregateIR) ||
-			null == (_irDeltaAggregate = irDeltaAggregate) ||
+			null == (_irSensitivityAggregate = irSensitivityAggregate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
@@ -117,14 +117,14 @@ public class BucketAggregateIR
 	}
 
 	/**
-	 * Retrieve the IR Delta Aggregate
+	 * Retrieve the IR Sensitivity Aggregate
 	 * 
-	 * @return The IR Delta Aggregate
+	 * @return The IR Sensitivity Aggregate
 	 */
 
-	public org.drip.simm20.margin.IRSensitivityAggregate irDeltaAggregate()
+	public org.drip.simm20.margin.IRSensitivityAggregate irSensitivityAggregate()
 	{
-		return _irDeltaAggregate;
+		return _irSensitivityAggregate;
 	}
 
 	/**

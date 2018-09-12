@@ -113,7 +113,7 @@ public class RiskClassSensitivity
 	 */
 
 	public org.drip.simm20.margin.RiskClassAggregate aggregate (
-		final org.drip.simm20.parameters.RiskClassSensitivitySettings riskClassSensitivitySettings)
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettings riskClassSensitivitySettings)
 	{
 <span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == riskClassSensitivitySettings)</span>
 		{
@@ -126,7 +126,7 @@ public class RiskClassSensitivity
 			java.util.TreeMap&lt;java.lang.String, org.drip.simm20.margin.BucketAggregate&gt;();
 
 		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
-<span class="nc" id="L129">			bucketSensitivitySettingsMap = riskClassSensitivitySettings.bucketSensitivitySettingsMap();</span>
+<span class="nc" id="L129">			bucketSensitivitySettingsMap = riskClassSensitivitySettings.bucketSettingsMap();</span>
 
 <span class="nc" id="L131">		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =</span>
 <span class="nc" id="L132">			riskClassSensitivitySettings.crossBucketCorrelation();</span>
@@ -187,17 +187,20 @@ public class RiskClassSensitivity
 
 <span class="nc" id="L188">			return new org.drip.simm20.margin.RiskClassAggregate (</span>
 				bucketAggregateMap,
+				null,
 				coreDeltaSBAVariance,
-<span class="nc bnc" id="L191" title="All 2 branches missed.">				bucketAggregateMap.containsKey (&quot;-1&quot;) ?</span>
-<span class="nc" id="L192">					bucketAggregateMap.get (&quot;-1&quot;).sensitivityMarginVariance() : 0.</span>
+				0.,
+<span class="nc bnc" id="L193" title="All 2 branches missed.">				bucketAggregateMap.containsKey (&quot;-1&quot;) ?</span>
+<span class="nc" id="L194">					bucketAggregateMap.get (&quot;-1&quot;).sensitivityMarginVariance() : 0.,</span>
+				0.
 			);
 		}
-<span class="nc" id="L195">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L198">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="nc" id="L200">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L200">		return null;</span>
+<span class="nc" id="L203">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -135,7 +135,6 @@ public class RiskFactorTenorSensitivity
 <span class="nc" id="L135">		return null;</span>
 	}
 
-
 	/**
 	 * Construct the Standard Credit Non-Qualifying ISDA Bucket Sensitivity
 	 * 
@@ -144,27 +143,27 @@ public class RiskFactorTenorSensitivity
 
 	public static final RiskFactorTenorSensitivity CRNQ()
 	{
-<span class="nc" id="L147">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaMap = new</span>
+<span class="nc" id="L146">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaMap = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (java.lang.String tenor : org.drip.simm20.credit.CRNQSettingsContainer.TenorSet())</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (java.lang.String tenor : org.drip.simm20.credit.CRNQSettingsContainer.TenorSet())</span>
 		{
-<span class="nc" id="L152">			deltaMap.put (</span>
+<span class="nc" id="L151">			deltaMap.put (</span>
 				tenor,
-<span class="nc" id="L154">				0.</span>
+<span class="nc" id="L153">				0.</span>
 			);
-<span class="nc" id="L156">		}</span>
+<span class="nc" id="L155">		}</span>
 
 		try
 		{
-<span class="nc" id="L160">			return new RiskFactorTenorSensitivity (deltaMap);</span>
+<span class="nc" id="L159">			return new RiskFactorTenorSensitivity (deltaMap);</span>
 		}
-<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L161">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L164">			e.printStackTrace();</span>
+<span class="nc" id="L163">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L167">		return null;</span>
+<span class="nc" id="L166">		return null;</span>
 	}
 
 	/**
@@ -178,12 +177,12 @@ public class RiskFactorTenorSensitivity
 	public RiskFactorTenorSensitivity (
 		java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaMap)
 		throws java.lang.Exception
-<span class="nc" id="L181">	{</span>
-<span class="nc bnc" id="L182" title="All 4 branches missed.">		if (null == (_deltaMap = deltaMap) || 0 == _deltaMap.size())</span>
+<span class="nc" id="L180">	{</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">		if (null == (_deltaMap = deltaMap) || 0 == _deltaMap.size())</span>
 		{
-<span class="nc" id="L184">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L183">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L186">	}</span>
+<span class="nc" id="L185">	}</span>
 
 	/**
 	 * Retrieve the Set of Tenors
@@ -193,7 +192,7 @@ public class RiskFactorTenorSensitivity
 
 	public java.util.Set&lt;java.lang.String&gt; tenorSet()
 	{
-<span class="nc" id="L196">		return _deltaMap.keySet();</span>
+<span class="nc" id="L195">		return _deltaMap.keySet();</span>
 	}
 
 	/**
@@ -209,17 +208,17 @@ public class RiskFactorTenorSensitivity
 		final java.lang.String tenor,
 		final double delta)
 	{
-<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (null == tenor || !org.drip.quant.common.NumberUtil.IsValid (delta))</span>
+<span class="nc bnc" id="L211" title="All 4 branches missed.">		if (null == tenor || !org.drip.quant.common.NumberUtil.IsValid (delta))</span>
 		{
-<span class="nc" id="L214">			return false;</span>
+<span class="nc" id="L213">			return false;</span>
 		}
 
-<span class="nc" id="L217">		_deltaMap.put (</span>
+<span class="nc" id="L216">		_deltaMap.put (</span>
 			tenor,
-<span class="nc" id="L219">			delta</span>
+<span class="nc" id="L218">			delta</span>
 		);
 
-<span class="nc" id="L222">		return true;</span>
+<span class="nc" id="L221">		return true;</span>
 	}
 
 	/**
@@ -233,7 +232,7 @@ public class RiskFactorTenorSensitivity
 	public boolean tenorExists (
 		final java.lang.String tenor)
 	{
-<span class="nc bnc" id="L236" title="All 4 branches missed.">		return null != tenor &amp;&amp; _deltaMap.containsKey (tenor);</span>
+<span class="nc bnc" id="L235" title="All 4 branches missed.">		return null != tenor &amp;&amp; _deltaMap.containsKey (tenor);</span>
 	}
 
 	/**
@@ -250,12 +249,12 @@ public class RiskFactorTenorSensitivity
 		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (!tenorExists (tenor))</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (!tenorExists (tenor))</span>
 		{
-<span class="nc" id="L255">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity::delta =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L254">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity::delta =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L258">		return _deltaMap.get (tenor);</span>
+<span class="nc" id="L257">		return _deltaMap.get (tenor);</span>
 	}
 
 	/**
@@ -266,7 +265,7 @@ public class RiskFactorTenorSensitivity
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaMap()
 	{
-<span class="nc" id="L269">		return _deltaMap;</span>
+<span class="nc" id="L268">		return _deltaMap;</span>
 	}
 
 	/**
@@ -277,14 +276,14 @@ public class RiskFactorTenorSensitivity
 
 	public double cumulativeDelta()
 	{
-<span class="nc" id="L280">		double cumulativeDelta = 0.;</span>
+<span class="nc" id="L279">		double cumulativeDelta = 0.;</span>
 
-<span class="nc bnc" id="L282" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; deltaEntry : _deltaMap.entrySet())</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; deltaEntry : _deltaMap.entrySet())</span>
 		{
-<span class="nc" id="L284">			cumulativeDelta = cumulativeDelta + deltaEntry.getValue();</span>
-<span class="nc" id="L285">		}</span>
+<span class="nc" id="L283">			cumulativeDelta = cumulativeDelta + deltaEntry.getValue();</span>
+<span class="nc" id="L284">		}</span>
 
-<span class="nc" id="L287">		return cumulativeDelta;</span>
+<span class="nc" id="L286">		return cumulativeDelta;</span>
 	}
 
 	/**
@@ -298,30 +297,30 @@ public class RiskFactorTenorSensitivity
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaSensitivityMargin (
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaRiskWeightMap)
 	{
-<span class="nc bnc" id="L301" title="All 4 branches missed.">		if (null == deltaRiskWeightMap || 0 == deltaRiskWeightMap.size())</span>
+<span class="nc bnc" id="L300" title="All 4 branches missed.">		if (null == deltaRiskWeightMap || 0 == deltaRiskWeightMap.size())</span>
 		{
-<span class="nc" id="L303">			return null;</span>
+<span class="nc" id="L302">			return null;</span>
 		}
 
-<span class="nc" id="L306">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaSensitivityMargin = new</span>
+<span class="nc" id="L305">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; deltaSensitivityMargin = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L309" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; deltaEntry : _deltaMap.entrySet())</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; deltaEntry : _deltaMap.entrySet())</span>
 		{
-<span class="nc" id="L311">			java.lang.String tenor = deltaEntry.getKey();</span>
+<span class="nc" id="L310">			java.lang.String tenor = deltaEntry.getKey();</span>
 
-<span class="nc bnc" id="L313" title="All 2 branches missed.">			if (!deltaRiskWeightMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">			if (!deltaRiskWeightMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L315">				return null;</span>
+<span class="nc" id="L314">				return null;</span>
 			}
 
-<span class="nc" id="L318">			deltaSensitivityMargin.put (</span>
+<span class="nc" id="L317">			deltaSensitivityMargin.put (</span>
 				tenor,
-<span class="nc" id="L320">				deltaEntry.getValue() * deltaRiskWeightMap.get (tenor)</span>
+<span class="nc" id="L319">				deltaEntry.getValue() * deltaRiskWeightMap.get (tenor)</span>
 			);
-<span class="nc" id="L322">		}</span>
+<span class="nc" id="L321">		}</span>
 
-<span class="nc" id="L324">		return deltaSensitivityMargin;</span>
+<span class="nc" id="L323">		return deltaSensitivityMargin;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

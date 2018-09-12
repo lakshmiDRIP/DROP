@@ -60,7 +60,7 @@ package org.drip.dynamics.sabr;
  */
 
 public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate {
-<span class="fc" id="L63">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="nc" id="L63">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
 
 	/**
 	 * ForwardRateUpdate Creator
@@ -87,33 +87,33 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 		final double dblForwardRateVolatility,
 		final double dblForwardRateVolatilityIncrement)
 	{
-<span class="fc" id="L90">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
+<span class="nc" id="L90">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE, dblForwardRate))
 <span class="nc" id="L95">			return null;</span>
 
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (!lrSnapshot.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY,
 				dblForwardRateVolatility))
 <span class="nc" id="L100">			return null;</span>
 
-<span class="fc" id="L102">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
+<span class="nc" id="L102">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
 				dblForwardRateIncrement))
 <span class="nc" id="L108">			return null;</span>
 
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (!lrIncrement.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY,
 				dblForwardRateVolatilityIncrement))
 <span class="nc" id="L113">			return null;</span>
 
 		try {
-<span class="fc" id="L116">			return new ForwardRateUpdate (lslForward, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
+<span class="nc" id="L116">			return new ForwardRateUpdate (lslForward, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
 				lrIncrement);
 <span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L119">			e.printStackTrace();</span>
@@ -131,11 +131,11 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L134">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
+<span class="nc" id="L134">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
 <span class="nc" id="L137">			throw new java.lang.Exception (&quot;ForwardRateUpdate ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L138">	}</span>
+<span class="nc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Forward Rate
@@ -148,7 +148,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	public double forwardRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L151">		return snapshot().qm (_lslForward,</span>
+<span class="nc" id="L151">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE);
 	}
 
@@ -178,7 +178,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	public double forwardRateVolatility()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L181">		return snapshot().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
+<span class="nc" id="L181">		return snapshot().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY);
 	}
 

@@ -574,7 +574,7 @@ public class IRDeltaMargin
 		{
 			DeltaMarginCovarianceEntry (
 				currency,
-				riskClassAggregateIR.deltaBucketAggregateMap().get (currency).irDeltaAggregate()
+				riskClassAggregateIR.deltaBucketAggregateMap().get (currency).irSensitivityAggregate()
 			);
 		}
 

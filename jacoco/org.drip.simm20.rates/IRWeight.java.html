@@ -73,29 +73,42 @@ public class IRWeight
 {
 <span class="fc" id="L74">	private java.lang.String _volatilityType = &quot;&quot;;</span>
 
-<span class="fc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorWeightMap = new</span>
+<span class="fc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorVega = new</span>
+		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
+
+<span class="fc" id="L79">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorDelta = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 	/**
 	 * IRWeight Constructor
 	 * 
 	 * @param volatilityType The Volatility Type
-	 * @param tenorWeightMap The Map of Tenor Risk Weights
+	 * @param tenorDelta The Map of Tenor Delta Risk Weights
+	 * @param tenorVega The Map of Tenor Vega Risk Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IRWeight (
 		final java.lang.String volatilityType,
-		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMap)
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDelta,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVega)
 		throws java.lang.Exception
-<span class="fc" id="L92">	{</span>
-<span class="pc bpc" id="L93" title="3 of 6 branches missed.">		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||</span>
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">			null == (_tenorWeightMap = tenorWeightMap) || 0 == _tenorWeightMap.size())</span>
+<span class="fc" id="L97">	{</span>
+<span class="pc bpc" id="L98" title="4 of 8 branches missed.">		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||</span>
+			null == (_tenorDelta = tenorDelta) ||
+			null == (_tenorVega = tenorVega))
 		{
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L98">	}</span>
+
+<span class="fc" id="L105">		int tenorCount = _tenorDelta.size();</span>
+
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (0 == tenorCount || tenorCount != _tenorVega.size())</span>
+		{
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L111">	}</span>
 
 	/**
 	 * Retrieve the Volatility Type
@@ -105,18 +118,29 @@ public class IRWeight
 
 	public java.lang.String volatilityType()
 	{
-<span class="nc" id="L108">		return _volatilityType;</span>
+<span class="nc" id="L121">		return _volatilityType;</span>
 	}
 
 	/**
-	 * Retrieve the Tenor Weight Map
+	 * Retrieve the Tenor Delta Weight Map
 	 * 
-	 * @return The Tenor Weight Map
+	 * @return The Tenor Delta Weight Map
 	 */
 
-	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMap()
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDelta()
 	{
-<span class="nc" id="L119">		return _tenorWeightMap;</span>
+<span class="nc" id="L132">		return _tenorDelta;</span>
+	}
+
+	/**
+	 * Retrieve the Tenor Vega Weight Map
+	 * 
+	 * @return The Tenor Vega Weight Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVega()
+	{
+<span class="nc" id="L143">		return _tenorVega;</span>
 	}
 
 	/**
@@ -127,7 +151,7 @@ public class IRWeight
 
 	public java.util.Set&lt;java.lang.String&gt; tenors()
 	{
-<span class="nc" id="L130">		return _tenorWeightMap.keySet();</span>
+<span class="nc" id="L154">		return _tenorDelta.keySet();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

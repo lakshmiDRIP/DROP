@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * BucketSensitivitySettingsIR holds the Risk Weights, Concentration Thresholds, and Cross-Tenor/Cross-Curve
- *  Correlations for each Currency Curve and its Tenor. The References are:
+ * BucketSensitivitySettingsIR holds the Delta Risk Weights, Concentration Thresholds, and
+ *  Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -82,14 +82,14 @@ public class BucketSensitivitySettingsIR extends org.drip.simm20.parameters.Liqu
 <span class="nc" id="L82">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _municipalTenorRiskWeight = null;</span>
 
 	/**
-	 * Construct the ISDA Standard IR Sensitivity Settings for the Currency
+	 * Construct the ISDA Standard IR Delta Sensitivity Settings for the Currency
 	 * 
 	 * @param currency Currency
 	 * 
-	 * @return The ISDA Standard IR Sensitivity Settings for the Currency
+	 * @return The ISDA Standard IR Delta Sensitivity Settings for the Currency
 	 */
 
-	public static final BucketSensitivitySettingsIR ISDA (
+	public static final BucketSensitivitySettingsIR ISDA_DELTA (
 		final java.lang.String currency)
 	{
 <span class="nc" id="L95">		org.drip.simm20.rates.IRThreshold irThreshold = org.drip.simm20.rates.IRThresholdContainer.Threshold</span>
@@ -146,13 +146,13 @@ public class BucketSensitivitySettingsIR extends org.drip.simm20.parameters.Liqu
 				null == libor12MRiskWeight ||
 				null == primeRiskWeight ||
 				null == municipalRiskWeight ? null : new BucketSensitivitySettingsIR (
-<span class="nc" id="L149">					oisRiskWeight.tenorWeightMap(),</span>
-<span class="nc" id="L150">					libor1MRiskWeight.tenorWeightMap(),</span>
-<span class="nc" id="L151">					libor3MRiskWeight.tenorWeightMap(),</span>
-<span class="nc" id="L152">					libor6MRiskWeight.tenorWeightMap(),</span>
-<span class="nc" id="L153">					libor12MRiskWeight.tenorWeightMap(),</span>
-<span class="nc" id="L154">					primeRiskWeight.tenorWeightMap(),</span>
-<span class="nc" id="L155">					municipalRiskWeight.tenorWeightMap(),</span>
+<span class="nc" id="L149">					oisRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L150">					libor1MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L151">					libor3MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L152">					libor6MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L153">					libor12MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L154">					primeRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L155">					municipalRiskWeight.tenorDelta(),</span>
 <span class="nc" id="L156">					org.drip.simm20.rates.IRSettingsContainer.SingleCurveTenorCorrelation(),</span>
 					org.drip.simm20.rates.IRSystemics.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 <span class="nc" id="L158">					irThreshold.deltaVega().delta()</span>

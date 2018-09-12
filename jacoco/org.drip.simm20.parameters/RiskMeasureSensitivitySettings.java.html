@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RiskMeasureSensitivitySettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm20.parameters</a> &gt; <span class="el_source">RiskMeasureSensitivitySettings.java</span></div><h1>RiskMeasureSensitivitySettings.java</h1><pre class="source lang-java linenums">
+package org.drip.simm20.parameters;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RiskMeasureSensitivitySettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Bucket
+ *  Sensitivities across Individual Risk Measure Buckets. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class RiskMeasureSensitivitySettings
+{
+<span class="nc" id="L74">	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;</span>
+<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;</span>
+		_bucketSettingsMap = null;
+
+	/**
+	 * Construct an ISDA Equity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA Equity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_DELTA()
+	{
+		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L87">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+				org.drip.simm20.parameters.BucketSensitivitySettings&gt;();
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold&gt;
+			eqConcentrationThresholdMap =
+<span class="nc" id="L92">				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap();</span>
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.equity.EQBucket&gt; bucketMap =
+<span class="nc" id="L95">			org.drip.simm20.equity.EQSettingsContainer.BucketMap();</span>
+
+<span class="nc" id="L97">		java.util.Set&lt;java.lang.Integer&gt; bucketKeySet = bucketMap.keySet();</span>
+
+		try
+		{
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			for (int bucketIndex : bucketKeySet)</span>
+			{
+<span class="nc" id="L103">				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);</span>
+
+<span class="nc" id="L105">				bucketDeltaSettingsMap.put (</span>
+					&quot;&quot; + bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+<span class="nc" id="L108">						equityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L109">						eqConcentrationThresholdMap.get (bucketIndex).delta(),</span>
+<span class="nc" id="L110">						equityBucket.memberCorrelation()</span>
+					)
+				);
+<span class="nc" id="L113">			}</span>
+
+<span class="nc" id="L115">			return new RiskMeasureSensitivitySettings (</span>
+				bucketDeltaSettingsMap,
+<span class="nc" id="L117">				org.drip.simm20.equity.EQSettingsContainer.CrossBucketCorrelation()</span>
+			);
+		}
+<span class="nc" id="L120">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L122">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L125">		return null;</span>
+	}
+
+	/**
+	 * Construct an ISDA Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_VEGA()
+	{
+		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L137">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+				org.drip.simm20.parameters.BucketSensitivitySettings&gt;();
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold&gt;
+			eqConcentrationThresholdMap =
+<span class="nc" id="L142">				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap();</span>
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.equity.EQBucket&gt; bucketMap =
+<span class="nc" id="L145">			org.drip.simm20.equity.EQSettingsContainer.BucketMap();</span>
+
+<span class="nc" id="L147">		java.util.Set&lt;java.lang.Integer&gt; bucketKeySet = bucketMap.keySet();</span>
+
+		try
+		{
+<span class="nc" id="L151">			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L152">				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			for (int bucketIndex : bucketKeySet)</span>
+			{
+<span class="nc" id="L156">				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);</span>
+
+<span class="nc" id="L158">				bucketVegaSettingsMap.put (</span>
+					&quot;&quot; + bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+<span class="nc" id="L161">						equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight() * vegaScaler,</span>
+<span class="nc" id="L162">						eqConcentrationThresholdMap.get (bucketIndex).vega(),</span>
+<span class="nc" id="L163">						equityBucket.memberCorrelation()</span>
+					)
+				);
+<span class="nc" id="L166">			}</span>
+
+<span class="nc" id="L168">			return new RiskMeasureSensitivitySettings (</span>
+				bucketVegaSettingsMap,
+<span class="nc" id="L170">				org.drip.simm20.equity.EQSettingsContainer.CrossBucketCorrelation()</span>
+			);
+		}
+<span class="nc" id="L173">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L175">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L178">		return null;</span>
+	}
+
+	/**
+	 * Construct an ISDA Commodity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA Commodity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_DELTA()
+	{
+		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L190">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+				org.drip.simm20.parameters.BucketSensitivitySettings&gt;();
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold&gt;
+			ctConcentrationThresholdMap =
+<span class="nc" id="L195">				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();</span>
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.commodity.CTBucket&gt; bucketMap =
+<span class="nc" id="L198">			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();</span>
+
+<span class="nc" id="L200">		java.util.Set&lt;java.lang.Integer&gt; bucketKeySet = bucketMap.keySet();</span>
+
+		try
+		{
+<span class="nc bnc" id="L204" title="All 2 branches missed.">			for (int bucketIndex : bucketKeySet)</span>
+			{
+<span class="nc" id="L206">				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);</span>
+
+<span class="nc" id="L208">				bucketDeltaSettingsMap.put (</span>
+					&quot;&quot; + bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+<span class="nc" id="L211">						commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L212">						ctConcentrationThresholdMap.get (bucketIndex).delta(),</span>
+<span class="nc" id="L213">						commodityBucket.memberCorrelation()</span>
+					)
+				);
+<span class="nc" id="L216">			}</span>
+
+<span class="nc" id="L218">			return new RiskMeasureSensitivitySettings (</span>
+				bucketDeltaSettingsMap,
+<span class="nc" id="L220">				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()</span>
+			);
+		}
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L225">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L228">		return null;</span>
+	}
+
+	/**
+	 * Construct an ISDA Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_VEGA()
+	{
+		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L240">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+				org.drip.simm20.parameters.BucketSensitivitySettings&gt;();
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold&gt;
+			ctConcentrationThresholdMap =
+<span class="nc" id="L245">				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();</span>
+
+		java.util.Map&lt;java.lang.Integer, org.drip.simm20.commodity.CTBucket&gt; bucketMap =
+<span class="nc" id="L248">			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();</span>
+
+<span class="nc" id="L250">		java.util.Set&lt;java.lang.Integer&gt; bucketKeySet = bucketMap.keySet();</span>
+
+		try
+		{
+<span class="nc" id="L254">			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L255">				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);</span>
+
+<span class="nc bnc" id="L257" title="All 2 branches missed.">			for (int bucketIndex : bucketKeySet)</span>
+			{
+<span class="nc" id="L259">				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);</span>
+
+<span class="nc" id="L261">				bucketVegaSettingsMap.put (</span>
+					&quot;&quot; + bucketIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT *
+<span class="nc" id="L265">							commodityBucket.deltaRiskWeight() * vegaScaler,</span>
+<span class="nc" id="L266">						ctConcentrationThresholdMap.get (bucketIndex).vega(),</span>
+<span class="nc" id="L267">						commodityBucket.memberCorrelation()</span>
+					)
+				);
+<span class="nc" id="L270">			}</span>
+
+<span class="nc" id="L272">			return new RiskMeasureSensitivitySettings (</span>
+				bucketVegaSettingsMap,
+<span class="nc" id="L274">				org.drip.simm20.commodity.CTSettingsContainer.CrossBucketCorrelation()</span>
+			);
+		}
+<span class="nc" id="L277">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L279">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L282">		return null;</span>
+	}
+
+	/**
+	 * Construct an ISDA FX DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA FX DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_DELTA()
+	{
+		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L294">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+				org.drip.simm20.parameters.BucketSensitivitySettings&gt;();
+
+		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; fxConcentrationCategoryDeltaMap =
+<span class="nc" id="L298">			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryDeltaMap();</span>
+
+<span class="nc" id="L300">		java.util.Set&lt;java.lang.Integer&gt; fxConcentrationCategoryDeltaKey =</span>
+<span class="nc" id="L301">			fxConcentrationCategoryDeltaMap.keySet();</span>
+
+<span class="nc" id="L303">		java.util.List&lt;java.lang.String&gt; deltaCategoryList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+
+<span class="nc" id="L305">		int fxConcentrationCategoryDeltaCount = fxConcentrationCategoryDeltaKey.size();</span>
+
+<span class="nc" id="L307">		double[][] crossBucketCorrelationMatrix = new</span>
+			double[fxConcentrationCategoryDeltaCount][fxConcentrationCategoryDeltaCount];
+
+		try
+		{
+<span class="nc bnc" id="L312" title="All 2 branches missed.">			for (int deltaCategoryIndex : fxConcentrationCategoryDeltaKey)</span>
+			{
+<span class="nc" id="L314">				deltaCategoryList.add (&quot;&quot; + deltaCategoryIndex);</span>
+
+<span class="nc" id="L316">				bucketDeltaSettingsMap.put (</span>
+					&quot;&quot; + deltaCategoryIndex,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
+<span class="nc" id="L320">						fxConcentrationCategoryDeltaMap.get (deltaCategoryIndex),</span>
+						org.drip.simm20.fx.FXSystemics.CORRELATION
+					)
+				);
+
+<span class="nc bnc" id="L325" title="All 2 branches missed.">				for (int categoryIndexInner : fxConcentrationCategoryDeltaKey)</span>
+				{
+<span class="nc bnc" id="L327" title="All 2 branches missed.">					crossBucketCorrelationMatrix[deltaCategoryIndex - 1][categoryIndexInner - 1] =</span>
+						deltaCategoryIndex == categoryIndexInner ? 1. :
+						org.drip.simm20.fx.FXSystemics.CORRELATION;
+<span class="nc" id="L330">				}</span>
+<span class="nc" id="L331">			}</span>
+
+<span class="nc" id="L333">			return new RiskMeasureSensitivitySettings (</span>
+				bucketDeltaSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					deltaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+<span class="nc" id="L341">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L343">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L346">		return null;</span>
+	}
+
+	/**
+	 * Construct an ISDA FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_VEGA()
+	{
+		java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+<span class="nc" id="L358">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+				org.drip.simm20.parameters.BucketSensitivitySettings&gt;();
+
+		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fxConcentrationCategoryVegaMap =
+<span class="nc" id="L362">			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryVegaMap();</span>
+
+<span class="nc" id="L364">		java.util.Set&lt;java.lang.String&gt; fxConcentrationCategoryVegaKey =</span>
+<span class="nc" id="L365">			fxConcentrationCategoryVegaMap.keySet();</span>
+
+<span class="nc" id="L367">		java.util.List&lt;java.lang.String&gt; vegaCategoryList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+
+<span class="nc" id="L369">		int fxConcentrationCategoryVegaCount = fxConcentrationCategoryVegaKey.size();</span>
+
+<span class="nc" id="L371">		int vegaCategoryIndexOuter = 0;</span>
+<span class="nc" id="L372">		double[][] crossBucketCorrelationMatrix = new</span>
+			double[fxConcentrationCategoryVegaCount][fxConcentrationCategoryVegaCount];
+
+		try
+		{
+<span class="nc" id="L377">			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L378">				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);</span>
+
+<span class="nc bnc" id="L380" title="All 2 branches missed.">			for (java.lang.String vegaCategoryOuter : fxConcentrationCategoryVegaKey)</span>
+			{
+<span class="nc" id="L382">				vegaCategoryList.add (vegaCategoryOuter);</span>
+
+<span class="nc" id="L384">				bucketVegaSettingsMap.put (</span>
+					vegaCategoryOuter,
+					new org.drip.simm20.parameters.BucketSensitivitySettings (
+						org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT *
+							org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT * vegaScaler,
+<span class="nc" id="L389">						fxConcentrationCategoryVegaMap.get (vegaCategoryOuter),</span>
+						org.drip.simm20.fx.FXSystemics.CORRELATION
+					)
+				);
+
+<span class="nc" id="L394">				for (int vegaCategoryIndexInner = 0;</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">					vegaCategoryIndexInner &lt; fxConcentrationCategoryVegaCount;</span>
+<span class="nc" id="L396">					++vegaCategoryIndexInner)</span>
+				{
+<span class="nc bnc" id="L398" title="All 2 branches missed.">					crossBucketCorrelationMatrix[vegaCategoryIndexOuter][vegaCategoryIndexInner] =</span>
+						vegaCategoryIndexOuter == vegaCategoryIndexInner ? 1. :
+						org.drip.simm20.fx.FXSystemics.CORRELATION;
+				}
+
+<span class="nc" id="L403">				++vegaCategoryIndexOuter;</span>
+<span class="nc" id="L404">			}</span>
+
+<span class="nc" id="L406">			return new RiskMeasureSensitivitySettings (</span>
+				bucketVegaSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					vegaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+<span class="nc" id="L414">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L416">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L419">		return null;</span>
+	}
+
+	/**
+	 * RiskMeasureSensitivitySettings Constructor
+	 * 
+	 * @param bucketSettingsMap The Bucket Sensitivity Settings Map
+	 * @param crossBucketCorrelation The Cross Bucket Correlation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RiskMeasureSensitivitySettings (
+		final java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+			bucketSettingsMap,
+		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
+		throws java.lang.Exception
+<span class="nc" id="L436">	{</span>
+<span class="nc bnc" id="L437" title="All 6 branches missed.">		if (null == (_bucketSettingsMap = bucketSettingsMap) || 0 == _bucketSettingsMap.size() ||</span>
+			null == (_crossBucketCorrelation = crossBucketCorrelation))
+		{
+<span class="nc" id="L440">			throw new java.lang.Exception (&quot;RiskMeasureSensitivitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L442">	}</span>
+
+	/**
+	 * Retrieve the Cross Bucket Correlation
+	 * 
+	 * @return The Cross Bucket Correlation
+	 */
+
+	public org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation()
+	{
+<span class="nc" id="L452">		return _crossBucketCorrelation;</span>
+	}
+
+	/**
+	 * Retrieve the Bucket Sensitivity Settings Map
+	 * 
+	 * @return The Bucket Sensitivity Settings Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettings&gt;
+		bucketSettingsMap()
+	{
+<span class="nc" id="L464">		return _bucketSettingsMap;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

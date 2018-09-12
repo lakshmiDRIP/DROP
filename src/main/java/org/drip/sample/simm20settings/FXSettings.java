@@ -87,7 +87,7 @@ public class FXSettings
 		System.out.println (
 			"\t|| Risk Weight                                         => " +
 			FormatUtil.FormatDouble (
-				FXSystemics.RISK_WEIGHT, 3, 2, 1.
+				FXSystemics.DELTA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 

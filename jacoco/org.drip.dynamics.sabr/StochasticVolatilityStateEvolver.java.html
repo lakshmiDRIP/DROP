@@ -262,31 +262,31 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 		final int iSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
-<span class="pc bpc" id="L265" title="3 of 6 branches missed.">		if (iViewDate &lt; iSpotDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
+<span class="nc bnc" id="L265" title="All 6 branches missed.">		if (iViewDate &lt; iSpotDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
 			org.drip.dynamics.sabr.ForwardRateUpdate))
 <span class="nc" id="L267">			return null;</span>
-<span class="fc" id="L268">		double dblForwardRateZ = _usgForwardRate.random();</span>
+<span class="nc" id="L268">		double dblForwardRateZ = _usgForwardRate.random();</span>
 
 
-<span class="fc" id="L271">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
-<span class="fc" id="L272">		org.drip.dynamics.sabr.ForwardRateUpdate fruPrev = (org.drip.dynamics.sabr.ForwardRateUpdate)</span>
+<span class="nc" id="L271">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="nc" id="L272">		org.drip.dynamics.sabr.ForwardRateUpdate fruPrev = (org.drip.dynamics.sabr.ForwardRateUpdate)</span>
 			lsqmPrev;
 
-<span class="fc" id="L275">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="nc" id="L275">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
 		try {
-<span class="fc" id="L278">			double dblForwardRate = fruPrev.forwardRate();</span>
+<span class="nc" id="L278">			double dblForwardRate = fruPrev.forwardRate();</span>
 
-<span class="fc" id="L280">			double dblForwardRateVolatility = fruPrev.forwardRateVolatility();</span>
+<span class="nc" id="L280">			double dblForwardRateVolatility = fruPrev.forwardRateVolatility();</span>
 
-<span class="fc" id="L282">			double dblForwardRateIncrement = dblForwardRateVolatility * java.lang.Math.pow (dblForwardRate,</span>
+<span class="nc" id="L282">			double dblForwardRateIncrement = dblForwardRateVolatility * java.lang.Math.pow (dblForwardRate,</span>
 				_dblBeta) * dblAnnualizedIncrementSQRT * dblForwardRateZ;
 
-<span class="fc" id="L285">			double dblForwardRateVolatilityIncrement = _dblVolatilityOfVolatility * dblForwardRateVolatility</span>
+<span class="nc" id="L285">			double dblForwardRateVolatilityIncrement = _dblVolatilityOfVolatility * dblForwardRateVolatility</span>
 				* dblAnnualizedIncrementSQRT * (_dblRho * dblForwardRateZ + _dblIdiosyncraticRho *
-<span class="fc" id="L287">					_usgForwardRateVolatilityIdiosyncratic.random());</span>
+<span class="nc" id="L287">					_usgForwardRateVolatilityIdiosyncratic.random());</span>
 
-<span class="fc" id="L289">			return org.drip.dynamics.sabr.ForwardRateUpdate.Create (_lslForward, iSpotDate, iSpotDate +</span>
+<span class="nc" id="L289">			return org.drip.dynamics.sabr.ForwardRateUpdate.Create (_lslForward, iSpotDate, iSpotDate +</span>
 				iSpotTimeIncrement, iViewDate, dblForwardRate + dblForwardRateIncrement,
 					dblForwardRateIncrement, dblForwardRateVolatility + dblForwardRateVolatilityIncrement,
 						dblForwardRateVolatilityIncrement);

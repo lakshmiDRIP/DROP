@@ -71,13 +71,13 @@ package org.drip.simm20.parameters;
 
 public class BucketSensitivitySettings extends org.drip.simm20.parameters.LiquiditySettings
 {
-<span class="nc" id="L74">	private double _deltaRiskWeight = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _riskWeight = java.lang.Double.NaN;</span>
 <span class="nc" id="L75">	private double _memberCorrelation = java.lang.Double.NaN;</span>
 
 	/**
 	 * BucketSensitivitySettings Constructor
 	 * 
-	 * @param deltaRiskWeight The Delta Risk Weight
+	 * @param riskWeight The Risk Factor Weight
 	 * @param concentrationFactor The Concentration Factor
 	 * @param memberCorrelation The Bucket Member Correlation
 	 * 
@@ -85,14 +85,14 @@ public class BucketSensitivitySettings extends org.drip.simm20.parameters.Liquid
 	 */
 
 	public BucketSensitivitySettings (
-		final double deltaRiskWeight,
+		final double riskWeight,
 		final double concentrationFactor,
 		final double memberCorrelation)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L93">		super (concentrationFactor);</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||</span>
 <span class="nc bnc" id="L96" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||</span>
 				1. &lt; _memberCorrelation || -1. &gt; _memberCorrelation)
 		{
@@ -101,20 +101,20 @@ public class BucketSensitivitySettings extends org.drip.simm20.parameters.Liquid
 <span class="nc" id="L101">	}</span>
 
 	/**
-	 * Retrieve the FX Bucket Delta Risk Weight
+	 * Retrieve the Bucket Risk Factor Weight
 	 * 
-	 * @return The FX Bucket Delta Risk Weight
+	 * @return The Bucket Risk Factor Weight
 	 */
 
-	public double deltaRiskWeight()
+	public double riskWeight()
 	{
-<span class="nc" id="L111">		return _deltaRiskWeight;</span>
+<span class="nc" id="L111">		return _riskWeight;</span>
 	}
 
 	/**
 	 * Retrieve the Correlation between the Basket Members
 	 * 
-	 * @return The FX Correlation between the Basket Members
+	 * @return The Correlation between the Basket Members
 	 */
 
 	public double memberCorrelation()

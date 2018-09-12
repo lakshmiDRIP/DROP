@@ -656,14 +656,14 @@ public class BucketSensitivityIR
 	}
 
 	/**
-	 * Generate the IR Margin Factor Aggregate
+	 * Generate the IR Margin Factor Curve Tenor Aggregate
 	 * 
 	 * @param bucketDeltaSensitivitySettings The Bucket Delta Tenor Sensitivity Settings
 	 * 
-	 * @return The IR Margin Factor Aggregate
+	 * @return The IR Margin Factor Curve Tenor Aggregate
 	 */
 
-	public org.drip.simm20.margin.IRFactorAggregate aggregate (
+	public org.drip.simm20.margin.RiskFactorAggregateIR curveAggregate (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketDeltaSensitivitySettings)
 	{
 <span class="nc bnc" id="L669" title="All 2 branches missed.">		if (null == bucketDeltaSensitivitySettings)</span>
@@ -767,7 +767,7 @@ public class BucketSensitivityIR
 
 		try
 		{
-<span class="nc" id="L770">			return new org.drip.simm20.margin.IRFactorAggregate (</span>
+<span class="nc" id="L770">			return new org.drip.simm20.margin.RiskFactorAggregateIR (</span>
 				oisTenorDeltaMargin,
 				libor1MTenorDeltaMargin,
 				libor3MTenorDeltaMargin,
@@ -784,6 +784,45 @@ public class BucketSensitivityIR
 		}
 
 <span class="nc" id="L786">		return null;</span>
+	}
+
+	/**
+	 * Generate the Bucket IR Sensitivity Margin Aggregate
+	 * 
+	 * @param bucketSensitivitySettingsIR The IR Bucket Sensitivity Settings
+	 * 
+	 * @return The Bucket IR Sensitivity Margin Aggregate
+	 */
+
+	public org.drip.simm20.margin.BucketAggregateIR aggregate (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
+	{
+<span class="nc" id="L800">		org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR = curveAggregate</span>
+<span class="nc" id="L801">			(bucketSensitivitySettingsIR);</span>
+
+<span class="nc" id="L803">		org.drip.simm20.margin.IRSensitivityAggregate deltaMargin = riskFactorAggregateIR.margin</span>
+<span class="nc" id="L804">			(bucketSensitivitySettingsIR);</span>
+
+<span class="nc bnc" id="L806" title="All 2 branches missed.">		if (null == deltaMargin)</span>
+		{
+<span class="nc" id="L808">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L813">			return new org.drip.simm20.margin.BucketAggregateIR (</span>
+				riskFactorAggregateIR,
+				deltaMargin,
+<span class="nc" id="L816">				deltaMargin.cumulativeMarginCovariance(),</span>
+<span class="nc" id="L817">				riskFactorAggregateIR.cumulativeSensitivityMargin()</span>
+			);
+		}
+<span class="nc" id="L820">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L822">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L825">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

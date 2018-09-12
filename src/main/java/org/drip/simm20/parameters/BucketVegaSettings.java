@@ -97,32 +97,11 @@ public class BucketVegaSettings extends org.drip.simm20.parameters.BucketSensiti
 			memberCorrelation
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||
+			0. > _impliedVolatility)
 		{
 			throw new java.lang.Exception ("BucketVegaSettings Constructor => Invalid Inputs");
 		}
-	}
-
-	/**
-	 * Retrieve the Raw Vega Risk Weight
-	 * 
-	 * @return The Raw Vega Risk Weight
-	 */
-
-	public double rawRiskWeight()
-	{
-		return riskWeight();
-	}
-
-	/**
-	 * Retrieve the Vega Risk Weight
-	 * 
-	 * @return The Vega Risk Weight
-	 */
-
-	public double riskWeight()
-	{
-		return riskWeight() * _impliedVolatility;
 	}
 
 	/**
@@ -134,5 +113,21 @@ public class BucketVegaSettings extends org.drip.simm20.parameters.BucketSensiti
 	public double impliedVolatility()
 	{
 		return _impliedVolatility;
+	}
+
+	/**
+	 * Retrieve the Raw Vega Risk Weight
+	 * 
+	 * @return The Raw Vega Risk Weight
+	 */
+
+	public double rawRiskWeight()
+	{
+		return super.riskWeight();
+	}
+
+	@Override public double riskWeight()
+	{
+		return super.riskWeight() * _impliedVolatility;
 	}
 }

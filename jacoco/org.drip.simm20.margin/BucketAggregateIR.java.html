@@ -72,15 +72,15 @@ package org.drip.simm20.margin;
 public class BucketAggregateIR
 {
 <span class="nc" id="L74">	private double _sensitivityMarginVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private org.drip.simm20.margin.IRDeltaAggregate _irDeltaAggregate = null;</span>
-<span class="nc" id="L76">	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private java.util.Map&lt;java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR&gt;</span>
-		_riskFactorAggregateMap = null;
+<span class="nc" id="L75">	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private org.drip.simm20.margin.RiskFactorAggregateIR _riskFactorAggregateIR = null;</span>
+<span class="nc" id="L77">	private org.drip.simm20.margin.IRSensitivityAggregate _irSensitivityAggregate = null;</span>
 
 	/**
 	 * BucketAggregateIR Constructor
 	 * 
-	 * @param riskFactorAggregateMap The Risk Factor Aggregate IR Map
+	 * @param riskFactorAggregateIR The Risk Factor Aggregate IR
+	 * @param irSensitivityAggregate The IR Sensitivity Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
@@ -88,46 +88,43 @@ public class BucketAggregateIR
 	 */
 
 	public BucketAggregateIR (
-		final java.util.Map&lt;java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR&gt;
-			riskFactorAggregateMap,
-		final org.drip.simm20.margin.IRDeltaAggregate irDeltaAggregate,
+		final org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR,
+		final org.drip.simm20.margin.IRSensitivityAggregate irSensitivityAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeRiskFactorSensitivityMargin)
 		throws java.lang.Exception
-<span class="nc" id="L97">	{</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) ||</span>
-<span class="nc bnc" id="L99" title="All 4 branches missed.">				0 == _riskFactorAggregateMap.size() ||</span>
-			null == (_irDeltaAggregate = irDeltaAggregate) ||
-<span class="nc bnc" id="L101" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =</span>
+<span class="nc" id="L96">	{</span>
+<span class="nc bnc" id="L97" title="All 4 branches missed.">		if (null == (_riskFactorAggregateIR = riskFactorAggregateIR) ||</span>
+			null == (_irSensitivityAggregate = irSensitivityAggregate) ||
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =</span>
 				sensitivityMarginVariance) ||
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =</span>
 				cumulativeRiskFactorSensitivityMargin))
 		{
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;BucketAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;BucketAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L106">	}</span>
 
 	/**
-	 * Retrieve the Risk Factor Aggregate IR Map
+	 * Retrieve the Risk Factor Aggregate IR
 	 * 
-	 * @return The Risk Factor Aggregate IR Map
+	 * @return The Risk Factor Aggregate IR
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.simm20.margin.RiskFactorAggregateIR&gt;
-		riskFactorAggregateMap()
+	public org.drip.simm20.margin.RiskFactorAggregateIR riskFactorAggregateIR()
 	{
-<span class="nc" id="L119">		return _riskFactorAggregateMap;</span>
+<span class="nc" id="L116">		return _riskFactorAggregateIR;</span>
 	}
 
 	/**
-	 * Retrieve the IR Delta Aggregate
+	 * Retrieve the IR Sensitivity Aggregate
 	 * 
-	 * @return The IR Delta Aggregate
+	 * @return The IR Sensitivity Aggregate
 	 */
 
-	public org.drip.simm20.margin.IRDeltaAggregate irDeltaAggregate()
+	public org.drip.simm20.margin.IRSensitivityAggregate irSensitivityAggregate()
 	{
-<span class="nc" id="L130">		return _irDeltaAggregate;</span>
+<span class="nc" id="L127">		return _irSensitivityAggregate;</span>
 	}
 
 	/**
@@ -138,7 +135,7 @@ public class BucketAggregateIR
 
 	public double sensitivityMarginVariance()
 	{
-<span class="nc" id="L141">		return _sensitivityMarginVariance;</span>
+<span class="nc" id="L138">		return _sensitivityMarginVariance;</span>
 	}
 
 	/**
@@ -149,7 +146,26 @@ public class BucketAggregateIR
 
 	public double cumulativeRiskFactorSensitivityMargin()
 	{
-<span class="nc" id="L152">		return _cumulativeRiskFactorSensitivityMargin;</span>
+<span class="nc" id="L149">		return _cumulativeRiskFactorSensitivityMargin;</span>
+	}
+
+	/**
+	 * Compute the Bounded Sensitivity Margin
+	 * 
+	 * @return The Bounded Sensitivity Margin
+	 */
+
+	public double boundedSensitivityMargin()
+	{
+<span class="nc" id="L160">		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);</span>
+
+<span class="nc" id="L162">		return java.lang.Math.max (</span>
+<span class="nc" id="L163">			java.lang.Math.min (</span>
+				_cumulativeRiskFactorSensitivityMargin,
+				sensitivityMargin
+			),
+			-1. * sensitivityMargin
+		);
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
