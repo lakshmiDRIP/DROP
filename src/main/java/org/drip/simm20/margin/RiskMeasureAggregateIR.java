@@ -47,8 +47,8 @@ package org.drip.simm20.margin;
  */
 
 /**
- * RiskClassAggregateIR holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk Class. The
- *  References are:
+ * RiskMeasureAggregateIR holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk Measure.
+ *  The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,51 +69,78 @@ package org.drip.simm20.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassAggregateIR
+public class RiskMeasureAggregateIR
 {
-	private org.drip.simm20.margin.RiskMeasureAggregateIR _vegaMargin = null;
-	private org.drip.simm20.margin.RiskMeasureAggregateIR _deltaMargin = null;
+	private double _coreSBAVariance = java.lang.Double.NaN;
+	private double _residualSBAVariance = java.lang.Double.NaN;
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> _bucketAggregateMap =
+		null;
 
 	/**
-	 * RiskClassAggregateIR Constructor
+	 * RiskMeasureAggregateIR Constructor
 	 * 
-	 * @param deltaMargin The Delta Margin
-	 * @param vegaMargin The Vega Margin
+	 * @param bucketAggregateMap IR Bucket Aggregate Map
+	 * @param coreSBAVariance The Core SBA Variance
+	 * @param residualSBAVariance The Residual SBA Variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskClassAggregateIR (
-		final org.drip.simm20.margin.RiskMeasureAggregateIR deltaMargin,
-		final org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin)
+	public RiskMeasureAggregateIR (
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateMap,
+		final double coreSBAVariance,
+		final double residualSBAVariance)
 		throws java.lang.Exception
 	{
-		if (null == (_deltaMargin = deltaMargin) ||
-			null == (_vegaMargin = vegaMargin))
+		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
 		{
-			throw new java.lang.Exception ("RiskClassAggregateIR Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskMeasureAggregateIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Delta Margin
+	 * Retrieve the Core SBA Variance
 	 * 
-	 * @return The Delta Margin
+	 * @return The Core SBA Variance
 	 */
 
-	public org.drip.simm20.margin.RiskMeasureAggregateIR deltaMargin()
+	public double coreSBAVariance()
 	{
-		return _deltaMargin;
+		return _coreSBAVariance;
 	}
 
 	/**
-	 * Retrieve the Vega Margin
+	 * Retrieve the Residual SBA Variance
 	 * 
-	 * @return The Vega Margin
+	 * @return The Residual SBA Variance
 	 */
 
-	public org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin()
+	public double residualSBAVariance()
 	{
-		return _vegaMargin;
+		return _residualSBAVariance;
+	}
+
+	/**
+	 * Retrieve the Aggregate Bucket Map
+	 * 
+	 * @return The Aggregate Bucket Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateMap()
+	{
+		return _bucketAggregateMap;
+	}
+
+	/**
+	 * Retrieve the Total SBA
+	 * 
+	 * @return The Total SBA
+	 */
+
+	public double sba()
+	{
+		return _coreSBAVariance + _residualSBAVariance;
 	}
 }

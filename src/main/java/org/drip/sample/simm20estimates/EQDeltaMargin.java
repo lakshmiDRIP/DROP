@@ -8,10 +8,10 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.BucketAggregate;
-import org.drip.simm20.margin.RiskClassAggregate;
+import org.drip.simm20.margin.RiskMeasureAggregate;
 import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
-import org.drip.simm20.product.RiskClassSensitivity;
+import org.drip.simm20.product.RiskMeasureSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -394,7 +394,7 @@ public class EQDeltaMargin
 
 		System.out.println();
 
-		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate
+		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity (bucketSensitivityMap).aggregate
 			(riskMeasureSensitivitySettings);
 
 		System.out.println ("\t|-----------------------------------------------------||");
@@ -418,11 +418,11 @@ public class EQDeltaMargin
 		System.out.println ("\t|-----------------------------------------------------||");
 
 		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
-			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.coreDeltaSBAVariance()), 5, 0, 1.) +
+			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
-			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.residualDeltaSBAVariance()), 5, 0, 1.) +
+			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
 				" | " +
-			FormatUtil.FormatDouble (riskClassAggregate.deltaSBA(), 5, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
 		);
 
 		System.out.println ("\t|-----------------------------------------------------||");

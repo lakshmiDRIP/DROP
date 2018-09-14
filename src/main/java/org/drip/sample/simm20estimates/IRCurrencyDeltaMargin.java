@@ -9,10 +9,10 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.IRSensitivityAggregate;
-import org.drip.simm20.margin.RiskClassAggregateIR;
+import org.drip.simm20.margin.RiskMeasureAggregateIR;
 import org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
-import org.drip.simm20.product.RiskClassSensitivityIR;
+import org.drip.simm20.product.RiskMeasureSensitivityIR;
 import org.drip.simm20.product.RiskFactorTenorSensitivity;
 
 /*
@@ -231,8 +231,8 @@ public class IRCurrencyDeltaMargin
 		System.out.println();
 	}
 
-	private static final void DisplayRiskClassAggregate (
-		final RiskClassAggregateIR riskClassAggregateIR)
+	private static final void DisplayRiskMeasureAggregate (
+		final RiskMeasureAggregateIR riskMeasureAggregateIR)
 		throws Exception
 	{
 		System.out.println ("\t||--------------------------------------------||");
@@ -243,17 +243,17 @@ public class IRCurrencyDeltaMargin
 
 		System.out.println (
 			"\t|| Core Delta SBA Variance     => " +
-			FormatUtil.FormatDouble (riskClassAggregateIR.coreDeltaSBAVariance(), 10, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (riskMeasureAggregateIR.coreSBAVariance(), 10, 0, 1.) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Delta SBA Variance => " +
-			FormatUtil.FormatDouble (riskClassAggregateIR.residualDeltaSBAVariance(), 10, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (riskMeasureAggregateIR.residualSBAVariance(), 10, 0, 1.) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Delta SBA                   => " +
-			FormatUtil.FormatDouble (riskClassAggregateIR.deltaSBA(), 10, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (riskMeasureAggregateIR.sba(), 10, 0, 1.) + " ||"
 		);
 
 		System.out.println ("\t||--------------------------------------------||");
@@ -535,17 +535,17 @@ public class IRCurrencyDeltaMargin
 			bucketSensitivityIR
 		);
 
-		RiskClassSensitivityIR riskClassSensitivityIR = new RiskClassSensitivityIR (bucketSensitivityMap);
+		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR (bucketSensitivityMap);
 
-		RiskClassAggregateIR riskClassAggregateIR = riskClassSensitivityIR.aggregate
+		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.aggregate
 			(riskMeasureSensitivitySettingsIR);
 
 		DeltaMarginCovarianceEntry (
 			currency,
-			riskClassAggregateIR.deltaBucketAggregateMap().get (currency).irSensitivityAggregate()
+			riskMeasureAggregateIR.bucketAggregateMap().get (currency).irSensitivityAggregate()
 		);
 
-		DisplayRiskClassAggregate (riskClassAggregateIR);
+		DisplayRiskMeasureAggregate (riskMeasureAggregateIR);
 
 		EnvManager.TerminateEnv();
 	}
