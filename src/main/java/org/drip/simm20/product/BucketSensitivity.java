@@ -70,35 +70,36 @@ package org.drip.simm20.product;
 
 public class BucketSensitivity
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _riskFactorDeltaMap = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _riskFactorSensitivityMap = null;
 
 	/**
 	 * BucketSensitivity Constructor
 	 * 
-	 * @param riskFactorDeltaMap The Map of Risk Factor Deltas
+	 * @param riskFactorSensitivityMap The Map of Risk Factor Sensitivities
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketSensitivity (
-		final java.util.Map<java.lang.String, java.lang.Double> riskFactorDeltaMap)
+		final java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorDeltaMap = riskFactorDeltaMap) || 0 == _riskFactorDeltaMap.size())
+		if (null == (_riskFactorSensitivityMap = riskFactorSensitivityMap) ||
+			0 == _riskFactorSensitivityMap.size())
 		{
 			throw new java.lang.Exception ("BucketSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Map of Risk Factor Deltas
+	 * Retrieve the Map of Risk Factor Sensitivities
 	 * 
-	 * @return The Map of Risk Factor Deltas
+	 * @return The Map of Risk Factor Sensitivities
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> riskFactorDeltaMap()
+	public java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap()
 	{
-		return _riskFactorDeltaMap;
+		return _riskFactorSensitivityMap;
 	}
 
 	/**
@@ -122,7 +123,7 @@ public class BucketSensitivity
 
 		double memberCorrelation = bucketSensitivitySettings.memberCorrelation();
 
-		double bucketDeltaRiskWeight = bucketSensitivitySettings.riskWeight();
+		double bucketSensitivityRiskWeight = bucketSensitivitySettings.riskWeight();
 
 		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
 
@@ -130,25 +131,26 @@ public class BucketSensitivity
 			augmentedBucketSensitivityMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.margin.RiskFactorAggregate>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorDeltaMapEntry :
-			_riskFactorDeltaMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorSensitivityMapEntry :
+			_riskFactorSensitivityMap.entrySet())
 		{
-			double riskFactorDelta = riskFactorDeltaMapEntry.getValue();
+			double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();
 
 			double concentrationRiskFactor = java.lang.Math.max (
 				1.,
-				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorDelta) * concentrationNormalizer)
+				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorSensitivity) * concentrationNormalizer)
 			);
 
-			double riskFactorSensitivity = riskFactorDelta * bucketDeltaRiskWeight * concentrationRiskFactor;
+			double riskFactorSensitivityMargin = riskFactorSensitivity * bucketSensitivityRiskWeight *
+				concentrationRiskFactor;
 			cumulativeRiskFactorSensitivity = cumulativeRiskFactorSensitivity + riskFactorSensitivity;
 
 			try
 			{
 				augmentedBucketSensitivityMap.put (
-					riskFactorDeltaMapEntry.getKey(),
+					riskFactorSensitivityMapEntry.getKey(),
 					new org.drip.simm20.margin.RiskFactorAggregate (
-						riskFactorSensitivity,
+						riskFactorSensitivityMargin,
 						concentrationRiskFactor
 					)
 				);

@@ -160,25 +160,25 @@ public class IRDeltaMargin
 		final BucketSensitivityIR bucketSensitivityIR)
 		throws Exception
 	{
-		Map<String, Double> oisTenorSensitivity = bucketSensitivityIR.oisTenorDeltaSensitivity().deltaMap();
+		Map<String, Double> oisTenorSensitivity = bucketSensitivityIR.oisTenorSensitivity().sensitivityMap();
 
 		Map<String, Double> libor1MTenorSensitivity =
-			bucketSensitivityIR.libor1MTenorDeltaSensitivity().deltaMap();
+			bucketSensitivityIR.libor1MTenorSensitivity().sensitivityMap();
 
 		Map<String, Double> libor3MTenorSensitivity =
-			bucketSensitivityIR.libor3MTenorDeltaSensitivity().deltaMap();
+			bucketSensitivityIR.libor3MTenorSensitivity().sensitivityMap();
 
 		Map<String, Double> libor6MTenorSensitivity =
-			bucketSensitivityIR.libor6MTenorDeltaSensitivity().deltaMap();
+			bucketSensitivityIR.libor6MTenorSensitivity().sensitivityMap();
 
 		Map<String, Double> libor12MTenorSensitivity =
-			bucketSensitivityIR.libor12MTenorDeltaSensitivity().deltaMap();
+			bucketSensitivityIR.libor12MTenorSensitivity().sensitivityMap();
 
 		Map<String, Double> primeTenorSensitivity =
-			bucketSensitivityIR.primeTenorDeltaSensitivity().deltaMap();
+			bucketSensitivityIR.primeTenorSensitivity().sensitivityMap();
 
 		Map<String, Double> municipalTenorSensitivity =
-			bucketSensitivityIR.municipalTenorDeltaSensitivity().deltaMap();
+			bucketSensitivityIR.municipalTenorSensitivity().sensitivityMap();
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
 

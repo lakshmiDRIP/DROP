@@ -47,7 +47,7 @@ package org.drip.simm20.product;
  */
 
 /**
- * RiskClassSensitivity holds the Risk Class Bucket Sensitivities for a single Risk Class. The References
+ * RiskClassSensitivityIR holds the Risk Class Bucket Sensitivities for a single IR Class. The References
  *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -69,50 +69,50 @@ package org.drip.simm20.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassSensitivity
+public class RiskClassSensitivityIR
 {
-	private org.drip.simm20.product.RiskMeasureSensitivity _vega = null;
-	private org.drip.simm20.product.RiskMeasureSensitivity _delta = null;
+	private org.drip.simm20.product.RiskMeasureSensitivityIR _vega = null;
+	private org.drip.simm20.product.RiskMeasureSensitivityIR _delta = null;
 
 	/**
-	 * RiskClassSensitivity Constructor
+	 * RiskClassSensitivityIR Constructor
 	 * 
-	 * @param delta The Delta Risk Measure Sensitivity
-	 * @param vega The Vega Risk Measure Sensitivity
+	 * @param delta The IR Delta Tenor Sensitivity
+	 * @param vega The IR Vega Tenor Sensitivity
 	 * 
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskClassSensitivity (
-		final org.drip.simm20.product.RiskMeasureSensitivity delta,
-		final org.drip.simm20.product.RiskMeasureSensitivity vega)
+	public RiskClassSensitivityIR (
+		final org.drip.simm20.product.RiskMeasureSensitivityIR delta,
+		final org.drip.simm20.product.RiskMeasureSensitivityIR vega)
 		throws java.lang.Exception
 	{
-		if (null == (_delta = delta) &&
+		if (null == (_delta = delta) ||
 			null == (_vega = vega))
 		{
-			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassSensitivityIR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Delta Risk Measure Sensitivity
+	 * Retrieve the IR Delta Tenor Sensitivity
 	 * 
-	 * @return The Delta Risk Measure Sensitivity
+	 * @return The IR Delta Tenor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskMeasureSensitivity delta()
+	public org.drip.simm20.product.RiskMeasureSensitivityIR delta()
 	{
 		return _delta;
 	}
 
 	/**
-	 * Retrieve the Vega Risk Measure Sensitivity
+	 * Retrieve the IR Vega Tenor Sensitivity
 	 * 
-	 * @return The Vega Risk Measure Sensitivity
+	 * @return The IR Vega Tenor Sensitivity
 	 */
 
-	public org.drip.simm20.product.RiskMeasureSensitivity vega()
+	public org.drip.simm20.product.RiskMeasureSensitivityIR vega()
 	{
 		return _vega;
 	}

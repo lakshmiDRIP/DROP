@@ -71,7 +71,7 @@ package org.drip.simm20.product;
 
 public class RiskFactorTenorSensitivity
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _deltaMap = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _sensitivityMap = null;
 
 	/**
 	 * Construct the Standard Rates ISDA Bucket Sensitivity
@@ -81,12 +81,12 @@ public class RiskFactorTenorSensitivity
 
 	public static final RiskFactorTenorSensitivity IR()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> deltaMap = new
+		java.util.Map<java.lang.String, java.lang.Double> sensitivityMap = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
 		for (java.lang.String tenor : org.drip.simm20.rates.IRSettingsContainer.TenorSet())
 		{
-			deltaMap.put (
+			sensitivityMap.put (
 				tenor,
 				0.
 			);
@@ -94,7 +94,7 @@ public class RiskFactorTenorSensitivity
 
 		try
 		{
-			return new RiskFactorTenorSensitivity (deltaMap);
+			return new RiskFactorTenorSensitivity (sensitivityMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -112,12 +112,12 @@ public class RiskFactorTenorSensitivity
 
 	public static final RiskFactorTenorSensitivity CRQ()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> deltaMap = new
+		java.util.Map<java.lang.String, java.lang.Double> sensitivityMap = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
 		for (java.lang.String tenor : org.drip.simm20.credit.CRQSettingsContainer.TenorSet())
 		{
-			deltaMap.put (
+			sensitivityMap.put (
 				tenor,
 				0.
 			);
@@ -125,7 +125,7 @@ public class RiskFactorTenorSensitivity
 
 		try
 		{
-			return new RiskFactorTenorSensitivity (deltaMap);
+			return new RiskFactorTenorSensitivity (sensitivityMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -143,12 +143,12 @@ public class RiskFactorTenorSensitivity
 
 	public static final RiskFactorTenorSensitivity CRNQ()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> deltaMap = new
+		java.util.Map<java.lang.String, java.lang.Double> sensitivityMap = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
 		for (java.lang.String tenor : org.drip.simm20.credit.CRNQSettingsContainer.TenorSet())
 		{
-			deltaMap.put (
+			sensitivityMap.put (
 				tenor,
 				0.
 			);
@@ -156,7 +156,7 @@ public class RiskFactorTenorSensitivity
 
 		try
 		{
-			return new RiskFactorTenorSensitivity (deltaMap);
+			return new RiskFactorTenorSensitivity (sensitivityMap);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -169,16 +169,16 @@ public class RiskFactorTenorSensitivity
 	/**
 	 * RiskFactorTenorSensitivity Constructor
 	 * 
-	 * @param deltaMap The Tenor Delta Map
+	 * @param sensitivityMap The Tenor Sensitivity Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskFactorTenorSensitivity (
-		java.util.Map<java.lang.String, java.lang.Double> deltaMap)
+		java.util.Map<java.lang.String, java.lang.Double> sensitivityMap)
 		throws java.lang.Exception
 	{
-		if (null == (_deltaMap = deltaMap) || 0 == _deltaMap.size())
+		if (null == (_sensitivityMap = sensitivityMap) || 0 == _sensitivityMap.size())
 		{
 			throw new java.lang.Exception ("RiskFactorTenorSensitivity Constructor => Invalid Inputs");
 		}
@@ -192,134 +192,135 @@ public class RiskFactorTenorSensitivity
 
 	public java.util.Set<java.lang.String> tenorSet()
 	{
-		return _deltaMap.keySet();
+		return _sensitivityMap.keySet();
 	}
 
 	/**
-	 * Add the Tenor Delta
+	 * Add the Tenor Sensitivity
 	 * 
 	 * @param tenor The Tenor
-	 * @param delta Delta for the given Tenor
+	 * @param sensitivity Sensitivity for the given Tenor
 	 * 
-	 * @return TRUE - The Tenor Delta successfully set
+	 * @return TRUE - The Tenor Sensitivity successfully set
 	 */
 
 	public boolean addTenorDelta (
 		final java.lang.String tenor,
-		final double delta)
+		final double sensitivity)
 	{
-		if (null == tenor || !org.drip.quant.common.NumberUtil.IsValid (delta))
+		if (null == tenor || !org.drip.quant.common.NumberUtil.IsValid (sensitivity))
 		{
 			return false;
 		}
 
-		_deltaMap.put (
+		_sensitivityMap.put (
 			tenor,
-			delta
+			sensitivity
 		);
 
 		return true;
 	}
 
 	/**
-	 * Indicate of the Delta exists for the specified Tenor
+	 * Indicate of the Sensitivity exists for the specified Tenor
 	 * 
 	 * @param tenor The Tenor
 	 * 
-	 * @return TRUE - Delta exists for the specified Tenor
+	 * @return TRUE - Sensitivity exists for the specified Tenor
 	 */
 
 	public boolean tenorExists (
 		final java.lang.String tenor)
 	{
-		return null != tenor && _deltaMap.containsKey (tenor);
+		return null != tenor && _sensitivityMap.containsKey (tenor);
 	}
 
 	/**
-	 * Retrieve the Delta for the Bucket Tenor
+	 * Retrieve the Sensitivity for the Bucket Tenor
 	 * 
 	 * @param tenor The Tenor
 	 * 
-	 * @return The Delta corresponding to the Tenor
+	 * @return The Sensitivity corresponding to the Tenor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public double delta (
+	public double sensitivity (
 		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
 		if (!tenorExists (tenor))
 		{
-			throw new java.lang.Exception ("RiskFactorTenorSensitivity::delta => Invalid Inputs");
+			throw new java.lang.Exception ("RiskFactorTenorSensitivity::sensitivity => Invalid Inputs");
 		}
 
-		return _deltaMap.get (tenor);
+		return _sensitivityMap.get (tenor);
 	}
 
 	/**
-	 * Retrieve the Map of Tenor Deltas
+	 * Retrieve the Map of Tenor Sensitivities
 	 * 
-	 * @return The Map of Tenor Deltas
+	 * @return The Map of Tenor Sensitivities
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> deltaMap()
+	public java.util.Map<java.lang.String, java.lang.Double> sensitivityMap()
 	{
-		return _deltaMap;
+		return _sensitivityMap;
 	}
 
 	/**
-	 * Generate the Cumulative Tenor Delta Sensitivity
+	 * Generate the Cumulative Tenor Sensitivity
 	 * 
-	 * @return The Cumulative Tenor Delta Sensitivity
+	 * @return The Cumulative Tenor Sensitivity
 	 */
 
-	public double cumulativeDelta()
+	public double cumulative()
 	{
-		double cumulativeDelta = 0.;
+		double cumulative = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> deltaEntry : _deltaMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> sensitivityEntry : _sensitivityMap.entrySet())
 		{
-			cumulativeDelta = cumulativeDelta + deltaEntry.getValue();
+			cumulative = cumulative + sensitivityEntry.getValue();
 		}
 
-		return cumulativeDelta;
+		return cumulative;
 	}
 
 	/**
-	 * Generate the Tenor Delta Sensitivity Margin Map
+	 * Generate the Tenor Sensitivity Margin Map
 	 * 
-	 * @param deltaRiskWeightMap The Tenor Delta Risk Weight Map
+	 * @param sensitivityRiskWeightMap The Tenor Sensitivity Risk Weight Map
 	 * 
-	 * @return The Tenor Delta Sensitivity Margin Map
+	 * @return The Tenor Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> deltaSensitivityMargin (
-		final java.util.Map<java.lang.String, java.lang.Double> deltaRiskWeightMap)
+	public java.util.Map<java.lang.String, java.lang.Double> sensitivityMargin (
+		final java.util.Map<java.lang.String, java.lang.Double> sensitivityRiskWeightMap)
 	{
-		if (null == deltaRiskWeightMap || 0 == deltaRiskWeightMap.size())
+		if (null == sensitivityRiskWeightMap || 0 == sensitivityRiskWeightMap.size())
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> deltaSensitivityMargin = new
+		java.util.Map<java.lang.String, java.lang.Double> sensitivityMargin = new
 			java.util.HashMap<java.lang.String, java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> deltaEntry : _deltaMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> sensitivityEntry :
+			_sensitivityMap.entrySet())
 		{
-			java.lang.String tenor = deltaEntry.getKey();
+			java.lang.String tenor = sensitivityEntry.getKey();
 
-			if (!deltaRiskWeightMap.containsKey (tenor))
+			if (!sensitivityRiskWeightMap.containsKey (tenor))
 			{
 				return null;
 			}
 
-			deltaSensitivityMargin.put (
+			sensitivityMargin.put (
 				tenor,
-				deltaEntry.getValue() * deltaRiskWeightMap.get (tenor)
+				sensitivityEntry.getValue() * sensitivityRiskWeightMap.get (tenor)
 			);
 		}
 
-		return deltaSensitivityMargin;
+		return sensitivityMargin;
 	}
 }
