@@ -60,8 +60,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * FXDeltaMargin demonstrates the Construction of a Portfolio of FX Sensitivities and their eventual SIMM
- * 	Initial Margin Computation. The References are:
+ * FXDeltaMargin demonstrates the Construction of a Portfolio of FX Delta Sensitivities and their eventual
+ *  SIMM Initial Margin Computation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -276,9 +276,9 @@ public class FXDeltaMargin
 
 		System.out.println ("\t|                                                  ||");
 
-		System.out.println ("\t|            - Core Delta SBA Delta                ||");
+		System.out.println ("\t|            - Core Delta SBA Margin               ||");
 
-		System.out.println ("\t|            - Residual Delta SBA Delta            ||");
+		System.out.println ("\t|            - Residual Delta SBA Margin           ||");
 
 		System.out.println ("\t|            - SBA Delta Margin                    ||");
 

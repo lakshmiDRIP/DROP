@@ -409,9 +409,9 @@ public class EQDeltaMargin
 
 		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|            - Core Delta SBA Delta                   ||");
+		System.out.println ("\t|            - Core Delta SBA Margin                  ||");
 
-		System.out.println ("\t|            - Residual Delta SBA Delta               ||");
+		System.out.println ("\t|            - Residual Delta SBA Margin              ||");
 
 		System.out.println ("\t|            - SBA Delta Margin                       ||");
 

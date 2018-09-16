@@ -59,8 +59,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * EQVegaMargin illustrates the Computation of the EQ Vega Margin for across a Group of Equity Bucket
- *  Exposure Sensitivities. The References are:
+ * FXVegaMargin demonstrates the Construction of a Portfolio of FX Vega Sensitivities and their eventual SIMM
+ * 	Initial Margin Computation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -81,27 +81,27 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EQVegaMargin
+public class FXVegaMargin
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
-		final int bucketIndex,
+		final String bucketKey,
 		final double notional,
-		final String[] equityArray)
+		final String[] fxPairArray)
 	{
 		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		for (String equity : equityArray)
+		for (String fxPair : fxPairArray)
 		{
 			riskFactorSensitivityMap.put (
-				equity,
+				fxPair,
 				notional * (Math.random() - 0.5)
 			);
 		}
 
 		bucketRiskFactorSensitivityMap.put (
-			"" + bucketIndex,
+			bucketKey,
 			riskFactorSensitivityMap
 		);
 	}
@@ -115,170 +115,118 @@ public class EQVegaMargin
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			-1,
+			"1__1",
 			notional,
 			new String[]
 			{
-				"BOEING  ",
-				"LOCKHEED",
-				"RAND    ",
-				"RAYTHEON",
+				"USD_EUR",
+				"USD_JPY",
+				"USD_GBP",
+				"USD_AUD",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			1,
+			"1__2",
 			notional,
 			new String[]
 			{
-				"ADP     ",
-				"PSEANDG ",
-				"STAPLES ",
-				"U-HAUL  ",
+				"USD_BRL",
+				"USD_CNY",
+				"USD_HKD",
+				"USD_INR",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			2,
+			"2__1",
 			notional,
 			new String[]
 			{
-				"CISCO   ",
-				"DEERE   ",
-				"HALIBTN ",
-				"VERIZON ",
+				"BRL_USD",
+				"CNY_USD",
+				"HKD_USD",
+				"INR_USD",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			3,
+			"2__2",
 			notional,
 			new String[]
 			{
-				"DUKE    ",
-				"MONSANTO",
-				"MMM     ",
-				"VEDANTA ",
+				"BRL_CNY",
+				"BRL_KDD",
+				"BRL_INR",
+				"BRL_KRW",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			4,
+			"1__3",
 			notional,
 			new String[]
 			{
-				"AMAZON  ",
-				"GOLDMAN ",
-				"MORGAN  ",
-				"REMAX   ",
+				"USD_IDR",
+				"USD_PKR",
+				"USD_SRL",
+				"USD_BNT",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			5,
+			"2__3",
 			notional,
 			new String[]
 			{
-				"ALDI    ",
-				"INFOSYS ",
-				"OLLA    ",
-				"RELIANCE",
+				"BRL_IDR",
+				"BRL_PKR",
+				"BRL_SRL",
+				"BRL_BNT",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			6,
+			"3__1",
 			notional,
 			new String[]
 			{
-				"GCC     ",
-				"NOKIA   ",
-				"SIEMENS ",
-				"VODAFONE",
+				"IDR_USD",
+				"PKR_USD",
+				"SRL_USD",
+				"BNT_USD",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			7,
+			"3__2",
 			notional,
 			new String[]
 			{
-				"ADIDAS  ",
-				"BAYER   ",
-				"BILLERTN",
-				"DE BEER ",
+				"IDR_BRL",
+				"PKR_BRL",
+				"SRL_BRL",
+				"BNT_BRL",
 			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			8,
+			"3__3",
 			notional,
 			new String[]
 			{
-				"NOKIA   ",
-				"NOMURA  ",
-				"QATARSOV",
-				"SOTHEBY ",
-			}
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			9,
-			notional,
-			new String[]
-			{
-				"AUTODESK",
-				"CALYPSO ",
-				"NUMERIX ",
-				"WEBLOGIC",
-			}
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			10,
-			notional,
-			new String[]
-			{
-				"COGNIZAN",
-				"TATAMOTO",
-				"TOBLERON",
-				"TVS     ",
-			}
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			11,
-			notional,
-			new String[]
-			{
-				"DJIA    ",
-				"LEHMAN  ",
-				"RUSSELL ",
-				"SANDP   ",
-			}
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			12,
-			notional,
-			new String[]
-			{
-				"CBOE    ",
-				"CITI    ",
-				"RUSSELL ",
-				"VIX     ",
+				"IDR_PKR",
+				"PKR_SRL",
+				"SRL_IDR",
+				"BNT_SRL",
 			}
 		);
 
@@ -308,7 +256,7 @@ public class EQVegaMargin
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			String bucketIndex = bucketSensitivityMapEntry.getKey();
+			String bucketKey = bucketSensitivityMapEntry.getKey();
 
 			Map<String, Double> riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();
 
@@ -322,7 +270,7 @@ public class EQVegaMargin
 				System.out.println (
 					"\t| " +
 					currency + " => " +
-					FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " | " +
+					bucketKey + " | " +
 					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + " ||"
 				);
 			}
@@ -342,7 +290,7 @@ public class EQVegaMargin
 		double notional = 100.;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_EQ_VEGA();
+			RiskMeasureSensitivitySettings.ISDA_FX_VEGA();
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
@@ -370,23 +318,23 @@ public class EQVegaMargin
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			String bucketIndex = bucketSensitivityMapEntry.getKey();
+			String bucketKey = bucketSensitivityMapEntry.getKey();
 
 			BucketSensitivity bucketSensitivity = new BucketSensitivity
 				(bucketSensitivityMapEntry.getValue());
 
 			bucketSensitivityMap.put (
-				"" + bucketIndex,
+				bucketKey,
 				bucketSensitivity
 			);
 
 			BucketAggregate bucketAggregate = bucketSensitivity.aggregate
-				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketIndex));
+				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketKey));
 
 			System.out.println ("\t| " +
-				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
+				bucketKey + " => " +
 				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + " ||"
 			);
 		}
 

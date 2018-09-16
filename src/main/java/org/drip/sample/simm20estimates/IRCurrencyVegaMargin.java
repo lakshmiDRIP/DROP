@@ -1,18 +1,19 @@
 
 package org.drip.sample.simm20estimates;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.BucketAggregateIR;
 import org.drip.simm20.margin.IRSensitivityAggregate;
 import org.drip.simm20.margin.RiskMeasureAggregateIR;
-import org.drip.simm20.parameters.BucketSensitivitySettingsIR;
-import org.drip.simm20.parameters.BucketVegaSettingsIR;
+import org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
 import org.drip.simm20.product.RiskFactorTenorSensitivity;
+import org.drip.simm20.product.RiskMeasureSensitivityIR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -60,8 +61,8 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
  */
 
 /**
- * IRCurrencyVegaMarginFlow illustrates the Steps in the Computation of the IR Vega Margin for a Currency
- *  Bucket's IR Exposure Sensitivities. The References are:
+ * IRCurrencyVegaMargin illustrates the Computation of the IR Vega Margin for a Currency Bucket's IR Exposure
+ *  Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -82,7 +83,7 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRCurrencyVegaMarginFlow
+public class IRCurrencyVegaMargin
 {
 
 	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
@@ -155,6 +156,7 @@ public class IRCurrencyVegaMarginFlow
 	}
 
 	private static final void DisplayBucketSensitivityIR (
+		final String currency,
 		final BucketSensitivityIR bucketSensitivityIR)
 		throws Exception
 	{
@@ -180,7 +182,7 @@ public class IRCurrencyVegaMarginFlow
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                             INTEREST CURVE TENOR SENSITIVITY                            ||");
+		System.out.println ("\t||                            " + currency + " INTEREST CURVE TENOR SENSITIVITY                         ||");
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------------||");
 
@@ -229,7 +231,38 @@ public class IRCurrencyVegaMarginFlow
 		System.out.println();
 	}
 
+	private static final void DisplayRiskMeasureAggregate (
+		final RiskMeasureAggregateIR riskMeasureAggregateIR)
+		throws Exception
+	{
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println ("\t||   IR RISK CLASS AGGREGATE MARGIN METRICS   ||");
+
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println (
+			"\t|| Core Vega SBA Variance      => " +
+			FormatUtil.FormatDouble (riskMeasureAggregateIR.coreSBAVariance(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Residual Vega SBA Variance  => " +
+			FormatUtil.FormatDouble (riskMeasureAggregateIR.residualSBAVariance(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Vega SBA                    => " +
+			FormatUtil.FormatDouble (riskMeasureAggregateIR.sba(), 10, 0, 1.) + " ||"
+		);
+
+		System.out.println ("\t||--------------------------------------------||");
+
+		System.out.println();
+	}
+
 	private static final void VegaMarginCovarianceEntry (
+		final String currency,
 		final IRSensitivityAggregate irSensitivityAggregate)
 		throws Exception
 	{
@@ -291,7 +324,7 @@ public class IRCurrencyVegaMarginFlow
 
 		System.out.println ("\t||-------------------------------------||");
 
-		System.out.println ("\t||  IR RISK FACTOR MARGIN COVARIANCE   ||");
+		System.out.println ("\t||  " + currency + " RISK FACTOR MARGIN COVARIANCE  ||");
 
 		System.out.println ("\t||-------------------------------------||");
 
@@ -464,36 +497,6 @@ public class IRCurrencyVegaMarginFlow
 		System.out.println();
 	}
 
-	private static final void DisplayRiskMeasureAggregate (
-		final RiskMeasureAggregateIR riskMeasureAggregateIR)
-		throws Exception
-	{
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println ("\t||   IR RISK CLASS AGGREGATE MARGIN METRICS   ||");
-
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println (
-			"\t|| Core Vega SBA Variance      => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateIR.coreSBAVariance(), 10, 0, 1.) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Vega SBA Variance  => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateIR.residualSBAVariance(), 10, 0, 1.) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Vega SBA                    => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateIR.sba(), 10, 0, 1.) + " ||"
-		);
-
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println();
-	}
-
 	public static final void main (
 		final String[] inputArray)
 		throws Exception
@@ -503,7 +506,12 @@ public class IRCurrencyVegaMarginFlow
 		double notional = 100.;
 		String currency = "USD";
 
-		BucketSensitivitySettingsIR bucketSensitivitySettingsIR = BucketVegaSettingsIR.ISDA_VEGA (currency);
+		List<String> currencyList = new ArrayList<String>();
+
+		currencyList.add (currency);
+
+		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =
+			RiskMeasureSensitivitySettingsIR.ISDA_VEGA (currencyList);
 
 		BucketSensitivityIR bucketSensitivityIR = new BucketSensitivityIR (
 			CurveTenorSensitivityMap (notional),
@@ -515,26 +523,26 @@ public class IRCurrencyVegaMarginFlow
 			CurveTenorSensitivityMap (notional)
 		);
 
-		DisplayBucketSensitivityIR (bucketSensitivityIR);
-
-		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);
-
-		IRSensitivityAggregate irVegaAggregate = bucketAggregateIR.riskFactorAggregateIR().margin
-			(bucketSensitivitySettingsIR);
-
-		VegaMarginCovarianceEntry (irVegaAggregate);
-
-		Map<String, BucketAggregateIR> bucketAggregateIRMap = new HashMap<String, BucketAggregateIR>();
-
-		bucketAggregateIRMap.put (
+		DisplayBucketSensitivityIR (
 			currency,
-			bucketAggregateIR
+			bucketSensitivityIR
 		);
 
-		RiskMeasureAggregateIR riskMeasureAggregateIR = new RiskMeasureAggregateIR (
-			bucketAggregateIRMap,
-			irVegaAggregate.cumulativeMarginCovariance(),
-			0.
+		Map<String, BucketSensitivityIR> bucketSensitivityMap = new HashMap<String, BucketSensitivityIR>();
+
+		bucketSensitivityMap.put (
+			currency,
+			bucketSensitivityIR
+		);
+
+		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR (bucketSensitivityMap);
+
+		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.aggregate
+			(riskMeasureSensitivitySettingsIR);
+
+		VegaMarginCovarianceEntry (
+			currency,
+			riskMeasureAggregateIR.bucketAggregateMap().get (currency).irSensitivityAggregate()
 		);
 
 		DisplayRiskMeasureAggregate (riskMeasureAggregateIR);

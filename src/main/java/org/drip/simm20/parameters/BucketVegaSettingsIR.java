@@ -72,6 +72,7 @@ package org.drip.simm20.parameters;
 public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensitivitySettingsIR
 {
 	private double _vegaScaler = java.lang.Double.NaN;
+	private double _historicalVolatilityRatio = java.lang.Double.NaN;
 	private java.util.Map<java.lang.String, java.lang.Double> _oisTenorDeltaRiskWeight = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _primeTenorDeltaRiskWeight = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _libor1MTenorDeltaRiskWeight = null;
@@ -161,6 +162,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 					irThreshold.deltaVega().vega(),
 					java.lang.Math.sqrt (365. / 14.) /
 						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+					1.,
 					bucketSensitivitySettingsIR.oisTenorRiskWeight(),
 					bucketSensitivitySettingsIR.libor1MTenorRiskWeight(),
 					bucketSensitivitySettingsIR.libor3MTenorRiskWeight(),
@@ -192,6 +194,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 	 * @param crossCurveCorrelation Cross Curve Correlation
 	 * @param concentrationThreshold The Concentration Threshold
 	 * @param vegaScaler The Vega Scaler
+	 * @param historicalVolatilityRatio The Historical Volatility Ratio
 	 * @param oisTenorDeltaRiskWeight The OIS Tenor Delta Risk Weight
 	 * @param libor1MTenorDeltaRiskWeight The LIBOR 1M Tenor Delta Risk Weight
 	 * @param libor3MTenorDeltaRiskWeight The LIBOR 3M Tenor Delta Risk Weight
@@ -215,6 +218,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 		final double crossCurveCorrelation,
 		final double concentrationThreshold,
 		final double vegaScaler,
+		final double historicalVolatilityRatio,
 		final java.util.Map<java.lang.String, java.lang.Double> oisTenorDeltaRiskWeight,
 		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorDeltaRiskWeight,
 		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaRiskWeight,
@@ -238,6 +242,8 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 		);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_vegaScaler = vegaScaler) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =
+				historicalVolatilityRatio) ||
 			null == (_oisTenorDeltaRiskWeight = oisTenorDeltaRiskWeight) ||
 			null == (_libor1MTenorDeltaRiskWeight = libor1MTenorDeltaRiskWeight) ||
 			null == (_libor3MTenorDeltaRiskWeight = libor3MTenorDeltaRiskWeight) ||
@@ -259,6 +265,17 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 	public double vegaScaler()
 	{
 		return _vegaScaler;
+	}
+
+	/**
+	 * Retrieve the Historical Volatility Ratio
+	 * 
+	 * @return The Historical Volatility Ratio
+	 */
+
+	public double historicalVolatilityRatio()
+	{
+		return _historicalVolatilityRatio;
 	}
 
 	/**
@@ -434,7 +451,8 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 
 			oisTenorRiskWeight.put (
 				tenor,
-				oisTenorVegaRiskWeightEntry.getValue() * _oisTenorDeltaRiskWeight.get (tenor) * _vegaScaler
+				oisTenorVegaRiskWeightEntry.getValue() * _oisTenorDeltaRiskWeight.get (tenor) * _vegaScaler *
+					_historicalVolatilityRatio
 			);
 		}
 
@@ -462,7 +480,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 			libor1MTenorRiskWeight.put (
 				tenor,
 				libor1MTenorVegaRiskWeightEntry.getValue() * _libor1MTenorDeltaRiskWeight.get (tenor) *
-					_vegaScaler
+					_vegaScaler * _historicalVolatilityRatio
 			);
 		}
 
@@ -490,7 +508,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 			libor3MTenorRiskWeight.put (
 				tenor,
 				libor3MTenorVegaRiskWeightEntry.getValue() * _libor3MTenorDeltaRiskWeight.get (tenor) *
-					_vegaScaler
+					_vegaScaler * _historicalVolatilityRatio
 			);
 		}
 
@@ -518,7 +536,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 			libor6MTenorRiskWeight.put (
 				tenor,
 				libor6MTenorVegaRiskWeightEntry.getValue() * _libor6MTenorDeltaRiskWeight.get (tenor) *
-					_vegaScaler
+					_vegaScaler *_historicalVolatilityRatio
 			);
 		}
 
@@ -546,7 +564,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 			libor12MTenorRiskWeight.put (
 				tenor,
 				libor12MTenorVegaRiskWeightEntry.getValue() * _libor12MTenorDeltaRiskWeight.get (tenor) *
-					_vegaScaler
+					_vegaScaler *_historicalVolatilityRatio
 			);
 		}
 
@@ -574,7 +592,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 			primeTenorRiskWeight.put (
 				tenor,
 				primeTenorVegaRiskWeightEntry.getValue() * _primeTenorDeltaRiskWeight.get (tenor) *
-					_vegaScaler
+					_vegaScaler *_historicalVolatilityRatio
 			);
 		}
 
@@ -602,7 +620,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 			municipalTenorRiskWeight.put (
 				tenor,
 				municipalTenorVegaRiskWeightEntry.getValue() * _municipalTenorDeltaRiskWeight.get (tenor) *
-					_vegaScaler
+					_vegaScaler *_historicalVolatilityRatio
 			);
 		}
 

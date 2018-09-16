@@ -196,7 +196,7 @@ public class FXRiskThresholdContainer
 			);
 
 			s_CategoryVega.put (
-				"13__2",
+				"3__2",
 				110.
 			);
 
