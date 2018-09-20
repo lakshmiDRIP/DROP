@@ -75,6 +75,113 @@ public class BucketSensitivitySettings extends org.drip.simm20.parameters.Liquid
 	private double _memberCorrelation = java.lang.Double.NaN;
 
 	/**
+	 * Construct the BucketSensitivitySettings Instance for the specified Bucket Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The BucketSensitivitySettings Instance
+	 */
+
+	public static BucketSensitivitySettings ISDA_EQ (
+		final int bucketIndex)
+	{
+		org.drip.simm20.equity.EQBucket equityBucket =
+			org.drip.simm20.equity.EQSettingsContainer.BucketMap().get (bucketIndex);
+
+		if (null == equityBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new BucketSensitivitySettings (
+				equityBucket.deltaRiskWeight(),
+				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap().get
+					(bucketIndex).delta(),
+				equityBucket.memberCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the ISDA Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The ISDA Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 */
+
+	public static BucketSensitivitySettings ISDA_CT (
+		final int bucketIndex)
+	{
+		org.drip.simm20.commodity.CTBucket commodityBucket =
+			org.drip.simm20.commodity.CTSettingsContainer.BucketMap().get (bucketIndex);
+
+		if (null == commodityBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new BucketSensitivitySettings (
+				commodityBucket.deltaRiskWeight(),
+				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap().get
+					(bucketIndex).delta(),
+				commodityBucket.memberCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA Instance of FX Delta Settings
+	 * 
+	 * @param categoryIndex The Category Index
+	 * 
+	 * @return The Standard ISDA Instance of FX Delta Settings
+	 */
+
+	public static BucketSensitivitySettings ISDA_FX (
+		final int categoryIndex)
+	{
+		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
+			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryDeltaMap();
+
+		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.simm20.parameters.BucketSensitivitySettings (
+				org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryDeltaMap.get (categoryIndex),
+				org.drip.simm20.fx.FXSystemics.CORRELATION
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BucketSensitivitySettings Constructor
 	 * 
 	 * @param riskWeight The Risk Factor Weight

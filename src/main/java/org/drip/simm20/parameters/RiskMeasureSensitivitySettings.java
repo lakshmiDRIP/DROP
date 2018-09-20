@@ -87,28 +87,16 @@ public class RiskMeasureSensitivitySettings
 			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
 				org.drip.simm20.parameters.BucketSensitivitySettings>();
 
-		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
-			eqConcentrationThresholdMap =
-				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.equity.EQBucket> bucketMap =
-			org.drip.simm20.equity.EQSettingsContainer.BucketMap();
-
-		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm20.equity.EQSettingsContainer.BucketMap().keySet();
 
 		try
 		{
 			for (int bucketIndex : bucketKeySet)
 			{
-				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);
-
 				bucketDeltaSettingsMap.put (
 					"" + bucketIndex,
-					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						equityBucket.deltaRiskWeight(),
-						eqConcentrationThresholdMap.get (bucketIndex).delta(),
-						equityBucket.memberCorrelation()
-					)
+					org.drip.simm20.parameters.BucketSensitivitySettings.ISDA_EQ (bucketIndex)
 				);
 			}
 
@@ -137,31 +125,16 @@ public class RiskMeasureSensitivitySettings
 			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
 				org.drip.simm20.parameters.BucketSensitivitySettings>();
 
-		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
-			eqConcentrationThresholdMap =
-				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.equity.EQBucket> bucketMap =
-			org.drip.simm20.equity.EQSettingsContainer.BucketMap();
-
-		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm20.equity.EQSettingsContainer.BucketMap().keySet();
 
 		try
 		{
-			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /
-				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);
-
 			for (int bucketIndex : bucketKeySet)
 			{
-				org.drip.simm20.equity.EQBucket equityBucket = bucketMap.get (bucketIndex);
-
 				bucketVegaSettingsMap.put (
 					"" + bucketIndex,
-					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight() * vegaScaler,
-						eqConcentrationThresholdMap.get (bucketIndex).vega(),
-						equityBucket.memberCorrelation()
-					)
+					org.drip.simm20.parameters.BucketVegaSettings.ISDA_EQ (bucketIndex)
 				);
 			}
 
@@ -190,28 +163,16 @@ public class RiskMeasureSensitivitySettings
 			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
 				org.drip.simm20.parameters.BucketSensitivitySettings>();
 
-		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
-			ctConcentrationThresholdMap =
-				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();
-
-		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
-			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
-
-		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm20.commodity.CTSettingsContainer.BucketMap().keySet();
 
 		try
 		{
 			for (int bucketIndex : bucketKeySet)
 			{
-				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);
-
 				bucketDeltaSettingsMap.put (
 					"" + bucketIndex,
-					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						commodityBucket.deltaRiskWeight(),
-						ctConcentrationThresholdMap.get (bucketIndex).delta(),
-						commodityBucket.memberCorrelation()
-					)
+					org.drip.simm20.parameters.BucketSensitivitySettings.ISDA_CT (bucketIndex)
 				);
 			}
 
@@ -240,10 +201,6 @@ public class RiskMeasureSensitivitySettings
 			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
 				org.drip.simm20.parameters.BucketSensitivitySettings>();
 
-		java.util.Map<java.lang.Integer, org.drip.simm20.common.DeltaVegaThreshold>
-			ctConcentrationThresholdMap =
-				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap();
-
 		java.util.Map<java.lang.Integer, org.drip.simm20.commodity.CTBucket> bucketMap =
 			org.drip.simm20.commodity.CTSettingsContainer.BucketMap();
 
@@ -251,21 +208,11 @@ public class RiskMeasureSensitivitySettings
 
 		try
 		{
-			double vegaScaler = java.lang.Math.sqrt (365. / 14.) /
-				org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99);
-
 			for (int bucketIndex : bucketKeySet)
 			{
-				org.drip.simm20.commodity.CTBucket commodityBucket = bucketMap.get (bucketIndex);
-
 				bucketVegaSettingsMap.put (
 					"" + bucketIndex,
-					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT *
-							commodityBucket.deltaRiskWeight() * vegaScaler,
-						ctConcentrationThresholdMap.get (bucketIndex).vega(),
-						commodityBucket.memberCorrelation()
-					)
+					org.drip.simm20.parameters.BucketVegaSettings.ISDA_CT (bucketIndex)
 				);
 			}
 
@@ -315,11 +262,7 @@ public class RiskMeasureSensitivitySettings
 
 				bucketDeltaSettingsMap.put (
 					"" + deltaCategoryIndex,
-					new org.drip.simm20.parameters.BucketSensitivitySettings (
-						org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
-						fxConcentrationCategoryDeltaMap.get (deltaCategoryIndex),
-						org.drip.simm20.fx.FXSystemics.CORRELATION
-					)
+					org.drip.simm20.parameters.BucketSensitivitySettings.ISDA_CT (deltaCategoryIndex)
 				);
 
 				for (int categoryIndexInner : fxConcentrationCategoryDeltaKey)
@@ -383,11 +326,13 @@ public class RiskMeasureSensitivitySettings
 
 				bucketVegaSettingsMap.put (
 					vegaCategoryOuter,
-					new org.drip.simm20.parameters.BucketSensitivitySettings (
+					new org.drip.simm20.parameters.BucketVegaSettings (
 						org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT *
-							org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT * vegaScaler,
+							org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
 						fxConcentrationCategoryVegaMap.get (vegaCategoryOuter),
-						org.drip.simm20.fx.FXSystemics.CORRELATION
+						org.drip.simm20.fx.FXSystemics.CORRELATION,
+						vegaScaler,
+						org.drip.simm20.fx.FXSystemics.HISTORICAL_VOLATILITY_RATIO
 					)
 				);
 

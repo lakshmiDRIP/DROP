@@ -47,8 +47,8 @@ package org.drip.simm20.parameters;
  */
 
 /**
- * BucketVegaSettings holds the Settings that govern the Generation of the ISDA SIMM 2.0 Single Bucket Vega
- *  Sensitivities. The References are:
+ * BucketCurvatureSettings holds the ISDA SIMM 2.0 Curvature Settings for Interest Rates, Qualifying and
+ * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,160 +69,118 @@ package org.drip.simm20.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketVegaSettings extends org.drip.simm20.parameters.BucketSensitivitySettings
+public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVegaSettings
 {
-	private double _impliedVolatility = java.lang.Double.NaN;
-	private double _historicalVolatilityRatio = java.lang.Double.NaN;
+	private double _marginCovarianceScaleFactor = java.lang.Double.NaN;
+	private org.drip.function.definition.R1ToR1 _tenorScalingFunction = null;
 
 	/**
-	 * Retrieve the ISDA Equity Vega Settings
-	 * 
-	 * @param bucketIndex The Bucket Index
-	 * 
-	 * @return The ISDA Equity Vega Settings
-	 */
-
-	public static BucketVegaSettings ISDA_EQ (
-		final int bucketIndex)
-	{
-		org.drip.simm20.equity.EQBucket equityBucket =
-			org.drip.simm20.equity.EQSettingsContainer.BucketMap().get (bucketIndex);
-
-		if (null == equityBucket)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new BucketVegaSettings (
-				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
-				org.drip.simm20.equity.EQRiskThresholdContainer.DeltaVegaThresholdMap().get
-					(bucketIndex).vega(),
-				equityBucket.memberCorrelation(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-				org.drip.simm20.equity.EQSystemics.HISTORICAL_VOLATILITY_RATIO
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the Standard ISDA Commodity Vega Settings for the specified Bucket
-	 * 
-	 * @param bucketIndex The Bucket Index
-	 * 
-	 * @return The Standard ISDA Commodity Vega Settings for the specified Bucket
-	 */
-
-	public static BucketVegaSettings ISDA_CT (
-		final int bucketIndex)
-	{
-		org.drip.simm20.commodity.CTBucket commodityBucket =
-			org.drip.simm20.commodity.CTSettingsContainer.BucketMap().get (bucketIndex);
-
-		if (null == commodityBucket)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new org.drip.simm20.parameters.BucketVegaSettings (
-				org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT *
-					commodityBucket.deltaRiskWeight(),
-				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap().get
-					(bucketIndex).vega(),
-				commodityBucket.memberCorrelation(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-				org.drip.simm20.commodity.CTSystemics.HISTORICAL_VOLATILITY_RATIO
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * BucketVegaSettings Constructor
+	 * Construct the ISDA Standard BucketCurvatureSettings
 	 * 
 	 * @param riskWeight The Vega Risk Weight
-	 * @param concentrationFactor The Concentration Factor
 	 * @param memberCorrelation The Member Correlation
 	 * @param impliedVolatility The Implied Volatility
-	 * @param historicalVolatilityRatio The Historical Volatility Ratio
+	 * 
+	 * @return The ISDA Standard BucketCurvatureSettings
+	 */
+
+	public static final BucketCurvatureSettings ISDA (
+		final double riskWeight,
+		final double memberCorrelation,
+		final double impliedVolatility)
+	{
+		try
+		{
+			double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.995);
+
+			return new BucketCurvatureSettings (
+				riskWeight,
+				memberCorrelation,
+				impliedVolatility,
+				tailVariate * tailVariate - 1.,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+						throws java.lang.Exception
+					{
+						if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. >= x)
+						{
+							throw new java.lang.Exception
+								("BucketCurvatureSettings::tenorScalingFunction::evaluate => Invalid Inputs");
+						}
+
+						return 0.5 * java.lang.Math.max (
+							1.,
+							14. / x
+						);
+					}
+				}
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * BucketCurvatureSettings Constructor
+	 * 
+	 * @param riskWeight The Vega Risk Weight
+	 * @param memberCorrelation The Member Correlation
+	 * @param impliedVolatility The Implied Volatility
+	 * @param marginCovarianceScaleFactor Margin Covariance Scaling Factor
+	 * @param tenorScalingFunction Tenor Scaling Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BucketVegaSettings (
+	public BucketCurvatureSettings (
 		final double riskWeight,
-		final double concentrationFactor,
 		final double memberCorrelation,
 		final double impliedVolatility,
-		final double historicalVolatilityRatio)
+		final double marginCovarianceScaleFactor,
+		final org.drip.function.definition.R1ToR1 tenorScalingFunction)
 		throws java.lang.Exception
 	{
 		super (
 			riskWeight,
-			concentrationFactor,
-			memberCorrelation
+			1.,
+			memberCorrelation,
+			impliedVolatility,
+			1.
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||
-				0. > _impliedVolatility ||
-			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =
-				historicalVolatilityRatio) || 0. > _historicalVolatilityRatio)
+		if (!org.drip.quant.common.NumberUtil.IsValid (_marginCovarianceScaleFactor =
+			marginCovarianceScaleFactor) ||
+			null == (_tenorScalingFunction = tenorScalingFunction))
 		{
-			throw new java.lang.Exception ("BucketVegaSettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketCurvatureSettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Implied Volatility
+	 * Retrieve the Tenor Scaling Function
 	 * 
-	 * @return The Implied Volatility
+	 * @return The Tenor Scaling Function
 	 */
 
-	public double impliedVolatility()
+	public org.drip.function.definition.R1ToR1 tenorScalingFunction()
 	{
-		return _impliedVolatility;
+		return _tenorScalingFunction;
 	}
 
 	/**
-	 * Retrieve the Historical Volatility Ratio
+	 * Retrieve the Margin Covariance Scaling Factor
 	 * 
-	 * @return The Historical Volatility Ratio
+	 * @return The Margin Covariance Scaling Factor
 	 */
 
-	public double historicalVolatilityRatio()
+	public double marginCovarianceScaleFactor()
 	{
-		return _historicalVolatilityRatio;
-	}
-
-	/**
-	 * Retrieve the Raw Vega Risk Weight
-	 * 
-	 * @return The Raw Vega Risk Weight
-	 */
-
-	public double rawRiskWeight()
-	{
-		return super.riskWeight();
-	}
-
-	@Override public double riskWeight()
-	{
-		return super.riskWeight() * _impliedVolatility;
+		return _marginCovarianceScaleFactor;
 	}
 }
