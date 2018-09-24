@@ -333,7 +333,11 @@ public class CoreCashFlowMeasures {
 		double[] adblFactor = new double[] {1., 1.0, 1.0, 1.0, 1.0};
 		// double[] adblFactor = new double[] {1., 0.9, 0.8, 0.7, 0.6};
 
-		JulianDate dtEOSStart = DateUtil.Today().addDays (2);
+		JulianDate dtEOSStart = DateUtil.CreateFromYMD (
+			2018,
+			9,
+			11
+		).addDays (2);
 
 		for (int i = 0; i < 5; ++i)
 			aiDate[i] = dtEOSStart.addYears (i + 2).julian();
@@ -357,7 +361,11 @@ public class CoreCashFlowMeasures {
 		double[] adblFactor = new double[] {1., 1.0, 1.0, 1.0, 1.0};
 		// double[] adblFactor = new double[] {1., 0.9, 0.8, 0.7, 0.6};
 
-		JulianDate dtEOSStart = DateUtil.Today().addDays (2);
+		JulianDate dtEOSStart = DateUtil.CreateFromYMD (
+			2018,
+			9,
+			11
+		).addDays (2);
 
 		for (int i = 0; i < 5; ++i)
 			aiDate[i] = dtEOSStart.addYears (i + 2).julian();
@@ -473,7 +481,11 @@ public class CoreCashFlowMeasures {
 			EmbeddedOptionSchedule eosPut = null;
 			EmbeddedOptionSchedule eosCall = null;
 
-			JulianDate dtEOSStart = DateUtil.Today().addDays (2);
+			JulianDate dtEOSStart = DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			).addDays (2);
 
 			for (int i = 0; i < 5; ++i) {
 				adblPutFactor[i] = 0.9;
@@ -484,7 +496,11 @@ public class CoreCashFlowMeasures {
 
 			if (bEOSAmerican) {		// Creation of the American call and put schedule
 				eosCall = EmbeddedOptionSchedule.FromAmerican (
-					DateUtil.Today().julian() + 1,
+					DateUtil.CreateFromYMD (
+						2018,
+						9,
+						11
+					).julian() + 1,
 					aiDate,
 					adblCallFactor,
 					false,
@@ -496,7 +512,11 @@ public class CoreCashFlowMeasures {
 				);
 
 				eosPut = EmbeddedOptionSchedule.FromAmerican (
-					DateUtil.Today().julian(),
+					DateUtil.CreateFromYMD (
+						2018,
+						9,
+						11
+					).julian(),
 					aiDate,
 					adblPutFactor,
 					true,
@@ -584,7 +604,13 @@ public class CoreCashFlowMeasures {
 		 * Base Discount Curve
 		 */
 
-		MergedDiscountForwardCurve dc = MakeDiscountCurve (DateUtil.Today());
+		MergedDiscountForwardCurve dc = MakeDiscountCurve (
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			)
+		);
 
 		String[] astrTSYTenor = new String[] {
 			"1Y", "2Y", "3Y", "5Y", "7Y", "10Y", "30Y"
@@ -597,7 +623,11 @@ public class CoreCashFlowMeasures {
 		};
 
 		TreasuryComponent[] aTSYBond = OTRTreasurySet (
-			DateUtil.Today(),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			),
 			astrTSYTenor,
 			adblTSYCoupon
 		);
@@ -607,7 +637,11 @@ public class CoreCashFlowMeasures {
 		 */
 
 		GovvieCurve gc = BuildOnTheRunGovvieCurve (
-			DateUtil.Today(),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			),
 			aTSYBond,
 			adblTSYYield
 		);
@@ -617,7 +651,11 @@ public class CoreCashFlowMeasures {
 		 */
 
 		CreditCurve cc = ScenarioCreditCurveBuilder.FlatHazard (
-			DateUtil.Today().julian(),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			).julian(),
 			strCreditCurve,
 			"USD",
 			0.01,
@@ -662,7 +700,11 @@ public class CoreCashFlowMeasures {
 				null,	// Bond market quote
 				Helper.CreateFixingsObject (
 					aBond[i],
-					DateUtil.Today(),
+					DateUtil.CreateFromYMD (
+						2018,
+						9,
+						11
+					),
 					0.04	// Fixings
 				)
 			);
@@ -686,7 +728,11 @@ public class CoreCashFlowMeasures {
 			 */
 
 			ValuationParams valParams = ValuationParams.Spot (
-				DateUtil.Today(),
+				DateUtil.CreateFromYMD (
+					2018,
+					9,
+					11
+				),
 				0,
 				"",
 				Convention.DATE_ROLL_ACTUAL
@@ -943,7 +989,11 @@ public class CoreCashFlowMeasures {
 		 */
 
 		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (
-			DateUtil.Today(),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			),
 			"USD",
 			0.04
 		);
@@ -953,7 +1003,11 @@ public class CoreCashFlowMeasures {
 		 */
 
 		CreditCurve cc = ScenarioCreditCurveBuilder.FlatHazard (
-			DateUtil.Today().julian(),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			).julian(),
 			"CC",
 			"USD",
 			0.01,
@@ -980,7 +1034,11 @@ public class CoreCashFlowMeasures {
 		 */
 
 		ValuationParams valParams = ValuationParams.Spot (
-			DateUtil.Today(),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			),
 			0,
 			"USD",
 			Convention.DATE_ROLL_ACTUAL
@@ -1007,8 +1065,16 @@ public class CoreCashFlowMeasures {
 		 */
 
 		CreditDefaultSwap cds = CDSBuilder.CreateCDS (
-			DateUtil.Today(),
-			DateUtil.Today().addTenor ("5Y"),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			),
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			).addTenor ("5Y"),
 			0.1,
 			"USD",
 			0.40,
@@ -1050,7 +1116,11 @@ public class CoreCashFlowMeasures {
 
 		CreditCurve ccCalib = ScenarioCreditCurveBuilder.Custom (
 			"CC", 					// Name
-			DateUtil.Today(), 		// Date
+			DateUtil.CreateFromYMD (
+				2018,
+				9,
+				11
+			), 						// Date
 			aCalibInst,				// Calibration instruments
 			dc,						// Discount Curve
 			adblQuotes,				// Component Quotes

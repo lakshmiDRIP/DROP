@@ -9,10 +9,10 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.fx.FXRiskThresholdContainer;
 import org.drip.simm20.margin.BucketAggregate;
-import org.drip.simm20.margin.RiskClassAggregate;
+import org.drip.simm20.margin.RiskMeasureAggregate;
 import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
-import org.drip.simm20.product.RiskClassSensitivity;
+import org.drip.simm20.product.RiskMeasureSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -60,8 +60,8 @@ import org.drip.simm20.product.RiskClassSensitivity;
  */
 
 /**
- * FXDeltaMargin demonstrates the Construction of a Portfolio of FX Sensitivities and their eventual SIMM
- * 	Initial Margin Computation. The References are:
+ * FXDeltaMargin demonstrates the Construction of a Portfolio of FX Delta Sensitivities and their eventual
+ *  SIMM Initial Margin Computation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -261,8 +261,8 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L262">		System.out.println();</span>
 
-<span class="nc" id="L264">		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate</span>
-<span class="nc" id="L265">			(riskMeasureSensitivitySettings);</span>
+<span class="nc" id="L264">		RiskMeasureAggregate riskMeasureAggregate = new</span>
+<span class="nc" id="L265">			RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);</span>
 
 <span class="nc" id="L267">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
 
@@ -276,20 +276,20 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L277">		System.out.println (&quot;\t|                                                  ||&quot;);</span>
 
-<span class="nc" id="L279">		System.out.println (&quot;\t|            - Core Delta SBA Delta                ||&quot;);</span>
+<span class="nc" id="L279">		System.out.println (&quot;\t|            - Core Delta SBA Margin               ||&quot;);</span>
 
-<span class="nc" id="L281">		System.out.println (&quot;\t|            - Residual Delta SBA Delta            ||&quot;);</span>
+<span class="nc" id="L281">		System.out.println (&quot;\t|            - Residual Delta SBA Margin           ||&quot;);</span>
 
 <span class="nc" id="L283">		System.out.println (&quot;\t|            - SBA Delta Margin                    ||&quot;);</span>
 
 <span class="nc" id="L285">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
 
 <span class="nc" id="L287">		System.out.println (&quot;\t| DELTA MARGIN COMPONENTS =&gt; &quot; +</span>
-<span class="nc" id="L288">			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.coreDeltaSBAVariance()), 4, 0, 1.) +</span>
+<span class="nc" id="L288">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 4, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L290">			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.residualDeltaSBAVariance()), 4, 0, 1.) +</span>
+<span class="nc" id="L290">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 4, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L292">			FormatUtil.FormatDouble (riskClassAggregate.deltaSBA(), 4, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L292">			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 4, 0, 1.) + &quot; ||&quot;</span>
 		);
 
 <span class="nc" id="L295">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>

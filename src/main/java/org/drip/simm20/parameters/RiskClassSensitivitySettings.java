@@ -73,23 +73,27 @@ public class RiskClassSensitivitySettings
 {
 	private org.drip.simm20.parameters.RiskMeasureSensitivitySettings _vega = null;
 	private org.drip.simm20.parameters.RiskMeasureSensitivitySettings _delta = null;
+	private org.drip.simm20.parameters.RiskMeasureSensitivitySettings _curvature = null;
 
 	/**
 	 * RiskClassSensitivitySettings Constructor
 	 * 
 	 * @param delta Delta Risk Measure Sensitivity Settings
 	 * @param vega Vega Risk Measure Sensitivity Settings
+	 * @param curvature Curvature Risk Measure Sensitivity Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivitySettings (
 		final org.drip.simm20.parameters.RiskMeasureSensitivitySettings delta,
-		final org.drip.simm20.parameters.RiskMeasureSensitivitySettings vega)
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettings vega,
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettings curvature)
 		throws java.lang.Exception
 	{
 		if (null == (_delta = delta) ||
-			null == (_vega = vega))
+			null == (_vega = vega) ||
+			null == (_curvature = curvature))
 		{
 			throw new java.lang.Exception ("RiskClassSensitivitySettings Constructor => Invalid Inputs");
 		}
@@ -115,5 +119,16 @@ public class RiskClassSensitivitySettings
 	public org.drip.simm20.parameters.RiskMeasureSensitivitySettings vega()
 	{
 		return _vega;
+	}
+
+	/**
+	 * Curvature Risk Measure Sensitivity Settings
+	 * 
+	 * @return Curvature Risk Measure Sensitivity Settings
+	 */
+
+	public org.drip.simm20.parameters.RiskMeasureSensitivitySettings curvature()
+	{
+		return _curvature;
 	}
 }

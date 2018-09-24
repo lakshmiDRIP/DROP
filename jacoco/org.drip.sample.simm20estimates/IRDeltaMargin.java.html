@@ -9,10 +9,10 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.IRSensitivityAggregate;
-import org.drip.simm20.margin.RiskClassAggregateIR;
+import org.drip.simm20.margin.RiskMeasureAggregateIR;
 import org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR;
 import org.drip.simm20.product.BucketSensitivityIR;
-import org.drip.simm20.product.RiskClassSensitivityIR;
+import org.drip.simm20.product.RiskMeasureSensitivityIR;
 import org.drip.simm20.product.RiskFactorTenorSensitivity;
 
 /*
@@ -160,25 +160,25 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
 		final BucketSensitivityIR bucketSensitivityIR)
 		throws Exception
 	{
-<span class="nc" id="L163">		Map&lt;String, Double&gt; oisTenorSensitivity = bucketSensitivityIR.oisTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L163">		Map&lt;String, Double&gt; oisTenorSensitivity = bucketSensitivityIR.oisTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L165">		Map&lt;String, Double&gt; libor1MTenorSensitivity =</span>
-<span class="nc" id="L166">			bucketSensitivityIR.libor1MTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L166">			bucketSensitivityIR.libor1MTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L168">		Map&lt;String, Double&gt; libor3MTenorSensitivity =</span>
-<span class="nc" id="L169">			bucketSensitivityIR.libor3MTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L169">			bucketSensitivityIR.libor3MTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L171">		Map&lt;String, Double&gt; libor6MTenorSensitivity =</span>
-<span class="nc" id="L172">			bucketSensitivityIR.libor6MTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L172">			bucketSensitivityIR.libor6MTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L174">		Map&lt;String, Double&gt; libor12MTenorSensitivity =</span>
-<span class="nc" id="L175">			bucketSensitivityIR.libor12MTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L175">			bucketSensitivityIR.libor12MTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L177">		Map&lt;String, Double&gt; primeTenorSensitivity =</span>
-<span class="nc" id="L178">			bucketSensitivityIR.primeTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L178">			bucketSensitivityIR.primeTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L180">		Map&lt;String, Double&gt; municipalTenorSensitivity =</span>
-<span class="nc" id="L181">			bucketSensitivityIR.municipalTenorDeltaSensitivity().deltaMap();</span>
+<span class="nc" id="L181">			bucketSensitivityIR.municipalTenorSensitivity().sensitivityMap();</span>
 
 <span class="nc" id="L183">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------||&quot;);</span>
 
@@ -490,8 +490,8 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
 <span class="nc" id="L490">		return bucketSensitivityIR;</span>
 	}
 
-	private static final void DisplayRiskClassAggregate (
-		final RiskClassAggregateIR riskClassAggregateIR)
+	private static final void DisplayRiskMeasureAggregate (
+		final RiskMeasureAggregateIR riskMeasureAggregateIR)
 		throws Exception
 	{
 <span class="nc" id="L497">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
@@ -502,17 +502,17 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
 
 <span class="nc" id="L503">		System.out.println (</span>
 			&quot;\t|| Core Delta SBA Variance     =&gt; &quot; +
-<span class="nc" id="L505">			FormatUtil.FormatDouble (riskClassAggregateIR.coreDeltaSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L505">			FormatUtil.FormatDouble (riskMeasureAggregateIR.coreSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
 		);
 
 <span class="nc" id="L508">		System.out.println (</span>
 			&quot;\t|| Residual Delta SBA Variance =&gt; &quot; +
-<span class="nc" id="L510">			FormatUtil.FormatDouble (riskClassAggregateIR.residualDeltaSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L510">			FormatUtil.FormatDouble (riskMeasureAggregateIR.residualSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
 		);
 
 <span class="nc" id="L513">		System.out.println (</span>
 			&quot;\t|| Delta SBA                   =&gt; &quot; +
-<span class="nc" id="L515">			FormatUtil.FormatDouble (riskClassAggregateIR.deltaSBA(), 10, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L515">			FormatUtil.FormatDouble (riskMeasureAggregateIR.sba(), 10, 0, 1.) + &quot; ||&quot;</span>
 		);
 
 <span class="nc" id="L518">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
@@ -562,23 +562,23 @@ import org.drip.simm20.product.RiskFactorTenorSensitivity;
 <span class="nc" id="L562">			currencyList.add (currency);</span>
 		}
 
-<span class="nc" id="L565">		RiskClassSensitivityIR riskClassSensitivityIR = new RiskClassSensitivityIR (bucketSensitivityMap);</span>
+<span class="nc" id="L565">		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR (bucketSensitivityMap);</span>
 
 <span class="nc" id="L567">		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =</span>
 <span class="nc" id="L568">			RiskMeasureSensitivitySettingsIR.ISDA_DELTA (currencyList);</span>
 
-<span class="nc" id="L570">		RiskClassAggregateIR riskClassAggregateIR = riskClassSensitivityIR.aggregate</span>
+<span class="nc" id="L570">		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.aggregate</span>
 <span class="nc" id="L571">			(riskMeasureSensitivitySettingsIR);</span>
 
 <span class="nc bnc" id="L573" title="All 2 branches missed.">		for (String currency : currencyArray)</span>
 		{
 <span class="nc" id="L575">			DeltaMarginCovarianceEntry (</span>
 				currency,
-<span class="nc" id="L577">				riskClassAggregateIR.deltaBucketAggregateMap().get (currency).irSensitivityAggregate()</span>
+<span class="nc" id="L577">				riskMeasureAggregateIR.bucketAggregateMap().get (currency).irSensitivityAggregate()</span>
 			);
 		}
 
-<span class="nc" id="L581">		DisplayRiskClassAggregate (riskClassAggregateIR);</span>
+<span class="nc" id="L581">		DisplayRiskMeasureAggregate (riskMeasureAggregateIR);</span>
 
 <span class="nc" id="L583">		EnvManager.TerminateEnv();</span>
 <span class="nc" id="L584">	}</span>

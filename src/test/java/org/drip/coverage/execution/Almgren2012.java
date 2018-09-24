@@ -68,7 +68,7 @@ public class Almgren2012
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		AdaptiveStaticInitialHoldings.main (null);
+		// AdaptiveStaticInitialHoldings.main (null);
 
 		AdaptiveStaticInitialTradeRate.main (null);
 

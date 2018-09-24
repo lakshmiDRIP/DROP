@@ -135,8 +135,7 @@ public class BucketVegaSettings extends org.drip.simm20.parameters.BucketSensiti
 		try
 		{
 			return new org.drip.simm20.parameters.BucketVegaSettings (
-				org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT *
-					commodityBucket.deltaRiskWeight(),
+				org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
 				org.drip.simm20.commodity.CTRiskThresholdContainer.DeltaVegaThresholdMap().get
 					(bucketIndex).vega(),
 				commodityBucket.memberCorrelation(),
@@ -144,6 +143,41 @@ public class BucketVegaSettings extends org.drip.simm20.parameters.BucketSensiti
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
 				org.drip.simm20.commodity.CTSystemics.HISTORICAL_VOLATILITY_RATIO
 			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA Bucket FX Settings
+	 * 
+	 * @param vegaCategory The Vega Category
+	 * 
+	 * @return The Standard ISDA Bucket FX Settings
+	 */
+
+	public static BucketVegaSettings ISDA_FX (
+		final java.lang.String vegaCategory)
+	{
+		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
+			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryVegaMap();
+
+		try
+		{
+			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?
+				new org.drip.simm20.parameters.BucketVegaSettings (
+					org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT *
+						org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
+					fxConcentrationCategoryVegaMap.get (vegaCategory),
+					org.drip.simm20.fx.FXSystemics.CORRELATION,
+					java.lang.Math.sqrt (365. / 14.) /
+						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+					org.drip.simm20.fx.FXSystemics.HISTORICAL_VOLATILITY_RATIO
+				) : null;
 		}
 		catch (java.lang.Exception e)
 		{

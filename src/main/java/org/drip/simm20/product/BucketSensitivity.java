@@ -72,52 +72,9 @@ public class BucketSensitivity
 {
 	private java.util.Map<java.lang.String, java.lang.Double> _riskFactorSensitivityMap = null;
 
-	/**
-	 * BucketSensitivity Constructor
-	 * 
-	 * @param riskFactorSensitivityMap The Map of Risk Factor Sensitivities
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public BucketSensitivity (
-		final java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap)
-		throws java.lang.Exception
-	{
-		if (null == (_riskFactorSensitivityMap = riskFactorSensitivityMap) ||
-			0 == _riskFactorSensitivityMap.size())
-		{
-			throw new java.lang.Exception ("BucketSensitivity Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Map of Risk Factor Sensitivities
-	 * 
-	 * @return The Map of Risk Factor Sensitivities
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap()
-	{
-		return _riskFactorSensitivityMap;
-	}
-
-	/**
-	 * Weight and Adjust the Input Sensitivities
-	 * 
-	 * @param bucketSensitivitySettings The Bucket Sensitivity Settings
-	 * 
-	 * @return Map of Weighted and Adjusted Input Sensitivities
-	 */
-
-	public org.drip.simm20.margin.BucketAggregate aggregate (
+	private org.drip.simm20.margin.BucketAggregate linearAggregate (
 		final org.drip.simm20.parameters.BucketSensitivitySettings bucketSensitivitySettings)
 	{
-		if (null == bucketSensitivitySettings)
-		{
-			return null;
-		}
-
 		double cumulativeRiskFactorSensitivity = 0.;
 		double weightedAggregateSensitivityVariance = 0.;
 
@@ -218,5 +175,142 @@ public class BucketSensitivity
 		}
 
 		return null;
+	}
+
+	private org.drip.simm20.margin.BucketAggregate curvatureAggregate (
+		final org.drip.simm20.parameters.BucketSensitivitySettings bucketSensitivitySettings)
+	{
+		double cumulativeRiskFactorSensitivity = 0.;
+		double weightedAggregateSensitivityVariance = 0.;
+
+		double memberCorrelation = bucketSensitivitySettings.memberCorrelation();
+
+		double bucketSensitivityRiskWeight = bucketSensitivitySettings.riskWeight();
+
+		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
+
+		java.util.Map<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
+			augmentedBucketSensitivityMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm20.margin.RiskFactorAggregate>();
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorSensitivityMapEntry :
+			_riskFactorSensitivityMap.entrySet())
+		{
+			double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();
+
+			double concentrationRiskFactor = java.lang.Math.max (
+				1.,
+				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorSensitivity) * concentrationNormalizer)
+			);
+
+			double riskFactorSensitivityMargin = riskFactorSensitivity * bucketSensitivityRiskWeight *
+				concentrationRiskFactor;
+			cumulativeRiskFactorSensitivity = cumulativeRiskFactorSensitivity + riskFactorSensitivity;
+
+			try
+			{
+				augmentedBucketSensitivityMap.put (
+					riskFactorSensitivityMapEntry.getKey(),
+					new org.drip.simm20.margin.RiskFactorAggregate (
+						riskFactorSensitivityMargin,
+						concentrationRiskFactor
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
+			augmentedBucketSensitivityMapOuterEntry : augmentedBucketSensitivityMap.entrySet())
+		{
+			org.drip.simm20.margin.RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
+				augmentedBucketSensitivityMapOuterEntry.getValue();
+
+			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.sensitivityMargin();
+
+			java.lang.String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
+
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.RiskFactorAggregate>
+				augmentedBucketSensitivityMapInnerEntry : augmentedBucketSensitivityMap.entrySet())
+			{
+				org.drip.simm20.margin.RiskFactorAggregate augmentedRiskFactorSensitivityInner =
+					augmentedBucketSensitivityMapInnerEntry.getValue();
+
+				weightedAggregateSensitivityVariance = weightedAggregateSensitivityVariance +
+					riskFactorSensitivityOuter * (riskFactorKeyOuter.equalsIgnoreCase
+						(augmentedBucketSensitivityMapInnerEntry.getKey()) ? 1. : memberCorrelation *
+							memberCorrelation) * augmentedRiskFactorSensitivityInner.sensitivityMargin();
+			}
+		}
+
+		try
+		{
+			return new org.drip.simm20.margin.BucketAggregate (
+				augmentedBucketSensitivityMap,
+				weightedAggregateSensitivityVariance,
+				cumulativeRiskFactorSensitivity
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * BucketSensitivity Constructor
+	 * 
+	 * @param riskFactorSensitivityMap The Map of Risk Factor Sensitivities
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BucketSensitivity (
+		final java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap)
+		throws java.lang.Exception
+	{
+		if (null == (_riskFactorSensitivityMap = riskFactorSensitivityMap) ||
+			0 == _riskFactorSensitivityMap.size())
+		{
+			throw new java.lang.Exception ("BucketSensitivity Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Map of Risk Factor Sensitivities
+	 * 
+	 * @return The Map of Risk Factor Sensitivities
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap()
+	{
+		return _riskFactorSensitivityMap;
+	}
+
+	/**
+	 * Weight and Adjust the Input Sensitivities
+	 * 
+	 * @param bucketSensitivitySettings The Bucket Sensitivity Settings
+	 * 
+	 * @return Map of Weighted and Adjusted Input Sensitivities
+	 */
+
+	public org.drip.simm20.margin.BucketAggregate aggregate (
+		final org.drip.simm20.parameters.BucketSensitivitySettings bucketSensitivitySettings)
+	{
+		if (null == bucketSensitivitySettings)
+		{
+			return null;
+		}
+
+		return bucketSensitivitySettings instanceof org.drip.simm20.parameters.BucketCurvatureSettings ?
+			curvatureAggregate (bucketSensitivitySettings) : linearAggregate (bucketSensitivitySettings);
 	}
 }

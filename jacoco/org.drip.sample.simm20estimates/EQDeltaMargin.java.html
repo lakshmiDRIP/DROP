@@ -8,10 +8,10 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm20.margin.BucketAggregate;
-import org.drip.simm20.margin.RiskClassAggregate;
+import org.drip.simm20.margin.RiskMeasureAggregate;
 import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm20.product.BucketSensitivity;
-import org.drip.simm20.product.RiskClassSensitivity;
+import org.drip.simm20.product.RiskMeasureSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -394,8 +394,8 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L395">		System.out.println();</span>
 
-<span class="nc" id="L397">		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (bucketSensitivityMap).aggregate</span>
-<span class="nc" id="L398">			(riskMeasureSensitivitySettings);</span>
+<span class="nc" id="L397">		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity</span>
+<span class="nc" id="L398">			(bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);</span>
 
 <span class="nc" id="L400">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
@@ -409,20 +409,20 @@ import org.drip.simm20.product.RiskClassSensitivity;
 
 <span class="nc" id="L410">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L412">		System.out.println (&quot;\t|            - Core Delta SBA Delta                   ||&quot;);</span>
+<span class="nc" id="L412">		System.out.println (&quot;\t|            - Core Delta SBA Margin                  ||&quot;);</span>
 
-<span class="nc" id="L414">		System.out.println (&quot;\t|            - Residual Delta SBA Delta               ||&quot;);</span>
+<span class="nc" id="L414">		System.out.println (&quot;\t|            - Residual Delta SBA Margin              ||&quot;);</span>
 
 <span class="nc" id="L416">		System.out.println (&quot;\t|            - SBA Delta Margin                       ||&quot;);</span>
 
 <span class="nc" id="L418">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
 <span class="nc" id="L420">		System.out.println (&quot;\t| DELTA MARGIN COMPONENTS =&gt; &quot; +</span>
-<span class="nc" id="L421">			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.coreDeltaSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L421">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L423">			FormatUtil.FormatDouble (Math.sqrt (riskClassAggregate.residualDeltaSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L423">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L425">			FormatUtil.FormatDouble (riskClassAggregate.deltaSBA(), 5, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L425">			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
 		);
 
 <span class="nc" id="L428">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>

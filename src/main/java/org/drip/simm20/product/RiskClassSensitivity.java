@@ -73,23 +73,27 @@ public class RiskClassSensitivity
 {
 	private org.drip.simm20.product.RiskMeasureSensitivity _vega = null;
 	private org.drip.simm20.product.RiskMeasureSensitivity _delta = null;
+	private org.drip.simm20.product.RiskMeasureSensitivity _curvature = null;
 
 	/**
 	 * RiskClassSensitivity Constructor
 	 * 
 	 * @param delta The Delta Risk Measure Sensitivity
 	 * @param vega The Vega Risk Measure Sensitivity
+	 * @param curvature The Curvature Risk Measure Sensitivity
 	 * 
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public RiskClassSensitivity (
 		final org.drip.simm20.product.RiskMeasureSensitivity delta,
-		final org.drip.simm20.product.RiskMeasureSensitivity vega)
+		final org.drip.simm20.product.RiskMeasureSensitivity vega,
+		final org.drip.simm20.product.RiskMeasureSensitivity curvature)
 		throws java.lang.Exception
 	{
 		if (null == (_delta = delta) &&
-			null == (_vega = vega))
+			null == (_vega = vega) &&
+			null == (_curvature = curvature))
 		{
 			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");
 		}
@@ -115,5 +119,16 @@ public class RiskClassSensitivity
 	public org.drip.simm20.product.RiskMeasureSensitivity vega()
 	{
 		return _vega;
+	}
+
+	/**
+	 * Retrieve the Curvature Risk Measure Sensitivity
+	 * 
+	 * @return The Curvature Risk Measure Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskMeasureSensitivity curvature()
+	{
+		return _curvature;
 	}
 }

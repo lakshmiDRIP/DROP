@@ -71,8 +71,111 @@ package org.drip.simm20.parameters;
 
 public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVegaSettings
 {
+	private double _tenorScalingFactor = java.lang.Double.NaN;
 	private double _marginCovarianceScaleFactor = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _tenorScalingFunction = null;
+
+	/**
+	 * Construct the Standard ISDA EQ Bucket Curvature Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA EQ Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_EQ (
+		final int bucketIndex,
+		final int vegaDurationDays)
+	{
+		org.drip.simm20.equity.EQBucket equityBucket =
+			org.drip.simm20.equity.EQSettingsContainer.BucketMap().get (bucketIndex);
+
+		try
+		{
+			return null == equityBucket ? null : BucketCurvatureSettings.ISDA (
+				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
+				equityBucket.memberCorrelation(),
+				java.lang.Math.sqrt (365. / 14.) /
+					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				vegaDurationDays
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA CT Bucket Curvature Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA CT Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_CT (
+		final int bucketIndex,
+		final int vegaDurationDays)
+	{
+		org.drip.simm20.commodity.CTBucket commodityBucket =
+			org.drip.simm20.commodity.CTSettingsContainer.BucketMap().get (bucketIndex);
+
+		try
+		{
+			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (
+				org.drip.simm20.commodity.CTSystemics.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				commodityBucket.memberCorrelation(),
+				java.lang.Math.sqrt (365. / 14.) /
+					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				vegaDurationDays
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA FX Bucket Curvature Settings
+	 * 
+	 * @param vegaCategory The Vega Category
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA CT Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_FX (
+		final java.lang.String vegaCategory,
+		final int vegaDurationDays)
+	{
+		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
+			org.drip.simm20.fx.FXRiskThresholdContainer.CategoryVegaMap();
+
+		try {
+			return !fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ? null :
+				BucketCurvatureSettings.ISDA (
+					org.drip.simm20.fx.FXSystemics.VEGA_RISK_WEIGHT *
+						org.drip.simm20.fx.FXSystemics.DELTA_RISK_WEIGHT,
+					org.drip.simm20.fx.FXSystemics.CORRELATION,
+					java.lang.Math.sqrt (365. / 14.) /
+						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+					vegaDurationDays
+				);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * Construct the ISDA Standard BucketCurvatureSettings
@@ -80,6 +183,7 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	 * @param riskWeight The Vega Risk Weight
 	 * @param memberCorrelation The Member Correlation
 	 * @param impliedVolatility The Implied Volatility
+	 * @param vegaDurationDays The Bucket Vega Duration in Days
 	 * 
 	 * @return The ISDA Standard BucketCurvatureSettings
 	 */
@@ -87,7 +191,8 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	public static final BucketCurvatureSettings ISDA (
 		final double riskWeight,
 		final double memberCorrelation,
-		final double impliedVolatility)
+		final double impliedVolatility,
+		final int vegaDurationDays)
 	{
 		try
 		{
@@ -98,24 +203,8 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 				memberCorrelation,
 				impliedVolatility,
 				tailVariate * tailVariate - 1.,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double x)
-						throws java.lang.Exception
-					{
-						if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. >= x)
-						{
-							throw new java.lang.Exception
-								("BucketCurvatureSettings::tenorScalingFunction::evaluate => Invalid Inputs");
-						}
-
-						return 0.5 * java.lang.Math.max (
-							1.,
-							14. / x
-						);
-					}
-				}
+				org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard().evaluate
+					(vegaDurationDays)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -133,7 +222,7 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	 * @param memberCorrelation The Member Correlation
 	 * @param impliedVolatility The Implied Volatility
 	 * @param marginCovarianceScaleFactor Margin Covariance Scaling Factor
-	 * @param tenorScalingFunction Tenor Scaling Function
+	 * @param tenorScalingFactor The Tenor Scaling Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -143,7 +232,7 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 		final double memberCorrelation,
 		final double impliedVolatility,
 		final double marginCovarianceScaleFactor,
-		final org.drip.function.definition.R1ToR1 tenorScalingFunction)
+		final double tenorScalingFactor)
 		throws java.lang.Exception
 	{
 		super (
@@ -155,22 +244,22 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 		);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_marginCovarianceScaleFactor =
-			marginCovarianceScaleFactor) ||
-			null == (_tenorScalingFunction = tenorScalingFunction))
+				marginCovarianceScaleFactor) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))
 		{
 			throw new java.lang.Exception ("BucketCurvatureSettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Tenor Scaling Function
+	 * Retrieve the Tenor Scaling Factor
 	 * 
-	 * @return The Tenor Scaling Function
+	 * @return The Tenor Scaling Factor
 	 */
 
-	public org.drip.function.definition.R1ToR1 tenorScalingFunction()
+	public double tenorScalingFactor()
 	{
-		return _tenorScalingFunction;
+		return _tenorScalingFactor;
 	}
 
 	/**
@@ -182,5 +271,21 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	public double marginCovarianceScaleFactor()
 	{
 		return _marginCovarianceScaleFactor;
+	}
+
+	/**
+	 * Retrieve the Vega Risk Weight
+	 * 
+	 * @return The Vega Risk Weight
+	 */
+
+	public double vegaRiskWeight()
+	{
+		return super.riskWeight();
+	}
+
+	@Override public double riskWeight()
+	{
+		return super.riskWeight() * _tenorScalingFactor;
 	}
 }

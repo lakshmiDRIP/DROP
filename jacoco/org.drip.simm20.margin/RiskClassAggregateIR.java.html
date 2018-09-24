@@ -71,139 +71,50 @@ package org.drip.simm20.margin;
 
 public class RiskClassAggregateIR
 {
-<span class="nc" id="L74">	private double _coreVegaSBAVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _coreDeltaSBAVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _residualVegaSBAVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _residualDeltaSBAVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L78">	private java.util.Map&lt;java.lang.String, org.drip.simm20.margin.BucketAggregateIR&gt;</span>
-		_vegaBucketAggregateMap = null;
-<span class="nc" id="L80">	private java.util.Map&lt;java.lang.String, org.drip.simm20.margin.BucketAggregateIR&gt;</span>
-		_deltaBucketAggregateMap = null;
+<span class="nc" id="L74">	private org.drip.simm20.margin.RiskMeasureAggregateIR _vegaMargin = null;</span>
+<span class="nc" id="L75">	private org.drip.simm20.margin.RiskMeasureAggregateIR _deltaMargin = null;</span>
 
 	/**
 	 * RiskClassAggregateIR Constructor
 	 * 
-	 * @param deltaBucketAggregateMap The IR Delta Bucket Aggregate Map
-	 * @param vegaBucketAggregateMap The IR Vega Bucket Aggregate Map
-	 * @param coreDeltaSBAVariance The SBA Based Risk Class Core IR Delta Variance
-	 * @param coreVegaSBAVariance The SBA Based Risk Class Core IR Vega Variance
-	 * @param residualDeltaSBAVariance The SBA Based Risk Class Residual IR Delta Variance
-	 * @param residualVegaSBAVariance The SBA Based Risk Class Residual IR Vega Variance
+	 * @param deltaMargin The Delta Margin
+	 * @param vegaMargin The Vega Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregateIR (
-		final java.util.Map&lt;java.lang.String, org.drip.simm20.margin.BucketAggregateIR&gt;
-			deltaBucketAggregateMap,
-		final java.util.Map&lt;java.lang.String, org.drip.simm20.margin.BucketAggregateIR&gt;
-			vegaBucketAggregateMap,
-		final double coreDeltaSBAVariance,
-		final double coreVegaSBAVariance,
-		final double residualDeltaSBAVariance,
-		final double residualVegaSBAVariance)
+		final org.drip.simm20.margin.RiskMeasureAggregateIR deltaMargin,
+		final org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin)
 		throws java.lang.Exception
-<span class="nc" id="L106">	{</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_coreDeltaSBAVariance = coreDeltaSBAVariance) ||</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_coreVegaSBAVariance = coreVegaSBAVariance) ||</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_residualDeltaSBAVariance = residualDeltaSBAVariance)</span>
-			||
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_residualVegaSBAVariance = residualVegaSBAVariance))</span>
+<span class="nc" id="L90">	{</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">		if (null == (_deltaMargin = deltaMargin) ||</span>
+			null == (_vegaMargin = vegaMargin))
 		{
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;RiskClassAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L94">			throw new java.lang.Exception (&quot;RiskClassAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-
-<span class="nc" id="L116">		_vegaBucketAggregateMap = vegaBucketAggregateMap;</span>
-<span class="nc" id="L117">		_deltaBucketAggregateMap = deltaBucketAggregateMap;</span>
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L96">	}</span>
 
 	/**
-	 * Retrieve the IR Delta Bucket Aggregate Map
+	 * Retrieve the Delta Margin
 	 * 
-	 * @return The IR Delta Bucket Aggregate Map
+	 * @return The Delta Margin
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.simm20.margin.BucketAggregateIR&gt;
-		deltaBucketAggregateMap()
+	public org.drip.simm20.margin.RiskMeasureAggregateIR deltaMargin()
 	{
-<span class="nc" id="L129">		return _deltaBucketAggregateMap;</span>
+<span class="nc" id="L106">		return _deltaMargin;</span>
 	}
 
 	/**
-	 * Retrieve the IR Vega Bucket Aggregate Map
+	 * Retrieve the Vega Margin
 	 * 
-	 * @return The IR Vega Bucket Aggregate Map
+	 * @return The Vega Margin
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.simm20.margin.BucketAggregateIR&gt; vegaBucketAggregateMap()
+	public org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin()
 	{
-<span class="nc" id="L140">		return _vegaBucketAggregateMap;</span>
-	}
-
-	/**
-	 * Retrieve the Risk Class Core Delta Margin Variance
-	 * 
-	 * @return The Risk Class Core Delta Margin Variance
-	 */
-
-	public double coreDeltaSBAVariance()
-	{
-<span class="nc" id="L151">		return _coreDeltaSBAVariance;</span>
-	}
-
-	/**
-	 * Retrieve the Risk Class Core Vega Margin Variance
-	 * 
-	 * @return The Risk Class Core Vega Margin Variance
-	 */
-
-	public double coreVegaSBAVariance()
-	{
-<span class="nc" id="L162">		return _coreVegaSBAVariance;</span>
-	}
-
-	/**
-	 * Retrieve the Risk Class Residual Delta Margin Variance
-	 * 
-	 * @return The Risk Class Residual Delta Margin Variance
-	 */
-
-	public double residualDeltaSBAVariance()
-	{
-<span class="nc" id="L173">		return _residualDeltaSBAVariance;</span>
-	}
-
-	/**
-	 * Retrieve the Risk Class Residual Vega Margin Variance
-	 * 
-	 * @return The Risk Class Residual Vega Margin Variance
-	 */
-
-	public double residualVegaSBAVariance()
-	{
-<span class="nc" id="L184">		return _residualVegaSBAVariance;</span>
-	}
-
-	/**
-	 * Retrieve the Risk Class SBA Based Delta Margin
-	 * 
-	 * @return The Risk Class SBA Based Delta Margin
-	 */
-
-	public double deltaSBA()
-	{
-<span class="nc" id="L195">		return java.lang.Math.sqrt (_coreDeltaSBAVariance) + java.lang.Math.sqrt (_residualDeltaSBAVariance);</span>
-	}
-
-	/**
-	 * Retrieve the Risk Class SBA Based Vega Margin
-	 * 
-	 * @return The Risk Class SBA Based Vega Margin
-	 */
-
-	public double vegaSBA()
-	{
-<span class="nc" id="L206">		return java.lang.Math.sqrt (_coreVegaSBAVariance) + java.lang.Math.sqrt (_residualVegaSBAVariance);</span>
+<span class="nc" id="L117">		return _vegaMargin;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

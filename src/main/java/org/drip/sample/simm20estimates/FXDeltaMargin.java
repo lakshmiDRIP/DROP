@@ -261,8 +261,8 @@ public class FXDeltaMargin
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity (bucketSensitivityMap).aggregate
-			(riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate = new
+			RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
 
 		System.out.println ("\t|--------------------------------------------------||");
 

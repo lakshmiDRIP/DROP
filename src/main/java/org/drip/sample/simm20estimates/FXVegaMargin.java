@@ -343,7 +343,7 @@ public class FXVegaMargin
 		System.out.println();
 
 		RiskMeasureAggregate riskMeasureAggregate =
-			new RiskMeasureSensitivity (bucketSensitivityMap).aggregate (riskMeasureSensitivitySettings);
+			new RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
