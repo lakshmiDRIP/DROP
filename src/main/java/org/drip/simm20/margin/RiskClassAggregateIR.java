@@ -73,23 +73,27 @@ public class RiskClassAggregateIR
 {
 	private org.drip.simm20.margin.RiskMeasureAggregateIR _vegaMargin = null;
 	private org.drip.simm20.margin.RiskMeasureAggregateIR _deltaMargin = null;
+	private org.drip.simm20.margin.RiskMeasureAggregateIR _curvatureMargin = null;
 
 	/**
 	 * RiskClassAggregateIR Constructor
 	 * 
 	 * @param deltaMargin The Delta Margin
 	 * @param vegaMargin The Vega Margin
+	 * @param curvatureMargin The Curvature Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregateIR (
 		final org.drip.simm20.margin.RiskMeasureAggregateIR deltaMargin,
-		final org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin)
+		final org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin,
+		final org.drip.simm20.margin.RiskMeasureAggregateIR curvatureMargin)
 		throws java.lang.Exception
 	{
 		if (null == (_deltaMargin = deltaMargin) ||
-			null == (_vegaMargin = vegaMargin))
+			null == (_vegaMargin = vegaMargin) ||
+			null == (_curvatureMargin = curvatureMargin))
 		{
 			throw new java.lang.Exception ("RiskClassAggregateIR Constructor => Invalid Inputs");
 		}
@@ -115,5 +119,27 @@ public class RiskClassAggregateIR
 	public org.drip.simm20.margin.RiskMeasureAggregateIR vegaMargin()
 	{
 		return _vegaMargin;
+	}
+
+	/**
+	 * Retrieve the Curvature Margin
+	 * 
+	 * @return The Curvature Margin
+	 */
+
+	public org.drip.simm20.margin.RiskMeasureAggregateIR curvatureMargin()
+	{
+		return _curvatureMargin;
+	}
+
+	/**
+	 * Compute the SBA Margin
+	 * 
+	 * @return The SBA Margin
+	 */
+
+	public double margin()
+	{
+		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();
 	}
 }

@@ -73,23 +73,27 @@ public class RiskClassAggregate
 {
 	private org.drip.simm20.margin.RiskMeasureAggregate _vegaMargin = null;
 	private org.drip.simm20.margin.RiskMeasureAggregate _deltaMargin = null;
+	private org.drip.simm20.margin.RiskMeasureAggregate _curvatureMargin = null;
 
 	/**
 	 * RiskClassAggregate Constructor
 	 * 
 	 * @param deltaMargin The Delta Margin
 	 * @param vegaMargin The Vega Margin
+	 * @param curvatureMargin The Curvature Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregate (
 		final org.drip.simm20.margin.RiskMeasureAggregate deltaMargin,
-		final org.drip.simm20.margin.RiskMeasureAggregate vegaMargin)
+		final org.drip.simm20.margin.RiskMeasureAggregate vegaMargin,
+		final org.drip.simm20.margin.RiskMeasureAggregate curvatureMargin)
 		throws java.lang.Exception
 	{
 		if (null == (_deltaMargin = deltaMargin) ||
-			null == (_vegaMargin = vegaMargin))
+			null == (_vegaMargin = vegaMargin) ||
+			null == (_curvatureMargin = curvatureMargin))
 		{
 			throw new java.lang.Exception ("RiskClassAggregate Construcgtor => Invalid Inputs");
 		}
@@ -118,6 +122,17 @@ public class RiskClassAggregate
 	}
 
 	/**
+	 * Retrieve the Curvature Margin
+	 * 
+	 * @return The Curvature Margin
+	 */
+
+	public org.drip.simm20.margin.RiskMeasureAggregate curvatureMargin()
+	{
+		return _curvatureMargin;
+	}
+
+	/**
 	 * Compute the SBA Margin
 	 * 
 	 * @return The SBA Margin
@@ -125,6 +140,6 @@ public class RiskClassAggregate
 
 	public double margin()
 	{
-		return _deltaMargin.sba() + _vegaMargin.sba();
+		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();
 	}
 }

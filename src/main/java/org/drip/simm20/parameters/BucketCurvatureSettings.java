@@ -72,7 +72,6 @@ package org.drip.simm20.parameters;
 public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVegaSettings
 {
 	private double _tenorScalingFactor = java.lang.Double.NaN;
-	private double _marginCovarianceScaleFactor = java.lang.Double.NaN;
 
 	/**
 	 * Construct the Standard ISDA EQ Bucket Curvature Settings
@@ -196,13 +195,10 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	{
 		try
 		{
-			double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.995);
-
 			return new BucketCurvatureSettings (
 				riskWeight,
 				memberCorrelation,
 				impliedVolatility,
-				tailVariate * tailVariate - 1.,
 				org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard().evaluate
 					(vegaDurationDays)
 			);
@@ -221,7 +217,6 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	 * @param riskWeight The Vega Risk Weight
 	 * @param memberCorrelation The Member Correlation
 	 * @param impliedVolatility The Implied Volatility
-	 * @param marginCovarianceScaleFactor Margin Covariance Scaling Factor
 	 * @param tenorScalingFactor The Tenor Scaling Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -231,7 +226,6 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 		final double riskWeight,
 		final double memberCorrelation,
 		final double impliedVolatility,
-		final double marginCovarianceScaleFactor,
 		final double tenorScalingFactor)
 		throws java.lang.Exception
 	{
@@ -243,9 +237,7 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 			1.
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_marginCovarianceScaleFactor =
-				marginCovarianceScaleFactor) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))
 		{
 			throw new java.lang.Exception ("BucketCurvatureSettings Constructor => Invalid Inputs");
 		}
@@ -260,17 +252,6 @@ public class BucketCurvatureSettings extends org.drip.simm20.parameters.BucketVe
 	public double tenorScalingFactor()
 	{
 		return _tenorScalingFactor;
-	}
-
-	/**
-	 * Retrieve the Margin Covariance Scaling Factor
-	 * 
-	 * @return The Margin Covariance Scaling Factor
-	 */
-
-	public double marginCovarianceScaleFactor()
-	{
-		return _marginCovarianceScaleFactor;
 	}
 
 	/**

@@ -134,13 +134,13 @@ public class RiskMeasureAggregateIR
 	}
 
 	/**
-	 * Retrieve the Total SBA
+	 * Retrieve the Total SBA Margin
 	 * 
-	 * @return The Total SBA
+	 * @return The Total SBA Margin
 	 */
 
 	public double sba()
 	{
-		return _coreSBAVariance + _residualSBAVariance;
+		return java.lang.Math.sqrt (_coreSBAVariance + _residualSBAVariance);
 	}
 }

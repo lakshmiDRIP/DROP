@@ -335,13 +335,14 @@ public class RiskMeasureSensitivity
 				0.
 			);
 
-			double thetaResidual = java.lang.Math.min (
-				cumulativeRiskFactorSensitivityMarginResidual /
-					cumulativeRiskFactorSensitivityMarginResidualPositive,
-				0.
-			);
+			double thetaResidual = 0 == cumulativeRiskFactorSensitivityMarginResidualPositive ? 0. :
+				java.lang.Math.min (
+					cumulativeRiskFactorSensitivityMarginResidual /
+						cumulativeRiskFactorSensitivityMarginResidualPositive,
+					0.
+				);
 
-			double residualSBAMargin = java.lang.Math.max (
+			double residualSBAMargin = !bucketAggregateMap.containsKey ("-1") ? 0. : java.lang.Math.max (
 				cumulativeRiskFactorSensitivityMarginResidual +
 				(lambda * (1. + thetaResidual) - thetaResidual) *
 					java.lang.Math.sqrt (bucketAggregateMap.get ("-1").sensitivityMarginVariance()),
