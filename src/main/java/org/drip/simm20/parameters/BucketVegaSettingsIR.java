@@ -89,7 +89,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 	 * @return The ISDA Standard IR Vega Sensitivity Settings for the Currency
 	 */
 
-	public static final BucketSensitivitySettingsIR ISDA_VEGA (
+	public static BucketVegaSettingsIR ISDA (
 		final java.lang.String currency)
 	{
 		org.drip.simm20.rates.IRThreshold irThreshold = org.drip.simm20.rates.IRThresholdContainer.Threshold
@@ -328,7 +328,7 @@ public class BucketVegaSettingsIR extends org.drip.simm20.parameters.BucketSensi
 	 * @return The LIBOR 3M Tenor Delta Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor13TenorDeltaRiskWeight()
+	public java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaRiskWeight()
 	{
 		return _libor3MTenorDeltaRiskWeight;
 	}

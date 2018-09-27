@@ -503,7 +503,7 @@ public class IRCurrencyVegaMarginFlow
 		double notional = 100.;
 		String currency = "USD";
 
-		BucketSensitivitySettingsIR bucketSensitivitySettingsIR = BucketVegaSettingsIR.ISDA_VEGA (currency);
+		BucketSensitivitySettingsIR bucketSensitivitySettingsIR = BucketVegaSettingsIR.ISDA (currency);
 
 		BucketSensitivityIR bucketSensitivityIR = new BucketSensitivityIR (
 			CurveTenorSensitivityMap (notional),
@@ -519,7 +519,7 @@ public class IRCurrencyVegaMarginFlow
 
 		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);
 
-		IRSensitivityAggregate irVegaAggregate = bucketAggregateIR.riskFactorAggregateIR().margin
+		IRSensitivityAggregate irVegaAggregate = bucketAggregateIR.riskFactorAggregateIR().linearMargin
 			(bucketSensitivitySettingsIR);
 
 		VegaMarginCovarianceEntry (irVegaAggregate);

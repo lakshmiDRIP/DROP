@@ -372,28 +372,29 @@ public class RiskFactorAggregateIR
 	}
 
 	/**
-	 * Compute the OIS-OIS Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-OIS Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-OIS Sensitivity Margin Co-variance
+	 * @return The Linear OIS-OIS Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_OIS (
+	public double linearMarginCovariance_OIS_OIS (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
-			throw new java.lang.Exception ("IRFactorAggregate::marginCovariance_OIS_OIS => Invalid Inputs");
+			throw new java.lang.Exception
+				("IRFactorAggregate::linearMarginCovariance_OIS_OIS => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_OIS = 0.;
+		double linearMarginCovariance_OIS_OIS = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginOuterEntry :
 			_oisSensitivityMargin.entrySet())
@@ -407,7 +408,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = oisSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_OIS_OIS = marginCovariance_OIS_OIS + outerSensitivityMargin *
+				linearMarginCovariance_OIS_OIS = linearMarginCovariance_OIS_OIS + outerSensitivityMargin *
 					oisSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
@@ -417,33 +418,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_OIS;
+		return linearMarginCovariance_OIS_OIS;
 	}
 
 	/**
-	 * Compute the LIBOR1M-LIBOR1M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR1M-LIBOR1M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR1M-LIBOR1M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR1M-LIBOR1M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR1M_LIBOR1M (
+	public double linearMarginCovariance_LIBOR1M_LIBOR1M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR1M_LIBOR1M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR1M_LIBOR1M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR1M_LIBOR1M = 0.;
+		double linearMarginCovariance_LIBOR1M_LIBOR1M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MSensitivityMarginOuterEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -457,8 +458,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = libor1MSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_LIBOR1M_LIBOR1M = marginCovariance_LIBOR1M_LIBOR1M + outerSensitivityMargin
-					* libor1MSensitivityMarginInnerEntry.getValue() * (
+				linearMarginCovariance_LIBOR1M_LIBOR1M = linearMarginCovariance_LIBOR1M_LIBOR1M +
+					outerSensitivityMargin * libor1MSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
 							innerTenor
@@ -467,33 +468,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR1M_LIBOR1M;
+		return linearMarginCovariance_LIBOR1M_LIBOR1M;
 	}
 
 	/**
-	 * Compute the LIBOR3M-LIBOR3M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR3M-LIBOR3M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR3M-LIBOR3M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR3M-LIBOR3M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR3M_LIBOR3M (
+	public double linearMarginCovariance_LIBOR3M_LIBOR3M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR3M_LIBOR3M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR3M_LIBOR3M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR3M_LIBOR3M = 0.;
+		double linearMarginCovariance_LIBOR3M_LIBOR3M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MSensitivityMarginOuterEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -507,7 +508,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = libor3MSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_LIBOR3M_LIBOR3M = marginCovariance_LIBOR3M_LIBOR3M +
+				linearMarginCovariance_LIBOR3M_LIBOR3M = linearMarginCovariance_LIBOR3M_LIBOR3M +
 					outerSensitivityMargin * libor3MSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
@@ -517,33 +518,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR3M_LIBOR3M;
+		return linearMarginCovariance_LIBOR3M_LIBOR3M;
 	}
 
 	/**
-	 * Compute the LIBOR6M-LIBOR6M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR6M-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR6M-LIBOR6M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR6M-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR6M_LIBOR6M (
+	public double linearMarginCovariance_LIBOR6M_LIBOR6M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR6M_LIBOR6M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR6M_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR6M_LIBOR6M = 0.;
+		double linearMarginCovariance_LIBOR6M_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MSensitivityMarginOuterEntry :
 			_libor6MSensitivityMargin.entrySet())
@@ -557,7 +558,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = libor6MSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_LIBOR6M_LIBOR6M = marginCovariance_LIBOR6M_LIBOR6M +
+				linearMarginCovariance_LIBOR6M_LIBOR6M = linearMarginCovariance_LIBOR6M_LIBOR6M +
 					outerSensitivityMargin * libor6MSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
@@ -567,20 +568,20 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR6M_LIBOR6M;
+		return linearMarginCovariance_LIBOR6M_LIBOR6M;
 	}
 
 	/**
-	 * Compute the LIBOR12M-LIBOR12M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR12M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR12M-LIBOR12M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR12M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR12M_LIBOR12M (
+	public double linearMarginCovariance_LIBOR12M_LIBOR12M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
@@ -593,7 +594,7 @@ public class RiskFactorAggregateIR
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR12M_LIBOR12M = 0.;
+		double linearMarginCovariance_LIBOR12M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MSensitivityMarginOuterEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -607,7 +608,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = libor12MSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_LIBOR12M_LIBOR12M = marginCovariance_LIBOR12M_LIBOR12M +
+				linearMarginCovariance_LIBOR12M_LIBOR12M = linearMarginCovariance_LIBOR12M_LIBOR12M +
 					outerSensitivityMargin * libor12MSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
@@ -617,33 +618,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR12M_LIBOR12M;
+		return linearMarginCovariance_LIBOR12M_LIBOR12M;
 	}
 
 	/**
-	 * Compute the PRIME-PRIME Sensitivity Margin Co-variance
+	 * Compute the Linear PRIME-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The PRIME-PRIME Sensitivity Margin Co-variance
+	 * @return The Linear PRIME-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_PRIME_PRIME (
+	public double linearMarginCovariance_PRIME_PRIME (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_PRIME_PRIME => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_PRIME_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_PRIME_PRIME = 0.;
+		double linearMarginCovariance_PRIME_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeSensitivityMarginOuterEntry :
 			_primeSensitivityMargin.entrySet())
@@ -657,8 +658,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = primeSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_PRIME_PRIME = marginCovariance_PRIME_PRIME + outerSensitivityMargin *
-					primeSensitivityMarginInnerEntry.getValue() * (
+				linearMarginCovariance_PRIME_PRIME = linearMarginCovariance_PRIME_PRIME +
+					outerSensitivityMargin * primeSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
 							innerTenor
@@ -667,33 +668,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_PRIME_PRIME;
+		return linearMarginCovariance_PRIME_PRIME;
 	}
 
 	/**
-	 * Compute the MUNICIPAL-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear MUNICIPAL-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The MUNICIPAL-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear MUNICIPAL-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_MUNICIPAL_MUNICIPAL (
+	public double linearMarginCovariance_MUNICIPAL_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_MUNICIPAL_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_MUNICIPAL_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_MUNICIPAL_MUNICIPAL = 0.;
+		double linearMarginCovariance_MUNICIPAL_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalSensitivityMarginOuterEntry :
 			_municipalSensitivityMargin.entrySet())
@@ -707,7 +708,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String innerTenor = municipalSensitivityMarginInnerEntry.getKey();
 
-				marginCovariance_MUNICIPAL_MUNICIPAL = marginCovariance_MUNICIPAL_MUNICIPAL +
+				linearMarginCovariance_MUNICIPAL_MUNICIPAL = linearMarginCovariance_MUNICIPAL_MUNICIPAL +
 					outerSensitivityMargin * municipalSensitivityMarginInnerEntry.getValue() * (
 						outerTenor.equalsIgnoreCase (innerTenor) ? 1. : tenorCorrelation.entry (
 							outerTenor,
@@ -717,33 +718,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_MUNICIPAL_MUNICIPAL;
+		return linearMarginCovariance_MUNICIPAL_MUNICIPAL;
 	}
 
 	/**
-	 * Compute the OIS-LIBOR1M Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-LIBOR1M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-LIBOR1M Sensitivity Margin Co-variance
+	 * @return The Linear OIS-LIBOR1M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_LIBOR1M (
+	public double linearMarginCovariance_OIS_LIBOR1M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_OIS_LIBOR1M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_OIS_LIBOR1M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_LIBOR1M = 0.;
+		double linearMarginCovariance_OIS_LIBOR1M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -757,8 +758,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor1MTenor = libor1MSensitivityMarginEntry.getKey();
 
-				marginCovariance_OIS_LIBOR1M = marginCovariance_OIS_LIBOR1M + oisSensitivityMargin *
-					libor1MSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_OIS_LIBOR1M = linearMarginCovariance_OIS_LIBOR1M +
+					oisSensitivityMargin * libor1MSensitivityMarginEntry.getValue() * (
 						oisTenor.equalsIgnoreCase (libor1MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor1MTenor
@@ -767,33 +768,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_LIBOR1M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_OIS_LIBOR1M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the OIS-LIBOR3M Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-LIBOR3M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-LIBOR3M Sensitivity Margin Co-variance
+	 * @return The Linear OIS-LIBOR3M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_LIBOR3M (
+	public double linearMarginCovariance_OIS_LIBOR3M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_OIS_LIBOR3M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_OIS_LIBOR3M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_LIBOR3M = 0.;
+		double linearMarginCovariance_OIS_LIBOR3M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -807,8 +808,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor3MTenor = libor3MSensitivityMarginEntry.getKey();
 
-				marginCovariance_OIS_LIBOR3M = marginCovariance_OIS_LIBOR3M + oisSensitivityMargin *
-					libor3MSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_OIS_LIBOR3M = linearMarginCovariance_OIS_LIBOR3M +
+					oisSensitivityMargin * libor3MSensitivityMarginEntry.getValue() * (
 						oisTenor.equalsIgnoreCase (libor3MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor3MTenor
@@ -817,33 +818,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_LIBOR3M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_OIS_LIBOR3M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the OIS-LIBOR6M Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-LIBOR6M Sensitivity Margin Co-variance
+	 * @return The Linear OIS-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_LIBOR6M (
+	public double linearMarginCovariance_OIS_LIBOR6M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_OIS_LIBOR6M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_OIS_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_LIBOR6M = 0.;
+		double linearMarginCovariance_OIS_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -857,8 +858,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor6MTenor = libor6MSensitivityMarginEntry.getKey();
 
-				marginCovariance_OIS_LIBOR6M = marginCovariance_OIS_LIBOR6M + oisSensitivityMargin *
-					libor6MSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_OIS_LIBOR6M = linearMarginCovariance_OIS_LIBOR6M +
+					oisSensitivityMargin * libor6MSensitivityMarginEntry.getValue() * (
 						oisTenor.equalsIgnoreCase (libor6MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
 							libor6MTenor
@@ -867,33 +868,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_LIBOR6M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_OIS_LIBOR6M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the OIS-LIBOR12M Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-LIBOR12M Sensitivity Margin Co-variance
+	 * @return The Linear OIS-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_LIBOR12M (
+	public double linearMarginCovariance_OIS_LIBOR12M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_OIS_LIBOR12M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_OIS_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_LIBOR12M = 0.;
+		double linearMarginCovariance_OIS_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -907,7 +908,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor12MTenor = libor12MSensitivityMarginEntry.getKey();
 
-				marginCovariance_OIS_LIBOR12M = marginCovariance_OIS_LIBOR12M +
+				linearMarginCovariance_OIS_LIBOR12M = linearMarginCovariance_OIS_LIBOR12M +
 					oisSensitivity * libor12MSensitivityMarginEntry.getValue() * (
 						oisTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
@@ -917,33 +918,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_OIS_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the OIS-PRIME Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-PRIME Sensitivity Margin Co-variance
+	 * @return The Linear OIS-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_PRIME (
+	public double linearMarginCovariance_OIS_PRIME (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_OIS_PRIME => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_OIS_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_PRIME = 0.;
+		double linearMarginCovariance_OIS_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -957,7 +958,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String primeTenor = primeSensitivityMarginEntry.getKey();
 
-				marginCovariance_OIS_PRIME = marginCovariance_OIS_PRIME + oisSensitivityMargin *
+				linearMarginCovariance_OIS_PRIME = linearMarginCovariance_OIS_PRIME + oisSensitivityMargin *
 					primeSensitivityMarginEntry.getValue() * (
 						oisTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
@@ -967,33 +968,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_OIS_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the OIS-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear OIS-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The OIS-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear OIS-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_OIS_MUNICIPAL (
+	public double linearMarginCovariance_OIS_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_OIS_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_OIS_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_OIS_MUNICIPAL = 0.;
+		double linearMarginCovariance_OIS_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -1007,7 +1008,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String municipalTenor = municipalSensitivityMarginEntry.getKey();
 
-				marginCovariance_OIS_MUNICIPAL = marginCovariance_OIS_MUNICIPAL +
+				linearMarginCovariance_OIS_MUNICIPAL = linearMarginCovariance_OIS_MUNICIPAL +
 					oisSensitivityMargin * municipalSensitivityMarginEntry.getValue() * (
 						oisTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
 							oisTenor,
@@ -1017,33 +1018,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_OIS_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_OIS_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR1M-LIBOR3M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR1M-LIBOR3M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR1M-LIBOR3M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR1M-LIBOR3M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR1M_LIBOR3M (
+	public double linearMarginCovariance_LIBOR1M_LIBOR3M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR1M_LIBOR3M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR1M_LIBOR3M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR1M_LIBOR3M = 0.;
+		double linearMarginCovariance_LIBOR1M_LIBOR3M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MSensitivityMarginEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -1057,7 +1058,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor3MTenor = libor3MSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR1M_LIBOR3M = marginCovariance_LIBOR1M_LIBOR3M +
+				linearMarginCovariance_LIBOR1M_LIBOR3M = linearMarginCovariance_LIBOR1M_LIBOR3M +
 					libor1MSensitivityMargin * libor3MSensitivityMarginEntry.getValue() * (
 						libor1MTenor.equalsIgnoreCase (libor3MTenor) ? 1. : tenorCorrelation.entry (
 							libor1MTenor,
@@ -1067,33 +1068,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR1M_LIBOR3M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR1M_LIBOR3M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR1M-LIBOR6M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR1M-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR1M-LIBOR6M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR1M-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR1M_LIBOR6M (
+	public double linearMarginCovariance_LIBOR1M_LIBOR6M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR1M_LIBOR6M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR1M_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR1M_LIBOR6M = 0.;
+		double linearMarginCovariance_LIBOR1M_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MSensitivityMarginEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -1107,7 +1108,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor6MTenor = libor6MSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR1M_LIBOR6M = marginCovariance_LIBOR1M_LIBOR6M +
+				linearMarginCovariance_LIBOR1M_LIBOR6M = linearMarginCovariance_LIBOR1M_LIBOR6M +
 					libor1MSensitivityMargin * libor6MSensitivityMarginEntry.getValue() * (
 						libor1MTenor.equalsIgnoreCase (libor6MTenor) ? 1. : tenorCorrelation.entry (
 							libor1MTenor,
@@ -1117,33 +1118,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR1M_LIBOR6M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR1M_LIBOR6M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR1M-LIBOR12M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR1M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR1M-LIBOR12M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR1M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR1M_LIBOR12M (
+	public double linearMarginCovariance_LIBOR1M_LIBOR12M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR1M_LIBOR12M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR1M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR1M_LIBOR12M = 0.;
+		double linearMarginCovariance_LIBOR1M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MSensitivityMarginEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -1157,7 +1158,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor12MTenor = libor12MSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR1M_LIBOR12M = marginCovariance_LIBOR1M_LIBOR12M +
+				linearMarginCovariance_LIBOR1M_LIBOR12M = linearMarginCovariance_LIBOR1M_LIBOR12M +
 					libor1MSensitivityMargin * libor12MSensitivityMarginEntry.getValue() * (
 						libor1MTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
 							libor1MTenor,
@@ -1167,33 +1168,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR1M_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR1M_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR1M-PRIME Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR1M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR1M-PRIME Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR1M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR1M_PRIME (
+	public double linearMarginCovariance_LIBOR1M_PRIME (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR1M_PRIME => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR1M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR1M_PRIME = 0.;
+		double linearMarginCovariance_LIBOR1M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MSensitivityMarginEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -1207,8 +1208,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String primeTenor = primeSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR1M_PRIME = marginCovariance_LIBOR1M_PRIME + libor1MSensitivityMargin *
-					primeSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_LIBOR1M_PRIME = linearMarginCovariance_LIBOR1M_PRIME +
+					libor1MSensitivityMargin * primeSensitivityMarginEntry.getValue() * (
 						libor1MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
 							libor1MTenor,
 							primeTenor
@@ -1217,33 +1218,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR1M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR1M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR1M-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR1M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR1M-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR1M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR1M_MUNICIPAL (
+	public double linearMarginCovariance_LIBOR1M_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR1M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR1M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR1M_MUNICIPAL = 0.;
+		double linearMarginCovariance_LIBOR1M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MSensitivityMarginEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -1257,7 +1258,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String municipalTenor = municipalSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR1M_MUNICIPAL = marginCovariance_LIBOR1M_MUNICIPAL +
+				linearMarginCovariance_LIBOR1M_MUNICIPAL = linearMarginCovariance_LIBOR1M_MUNICIPAL +
 					libor1MSensitivityMargin * municipalSensitivityMarginEntry.getValue() * (
 						libor1MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
 							libor1MTenor,
@@ -1267,33 +1268,34 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR1M_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR1M_MUNICIPAL *
+			bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR3M-LIBOR6M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR3M-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR3M-LIBOR6M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR3M-LIBOR6M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR3M_LIBOR6M (
+	public double linearMarginCovariance_LIBOR3M_LIBOR6M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR3M_LIBOR6M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR3M_LIBOR6M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR3M_LIBOR6M = 0.;
+		double linearMarginCovariance_LIBOR3M_LIBOR6M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MSensitivityMarginEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -1307,7 +1309,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor6MTenor = libor6MSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR3M_LIBOR6M = marginCovariance_LIBOR3M_LIBOR6M +
+				linearMarginCovariance_LIBOR3M_LIBOR6M = linearMarginCovariance_LIBOR3M_LIBOR6M +
 					libor3MSensitivityMargin * libor6MSensitivityMarginEntry.getValue() * (
 						libor3MTenor.equalsIgnoreCase (libor6MTenor) ? 1. : tenorCorrelation.entry (
 							libor3MTenor,
@@ -1317,33 +1319,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR3M_LIBOR6M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR3M_LIBOR6M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR3M-LIBOR12M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR3M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR3M-LIBOR12M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR3M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR3M_LIBOR12M (
+	public double linearMarginCovariance_LIBOR3M_LIBOR12M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR3M_LIBOR12M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR3M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR3M_LIBOR12M = 0.;
+		double linearMarginCovariance_LIBOR3M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MSensitivityMarginEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -1357,7 +1359,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor12MTenor = libor12MSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR3M_LIBOR12M = marginCovariance_LIBOR3M_LIBOR12M +
+				linearMarginCovariance_LIBOR3M_LIBOR12M = linearMarginCovariance_LIBOR3M_LIBOR12M +
 					libor3MSensitivityMargin * libor12MSensitivityMarginEntry.getValue() * (
 						libor3MTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
 							libor3MTenor,
@@ -1367,33 +1369,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR3M_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR3M_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR3M-PRIME Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR3M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR3M-PRIME Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR3M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR3M_PRIME (
+	public double linearMarginCovariance_LIBOR3M_PRIME (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR3M_PRIME => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR3M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR3M_PRIME = 0.;
+		double linearMarginCovariance_LIBOR3M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MSensitivityMarginEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -1407,8 +1409,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String primeTenor = primeSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR3M_PRIME = marginCovariance_LIBOR3M_PRIME + libor3MSensitivityMargin *
-					primeSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_LIBOR3M_PRIME = linearMarginCovariance_LIBOR3M_PRIME +
+					libor3MSensitivityMargin * primeSensitivityMarginEntry.getValue() * (
 						libor3MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
 							libor3MTenor,
 							primeTenor
@@ -1417,33 +1419,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR3M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR3M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR3M-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR3M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR3M-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR3M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR3M_MUNICIPAL (
+	public double linearMarginCovariance_LIBOR3M_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR3M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR3M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR3M_MUNICIPAL = 0.;
+		double linearMarginCovariance_LIBOR3M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MSensitivityMarginEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -1457,7 +1459,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String municipalTenor = municipalSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR3M_MUNICIPAL = marginCovariance_LIBOR3M_MUNICIPAL +
+				linearMarginCovariance_LIBOR3M_MUNICIPAL = linearMarginCovariance_LIBOR3M_MUNICIPAL +
 					libor3MSensitivityMargin * municipalSensitivityMarginEntry.getValue() * (
 						libor3MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
 							libor3MTenor,
@@ -1467,33 +1469,34 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR3M_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR3M_MUNICIPAL *
+			bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR6M-LIBOR12M Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR6M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR6M-LIBOR12M Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR6M-LIBOR12M Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR6M_LIBOR12M (
+	public double linearMarginCovariance_LIBOR6M_LIBOR12M (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR6M_LIBOR12M => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR6M_LIBOR12M => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR6M_LIBOR12M = 0.;
+		double linearMarginCovariance_LIBOR6M_LIBOR12M = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MSensitivityMarginEntry :
 			_libor6MSensitivityMargin.entrySet())
@@ -1507,7 +1510,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String libor12MTenor = libor12MSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR6M_LIBOR12M = marginCovariance_LIBOR6M_LIBOR12M +
+				linearMarginCovariance_LIBOR6M_LIBOR12M = linearMarginCovariance_LIBOR6M_LIBOR12M +
 					libor6MSensitivityMargin * libor12MSensitivityMarginEntry.getValue() * (
 						libor6MTenor.equalsIgnoreCase (libor12MTenor) ? 1. : tenorCorrelation.entry (
 							libor6MTenor,
@@ -1517,33 +1520,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR6M_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR6M_LIBOR12M * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR6M-PRIME Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR6M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR6M-PRIME Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR6M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR6M_PRIME (
+	public double linearMarginCovariance_LIBOR6M_PRIME (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR6M_PRIME => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR6M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR6M_PRIME = 0.;
+		double linearMarginCovariance_LIBOR6M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MSensitivityMarginEntry :
 			_libor6MSensitivityMargin.entrySet())
@@ -1557,8 +1560,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String primeTenor = primeSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR6M_PRIME = marginCovariance_LIBOR6M_PRIME + libor6MSensitivityMargin *
-					primeSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_LIBOR6M_PRIME = linearMarginCovariance_LIBOR6M_PRIME +
+					libor6MSensitivityMargin * primeSensitivityMarginEntry.getValue() * (
 						libor6MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
 							libor6MTenor,
 							primeTenor
@@ -1567,33 +1570,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR6M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR6M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR6M-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear -MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR6M-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR6M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR6M_MUNICIPAL (
+	public double linearMarginCovariance_LIBOR6M_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR6M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR6M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR6M_MUNICIPAL = 0.;
+		double linearMarginCovariance_LIBOR6M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MSensitivityMarginEntry :
 			_libor6MSensitivityMargin.entrySet())
@@ -1607,7 +1610,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String municipalTenor = municipalSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR6M_MUNICIPAL = marginCovariance_LIBOR6M_MUNICIPAL +
+				linearMarginCovariance_LIBOR6M_MUNICIPAL = linearMarginCovariance_LIBOR6M_MUNICIPAL +
 					libor6MSensitivityMargin * municipalSensitivityMarginEntry.getValue() * (
 						libor6MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
 							libor6MTenor,
@@ -1617,32 +1620,34 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR6M_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR6M_MUNICIPAL *
+			bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR12M-PRIME Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR12M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR12M-PRIME Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR12M-PRIME Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR12M_PRIME (
+	public double linearMarginCovariance_LIBOR12M_PRIME (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
-			throw new java.lang.Exception ("IRFactorAggregate::covariance_LIBOR12M_PRIME => Invalid Inputs");
+			throw new java.lang.Exception
+				("IRFactorAggregate::linearMarginCovariance_LIBOR12M_PRIME => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR12M_PRIME = 0.;
+		double linearMarginCovariance_LIBOR12M_PRIME = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MSensitivityMarginEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -1656,8 +1661,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String primeTenor = primeSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR12M_PRIME = marginCovariance_LIBOR12M_PRIME + libor12MSensitivityMargin *
-					primeSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_LIBOR12M_PRIME = linearMarginCovariance_LIBOR12M_PRIME +
+					libor12MSensitivityMargin * primeSensitivityMarginEntry.getValue() * (
 						libor12MTenor.equalsIgnoreCase (primeTenor) ? 1. : tenorCorrelation.entry (
 							libor12MTenor,
 							primeTenor
@@ -1666,33 +1671,33 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR12M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR12M_PRIME * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the LIBOR12M-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear LIBOR12M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The LIBOR12M-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear LIBOR12M-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_LIBOR12M_MUNICIPAL (
+	public double linearMarginCovariance_LIBOR12M_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_LIBOR12M_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_LIBOR12M_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_LIBOR12M_MUNICIPAL = 0.;
+		double linearMarginCovariance_LIBOR12M_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MSensitivityMarginEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -1706,7 +1711,7 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String municipalTenor = municipalSensitivityMarginEntry.getKey();
 
-				marginCovariance_LIBOR12M_MUNICIPAL = marginCovariance_LIBOR12M_MUNICIPAL +
+				linearMarginCovariance_LIBOR12M_MUNICIPAL = linearMarginCovariance_LIBOR12M_MUNICIPAL +
 					libor12MSensitivityMargin * municipalSensitivityMarginEntry.getValue() * (
 						libor12MTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
 							libor12MTenor,
@@ -1716,33 +1721,34 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_LIBOR12M_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_LIBOR12M_MUNICIPAL *
+			bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the PRIME-MUNICIPAL Sensitivity Margin Co-variance
+	 * Compute the Linear PRIME-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The PRIME-MUNICIPAL Sensitivity Margin Co-variance
+	 * @return The Linear PRIME-MUNICIPAL Sensitivity Margin Co-variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double marginCovariance_PRIME_MUNICIPAL (
+	public double linearMarginCovariance_PRIME_MUNICIPAL (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 		throws java.lang.Exception
 	{
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::marginCovariance_PRIME_MUNICIPAL => Invalid Inputs");
+				("IRFactorAggregate::linearMarginCovariance_PRIME_MUNICIPAL => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
 			bucketSensitivitySettingsIR.crossTenorCorrelation();
 
-		double marginCovariance_PRIME_MUNICIPAL = 0.;
+		double linearMarginCovariance_PRIME_MUNICIPAL = 0.;
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeSensitivityMarginEntry :
 			_primeSensitivityMargin.entrySet())
@@ -1756,8 +1762,8 @@ public class RiskFactorAggregateIR
 			{
 				java.lang.String municipalTenor = municipalSensitivityMarginEntry.getKey();
 
-				marginCovariance_PRIME_MUNICIPAL = marginCovariance_PRIME_MUNICIPAL + primeSensitivityMargin *
-					municipalSensitivityMarginEntry.getValue() * (
+				linearMarginCovariance_PRIME_MUNICIPAL = linearMarginCovariance_PRIME_MUNICIPAL +
+					primeSensitivityMargin * municipalSensitivityMarginEntry.getValue() * (
 						primeTenor.equalsIgnoreCase (municipalTenor) ? 1. : tenorCorrelation.entry (
 							primeTenor,
 							municipalTenor
@@ -1766,51 +1772,104 @@ public class RiskFactorAggregateIR
 			}
 		}
 
-		return marginCovariance_PRIME_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
+		return linearMarginCovariance_PRIME_MUNICIPAL * bucketSensitivitySettingsIR.crossCurveCorrelation();
 	}
 
 	/**
-	 * Compute the Complete Net Sensitivity Margin Co-variance
+	 * Compute the Linear Margin Co-variance
 	 * 
 	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
 	 * 
-	 * @return The Complete Net Sensitivity Margin Co-variance
+	 * @return The Linear Margin Co-variance
 	 */
 
-	public org.drip.simm20.margin.IRSensitivityAggregate margin (
+	public org.drip.simm20.margin.IRSensitivityAggregate linearMargin (
 		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 	{
 		try
 		{
 			return new org.drip.simm20.margin.IRSensitivityAggregate (
-				marginCovariance_OIS_OIS (bucketSensitivitySettingsIR),
-				marginCovariance_OIS_LIBOR1M (bucketSensitivitySettingsIR),
-				marginCovariance_OIS_LIBOR3M (bucketSensitivitySettingsIR),
-				marginCovariance_OIS_LIBOR6M (bucketSensitivitySettingsIR),
-				marginCovariance_OIS_LIBOR12M (bucketSensitivitySettingsIR),
-				marginCovariance_OIS_PRIME (bucketSensitivitySettingsIR),
-				marginCovariance_OIS_MUNICIPAL (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR1M_LIBOR1M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR1M_LIBOR3M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR1M_LIBOR6M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR1M_LIBOR12M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR1M_PRIME (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR1M_MUNICIPAL (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR3M_LIBOR3M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR3M_LIBOR6M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR3M_LIBOR12M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR3M_PRIME (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR3M_MUNICIPAL (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR6M_LIBOR6M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR6M_LIBOR12M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR6M_PRIME (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR6M_MUNICIPAL (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR12M_LIBOR12M (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR12M_PRIME (bucketSensitivitySettingsIR),
-				marginCovariance_LIBOR12M_MUNICIPAL (bucketSensitivitySettingsIR),
-				marginCovariance_PRIME_PRIME (bucketSensitivitySettingsIR),
-				marginCovariance_PRIME_MUNICIPAL (bucketSensitivitySettingsIR),
-				marginCovariance_MUNICIPAL_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_OIS (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR1M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR3M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR1M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR3M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_LIBOR3M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR12M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR12M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR12M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_PRIME_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_PRIME_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_MUNICIPAL_MUNICIPAL (bucketSensitivitySettingsIR),
+				cumulativeSensitivityMargin()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Curvature Margin Co-variance
+	 * 
+	 * @param bucketSensitivitySettingsIR The IR Currency Bucket Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The Curvature Margin Co-variance
+	 */
+
+	public org.drip.simm20.margin.IRSensitivityAggregate curvatureMargin (
+		final org.drip.simm20.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
+	{
+		try
+		{
+			return new org.drip.simm20.margin.IRSensitivityAggregate (
+				linearMarginCovariance_OIS_OIS (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR1M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR3M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_OIS_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR1M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR3M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR1M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_LIBOR3M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR3M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_LIBOR6M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR6M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR12M_LIBOR12M (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR12M_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_LIBOR12M_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_PRIME_PRIME (bucketSensitivitySettingsIR),
+				linearMarginCovariance_PRIME_MUNICIPAL (bucketSensitivitySettingsIR),
+				linearMarginCovariance_MUNICIPAL_MUNICIPAL (bucketSensitivitySettingsIR),
 				cumulativeSensitivityMargin()
 			);
 		}

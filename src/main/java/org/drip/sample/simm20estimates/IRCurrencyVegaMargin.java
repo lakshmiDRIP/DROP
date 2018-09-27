@@ -535,9 +535,10 @@ public class IRCurrencyVegaMargin
 			bucketSensitivityIR
 		);
 
-		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR (bucketSensitivityMap);
+		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR
+			(bucketSensitivityMap);
 
-		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.aggregate
+		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.linearAggregate
 			(riskMeasureSensitivitySettingsIR);
 
 		VegaMarginCovarianceEntry (

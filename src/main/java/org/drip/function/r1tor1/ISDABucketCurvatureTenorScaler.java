@@ -124,7 +124,7 @@ public class ISDABucketCurvatureTenorScaler extends org.drip.function.definition
 			throw new java.lang.Exception ("ISDABucketCurvatureTenorScaler::evaluate => Invalid Inputs");
 		}
 
-		return 0.5 * java.lang.Math.max (
+		return 0.5 * java.lang.Math.min (
 			1.,
 			((double) _mporCalendarDays) / t
 		);

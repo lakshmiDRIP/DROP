@@ -176,7 +176,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 			bucketVegaSettingsMap.put (
 				currency,
-				org.drip.simm20.parameters.BucketVegaSettingsIR.ISDA_VEGA (currency)
+				org.drip.simm20.parameters.BucketVegaSettingsIR.ISDA (currency)
 			);
 
 			for (int currencyListInnerIndex = 0;
@@ -193,6 +193,72 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketVegaSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					currencyList,
+					crossCurrencyCorrelation
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Standard ISDA CURVATURE Instance of RiskMeasureSensitivitySettingsIR
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The Standard ISDA CURVATURE Instance of RiskMeasureSensitivitySettingsIR
+	 */
+
+	public static final RiskMeasureSensitivitySettingsIR ISDA_CURVATURE (
+		final java.util.List<java.lang.String> currencyList)
+	{
+		if (null == currencyList)
+		{
+			return null;
+		}
+
+		int currencyListSize = currencyList.size();
+
+		if (0 == currencyListSize)
+		{
+			return null;
+		}
+
+		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
+
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
+			bucketCurvatureSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm20.parameters.BucketSensitivitySettingsIR>();
+
+		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		{
+			java.lang.String currency = currencyList.get (currencyListIndex);
+
+			bucketCurvatureSettingsMap.put (
+				currency,
+				org.drip.simm20.parameters.BucketCurvatureSettingsIR.ISDA (currency)
+			);
+
+			for (int currencyListInnerIndex = 0;
+				currencyListInnerIndex < currencyListSize;
+				++currencyListInnerIndex)
+			{
+				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
+					currencyListIndex == currencyListInnerIndex ? 1. :
+						org.drip.simm20.rates.IRSystemics.CROSS_CURRENCY_CORRELATION;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsIR (
+				bucketCurvatureSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation

@@ -73,13 +73,13 @@ public class RiskMeasureAggregate
 {
 	private double _coreSBAVariance = java.lang.Double.NaN;
 	private double _residualSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate>
-		_bucketSensitivityAggregateMap = null;
+	private java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> _bucketAggregateMap =
+		null;
 
 	/**
 	 * RiskMeasureAggregate Constructor
 	 * 
-	 * @param bucketSensitivityAggregateMap The Bucket Aggregate Sensitivity Map
+	 * @param bucketAggregateMap The Bucket Aggregate Sensitivity Map
 	 * @param coreSBAVariance The Core SBA Variance
 	 * @param residualSBAVariance The Residual SBA Variance
 	 * 
@@ -87,13 +87,12 @@ public class RiskMeasureAggregate
 	 */
 
 	public RiskMeasureAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate>
-			bucketSensitivityAggregateMap,
+		final java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap,
 		final double coreSBAVariance,
 		final double residualSBAVariance)
 		throws java.lang.Exception
 	{
-		if (null == (_bucketSensitivityAggregateMap = bucketSensitivityAggregateMap) ||
+		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
 		{
@@ -107,10 +106,9 @@ public class RiskMeasureAggregate
 	 * @return The Bucket Sensitivity Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate>
-		bucketSensitivityAggregateMap()
+	public java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregate> bucketAggregateMap()
 	{
-		return _bucketSensitivityAggregateMap;
+		return _bucketAggregateMap;
 	}
 
 	/**

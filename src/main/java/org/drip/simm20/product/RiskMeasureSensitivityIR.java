@@ -106,14 +106,14 @@ public class RiskMeasureSensitivityIR
 	}
 
 	/**
-	 * Generate the Risk Measure Aggregate
+	 * Generate the Linear Risk Measure Aggregate
 	 * 
 	 * @param riskMeasureSensitivitySettings The Risk Measure Sensitivity Settings
 	 * 
-	 * @return The Risk Measure Aggregate
+	 * @return The Linear Risk Measure Aggregate
 	 */
 
-	public org.drip.simm20.margin.RiskMeasureAggregateIR aggregate (
+	public org.drip.simm20.margin.RiskMeasureAggregateIR linearAggregate (
 		final org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettings)
 	{
 		if (null == riskMeasureSensitivitySettings)
@@ -186,6 +186,138 @@ public class RiskMeasureSensitivityIR
 			return new org.drip.simm20.margin.RiskMeasureAggregateIR (
 				bucketAggregateMap,
 				coreSBAVariance,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Curvature Risk Measure Aggregate
+	 * 
+	 * @param riskMeasureSensitivitySettings The Risk Measure Sensitivity Settings
+	 * 
+	 * @return The Curvature Risk Measure Aggregate
+	 */
+
+	public org.drip.simm20.margin.RiskMeasureAggregateIR curvatureAggregate (
+		final org.drip.simm20.parameters.RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettings)
+	{
+		if (null == riskMeasureSensitivitySettings)
+		{
+			return null;
+		}
+
+		double coreSBAVariance = 0.;
+		double cumulativeRiskFactorSensitivityMarginCore = 0.;
+		double cumulativeRiskFactorSensitivityMarginCorePositive = 0.;
+
+		java.util.Map<java.lang.String, org.drip.simm20.margin.BucketAggregateIR> bucketAggregateMap = new
+			java.util.TreeMap<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>();
+
+		java.util.Map<java.lang.String, org.drip.simm20.parameters.BucketSensitivitySettingsIR>
+			bucketSensitivitySettingsMap = riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();
+
+		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =
+			riskMeasureSensitivitySettings.crossBucketCorrelation();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.simm20.product.BucketSensitivityIR>
+			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())
+		{
+			java.lang.String bucketIndex = bucketSensitivityMapEntry.getKey();
+
+			org.drip.simm20.product.BucketSensitivityIR bucketSensitivity =
+				bucketSensitivityMapEntry.getValue();
+
+			org.drip.simm20.margin.BucketAggregateIR bucketAggregate = bucketSensitivity.aggregate
+				(bucketSensitivitySettingsMap.get (bucketIndex));
+
+			if (null == bucketAggregate)
+			{
+				return null;
+			}
+
+			double bucketCumulativeRiskFactorSensitivityMargin =
+				bucketAggregate.cumulativeRiskFactorSensitivityMargin();
+
+			cumulativeRiskFactorSensitivityMarginCore = cumulativeRiskFactorSensitivityMarginCore +
+				bucketCumulativeRiskFactorSensitivityMargin;
+
+			cumulativeRiskFactorSensitivityMarginCorePositive =
+				cumulativeRiskFactorSensitivityMarginCorePositive +
+				java.lang.Math.max (
+					bucketCumulativeRiskFactorSensitivityMargin,
+					0.
+				);
+
+			bucketAggregateMap.put (
+				bucketIndex,
+				bucketAggregate
+			);
+		}
+
+		try
+		{
+			for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())
+			{
+				java.lang.String outerKey = bucketAggregateMapOuterEntry.getKey();
+
+				org.drip.simm20.margin.BucketAggregateIR bucketAggregateOuter =
+					bucketAggregateMapOuterEntry.getValue();
+
+				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();
+
+				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedSensitivityMargin();
+
+				for (java.util.Map.Entry<java.lang.String, org.drip.simm20.margin.BucketAggregateIR>
+					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())
+				{
+					java.lang.String innerKey = bucketAggregateMapInnerEntry.getKey();
+
+					if (outerKey.equalsIgnoreCase (innerKey))
+					{
+						coreSBAVariance = coreSBAVariance + weightedSensitivityVarianceOuter;
+					}
+					else
+					{
+						double correlation = crossBucketCorrelation.entry (
+							"" + outerKey,
+							"" + innerKey
+						);
+
+						coreSBAVariance = coreSBAVariance + correlation * correlation *
+							boundedWeightedSensitivityOuter *
+							bucketAggregateMapInnerEntry.getValue().boundedSensitivityMargin();
+					}
+				}
+			}
+
+			double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.995);
+
+			double lambda = tailVariate * tailVariate - 1.;
+
+			double thetaCore = 0 == cumulativeRiskFactorSensitivityMarginCorePositive ? 0. :
+				java.lang.Math.min (
+					cumulativeRiskFactorSensitivityMarginCore /
+						cumulativeRiskFactorSensitivityMarginCorePositive,
+					0.
+				);
+
+			double coreSBAMargin = java.lang.Math.max (
+				cumulativeRiskFactorSensitivityMarginCore +
+					(lambda * (1. + thetaCore) - thetaCore) * java.lang.Math.sqrt (coreSBAVariance),
+				0.
+			);
+
+			return new org.drip.simm20.margin.RiskMeasureAggregateIR (
+				bucketAggregateMap,
+				coreSBAMargin * coreSBAMargin,
 				0.
 			);
 		}

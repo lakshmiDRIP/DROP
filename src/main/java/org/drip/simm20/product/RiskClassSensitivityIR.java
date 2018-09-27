@@ -73,23 +73,27 @@ public class RiskClassSensitivityIR
 {
 	private org.drip.simm20.product.RiskMeasureSensitivityIR _vega = null;
 	private org.drip.simm20.product.RiskMeasureSensitivityIR _delta = null;
+	private org.drip.simm20.product.RiskMeasureSensitivityIR _curvature = null;
 
 	/**
 	 * RiskClassSensitivityIR Constructor
 	 * 
 	 * @param delta The IR Delta Tenor Sensitivity
 	 * @param vega The IR Vega Tenor Sensitivity
+	 * @param curvature The IR Curvature Tenor Sensitivity
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivityIR (
 		final org.drip.simm20.product.RiskMeasureSensitivityIR delta,
-		final org.drip.simm20.product.RiskMeasureSensitivityIR vega)
+		final org.drip.simm20.product.RiskMeasureSensitivityIR vega,
+		final org.drip.simm20.product.RiskMeasureSensitivityIR curvature)
 		throws java.lang.Exception
 	{
 		if (null == (_delta = delta) ||
-			null == (_vega = vega))
+			null == (_vega = vega) ||
+			null == (_curvature = curvature))
 		{
 			throw new java.lang.Exception ("RiskClassSensitivityIR Constructor => Invalid Inputs");
 		}
@@ -115,5 +119,16 @@ public class RiskClassSensitivityIR
 	public org.drip.simm20.product.RiskMeasureSensitivityIR vega()
 	{
 		return _vega;
+	}
+
+	/**
+	 * Retrieve the IR Curvature Tenor Sensitivity
+	 * 
+	 * @return The IR Curvature Tenor Sensitivity
+	 */
+
+	public org.drip.simm20.product.RiskMeasureSensitivityIR curvature()
+	{
+		return _curvature;
 	}
 }

@@ -245,30 +245,30 @@ public class RiskMeasureSensitivity
 				return null;
 			}
 
-			double bucketBumulativeRiskFactorSensitivityMargin =
+			double bucketCumulativeRiskFactorSensitivityMargin =
 				bucketAggregate.cumulativeRiskFactorSensitivityMargin();
 
 			if (!"-1".equalsIgnoreCase (bucketIndex))
 			{
 				cumulativeRiskFactorSensitivityMarginCore = cumulativeRiskFactorSensitivityMarginCore +
-					bucketBumulativeRiskFactorSensitivityMargin;
+					bucketCumulativeRiskFactorSensitivityMargin;
 
 				cumulativeRiskFactorSensitivityMarginCorePositive =
 					cumulativeRiskFactorSensitivityMarginCorePositive +
 					java.lang.Math.max (
-						bucketBumulativeRiskFactorSensitivityMargin,
+						bucketCumulativeRiskFactorSensitivityMargin,
 						0.
 					);
 			}
 			else
 			{
 				cumulativeRiskFactorSensitivityMarginResidual = cumulativeRiskFactorSensitivityMarginResidual
-					+ bucketBumulativeRiskFactorSensitivityMargin;
+					+ bucketCumulativeRiskFactorSensitivityMargin;
 
 				cumulativeRiskFactorSensitivityMarginResidualPositive =
 					cumulativeRiskFactorSensitivityMarginResidualPositive +
 					java.lang.Math.max (
-						bucketBumulativeRiskFactorSensitivityMargin,
+						bucketCumulativeRiskFactorSensitivityMargin,
 						0.
 					);
 			}
@@ -306,7 +306,7 @@ public class RiskMeasureSensitivity
 						}
 						else
 						{
-							double correlation =  crossBucketCorrelation.entry (
+							double correlation = crossBucketCorrelation.entry (
 								"" + outerKey,
 								"" + innerKey
 							);
@@ -323,15 +323,16 @@ public class RiskMeasureSensitivity
 
 			double lambda = tailVariate * tailVariate - 1.;
 
-			double thetaCore = java.lang.Math.min (
-				cumulativeRiskFactorSensitivityMarginCore /
-					cumulativeRiskFactorSensitivityMarginCorePositive,
-				0.
-			);
+			double thetaCore = 0 == cumulativeRiskFactorSensitivityMarginCorePositive ? 0. :
+				java.lang.Math.min (
+					cumulativeRiskFactorSensitivityMarginCore /
+						cumulativeRiskFactorSensitivityMarginCorePositive,
+					0.
+				);
 
 			double coreSBAMargin = java.lang.Math.max (
 				cumulativeRiskFactorSensitivityMarginCore +
-				(lambda * (1. + thetaCore) - thetaCore) * java.lang.Math.sqrt (coreSBAVariance),
+					(lambda * (1. + thetaCore) - thetaCore) * java.lang.Math.sqrt (coreSBAVariance),
 				0.
 			);
 
@@ -344,8 +345,8 @@ public class RiskMeasureSensitivity
 
 			double residualSBAMargin = !bucketAggregateMap.containsKey ("-1") ? 0. : java.lang.Math.max (
 				cumulativeRiskFactorSensitivityMarginResidual +
-				(lambda * (1. + thetaResidual) - thetaResidual) *
-					java.lang.Math.sqrt (bucketAggregateMap.get ("-1").sensitivityMarginVariance()),
+					(lambda * (1. + thetaResidual) - thetaResidual) *
+						java.lang.Math.sqrt (bucketAggregateMap.get ("-1").sensitivityMarginVariance()),
 				0.
 			);
 

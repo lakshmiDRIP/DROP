@@ -562,12 +562,13 @@ public class IRDeltaMargin
 			currencyList.add (currency);
 		}
 
-		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR (bucketSensitivityMap);
+		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR
+			(bucketSensitivityMap);
 
 		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =
 			RiskMeasureSensitivitySettingsIR.ISDA_DELTA (currencyList);
 
-		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.aggregate
+		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.linearAggregate
 			(riskMeasureSensitivitySettingsIR);
 
 		for (String currency : currencyArray)

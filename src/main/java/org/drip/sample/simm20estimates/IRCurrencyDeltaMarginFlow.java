@@ -519,7 +519,7 @@ public class IRCurrencyDeltaMarginFlow
 
 		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);
 
-		IRSensitivityAggregate irDeltaAggregate = bucketAggregateIR.riskFactorAggregateIR().margin
+		IRSensitivityAggregate irDeltaAggregate = bucketAggregateIR.riskFactorAggregateIR().linearMargin
 			(bucketSensitivitySettingsIR);
 
 		DeltaMarginCovarianceEntry (irDeltaAggregate);
