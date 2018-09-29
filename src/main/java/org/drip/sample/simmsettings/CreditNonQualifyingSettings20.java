@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.credit.CRBucket;
-import org.drip.simm20.credit.CRNQBucketCorrelation;
-import org.drip.simm20.credit.CRNQSettingsContainer;
-import org.drip.simm20.credit.CRNQSystemics;
+import org.drip.simm.credit.CRBucket;
+import org.drip.simm.credit.CRNQBucketCorrelation20;
+import org.drip.simm.credit.CRNQSettingsContainer20;
+import org.drip.simm.credit.CRNQSystemics20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,7 +83,7 @@ public class CreditNonQualifyingSettings20
 
 	private static final void DisplayRiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CRNQSettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = CRNQSettingsContainer20.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -117,7 +117,7 @@ public class CreditNonQualifyingSettings20
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CRBucket creditQualifyingBucket = CRNQSettingsContainer.Bucket (bucketIndex);
+			CRBucket creditQualifyingBucket = CRNQSettingsContainer20.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
@@ -153,35 +153,35 @@ public class CreditNonQualifyingSettings20
 		System.out.println (
 			"\t|| Vega Risk Wight                                     => " +
 			FormatUtil.FormatDouble (
-				CRNQSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CRNQSystemics20.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Correlation >80% Names Overlap         => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.GT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation20.GT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Correlation <80% Names Overlap         => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.LT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation20.LT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Correlation >80% Names Overlap             => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.GT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation20.GT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Correlation <80% Names Overlap             => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation.LT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
+				CRNQBucketCorrelation20.LT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 

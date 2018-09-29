@@ -3,7 +3,7 @@ package org.drip.sample.simmsettings;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.fx.FXSystemics;
+import org.drip.simm.fx.FXSystemics20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -87,28 +87,28 @@ public class FXSettings20
 		System.out.println (
 			"\t|| Risk Weight                                         => " +
 			FormatUtil.FormatDouble (
-				FXSystemics.DELTA_RISK_WEIGHT, 3, 2, 1.
+				FXSystemics20.DELTA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				FXSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+				FXSystemics20.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				FXSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				FXSystemics20.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Correlation                                         => " +
 			FormatUtil.FormatDouble (
-				FXSystemics.CORRELATION, 3, 2, 1.
+				FXSystemics20.CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 

@@ -7,10 +7,10 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.credit.CRBucket;
-import org.drip.simm20.credit.CRQBucketCorrelation;
-import org.drip.simm20.credit.CRQSettingsContainer;
-import org.drip.simm20.credit.CRQSystemics;
+import org.drip.simm.credit.CRBucket;
+import org.drip.simm.credit.CRQBucketCorrelation20;
+import org.drip.simm.credit.CRQSettingsContainer20;
+import org.drip.simm.credit.CRQSystemics20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,7 +85,7 @@ public class CreditQualifyingSettings20
 
 	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CRQSettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = CRQSettingsContainer20.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -119,7 +119,7 @@ public class CreditQualifyingSettings20
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CRBucket creditQualifyingBucket = CRQSettingsContainer.Bucket (bucketIndex);
+			CRBucket creditQualifyingBucket = CRQSettingsContainer20.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
@@ -155,56 +155,56 @@ public class CreditQualifyingSettings20
 		System.out.println (
 			"\t|| Residual Bucket Risk Weight                         => " +
 			FormatUtil.FormatDouble (
-				CRQSystemics.RESIDUAL_BUCKET_RISK_WEIGHT, 3, 2, 1.
+				CRQSystemics20.RESIDUAL_BUCKET_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Vega Risk Wight                                     => " +
 			FormatUtil.FormatDouble (
-				CRQSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
+				CRQSystemics20.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Base Correlation Risk Weight                        => " +
 			FormatUtil.FormatDouble (
-				CRQSystemics.BASE_CORRELATION_RISK_WEIGHT, 3, 2, 1.
+				CRQSystemics20.BASE_CORRELATION_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Cross Base Correlation Index Correlation            => " +
 			FormatUtil.FormatDouble (
-				CRQSystemics.BASE_CORRELATION_CORRELATION, 3, 2, 1.
+				CRQSystemics20.BASE_CORRELATION_CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Same Issuer/Seniority Correlation      => " +
 			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Non-Residual Different Issuer/Seniority Correlation => " +
 			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Same Issuer/Seniority Correlation          => " +
 			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Different Issuer/Seniority Correlation     => " +
 			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -216,7 +216,7 @@ public class CreditQualifyingSettings20
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CRQSettingsContainer.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = CRQSettingsContainer20.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 

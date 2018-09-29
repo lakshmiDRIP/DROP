@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.commodity.CTRiskThresholdContainer;
-import org.drip.simm20.common.DeltaVegaThreshold;
+import org.drip.simm.commodity.CTRiskThresholdContainer20;
+import org.drip.simm.common.DeltaVegaThreshold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +82,7 @@ public class CommodityRiskConcentrationThreshold20
 	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CTRiskThresholdContainer.BucketSet();
+		Set<Integer> bucketSet = CTRiskThresholdContainer20.BucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -104,7 +104,7 @@ public class CommodityRiskConcentrationThreshold20
 
 		for (int bucketNumber : bucketSet)
 		{
-			DeltaVegaThreshold commodityRiskThreshold = CTRiskThresholdContainer.Threshold (bucketNumber);
+			DeltaVegaThreshold commodityRiskThreshold = CTRiskThresholdContainer20.Threshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +

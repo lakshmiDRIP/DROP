@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.common.DeltaVegaThreshold;
-import org.drip.simm20.credit.CRThresholdContainer;
+import org.drip.simm.common.DeltaVegaThreshold;
+import org.drip.simm.credit.CRThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

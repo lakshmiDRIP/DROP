@@ -213,7 +213,7 @@ public class EnvManager {
 			return null;
 		}
 
-		if (!org.drip.simm20.common.ISDASettingsContainer.Init()) {
+		if (!org.drip.simm.common.ISDASettingsContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize ISDA SIMM 2.0 Specifications!");
 
 			return null;

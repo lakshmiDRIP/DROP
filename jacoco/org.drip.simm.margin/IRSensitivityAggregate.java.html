@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IRSensitivityAggregate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm.margin</a> &gt; <span class="el_source">IRSensitivityAggregate.java</span></div><h1>IRSensitivityAggregate.java</h1><pre class="source lang-java linenums">
+package org.drip.simm.margin;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IRSensitivityAggregate holds the IM Margin Sensitivity Co-variances within a single Currency for each of
+ *  the IR Risk Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The References
+ *  are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class IRSensitivityAggregate
+{
+<span class="nc" id="L75">	private double _marginCovariance_OIS_OIS = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private double _marginCovariance_OIS_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L77">	private double _marginCovariance_OIS_LIBOR1M = java.lang.Double.NaN;</span>
+<span class="nc" id="L78">	private double _marginCovariance_OIS_LIBOR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L79">	private double _marginCovariance_OIS_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L80">	private double _marginCovariance_OIS_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L81">	private double _marginCovariance_OIS_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L83">	private double _marginCovariance_LIBOR1M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L84">	private double _marginCovariance_LIBOR1M_LIBOR1M = java.lang.Double.NaN;</span>
+<span class="nc" id="L85">	private double _marginCovariance_LIBOR1M_LIBOR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private double _marginCovariance_LIBOR1M_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L87">	private double _marginCovariance_LIBOR1M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L88">	private double _marginCovariance_LIBOR1M_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L90">	private double _marginCovariance_LIBOR3M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L91">	private double _marginCovariance_LIBOR3M_LIBOR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L92">	private double _marginCovariance_LIBOR3M_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L93">	private double _marginCovariance_LIBOR3M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L94">	private double _marginCovariance_LIBOR3M_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L96">	private double _marginCovariance_LIBOR6M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L97">	private double _marginCovariance_LIBOR6M_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L98">	private double _marginCovariance_LIBOR6M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L99">	private double _marginCovariance_LIBOR6M_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L101">	private double _marginCovariance_LIBOR12M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L102">	private double _marginCovariance_LIBOR12M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L103">	private double _marginCovariance_LIBOR12M_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L105">	private double _marginCovariance_PRIME_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L106">	private double _marginCovariance_PRIME_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L108">	private double _marginCovariance_MUNICIPAL_MUNICIPAL = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L110">	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;</span>
+
+	/**
+	 * IRSensitivityAggregate Constructor
+	 * 
+	 * @param marginCovariance_OIS_OIS The OIS - OIS Margin Co-variance
+	 * @param marginCovariance_OIS_LIBOR1M The OIS - LIBOR1M Margin Co-variance
+	 * @param marginCovariance_OIS_LIBOR3M The OIS - LIBOR3M Margin Co-variance
+	 * @param marginCovariance_OIS_LIBOR6M The OIS - LIBOR6M Margin Co-variance
+	 * @param marginCovariance_OIS_LIBOR12M The OIS - LIBOR12M Margin Co-variance
+	 * @param marginCovariance_OIS_PRIME The OIS - PRIME Margin Co-variance
+	 * @param marginCovariance_OIS_MUNICIPAL The OIS - MUNICIPAL Margin Co-variance
+	 * @param marginCovariance_LIBOR1M_LIBOR1M The LIBOR1M - LIBOR1M Margin Co-variance
+	 * @param marginCovariance_LIBOR1M_LIBOR3M The LIBOR1M - LIBOR3M Margin Co-variance
+	 * @param marginCovariance_LIBOR1M_LIBOR6M The LIBOR1M - LIBOR6M Margin Co-variance
+	 * @param marginCovariance_LIBOR1M_LIBOR12M The LIBOR1M - LIBOR12M Margin Co-variance
+	 * @param marginCovariance_LIBOR1M_PRIME The LIBOR1M - PRIME Margin Co-variance
+	 * @param marginCovariance_LIBOR1M_MUNICIPAL The LIBOR1M - MUNICIPAL Margin Co-variance
+	 * @param marginCovariance_LIBOR3M_LIBOR3M The LIBOR3M - LIBOR3M Margin Co-variance
+	 * @param marginCovariance_LIBOR3M_LIBOR6M The LIBOR3M - LIBOR6M Margin Co-variance
+	 * @param marginCovariance_LIBOR3M_LIBOR12M The LIBOR3M - LIBOR12M Margin Co-variance
+	 * @param marginCovariance_LIBOR3M_PRIME The LIBOR3M - PRIME Margin Co-variance
+	 * @param marginCovariance_LIBOR3M_MUNICIPAL The LIBOR3M - MUNICIPAL Margin Co-variance
+	 * @param marginCovariance_LIBOR6M_LIBOR6M The LIBOR6M - LIBOR6M Margin Co-variance
+	 * @param marginCovariance_LIBOR6M_LIBOR12M The LIBOR6M - LIBOR12M Margin Co-variance
+	 * @param marginCovariance_LIBOR6M_PRIME The LIBOR6M - PRIME Margin Co-variance
+	 * @param marginCovariance_LIBOR6M_MUNICIPAL The LIBOR6M - MUNICIPAL Margin Co-variance
+	 * @param marginCovariance_LIBOR12M_LIBOR12M The LIBOR12M - LIBOR12M Margin Co-variance
+	 * @param marginCovariance_LIBOR12M_PRIME The LIBOR12M - PRIME Margin Co-variance
+	 * @param marginCovariance_LIBOR12M_MUNICIPAL The LIBOR12M - MUNICIPAL Margin Co-variance
+	 * @param marginCovariance_PRIME_PRIME The PRIME - PRIME Margin Co-variance
+	 * @param marginCovariance_PRIME_MUNICIPAL The PRIME - MUNICIPAL Margin Co-variance
+	 * @param marginCovariance_MUNICIPAL_MUNICIPAL The MUNICIPAL - MUNICIPAL Margin Co-variance
+	 * @param cumulativeMarginSensitivity The Cumulative Margin Sensitivity
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public IRSensitivityAggregate (
+		final double marginCovariance_OIS_OIS,
+		final double marginCovariance_OIS_LIBOR1M,
+		final double marginCovariance_OIS_LIBOR3M,
+		final double marginCovariance_OIS_LIBOR6M,
+		final double marginCovariance_OIS_LIBOR12M,
+		final double marginCovariance_OIS_PRIME,
+		final double marginCovariance_OIS_MUNICIPAL,
+		final double marginCovariance_LIBOR1M_LIBOR1M,
+		final double marginCovariance_LIBOR1M_LIBOR3M,
+		final double marginCovariance_LIBOR1M_LIBOR6M,
+		final double marginCovariance_LIBOR1M_LIBOR12M,
+		final double marginCovariance_LIBOR1M_PRIME,
+		final double marginCovariance_LIBOR1M_MUNICIPAL,
+		final double marginCovariance_LIBOR3M_LIBOR3M,
+		final double marginCovariance_LIBOR3M_LIBOR6M,
+		final double marginCovariance_LIBOR3M_LIBOR12M,
+		final double marginCovariance_LIBOR3M_PRIME,
+		final double marginCovariance_LIBOR3M_MUNICIPAL,
+		final double marginCovariance_LIBOR6M_LIBOR6M,
+		final double marginCovariance_LIBOR6M_LIBOR12M,
+		final double marginCovariance_LIBOR6M_PRIME,
+		final double marginCovariance_LIBOR6M_MUNICIPAL,
+		final double marginCovariance_LIBOR12M_LIBOR12M,
+		final double marginCovariance_LIBOR12M_PRIME,
+		final double marginCovariance_LIBOR12M_MUNICIPAL,
+		final double marginCovariance_PRIME_PRIME,
+		final double marginCovariance_PRIME_MUNICIPAL,
+		final double marginCovariance_MUNICIPAL_MUNICIPAL,
+		final double cumulativeMarginSensitivity)
+		throws java.lang.Exception
+<span class="nc" id="L179">	{</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_OIS =</span>
+				marginCovariance_OIS_OIS) ||
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR1M =</span>
+				marginCovariance_OIS_LIBOR1M) ||
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR3M =</span>
+				marginCovariance_OIS_LIBOR3M) ||
+<span class="nc bnc" id="L186" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR6M =</span>
+				marginCovariance_OIS_LIBOR6M) ||
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR12M =</span>
+				marginCovariance_OIS_LIBOR12M) ||
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_PRIME =</span>
+				marginCovariance_OIS_PRIME) ||
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_MUNICIPAL =</span>
+				marginCovariance_OIS_MUNICIPAL) ||
+<span class="nc bnc" id="L194" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR1M =</span>
+				marginCovariance_LIBOR1M_LIBOR1M) ||
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR3M =</span>
+				marginCovariance_LIBOR1M_LIBOR3M) ||
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR6M =</span>
+				marginCovariance_LIBOR1M_LIBOR6M) ||
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR12M =</span>
+				marginCovariance_LIBOR1M_LIBOR12M) ||
+<span class="nc bnc" id="L202" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_PRIME =</span>
+				marginCovariance_LIBOR1M_PRIME) ||
+<span class="nc bnc" id="L204" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_MUNICIPAL =</span>
+				marginCovariance_LIBOR1M_MUNICIPAL) ||
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR3M =</span>
+				marginCovariance_LIBOR3M_LIBOR3M) ||
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR6M =</span>
+				marginCovariance_LIBOR3M_LIBOR6M) ||
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR12M =</span>
+				marginCovariance_LIBOR3M_LIBOR12M) ||
+<span class="nc bnc" id="L212" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_PRIME =</span>
+				marginCovariance_LIBOR3M_PRIME) ||
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_MUNICIPAL =</span>
+				marginCovariance_LIBOR3M_MUNICIPAL) ||
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR6M =</span>
+				marginCovariance_LIBOR6M_LIBOR6M) ||
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR12M =</span>
+				marginCovariance_LIBOR6M_LIBOR12M) ||
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_PRIME =</span>
+				marginCovariance_LIBOR6M_PRIME) ||
+<span class="nc bnc" id="L222" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_MUNICIPAL =</span>
+				marginCovariance_LIBOR6M_MUNICIPAL) ||
+<span class="nc bnc" id="L224" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_LIBOR12M =</span>
+				marginCovariance_LIBOR12M_LIBOR12M) ||
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_PRIME =</span>
+				marginCovariance_LIBOR12M_PRIME) ||
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_MUNICIPAL =</span>
+				marginCovariance_LIBOR12M_MUNICIPAL) ||
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_PRIME_PRIME =</span>
+				marginCovariance_PRIME_PRIME) ||
+<span class="nc bnc" id="L232" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_PRIME_MUNICIPAL =</span>
+				marginCovariance_PRIME_MUNICIPAL) ||
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_MUNICIPAL_MUNICIPAL =</span>
+				marginCovariance_MUNICIPAL_MUNICIPAL) ||
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =</span>
+				cumulativeMarginSensitivity))
+		{
+<span class="nc" id="L239">			throw new java.lang.Exception (&quot;IRSensitivityAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L241">	}</span>
+
+	/**
+	 * Retrieve the OIS - OIS Margin Co-variance
+	 * 
+	 * @return The OIS - OIS Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_OIS()
+	{
+<span class="nc" id="L251">		return _marginCovariance_OIS_OIS;</span>
+	}
+
+	/**
+	 * Retrieve the OIS - LIBOR1M Margin Co-variance
+	 * 
+	 * @return The OIS - LIBOR1M Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_LIBOR1M()
+	{
+<span class="nc" id="L262">		return _marginCovariance_OIS_LIBOR1M;</span>
+	}
+
+	/**
+	 * Retrieve the OIS - LIBOR3M Margin Co-variance
+	 * 
+	 * @return The OIS - LIBOR3M Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_LIBOR3M()
+	{
+<span class="nc" id="L273">		return _marginCovariance_OIS_LIBOR3M;</span>
+	}
+
+	/**
+	 * Retrieve the OIS - LIBOR6M Margin Co-variance
+	 * 
+	 * @return The OIS - LIBOR6M Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_LIBOR6M()
+	{
+<span class="nc" id="L284">		return _marginCovariance_OIS_LIBOR6M;</span>
+	}
+
+	/**
+	 * Retrieve the OIS - LIBOR12M Margin Co-variance
+	 * 
+	 * @return The OIS - LIBOR12M Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_LIBOR12M()
+	{
+<span class="nc" id="L295">		return _marginCovariance_OIS_LIBOR12M;</span>
+	}
+
+	/**
+	 * Retrieve the OIS - PRIME Margin Co-variance
+	 * 
+	 * @return The OIS - PRIME Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_PRIME()
+	{
+<span class="nc" id="L306">		return _marginCovariance_OIS_PRIME;</span>
+	}
+
+	/**
+	 * Retrieve the OIS - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The OIS - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_OIS_MUNICIPAL()
+	{
+<span class="nc" id="L317">		return _marginCovariance_OIS_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR1M - LIBOR1M Margin Co-variance
+	 * 
+	 * @return The LIBOR1M - LIBOR1M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR1M_LIBOR1M()
+	{
+<span class="nc" id="L328">		return _marginCovariance_LIBOR1M_LIBOR1M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR1M - LIBOR3M Margin Co-variance
+	 * 
+	 * @return The LIBOR1M - LIBOR3M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR1M_LIBOR3M()
+	{
+<span class="nc" id="L339">		return _marginCovariance_LIBOR1M_LIBOR3M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR1M - LIBOR6M Margin Co-variance
+	 * 
+	 * @return The LIBOR1M - LIBOR6M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR1M_LIBOR6M()
+	{
+<span class="nc" id="L350">		return _marginCovariance_LIBOR1M_LIBOR6M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR1M - LIBOR12M Margin Co-variance
+	 * 
+	 * @return The LIBOR1M - LIBOR12M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR1M_LIBOR12M()
+	{
+<span class="nc" id="L361">		return _marginCovariance_LIBOR1M_LIBOR12M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR1M - PRIME Margin Co-variance
+	 * 
+	 * @return The LIBOR1M - PRIME Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR1M_PRIME()
+	{
+<span class="nc" id="L372">		return _marginCovariance_LIBOR1M_PRIME;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR1M - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The LIBOR1M - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR1M_MUNICIPAL()
+	{
+<span class="nc" id="L383">		return _marginCovariance_LIBOR1M_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR3M - LIBOR3M Margin Co-variance
+	 * 
+	 * @return The LIBOR3M - LIBOR3M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR3M_LIBOR3M()
+	{
+<span class="nc" id="L394">		return _marginCovariance_LIBOR3M_LIBOR3M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR3M - LIBOR6M Margin Co-variance
+	 * 
+	 * @return The LIBOR3M - LIBOR6M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR3M_LIBOR6M()
+	{
+<span class="nc" id="L405">		return _marginCovariance_LIBOR3M_LIBOR6M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR3M - LIBOR12M Margin Co-variance
+	 * 
+	 * @return The LIBOR3M - LIBOR12M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR3M_LIBOR12M()
+	{
+<span class="nc" id="L416">		return _marginCovariance_LIBOR3M_LIBOR12M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR3M - PRIME Margin Co-variance
+	 * 
+	 * @return The LIBOR3M - PRIME Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR3M_PRIME()
+	{
+<span class="nc" id="L427">		return _marginCovariance_LIBOR3M_PRIME;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR3M - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The LIBOR3M - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR3M_MUNICIPAL()
+	{
+<span class="nc" id="L438">		return _marginCovariance_LIBOR3M_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR6M - LIBOR6M Margin Co-variance
+	 * 
+	 * @return The LIBOR6M - LIBOR6M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR6M_LIBOR6M()
+	{
+<span class="nc" id="L449">		return _marginCovariance_LIBOR6M_LIBOR6M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR6M - LIBOR12M Margin Co-variance
+	 * 
+	 * @return The LIBOR6M - LIBOR12M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR6M_LIBOR12M()
+	{
+<span class="nc" id="L460">		return _marginCovariance_LIBOR6M_LIBOR12M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR6M - PRIME Margin Co-variance
+	 * 
+	 * @return The LIBOR6M - PRIME Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR6M_PRIME()
+	{
+<span class="nc" id="L471">		return _marginCovariance_LIBOR6M_PRIME;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR6M - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The LIBOR6M - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR6M_MUNICIPAL()
+	{
+<span class="nc" id="L482">		return _marginCovariance_LIBOR6M_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR12M - LIBOR12M Margin Co-variance
+	 * 
+	 * @return The LIBOR12M - LIBOR12M Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR12M_LIBOR12M()
+	{
+<span class="nc" id="L493">		return _marginCovariance_LIBOR12M_LIBOR12M;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR12M - PRIME Margin Co-variance
+	 * 
+	 * @return The LIBOR12M - PRIME Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR12M_PRIME()
+	{
+<span class="nc" id="L504">		return _marginCovariance_LIBOR12M_PRIME;</span>
+	}
+
+	/**
+	 * Retrieve the LIBOR12M - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The LIBOR12M - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_LIBOR12M_MUNICIPAL()
+	{
+<span class="nc" id="L515">		return _marginCovariance_LIBOR12M_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Retrieve the PRIME - PRIME Margin Co-variance
+	 * 
+	 * @return The PRIME - PRIME Margin Co-variance
+	 */
+
+	public double marginCovariance_PRIME_PRIME()
+	{
+<span class="nc" id="L526">		return _marginCovariance_PRIME_PRIME;</span>
+	}
+
+	/**
+	 * Retrieve the PRIME - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The PRIME - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_PRIME_MUNICIPAL()
+	{
+<span class="nc" id="L537">		return _marginCovariance_PRIME_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Retrieve the MUNICIPAL - MUNICIPAL Margin Co-variance
+	 * 
+	 * @return The MUNICIPAL - MUNICIPAL Margin Co-variance
+	 */
+
+	public double marginCovariance_MUNICIPAL_MUNICIPAL()
+	{
+<span class="nc" id="L548">		return _marginCovariance_MUNICIPAL_MUNICIPAL;</span>
+	}
+
+	/**
+	 * Compute the Cumulative Margin Covariance
+	 * 
+	 * @return The Cumulative Margin Covariance
+	 */
+
+	public double cumulativeMarginCovariance()
+	{
+<span class="nc" id="L559">		return _marginCovariance_OIS_OIS +</span>
+			_marginCovariance_OIS_PRIME +
+			_marginCovariance_OIS_LIBOR1M +
+			_marginCovariance_OIS_LIBOR3M +
+			_marginCovariance_OIS_LIBOR6M + 
+			_marginCovariance_OIS_LIBOR12M +
+			_marginCovariance_OIS_MUNICIPAL +
+			_marginCovariance_LIBOR1M_PRIME +
+			_marginCovariance_LIBOR1M_LIBOR1M +
+			_marginCovariance_LIBOR1M_LIBOR3M +
+			_marginCovariance_LIBOR1M_LIBOR6M +
+			_marginCovariance_LIBOR1M_LIBOR12M +
+			_marginCovariance_LIBOR1M_MUNICIPAL +
+			_marginCovariance_LIBOR3M_PRIME +
+			_marginCovariance_LIBOR3M_LIBOR3M +
+			_marginCovariance_LIBOR3M_LIBOR6M +
+			_marginCovariance_LIBOR3M_LIBOR12M +
+			_marginCovariance_LIBOR3M_MUNICIPAL +
+			_marginCovariance_LIBOR6M_PRIME +
+			_marginCovariance_LIBOR6M_LIBOR6M +
+			_marginCovariance_LIBOR6M_LIBOR12M +
+			_marginCovariance_LIBOR6M_MUNICIPAL +
+			_marginCovariance_LIBOR12M_PRIME +
+			_marginCovariance_LIBOR12M_LIBOR12M +
+			_marginCovariance_LIBOR12M_MUNICIPAL +
+			_marginCovariance_PRIME_PRIME +
+			_marginCovariance_PRIME_MUNICIPAL +
+			_marginCovariance_MUNICIPAL_MUNICIPAL;
+	}
+
+	/**
+	 * Compute the Cumulative Sensitivity Margin
+	 * 
+	 * @return The Cumulative Sensitivity Margin
+	 */
+
+	public double cumulativeMargin()
+	{
+<span class="nc" id="L597">		return java.lang.Math.sqrt (cumulativeMarginCovariance());</span>
+	}
+
+	/**
+	 * Retrieve the Cumulative Margin Sensitivity
+	 * 
+	 * @return The Cumulative Margin Sensitivity
+	 */
+
+	public double cumulativeMarginSensitivity()
+	{
+<span class="nc" id="L608">		return _cumulativeMarginSensitivity;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

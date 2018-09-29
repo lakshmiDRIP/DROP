@@ -7,12 +7,12 @@ import java.util.TreeMap;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.fx.FXRiskThresholdContainer;
-import org.drip.simm20.margin.BucketAggregate;
-import org.drip.simm20.margin.RiskMeasureAggregate;
-import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
-import org.drip.simm20.product.BucketSensitivity;
-import org.drip.simm20.product.RiskMeasureSensitivity;
+import org.drip.simm.fx.FXRiskThresholdContainer20;
+import org.drip.simm.margin.BucketAggregate;
+import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.RiskMeasureSensitivitySettings;
+import org.drip.simm.product.BucketSensitivity;
+import org.drip.simm.product.RiskMeasureSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -94,7 +94,7 @@ public class FXDeltaMargin20
 
 		for (String currency : currencyArray)
 		{
-			int categoryIndex = FXRiskThresholdContainer.CurrencyCategory (currency);
+			int categoryIndex = FXRiskThresholdContainer20.CurrencyCategory (currency);
 
 			if (currencySentivityMap.containsKey ("" + categoryIndex))
 			{
@@ -207,7 +207,7 @@ public class FXDeltaMargin20
 		};
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_FX_DELTA();
+			RiskMeasureSensitivitySettings.ISDA_FX_DELTA_20();
 
 		Map<String, Map<String, Double>> categorySensitivityMap = CategorySensitivityMap (
 			currencyArray,

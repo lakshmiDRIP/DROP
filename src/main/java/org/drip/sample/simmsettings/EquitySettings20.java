@@ -7,9 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.equity.EQBucket;
-import org.drip.simm20.equity.EQSettingsContainer;
-import org.drip.simm20.equity.EQSystemics;
+import org.drip.simm.equity.EQBucket;
+import org.drip.simm.equity.EQSettingsContainer20;
+import org.drip.simm.equity.EQSystemics20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,7 +84,7 @@ public class EquitySettings20
 
 	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = EQSettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = EQSettingsContainer20.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -127,7 +127,7 @@ public class EquitySettings20
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			EQBucket equityBucket = EQSettingsContainer.Bucket (bucketIndex);
+			EQBucket equityBucket = EQSettingsContainer20.Bucket (bucketIndex);
 
 			String sectorArrayDump = "";
 
@@ -166,14 +166,14 @@ public class EquitySettings20
 		System.out.println (
 			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				EQSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+				EQSystemics20.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Bucket Correlation                         => " +
 			FormatUtil.FormatDouble (
-				EQSystemics.RESIDUAL_BUCKET_CORRELATION, 3, 2, 1.
+				EQSystemics20.RESIDUAL_BUCKET_CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -185,7 +185,7 @@ public class EquitySettings20
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = EQSettingsContainer.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = EQSettingsContainer20.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 

@@ -7,11 +7,11 @@ import java.util.Map;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.margin.BucketAggregate;
-import org.drip.simm20.margin.RiskMeasureAggregate;
-import org.drip.simm20.parameters.RiskMeasureSensitivitySettings;
-import org.drip.simm20.product.BucketSensitivity;
-import org.drip.simm20.product.RiskMeasureSensitivity;
+import org.drip.simm.margin.BucketAggregate;
+import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.RiskMeasureSensitivitySettings;
+import org.drip.simm.product.BucketSensitivity;
+import org.drip.simm.product.RiskMeasureSensitivity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -290,7 +290,7 @@ public class CommodityCurvatureMargin20
 		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE (vegaDurationDays);
+			RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_20 (vegaDurationDays);
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);

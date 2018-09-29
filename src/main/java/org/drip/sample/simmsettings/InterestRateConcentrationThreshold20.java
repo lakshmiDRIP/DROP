@@ -4,9 +4,9 @@ package org.drip.sample.simmsettings;
 import java.util.Set;
 
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.rates.CurrencyRiskGroup;
-import org.drip.simm20.rates.IRThreshold;
-import org.drip.simm20.rates.IRThresholdContainer;
+import org.drip.simm.rates.CurrencyRiskGroup;
+import org.drip.simm.rates.IRThreshold;
+import org.drip.simm.rates.IRThresholdContainer20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +82,7 @@ public class InterestRateConcentrationThreshold20
 	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
+		Set<Integer> bucketSet = IRThresholdContainer20.IndexSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -110,7 +110,7 @@ public class InterestRateConcentrationThreshold20
 
 		for (int bucketNumber : bucketSet)
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
+			IRThreshold interestRateThreshold = IRThresholdContainer20.Threshold (bucketNumber);
 
 			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
 

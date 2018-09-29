@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EquityDeltaMargin20.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.simmeq</a> &gt; <span class="el_source">EquityDeltaMargin20.java</span></div><h1>EquityDeltaMargin20.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.simmeq;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm.margin.BucketAggregate;
+import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.RiskMeasureSensitivitySettings;
+import org.drip.simm.product.BucketSensitivity;
+import org.drip.simm.product.RiskMeasureSensitivity;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EquityDeltaMargin20 illustrates the Computation of the SIMM 2.0 Delta Margin across a Group of Equity
+ *  Bucket Exposure Sensitivities. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L84">public class EquityDeltaMargin20</span>
+{
+
+	private static final void AddBucketRiskFactorSensitivity (
+		final Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap,
+		final int bucketIndex,
+		final double notional,
+		final String[] equityArray)
+	{
+<span class="nc" id="L93">		Map&lt;String, Double&gt; riskFactorSensitivityMap = new CaseInsensitiveHashMap&lt;Double&gt;();</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (String equity : equityArray)</span>
+		{
+<span class="nc" id="L97">			riskFactorSensitivityMap.put (</span>
+				equity,
+<span class="nc" id="L99">				notional * (Math.random() - 0.5)</span>
+			);
+		}
+
+<span class="nc" id="L103">		bucketRiskFactorSensitivityMap.put (</span>
+			&quot;&quot; + bucketIndex,
+			riskFactorSensitivityMap
+		);
+<span class="nc" id="L107">	}</span>
+
+	private static final Map&lt;String, Map&lt;String, Double&gt;&gt; BucketRiskFactorSensitivityMap (
+		final double notional)
+		throws Exception
+	{
+<span class="nc" id="L113">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap =</span>
+			new TreeMap&lt;String, Map&lt;String, Double&gt;&gt;();
+
+<span class="nc" id="L116">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			-1,
+			notional,
+			new String[]
+			{
+				&quot;BOEING  &quot;,
+				&quot;LOCKHEED&quot;,
+				&quot;RAND    &quot;,
+				&quot;RAYTHEON&quot;,
+			}
+		);
+
+<span class="nc" id="L129">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			1,
+			notional,
+			new String[]
+			{
+				&quot;ADP     &quot;,
+				&quot;PSEANDG &quot;,
+				&quot;STAPLES &quot;,
+				&quot;U-HAUL  &quot;,
+			}
+		);
+
+<span class="nc" id="L142">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			2,
+			notional,
+			new String[]
+			{
+				&quot;CISCO   &quot;,
+				&quot;DEERE   &quot;,
+				&quot;HALIBTN &quot;,
+				&quot;VERIZON &quot;,
+			}
+		);
+
+<span class="nc" id="L155">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			3,
+			notional,
+			new String[]
+			{
+				&quot;DUKE    &quot;,
+				&quot;MONSANTO&quot;,
+				&quot;MMM     &quot;,
+				&quot;VEDANTA &quot;,
+			}
+		);
+
+<span class="nc" id="L168">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			4,
+			notional,
+			new String[]
+			{
+				&quot;AMAZON  &quot;,
+				&quot;GOLDMAN &quot;,
+				&quot;MORGAN  &quot;,
+				&quot;REMAX   &quot;,
+			}
+		);
+
+<span class="nc" id="L181">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			5,
+			notional,
+			new String[]
+			{
+				&quot;ALDI    &quot;,
+				&quot;INFOSYS &quot;,
+				&quot;OLLA    &quot;,
+				&quot;RELIANCE&quot;,
+			}
+		);
+
+<span class="nc" id="L194">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			6,
+			notional,
+			new String[]
+			{
+				&quot;GCC     &quot;,
+				&quot;NOKIA   &quot;,
+				&quot;SIEMENS &quot;,
+				&quot;VODAFONE&quot;,
+			}
+		);
+
+<span class="nc" id="L207">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			7,
+			notional,
+			new String[]
+			{
+				&quot;ADIDAS  &quot;,
+				&quot;BAYER   &quot;,
+				&quot;BILLERTN&quot;,
+				&quot;DE BEER &quot;,
+			}
+		);
+
+<span class="nc" id="L220">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			8,
+			notional,
+			new String[]
+			{
+				&quot;NOKIA   &quot;,
+				&quot;NOMURA  &quot;,
+				&quot;QATARSOV&quot;,
+				&quot;SOTHEBY &quot;,
+			}
+		);
+
+<span class="nc" id="L233">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			9,
+			notional,
+			new String[]
+			{
+				&quot;AUTODESK&quot;,
+				&quot;CALYPSO &quot;,
+				&quot;NUMERIX &quot;,
+				&quot;WEBLOGIC&quot;,
+			}
+		);
+
+<span class="nc" id="L246">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			10,
+			notional,
+			new String[]
+			{
+				&quot;COGNIZAN&quot;,
+				&quot;TATAMOTO&quot;,
+				&quot;TOBLERON&quot;,
+				&quot;TVS     &quot;,
+			}
+		);
+
+<span class="nc" id="L259">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			11,
+			notional,
+			new String[]
+			{
+				&quot;DJIA    &quot;,
+				&quot;LEHMAN  &quot;,
+				&quot;RUSSELL &quot;,
+				&quot;SANDP   &quot;,
+			}
+		);
+
+<span class="nc" id="L272">		AddBucketRiskFactorSensitivity (</span>
+			bucketRiskFactorSensitivityMap,
+			12,
+			notional,
+			new String[]
+			{
+				&quot;CBOE    &quot;,
+				&quot;CITI    &quot;,
+				&quot;RUSSELL &quot;,
+				&quot;VIX     &quot;,
+			}
+		);
+
+<span class="nc" id="L285">		return bucketRiskFactorSensitivityMap;</span>
+	}
+
+	private static final void DisplayBucketRiskFactorSensitivity (
+		final Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap)
+		throws Exception
+	{
+<span class="nc" id="L292">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+
+<span class="nc" id="L294">		System.out.println (&quot;\t|    RISK FACTOR DELTA     ||&quot;);</span>
+
+<span class="nc" id="L296">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+
+<span class="nc" id="L298">		System.out.println (&quot;\t|  L -&gt; R:                 ||&quot;);</span>
+
+<span class="nc" id="L300">		System.out.println (&quot;\t|    - Ticker              ||&quot;);</span>
+
+<span class="nc" id="L302">		System.out.println (&quot;\t|    - Bucket              ||&quot;);</span>
+
+<span class="nc" id="L304">		System.out.println (&quot;\t|    - Delta               ||&quot;);</span>
+
+<span class="nc" id="L306">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketSensitivityMapEntry :
+<span class="nc bnc" id="L309" title="All 2 branches missed.">			bucketRiskFactorSensitivityMap.entrySet())</span>
+		{
+<span class="nc" id="L311">			String bucketIndex = bucketSensitivityMapEntry.getKey();</span>
+
+<span class="nc" id="L313">			Map&lt;String, Double&gt; riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();</span>
+
+			for (Map.Entry&lt;String, Double&gt; riskFactorSensitivityMapEntry :
+<span class="nc bnc" id="L316" title="All 2 branches missed.">				riskFactorSensitivityMap.entrySet())</span>
+			{
+<span class="nc" id="L318">				String currency = riskFactorSensitivityMapEntry.getKey();</span>
+
+<span class="nc" id="L320">				double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();</span>
+
+<span class="nc" id="L322">				System.out.println (</span>
+					&quot;\t| &quot; +
+					currency + &quot; =&gt; &quot; +
+<span class="nc" id="L325">					FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L326">					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + &quot; ||&quot;</span>
+				);
+<span class="nc" id="L328">			}</span>
+<span class="nc" id="L329">		}</span>
+
+<span class="nc" id="L331">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+
+<span class="nc" id="L333">		System.out.println();</span>
+<span class="nc" id="L334">	}</span>
+
+	public static final void main (
+		final String[] inputs)
+		throws Exception
+	{
+<span class="nc" id="L340">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L342">		double notional = 100.;</span>
+
+		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
+<span class="nc" id="L345">			RiskMeasureSensitivitySettings.ISDA_EQ_DELTA_20();</span>
+
+<span class="nc" id="L347">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap</span>
+<span class="nc" id="L348">			(notional);</span>
+
+<span class="nc" id="L350">		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);</span>
+
+<span class="nc" id="L352">		Map&lt;String, BucketSensitivity&gt; bucketSensitivityMap = new TreeMap&lt;String, BucketSensitivity&gt;();</span>
+
+<span class="nc" id="L354">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L356">		System.out.println (&quot;\t|    BUCKET AGGREGATE    ||&quot;);</span>
+
+<span class="nc" id="L358">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L360">		System.out.println (&quot;\t|  L -&gt; R:               ||&quot;);</span>
+
+<span class="nc" id="L362">		System.out.println (&quot;\t|    - Bucket Index      ||&quot;);</span>
+
+<span class="nc" id="L364">		System.out.println (&quot;\t|    - Bucket Margin     ||&quot;);</span>
+
+<span class="nc" id="L366">		System.out.println (&quot;\t|    - Bucket Delta      ||&quot;);</span>
+
+<span class="nc" id="L368">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketSensitivityMapEntry :
+<span class="nc bnc" id="L371" title="All 2 branches missed.">			bucketRiskFactorSensitivityMap.entrySet())</span>
+		{
+<span class="nc" id="L373">			String bucketIndex = bucketSensitivityMapEntry.getKey();</span>
+
+<span class="nc" id="L375">			BucketSensitivity bucketSensitivity = new BucketSensitivity</span>
+<span class="nc" id="L376">				(bucketSensitivityMapEntry.getValue());</span>
+
+<span class="nc" id="L378">			bucketSensitivityMap.put (</span>
+				&quot;&quot; + bucketIndex,
+				bucketSensitivity
+			);
+
+<span class="nc" id="L383">			BucketAggregate bucketAggregate = bucketSensitivity.aggregate</span>
+<span class="nc" id="L384">				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketIndex));</span>
+
+<span class="nc" id="L386">			System.out.println (&quot;\t| &quot; +</span>
+<span class="nc" id="L387">				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L388">				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L389">				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + &quot; ||&quot;</span>
+			);
+<span class="nc" id="L391">		}</span>
+
+<span class="nc" id="L393">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L395">		System.out.println();</span>
+
+<span class="nc" id="L397">		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity</span>
+<span class="nc" id="L398">			(bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);</span>
+
+<span class="nc" id="L400">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L402">		System.out.println (&quot;\t|               SBA BASED DELTA MARGIN                ||&quot;);</span>
+
+<span class="nc" id="L404">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L406">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
+
+<span class="nc" id="L408">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
+
+<span class="nc" id="L410">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
+
+<span class="nc" id="L412">		System.out.println (&quot;\t|            - Core Delta SBA Margin                  ||&quot;);</span>
+
+<span class="nc" id="L414">		System.out.println (&quot;\t|            - Residual Delta SBA Margin              ||&quot;);</span>
+
+<span class="nc" id="L416">		System.out.println (&quot;\t|            - SBA Delta Margin                       ||&quot;);</span>
+
+<span class="nc" id="L418">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L420">		System.out.println (&quot;\t| DELTA MARGIN COMPONENTS =&gt; &quot; +</span>
+<span class="nc" id="L421">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
+				&quot; | &quot; +
+<span class="nc" id="L423">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
+				&quot; | &quot; +
+<span class="nc" id="L425">			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L428">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L430">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L431">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
