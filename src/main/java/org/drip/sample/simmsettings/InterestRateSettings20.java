@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20settings;
+package org.drip.sample.simmsettings;
 
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ import org.drip.simm20.rates.IRWeight;
  */
 
 /**
- * InterestRateSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
+ * InterestRateSettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
  * 	Interest Rate Tenor Risk Weights, Systemics, and Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -79,7 +79,7 @@ import org.drip.simm20.rates.IRWeight;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateSettings
+public class InterestRateSettings20
 {
 
 	private static final void RegularVolatility()
@@ -87,7 +87,7 @@ public class InterestRateSettings
 	{
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                  REGULAR VOLATILITY CURRENCY SET and RISK WEIGHTS                 ||");
+		System.out.println ("\t||               2.0 REGULAR VOLATILITY CURRENCY SET and RISK WEIGHTS                ||");
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
 
@@ -124,7 +124,7 @@ public class InterestRateSettings
 	{
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                    LOW VOLATILITY CURRENCY SET and RISK WEIGHTS                   ||");
+		System.out.println ("\t||                 2.0 LOW VOLATILITY CURRENCY SET and RISK WEIGHTS                  ||");
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
 
@@ -161,7 +161,7 @@ public class InterestRateSettings
 	{
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                   HIGH VOLATILITY CURRENCY SET and RISK WEIGHTS                   ||");
+		System.out.println ("\t||                2.0 HIGH VOLATILITY CURRENCY SET and RISK WEIGHTS                  ||");
 
 		System.out.println ("\t||-----------------------------------------------------------------------------------||");
 

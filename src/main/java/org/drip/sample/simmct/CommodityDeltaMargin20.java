@@ -1,8 +1,8 @@
 
-package org.drip.sample.simm20estimates;
+package org.drip.sample.simmct;
 
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
@@ -59,8 +59,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * EQCurvatureMargin illustrates the Computation of the EQ Curvature Margin for across a Group of Equity
- *  Bucket Exposure Sensitivities. The References are:
+ * CommodityDeltaMargin20 illustrates the Computation of the ISDA 2.0 Delta Margin for across a Group of
+ *  Commodity Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -81,24 +81,21 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EQCurvatureMargin
+public class CommodityDeltaMargin20
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
 		final int bucketIndex,
 		final double notional,
-		final String[] equityArray)
+		final String commodity)
 	{
 		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		for (String equity : equityArray)
-		{
-			riskFactorSensitivityMap.put (
-				equity,
-				notional * (Math.random() - 0.5)
-			);
-		}
+		riskFactorSensitivityMap.put (
+			commodity,
+			notional * (Math.random() - 0.5)
+		);
 
 		bucketRiskFactorSensitivityMap.put (
 			"" + bucketIndex,
@@ -111,175 +108,125 @@ public class EQCurvatureMargin
 		throws Exception
 	{
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new TreeMap<String, Map<String, Double>>();
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			-1,
-			notional,
-			new String[]
-			{
-				"BOEING  ",
-				"LOCKHEED",
-				"RAND    ",
-				"RAYTHEON",
-			}
-		);
+			new HashMap<String, Map<String, Double>>();
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			1,
 			notional,
-			new String[]
-			{
-				"ADP     ",
-				"PSEANDG ",
-				"STAPLES ",
-				"U-HAUL  ",
-			}
+			"COAL                          "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			2,
 			notional,
-			new String[]
-			{
-				"CISCO   ",
-				"DEERE   ",
-				"HALIBTN ",
-				"VERIZON ",
-			}
+			"CRUDE                         "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			3,
 			notional,
-			new String[]
-			{
-				"DUKE    ",
-				"MONSANTO",
-				"MMM     ",
-				"VEDANTA ",
-			}
+			"LIGHT ENDS                    "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			4,
 			notional,
-			new String[]
-			{
-				"AMAZON  ",
-				"GOLDMAN ",
-				"MORGAN  ",
-				"REMAX   ",
-			}
+			"MIDDLE DISTILLATES            "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			5,
 			notional,
-			new String[]
-			{
-				"ALDI    ",
-				"INFOSYS ",
-				"OLLA    ",
-				"RELIANCE",
-			}
+			"HEAVY DISTILLATES             "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			6,
 			notional,
-			new String[]
-			{
-				"GCC     ",
-				"NOKIA   ",
-				"SIEMENS ",
-				"VODAFONE",
-			}
+			"NORTH AMERICAN NATURAL GAS    "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			7,
 			notional,
-			new String[]
-			{
-				"ADIDAS  ",
-				"BAYER   ",
-				"BILLERTN",
-				"DE BEER ",
-			}
+			"EUROPEAN NATURAL GAS          "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			8,
 			notional,
-			new String[]
-			{
-				"NOKIA   ",
-				"NOMURA  ",
-				"QATARSOV",
-				"SOTHEBY ",
-			}
+			"NORTH AMERICAN POWER          "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			9,
 			notional,
-			new String[]
-			{
-				"AUTODESK",
-				"CALYPSO ",
-				"NUMERIX ",
-				"WEBLOGIC",
-			}
+			"EUROPEAN POWER                "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			10,
 			notional,
-			new String[]
-			{
-				"COGNIZAN",
-				"TATAMOTO",
-				"TOBLERON",
-				"TVS     ",
-			}
+			"FREIGHT                       "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			11,
 			notional,
-			new String[]
-			{
-				"DJIA    ",
-				"LEHMAN  ",
-				"RUSSELL ",
-				"SANDP   ",
-			}
+			"BASE METALS                   "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			12,
 			notional,
-			new String[]
-			{
-				"CBOE    ",
-				"CITI    ",
-				"RUSSELL ",
-				"VIX     ",
-			}
+			"PRECIOUS METALS               "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			13,
+			notional,
+			"GRAINS                        "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			14,
+			notional,
+			"SOFTS                         "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			15,
+			notional,
+			"LIVESTOCK                     "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			16,
+			notional,
+			"OTHER                         "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			17,
+			notional,
+			"INDEXES                       "
 		);
 
 		return bucketRiskFactorSensitivityMap;
@@ -289,21 +236,21 @@ public class EQCurvatureMargin
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
-		System.out.println ("\t|     RISK FACTOR VEGA     ||");
+		System.out.println ("\t|               RISK FACTOR DELTA                ||");
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
-		System.out.println ("\t|  L -> R:                 ||");
+		System.out.println ("\t|  L -> R:                                       ||");
 
-		System.out.println ("\t|    - Ticker              ||");
+		System.out.println ("\t|    - Ticker                                    ||");
 
-		System.out.println ("\t|    - Bucket              ||");
+		System.out.println ("\t|    - Bucket                                    ||");
 
-		System.out.println ("\t|    - Vega                ||");
+		System.out.println ("\t|    - Delta                                     ||");
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
@@ -328,7 +275,7 @@ public class EQCurvatureMargin
 			}
 		}
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
 		System.out.println();
 	}
@@ -340,17 +287,16 @@ public class EQCurvatureMargin
 		EnvManager.InitEnv ("");
 
 		double notional = 100.;
-		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE (vegaDurationDays);
+			RiskMeasureSensitivitySettings.ISDA_CT_DELTA();
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
 
 		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);
 
-		Map<String, BucketSensitivity> bucketSensitivityMap = new TreeMap<String, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketSensitivityMap = new HashMap<String, BucketSensitivity>();
 
 		System.out.println ("\t|------------------------||");
 
@@ -364,7 +310,7 @@ public class EQCurvatureMargin
 
 		System.out.println ("\t|    - Bucket Margin     ||");
 
-		System.out.println ("\t|    - Bucket Vega       ||");
+		System.out.println ("\t|    - Bucket Delta      ||");
 
 		System.out.println ("\t|------------------------||");
 
@@ -395,30 +341,30 @@ public class EQCurvatureMargin
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
-			(bucketSensitivityMap).curvatureAggregate (riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity 
+			(bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                 SBA BASED CURVATURE MARGIN              ||");
+		System.out.println ("\t|               SBA BASED DELTA MARGIN                ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                                                         ||");
+		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|    L -> R:                                              ||");
+		System.out.println ("\t|    L -> R:                                          ||");
 
-		System.out.println ("\t|                                                         ||");
+		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|            - Core Curvature SBA Margin                  ||");
+		System.out.println ("\t|            - Core Delta SBA Margin                  ||");
 
-		System.out.println ("\t|            - Residual Curvature SBA Margin              ||");
+		System.out.println ("\t|            - Residual Delta SBA Margin              ||");
 
-		System.out.println ("\t|            - SBA Curvature Margin                       ||");
+		System.out.println ("\t|            - SBA Delta Margin                       ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t| CURVATURE MARGIN COMPONENTS => " +
+		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
@@ -426,7 +372,7 @@ public class EQCurvatureMargin
 			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

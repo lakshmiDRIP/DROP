@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20settings;
+package org.drip.sample.simmsettings;
 
 import java.util.Set;
 
@@ -56,8 +56,8 @@ import org.drip.simm20.credit.CRNQSystemics;
  */
 
 /**
- * CreditNonQualifyingSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
- *  Credit Non-Qualifying Bucket Risk Weights, Systemics, and Correlations. The References are:
+ * CreditNonQualifyingSettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross
+ *  Currency Credit Non-Qualifying Bucket Risk Weights, Systemics, and Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -78,7 +78,7 @@ import org.drip.simm20.credit.CRNQSystemics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditNonQualifyingSettings
+public class CreditNonQualifyingSettings20
 {
 
 	private static final void DisplayRiskWeights()
@@ -89,7 +89,7 @@ public class CreditNonQualifyingSettings
 			("\t||-------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                                  CREDIT NON QUALIFYING BUCKETS RISK WEIGHT                                  ||");
+			("\t||                               2.0 CREDIT NON QUALIFYING BUCKETS RISK WEIGHT                                 ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");

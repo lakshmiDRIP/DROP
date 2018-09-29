@@ -1,9 +1,12 @@
 
-package org.drip.sample.simm20settings;
+package org.drip.sample.simmsettings;
 
-import org.drip.quant.common.FormatUtil;
+import java.util.Set;
+
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.fx.FXSystemics;
+import org.drip.simm20.rates.CurrencyRiskGroup;
+import org.drip.simm20.rates.IRThreshold;
+import org.drip.simm20.rates.IRThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -51,8 +54,8 @@ import org.drip.simm20.fx.FXSystemics;
  */
 
 /**
- * FXSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 FX Bucket Risk Weights, Correlations,
- * 	and Systemics. The References are:
+ * InterestRateConcentrationThreshold20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Interest
+ *  Rate Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -73,48 +76,64 @@ import org.drip.simm20.fx.FXSystemics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXSettings
+public class InterestRateConcentrationThreshold20
 {
 
-	private static final void Systemics()
+	private static final void DisplayBuckets()
+		throws Exception
 	{
-		System.out.println ("\t||----------------------------------------------------------------||");
+		Set<Integer> bucketSet = IRThresholdContainer.IndexSet();
 
-		System.out.println ("\t||                         FX SYSTEMICS                           ||");
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||----------------------------------------------------------------||");
+		System.out.println ("\t||                           2.0 INTEREST RATE CONCENTRATION THRESHOLD                             ||");
 
-		System.out.println (
-			"\t|| Risk Weight                                         => " +
-			FormatUtil.FormatDouble (
-				FXSystemics.DELTA_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
-		System.out.println (
-			"\t|| Historical Volatility Ratio                         => " +
-			FormatUtil.FormatDouble (
-				FXSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
-			) + " ||"
-		);
+		System.out.println ("\t||                                                                                                 ||");
 
-		System.out.println (
-			"\t|| Vega Risk Weight                                    => " +
-			FormatUtil.FormatDouble (
-				FXSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
+		System.out.println ("\t||      L -> R:                                                                                    ||");
 
-		System.out.println (
-			"\t|| Correlation                                         => " +
-			FormatUtil.FormatDouble (
-				FXSystemics.CORRELATION, 3, 2, 1.
-			) + " ||"
-		);
+		System.out.println ("\t||            - Bucket Number                                                                      ||");
 
-		System.out.println ("\t||----------------------------------------------------------------||");
+		System.out.println ("\t||            - Volatility Type                                                                    ||");
 
-		System.out.println();
+		System.out.println ("\t||            - Trade Frequency                                                                    ||");
+
+		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+
+		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
+
+		System.out.println ("\t||            - Currency Set                                                                       ||");
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		for (int bucketNumber : bucketSet)
+		{
+			IRThreshold interestRateThreshold = IRThresholdContainer.Threshold (bucketNumber);
+
+			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
+
+			String[] componentArray = currencyRiskGroup.componentArray();
+
+			String componentSet = "";
+
+			for (String component : componentArray)
+			{
+				componentSet = componentSet + component + ",";
+			}
+
+			System.out.println (
+				"\t|| " + bucketNumber + " => " +
+				currencyRiskGroup.volatilityType() + " | " +
+				currencyRiskGroup.tradeFrequencyType() + " | " +
+				interestRateThreshold.deltaVega().delta() + " | " +
+				interestRateThreshold.deltaVega().vega() + " | " +
+				componentSet
+			);
+		}
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -123,7 +142,7 @@ public class FXSettings
 	{
 		EnvManager.InitEnv ("");
 
-		Systemics();
+		DisplayBuckets();
 
 		EnvManager.TerminateEnv();
 	}

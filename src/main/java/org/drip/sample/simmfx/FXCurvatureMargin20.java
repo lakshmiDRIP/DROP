@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20estimates;
+package org.drip.sample.simmfx;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -59,8 +59,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * FXVegaMargin demonstrates the Construction of a Portfolio of FX Vega Sensitivities and their eventual SIMM
- * 	Initial Margin Computation. The References are:
+ * FXCurvatureMargin20 demonstrates the Construction of a Portfolio of FX Curvature Sensitivities and their
+ *  eventual SIMM 2.0 Margin Computation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -81,7 +81,7 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXVegaMargin
+public class FXCurvatureMargin20
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -288,9 +288,10 @@ public class FXVegaMargin
 		EnvManager.InitEnv ("");
 
 		double notional = 100.;
+		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_FX_VEGA();
+			RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE (vegaDurationDays);
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
@@ -342,30 +343,30 @@ public class FXVegaMargin
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate =
-			new RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
+			(bucketSensitivityMap).curvatureAggregate (riskMeasureSensitivitySettings);
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
-		System.out.println ("\t|               SBA BASED VEGA MARGIN                 ||");
+		System.out.println ("\t|                 SBA BASED CURVATURE MARGIN              ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
-		System.out.println ("\t|                                                     ||");
+		System.out.println ("\t|                                                         ||");
 
-		System.out.println ("\t|    L -> R:                                          ||");
+		System.out.println ("\t|    L -> R:                                              ||");
 
-		System.out.println ("\t|                                                     ||");
+		System.out.println ("\t|                                                         ||");
 
-		System.out.println ("\t|            - Core Vega SBA Margin                   ||");
+		System.out.println ("\t|            - Core Curvature SBA Margin                  ||");
 
-		System.out.println ("\t|            - Residual Vega SBA Margin               ||");
+		System.out.println ("\t|            - Residual Curvature SBA Margin              ||");
 
-		System.out.println ("\t|            - SBA Vega Margin                        ||");
+		System.out.println ("\t|            - SBA Curvature Margin                       ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
-		System.out.println ("\t| VEGA MARGIN COMPONENTS  => " +
+		System.out.println ("\t| CURVATURE MARGIN COMPONENTS => " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
@@ -373,7 +374,7 @@ public class FXVegaMargin
 			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

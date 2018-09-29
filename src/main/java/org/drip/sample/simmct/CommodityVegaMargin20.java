@@ -1,8 +1,8 @@
 
-package org.drip.sample.simm20estimates;
+package org.drip.sample.simmct;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
@@ -59,8 +59,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * FXCurvatureMargin demonstrates the Construction of a Portfolio of FX Curvature Sensitivities and their
- *  eventual SIMM Initial Margin Computation. The References are:
+ * CommodityVegaMargin20 illustrates the Computation of the SIMM Vega Margin for across a Group of Commodity
+ *  Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -81,27 +81,24 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXCurvatureMargin
+public class CommodityVegaMargin20
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
-		final String bucketKey,
+		final int bucketIndex,
 		final double notional,
-		final String[] fxPairArray)
+		final String commodity)
 	{
 		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		for (String fxPair : fxPairArray)
-		{
-			riskFactorSensitivityMap.put (
-				fxPair,
-				notional * (Math.random() - 0.5)
-			);
-		}
+		riskFactorSensitivityMap.put (
+			commodity,
+			notional * (Math.random() - 0.5)
+		);
 
 		bucketRiskFactorSensitivityMap.put (
-			bucketKey,
+			"" + bucketIndex,
 			riskFactorSensitivityMap
 		);
 	}
@@ -111,123 +108,125 @@ public class FXCurvatureMargin
 		throws Exception
 	{
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new TreeMap<String, Map<String, Double>>();
+			new HashMap<String, Map<String, Double>>();
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"1__1",
+			1,
 			notional,
-			new String[]
-			{
-				"USD_EUR",
-				"USD_JPY",
-				"USD_GBP",
-				"USD_AUD",
-			}
+			"COAL                          "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"1__2",
+			2,
 			notional,
-			new String[]
-			{
-				"USD_BRL",
-				"USD_CNY",
-				"USD_HKD",
-				"USD_INR",
-			}
+			"CRUDE                         "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"2__1",
+			3,
 			notional,
-			new String[]
-			{
-				"BRL_USD",
-				"CNY_USD",
-				"HKD_USD",
-				"INR_USD",
-			}
+			"LIGHT ENDS                    "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"2__2",
+			4,
 			notional,
-			new String[]
-			{
-				"BRL_CNY",
-				"BRL_KDD",
-				"BRL_INR",
-				"BRL_KRW",
-			}
+			"MIDDLE DISTILLATES            "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"1__3",
+			5,
 			notional,
-			new String[]
-			{
-				"USD_IDR",
-				"USD_PKR",
-				"USD_SRL",
-				"USD_BNT",
-			}
+			"HEAVY DISTILLATES             "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"2__3",
+			6,
 			notional,
-			new String[]
-			{
-				"BRL_IDR",
-				"BRL_PKR",
-				"BRL_SRL",
-				"BRL_BNT",
-			}
+			"NORTH AMERICAN NATURAL GAS    "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"3__1",
+			7,
 			notional,
-			new String[]
-			{
-				"IDR_USD",
-				"PKR_USD",
-				"SRL_USD",
-				"BNT_USD",
-			}
+			"EUROPEAN NATURAL GAS          "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"3__2",
+			8,
 			notional,
-			new String[]
-			{
-				"IDR_BRL",
-				"PKR_BRL",
-				"SRL_BRL",
-				"BNT_BRL",
-			}
+			"NORTH AMERICAN POWER          "
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			"3__3",
+			9,
 			notional,
-			new String[]
-			{
-				"IDR_PKR",
-				"PKR_SRL",
-				"SRL_IDR",
-				"BNT_SRL",
-			}
+			"EUROPEAN POWER                "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			10,
+			notional,
+			"FREIGHT                       "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			11,
+			notional,
+			"BASE METALS                   "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			12,
+			notional,
+			"PRECIOUS METALS               "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			13,
+			notional,
+			"GRAINS                        "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			14,
+			notional,
+			"SOFTS                         "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			15,
+			notional,
+			"LIVESTOCK                     "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			16,
+			notional,
+			"OTHER                         "
+		);
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			17,
+			notional,
+			"INDEXES                       "
 		);
 
 		return bucketRiskFactorSensitivityMap;
@@ -237,26 +236,26 @@ public class FXCurvatureMargin
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
-		System.out.println ("\t|     RISK FACTOR VEGA     ||");
+		System.out.println ("\t|               RISK FACTOR VEGA                 ||");
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
-		System.out.println ("\t|  L -> R:                 ||");
+		System.out.println ("\t|  L -> R:                                       ||");
 
-		System.out.println ("\t|    - Ticker              ||");
+		System.out.println ("\t|    - Ticker                                    ||");
 
-		System.out.println ("\t|    - Bucket              ||");
+		System.out.println ("\t|    - Bucket                                    ||");
 
-		System.out.println ("\t|    - Vega                ||");
+		System.out.println ("\t|    - Vega                                      ||");
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			String bucketKey = bucketSensitivityMapEntry.getKey();
+			String bucketIndex = bucketSensitivityMapEntry.getKey();
 
 			Map<String, Double> riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();
 
@@ -270,35 +269,34 @@ public class FXCurvatureMargin
 				System.out.println (
 					"\t| " +
 					currency + " => " +
-					bucketKey + " | " +
+					FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " | " +
 					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + " ||"
 				);
 			}
 		}
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println ("\t|------------------------------------------------||");
 
 		System.out.println();
 	}
 
-	public static void main (
-		final String[] argumentArray)
+	public static final void main (
+		final String[] inputArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
 		double notional = 100.;
-		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE (vegaDurationDays);
+			RiskMeasureSensitivitySettings.ISDA_CT_VEGA();
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
 
 		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);
 
-		Map<String, BucketSensitivity> bucketSensitivityMap = new TreeMap<String, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketSensitivityMap = new HashMap<String, BucketSensitivity>();
 
 		System.out.println ("\t|------------------------||");
 
@@ -319,23 +317,23 @@ public class FXCurvatureMargin
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
 		{
-			String bucketKey = bucketSensitivityMapEntry.getKey();
+			String bucketIndex = bucketSensitivityMapEntry.getKey();
 
 			BucketSensitivity bucketSensitivity = new BucketSensitivity
 				(bucketSensitivityMapEntry.getValue());
 
 			bucketSensitivityMap.put (
-				bucketKey,
+				"" + bucketIndex,
 				bucketSensitivity
 			);
 
 			BucketAggregate bucketAggregate = bucketSensitivity.aggregate
-				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketKey));
+				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketIndex));
 
 			System.out.println ("\t| " +
-				bucketKey + " => " +
+				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
 				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
 			);
 		}
 
@@ -343,30 +341,30 @@ public class FXCurvatureMargin
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
-			(bucketSensitivityMap).curvatureAggregate (riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate = new
+			RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                 SBA BASED CURVATURE MARGIN              ||");
+		System.out.println ("\t|               SBA BASED VEGA MARGIN                 ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                                                         ||");
+		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|    L -> R:                                              ||");
+		System.out.println ("\t|    L -> R:                                          ||");
 
-		System.out.println ("\t|                                                         ||");
+		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|            - Core Curvature SBA Margin                  ||");
+		System.out.println ("\t|            - Core Vega SBA Margin                   ||");
 
-		System.out.println ("\t|            - Residual Curvature SBA Margin              ||");
+		System.out.println ("\t|            - Residual Vega SBA Margin               ||");
 
-		System.out.println ("\t|            - SBA Curvature Margin                       ||");
+		System.out.println ("\t|            - SBA Vega Margin                        ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t| CURVATURE MARGIN COMPONENTS => " +
+		System.out.println ("\t| VEGA MARGIN COMPONENTS  => " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
@@ -374,7 +372,7 @@ public class FXCurvatureMargin
 			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

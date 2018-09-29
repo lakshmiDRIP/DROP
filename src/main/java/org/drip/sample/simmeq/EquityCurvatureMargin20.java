@@ -1,8 +1,8 @@
 
-package org.drip.sample.simm20estimates;
+package org.drip.sample.simmeq;
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
@@ -59,8 +59,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * CTDeltaMargin illustrates the Computation of the CT Delta Margin for across a Group of Commodity Bucket
- *  Exposure Sensitivities. The References are:
+ * EquityCurvatureMargin20 illustrates the Computation of the SIMM 2.0 Curvature Margin for a Group of Equity
+ *  Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -81,21 +81,24 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CTDeltaMargin
+public class EquityCurvatureMargin20
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
 		final int bucketIndex,
 		final double notional,
-		final String commodity)
+		final String[] equityArray)
 	{
 		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		riskFactorSensitivityMap.put (
-			commodity,
-			notional * (Math.random() - 0.5)
-		);
+		for (String equity : equityArray)
+		{
+			riskFactorSensitivityMap.put (
+				equity,
+				notional * (Math.random() - 0.5)
+			);
+		}
 
 		bucketRiskFactorSensitivityMap.put (
 			"" + bucketIndex,
@@ -108,125 +111,175 @@ public class CTDeltaMargin
 		throws Exception
 	{
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new HashMap<String, Map<String, Double>>();
+			new TreeMap<String, Map<String, Double>>();
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			-1,
+			notional,
+			new String[]
+			{
+				"BOEING  ",
+				"LOCKHEED",
+				"RAND    ",
+				"RAYTHEON",
+			}
+		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			1,
 			notional,
-			"COAL                          "
+			new String[]
+			{
+				"ADP     ",
+				"PSEANDG ",
+				"STAPLES ",
+				"U-HAUL  ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			2,
 			notional,
-			"CRUDE                         "
+			new String[]
+			{
+				"CISCO   ",
+				"DEERE   ",
+				"HALIBTN ",
+				"VERIZON ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			3,
 			notional,
-			"LIGHT ENDS                    "
+			new String[]
+			{
+				"DUKE    ",
+				"MONSANTO",
+				"MMM     ",
+				"VEDANTA ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			4,
 			notional,
-			"MIDDLE DISTILLATES            "
+			new String[]
+			{
+				"AMAZON  ",
+				"GOLDMAN ",
+				"MORGAN  ",
+				"REMAX   ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			5,
 			notional,
-			"HEAVY DISTILLATES             "
+			new String[]
+			{
+				"ALDI    ",
+				"INFOSYS ",
+				"OLLA    ",
+				"RELIANCE",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			6,
 			notional,
-			"NORTH AMERICAN NATURAL GAS    "
+			new String[]
+			{
+				"GCC     ",
+				"NOKIA   ",
+				"SIEMENS ",
+				"VODAFONE",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			7,
 			notional,
-			"EUROPEAN NATURAL GAS          "
+			new String[]
+			{
+				"ADIDAS  ",
+				"BAYER   ",
+				"BILLERTN",
+				"DE BEER ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			8,
 			notional,
-			"NORTH AMERICAN POWER          "
+			new String[]
+			{
+				"NOKIA   ",
+				"NOMURA  ",
+				"QATARSOV",
+				"SOTHEBY ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			9,
 			notional,
-			"EUROPEAN POWER                "
+			new String[]
+			{
+				"AUTODESK",
+				"CALYPSO ",
+				"NUMERIX ",
+				"WEBLOGIC",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			10,
 			notional,
-			"FREIGHT                       "
+			new String[]
+			{
+				"COGNIZAN",
+				"TATAMOTO",
+				"TOBLERON",
+				"TVS     ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			11,
 			notional,
-			"BASE METALS                   "
+			new String[]
+			{
+				"DJIA    ",
+				"LEHMAN  ",
+				"RUSSELL ",
+				"SANDP   ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			12,
 			notional,
-			"PRECIOUS METALS               "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			13,
-			notional,
-			"GRAINS                        "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			14,
-			notional,
-			"SOFTS                         "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			15,
-			notional,
-			"LIVESTOCK                     "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			16,
-			notional,
-			"OTHER                         "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			17,
-			notional,
-			"INDEXES                       "
+			new String[]
+			{
+				"CBOE    ",
+				"CITI    ",
+				"RUSSELL ",
+				"VIX     ",
+			}
 		);
 
 		return bucketRiskFactorSensitivityMap;
@@ -236,21 +289,21 @@ public class CTDeltaMargin
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|--------------------------||");
 
-		System.out.println ("\t|               RISK FACTOR DELTA                ||");
+		System.out.println ("\t|     RISK FACTOR VEGA     ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|--------------------------||");
 
-		System.out.println ("\t|  L -> R:                                       ||");
+		System.out.println ("\t|  L -> R:                 ||");
 
-		System.out.println ("\t|    - Ticker                                    ||");
+		System.out.println ("\t|    - Ticker              ||");
 
-		System.out.println ("\t|    - Bucket                                    ||");
+		System.out.println ("\t|    - Bucket              ||");
 
-		System.out.println ("\t|    - Delta                                     ||");
+		System.out.println ("\t|    - Vega                ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|--------------------------||");
 
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
@@ -275,7 +328,7 @@ public class CTDeltaMargin
 			}
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|--------------------------||");
 
 		System.out.println();
 	}
@@ -287,16 +340,17 @@ public class CTDeltaMargin
 		EnvManager.InitEnv ("");
 
 		double notional = 100.;
+		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_CT_DELTA();
+			RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE (vegaDurationDays);
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
 
 		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);
 
-		Map<String, BucketSensitivity> bucketSensitivityMap = new HashMap<String, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketSensitivityMap = new TreeMap<String, BucketSensitivity>();
 
 		System.out.println ("\t|------------------------||");
 
@@ -310,7 +364,7 @@ public class CTDeltaMargin
 
 		System.out.println ("\t|    - Bucket Margin     ||");
 
-		System.out.println ("\t|    - Bucket Delta      ||");
+		System.out.println ("\t|    - Bucket Vega       ||");
 
 		System.out.println ("\t|------------------------||");
 
@@ -341,30 +395,30 @@ public class CTDeltaMargin
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity 
-			(bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
+			(bucketSensitivityMap).curvatureAggregate (riskMeasureSensitivitySettings);
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
-		System.out.println ("\t|               SBA BASED DELTA MARGIN                ||");
+		System.out.println ("\t|                 SBA BASED CURVATURE MARGIN              ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
-		System.out.println ("\t|                                                     ||");
+		System.out.println ("\t|                                                         ||");
 
-		System.out.println ("\t|    L -> R:                                          ||");
+		System.out.println ("\t|    L -> R:                                              ||");
 
-		System.out.println ("\t|                                                     ||");
+		System.out.println ("\t|                                                         ||");
 
-		System.out.println ("\t|            - Core Delta SBA Margin                  ||");
+		System.out.println ("\t|            - Core Curvature SBA Margin                  ||");
 
-		System.out.println ("\t|            - Residual Delta SBA Margin              ||");
+		System.out.println ("\t|            - Residual Curvature SBA Margin              ||");
 
-		System.out.println ("\t|            - SBA Delta Margin                       ||");
+		System.out.println ("\t|            - SBA Curvature Margin                       ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
-		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
+		System.out.println ("\t| CURVATURE MARGIN COMPONENTS => " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
@@ -372,7 +426,7 @@ public class CTDeltaMargin
 			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

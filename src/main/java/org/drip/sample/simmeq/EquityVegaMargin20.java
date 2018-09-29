@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20estimates;
+package org.drip.sample.simmeq;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -59,7 +59,7 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * EQDeltaMargin illustrates the Computation of the EQ Delta Margin for across a Group of Equity Bucket
+ * EquityVegaMargin20 illustrates the Computation of the SIMM 2.0 Vega Margin across a Group of Equity Bucket
  *  Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -81,7 +81,7 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EQDeltaMargin
+public class EquityVegaMargin20
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -291,7 +291,7 @@ public class EQDeltaMargin
 	{
 		System.out.println ("\t|--------------------------||");
 
-		System.out.println ("\t|    RISK FACTOR DELTA     ||");
+		System.out.println ("\t|     RISK FACTOR VEGA     ||");
 
 		System.out.println ("\t|--------------------------||");
 
@@ -301,7 +301,7 @@ public class EQDeltaMargin
 
 		System.out.println ("\t|    - Bucket              ||");
 
-		System.out.println ("\t|    - Delta               ||");
+		System.out.println ("\t|    - Vega                ||");
 
 		System.out.println ("\t|--------------------------||");
 
@@ -333,8 +333,8 @@ public class EQDeltaMargin
 		System.out.println();
 	}
 
-	public static final void main (
-		final String[] inputs)
+	public static void main (
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
@@ -342,7 +342,7 @@ public class EQDeltaMargin
 		double notional = 100.;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_EQ_DELTA();
+			RiskMeasureSensitivitySettings.ISDA_EQ_VEGA();
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
@@ -363,7 +363,7 @@ public class EQDeltaMargin
 
 		System.out.println ("\t|    - Bucket Margin     ||");
 
-		System.out.println ("\t|    - Bucket Delta      ||");
+		System.out.println ("\t|    - Bucket Vega       ||");
 
 		System.out.println ("\t|------------------------||");
 
@@ -394,12 +394,12 @@ public class EQDeltaMargin
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
-			(bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate =
+			new RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|               SBA BASED DELTA MARGIN                ||");
+		System.out.println ("\t|               SBA BASED VEGA MARGIN                 ||");
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
@@ -409,15 +409,15 @@ public class EQDeltaMargin
 
 		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|            - Core Delta SBA Margin                  ||");
+		System.out.println ("\t|            - Core Vega SBA Margin                   ||");
 
-		System.out.println ("\t|            - Residual Delta SBA Margin              ||");
+		System.out.println ("\t|            - Residual Vega SBA Margin               ||");
 
-		System.out.println ("\t|            - SBA Delta Margin                       ||");
+		System.out.println ("\t|            - SBA Vega Margin                        ||");
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
+		System.out.println ("\t| VEGA MARGIN COMPONENTS  => " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +

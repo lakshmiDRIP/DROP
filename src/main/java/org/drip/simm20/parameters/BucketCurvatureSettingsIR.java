@@ -280,41 +280,6 @@ public class BucketCurvatureSettingsIR extends org.drip.simm20.parameters.Bucket
 		return _tenorScalingFactorMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> oisTenorVegaRiskWeight()
-	{
-		return super.oisTenorRiskWeight();
-	}
-
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor1MTenorVegaRiskWeight()
-	{
-		return super.libor1MTenorRiskWeight();
-	}
-
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor3MTenorVegaRiskWeight()
-	{
-		return super.libor3MTenorRiskWeight();
-	}
-
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor6MTenorVegaRiskWeight()
-	{
-		return super.libor6MTenorRiskWeight();
-	}
-
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor12MTenorVegaRiskWeight()
-	{
-		return super.libor12MTenorRiskWeight();
-	}
-
-	@Override public java.util.Map<java.lang.String, java.lang.Double> primeTenorVegaRiskWeight()
-	{
-		return super.primeTenorRiskWeight();
-	}
-
-	@Override public java.util.Map<java.lang.String, java.lang.Double> municipalTenorVegaRiskWeight()
-	{
-		return super.municipalTenorRiskWeight();
-	}
-
 	@Override public java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight()
 	{
 		java.util.Map<java.lang.String, java.lang.Double> oisTenorVegaRiskWeight =

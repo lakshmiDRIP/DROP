@@ -1,12 +1,12 @@
 
-package org.drip.sample.simm20settings;
+package org.drip.sample.simmsettings;
 
 import java.util.Set;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.simm20.commodity.CTRiskThresholdContainer;
 import org.drip.simm20.common.DeltaVegaThreshold;
-import org.drip.simm20.equity.EQRiskThresholdContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +54,8 @@ import org.drip.simm20.equity.EQRiskThresholdContainer;
  */
 
 /**
- * EquityRiskConcentrationThreshold demonstrates the Extraction and Display of ISDA SIMM 2.0 Equity Risk
- * 	Concentration Thresholds. The References are:
+ * CommodityRiskConcentrationThreshold20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Commodity
+ *  Risk Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,17 +76,17 @@ import org.drip.simm20.equity.EQRiskThresholdContainer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EquityRiskConcentrationThreshold
+public class CommodityRiskConcentrationThreshold20
 {
 
 	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = EQRiskThresholdContainer.BucketSet();
+		Set<Integer> bucketSet = CTRiskThresholdContainer.BucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                              EQUITY RISK CONCENTRATION THRESHOLD                                ||");
+		System.out.println ("\t||                          2.0 COMMODITY RISK CONCENTRATION THRESHOLD                             ||");
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -104,12 +104,12 @@ public class EquityRiskConcentrationThreshold
 
 		for (int bucketNumber : bucketSet)
 		{
-			DeltaVegaThreshold equityRiskThreshold = EQRiskThresholdContainer.Threshold (bucketNumber);
+			DeltaVegaThreshold commodityRiskThreshold = CTRiskThresholdContainer.Threshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (equityRiskThreshold.delta(), 3, 1, 1.) + " | " +
-				FormatUtil.FormatDouble (equityRiskThreshold.vega(), 5, 1, 1.) + " ||"
+				FormatUtil.FormatDouble (commodityRiskThreshold.delta(), 5, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityRiskThreshold.vega(), 4, 1, 1.) + " ||"
 			);
 		}
 

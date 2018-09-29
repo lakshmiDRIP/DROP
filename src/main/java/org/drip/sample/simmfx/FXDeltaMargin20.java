@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20estimates;
+package org.drip.sample.simmfx;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -60,8 +60,8 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  */
 
 /**
- * FXDeltaMargin demonstrates the Construction of a Portfolio of FX Delta Sensitivities and their eventual
- *  SIMM Initial Margin Computation. The References are:
+ * FXDeltaMargin20 demonstrates the Construction of a Portfolio of FX Delta Sensitivities and their eventual
+ *  SIMM 2.0 Margin Computation. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -82,7 +82,7 @@ import org.drip.simm20.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXDeltaMargin
+public class FXDeltaMargin20
 {
 
 	private static final Map<String, Map<String, Double>> CategorySensitivityMap (

@@ -1,5 +1,5 @@
 
-package org.drip.sample.simm20settings;
+package org.drip.sample.simmsettings;
 
 import java.util.List;
 import java.util.Set;
@@ -7,10 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm20.credit.CRBucket;
-import org.drip.simm20.credit.CRQBucketCorrelation;
-import org.drip.simm20.credit.CRQSettingsContainer;
-import org.drip.simm20.credit.CRQSystemics;
+import org.drip.simm20.commodity.CTBucket;
+import org.drip.simm20.commodity.CTSettingsContainer;
+import org.drip.simm20.commodity.CTSystemics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -58,8 +57,8 @@ import org.drip.simm20.credit.CRQSystemics;
  */
 
 /**
- * CreditQualifyingSettings demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
- * 	Credit Qualifying Bucket Risk Weights, Systemics, and Correlations. The References are:
+ * CommoditySettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
+ *  Commodity Bucket Risk Weights, Correlations, and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -80,18 +79,18 @@ import org.drip.simm20.credit.CRQSystemics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditQualifyingSettings
+public class CommoditySettings20
 {
 
 	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CRQSettingsContainer.BucketSet();
+		Set<Integer> bucketIndexSet = CTSettingsContainer.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                                    CREDIT QUALIFYING BUCKETS RISK WEIGHT                                    ||");
+			("\t||                                    2.0 COMMODITY BUCKETS RISK WEIGHT                                        ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -106,35 +105,26 @@ public class CreditQualifyingSettings
 			("\t||                - Bucket Number                                                                              ||");
 
 		System.out.println
-			("\t||                - Bucket Quality                                                                             ||");
-
-		System.out.println
 			("\t||                - Bucket Risk Weight                                                                         ||");
 
 		System.out.println
-			("\t||                - Bucket Sector                                                                              ||");
+			("\t||                - Bucket Member Correlation                                                                  ||");
+
+		System.out.println
+			("\t||                - Bucket Entity                                                                              ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------");
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CRBucket creditQualifyingBucket = CRQSettingsContainer.Bucket (bucketIndex);
-
-			String sectorArrayDump = "";
-
-			String[] sectorArray = creditQualifyingBucket.sectorArray();
-
-			for (String sector : sectorArray)
-			{
-				sectorArrayDump = sectorArrayDump + sector + " ,";
-			}
+			CTBucket commodityBucket = CTSettingsContainer.Bucket (bucketIndex);
 
 			System.out.println (
-				"\t||" + FormatUtil.FormatDouble (creditQualifyingBucket.number(), 2, 0, 1.) + " | " +
-				creditQualifyingBucket.quality() + " | " +
-				FormatUtil.FormatDouble (creditQualifyingBucket.riskWeight(), 3, 0, 1.) + " | {" +
-				sectorArrayDump + "}"
+				"\t||" + FormatUtil.FormatDouble (commodityBucket.number(), 2, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityBucket.deltaRiskWeight(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityBucket.memberCorrelation(), 2, 1, 100.) + "% | " +
+				commodityBucket.entity()
 			);
 		}
 
@@ -148,63 +138,21 @@ public class CreditQualifyingSettings
 	{
 		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||                  CREDIT QUALIFYING SYSTEMICS                   ||");
+		System.out.println ("\t||                      COMMODITY SYSTEMICS                       ||");
 
 		System.out.println ("\t||----------------------------------------------------------------||");
 
 		System.out.println (
-			"\t|| Residual Bucket Risk Weight                         => " +
+			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				CRQSystemics.RESIDUAL_BUCKET_RISK_WEIGHT, 3, 2, 1.
+				CTSystemics.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Vega Risk Wight                                     => " +
+			"\t|| Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				CRQSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Base Correlation Risk Weight                        => " +
-			FormatUtil.FormatDouble (
-				CRQSystemics.BASE_CORRELATION_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Cross Base Correlation Index Correlation            => " +
-			FormatUtil.FormatDouble (
-				CRQSystemics.BASE_CORRELATION_CORRELATION, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Non-Residual Same Issuer/Seniority Correlation      => " +
-			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.SAME_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Non-Residual Different Issuer/Seniority Correlation => " +
-			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Same Issuer/Seniority Correlation          => " +
-			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.SAME_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Different Issuer/Seniority Correlation     => " +
-			FormatUtil.FormatDouble (
-				CRQBucketCorrelation.DIFFERENT_ISSUER_SENIORITY_RESIDUAL, 3, 2, 1.
+				CTSystemics.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -216,18 +164,18 @@ public class CreditQualifyingSettings
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CRQSettingsContainer.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = CTSettingsContainer.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 
 		System.out.println
-			("\t||------------------------------------------------------------------------------------------||");
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                             CROSS BUCKET TENOR CORRELATION                               ||");
+			("\t||                                               CROSS BUCKET TENOR CORRELATION                                                ||");
 
 		System.out.println
-			("\t||------------------------------------------------------------------------------------------||");
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
 
 		String rowDump = "\t||     ";
 
@@ -239,7 +187,7 @@ public class CreditQualifyingSettings
 		System.out.println (rowDump + " ||");
 
 		System.out.println
-			("\t||------------------------------------------------------------------------------------------||");
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
 
 		for (String innerBucket : bucketList)
 		{
@@ -260,7 +208,7 @@ public class CreditQualifyingSettings
 		}
 
 		System.out.println
-			("\t||------------------------------------------------------------------------------------------||");
+			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
 	}
