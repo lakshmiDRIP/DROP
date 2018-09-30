@@ -76,6 +76,34 @@ public class RiskClassSensitivitySettings
 	private org.drip.simm.parameters.RiskMeasureSensitivitySettings _curvature = null;
 
 	/**
+	 * Generate the ISDA 2.0 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.0 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_CT_20 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_DELTA_20(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_VEGA_20(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_20
+					(vegaDurationDays)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();;
+		}
+
+		return null;
+	}
+
+	/**
 	 * RiskClassSensitivitySettings Constructor
 	 * 
 	 * @param delta Delta Risk Measure Sensitivity Settings

@@ -114,14 +114,14 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	}
 
 	/**
-	 * Construct the Standard ISDA Commodity Vega Settings for the specified Bucket
+	 * Construct the Standard ISDA 2.0 Commodity Vega Settings for the specified Bucket
 	 * 
 	 * @param bucketIndex The Bucket Index
 	 * 
-	 * @return The Standard ISDA Commodity Vega Settings for the specified Bucket
+	 * @return The Standard ISDA 2.0 Commodity Vega Settings for the specified Bucket
 	 */
 
-	public static BucketVegaSettings ISDA_CT (
+	public static BucketVegaSettings ISDA_CT_20 (
 		final int bucketIndex)
 	{
 		org.drip.simm.commodity.CTBucket commodityBucket =
@@ -142,6 +142,45 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 				java.lang.Math.sqrt (365. / 14.) /
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
 				org.drip.simm.commodity.CTSystemics20.HISTORICAL_VOLATILITY_RATIO
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA 2.1 Commodity Vega Settings for the specified Bucket
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The Standard ISDA 2.1 Commodity Vega Settings for the specified Bucket
+	 */
+
+	public static BucketVegaSettings ISDA_CT_21 (
+		final int bucketIndex)
+	{
+		org.drip.simm.commodity.CTBucket commodityBucket =
+			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);
+
+		if (null == commodityBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.simm.parameters.BucketVegaSettings (
+				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get
+					(bucketIndex).vega(),
+				commodityBucket.memberCorrelation(),
+				java.lang.Math.sqrt (365. / 14.) /
+					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				org.drip.simm.commodity.CTSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
 		catch (java.lang.Exception e)

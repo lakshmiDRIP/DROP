@@ -177,6 +177,40 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 	}
 
 	/**
+	 * Construct the Standard ISDA 2.1 CT Bucket Curvature Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA 2.1 CT Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_CT_21 (
+		final int bucketIndex,
+		final int vegaDurationDays)
+	{
+		org.drip.simm.commodity.CTBucket commodityBucket =
+			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);
+
+		try
+		{
+			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (
+				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				commodityBucket.memberCorrelation(),
+				java.lang.Math.sqrt (365. / 14.) /
+					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				vegaDurationDays
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 FX Bucket Curvature Settings
 	 * 
 	 * @param vegaCategory The Vega Category

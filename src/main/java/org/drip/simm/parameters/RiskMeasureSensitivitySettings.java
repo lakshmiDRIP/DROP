@@ -234,6 +234,44 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.1 Commodity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.1 Commodity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_DELTA_21()
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				bucketDeltaSettingsMap.put (
+					"" + bucketIndex,
+					org.drip.simm.parameters.BucketSensitivitySettings.ISDA_CT_21 (bucketIndex)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketDeltaSettingsMap,
+				org.drip.simm.commodity.CTSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @return ISDA 2.0 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
@@ -256,13 +294,53 @@ public class RiskMeasureSensitivitySettings
 			{
 				bucketVegaSettingsMap.put (
 					"" + bucketIndex,
-					org.drip.simm.parameters.BucketVegaSettings.ISDA_CT (bucketIndex)
+					org.drip.simm.parameters.BucketVegaSettings.ISDA_CT_20 (bucketIndex)
 				);
 			}
 
 			return new RiskMeasureSensitivitySettings (
 				bucketVegaSettingsMap,
 				org.drip.simm.commodity.CTSettingsContainer20.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.1 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.1 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_VEGA_21()
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, org.drip.simm.commodity.CTBucket> bucketMap =
+			org.drip.simm.commodity.CTSettingsContainer21.BucketMap();
+
+		java.util.Set<java.lang.Integer> bucketKeySet = bucketMap.keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				bucketVegaSettingsMap.put (
+					"" + bucketIndex,
+					org.drip.simm.parameters.BucketVegaSettings.ISDA_CT_21 (bucketIndex)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				org.drip.simm.commodity.CTSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
 		catch (java.lang.Exception e)
@@ -307,6 +385,50 @@ public class RiskMeasureSensitivitySettings
 			return new RiskMeasureSensitivitySettings (
 				bucketCurvatureSettingsMap,
 				org.drip.simm.commodity.CTSettingsContainer20.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.1 Commodity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return ISDA 2.1 Commodity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_CURVATURE_21 (
+		final int vegaDurationDays)
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketCurvatureSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				bucketCurvatureSettingsMap.put (
+					"" + bucketIndex,
+					org.drip.simm.parameters.BucketCurvatureSettings.ISDA_CT_21 (
+						bucketIndex,
+						vegaDurationDays
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketCurvatureSettingsMap,
+				org.drip.simm.commodity.CTSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
 		catch (java.lang.Exception e)

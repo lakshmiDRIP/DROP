@@ -147,6 +147,42 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	}
 
 	/**
+	 * Construct the ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 */
+
+	public static BucketSensitivitySettings ISDA_CT_21 (
+		final int bucketIndex)
+	{
+		org.drip.simm.commodity.CTBucket commodityBucket =
+			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);
+
+		if (null == commodityBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new BucketSensitivitySettings (
+				commodityBucket.deltaRiskWeight(),
+				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get
+					(bucketIndex).delta(),
+				commodityBucket.memberCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 Instance of FX Delta Settings
 	 * 
 	 * @param categoryIndex The Category Index

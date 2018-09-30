@@ -105,6 +105,11 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
+		if (!org.drip.simm.commodity.CTRiskThresholdContainer21.Init())
+		{
+			return false;
+		}
+
 		return true;
 	}
 }

@@ -59,7 +59,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * CommodityCurvatureMargin20 illustrates the Computation of the SIMM 2.0 Curvature Margin for across a Group
+ * CommodityCurvatureMargin21 illustrates the Computation of the SIMM 2.1 Curvature Margin for across a Group
  *  of Commodity Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -81,7 +81,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommodityCurvatureMargin20
+public class CommodityCurvatureMargin21
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -290,7 +290,7 @@ public class CommodityCurvatureMargin20
 		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_20 (vegaDurationDays);
+			RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_21 (vegaDurationDays);
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);

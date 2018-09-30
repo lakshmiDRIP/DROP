@@ -1,5 +1,12 @@
 
-package org.drip.simm.product;
+package org.drip.sample.simmsettings;
+
+import java.util.Set;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.common.DeltaVegaThreshold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +54,8 @@ package org.drip.simm.product;
  */
 
 /**
- * RiskClassSensitivity holds the Risk Class Bucket Sensitivities for a single Risk Class. The References
- *  are:
+ * CommodityRiskConcentrationThreshold21 demonstrates the Extraction and Display of ISDA SIMM 2.1 Commodity
+ *  Risk Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -57,7 +64,7 @@ package org.drip.simm.product;
  *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
  *  
  *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting .Initial Margin Requirements,
+ *  	Framework for Forecasting Initial Margin Requirements,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
  *  
  *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
@@ -69,98 +76,54 @@ package org.drip.simm.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassSensitivity
+public class CommodityRiskConcentrationThreshold21
 {
-	private org.drip.simm.product.RiskMeasureSensitivity _vega = null;
-	private org.drip.simm.product.RiskMeasureSensitivity _delta = null;
-	private org.drip.simm.product.RiskMeasureSensitivity _curvature = null;
 
-	/**
-	 * RiskClassSensitivity Constructor
-	 * 
-	 * @param delta The Delta Risk Measure Sensitivity
-	 * @param vega The Vega Risk Measure Sensitivity
-	 * @param curvature The Curvature Risk Measure Sensitivity
-	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
-	 */
-
-	public RiskClassSensitivity (
-		final org.drip.simm.product.RiskMeasureSensitivity delta,
-		final org.drip.simm.product.RiskMeasureSensitivity vega,
-		final org.drip.simm.product.RiskMeasureSensitivity curvature)
-		throws java.lang.Exception
+	private static final void DisplayBuckets()
+		throws Exception
 	{
-		if (null == (_delta = delta) &&
-			null == (_vega = vega) &&
-			null == (_curvature = curvature))
+		Set<Integer> bucketSet = CTRiskThresholdContainer21.BucketSet();
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                          2.1 COMMODITY RISK CONCENTRATION THRESHOLD                             ||");
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                                                                                                 ||");
+
+		System.out.println ("\t||      L -> R:                                                                                    ||");
+
+		System.out.println ("\t||            - Bucket Number                                                                      ||");
+
+		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+
+		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		for (int bucketNumber : bucketSet)
 		{
-			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");
-		}
-	}
+			DeltaVegaThreshold commodityRiskThreshold = CTRiskThresholdContainer21.Threshold (bucketNumber);
 
-	/**
-	 * Retrieve the Delta Risk Measure Sensitivity
-	 * 
-	 * @return The Delta Risk Measure Sensitivity
-	 */
-
-	public org.drip.simm.product.RiskMeasureSensitivity delta()
-	{
-		return _delta;
-	}
-
-	/**
-	 * Retrieve the Vega Risk Measure Sensitivity
-	 * 
-	 * @return The Vega Risk Measure Sensitivity
-	 */
-
-	public org.drip.simm.product.RiskMeasureSensitivity vega()
-	{
-		return _vega;
-	}
-
-	/**
-	 * Retrieve the Curvature Risk Measure Sensitivity
-	 * 
-	 * @return The Curvature Risk Measure Sensitivity
-	 */
-
-	public org.drip.simm.product.RiskMeasureSensitivity curvature()
-	{
-		return _curvature;
-	}
-
-	/**
-	 * Compute the Risk Class Sensitivity Aggregate
-	 * 
-	 * @param riskClassSensitivitySettings The Risk Class Sensitivity Settings
-	 * 
-	 * @return The Risk Class Sensitivity Aggregate
-	 */
-
-	public org.drip.simm.margin.RiskClassAggregate aggregate (
-		final org.drip.simm.parameters.RiskClassSensitivitySettings riskClassSensitivitySettings)
-	{
-		if (null == riskClassSensitivitySettings)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new org.drip.simm.margin.RiskClassAggregate (
-				_delta.linearAggregate (riskClassSensitivitySettings.delta()),
-				_vega.linearAggregate (riskClassSensitivitySettings.vega()),
-				_curvature.curvatureAggregate (riskClassSensitivitySettings.curvature())
+			System.out.println (
+				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (commodityRiskThreshold.delta(), 5, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (commodityRiskThreshold.vega(), 4, 1, 1.) + " ||"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	}
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		DisplayBuckets();
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -59,8 +59,8 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * CommodityCurvatureMargin20 illustrates the Computation of the SIMM 2.0 Curvature Margin for across a Group
- *  of Commodity Bucket Exposure Sensitivities. The References are:
+ * CommodityDeltaMargin21 illustrates the Computation of the ISDA 2.1 Delta Margin for across a Group of
+ *  Commodity Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -81,7 +81,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommodityCurvatureMargin20
+public class CommodityDeltaMargin21
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -238,7 +238,7 @@ public class CommodityCurvatureMargin20
 	{
 		System.out.println ("\t|------------------------------------------------||");
 
-		System.out.println ("\t|               RISK FACTOR VEGA                 ||");
+		System.out.println ("\t|               RISK FACTOR DELTA                ||");
 
 		System.out.println ("\t|------------------------------------------------||");
 
@@ -248,7 +248,7 @@ public class CommodityCurvatureMargin20
 
 		System.out.println ("\t|    - Bucket                                    ||");
 
-		System.out.println ("\t|    - Vega                                      ||");
+		System.out.println ("\t|    - Delta                                     ||");
 
 		System.out.println ("\t|------------------------------------------------||");
 
@@ -287,10 +287,9 @@ public class CommodityCurvatureMargin20
 		EnvManager.InitEnv ("");
 
 		double notional = 100.;
-		int vegaDurationDays = 365;
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_20 (vegaDurationDays);
+			RiskMeasureSensitivitySettings.ISDA_CT_DELTA_21();
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);
@@ -311,7 +310,7 @@ public class CommodityCurvatureMargin20
 
 		System.out.println ("\t|    - Bucket Margin     ||");
 
-		System.out.println ("\t|    - Bucket Vega       ||");
+		System.out.println ("\t|    - Bucket Delta      ||");
 
 		System.out.println ("\t|------------------------||");
 
@@ -342,30 +341,30 @@ public class CommodityCurvatureMargin20
 
 		System.out.println();
 
-		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
-			(bucketSensitivityMap).curvatureAggregate (riskMeasureSensitivitySettings);
+		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity 
+			(bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                 SBA BASED CURVATURE MARGIN              ||");
+		System.out.println ("\t|               SBA BASED DELTA MARGIN                ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                                                         ||");
+		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|    L -> R:                                              ||");
+		System.out.println ("\t|    L -> R:                                          ||");
 
-		System.out.println ("\t|                                                         ||");
+		System.out.println ("\t|                                                     ||");
 
-		System.out.println ("\t|            - Core Curvature SBA Margin                  ||");
+		System.out.println ("\t|            - Core Delta SBA Margin                  ||");
 
-		System.out.println ("\t|            - Residual Curvature SBA Margin              ||");
+		System.out.println ("\t|            - Residual Delta SBA Margin              ||");
 
-		System.out.println ("\t|            - SBA Curvature Margin                       ||");
+		System.out.println ("\t|            - SBA Delta Margin                       ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t| CURVATURE MARGIN COMPONENTS => " +
+		System.out.println ("\t| DELTA MARGIN COMPONENTS => " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
 				" | " +
 			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
@@ -373,7 +372,7 @@ public class CommodityCurvatureMargin20
 			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
 		);
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
