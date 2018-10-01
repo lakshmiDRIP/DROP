@@ -60,7 +60,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * CommodityClassMargin20 illustrates the Computation of the ISDA 2.0 Aggregate Margin for across a Group of
+ * CommodityClassMargin21 illustrates the Computation of the ISDA 2.1 Aggregate Margin for across a Group of
  *  Commodity Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -82,7 +82,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommodityClassMargin20
+public class CommodityClassMargin21
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -242,7 +242,7 @@ public class CommodityClassMargin20
 		double notional = 100.;
 		int vegaDurationDays = 365;
 
-		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_CT_20
+		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_CT_21
 			(vegaDurationDays);
 
 		Map<String, Map<String, Double>> bucketDeltaMap = BucketRiskFactorSensitivityMap (notional);

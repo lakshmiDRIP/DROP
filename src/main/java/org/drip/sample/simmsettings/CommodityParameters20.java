@@ -57,7 +57,7 @@ import org.drip.simm.commodity.CTSystemics20;
  */
 
 /**
- * CommoditySettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
+ * CommodityParameters20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
  *  Commodity Bucket Risk Weights, Correlations, and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -79,7 +79,7 @@ import org.drip.simm.commodity.CTSystemics20;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommoditySettings20
+public class CommodityParameters20
 {
 
 	private static final void RiskWeights()

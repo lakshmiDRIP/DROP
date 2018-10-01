@@ -1,12 +1,13 @@
 
-package org.drip.sample.simmct;
+package org.drip.sample.simmfx;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
 import org.drip.simm.parameters.RiskClassSensitivitySettings;
@@ -60,8 +61,8 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * CommodityClassMargin20 illustrates the Computation of the ISDA 2.0 Aggregate Margin for across a Group of
- *  Commodity Bucket Exposure Sensitivities. The References are:
+ * FXClassMargin20 illustrates the Computation of the ISDA 2.0 Aggregate Margin for across a Group of FX
+ *  Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -82,24 +83,66 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommodityClassMargin20
+public class FXClassMargin20
 {
+
+	private static final Map<String, Map<String, Double>> CategorySensitivityMap (
+		final String[] currencyArray,
+		final double notional)
+		throws Exception
+	{
+		Map<String, Map<String, Double>> currencySentivityMap = new TreeMap<String, Map<String, Double>>();
+
+		for (String currency : currencyArray)
+		{
+			int categoryIndex = FXRiskThresholdContainer20.CurrencyCategory (currency);
+
+			if (currencySentivityMap.containsKey ("" + categoryIndex))
+			{
+				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get ("" + categoryIndex);
+
+				riskFactorSensitivityMap.put (
+					currency,
+					notional * (Math.random() - 0.5)
+				);
+			}
+			else
+			{
+				Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
+
+				riskFactorSensitivityMap.put (
+					currency,
+					notional * (Math.random() - 0.5)
+				);
+
+				currencySentivityMap.put (
+					"" + categoryIndex,
+					riskFactorSensitivityMap
+				);
+			}
+		}
+
+		return currencySentivityMap;
+	}
 
 	private static final void AddBucketRiskFactorSensitivity (
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
-		final int bucketIndex,
+		final String bucketKey,
 		final double notional,
-		final String commodity)
+		final String[] fxPairArray)
 	{
 		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		riskFactorSensitivityMap.put (
-			commodity,
-			notional * (Math.random() - 0.5)
-		);
+		for (String fxPair : fxPairArray)
+		{
+			riskFactorSensitivityMap.put (
+				fxPair,
+				notional * (Math.random() - 0.5)
+			);
+		}
 
 		bucketRiskFactorSensitivityMap.put (
-			"" + bucketIndex,
+			bucketKey,
 			riskFactorSensitivityMap
 		);
 	}
@@ -109,132 +152,130 @@ public class CommodityClassMargin20
 		throws Exception
 	{
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new HashMap<String, Map<String, Double>>();
+			new TreeMap<String, Map<String, Double>>();
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			1,
+			"1__1",
 			notional,
-			"COAL                          "
+			new String[]
+			{
+				"USD_EUR",
+				"USD_JPY",
+				"USD_GBP",
+				"USD_AUD",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			2,
+			"1__2",
 			notional,
-			"CRUDE                         "
+			new String[]
+			{
+				"USD_BRL",
+				"USD_CNY",
+				"USD_HKD",
+				"USD_INR",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			3,
+			"2__1",
 			notional,
-			"LIGHT ENDS                    "
+			new String[]
+			{
+				"BRL_USD",
+				"CNY_USD",
+				"HKD_USD",
+				"INR_USD",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			4,
+			"2__2",
 			notional,
-			"MIDDLE DISTILLATES            "
+			new String[]
+			{
+				"BRL_CNY",
+				"BRL_KDD",
+				"BRL_INR",
+				"BRL_KRW",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			5,
+			"1__3",
 			notional,
-			"HEAVY DISTILLATES             "
+			new String[]
+			{
+				"USD_IDR",
+				"USD_PKR",
+				"USD_SRL",
+				"USD_BNT",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			6,
+			"2__3",
 			notional,
-			"NORTH AMERICAN NATURAL GAS    "
+			new String[]
+			{
+				"BRL_IDR",
+				"BRL_PKR",
+				"BRL_SRL",
+				"BRL_BNT",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			7,
+			"3__1",
 			notional,
-			"EUROPEAN NATURAL GAS          "
+			new String[]
+			{
+				"IDR_USD",
+				"PKR_USD",
+				"SRL_USD",
+				"BNT_USD",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			8,
+			"3__2",
 			notional,
-			"NORTH AMERICAN POWER          "
+			new String[]
+			{
+				"IDR_BRL",
+				"PKR_BRL",
+				"SRL_BRL",
+				"BNT_BRL",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
-			9,
+			"3__3",
 			notional,
-			"EUROPEAN POWER                "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			10,
-			notional,
-			"FREIGHT                       "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			11,
-			notional,
-			"BASE METALS                   "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			12,
-			notional,
-			"PRECIOUS METALS               "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			13,
-			notional,
-			"GRAINS                        "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			14,
-			notional,
-			"SOFTS                         "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			15,
-			notional,
-			"LIVESTOCK                     "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			16,
-			notional,
-			"OTHER                         "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			17,
-			notional,
-			"INDEXES                       "
+			new String[]
+			{
+				"IDR_PKR",
+				"PKR_SRL",
+				"SRL_IDR",
+				"BNT_SRL",
+			}
 		);
 
 		return bucketRiskFactorSensitivityMap;
 	}
 
-	public static final void main (
-		final String[] inputArray)
+	public static void main (
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
@@ -242,35 +283,59 @@ public class CommodityClassMargin20
 		double notional = 100.;
 		int vegaDurationDays = 365;
 
-		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_CT_20
+		String[] currencyArray =
+		{
+			"USD",
+			"EUR",
+			"JPY",
+			"GBP",
+			"AUD",
+			"CHF",
+			"CAD",
+			"BRL",
+			"CNY",
+			"HKD",
+			"INR",
+			"KRW",
+			"MXN",
+			"NOK",
+			"NZD",
+			"RUB",
+			"SEK",
+			"SGD",
+			"TRY",
+			"ZAR",
+			"PKR",
+			"IDR"
+		};
+
+		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX_20
 			(vegaDurationDays);
 
-		Map<String, Map<String, Double>> bucketDeltaMap = BucketRiskFactorSensitivityMap (notional);
+		Map<String, Map<String, Double>> bucketDeltaMap = CategorySensitivityMap (
+			currencyArray,
+			notional
+		);
 
-		Map<String, BucketSensitivity> bucketDeltaSensitivityMap = new HashMap<String, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketDeltaSensitivityMap = new TreeMap<String, BucketSensitivity>();
 
-		for (Map.Entry<String, Map<String, Double>> bucketDeltaMapEntry : bucketDeltaMap.entrySet())
+		for (Map.Entry<String, Map<String, Double>> deltaCategoryMapEntry : bucketDeltaMap.entrySet())
 		{
-			BucketSensitivity bucketDeltaSensitivity = new BucketSensitivity
-				(bucketDeltaMapEntry.getValue());
-
 			bucketDeltaSensitivityMap.put (
-				bucketDeltaMapEntry.getKey(),
-				bucketDeltaSensitivity
+				deltaCategoryMapEntry.getKey(),
+				new BucketSensitivity (deltaCategoryMapEntry.getValue())
 			);
 		}
 
 		Map<String, Map<String, Double>> bucketVegaMap = BucketRiskFactorSensitivityMap (notional);
 
-		Map<String, BucketSensitivity> bucketVegaSensitivityMap = new HashMap<String, BucketSensitivity>();
+		Map<String, BucketSensitivity> bucketVegaSensitivityMap = new TreeMap<String, BucketSensitivity>();
 
 		for (Map.Entry<String, Map<String, Double>> bucketVegaMapEntry : bucketVegaMap.entrySet())
 		{
-			BucketSensitivity bucketVegaSensitivity = new BucketSensitivity (bucketVegaMapEntry.getValue());
-
 			bucketVegaSensitivityMap.put (
 				bucketVegaMapEntry.getKey(),
-				bucketVegaSensitivity
+				new BucketSensitivity (bucketVegaMapEntry.getValue())
 			);
 		}
 
@@ -385,8 +450,6 @@ public class CommodityClassMargin20
 			FormatUtil.FormatDouble (riskClassAggregate.margin(), 5, 0, 1.) + " ||");
 
 		System.out.println ("\t|------------------------||");
-
-		System.out.println();
 
 		EnvManager.TerminateEnv();
 	}

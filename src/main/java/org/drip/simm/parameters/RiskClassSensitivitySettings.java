@@ -97,7 +97,91 @@ public class RiskClassSensitivitySettings
 		}
 		catch (java.lang.Exception e)
 		{
-			e.printStackTrace();;
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the ISDA 2.1 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.1 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_CT_21 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_DELTA_21(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_VEGA_21(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_21
+					(vegaDurationDays)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the ISDA 2.0 Standard FX Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.0 Standard FX Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_FX_20 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_DELTA_20(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_VEGA_20(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_20
+					(vegaDurationDays)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the ISDA 2.1 Standard FX Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.1 Standard FX Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_FX_21 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_DELTA_21(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_VEGA_21(),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_21
+					(vegaDurationDays)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
 		return null;

@@ -1,9 +1,5 @@
 
-package org.drip.sample.simmsettings;
-
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.simm.fx.FXSystemics20;
+package org.drip.simm.equity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -51,8 +47,7 @@ import org.drip.simm.fx.FXSystemics20;
  */
 
 /**
- * FXSettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 FX Bucket Risk Weights,
- *  Correlations, and Systemics. The References are:
+ * EQSettingsContainer21 holds the ISDA SIMM 2.1 Equity Buckets and their Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -73,58 +68,69 @@ import org.drip.simm.fx.FXSystemics20;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXSettings20
+public class EQSettingsContainer21
 {
+	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final void Systemics()
+	private static final java.util.Map<java.lang.Integer, org.drip.simm.equity.EQBucket> s_BucketMap =
+		new java.util.TreeMap<java.lang.Integer, org.drip.simm.equity.EQBucket>();
+
+	private static final boolean SetUpCrossBucketCorrelation()
 	{
-		System.out.println ("\t||----------------------------------------------------------------||");
+		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
 
-		System.out.println ("\t||                      2.0 FX SYSTEMICS                          ||");
+		bucketList.add ("1");
 
-		System.out.println ("\t||----------------------------------------------------------------||");
+		bucketList.add ("2");
 
-		System.out.println (
-			"\t|| Risk Weight                                         => " +
-			FormatUtil.FormatDouble (
-				FXSystemics20.DELTA_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
+		bucketList.add ("3");
 
-		System.out.println (
-			"\t|| Historical Volatility Ratio                         => " +
-			FormatUtil.FormatDouble (
-				FXSystemics20.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
-			) + " ||"
-		);
+		bucketList.add ("4");
 
-		System.out.println (
-			"\t|| Vega Risk Weight                                    => " +
-			FormatUtil.FormatDouble (
-				FXSystemics20.VEGA_RISK_WEIGHT, 3, 2, 1.
-			) + " ||"
-		);
+		bucketList.add ("5");
 
-		System.out.println (
-			"\t|| Correlation                                         => " +
-			FormatUtil.FormatDouble (
-				FXSystemics20.CORRELATION, 3, 2, 1.
-			) + " ||"
-		);
+		bucketList.add ("6");
 
-		System.out.println ("\t||----------------------------------------------------------------||");
+		bucketList.add ("7");
 
-		System.out.println();
-	}
+		bucketList.add ("8");
 
-	public static final void main (
-		final String[] args)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
+		bucketList.add ("9");
 
-		Systemics();
+		bucketList.add ("10");
 
-		EnvManager.TerminateEnv();
+		bucketList.add ("11");
+
+		bucketList.add ("12");
+
+		try
+		{
+			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
+				bucketList,
+				new double[][]
+				{
+					{1.00, 0.16, 0.16, 0.17, 0.13, 0.15, 0.15, 0.15, 0.13, 0.11, 0.19, 0.19}, // #01
+					{0.16, 1.00, 0.20, 0.20, 0.14, 0.16, 0.16, 0.16, 0.15, 0.13, 0.20, 0.20}, // #02
+					{0.16, 0.20, 1.00, 0.22, 0.15, 0.19, 0.22, 0.19, 0.16, 0.15, 0.25, 0.25}, // #03
+					{0.17, 0.20, 0.22, 1.00, 0.17, 0.21, 0.21, 0.21, 0.17, 0.15, 0.27, 0.27}, // #04
+					{0.13, 0.14, 0.15, 0.17, 1.00, 0.25, 0.23, 0.26, 0.14, 0.17, 0.32, 0.32}, // #05
+					{0.15, 0.16, 0.19, 0.21, 0.25, 1.00, 0.30, 0.31, 0.16, 0.21, 0.38, 0.38}, // #06
+					{0.15, 0.16, 0.22, 0.21, 0.23, 0.30, 1.00, 0.29, 0.16, 0.21, 0.38, 0.38}, // #07
+					{0.15, 0.16, 0.19, 0.21, 0.26, 0.31, 0.29, 1.00, 0.17, 0.21, 0.39, 0.39}, // #08
+					{0.13, 0.15, 0.16, 0.17, 0.14, 0.16, 0.16, 0.17, 1.00, 0.13, 0.21, 0.21}, // #09
+					{0.11, 0.13, 0.15, 0.15, 0.17, 0.21, 0.21, 0.21, 0.13, 1.00, 0.25, 0.25}, // #10
+					{0.19, 0.20, 0.25, 0.27, 0.32, 0.38, 0.38, 0.39, 0.21, 0.25, 1.00, 0.51}, // #11
+					{0.19, 0.20, 0.25, 0.27, 0.32, 0.38, 0.38, 0.39, 0.21, 0.25, 0.51, 1.00}, // #12
+				}
+			);
+
+			return true;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 }

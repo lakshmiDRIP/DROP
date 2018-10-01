@@ -246,6 +246,41 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 	}
 
 	/**
+	 * Construct the Standard ISDA 2.1 FX Bucket Curvature Settings
+	 * 
+	 * @param vegaCategory The Vega Category
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA 2.1 FX Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_FX_21 (
+		final java.lang.String vegaCategory,
+		final int vegaDurationDays)
+	{
+		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
+			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();
+
+		try {
+			return !fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ? null :
+				BucketCurvatureSettings.ISDA (
+					org.drip.simm.fx.FXSystemics21.VEGA_RISK_WEIGHT *
+						org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
+					org.drip.simm.fx.FXSystemics21.CORRELATION,
+					java.lang.Math.sqrt (365. / 14.) /
+						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+					vegaDurationDays
+				);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BucketCurvatureSettings Constructor
 	 * 
 	 * @param riskWeight The Vega Risk Weight

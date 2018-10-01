@@ -105,12 +105,12 @@ public class ISDASettingsContainer
 			return false;
 		}
 
-		if (!org.drip.simm.common.RiskFactorThresholdContainer.Init())
+		if (!org.drip.simm.commodity.CTSettingsContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.commodity.CTSettingsContainer21.Init())
+		if (!org.drip.simm.common.RiskFactorThresholdContainer.Init())
 		{
 			return false;
 		}

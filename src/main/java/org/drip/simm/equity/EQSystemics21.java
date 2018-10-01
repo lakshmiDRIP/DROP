@@ -1,5 +1,5 @@
 
-package org.drip.simm.common;
+package org.drip.simm.equity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.common;
  */
 
 /**
- * RiskFactorThresholdContainer holds the ISDA SIMM 2.0 Risk Factor Thresholds - the Concentration Limits for
- * 	Interest Rate, Credit Spread, Equity, Commodity, and FX Risk Factors. The References are:
+ * EQSystemics21 contains the SIMM 2.1 Systemic Settings common to all Equity Risk Factors. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,52 +69,18 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskFactorThresholdContainer
+public class EQSystemics21
 {
 
 	/**
-	 * Initialize the Risk Factor Threshold Container
-	 * 
-	 * @return TRUE - The Risk Factor Threshold Container successfully initialized
+	 * Historical Volatility Ratio (HVR)
 	 */
 
-	public static final boolean Init()
-	{
-		if (!org.drip.simm.rates.IRThresholdContainer20.Init())
-		{
-			return false;
-		}
+	public static final double HISTORICAL_VOLATILITY_RATIO = 0.59;
 
-		if (!org.drip.simm.credit.CRThresholdContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Residual Bucket Correlation
+	 */
 
-		if (!org.drip.simm.equity.EQRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.fx.FXRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.fx.FXRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
-
-		return true;
-	}
+	public static final double RESIDUAL_BUCKET_CORRELATION = 0.00;
 }

@@ -1,14 +1,9 @@
 
 package org.drip.sample.simmsettings;
 
-import java.util.Set;
-
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.credit.CRBucket;
-import org.drip.simm.credit.CRNQBucketCorrelation20;
-import org.drip.simm.credit.CRNQSettingsContainer20;
-import org.drip.simm.credit.CRNQSystemics20;
+import org.drip.simm.fx.FXSystemics20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -56,8 +51,8 @@ import org.drip.simm.credit.CRNQSystemics20;
  */
 
 /**
- * CreditNonQualifyingSettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross
- *  Currency Credit Non-Qualifying Bucket Risk Weights, Systemics, and Correlations. The References are:
+ * FX20 demonstrates the Extraction and Display of ISDA SIMM 2.0 FX Bucket Risk Weights, Correlations, and
+ *  Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -78,110 +73,42 @@ import org.drip.simm.credit.CRNQSystemics20;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditNonQualifyingSettings20
+public class FX20
 {
 
-	private static final void DisplayRiskWeights()
-	{
-		Set<Integer> bucketIndexSet = CRNQSettingsContainer20.BucketSet();
-
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println
-			("\t||                               2.0 CREDIT NON QUALIFYING BUCKETS RISK WEIGHT                                 ||");
-
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println
-			("\t||                                                                                                             ||");
-
-		System.out.println
-			("\t||        L -> R:                                                                                              ||");
-
-		System.out.println
-			("\t||                - Bucket Number                                                                              ||");
-
-		System.out.println
-			("\t||                - Bucket Quality                                                                             ||");
-
-		System.out.println
-			("\t||                - Bucket Risk Weight                                                                         ||");
-
-		System.out.println
-			("\t||                - Bucket Sector                                                                              ||");
-
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------");
-
-		for (int bucketIndex : bucketIndexSet)
-		{
-			CRBucket creditQualifyingBucket = CRNQSettingsContainer20.Bucket (bucketIndex);
-
-			String sectorArrayDump = "";
-
-			String[] sectorArray = creditQualifyingBucket.sectorArray();
-
-			for (String sector : sectorArray)
-			{
-				sectorArrayDump = sectorArrayDump + sector + " ,";
-			}
-
-			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (creditQualifyingBucket.number(), 2, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (creditQualifyingBucket.riskWeight(), 4, 0, 1.) + " | " +
-				creditQualifyingBucket.quality() + " | {" +
-				sectorArrayDump + "}"
-			);
-		}
-
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println();
-	}
-
-	private static final void CreditNonQualifyingSystemics()
+	private static final void Systemics()
 	{
 		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||                CREDIT NON QUALIFYING SYSTEMICS                 ||");
+		System.out.println ("\t||                      2.0 FX SYSTEMICS                          ||");
 
 		System.out.println ("\t||----------------------------------------------------------------||");
 
 		System.out.println (
-			"\t|| Vega Risk Wight                                     => " +
+			"\t|| Risk Weight                                         => " +
 			FormatUtil.FormatDouble (
-				CRNQSystemics20.VEGA_RISK_WEIGHT, 3, 2, 1.
+				FXSystemics20.DELTA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Non-Residual Correlation >80% Names Overlap         => " +
+			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation20.GT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
+				FXSystemics20.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Non-Residual Correlation <80% Names Overlap         => " +
+			"\t|| Vega Risk Weight                                    => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation20.LT_80PC_OVERLAP_NON_RESIDUAL, 3, 2, 1.
+				FXSystemics20.VEGA_RISK_WEIGHT, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Residual Correlation >80% Names Overlap             => " +
+			"\t|| Correlation                                         => " +
 			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation20.GT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
-			) + " ||"
-		);
-
-		System.out.println (
-			"\t|| Residual Correlation <80% Names Overlap             => " +
-			FormatUtil.FormatDouble (
-				CRNQBucketCorrelation20.LT_80PC_OVERLAP_RESIDUAL, 3, 2, 1.
+				FXSystemics20.CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -196,9 +123,7 @@ public class CreditNonQualifyingSettings20
 	{
 		EnvManager.InitEnv ("");
 
-		DisplayRiskWeights();
-
-		CreditNonQualifyingSystemics();
+		Systemics();
 
 		EnvManager.TerminateEnv();
 	}

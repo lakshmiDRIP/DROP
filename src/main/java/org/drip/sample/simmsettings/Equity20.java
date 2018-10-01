@@ -7,9 +7,9 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.commodity.CTBucket;
-import org.drip.simm.commodity.CTSettingsContainer21;
-import org.drip.simm.commodity.CTSystemics21;
+import org.drip.simm.equity.EQBucket;
+import org.drip.simm.equity.EQSettingsContainer20;
+import org.drip.simm.equity.EQSystemics20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -57,8 +57,8 @@ import org.drip.simm.commodity.CTSystemics21;
  */
 
 /**
- * CommoditySettings21 demonstrates the Extraction and Display of ISDA SIMM 2.1 Single/Cross Currency
- *  Commodity Bucket Risk Weights, Correlations, and Systemics. The References are:
+ * Equity20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency Equity Bucket Risk
+ *  Weights, Correlations, and Systemics. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -79,18 +79,18 @@ import org.drip.simm.commodity.CTSystemics21;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommoditySettings21
+public class Equity20
 {
 
 	private static final void RiskWeights()
 	{
-		Set<Integer> bucketIndexSet = CTSettingsContainer21.BucketSet();
+		Set<Integer> bucketIndexSet = EQSettingsContainer20.BucketSet();
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                                    2.1 COMMODITY BUCKETS RISK WEIGHT                                        ||");
+			("\t||                                      2.0 EQUITY BUCKETS RISK WEIGHT                                         ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------||");
@@ -105,26 +105,47 @@ public class CommoditySettings21
 			("\t||                - Bucket Number                                                                              ||");
 
 		System.out.println
+			("\t||                - Bucket Size                                                                                ||");
+
+		System.out.println
+			("\t||                - Bucket Region                                                                              ||");
+
+		System.out.println
 			("\t||                - Bucket Risk Weight                                                                         ||");
 
 		System.out.println
 			("\t||                - Bucket Member Correlation                                                                  ||");
 
 		System.out.println
-			("\t||                - Bucket Entity                                                                              ||");
+			("\t||                - Bucket Vega Risk Weight                                                                    ||");
+
+		System.out.println
+			("\t||                - Bucket Sector                                                                              ||");
 
 		System.out.println
 			("\t||-------------------------------------------------------------------------------------------------------------");
 
 		for (int bucketIndex : bucketIndexSet)
 		{
-			CTBucket commodityBucket = CTSettingsContainer21.Bucket (bucketIndex);
+			EQBucket equityBucket = EQSettingsContainer20.Bucket (bucketIndex);
+
+			String sectorArrayDump = "";
+
+			String[] sectorArray = equityBucket.sectorArray();
+
+			for (String sector : sectorArray)
+			{
+				sectorArrayDump = sectorArrayDump + sector + " ,";
+			}
 
 			System.out.println (
-				"\t||" + FormatUtil.FormatDouble (commodityBucket.number(), 2, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (commodityBucket.deltaRiskWeight(), 3, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (commodityBucket.memberCorrelation(), 2, 1, 100.) + "% | " +
-				commodityBucket.entity()
+				"\t||" + FormatUtil.FormatDouble (equityBucket.number(), 2, 0, 1.) + " | " +
+				equityBucket.size() + " | " +
+				equityBucket.region() + " | " +
+				FormatUtil.FormatDouble (equityBucket.deltaRiskWeight(), 3, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (equityBucket.memberCorrelation(), 2, 0, 100.) + "% | " +
+				FormatUtil.FormatDouble (equityBucket.vegaRiskWeight(), 1, 2, 1.) + " | {" +
+				sectorArrayDump + "}"
 			);
 		}
 
@@ -138,21 +159,21 @@ public class CommoditySettings21
 	{
 		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||                      COMMODITY SYSTEMICS                       ||");
+		System.out.println ("\t||                        EQUITY SYSTEMICS                        ||");
 
 		System.out.println ("\t||----------------------------------------------------------------||");
 
 		System.out.println (
 			"\t|| Historical Volatility Ratio                         => " +
 			FormatUtil.FormatDouble (
-				CTSystemics21.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+				EQSystemics20.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
 			) + " ||"
 		);
 
 		System.out.println (
-			"\t|| Vega Risk Weight                                    => " +
+			"\t|| Residual Bucket Correlation                         => " +
 			FormatUtil.FormatDouble (
-				CTSystemics21.VEGA_RISK_WEIGHT, 3, 2, 1.
+				EQSystemics20.RESIDUAL_BUCKET_CORRELATION, 3, 2, 1.
 			) + " ||"
 		);
 
@@ -164,18 +185,18 @@ public class CommoditySettings21
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CTSettingsContainer21.CrossBucketCorrelation();
+		LabelCorrelation crossBucketCorrelation = EQSettingsContainer20.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.labelList();
 
 		System.out.println
-			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+			("\t||------------------------------------------------------------------------------------------||");
 
 		System.out.println
-			("\t||                                               CROSS BUCKET TENOR CORRELATION                                                ||");
+			("\t||                             CROSS BUCKET TENOR CORRELATION                               ||");
 
 		System.out.println
-			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+			("\t||------------------------------------------------------------------------------------------||");
 
 		String rowDump = "\t||     ";
 
@@ -187,7 +208,7 @@ public class CommoditySettings21
 		System.out.println (rowDump + " ||");
 
 		System.out.println
-			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+			("\t||------------------------------------------------------------------------------------------||");
 
 		for (String innerBucket : bucketList)
 		{
@@ -208,7 +229,7 @@ public class CommoditySettings21
 		}
 
 		System.out.println
-			("\t||-----------------------------------------------------------------------------------------------------------------------------||");
+			("\t||------------------------------------------------------------------------------------------||");
 
 		System.out.println();
 	}

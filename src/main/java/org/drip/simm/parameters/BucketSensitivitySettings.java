@@ -218,6 +218,41 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	}
 
 	/**
+	 * Construct the Standard ISDA 2.1 Instance of FX Delta Settings
+	 * 
+	 * @param categoryIndex The Category Index
+	 * 
+	 * @return The Standard ISDA 2.1 Instance of FX Delta Settings
+	 */
+
+	public static BucketSensitivitySettings ISDA_FX_21 (
+		final int categoryIndex)
+	{
+		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
+			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryDeltaMap();
+
+		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.simm.parameters.BucketSensitivitySettings (
+				org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryDeltaMap.get (categoryIndex),
+				org.drip.simm.fx.FXSystemics21.CORRELATION
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BucketSensitivitySettings Constructor
 	 * 
 	 * @param riskWeight The Risk Factor Weight

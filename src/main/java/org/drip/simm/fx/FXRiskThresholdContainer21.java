@@ -47,7 +47,7 @@ package org.drip.simm.fx;
  */
 
 /**
- * FXRiskThresholdContainer20 holds the ISDA SIMM 2.0 FX Risk Thresholds - the FX Categories and the
+ * FXRiskThresholdContainer21 holds the ISDA SIMM 2.1 FX Risk Thresholds - the FX Categories and the
  *  Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -69,7 +69,7 @@ package org.drip.simm.fx;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXRiskThresholdContainer20
+public class FXRiskThresholdContainer21
 {
 	private static final java.util.Map<java.lang.Integer, org.drip.simm.fx.FXRiskGroup> s_FXRiskGroupMap =
 		new java.util.TreeMap<java.lang.Integer, org.drip.simm.fx.FXRiskGroup>();
@@ -146,27 +146,27 @@ public class FXRiskThresholdContainer20
 
 			s_CategoryDelta.put (
 				1,
-				8400.
+				9700.
 			);
 
 			s_CategoryDelta.put (
 				2,
-				1900.
+				2900.
 			);
 
 			s_CategoryDelta.put (
 				3,
-				560.
+				450.
 			);
 
 			s_CategoryVega.put (
 				"1__1",
-				4000.
+				2000.
 			);
 
 			s_CategoryVega.put (
 				"1__2",
-				1900.
+				1000.
 			);
 
 			s_CategoryVega.put (
@@ -176,17 +176,17 @@ public class FXRiskThresholdContainer20
 
 			s_CategoryVega.put (
 				"2__1",
-				1900.
+				1000.
 			);
 
 			s_CategoryVega.put (
 				"2__2",
-				120.
+				410.
 			);
 
 			s_CategoryVega.put (
 				"2__3",
-				110.
+				210.
 			);
 
 			s_CategoryVega.put (
@@ -196,12 +196,12 @@ public class FXRiskThresholdContainer20
 
 			s_CategoryVega.put (
 				"3__2",
-				110.
+				210.
 			);
 
 			s_CategoryVega.put (
 				"3__3",
-				110.
+				150.
 			);
 		}
 		catch (java.lang.Exception e)

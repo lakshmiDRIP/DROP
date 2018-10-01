@@ -91,8 +91,8 @@ public class RiskClassSensitivity
 		final org.drip.simm.product.RiskMeasureSensitivity curvature)
 		throws java.lang.Exception
 	{
-		if (null == (_delta = delta) &&
-			null == (_vega = vega) &&
+		if (null == (_delta = delta) ||
+			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
 			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");

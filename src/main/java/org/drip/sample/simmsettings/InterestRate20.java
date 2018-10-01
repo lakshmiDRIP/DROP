@@ -57,8 +57,8 @@ import org.drip.simm.rates.IRWeight;
  */
 
 /**
- * InterestRateSettings20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency
- * 	Interest Rate Tenor Risk Weights, Systemics, and Correlations. The References are:
+ * InterestRate20 demonstrates the Extraction and Display of ISDA SIMM 2.0 Single/Cross Currency Interest
+ *  Rate Tenor Risk Weights, Systemics, and Correlations. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -79,7 +79,7 @@ import org.drip.simm.rates.IRWeight;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InterestRateSettings20
+public class InterestRate20
 {
 
 	private static final void RegularVolatility()

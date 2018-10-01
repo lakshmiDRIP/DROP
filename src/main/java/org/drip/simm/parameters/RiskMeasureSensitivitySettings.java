@@ -500,6 +500,66 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.1 FX DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.1 FX DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_DELTA_21()
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
+			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryDeltaMap();
+
+		java.util.Set<java.lang.Integer> fxConcentrationCategoryDeltaKey =
+			fxConcentrationCategoryDeltaMap.keySet();
+
+		java.util.List<java.lang.String> deltaCategoryList = new java.util.ArrayList<java.lang.String>();
+
+		int fxConcentrationCategoryDeltaCount = fxConcentrationCategoryDeltaKey.size();
+
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryDeltaCount][fxConcentrationCategoryDeltaCount];
+
+		try
+		{
+			for (int deltaCategoryIndex : fxConcentrationCategoryDeltaKey)
+			{
+				deltaCategoryList.add ("" + deltaCategoryIndex);
+
+				bucketDeltaSettingsMap.put (
+					"" + deltaCategoryIndex,
+					org.drip.simm.parameters.BucketSensitivitySettings.ISDA_FX_21 (deltaCategoryIndex)
+				);
+
+				for (int categoryIndexInner : fxConcentrationCategoryDeltaKey)
+				{
+					crossBucketCorrelationMatrix[deltaCategoryIndex - 1][categoryIndexInner - 1] =
+						deltaCategoryIndex == categoryIndexInner ? 1. :
+						org.drip.simm.fx.FXSystemics21.CORRELATION;
+				}
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketDeltaSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					deltaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @return ISDA 2.0 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
@@ -533,7 +593,7 @@ public class RiskMeasureSensitivitySettings
 
 				bucketVegaSettingsMap.put (
 					vegaCategoryOuter,
-					org.drip.simm.parameters.BucketVegaSettings.ISDA_FX (vegaCategoryOuter)
+					org.drip.simm.parameters.BucketVegaSettings.ISDA_FX_20 (vegaCategoryOuter)
 				);
 
 				for (int vegaCategoryIndexInner = 0;
@@ -543,6 +603,71 @@ public class RiskMeasureSensitivitySettings
 					crossBucketCorrelationMatrix[vegaCategoryIndexOuter][vegaCategoryIndexInner] =
 						vegaCategoryIndexOuter == vegaCategoryIndexInner ? 1. :
 						org.drip.simm.fx.FXSystemics20.CORRELATION;
+				}
+
+				++vegaCategoryIndexOuter;
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					vegaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.1 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.1 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_VEGA_21()
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
+			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();
+
+		java.util.Set<java.lang.String> fxConcentrationCategoryVegaKey =
+			fxConcentrationCategoryVegaMap.keySet();
+
+		java.util.List<java.lang.String> vegaCategoryList = new java.util.ArrayList<java.lang.String>();
+
+		int fxConcentrationCategoryVegaCount = fxConcentrationCategoryVegaKey.size();
+
+		int vegaCategoryIndexOuter = 0;
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryVegaCount][fxConcentrationCategoryVegaCount];
+
+		try
+		{
+			for (java.lang.String vegaCategoryOuter : fxConcentrationCategoryVegaKey)
+			{
+				vegaCategoryList.add (vegaCategoryOuter);
+
+				bucketVegaSettingsMap.put (
+					vegaCategoryOuter,
+					org.drip.simm.parameters.BucketVegaSettings.ISDA_FX_21 (vegaCategoryOuter)
+				);
+
+				for (int vegaCategoryIndexInner = 0;
+					vegaCategoryIndexInner < fxConcentrationCategoryVegaCount;
+					++vegaCategoryIndexInner)
+				{
+					crossBucketCorrelationMatrix[vegaCategoryIndexOuter][vegaCategoryIndexInner] =
+						vegaCategoryIndexOuter == vegaCategoryIndexInner ? 1. :
+						org.drip.simm.fx.FXSystemics21.CORRELATION;
 				}
 
 				++vegaCategoryIndexOuter;
@@ -614,6 +739,77 @@ public class RiskMeasureSensitivitySettings
 					crossBucketCorrelationMatrix[curvatureCategoryIndexOuter][curvatureCategoryIndexInner] =
 						curvatureCategoryIndexOuter == curvatureCategoryIndexInner ? 1. :
 						org.drip.simm.fx.FXSystemics20.CORRELATION;
+				}
+
+				++curvatureCategoryIndexOuter;
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketCurvatureSettingsMap,
+				new org.drip.measure.stochastic.LabelCorrelation (
+					curvatureCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.1 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return ISDA 2.1 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_CURVATURE_21 (
+		final int vegaDurationDays)
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketCurvatureSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryCurvatureMap =
+			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();
+
+		java.util.Set<java.lang.String> fxConcentrationCategoryCurvatureKey =
+			fxConcentrationCategoryCurvatureMap.keySet();
+
+		java.util.List<java.lang.String> curvatureCategoryList = new java.util.ArrayList<java.lang.String>();
+
+		int fxConcentrationCategoryCurvatureCount = fxConcentrationCategoryCurvatureKey.size();
+
+		int curvatureCategoryIndexOuter = 0;
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryCurvatureCount][fxConcentrationCategoryCurvatureCount];
+
+		try
+		{
+			for (java.lang.String curvatureCategoryOuter : fxConcentrationCategoryCurvatureKey)
+			{
+				curvatureCategoryList.add (curvatureCategoryOuter);
+
+				bucketCurvatureSettingsMap.put (
+					curvatureCategoryOuter,
+					org.drip.simm.parameters.BucketCurvatureSettings.ISDA_FX_21 (
+						curvatureCategoryOuter,
+						vegaDurationDays
+					)
+				);
+
+				for (int curvatureCategoryIndexInner = 0;
+					curvatureCategoryIndexInner < fxConcentrationCategoryCurvatureCount;
+					++curvatureCategoryIndexInner)
+				{
+					crossBucketCorrelationMatrix[curvatureCategoryIndexOuter][curvatureCategoryIndexInner] =
+						curvatureCategoryIndexOuter == curvatureCategoryIndexInner ? 1. :
+						org.drip.simm.fx.FXSystemics21.CORRELATION;
 				}
 
 				++curvatureCategoryIndexOuter;
