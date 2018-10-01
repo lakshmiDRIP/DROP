@@ -1,5 +1,12 @@
 
-package org.drip.simm.common;
+package org.drip.sample.simmsettings;
+
+import java.util.Set;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm.common.DeltaVegaThreshold;
+import org.drip.simm.equity.EQRiskThresholdContainer21;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +54,8 @@ package org.drip.simm.common;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * EquityRiskConcentrationThreshold21 demonstrates the Extraction and Display of ISDA SIMM 2.1 Equity Risk
+ * 	Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,56 +76,54 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class EquityRiskConcentrationThreshold21
 {
-	/**
-	 * Initial the ISDA Settings Container
-	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
-	 */
 
-	public static final boolean Init()
+	private static final void DisplayBuckets()
+		throws Exception
 	{
-		if (!org.drip.simm.rates.IRSettingsContainer20.Init())
+		Set<Integer> bucketSet = EQRiskThresholdContainer21.BucketSet();
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                           2.1 EQUITY RISK CONCENTRATION THRESHOLD                               ||");
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t||                                                                                                 ||");
+
+		System.out.println ("\t||      L -> R:                                                                                    ||");
+
+		System.out.println ("\t||            - Bucket Number                                                                      ||");
+
+		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+
+		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
+
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+
+		for (int bucketNumber : bucketSet)
 		{
-			return false;
+			DeltaVegaThreshold equityRiskThreshold = EQRiskThresholdContainer21.Threshold (bucketNumber);
+
+			System.out.println (
+				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (equityRiskThreshold.delta(), 3, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (equityRiskThreshold.vega(), 5, 1, 1.) + " ||"
+			);
 		}
 
-		if (!org.drip.simm.credit.CRQSettingsContainer20.Init())
-		{
-			return false;
-		}
+		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+	}
 
-		if (!org.drip.simm.credit.CRNQSettingsContainer20.Init())
-		{
-			return false;
-		}
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
 
-		if (!org.drip.simm.equity.EQSettingsContainer20.Init())
-		{
-			return false;
-		}
+		DisplayBuckets();
 
-		if (!org.drip.simm.equity.EQSettingsContainer21.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTSettingsContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTSettingsContainer21.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.common.RiskFactorThresholdContainer.Init())
-		{
-			return false;
-		}
-
-		return true;
+		EnvManager.TerminateEnv();
 	}
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.common.DeltaVegaThreshold;
-import org.drip.simm.credit.CRThresholdContainer;
+import org.drip.simm.credit.CRThresholdContainer20;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +82,7 @@ public class CreditRiskConcentrationThreshold20
 	private static final void DisplayQualifyingBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CRThresholdContainer.QualifyingBucketSet();
+		Set<Integer> bucketSet = CRThresholdContainer20.QualifyingBucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -105,7 +105,7 @@ public class CreditRiskConcentrationThreshold20
 		for (int bucketNumber : bucketSet)
 		{
 			DeltaVegaThreshold creditRiskQualifyingThreshold =
-				CRThresholdContainer.QualifyingThreshold (bucketNumber);
+				CRThresholdContainer20.QualifyingThreshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
@@ -120,7 +120,7 @@ public class CreditRiskConcentrationThreshold20
 	private static final void DisplayNonQualifyingBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CRThresholdContainer.NonQualifyingBucketSet();
+		Set<Integer> bucketSet = CRThresholdContainer20.NonQualifyingBucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -143,7 +143,7 @@ public class CreditRiskConcentrationThreshold20
 		for (int bucketNumber : bucketSet)
 		{
 			DeltaVegaThreshold creditRiskNonQualifyingThreshold =
-				CRThresholdContainer.NonQualifyingThreshold (bucketNumber);
+				CRThresholdContainer20.NonQualifyingThreshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +

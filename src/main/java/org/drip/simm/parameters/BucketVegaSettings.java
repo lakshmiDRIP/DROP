@@ -114,6 +114,45 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	}
 
 	/**
+	 * Retrieve the ISDA 2.1 Equity Vega Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The ISDA 2.1 Equity Vega Settings
+	 */
+
+	public static BucketVegaSettings ISDA_EQ_21 (
+		final int bucketIndex)
+	{
+		org.drip.simm.equity.EQBucket equityBucket =
+			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);
+
+		if (null == equityBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new BucketVegaSettings (
+				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
+				org.drip.simm.equity.EQRiskThresholdContainer21.DeltaVegaThresholdMap().get
+					(bucketIndex).vega(),
+				equityBucket.memberCorrelation(),
+				java.lang.Math.sqrt (365. / 14.) /
+					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				org.drip.simm.equity.EQSystemics21.HISTORICAL_VOLATILITY_RATIO
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 Commodity Vega Settings for the specified Bucket
 	 * 
 	 * @param bucketIndex The Bucket Index

@@ -111,6 +111,42 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	}
 
 	/**
+	 * Construct the BucketSensitivitySettings 2.1 Instance for the specified Bucket Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The BucketSensitivitySettings 2.1 Instance
+	 */
+
+	public static BucketSensitivitySettings ISDA_EQ_21 (
+		final int bucketIndex)
+	{
+		org.drip.simm.equity.EQBucket equityBucket =
+			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);
+
+		if (null == equityBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new BucketSensitivitySettings (
+				equityBucket.deltaRiskWeight(),
+				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get
+					(bucketIndex).delta(),
+				equityBucket.memberCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the ISDA 2.0 Standard Commodity Bucket Sensitivity Settings for the specified Index
 	 * 
 	 * @param bucketIndex The Bucket Index

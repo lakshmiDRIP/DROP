@@ -1,5 +1,5 @@
 
-package org.drip.simm.common;
+package org.drip.simm.rates;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,9 +47,8 @@ package org.drip.simm.common;
  */
 
 /**
- * ISDASettingsContainer holds the ISDA SIMM 2.0 Risk Weights/Correlations for Interest Rates, Qualifying and
- * 	Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * 	Thresholds are also contained. The References are:
+ * IRSystemics21 contains the Systemic Settings of the SIMM 2.1 Interest Rate Risk Factors. The References
+ *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -70,56 +69,66 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ISDASettingsContainer
+public class IRSystemics21
 {
+
 	/**
-	 * Initial the ISDA Settings Container
-	 * 
-	 * @return TRUE - The ISDA Settings Container successfully initialized
+	 * Same Currency Curve Inflation Rate Risk Weight
 	 */
 
-	public static final boolean Init()
-	{
-		if (!org.drip.simm.rates.IRSettingsContainer20.Init())
-		{
-			return false;
-		}
+	public static final double SINGLE_CURRENCY_CURVE_INFLATION_RISK_WEIGHT = 48.;
 
-		if (!org.drip.simm.credit.CRQSettingsContainer20.Init())
-		{
-			return false;
-		}
+	/**
+	 * Single Currency Single Curve Basis Swap Spread
+	 */
 
-		if (!org.drip.simm.credit.CRNQSettingsContainer20.Init())
-		{
-			return false;
-		}
+	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT = 21.;
 
-		if (!org.drip.simm.equity.EQSettingsContainer20.Init())
-		{
-			return false;
-		}
+	/**
+	 * Interest Rate Historical Volatility Ratio
+	 */
 
-		if (!org.drip.simm.equity.EQSettingsContainer21.Init())
-		{
-			return false;
-		}
+	public static final double HISTORICAL_VOLATILITY_RATIO = 0.62;
 
-		if (!org.drip.simm.commodity.CTSettingsContainer20.Init())
-		{
-			return false;
-		}
+	/**
+	 * Interest Rate Vega Risk Weight
+	 */
 
-		if (!org.drip.simm.commodity.CTSettingsContainer21.Init())
-		{
-			return false;
-		}
+	public static final double VEGA_RISK_WEIGHT = 0.16;
 
-		if (!org.drip.simm.common.RiskFactorThresholdContainer.Init())
-		{
-			return false;
-		}
+	/**
+	 * Single Currency Cross-Curve Correlation
+	 */
 
-		return true;
-	}
+	public static final double SINGLE_CURRENCY_CROSS_CURVE_CORRELATION = 0.98;
+
+	/**
+	 * Single Currency Curve Inflation Correlation
+	 */
+
+	public static final double SINGLE_CURRENCY_CURVE_INFLATION_CORRELATION = 0.33;
+
+	/**
+	 * Single Currency Curve Volatility Inflation Volatility Correlation
+	 */
+
+	public static final double SINGLE_CURRENCY_CURVE_VOLATILITY_INFLATION_VOLATILITY_CORRELATION = 0.33;
+
+	/**
+	 * Single Currency Curve Basis Swap Spread Correlation
+	 */
+
+	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_CORRELATION = 0.19;
+
+	/**
+	 * Single Currency Basis Swap Spread Inflation Correlation
+	 */
+
+	public static final double SINGLE_CURRENCY_BASIS_SWAP_SPREAD_INFLATION_CORRELATION = 0.19;
+
+	/**
+	 * Cross Currency Curve Correlation
+	 */
+
+	public static final double CROSS_CURRENCY_CORRELATION = 0.21;
 }

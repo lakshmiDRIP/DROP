@@ -85,12 +85,22 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRThresholdContainer.Init())
+		if (!org.drip.simm.rates.IRThresholdContainer21.Init())
+		{
+			return false;
+		}
+
+		if (!org.drip.simm.credit.CRThresholdContainer20.Init())
 		{
 			return false;
 		}
 
 		if (!org.drip.simm.equity.EQRiskThresholdContainer20.Init())
+		{
+			return false;
+		}
+
+		if (!org.drip.simm.equity.EQRiskThresholdContainer21.Init())
 		{
 			return false;
 		}

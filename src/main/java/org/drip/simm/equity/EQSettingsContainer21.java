@@ -133,4 +133,254 @@ public class EQSettingsContainer21
 
 		return false;
 	}
+
+	/**
+	 * Initialize the Equity Settings Container
+	 * 
+	 * @return TRUE - Equity Settings Container successfully initialized
+	 */
+
+	public static final boolean Init()
+	{
+		try
+		{
+			s_BucketMap.put (
+				-1,
+				new org.drip.simm.equity.EQBucket (
+					-1,
+					org.drip.simm.equity.MarketCapitalizationSystemics.ALL,
+					org.drip.simm.equity.RegionSystemics.ALL,
+					org.drip.simm.credit.SectorSystemics.ALL,
+					34.,
+					0.00,
+					0.63
+				)
+			);
+
+			s_BucketMap.put (
+				1,
+				new org.drip.simm.equity.EQBucket (
+					1,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
+					org.drip.simm.credit.SectorSystemics.CONSUMER_SERVICES,
+					24.,
+					0.14,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				2,
+				new org.drip.simm.equity.EQBucket (
+					2,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
+					org.drip.simm.credit.SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
+					30.,
+					0.20,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				3,
+				new org.drip.simm.equity.EQBucket (
+					3,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
+					org.drip.simm.credit.SectorSystemics.HEAVY_INDUSTRIALS,
+					31.,
+					0.25,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				4,
+				new org.drip.simm.equity.EQBucket (
+					4,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
+					org.drip.simm.credit.SectorSystemics.INVESTMENT,
+					25.,
+					0.23,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				5,
+				new org.drip.simm.equity.EQBucket (
+					5,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
+					org.drip.simm.credit.SectorSystemics.CONSUMER_SERVICES,
+					21.,
+					0.23,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				6,
+				new org.drip.simm.equity.EQBucket (
+					6,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
+					org.drip.simm.credit.SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
+					22.,
+					0.32,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				7,
+				new org.drip.simm.equity.EQBucket (
+					7,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
+					org.drip.simm.credit.SectorSystemics.HEAVY_INDUSTRIALS,
+					27.,
+					0.35,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				8,
+				new org.drip.simm.equity.EQBucket (
+					8,
+					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
+					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
+					org.drip.simm.credit.SectorSystemics.INVESTMENT,
+					24.,
+					0.32,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				9,
+				new org.drip.simm.equity.EQBucket (
+					9,
+					org.drip.simm.equity.MarketCapitalizationSystemics.SMALL,
+					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
+					org.drip.simm.credit.SectorSystemics.ALL,
+					33.,
+					0.17,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				10,
+				new org.drip.simm.equity.EQBucket (
+					10,
+					org.drip.simm.equity.MarketCapitalizationSystemics.SMALL,
+					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
+					org.drip.simm.credit.SectorSystemics.ALL,
+					34.,
+					0.16,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				11,
+				new org.drip.simm.equity.EQBucket (
+					11,
+					org.drip.simm.equity.MarketCapitalizationSystemics.ALL,
+					org.drip.simm.equity.RegionSystemics.ALL,
+					org.drip.simm.credit.SectorSystemics.INDEX_FUND_ETF,
+					17.,
+					0.51,
+					0.28
+				)
+			);
+
+			s_BucketMap.put (
+				12,
+				new org.drip.simm.equity.EQBucket (
+					12,
+					org.drip.simm.equity.MarketCapitalizationSystemics.ALL,
+					org.drip.simm.equity.RegionSystemics.ALL,
+					org.drip.simm.credit.SectorSystemics.VOLATILITY_INDEX,
+					17.,
+					0.51,
+					0.28
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return false;
+		}
+
+		return SetUpCrossBucketCorrelation();
+	}
+
+	/**
+	 * Retrieve the Set of Bucket Indexes available
+	 * 
+	 * @return The Set of Bucket Indexes available
+	 */
+
+	public static final java.util.Set<java.lang.Integer> BucketSet()
+	{
+		return s_BucketMap.keySet();
+	}
+
+	/**
+	 * Indicate if the Bucket denoted by the Number is available
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return TRUE - The Bucket denoted by the Number is available
+	 */
+
+	public static final boolean ContainsBucket (
+		final int bucketNumber)
+	{
+		return s_BucketMap.containsKey (bucketNumber);
+	}
+
+	/**
+	 * Retrieve the Bucket denoted by the Number
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The Bucket denoted by the Number
+	 */
+
+	public static final org.drip.simm.equity.EQBucket Bucket (
+		final int bucketNumber)
+	{
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+	}
+
+	/**
+	 * Retrieve the Cross Bucket Correlation
+	 * 
+	 * @return The Cross Bucket Correlation
+	 */
+
+	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
+	{
+		return s_CrossBucketCorrelation;
+	}
+
+	/**
+	 * Retrieve the Bucket Map
+	 * 
+	 * @return The Bucket Map
+	 */
+
+	public static final java.util.Map<java.lang.Integer, org.drip.simm.equity.EQBucket> BucketMap()
+	{
+		return s_BucketMap;
+	}
 }

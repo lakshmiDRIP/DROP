@@ -114,6 +114,44 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.1 Equity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.1 Equity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_DELTA_21()
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm.equity.EQSettingsContainer21.BucketMap().keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				bucketDeltaSettingsMap.put (
+					"" + bucketIndex,
+					org.drip.simm.parameters.BucketSensitivitySettings.ISDA_EQ_21 (bucketIndex)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketDeltaSettingsMap,
+				org.drip.simm.equity.EQSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @return ISDA 2.0 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
@@ -141,6 +179,44 @@ public class RiskMeasureSensitivitySettings
 			return new RiskMeasureSensitivitySettings (
 				bucketVegaSettingsMap,
 				org.drip.simm.equity.EQSettingsContainer20.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.1 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.1 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_VEGA_21()
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm.equity.EQSettingsContainer21.BucketMap().keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				bucketVegaSettingsMap.put (
+					"" + bucketIndex,
+					org.drip.simm.parameters.BucketVegaSettings.ISDA_EQ_21 (bucketIndex)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				org.drip.simm.equity.EQSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
 		catch (java.lang.Exception e)
@@ -185,6 +261,50 @@ public class RiskMeasureSensitivitySettings
 			return new RiskMeasureSensitivitySettings (
 				bucketCurvatureSettingsMap,
 				org.drip.simm.equity.EQSettingsContainer20.CrossBucketCorrelation()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.1 Equity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return ISDA 2.1 Equity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_CURVATURE_21 (
+		final int vegaDurationDays)
+	{
+		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettings>
+			bucketCurvatureSettingsMap = new java.util.HashMap<java.lang.String,
+				org.drip.simm.parameters.BucketSensitivitySettings>();
+
+		java.util.Set<java.lang.Integer> bucketKeySet =
+			org.drip.simm.equity.EQSettingsContainer21.BucketMap().keySet();
+
+		try
+		{
+			for (int bucketIndex : bucketKeySet)
+			{
+				bucketCurvatureSettingsMap.put (
+					"" + bucketIndex,
+					org.drip.simm.parameters.BucketCurvatureSettings.ISDA_EQ_21 (
+						bucketIndex,
+						vegaDurationDays
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketCurvatureSettingsMap,
+				org.drip.simm.equity.EQSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
 		catch (java.lang.Exception e)

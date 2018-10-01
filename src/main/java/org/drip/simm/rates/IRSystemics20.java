@@ -85,6 +85,12 @@ public class IRSystemics20
 	public static final double SINGLE_CURRENCY_CURVE_BASIS_SWAP_SPREAD_RISK_WEIGHT = 20.;
 
 	/**
+	 * Interest Rate Historical Volatility Ratio
+	 */
+
+	public static final double HISTORICAL_VOLATILITY_RATIO = 1.00;
+
+	/**
 	 * Interest Rate Vega Risk Weight
 	 */
 

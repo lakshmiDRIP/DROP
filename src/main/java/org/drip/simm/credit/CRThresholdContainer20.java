@@ -47,7 +47,7 @@ package org.drip.simm.credit;
  */
 
 /**
- * CRThresholdContainer holds the ISDA SIMM 2.0 Credit Risk Thresholds - the Credit Risk Buckets and the
+ * CRThresholdContainer20 holds the ISDA SIMM 2.0 Credit Risk Thresholds - the Credit Risk Buckets and the
  *  Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -69,7 +69,7 @@ package org.drip.simm.credit;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CRThresholdContainer
+public class CRThresholdContainer20
 {
 	private static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
 		s_CRQThresholdMap = new java.util.TreeMap<java.lang.Integer,

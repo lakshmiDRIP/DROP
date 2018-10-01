@@ -1,8 +1,9 @@
 
-package org.drip.sample.simmct;
+package org.drip.sample.simmeq;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
@@ -60,8 +61,8 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * CommodityClassMargin20 illustrates the Computation of the ISDA 2.0 Aggregate Margin for across a Group of
- *  Commodity Bucket Exposure Sensitivities. The References are:
+ * EquityClassMargin21 illustrates the Computation of the ISDA 2.1 Aggregate Margin for across a Group of
+ *  Equity Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -82,21 +83,24 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CommodityClassMargin20
+public class EquityClassMargin21
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
 		final int bucketIndex,
 		final double notional,
-		final String commodity)
+		final String[] equityArray)
 	{
 		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
 
-		riskFactorSensitivityMap.put (
-			commodity,
-			notional * (Math.random() - 0.5)
-		);
+		for (String equity : equityArray)
+		{
+			riskFactorSensitivityMap.put (
+				equity,
+				notional * (Math.random() - 0.5)
+			);
+		}
 
 		bucketRiskFactorSensitivityMap.put (
 			"" + bucketIndex,
@@ -109,125 +113,175 @@ public class CommodityClassMargin20
 		throws Exception
 	{
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new HashMap<String, Map<String, Double>>();
+			new TreeMap<String, Map<String, Double>>();
+
+		AddBucketRiskFactorSensitivity (
+			bucketRiskFactorSensitivityMap,
+			-1,
+			notional,
+			new String[]
+			{
+				"BOEING  ",
+				"LOCKHEED",
+				"RAND    ",
+				"RAYTHEON",
+			}
+		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			1,
 			notional,
-			"COAL                          "
+			new String[]
+			{
+				"ADP     ",
+				"PSEANDG ",
+				"STAPLES ",
+				"U-HAUL  ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			2,
 			notional,
-			"CRUDE                         "
+			new String[]
+			{
+				"CISCO   ",
+				"DEERE   ",
+				"HALIBTN ",
+				"VERIZON ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			3,
 			notional,
-			"LIGHT ENDS                    "
+			new String[]
+			{
+				"DUKE    ",
+				"MONSANTO",
+				"MMM     ",
+				"VEDANTA ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			4,
 			notional,
-			"MIDDLE DISTILLATES            "
+			new String[]
+			{
+				"AMAZON  ",
+				"GOLDMAN ",
+				"MORGAN  ",
+				"REMAX   ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			5,
 			notional,
-			"HEAVY DISTILLATES             "
+			new String[]
+			{
+				"ALDI    ",
+				"INFOSYS ",
+				"OLLA    ",
+				"RELIANCE",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			6,
 			notional,
-			"NORTH AMERICAN NATURAL GAS    "
+			new String[]
+			{
+				"GCC     ",
+				"NOKIA   ",
+				"SIEMENS ",
+				"VODAFONE",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			7,
 			notional,
-			"EUROPEAN NATURAL GAS          "
+			new String[]
+			{
+				"ADIDAS  ",
+				"BAYER   ",
+				"BILLERTN",
+				"DE BEER ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			8,
 			notional,
-			"NORTH AMERICAN POWER          "
+			new String[]
+			{
+				"NOKIA   ",
+				"NOMURA  ",
+				"QATARSOV",
+				"SOTHEBY ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			9,
 			notional,
-			"EUROPEAN POWER                "
+			new String[]
+			{
+				"AUTODESK",
+				"CALYPSO ",
+				"NUMERIX ",
+				"WEBLOGIC",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			10,
 			notional,
-			"FREIGHT                       "
+			new String[]
+			{
+				"COGNIZAN",
+				"TATAMOTO",
+				"TOBLERON",
+				"TVS     ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			11,
 			notional,
-			"BASE METALS                   "
+			new String[]
+			{
+				"DJIA    ",
+				"LEHMAN  ",
+				"RUSSELL ",
+				"SANDP   ",
+			}
 		);
 
 		AddBucketRiskFactorSensitivity (
 			bucketRiskFactorSensitivityMap,
 			12,
 			notional,
-			"PRECIOUS METALS               "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			13,
-			notional,
-			"GRAINS                        "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			14,
-			notional,
-			"SOFTS                         "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			15,
-			notional,
-			"LIVESTOCK                     "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			16,
-			notional,
-			"OTHER                         "
-		);
-
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			17,
-			notional,
-			"INDEXES                       "
+			new String[]
+			{
+				"CBOE    ",
+				"CITI    ",
+				"RUSSELL ",
+				"VIX     ",
+			}
 		);
 
 		return bucketRiskFactorSensitivityMap;
@@ -242,7 +296,7 @@ public class CommodityClassMargin20
 		double notional = 100.;
 		int vegaDurationDays = 365;
 
-		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_CT_20
+		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ_21
 			(vegaDurationDays);
 
 		Map<String, Map<String, Double>> bucketDeltaMap = BucketRiskFactorSensitivityMap (notional);
