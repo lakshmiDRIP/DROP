@@ -1,5 +1,5 @@
 
-package org.drip.simm.common;
+package org.drip.simm.credit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,7 @@ package org.drip.simm.common;
  */
 
 /**
- * RiskFactorThresholdContainer holds the ISDA SIMM 2.0 Risk Factor Thresholds - the Concentration Limits for
- * 	Interest Rate, Credit Spread, Equity, Commodity, and FX Risk Factors. The References are:
+ * CRNQSettingsContainer21 holds the ISDA SIMM 2.1 Credit Non-Qualifying Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,67 +68,131 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskFactorThresholdContainer
+public class CRNQSettingsContainer21
 {
+	private static final java.util.Map<java.lang.Integer, org.drip.simm.credit.CRBucket> s_BucketMap = new
+		java.util.TreeMap<java.lang.Integer, org.drip.simm.credit.CRBucket>();
 
 	/**
-	 * Initialize the Risk Factor Threshold Container
+	 * Initial the Credit Non-Qualifying Settings
 	 * 
-	 * @return TRUE - The Risk Factor Threshold Container successfully initialized
+	 * @return TRUE - The Credit Non-Qualifying Settings successfully initialized
 	 */
 
 	public static final boolean Init()
 	{
-		if (!org.drip.simm.rates.IRThresholdContainer20.Init())
+		try
 		{
-			return false;
-		}
+			s_BucketMap.put (
+				-1,
+				new org.drip.simm.credit.CRBucket (
+					-1,
+					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
+					org.drip.simm.credit.SectorSystemics.RESIDUAL,
+					1200.
+				)
+			);
 
-		if (!org.drip.simm.rates.IRThresholdContainer21.Init())
-		{
-			return false;
-		}
+			s_BucketMap.put (
+				1,
+				new org.drip.simm.credit.CRBucket (
+					1,
+					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					org.drip.simm.credit.SectorSystemics.RMBS_CMBS,
+					150.
+				)
+			);
 
-		if (!org.drip.simm.credit.CRThresholdContainer20.Init())
-		{
-			return false;
+			s_BucketMap.put (
+				2,
+				new org.drip.simm.credit.CRBucket (
+					2,
+					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					org.drip.simm.credit.SectorSystemics.RMBS_CMBS,
+					1200.
+				)
+			);
 		}
-
-		if (!org.drip.simm.credit.CRThresholdContainer21.Init())
+		catch (java.lang.Exception e)
 		{
-			return false;
-		}
+			e.printStackTrace();
 
-		if (!org.drip.simm.equity.EQRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.equity.EQRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.fx.FXRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.fx.FXRiskThresholdContainer21.Init())
-		{
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Retrieve the Standard ISDA Credit Tenor Set
+	 * 
+	 * @return The Standard ISDA Credit Tenor Set
+	 */
+
+	public static final java.util.Set<java.lang.String> TenorSet()
+	{
+		java.util.Set<java.lang.String> tenorSet = new java.util.HashSet<java.lang.String>();
+
+		tenorSet.add ("1Y");
+
+		tenorSet.add ("2Y");
+
+		tenorSet.add ("3Y");
+
+		tenorSet.add ("5Y");
+
+		tenorSet.add ("10Y");
+
+		return tenorSet;
+	}
+
+	/**
+	 * Retrieve the Set of Bucket Indexes available
+	 * 
+	 * @return The Set of Bucket Indexes available
+	 */
+
+	public static final java.util.Set<java.lang.Integer> BucketSet()
+	{
+		return s_BucketMap.keySet();
+	}
+
+	/**
+	 * Indicate if the Bucket denoted by the Number is available
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return TRUE - The Bucket denoted by the Number is available
+	 */
+
+	public static final boolean ContainsBucket (
+		final int bucketNumber)
+	{
+		return s_BucketMap.containsKey (bucketNumber);
+	}
+
+	/**
+	 * Retrieve the Bucket denoted by the Number
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The Bucket denoted by the Number
+	 */
+
+	public static final org.drip.simm.credit.CRBucket Bucket (
+		final int bucketNumber)
+	{
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+	}
+
+	/**
+	 * Retrieve the Bucket Map
+	 * 
+	 * @return The Bucket Map
+	 */
+
+	public static final java.util.Map<java.lang.Integer, org.drip.simm.credit.CRBucket> BucketMap()
+	{
+		return s_BucketMap;
 	}
 }

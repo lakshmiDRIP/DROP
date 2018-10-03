@@ -167,6 +167,91 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	}
 
 	/**
+	 * Construct the ISDA 2.1 Standard IR Delta Sensitivity Settings for the Currency
+	 * 
+	 * @param currency Currency
+	 * 
+	 * @return The ISDA 2.1 Standard IR Delta Sensitivity Settings for the Currency
+	 */
+
+	public static final BucketSensitivitySettingsIR ISDA_DELTA_21 (
+		final java.lang.String currency)
+	{
+		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer21.Threshold
+			(currency);
+
+		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+			currency,
+			org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS
+		);
+
+		org.drip.simm.rates.IRWeight libor1MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M
+			);
+
+		org.drip.simm.rates.IRWeight libor3MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M
+			);
+
+		org.drip.simm.rates.IRWeight libor6MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M
+			);
+
+		org.drip.simm.rates.IRWeight libor12MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M
+			);
+
+		org.drip.simm.rates.IRWeight primeRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME
+			);
+
+		org.drip.simm.rates.IRWeight municipalRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL
+			);
+
+		try
+		{
+			return null == irThreshold ||
+				null == libor1MRiskWeight ||
+				null == libor1MRiskWeight ||
+				null == libor3MRiskWeight ||
+				null == libor6MRiskWeight ||
+				null == libor12MRiskWeight ||
+				null == primeRiskWeight ||
+				null == municipalRiskWeight ? null : new BucketSensitivitySettingsIR (
+					oisRiskWeight.tenorDelta(),
+					libor1MRiskWeight.tenorDelta(),
+					libor3MRiskWeight.tenorDelta(),
+					libor6MRiskWeight.tenorDelta(),
+					libor12MRiskWeight.tenorDelta(),
+					primeRiskWeight.tenorDelta(),
+					municipalRiskWeight.tenorDelta(),
+					org.drip.simm.rates.IRSettingsContainer21.SingleCurveTenorCorrelation(),
+					org.drip.simm.rates.IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
+					irThreshold.deltaVega().delta()
+				);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BucketSensitivitySettingsIR Constructor
 	 * 
 	 * @param oisTenorRiskWeight The OIS Tenor Risk Weight

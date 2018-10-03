@@ -181,6 +181,105 @@ public class BucketVegaSettingsIR extends org.drip.simm.parameters.BucketSensiti
 	}
 
 	/**
+	 * Construct the ISDA 2.1 Standard IR Vega Sensitivity Settings for the Currency
+	 * 
+	 * @param currency Currency
+	 * 
+	 * @return The ISDA 2.1 Standard IR Vega Sensitivity Settings for the Currency
+	 */
+
+	public static BucketVegaSettingsIR ISDA_21 (
+		final java.lang.String currency)
+	{
+		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer21.Threshold
+			(currency);
+
+		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+			currency,
+			org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS
+		);
+
+		org.drip.simm.rates.IRWeight libor1MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M
+			);
+
+		org.drip.simm.rates.IRWeight libor3MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M
+			);
+
+		org.drip.simm.rates.IRWeight libor6MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M
+			);
+
+		org.drip.simm.rates.IRWeight libor12MRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M
+			);
+
+		org.drip.simm.rates.IRWeight primeRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME
+			);
+
+		org.drip.simm.rates.IRWeight municipalRiskWeight =
+			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
+				currency,
+				org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL
+			);
+
+		BucketSensitivitySettingsIR bucketSensitivitySettingsIR =
+			org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_21 (currency);
+
+		try
+		{
+			return null == irThreshold ||
+				null == libor1MRiskWeight ||
+				null == libor1MRiskWeight ||
+				null == libor3MRiskWeight ||
+				null == libor6MRiskWeight ||
+				null == libor12MRiskWeight ||
+				null == primeRiskWeight ||
+				null == municipalRiskWeight ||
+				null == bucketSensitivitySettingsIR ? null : new BucketVegaSettingsIR (
+					oisRiskWeight.tenorVega(),
+					libor1MRiskWeight.tenorVega(),
+					libor3MRiskWeight.tenorVega(),
+					libor6MRiskWeight.tenorVega(),
+					libor12MRiskWeight.tenorVega(),
+					primeRiskWeight.tenorVega(),
+					municipalRiskWeight.tenorVega(),
+					org.drip.simm.rates.IRSettingsContainer20.SingleCurveTenorCorrelation(),
+					org.drip.simm.rates.IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
+					irThreshold.deltaVega().vega(),
+					java.lang.Math.sqrt (365. / 14.) /
+						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+					1.,
+					bucketSensitivitySettingsIR.oisTenorRiskWeight(),
+					bucketSensitivitySettingsIR.libor1MTenorRiskWeight(),
+					bucketSensitivitySettingsIR.libor3MTenorRiskWeight(),
+					bucketSensitivitySettingsIR.libor6MTenorRiskWeight(),
+					bucketSensitivitySettingsIR.libor12MTenorRiskWeight(),
+					bucketSensitivitySettingsIR.primeTenorRiskWeight(),
+					bucketSensitivitySettingsIR.municipalTenorRiskWeight()
+				);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BucketVegaSettingsIR Constructor
 	 * 
 	 * @param oisTenorVegaRiskWeight The OIS Tenor Vega Risk Weight

@@ -1,5 +1,5 @@
 
-package org.drip.simm.common;
+package org.drip.simm.credit;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.common;
  */
 
 /**
- * RiskFactorThresholdContainer holds the ISDA SIMM 2.0 Risk Factor Thresholds - the Concentration Limits for
- * 	Interest Rate, Credit Spread, Equity, Commodity, and FX Risk Factors. The References are:
+ * CRQBucketCorrelation21 contains the between the SIMM 2.1 Same/Different Issuer/Seniority and Different
+ * 	Vertex/Currency for the Same Credit Qualifying Buckets. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,67 +69,30 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskFactorThresholdContainer
+public class CRQBucketCorrelation21
 {
 
 	/**
-	 * Initialize the Risk Factor Threshold Container
-	 * 
-	 * @return TRUE - The Risk Factor Threshold Container successfully initialized
+	 * Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Regular Bucket
 	 */
 
-	public static final boolean Init()
-	{
-		if (!org.drip.simm.rates.IRThresholdContainer20.Init())
-		{
-			return false;
-		}
+	public static final double SAME_ISSUER_SENIORITY_NON_RESIDUAL = 0.96;
 
-		if (!org.drip.simm.rates.IRThresholdContainer21.Init())
-		{
-			return false;
-		}
+	/**
+	 * Correlation between Sensitivities having Different Issuer/Seniority falling under Same Regular Bucket
+	 */
 
-		if (!org.drip.simm.credit.CRThresholdContainer20.Init())
-		{
-			return false;
-		}
+	public static final double DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL = 0.39;
 
-		if (!org.drip.simm.credit.CRThresholdContainer21.Init())
-		{
-			return false;
-		}
+	/**
+	 * Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Residual Bucket
+	 */
 
-		if (!org.drip.simm.equity.EQRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
+	public static final double SAME_ISSUER_SENIORITY_RESIDUAL = 0.50;
 
-		if (!org.drip.simm.equity.EQRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
+	/**
+	 * Correlation between Sensitivities having Different Issuer/Seniority falling under Same Residual Bucket
+	 */
 
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.fx.FXRiskThresholdContainer20.Init())
-		{
-			return false;
-		}
-
-		if (!org.drip.simm.fx.FXRiskThresholdContainer21.Init())
-		{
-			return false;
-		}
-
-		return true;
-	}
+	public static final double DIFFERENT_ISSUER_SENIORITY_RESIDUAL = 0.50;
 }

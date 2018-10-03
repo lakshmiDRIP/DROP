@@ -192,6 +192,124 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	}
 
 	/**
+	 * Generate the ISDA 2.1 Standard BucketCurvatureSettingsIR
+	 * 
+	 * @param currency Currency
+	 * 
+	 * @return The ISDA 2.1 Standard BucketCurvatureSettingsIR
+	 */
+
+	public static BucketCurvatureSettingsIR ISDA_21 (
+		final java.lang.String currency)
+	{
+		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =
+			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency);
+
+		if (null == bucketVegaSettingsIR)
+		{
+			return null;
+		}
+
+		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
+			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();
+
+		java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		try
+		{
+			tenorScalingFactorMap.put (
+				"2W",
+				r1ToR1CurvatureTenorScaler.evaluate (14.)
+			);
+
+			tenorScalingFactorMap.put (
+				"1M",
+				r1ToR1CurvatureTenorScaler.evaluate (30.)
+			);
+
+			tenorScalingFactorMap.put (
+				"3M",
+				r1ToR1CurvatureTenorScaler.evaluate (91.)
+			);
+
+			tenorScalingFactorMap.put (
+				"6M",
+				r1ToR1CurvatureTenorScaler.evaluate (183.)
+			);
+
+			tenorScalingFactorMap.put (
+				"1Y",
+				r1ToR1CurvatureTenorScaler.evaluate (365.)
+			);
+
+			tenorScalingFactorMap.put (
+				"2Y",
+				r1ToR1CurvatureTenorScaler.evaluate (731.)
+			);
+
+			tenorScalingFactorMap.put (
+				"3Y",
+				r1ToR1CurvatureTenorScaler.evaluate (1096.)
+			);
+
+			tenorScalingFactorMap.put (
+				"5Y",
+				r1ToR1CurvatureTenorScaler.evaluate (1826.)
+			);
+
+			tenorScalingFactorMap.put (
+				"10Y",
+				r1ToR1CurvatureTenorScaler.evaluate (3652.)
+			);
+
+			tenorScalingFactorMap.put (
+				"15Y",
+				r1ToR1CurvatureTenorScaler.evaluate (5479.)
+			);
+
+			tenorScalingFactorMap.put (
+				"20Y",
+				r1ToR1CurvatureTenorScaler.evaluate (7305.)
+			);
+
+			tenorScalingFactorMap.put (
+				"30Y",
+				r1ToR1CurvatureTenorScaler.evaluate (10957.)
+			);
+
+			return new BucketCurvatureSettingsIR (
+				bucketVegaSettingsIR.oisTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.libor1MTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.libor3MTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.libor6MTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.libor12MTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.primeTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.municipalTenorVegaRiskWeight(),
+				bucketVegaSettingsIR.crossTenorCorrelation(),
+				bucketVegaSettingsIR.crossCurveCorrelation(),
+				bucketVegaSettingsIR.concentrationThreshold(),
+				bucketVegaSettingsIR.vegaScaler(),
+				bucketVegaSettingsIR.historicalVolatilityRatio(),
+				bucketVegaSettingsIR.oisTenorDeltaRiskWeight(),
+				bucketVegaSettingsIR.libor1MTenorDeltaRiskWeight(),
+				bucketVegaSettingsIR.libor3MTenorDeltaRiskWeight(),
+				bucketVegaSettingsIR.libor6MTenorDeltaRiskWeight(),
+				bucketVegaSettingsIR.libor12MTenorDeltaRiskWeight(),
+				bucketVegaSettingsIR.primeTenorDeltaRiskWeight(),
+				bucketVegaSettingsIR.municipalTenorDeltaRiskWeight(),
+				tenorScalingFactorMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BucketCurvatureSettingsIR Constructor
 	 * 
 	 * @param oisTenorVegaRiskWeight The OIS Tenor Vega Risk Weight

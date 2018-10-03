@@ -73,23 +73,81 @@ public class RiskClassSensitivitySettingsIR
 {
 	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR _vega = null;
 	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR _delta = null;
+	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR _curvature = null;
+
+	/**
+	 * Generate the ISDA 2.0 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The ISDA 2.0 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettingsIR ISDA_20 (
+		final java.util.List<java.lang.String> currencyList)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettingsIR (
+				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_DELTA_20 (currencyList),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_VEGA_20 (currencyList),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_20 (currencyList)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the ISDA 2.1 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The ISDA 2.1 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettingsIR ISDA_21 (
+		final java.util.List<java.lang.String> currencyList)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettingsIR (
+				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_DELTA_21 (currencyList),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_VEGA_21 (currencyList),
+				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_21 (currencyList)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * RiskClassSensitivitySettingsIR Constructor
 	 * 
 	 * @param delta The IR Risk Class Delta Sensitivity Settings
 	 * @param vega The IR Risk Class Vega Sensitivity Settings
+	 * @param curvature Curvature Risk Measure Sensitivity Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivitySettingsIR (
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR delta,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR vega)
+		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR vega,
+		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR curvature)
 		throws java.lang.Exception
 	{
 		if (null == (_delta = delta) ||
-			null == (_vega = vega))
+			null == (_vega = vega) ||
+			null == (_curvature = curvature))
 		{
 			throw new java.lang.Exception ("RiskClassSensitivitySettingsIR Constructor => Invalid Inputs");
 		}
@@ -115,5 +173,16 @@ public class RiskClassSensitivitySettingsIR
 	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR vega()
 	{
 		return _vega;
+	}
+
+	/**
+	 * Curvature IR Risk Measure Sensitivity Settings
+	 * 
+	 * @return IR Curvature Risk Measure Sensitivity Settings
+	 */
+
+	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR curvature()
+	{
+		return _curvature;
 	}
 }

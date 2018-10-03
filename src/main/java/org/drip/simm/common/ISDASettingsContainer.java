@@ -85,6 +85,11 @@ public class ISDASettingsContainer
 			return false;
 		}
 
+		if (!org.drip.simm.rates.IRSettingsContainer21.Init())
+		{
+			return false;
+		}
+
 		if (!org.drip.simm.credit.CRQSettingsContainer20.Init())
 		{
 			return false;
