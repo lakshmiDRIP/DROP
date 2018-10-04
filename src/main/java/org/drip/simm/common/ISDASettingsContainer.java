@@ -95,7 +95,17 @@ public class ISDASettingsContainer
 			return false;
 		}
 
+		if (!org.drip.simm.credit.CRQSettingsContainer21.Init())
+		{
+			return false;
+		}
+
 		if (!org.drip.simm.credit.CRNQSettingsContainer20.Init())
+		{
+			return false;
+		}
+
+		if (!org.drip.simm.credit.CRNQSettingsContainer21.Init())
 		{
 			return false;
 		}

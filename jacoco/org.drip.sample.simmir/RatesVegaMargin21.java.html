@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RatesVegaMargin21.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.simmir</a> &gt; <span class="el_source">RatesVegaMargin21.java</span></div><h1>RatesVegaMargin21.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.simmir;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm.margin.IRSensitivityAggregate;
+import org.drip.simm.margin.RiskMeasureAggregateIR;
+import org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR;
+import org.drip.simm.product.BucketSensitivityIR;
+import org.drip.simm.product.RiskFactorTenorSensitivity;
+import org.drip.simm.product.RiskMeasureSensitivityIR;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RatesVegaMargin21 illustrates the Computation of the SIMM 2.1 IR Vega Margin for a Bucket of Currency's IR
+ *  Exposure Sensitivities. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L86">public class RatesVegaMargin21</span>
+{
+
+	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
+		final double notional)
+		throws Exception
+	{
+<span class="nc" id="L93">		Map&lt;String, Double&gt; tenorSensitivityMap = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L95">		tenorSensitivityMap.put (</span>
+			&quot;2W&quot;,
+<span class="nc" id="L97">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L100">		tenorSensitivityMap.put (</span>
+			&quot;1M&quot;,
+<span class="nc" id="L102">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L105">		tenorSensitivityMap.put (</span>
+			&quot;3M&quot;,
+<span class="nc" id="L107">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L110">		tenorSensitivityMap.put (</span>
+			&quot;6M&quot;,
+<span class="nc" id="L112">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L115">		tenorSensitivityMap.put (</span>
+			&quot;1Y&quot;,
+<span class="nc" id="L117">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L120">		tenorSensitivityMap.put (</span>
+			&quot;2Y&quot;,
+<span class="nc" id="L122">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L125">		tenorSensitivityMap.put (</span>
+			&quot;3Y&quot;,
+<span class="nc" id="L127">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L130">		tenorSensitivityMap.put (</span>
+			&quot;5Y&quot;,
+<span class="nc" id="L132">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L135">		tenorSensitivityMap.put (</span>
+			&quot;10Y&quot;,
+<span class="nc" id="L137">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L140">		tenorSensitivityMap.put (</span>
+			&quot;15Y&quot;,
+<span class="nc" id="L142">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L145">		tenorSensitivityMap.put (</span>
+			&quot;20Y&quot;,
+<span class="nc" id="L147">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L150">		tenorSensitivityMap.put (</span>
+			&quot;30Y&quot;,
+<span class="nc" id="L152">			notional * (Math.random() - 0.5)</span>
+		);
+
+<span class="nc" id="L155">		return new RiskFactorTenorSensitivity (tenorSensitivityMap);</span>
+	}
+
+	private static final void DisplayBucketSensitivityIR (
+		final String currency,
+		final BucketSensitivityIR bucketSensitivityIR)
+		throws Exception
+	{
+<span class="nc" id="L163">		Map&lt;String, Double&gt; oisTenorSensitivity = bucketSensitivityIR.oisTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L165">		Map&lt;String, Double&gt; libor1MTenorSensitivity =</span>
+<span class="nc" id="L166">			bucketSensitivityIR.libor1MTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L168">		Map&lt;String, Double&gt; libor3MTenorSensitivity =</span>
+<span class="nc" id="L169">			bucketSensitivityIR.libor3MTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L171">		Map&lt;String, Double&gt; libor6MTenorSensitivity =</span>
+<span class="nc" id="L172">			bucketSensitivityIR.libor6MTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L174">		Map&lt;String, Double&gt; libor12MTenorSensitivity =</span>
+<span class="nc" id="L175">			bucketSensitivityIR.libor12MTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L177">		Map&lt;String, Double&gt; primeTenorSensitivity =</span>
+<span class="nc" id="L178">			bucketSensitivityIR.primeTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L180">		Map&lt;String, Double&gt; municipalTenorSensitivity =</span>
+<span class="nc" id="L181">			bucketSensitivityIR.municipalTenorSensitivity().sensitivityMap();</span>
+
+<span class="nc" id="L183">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L185">		System.out.println (&quot;\t||                            &quot; + currency + &quot; INTEREST CURVE TENOR SENSITIVITY                         ||&quot;);</span>
+
+<span class="nc" id="L187">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L189">		System.out.println (&quot;\t||                                                                                         ||&quot;);</span>
+
+<span class="nc" id="L191">		System.out.println (&quot;\t||    L -&gt; R:                                                                              ||&quot;);</span>
+
+<span class="nc" id="L193">		System.out.println (&quot;\t||            - Curve Type                                                                 ||&quot;);</span>
+
+<span class="nc" id="L195">		System.out.println (&quot;\t||            - OIS Tenor Vega Sensitivity                                                 ||&quot;);</span>
+
+<span class="nc" id="L197">		System.out.println (&quot;\t||            - LIBOR1M Tenor Vega Sensitivity                                             ||&quot;);</span>
+
+<span class="nc" id="L199">		System.out.println (&quot;\t||            - LIBOR3M Tenor Vega Sensitivity                                             ||&quot;);</span>
+
+<span class="nc" id="L201">		System.out.println (&quot;\t||            - LIBOR6M Tenor Vega Sensitivity                                             ||&quot;);</span>
+
+<span class="nc" id="L203">		System.out.println (&quot;\t||            - LIBOR12M Tenor Vega Sensitivity                                            ||&quot;);</span>
+
+<span class="nc" id="L205">		System.out.println (&quot;\t||            - PRIME Tenor Vega Sensitivity                                               ||&quot;);</span>
+
+<span class="nc" id="L207">		System.out.println (&quot;\t||            - MUNICIPAL Tenor Vega Sensitivity                                           ||&quot;);</span>
+
+<span class="nc" id="L209">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L211">		System.out.println (&quot;\t||    OIS    |  LIBOR1M   |  LIBOR3M   |  LIBOR6M   |  LIBOR12M  |   PRIME    | MUNICIPAL  ||&quot;);</span>
+
+<span class="nc" id="L213">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		for (String tenor : oisTenorSensitivity.keySet())</span>
+		{
+<span class="nc" id="L217">			System.out.println (</span>
+				&quot;\t||  &quot; +
+<span class="nc" id="L219">				FormatUtil.FormatDouble (oisTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   |   &quot; +</span>
+<span class="nc" id="L220">				FormatUtil.FormatDouble (libor1MTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   |   &quot; +</span>
+<span class="nc" id="L221">				FormatUtil.FormatDouble (libor3MTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   |   &quot; +</span>
+<span class="nc" id="L222">				FormatUtil.FormatDouble (libor6MTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   |   &quot; +</span>
+<span class="nc" id="L223">				FormatUtil.FormatDouble (libor12MTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   |   &quot; +</span>
+<span class="nc" id="L224">				FormatUtil.FormatDouble (primeTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   |   &quot; +</span>
+<span class="nc" id="L225">				FormatUtil.FormatDouble (municipalTenorSensitivity.get (tenor), 2, 2, 1.) + &quot;   ||&quot;</span>
+			);
+<span class="nc" id="L227">		}</span>
+
+<span class="nc" id="L229">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L231">		System.out.println();</span>
+<span class="nc" id="L232">	}</span>
+
+	private static final void VegaMarginCovarianceEntry (
+		final String currency,
+		final IRSensitivityAggregate irSensitivityAggregate)
+		throws Exception
+	{
+<span class="nc" id="L239">		double marginCovariance_OIS_OIS = irSensitivityAggregate.marginCovariance_OIS_OIS();</span>
+
+<span class="nc" id="L241">		double marginCovariance_OIS_LIBOR1M = irSensitivityAggregate.marginCovariance_OIS_LIBOR1M();</span>
+
+<span class="nc" id="L243">		double marginCovariance_OIS_LIBOR3M = irSensitivityAggregate.marginCovariance_OIS_LIBOR3M();</span>
+
+<span class="nc" id="L245">		double marginCovariance_OIS_LIBOR6M = irSensitivityAggregate.marginCovariance_OIS_LIBOR6M();</span>
+
+<span class="nc" id="L247">		double marginCovariance_OIS_LIBOR12M = irSensitivityAggregate.marginCovariance_OIS_LIBOR12M();</span>
+
+<span class="nc" id="L249">		double marginCovariance_OIS_PRIME = irSensitivityAggregate.marginCovariance_OIS_PRIME();</span>
+
+<span class="nc" id="L251">		double marginCovariance_OIS_MUNICIPAL = irSensitivityAggregate.marginCovariance_OIS_MUNICIPAL();</span>
+
+<span class="nc" id="L253">		double marginCovariance_LIBOR1M_LIBOR1M = irSensitivityAggregate.marginCovariance_LIBOR1M_LIBOR1M();</span>
+
+<span class="nc" id="L255">		double marginCovariance_LIBOR1M_LIBOR3M = irSensitivityAggregate.marginCovariance_LIBOR1M_LIBOR3M();</span>
+
+<span class="nc" id="L257">		double marginCovariance_LIBOR1M_LIBOR6M = irSensitivityAggregate.marginCovariance_LIBOR1M_LIBOR6M();</span>
+
+<span class="nc" id="L259">		double marginCovariance_LIBOR1M_LIBOR12M = irSensitivityAggregate.marginCovariance_LIBOR1M_LIBOR12M();</span>
+
+<span class="nc" id="L261">		double marginCovariance_LIBOR1M_PRIME = irSensitivityAggregate.marginCovariance_LIBOR1M_PRIME();</span>
+
+<span class="nc" id="L263">		double marginCovariance_LIBOR1M_MUNICIPAL = irSensitivityAggregate.marginCovariance_LIBOR1M_MUNICIPAL();</span>
+
+<span class="nc" id="L265">		double marginCovariance_LIBOR3M_LIBOR3M = irSensitivityAggregate.marginCovariance_LIBOR3M_LIBOR3M();</span>
+
+<span class="nc" id="L267">		double marginCovariance_LIBOR3M_LIBOR6M = irSensitivityAggregate.marginCovariance_LIBOR3M_LIBOR6M();</span>
+
+<span class="nc" id="L269">		double marginCovariance_LIBOR3M_LIBOR12M = irSensitivityAggregate.marginCovariance_LIBOR3M_LIBOR12M();</span>
+
+<span class="nc" id="L271">		double marginCovariance_LIBOR3M_PRIME = irSensitivityAggregate.marginCovariance_LIBOR3M_PRIME();</span>
+
+<span class="nc" id="L273">		double marginCovariance_LIBOR3M_MUNICIPAL = irSensitivityAggregate.marginCovariance_LIBOR3M_MUNICIPAL();</span>
+
+<span class="nc" id="L275">		double marginCovariance_LIBOR6M_LIBOR6M = irSensitivityAggregate.marginCovariance_LIBOR6M_LIBOR6M();</span>
+
+<span class="nc" id="L277">		double marginCovariance_LIBOR6M_LIBOR12M = irSensitivityAggregate.marginCovariance_LIBOR6M_LIBOR12M();</span>
+
+<span class="nc" id="L279">		double marginCovariance_LIBOR6M_PRIME = irSensitivityAggregate.marginCovariance_LIBOR6M_PRIME();</span>
+
+<span class="nc" id="L281">		double marginCovariance_LIBOR6M_MUNICIPAL = irSensitivityAggregate.marginCovariance_LIBOR6M_MUNICIPAL();</span>
+
+<span class="nc" id="L283">		double marginCovariance_LIBOR12M_LIBOR12M = irSensitivityAggregate.marginCovariance_LIBOR12M_LIBOR12M();</span>
+
+<span class="nc" id="L285">		double marginCovariance_LIBOR12M_PRIME = irSensitivityAggregate.marginCovariance_LIBOR12M_PRIME();</span>
+
+<span class="nc" id="L287">		double marginCovariance_LIBOR12M_MUNICIPAL = irSensitivityAggregate.marginCovariance_LIBOR12M_MUNICIPAL();</span>
+
+<span class="nc" id="L289">		double marginCovariance_PRIME_PRIME = irSensitivityAggregate.marginCovariance_PRIME_PRIME();</span>
+
+<span class="nc" id="L291">		double marginCovariance_PRIME_MUNICIPAL = irSensitivityAggregate.marginCovariance_PRIME_MUNICIPAL();</span>
+
+<span class="nc" id="L293">		double marginCovariance_MUNICIPAL_MUNICIPAL = irSensitivityAggregate.marginCovariance_MUNICIPAL_MUNICIPAL();</span>
+
+<span class="nc" id="L295">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L297">		System.out.println (&quot;\t||  &quot; + currency + &quot; RISK FACTOR MARGIN COVARIANCE  ||&quot;);</span>
+
+<span class="nc" id="L299">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L301">		System.out.println (&quot;\t||                                     ||&quot;);</span>
+
+<span class="nc" id="L303">		System.out.println (&quot;\t||    - L -&gt; R:                        ||&quot;);</span>
+
+<span class="nc" id="L305">		System.out.println (&quot;\t||        - Curve #1                   ||&quot;);</span>
+
+<span class="nc" id="L307">		System.out.println (&quot;\t||        - Curve #2                   ||&quot;);</span>
+
+<span class="nc" id="L309">		System.out.println (&quot;\t||        - Covariance                 ||&quot;);</span>
+
+<span class="nc" id="L311">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L313">		System.out.println (</span>
+			&quot;\t|| OIS       - OIS       =&gt; &quot; +
+<span class="nc" id="L315">			FormatUtil.FormatDouble (marginCovariance_OIS_OIS, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L318">		System.out.println (</span>
+			&quot;\t|| OIS       - LIBOR1M   =&gt; &quot; +
+<span class="nc" id="L320">			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR1M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L323">		System.out.println (</span>
+			&quot;\t|| OIS       - LIBOR3M   =&gt; &quot; +
+<span class="nc" id="L325">			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR3M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L328">		System.out.println (</span>
+			&quot;\t|| OIS       - LIBOR6M   =&gt; &quot; +
+<span class="nc" id="L330">			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR6M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L333">		System.out.println (</span>
+			&quot;\t|| OIS       - LIBOR12M  =&gt; &quot; +
+<span class="nc" id="L335">			FormatUtil.FormatDouble (marginCovariance_OIS_LIBOR12M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L338">		System.out.println (</span>
+			&quot;\t|| OIS       - PRIME     =&gt; &quot; +
+<span class="nc" id="L340">			FormatUtil.FormatDouble (marginCovariance_OIS_PRIME, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L343">		System.out.println (</span>
+			&quot;\t|| OIS       - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L345">			FormatUtil.FormatDouble (marginCovariance_OIS_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L348">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L350">		System.out.println (</span>
+			&quot;\t|| LIBOR1M   - LIBOR1M   =&gt; &quot; +
+<span class="nc" id="L352">			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR1M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L355">		System.out.println (</span>
+			&quot;\t|| LIBOR1M   - LIBOR3M   =&gt; &quot; +
+<span class="nc" id="L357">			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR3M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L360">		System.out.println (</span>
+			&quot;\t|| LIBOR1M   - LIBOR6M   =&gt; &quot; +
+<span class="nc" id="L362">			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR6M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L365">		System.out.println (</span>
+			&quot;\t|| LIBOR1M   - LIBOR12M  =&gt; &quot; +
+<span class="nc" id="L367">			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_LIBOR12M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L370">		System.out.println (</span>
+			&quot;\t|| LIBOR1M   - PRIME     =&gt; &quot; +
+<span class="nc" id="L372">			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_PRIME, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L375">		System.out.println (</span>
+			&quot;\t|| LIBOR1M   - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L377">			FormatUtil.FormatDouble (marginCovariance_LIBOR1M_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L380">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L382">		System.out.println (</span>
+			&quot;\t|| LIBOR3M   - LIBOR3M   =&gt; &quot; +
+<span class="nc" id="L384">			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR3M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L387">		System.out.println (</span>
+			&quot;\t|| LIBOR3M   - LIBOR6M   =&gt; &quot; +
+<span class="nc" id="L389">			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR6M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L392">		System.out.println (</span>
+			&quot;\t|| LIBOR3M   - LIBOR12M  =&gt; &quot; +
+<span class="nc" id="L394">			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_LIBOR12M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L397">		System.out.println (</span>
+			&quot;\t|| LIBOR3M   - PRIME     =&gt; &quot; +
+<span class="nc" id="L399">			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_PRIME, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L402">		System.out.println (</span>
+			&quot;\t|| LIBOR3M   - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L404">			FormatUtil.FormatDouble (marginCovariance_LIBOR3M_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L407">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L409">		System.out.println (</span>
+			&quot;\t|| LIBOR6M   - LIBOR6M   =&gt; &quot; +
+<span class="nc" id="L411">			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_LIBOR6M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L414">		System.out.println (</span>
+			&quot;\t|| LIBOR6M   - LIBOR12M  =&gt; &quot; +
+<span class="nc" id="L416">			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_LIBOR12M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L419">		System.out.println (</span>
+			&quot;\t|| LIBOR6M   - PRIME     =&gt; &quot; +
+<span class="nc" id="L421">			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_PRIME, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L424">		System.out.println (</span>
+			&quot;\t|| LIBOR6M   - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L426">			FormatUtil.FormatDouble (marginCovariance_LIBOR6M_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L429">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L431">		System.out.println (</span>
+			&quot;\t|| LIBOR12M  - LIBOR12M  =&gt; &quot; +
+<span class="nc" id="L433">			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_LIBOR12M, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L436">		System.out.println (</span>
+			&quot;\t|| LIBOR12M  - PRIME     =&gt; &quot; +
+<span class="nc" id="L438">			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_PRIME, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L441">		System.out.println (</span>
+			&quot;\t|| LIBOR12M  - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L443">			FormatUtil.FormatDouble (marginCovariance_LIBOR12M_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L446">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L448">		System.out.println (</span>
+			&quot;\t|| PRIME     - PRIME     =&gt; &quot; +
+<span class="nc" id="L450">			FormatUtil.FormatDouble (marginCovariance_PRIME_PRIME, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L453">		System.out.println (</span>
+			&quot;\t|| PRIME     - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L455">			FormatUtil.FormatDouble (marginCovariance_PRIME_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L458">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L460">		System.out.println (</span>
+			&quot;\t|| MUNICIPAL - MUNICIPAL =&gt; &quot; +
+<span class="nc" id="L462">			FormatUtil.FormatDouble (marginCovariance_MUNICIPAL_MUNICIPAL, 9, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L465">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+
+<span class="nc" id="L467">		System.out.println();</span>
+<span class="nc" id="L468">	}</span>
+
+	private static final BucketSensitivityIR CurrencyBucketSensitivity (
+		final String currency,
+		final double notional)
+		throws Exception
+	{
+<span class="nc" id="L475">		BucketSensitivityIR bucketSensitivityIR = new BucketSensitivityIR (</span>
+<span class="nc" id="L476">			CurveTenorSensitivityMap (notional),</span>
+<span class="nc" id="L477">			CurveTenorSensitivityMap (notional),</span>
+<span class="nc" id="L478">			CurveTenorSensitivityMap (notional),</span>
+<span class="nc" id="L479">			CurveTenorSensitivityMap (notional),</span>
+<span class="nc" id="L480">			CurveTenorSensitivityMap (notional),</span>
+<span class="nc" id="L481">			CurveTenorSensitivityMap (notional),</span>
+<span class="nc" id="L482">			CurveTenorSensitivityMap (notional)</span>
+		);
+
+<span class="nc" id="L485">		DisplayBucketSensitivityIR (</span>
+			currency,
+			bucketSensitivityIR
+		);
+
+<span class="nc" id="L490">		return bucketSensitivityIR;</span>
+	}
+
+	private static final void DisplayRiskMeasureAggregate (
+		final RiskMeasureAggregateIR riskMeasureAggregateIR)
+		throws Exception
+	{
+<span class="nc" id="L497">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L499">		System.out.println (&quot;\t||   IR RISK CLASS AGGREGATE MARGIN METRICS   ||&quot;);</span>
+
+<span class="nc" id="L501">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L503">		System.out.println (</span>
+			&quot;\t|| Core Vega SBA Variance      =&gt; &quot; +
+<span class="nc" id="L505">			FormatUtil.FormatDouble (riskMeasureAggregateIR.coreSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L508">		System.out.println (</span>
+			&quot;\t|| Residual Vega SBA Variance  =&gt; &quot; +
+<span class="nc" id="L510">			FormatUtil.FormatDouble (riskMeasureAggregateIR.residualSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L513">		System.out.println (</span>
+			&quot;\t|| Vega SBA                    =&gt; &quot; +
+<span class="nc" id="L515">			FormatUtil.FormatDouble (riskMeasureAggregateIR.sba(), 10, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L518">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L520">		System.out.println();</span>
+<span class="nc" id="L521">	}</span>
+
+	public static final void main (
+		final String[] inputs)
+		throws Exception
+	{
+<span class="nc" id="L527">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L529">		String[] currencyArray = {</span>
+			&quot;USD&quot;,
+			&quot;EUR&quot;,
+			&quot;CNY&quot;,
+			&quot;INR&quot;,
+			&quot;JPY&quot;
+		};
+
+<span class="nc" id="L537">		double[] notionalArray = {</span>
+			100.,
+			108.,
+			119.,
+			 49.,
+			 28.
+		};
+
+<span class="nc" id="L545">		Map&lt;String, BucketSensitivityIR&gt; bucketSensitivityMap = new HashMap&lt;String, BucketSensitivityIR&gt;();</span>
+
+<span class="nc bnc" id="L547" title="All 2 branches missed.">		for (int currencyIndex = 0; currencyIndex &lt; currencyArray.length; ++currencyIndex)</span>
+		{
+<span class="nc" id="L549">			bucketSensitivityMap.put (</span>
+				currencyArray[currencyIndex],
+<span class="nc" id="L551">				CurrencyBucketSensitivity (</span>
+					currencyArray[currencyIndex],
+					notionalArray[currencyIndex]
+				)
+			);
+		}
+
+<span class="nc" id="L558">		List&lt;String&gt; currencyList = new ArrayList&lt;String&gt;();</span>
+
+<span class="nc bnc" id="L560" title="All 2 branches missed.">		for (String currency : currencyArray)</span>
+		{
+<span class="nc" id="L562">			currencyList.add (currency);</span>
+		}
+
+<span class="nc" id="L565">		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR</span>
+			(bucketSensitivityMap);
+
+<span class="nc" id="L568">		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =</span>
+<span class="nc" id="L569">			RiskMeasureSensitivitySettingsIR.ISDA_VEGA_21 (currencyList);</span>
+
+<span class="nc" id="L571">		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.linearAggregate</span>
+<span class="nc" id="L572">			(riskMeasureSensitivitySettingsIR);</span>
+
+<span class="nc bnc" id="L574" title="All 2 branches missed.">		for (String currency : currencyArray)</span>
+		{
+<span class="nc" id="L576">			VegaMarginCovarianceEntry (</span>
+				currency,
+<span class="nc" id="L578">				riskMeasureAggregateIR.bucketAggregateMap().get (currency).irSensitivityAggregate()</span>
+			);
+		}
+
+<span class="nc" id="L582">		DisplayRiskMeasureAggregate (riskMeasureAggregateIR);</span>
+
+<span class="nc" id="L584">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L585">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

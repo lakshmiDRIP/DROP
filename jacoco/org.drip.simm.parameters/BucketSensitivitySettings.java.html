@@ -111,6 +111,42 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	}
 
 	/**
+	 * Construct the BucketSensitivitySettings 2.1 Instance for the specified Bucket Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The BucketSensitivitySettings 2.1 Instance
+	 */
+
+	public static BucketSensitivitySettings ISDA_EQ_21 (
+		final int bucketIndex)
+	{
+		org.drip.simm.equity.EQBucket equityBucket =
+<span class="nc" id="L125">			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);</span>
+
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == equityBucket)</span>
+		{
+<span class="nc" id="L129">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L134">			return new BucketSensitivitySettings (</span>
+<span class="nc" id="L135">				equityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L136">				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L137">					(bucketIndex).delta(),</span>
+<span class="nc" id="L138">				equityBucket.memberCorrelation()</span>
+			);
+		}
+<span class="nc" id="L141">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L143">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L146">		return null;</span>
+	}
+
+	/**
 	 * Construct the ISDA 2.0 Standard Commodity Bucket Sensitivity Settings for the specified Index
 	 * 
 	 * @param bucketIndex The Bucket Index
@@ -122,28 +158,64 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 		final int bucketIndex)
 	{
 		org.drip.simm.commodity.CTBucket commodityBucket =
-<span class="nc" id="L125">			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L161">			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == commodityBucket)</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (null == commodityBucket)</span>
 		{
-<span class="nc" id="L129">			return null;</span>
+<span class="nc" id="L165">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L134">			return new BucketSensitivitySettings (</span>
-<span class="nc" id="L135">				commodityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L136">				org.drip.simm.commodity.CTRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
-<span class="nc" id="L137">					(bucketIndex).delta(),</span>
-<span class="nc" id="L138">				commodityBucket.memberCorrelation()</span>
+<span class="nc" id="L170">			return new BucketSensitivitySettings (</span>
+<span class="nc" id="L171">				commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L172">				org.drip.simm.commodity.CTRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L173">					(bucketIndex).delta(),</span>
+<span class="nc" id="L174">				commodityBucket.memberCorrelation()</span>
 			);
 		}
-<span class="nc" id="L141">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L177">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L179">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L182">		return null;</span>
+	}
+
+	/**
+	 * Construct the ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 */
+
+	public static BucketSensitivitySettings ISDA_CT_21 (
+		final int bucketIndex)
+	{
+		org.drip.simm.commodity.CTBucket commodityBucket =
+<span class="nc" id="L197">			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (null == commodityBucket)</span>
+		{
+<span class="nc" id="L201">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L206">			return new BucketSensitivitySettings (</span>
+<span class="nc" id="L207">				commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L208">				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L209">					(bucketIndex).delta(),</span>
+<span class="nc" id="L210">				commodityBucket.memberCorrelation()</span>
+			);
+		}
+<span class="nc" id="L213">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L215">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L218">		return null;</span>
 	}
 
 	/**
@@ -158,27 +230,62 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 		final int categoryIndex)
 	{
 		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; fxConcentrationCategoryDeltaMap =
-<span class="nc" id="L161">			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryDeltaMap();</span>
+<span class="nc" id="L233">			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryDeltaMap();</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))</span>
 		{
-<span class="nc" id="L165">			return null;</span>
+<span class="nc" id="L237">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L170">			return new org.drip.simm.parameters.BucketSensitivitySettings (</span>
+<span class="nc" id="L242">			return new org.drip.simm.parameters.BucketSensitivitySettings (</span>
 				org.drip.simm.fx.FXSystemics20.DELTA_RISK_WEIGHT,
-<span class="nc" id="L172">				fxConcentrationCategoryDeltaMap.get (categoryIndex),</span>
+<span class="nc" id="L244">				fxConcentrationCategoryDeltaMap.get (categoryIndex),</span>
 				org.drip.simm.fx.FXSystemics20.CORRELATION
 			);
 		}
-<span class="nc" id="L176">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L248">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L178">			e.printStackTrace();</span>
+<span class="nc" id="L250">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L181">		return null;</span>
+<span class="nc" id="L253">		return null;</span>
+	}
+
+	/**
+	 * Construct the Standard ISDA 2.1 Instance of FX Delta Settings
+	 * 
+	 * @param categoryIndex The Category Index
+	 * 
+	 * @return The Standard ISDA 2.1 Instance of FX Delta Settings
+	 */
+
+	public static BucketSensitivitySettings ISDA_FX_21 (
+		final int categoryIndex)
+	{
+		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; fxConcentrationCategoryDeltaMap =
+<span class="nc" id="L268">			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryDeltaMap();</span>
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))</span>
+		{
+<span class="nc" id="L272">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L277">			return new org.drip.simm.parameters.BucketSensitivitySettings (</span>
+				org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
+<span class="nc" id="L279">				fxConcentrationCategoryDeltaMap.get (categoryIndex),</span>
+				org.drip.simm.fx.FXSystemics21.CORRELATION
+			);
+		}
+<span class="nc" id="L283">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L285">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L288">		return null;</span>
 	}
 
 	/**
@@ -197,15 +304,15 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 		final double memberCorrelation)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L200">		super (concentrationFactor);</span>
+<span class="nc" id="L307">		super (concentrationFactor);</span>
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||</span>
-<span class="nc bnc" id="L203" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||</span>
+<span class="nc bnc" id="L310" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||</span>
 				1. &lt; _memberCorrelation || -1. &gt; _memberCorrelation)
 		{
-<span class="nc" id="L206">			throw new java.lang.Exception (&quot;BucketSensitivitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L313">			throw new java.lang.Exception (&quot;BucketSensitivitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L208">	}</span>
+<span class="nc" id="L315">	}</span>
 
 	/**
 	 * Retrieve the Bucket Risk Factor Weight
@@ -215,7 +322,7 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 
 	public double riskWeight()
 	{
-<span class="nc" id="L218">		return _riskWeight;</span>
+<span class="nc" id="L325">		return _riskWeight;</span>
 	}
 
 	/**
@@ -226,7 +333,7 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 
 	public double memberCorrelation()
 	{
-<span class="nc" id="L229">		return _memberCorrelation;</span>
+<span class="nc" id="L336">		return _memberCorrelation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

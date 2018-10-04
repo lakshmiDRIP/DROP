@@ -59,8 +59,8 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * CommodityVegaMargin20 illustrates the Computation of the SIMM Vega Margin for across a Group of Commodity
- *  Bucket Exposure Sensitivities. The References are:
+ * CommodityVegaMargin20 illustrates the Computation of the SIMM 2.0 Vega Margin for across a Group of
+ *  Commodity Bucket Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
