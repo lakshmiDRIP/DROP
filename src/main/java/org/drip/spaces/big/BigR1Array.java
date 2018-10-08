@@ -158,18 +158,29 @@ public class BigR1Array {
 		final int iLow,
 		final int iHigh)
 	{
-		if (iLow < 0 || iLow >= iHigh || iLow >= _iLength) return false;
+		if (iLow < 0 || iLow >= iHigh || iLow >= _iLength)
+		{
+			return false;
+		}
 
 		int iLeft = iLow;
 		int iRight = iHigh;
 		double dblPivot = _adblA[(iLow + iHigh) / 2];
 
-		while (iLeft <= iRight) {
-			while (_adblA[iLeft] < dblPivot) ++iLeft;
+		while (iLeft <= iRight)
+		{
+			while (_adblA[iLeft] < dblPivot)
+			{
+				++iLeft;
+			}
 
-			while (_adblA[iRight] > dblPivot) --iRight;
+			while (_adblA[iRight] > dblPivot)
+			{
+				--iRight;
+			}
 
-			if (iLeft <= iRight) {
+			if (iLeft <= iRight)
+			{
 				swapLocations (iLeft, iRight);
 
 				++iLeft;

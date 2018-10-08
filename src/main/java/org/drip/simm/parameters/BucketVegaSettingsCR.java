@@ -83,7 +83,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @return The ISDA 2.0 Credit Qualifying Bucket Vega Settings
 	 */
 
-	public static final BucketVegaSettingsCR ISDA_CRQ_20 (
+	public static BucketVegaSettingsCR ISDA_CRQ_20 (
 		final int bucketNumber)
 	{
 		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
@@ -123,7 +123,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @return The ISDA 2.0 Credit Non-Qualifying Bucket Vega Settings
 	 */
 
-	public static final BucketVegaSettingsCR ISDA_CRNQ_20 (
+	public static BucketVegaSettingsCR ISDA_CRNQ_20 (
 		final int bucketNumber)
 	{
 		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
@@ -163,7 +163,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @return The ISDA 2.1 Credit Qualifying Bucket Vega Settings
 	 */
 
-	public static final BucketVegaSettingsCR ISDA_CRQ_21 (
+	public static BucketVegaSettingsCR ISDA_CRQ_21 (
 		final int bucketNumber)
 	{
 		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
@@ -203,7 +203,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @return The ISDA 2.1 Credit Non-Qualifying Bucket Vega Settings
 	 */
 
-	public static final BucketVegaSettingsCR ISDA_CRNQ_21 (
+	public static BucketVegaSettingsCR ISDA_CRNQ_21 (
 		final int bucketNumber)
 	{
 		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
@@ -238,7 +238,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	/**
 	 * BucketVegaSettingsCR Constructor
 	 * 
-	 * @param tenorRiskWeight The Tenor Risk Weight Map
+	 * @param tenorVegaRiskWeight The Tenor Vega Risk Weight Map
 	 * @param sameIssuerSeniorityCorrelation Same Issuer/Seniority Correlation
 	 * @param differentIssuerSeniorityCorrelation Different Issuer/Seniority Correlation
 	 * @param concentrationThreshold The Concentration Threshold
