@@ -134,9 +134,9 @@ public class RiskMeasureAggregate
 	}
 
 	/**
-	 * Retrieve the SBA Based Delta Margin
+	 * Retrieve the SBA Based Margin
 	 * 
-	 * @return The SBA Based Delta Margin
+	 * @return The SBA Based Margin
 	 */
 
 	public double sba()

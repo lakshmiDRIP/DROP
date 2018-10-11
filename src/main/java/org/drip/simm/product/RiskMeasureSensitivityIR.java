@@ -243,7 +243,7 @@ public class RiskMeasureSensitivityIR
 			}
 
 			double bucketCumulativeRiskFactorSensitivityMargin =
-				bucketAggregate.cumulativeRiskFactorSensitivityMargin();
+				bucketAggregate.cumulativeSensitivityMargin();
 
 			cumulativeRiskFactorSensitivityMarginCore = cumulativeRiskFactorSensitivityMarginCore +
 				bucketCumulativeRiskFactorSensitivityMargin;

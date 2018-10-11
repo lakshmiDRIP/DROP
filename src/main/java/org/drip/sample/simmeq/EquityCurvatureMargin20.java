@@ -387,7 +387,7 @@ public class EquityCurvatureMargin20
 			System.out.println ("\t| " +
 				FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " => " +
 				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 5, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (bucketAggregate.cumulativeSensitivityMargin(), 5, 0, 1.) + " ||"
 			);
 		}
 

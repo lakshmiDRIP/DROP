@@ -72,7 +72,7 @@ package org.drip.simm.margin;
 public class BucketAggregate
 {
 	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;
+	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;
 	private java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
 		_riskFactorAggregateMap = null;
 
@@ -81,7 +81,7 @@ public class BucketAggregate
 	 * 
 	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
-	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
+	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -90,14 +90,14 @@ public class BucketAggregate
 		final java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
 			riskFactorAggregateMap,
 		final double sensitivityMarginVariance,
-		final double cumulativeRiskFactorSensitivityMargin)
+		final double cumulativeSensitivityMargin)
 		throws java.lang.Exception
 	{
 		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
 			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =
-				cumulativeRiskFactorSensitivityMargin))
+			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
+				cumulativeSensitivityMargin))
 		{
 			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");
 		}
@@ -131,9 +131,9 @@ public class BucketAggregate
 	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
 	 */
 
-	public double cumulativeRiskFactorSensitivityMargin()
+	public double cumulativeSensitivityMargin()
 	{
-		return _cumulativeRiskFactorSensitivityMargin;
+		return _cumulativeSensitivityMargin;
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class BucketAggregate
 
 		return java.lang.Math.max (
 			java.lang.Math.min (
-				_cumulativeRiskFactorSensitivityMargin,
+				_cumulativeSensitivityMargin,
 				sensitivityMargin
 			),
 			-1. * sensitivityMargin

@@ -47,8 +47,8 @@ package org.drip.simm.margin;
  */
 
 /**
- * RiskClassAggregate holds the Bucket Aggregate and the Computed SIMM Margin for a single Risk Class. The
- *  References are:
+ * RiskClassAggregateCR holds the CR Bucket Aggregate and the Computed SIMM Margin for a single Risk Class.
+ *  The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,14 +69,14 @@ package org.drip.simm.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassAggregate
+public class RiskClassAggregateCR
 {
-	private org.drip.simm.margin.RiskMeasureAggregate _vegaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregate _deltaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregate _curvatureMargin = null;
+	private org.drip.simm.margin.RiskMeasureAggregateCR _vegaMargin = null;
+	private org.drip.simm.margin.RiskMeasureAggregateCR _deltaMargin = null;
+	private org.drip.simm.margin.RiskMeasureAggregateCR _curvatureMargin = null;
 
 	/**
-	 * RiskClassAggregate Constructor
+	 * RiskClassAggregateCR Constructor
 	 * 
 	 * @param deltaMargin The Delta Margin
 	 * @param vegaMargin The Vega Margin
@@ -85,61 +85,50 @@ public class RiskClassAggregate
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskClassAggregate (
-		final org.drip.simm.margin.RiskMeasureAggregate deltaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregate vegaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregate curvatureMargin)
+	public RiskClassAggregateCR (
+		final org.drip.simm.margin.RiskMeasureAggregateCR deltaMargin,
+		final org.drip.simm.margin.RiskMeasureAggregateCR vegaMargin,
+		final org.drip.simm.margin.RiskMeasureAggregateCR curvatureMargin)
 		throws java.lang.Exception
 	{
 		if (null == (_deltaMargin = deltaMargin) ||
 			null == (_vegaMargin = vegaMargin) ||
 			null == (_curvatureMargin = curvatureMargin))
 		{
-			throw new java.lang.Exception ("RiskClassAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskClassAggregateCR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Delta Margin
+	 * Retrieve the CR Delta SBA Margin
 	 * 
-	 * @return The Delta Margin
+	 * @return The CR Delta SBA Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate deltaMargin()
+	public org.drip.simm.margin.RiskMeasureAggregateCR deltaMargin()
 	{
 		return _deltaMargin;
 	}
 
 	/**
-	 * Retrieve the Vega Margin
+	 * Retrieve the CR Vega SBA Margin
 	 * 
-	 * @return The Vega Margin
+	 * @return The CR Vega SBA Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate vegaMargin()
+	public org.drip.simm.margin.RiskMeasureAggregateCR vegaMargin()
 	{
 		return _vegaMargin;
 	}
 
 	/**
-	 * Retrieve the Curvature Margin
+	 * Retrieve the CR Curvature SBA Margin
 	 * 
-	 * @return The Curvature Margin
+	 * @return The CR Curvature SBA Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate curvatureMargin()
+	public org.drip.simm.margin.RiskMeasureAggregateCR curvatureMargin()
 	{
 		return _curvatureMargin;
-	}
-
-	/**
-	 * Compute the SBA Margin
-	 * 
-	 * @return The SBA Margin
-	 */
-
-	public double margin()
-	{
-		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();
 	}
 }

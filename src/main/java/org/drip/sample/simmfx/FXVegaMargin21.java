@@ -334,7 +334,7 @@ public class FXVegaMargin21
 			System.out.println ("\t| " +
 				bucketKey + " => " +
 				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (bucketAggregate.cumulativeRiskFactorSensitivityMargin(), 4, 0, 1.) + " ||"
+				FormatUtil.FormatDouble (bucketAggregate.cumulativeSensitivityMargin(), 4, 0, 1.) + " ||"
 			);
 		}
 

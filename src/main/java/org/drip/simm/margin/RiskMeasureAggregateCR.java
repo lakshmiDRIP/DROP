@@ -47,8 +47,8 @@ package org.drip.simm.margin;
  */
 
 /**
- * RiskClassAggregate holds the Bucket Aggregate and the Computed SIMM Margin for a single Risk Class. The
- *  References are:
+ * RiskMeasureAggregateCR holds the CR Bucket Aggregate and the Computed SIMM Margin for a single Risk
+ *  Measure. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,77 +69,78 @@ package org.drip.simm.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassAggregate
+public class RiskMeasureAggregateCR
 {
-	private org.drip.simm.margin.RiskMeasureAggregate _vegaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregate _deltaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregate _curvatureMargin = null;
+	private double _coreSBAVariance = java.lang.Double.NaN;
+	private double _residualSBAVariance = java.lang.Double.NaN;
+	private java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateCR> _bucketAggregateMap =
+		null;
 
 	/**
-	 * RiskClassAggregate Constructor
+	 * RiskMeasureAggregateCR Constructor
 	 * 
-	 * @param deltaMargin The Delta Margin
-	 * @param vegaMargin The Vega Margin
-	 * @param curvatureMargin The Curvature Margin
+	 * @param bucketAggregateMap The Bucket Aggregate Sensitivity Map
+	 * @param coreSBAVariance The Core SBA Variance
+	 * @param residualSBAVariance The Residual SBA Variance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskClassAggregate (
-		final org.drip.simm.margin.RiskMeasureAggregate deltaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregate vegaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregate curvatureMargin)
+	public RiskMeasureAggregateCR (
+		final java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateCR> bucketAggregateMap,
+		final double coreSBAVariance,
+		final double residualSBAVariance)
 		throws java.lang.Exception
 	{
-		if (null == (_deltaMargin = deltaMargin) ||
-			null == (_vegaMargin = vegaMargin) ||
-			null == (_curvatureMargin = curvatureMargin))
+		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
 		{
-			throw new java.lang.Exception ("RiskClassAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskMeasureAggregateCR Consructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Delta Margin
+	 * Retrieve the Credit Bucket Sensitivity Aggregate Map
 	 * 
-	 * @return The Delta Margin
+	 * @return The Credit Bucket Sensitivity Aggregate Map
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate deltaMargin()
+	public java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateCR> bucketAggregateMap()
 	{
-		return _deltaMargin;
+		return _bucketAggregateMap;
 	}
 
 	/**
-	 * Retrieve the Vega Margin
+	 * Retrieve the Core SBA Variance
 	 * 
-	 * @return The Vega Margin
+	 * @return The Core SBA Variance
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate vegaMargin()
+	public double coreSBAVariance()
 	{
-		return _vegaMargin;
+		return _coreSBAVariance;
 	}
 
 	/**
-	 * Retrieve the Curvature Margin
+	 * Retrieve the Residual SBA Variance
 	 * 
-	 * @return The Curvature Margin
+	 * @return The Residual SBA Variance
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate curvatureMargin()
+	public double residualSBAVariance()
 	{
-		return _curvatureMargin;
+		return _residualSBAVariance;
 	}
 
 	/**
-	 * Compute the SBA Margin
+	 * Retrieve the SBA Based Margin
 	 * 
-	 * @return The SBA Margin
+	 * @return The SBA Based Margin
 	 */
 
-	public double margin()
+	public double sba()
 	{
-		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();
+		return java.lang.Math.sqrt (_coreSBAVariance) + java.lang.Math.sqrt (_residualSBAVariance);
 	}
 }

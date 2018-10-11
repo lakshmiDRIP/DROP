@@ -47,8 +47,8 @@ package org.drip.simm.margin;
  */
 
 /**
- * RiskClassAggregate holds the Bucket Aggregate and the Computed SIMM Margin for a single Risk Class. The
- *  References are:
+ * BucketAggregateCR holds the Single Bucket CR Sensitivity Margin, the Cumulative CR Bucket Risk Factor
+ *  Sensitivity Margin, as well as the Aggregate CR Risk Factor Maps. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -57,7 +57,7 @@ package org.drip.simm.margin;
  *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
  *  
  *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting .Initial Margin Requirements,
+ *  	Framework for Forecasting Initial Margin Requirements,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
  *  
  *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
@@ -69,77 +69,87 @@ package org.drip.simm.margin;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassAggregate
+public class BucketAggregateCR
 {
-	private org.drip.simm.margin.RiskMeasureAggregate _vegaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregate _deltaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregate _curvatureMargin = null;
+	private double _sensitivityMarginVariance = java.lang.Double.NaN;
+	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;
+	private org.drip.simm.margin.RiskFactorAggregateCR _riskFactorAggregate = null;
 
 	/**
-	 * RiskClassAggregate Constructor
+	 * BucketAggregateCR Constructor
 	 * 
-	 * @param deltaMargin The Delta Margin
-	 * @param vegaMargin The Vega Margin
-	 * @param curvatureMargin The Curvature Margin
+	 * @param riskFactorAggregate The CR Risk Factor Aggregate
+	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
+	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskClassAggregate (
-		final org.drip.simm.margin.RiskMeasureAggregate deltaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregate vegaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregate curvatureMargin)
+	public BucketAggregateCR (
+		final org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate,
+		final double sensitivityMarginVariance,
+		final double cumulativeSensitivityMargin)
 		throws java.lang.Exception
 	{
-		if (null == (_deltaMargin = deltaMargin) ||
-			null == (_vegaMargin = vegaMargin) ||
-			null == (_curvatureMargin = curvatureMargin))
+		if (null == (_riskFactorAggregate = riskFactorAggregate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
+				sensitivityMarginVariance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
+				cumulativeSensitivityMargin))
 		{
-			throw new java.lang.Exception ("RiskClassAggregate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BucketAggregateCR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Delta Margin
+	 * Retrieve the CR Bucket Sensitivity Margin Variance
 	 * 
-	 * @return The Delta Margin
+	 * @return The CR Bucket Sensitivity Margin Variance
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate deltaMargin()
+	public double sensitivityMarginVariance()
 	{
-		return _deltaMargin;
+		return _sensitivityMarginVariance;
 	}
 
 	/**
-	 * Retrieve the Vega Margin
+	 * Retrieve the CR Bucket Cumulative Sensitivity Margin
 	 * 
-	 * @return The Vega Margin
+	 * @return The CR Bucket Cumulative Sensitivity Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate vegaMargin()
+	public double cumulativeSensitivityMargin()
 	{
-		return _vegaMargin;
+		return _cumulativeSensitivityMargin;
 	}
 
 	/**
-	 * Retrieve the Curvature Margin
+	 * Retrieve the CR Risk Factor Aggregate
 	 * 
-	 * @return The Curvature Margin
+	 * @return The CR Risk Factor Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregate curvatureMargin()
+	public org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate()
 	{
-		return _curvatureMargin;
+		return _riskFactorAggregate;
 	}
 
 	/**
-	 * Compute the SBA Margin
+	 * Compute the Bounded Sensitivity Margin
 	 * 
-	 * @return The SBA Margin
+	 * @return The Bounded Sensitivity Margin
 	 */
 
-	public double margin()
+	public double boundedSensitivityMargin()
 	{
-		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();
+		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
+
+		return java.lang.Math.max (
+			java.lang.Math.min (
+				_cumulativeSensitivityMargin,
+				sensitivityMargin
+			),
+			-1. * sensitivityMargin
+		);
 	}
 }

@@ -246,7 +246,7 @@ public class RiskMeasureSensitivity
 			}
 
 			double bucketCumulativeRiskFactorSensitivityMargin =
-				bucketAggregate.cumulativeRiskFactorSensitivityMargin();
+				bucketAggregate.cumulativeSensitivityMargin();
 
 			if (!"-1".equalsIgnoreCase (bucketIndex))
 			{

@@ -87,7 +87,7 @@ public class BucketSensitivityIR
 			(bucketSensitivitySettingsIR);
 
 		org.drip.simm.margin.IRSensitivityAggregate sensitivityAggregate =
-				riskFactorAggregateIR.linearMargin (bucketSensitivitySettingsIR);
+			riskFactorAggregateIR.linearMargin (bucketSensitivitySettingsIR);
 
 		if (null == sensitivityAggregate)
 		{
