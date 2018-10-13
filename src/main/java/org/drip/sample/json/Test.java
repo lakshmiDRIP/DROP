@@ -339,9 +339,9 @@ public class Test {
             
             JSONArray array1=new JSONArray();
             array1.add("abc\u0010a/");
-            array1.add(new Integer(123));
-            array1.add(new Double(222.123));
-            array1.add(new Boolean(true));
+            array1.add(Integer.toString(123));
+            array1.add(Double.toString(222.123));
+            array1.add(Boolean.toString(true));
             System.out.println("======array1==========");
             System.out.println(array1);
             System.out.println();
@@ -349,9 +349,9 @@ public class Test {
             
             JSONObject obj1=new JSONObject();
             obj1.put("name","fang");
-            obj1.put("age",new Integer(27));
-            obj1.put("is_developer",new Boolean(true));
-            obj1.put("weight",new Double(60.21));
+            obj1.put("age",Integer.toString(27));
+            obj1.put("is_developer", Boolean.toString(true));
+            obj1.put("weight", Double.toString(60.21));
             obj1.put("array1",array1);
             System.out.println("======obj1 with array1===========");
             System.out.println(obj1);
@@ -367,9 +367,9 @@ public class Test {
     
             List list = new ArrayList();
             list.add("abc\u0010a/");
-            list.add(new Integer(123));
-            list.add(new Double(222.123));
-            list.add(new Boolean(true));
+            list.add(Integer.toString (123));
+            list.add(Double.toString (222.123));
+            list.add(Boolean.toString (true));
             list.add(null);
             System.out.println("======list==========");
             System.out.println(JSONArray.toJSONString(list));
@@ -378,9 +378,9 @@ public class Test {
             
             Map map = new HashMap();
             map.put("name","fang");
-            map.put("age",new Integer(27));
-            map.put("is_developer",new Boolean(true));
-            map.put("weight",new Double(60.21));
+            map.put("age", Integer.toString (27));
+            map.put("is_developer", Boolean.toString (true));
+            map.put("weight", Double.toString (60.21));
             map.put("array1",list);
             System.out.println("======map with list===========");
             System.out.println(map);
@@ -412,12 +412,12 @@ public class Test {
     List l2 = new LinkedList();
     Map m3 = new LinkedHashMap();
     m3.put("k31", "v3");
-    m3.put("k32", new Double(123.45));
-    m3.put("k33", new Boolean(false));
+    m3.put("k32", Double.toString (123.45));
+    m3.put("k33", Boolean.toString (false));
     m3.put("k34", null);
     l2.add("vvv");
     l2.add("1.23456789123456789");
-    l2.add(new Boolean(true));
+    l2.add(Boolean.toString (true));
     l2.add(null);
     m3.put("k35", l2);
     m1.put("k14", m3);

@@ -235,7 +235,7 @@ public class IBORCurve {
 
 		FixFloatComponent[] aFFC = new FixFloatComponent[astrMaturityTenor.length];
 
-		int iTenorInMonths = new Integer (fri.tenor().split ("M")[0]);
+		int iTenorInMonths = Integer.parseInt (fri.tenor().split ("M")[0]);
 
 		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (
 			1,
@@ -364,7 +364,7 @@ public class IBORCurve {
 
 		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];
 
-		int iTenorInMonths = new Integer (fri.tenor().split ("M")[0]);
+		int iTenorInMonths = Integer.parseInt (fri.tenor().split ("M")[0]);
 
 		String strCurrency = fri.currency();
 

@@ -340,7 +340,7 @@ public class CollectionUtil {
 						(astrKVPair[1]))))
 				continue;
 
-			map2D.put (astrKVPair[0], new java.lang.Double (astrKVPair[1]));
+			map2D.put (astrKVPair[0], java.lang.Double.parseDouble (astrKVPair[1]));
 		}
 
 		if (0 == map2D.size()) return null;
@@ -410,7 +410,7 @@ public class CollectionUtil {
 			if (null == map2D)
 				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
-			map2D.put (astrKeySet[1], new java.lang.Double (astrKVPair[1]));
+			map2D.put (astrKeySet[1], java.lang.Double.parseDouble (astrKVPair[1]));
 
 			map3D.put (astrKeySet[0], map2D);
 		}
@@ -493,7 +493,7 @@ public class CollectionUtil {
 			if (null == map2D)
 				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
-			map2D.put (astrKeySet[2], new java.lang.Double (astrKVPairOut[1]));
+			map2D.put (astrKeySet[2], java.lang.Double.parseDouble (astrKVPairOut[1]));
 
 			map3D.put (astrKeySet[1], map2D);
 

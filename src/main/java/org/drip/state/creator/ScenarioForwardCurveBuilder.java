@@ -163,7 +163,7 @@ public class ScenarioForwardCurveBuilder {
 					mapForwardLabel = aCalibComp[0].forwardLabel();
 
 				if (null != mapForwardLabel && 0 != mapForwardLabel.size())
-					forwardLabel = mapForwardLabel.get (0);
+					forwardLabel = mapForwardLabel.get ("BASE");
 			}
 
 			org.drip.state.representation.LatentStateSpecification[] aLSS = new

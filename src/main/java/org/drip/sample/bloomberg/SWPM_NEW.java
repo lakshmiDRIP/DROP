@@ -653,7 +653,7 @@ public class SWPM_NEW {
 	{
 		String strCurrency = fri.currency();
 
-		int iTenorInMonths = new Integer (fri.tenor().split ("M")[0]);
+		int iTenorInMonths = Integer.parseInt (fri.tenor().split ("M")[0]);
 
 		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (
 			2,

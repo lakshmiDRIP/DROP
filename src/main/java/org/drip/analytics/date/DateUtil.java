@@ -773,8 +773,8 @@ public class DateUtil {
 		if (3 != astrParts.length) return null;
 
 		try {
-			return CreateFromYMD (new java.lang.Integer (astrParts[2]), MonthFromMonthChars (astrParts[1]),
-				new java.lang.Integer (astrParts[0]));
+			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[2]), MonthFromMonthChars (astrParts[1]),
+				java.lang.Integer.parseInt (astrParts[0]));
 		} catch (java.lang.Exception e) {
 		}
 
@@ -801,8 +801,8 @@ public class DateUtil {
 		if (3 != astrParts.length) return null;
 
 		try {
-			return CreateFromYMD (new java.lang.Integer (astrParts[2]), new java.lang.Integer (astrParts[0]),
-				new java.lang.Integer (astrParts[1]));
+			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[2]), java.lang.Integer.parseInt (astrParts[0]),
+				java.lang.Integer.parseInt (astrParts[1]));
 		} catch (java.lang.Exception e) {
 		}
 
@@ -829,8 +829,8 @@ public class DateUtil {
 		if (3 != astrParts.length) return null;
 
 		try {
-			return CreateFromYMD (new java.lang.Integer (astrParts[0]), new java.lang.Integer (astrParts[1]),
-				new java.lang.Integer (astrParts[2]));
+			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[0]), java.lang.Integer.parseInt (astrParts[1]),
+				java.lang.Integer.parseInt (astrParts[2]));
 		} catch (java.lang.Exception e) {
 		}
 
@@ -943,8 +943,8 @@ public class DateUtil {
 		if (null == strYYYYMMDD || strYYYYMMDD.isEmpty()) return null;
 
 		try {
-			return strYYYYMMDD.substring (6) + "-" + MonthTrigram ((new java.lang.Integer
-				(strYYYYMMDD.substring (4, 6))).intValue()) + "-" + strYYYYMMDD.substring (0, 4);
+			return strYYYYMMDD.substring (6) + "-" + MonthTrigram ((java.lang.Integer.parseInt
+				(strYYYYMMDD.substring (4, 6)))) + "-" + strYYYYMMDD.substring (0, 4);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -968,7 +968,7 @@ public class DateUtil {
 		java.util.StringTokenizer st = new java.util.StringTokenizer (strBBGDate, "/");
 
 		try {
-			java.lang.String strMonth = MonthTrigram (new java.lang.Integer (st.nextToken()));
+			java.lang.String strMonth = MonthTrigram (java.lang.Integer.parseInt (st.nextToken()));
 
 			if (null == strMonth) return null;
 
@@ -1051,8 +1051,8 @@ public class DateUtil {
 		if (null == astrDMY || 3 != astrDMY.length) return null;
 
 		try {
-			return CreateFromYMD (2000 + new java.lang.Integer (astrDMY[2].trim()), MonthFromMonthChars
-				(astrDMY[1].trim()), new java.lang.Integer (astrDMY[0].trim()));
+			return CreateFromYMD (2000 + java.lang.Integer.parseInt (astrDMY[2].trim()), MonthFromMonthChars
+				(astrDMY[1].trim()), java.lang.Integer.parseInt (astrDMY[0].trim()));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1081,8 +1081,8 @@ public class DateUtil {
 		if (null == astrYYYYMMDD || 3 != astrYYYYMMDD.length) return null;
 
 		try {
-			return CreateFromYMD (new java.lang.Integer (astrYYYYMMDD[0].trim()), new java.lang.Integer
-				(astrYYYYMMDD[1].trim()), new java.lang.Integer (astrYYYYMMDD[2].trim()));
+			return CreateFromYMD (java.lang.Integer.parseInt (astrYYYYMMDD[0].trim()), java.lang.Integer.parseInt
+				(astrYYYYMMDD[1].trim()), java.lang.Integer.parseInt (astrYYYYMMDD[2].trim()));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1111,8 +1111,8 @@ public class DateUtil {
 		if (null == astrDMY || 3 != astrDMY.length) return null;
 
 		try {
-			return CreateFromYMD (new java.lang.Integer (astrDMY[2].trim()), new java.lang.Integer
-				(astrDMY[0].trim()), new java.lang.Integer (astrDMY[1].trim()));
+			return CreateFromYMD (java.lang.Integer.parseInt (astrDMY[2].trim()), java.lang.Integer.parseInt
+				(astrDMY[0].trim()), java.lang.Integer.parseInt (astrDMY[1].trim()));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1138,9 +1138,11 @@ public class DateUtil {
 		if (3 != astrFields.length) return null;
 
 		try {
-			return CreateFromYMD ((int) new java.lang.Double (astrFields[2].trim()).doubleValue(), (int) new
-				java.lang.Double (astrFields[0].trim()).doubleValue(), (int) new java.lang.Double
-					(astrFields[1].trim()).doubleValue());
+			return CreateFromYMD (
+				(int) java.lang.Double.parseDouble (astrFields[2].trim()),
+				(int) java.lang.Double.parseDouble (astrFields[0].trim()),
+				(int) java.lang.Double.parseDouble (astrFields[1].trim())
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

@@ -424,7 +424,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		int iTimeUnit = -1;
 
 		try {
-			iTimeUnit = new java.lang.Integer (strTenor.substring (0, iNumChar - 1));
+			iTimeUnit = java.lang.Integer.parseInt (strTenor.substring (0, iNumChar - 1));
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad time unit " + iTimeUnit + " in tenor " + strTenor);
 
@@ -495,7 +495,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		int iTimeUnit = -1;
 
 		try {
-			iTimeUnit = new java.lang.Integer (strTenor.substring (0, iNumChar - 1));
+			iTimeUnit = java.lang.Integer.parseInt (strTenor.substring (0, iNumChar - 1));
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad time unit " + iTimeUnit + " in tenor " + strTenor);
 

@@ -495,7 +495,7 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 		org.drip.state.identifier.EntityCDSLabel creditLabel = comp.creditLabel();
 
 		org.drip.param.market.CreditCurveScenarioContainer scc = null == creditLabel ? null :
-			_mapScenarioCreditCurve.get (creditLabel);
+			_mapScenarioCreditCurve.get (creditLabel.fullyQualifiedName());
 
 		if (null != scc) {
 			if ("FlatCreditBumpUp".equalsIgnoreCase (strScenario))
@@ -538,7 +538,7 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 		org.drip.state.identifier.EntityCDSLabel creditLabel = comp.creditLabel();
 
 		org.drip.param.market.CreditCurveScenarioContainer scc = null == creditLabel ? null :
-			_mapScenarioCreditCurve.get (creditLabel);
+			_mapScenarioCreditCurve.get (creditLabel.fullyQualifiedName());
 
 		org.drip.state.credit.CreditCurve cc = null == scc ? null : scc.base();
 
@@ -593,7 +593,8 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 
 		if (null == creditLabel) return null;
 
-		org.drip.param.market.CreditCurveScenarioContainer scc = _mapScenarioCreditCurve.get (creditLabel);
+		org.drip.param.market.CreditCurveScenarioContainer scc = _mapScenarioCreditCurve.get
+			(creditLabel.fullyQualifiedName());
 
 		if (null == scc) return null;
 

@@ -597,8 +597,10 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 			if (0 == iNumForwardCurve) continue;
 
-			for (int j = 0; j < iNumForwardCurve; ++j) {
-				org.drip.state.identifier.ForwardLabel lslForward = aLSLForward.get (j);
+			java.util.Set<java.lang.String> forwardLabelSet = aLSLForward.keySet();
+
+			for (java.lang.String forwardLabelKey : forwardLabelSet) {
+				org.drip.state.identifier.ForwardLabel lslForward = aLSLForward.get (forwardLabelKey);
 
 				if (null != lslForward) setLSLForward.add (lslForward);
 			}
@@ -680,8 +682,10 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 			if (0 == iNumLabel) continue;
 
-			for (int j = 0; j < iNumLabel; ++j) {
-				org.drip.state.identifier.FXLabel label = aLabel.get (j);
+			java.util.Set<java.lang.String> fxLabelSet = aLabel.keySet();
+
+			for (java.lang.String fxLabelKey : fxLabelSet) {
+				org.drip.state.identifier.FXLabel label = aLabel.get (fxLabelKey);
 
 				if (null != label) setLabel.add (label);
 			}

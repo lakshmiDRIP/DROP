@@ -825,21 +825,21 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		_strCollateralType = mapJSON.get ("collateraltype");
 
-		_dblIssueAmount = new java.lang.Double (mapJSON.get ("issueamount"));
+		_dblIssueAmount = java.lang.Double.parseDouble (mapJSON.get ("issueamount"));
 
-		_dblOutstandingAmount = new java.lang.Double (mapJSON.get ("outstandingamount"));
+		_dblOutstandingAmount = java.lang.Double.parseDouble (mapJSON.get ("outstandingamount"));
 
-		_dblMinimumPiece = new java.lang.Double (mapJSON.get ("minimumpiece"));
+		_dblMinimumPiece = java.lang.Double.parseDouble (mapJSON.get ("minimumpiece"));
 
-		_dblMinimumIncrement = new java.lang.Double (mapJSON.get ("minimumincrement"));
+		_dblMinimumIncrement = java.lang.Double.parseDouble (mapJSON.get ("minimumincrement"));
 
-		_dblParAmount = new java.lang.Double (mapJSON.get ("paramount"));
+		_dblParAmount = java.lang.Double.parseDouble (mapJSON.get ("paramount"));
 
 		_strLeadManager = mapJSON.get ("leadmanager");
 
 		_strExchangeCode = mapJSON.get ("exchangecode");
 
-		_dblRedemptionValue = new java.lang.Double (mapJSON.get ("redemptionvalue"));
+		_dblRedemptionValue = java.lang.Double.parseDouble (mapJSON.get ("redemptionvalue"));
 
 		_dtAnnounce = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD (mapJSON.get ("announcedate"),
 			"-");
@@ -858,11 +858,11 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		_dtNextCouponDate = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD (mapJSON.get
 			("nextcoupondate"), "-");
 
-		_bIsCallable = new java.lang.Boolean (mapJSON.get ("iscallable"));
+		_bIsCallable = java.lang.Boolean.parseBoolean (mapJSON.get ("iscallable"));
 
-		_bIsPutable = new java.lang.Boolean (mapJSON.get ("isputabale"));
+		_bIsPutable = java.lang.Boolean.parseBoolean (mapJSON.get ("isputabale"));
 
-		_bIsSinkable = new java.lang.Boolean (mapJSON.get ("issinkable"));
+		_bIsSinkable = java.lang.Boolean.parseBoolean (mapJSON.get ("issinkable"));
 
 		_strBBGParent = mapJSON.get ("bbgparent");
 
@@ -889,11 +889,11 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		_strLongCompanyName = mapJSON.get ("longcompanyname");
 
-		_bIsStructuredNote = new java.lang.Boolean (mapJSON.get ("isstructurednote"));
+		_bIsStructuredNote = java.lang.Boolean.parseBoolean (mapJSON.get ("isstructurednote"));
 
-		_bIsUnitTraded = new java.lang.Boolean (mapJSON.get ("isunittraded"));
+		_bIsUnitTraded = java.lang.Boolean.parseBoolean (mapJSON.get ("isunittraded"));
 
-		_bIsReversibleConvertible = new java.lang.Boolean (mapJSON.get ("isreversibleconvertible"));
+		_bIsReversibleConvertible = java.lang.Boolean.parseBoolean (mapJSON.get ("isreversibleconvertible"));
 
 		_strRedemptionCurrency = mapJSON.get ("redemptioncurrency");
 
@@ -901,11 +901,11 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		_strTradeCurrency = mapJSON.get ("tradecurrency");
 
-		_bIsBearer = new java.lang.Boolean (mapJSON.get ("isbearer"));
+		_bIsBearer = java.lang.Boolean.parseBoolean (mapJSON.get ("isbearer"));
 
-		_bIsRegistered = new java.lang.Boolean (mapJSON.get ("isregistered"));
+		_bIsRegistered = java.lang.Boolean.parseBoolean (mapJSON.get ("isregistered"));
 
-		_bHasBeenCalled = new java.lang.Boolean (mapJSON.get ("hasbeencalled"));
+		_bHasBeenCalled = java.lang.Boolean.parseBoolean (mapJSON.get ("hasbeencalled"));
 
 		_strIssuer = mapJSON.get ("issuer");
 
@@ -914,11 +914,11 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		_strFloatCouponConvention = mapJSON.get ("floatcouponconvention");
 
-		_dblCurrentCoupon = new java.lang.Double (mapJSON.get ("currentcoupon"));
+		_dblCurrentCoupon = java.lang.Double.parseDouble (mapJSON.get ("currentcoupon"));
 
-		_bIsFloater = new java.lang.Boolean (mapJSON.get ("isfloater"));
+		_bIsFloater = java.lang.Boolean.parseBoolean (mapJSON.get ("isfloater"));
 
-		_bTradeStatus = new java.lang.Boolean (mapJSON.get ("tradestatus"));
+		_bTradeStatus = java.lang.Boolean.parseBoolean (mapJSON.get ("tradestatus"));
 
 		_strCDRCountryCode = mapJSON.get ("cdrcountrycode");
 
@@ -927,13 +927,13 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		_dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD (mapJSON.get
 			("finalmaturitydate"), "-");
 
-		_bIsPrivatePlacement = new java.lang.Boolean (mapJSON.get ("isprivateplacement"));
+		_bIsPrivatePlacement = java.lang.Boolean.parseBoolean (mapJSON.get ("isprivateplacement"));
 
-		_bIsPerpetual = new java.lang.Boolean (mapJSON.get ("isperpetual"));
+		_bIsPerpetual = java.lang.Boolean.parseBoolean (mapJSON.get ("isperpetual"));
 
-		_bIsDefaulted = new java.lang.Boolean (mapJSON.get ("isdefaulted"));
+		_bIsDefaulted = java.lang.Boolean.parseBoolean (mapJSON.get ("isdefaulted"));
 
-		_dblFloatSpread = new java.lang.Double (mapJSON.get ("floatspread"));
+		_dblFloatSpread = java.lang.Double.parseDouble (mapJSON.get ("floatspread"));
 
 		_strRateIndex = mapJSON.get ("rateindex");
 
@@ -947,9 +947,9 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		_strIssuerSPN = mapJSON.get ("issuerspn");
 
-		_dblIssuePrice = new java.lang.Double (mapJSON.get ("issueprice"));
+		_dblIssuePrice = java.lang.Double.parseDouble (mapJSON.get ("issueprice"));
 
-		_dblCoupon = new java.lang.Double (mapJSON.get ("coupon"));
+		_dblCoupon = java.lang.Double.parseDouble (mapJSON.get ("coupon"));
 
 		_dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD (mapJSON.get ("maturitydate"),
 			"-");
@@ -1252,7 +1252,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strIssueAmount)
 	{
 		try {
-			_dblIssueAmount = new java.lang.Double (strIssueAmount.trim());
+			_dblIssueAmount = java.lang.Double.parseDouble (strIssueAmount.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -1274,7 +1274,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strOutstandingAmount)
 	{
 		try {
-			_dblOutstandingAmount = new java.lang.Double (strOutstandingAmount.trim());
+			_dblOutstandingAmount = java.lang.Double.parseDouble (strOutstandingAmount.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -1298,7 +1298,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strMinimumPiece)
 	{
 		try {
-			_dblMinimumPiece = new java.lang.Double (strMinimumPiece.trim());
+			_dblMinimumPiece = java.lang.Double.parseDouble (strMinimumPiece.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -1321,7 +1321,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strMinimumIncrement)
 	{
 		try {
-			_dblMinimumIncrement = new java.lang.Double (strMinimumIncrement.trim());
+			_dblMinimumIncrement = java.lang.Double.parseDouble (strMinimumIncrement.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -1345,7 +1345,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strParAmount)
 	{
 		try {
-			_dblParAmount = new java.lang.Double (strParAmount.trim());
+			_dblParAmount = java.lang.Double.parseDouble (strParAmount.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -1399,7 +1399,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strRedemptionValue)
 	{
 		try {
-			_dblRedemptionValue = new java.lang.Double (strRedemptionValue.trim());
+			_dblRedemptionValue = java.lang.Double.parseDouble (strRedemptionValue.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -2059,7 +2059,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 			_dblCurrentCoupon = 0.;
 		else {
 			try {
-				_dblCurrentCoupon = new java.lang.Double (strCurrentCoupon.trim()).doubleValue();
+				_dblCurrentCoupon = java.lang.Double.parseDouble (strCurrentCoupon.trim());
 
 				return true;
 			} catch (java.lang.Exception e) {
@@ -2244,7 +2244,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strFloatSpread)
 	{
 		try {
-			_dblFloatSpread = new java.lang.Double (strFloatSpread.trim());
+			_dblFloatSpread = java.lang.Double.parseDouble (strFloatSpread.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -2362,7 +2362,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		final java.lang.String strIssuePrice)
 	{
 		try {
-			_dblIssuePrice = new java.lang.Double (strIssuePrice.trim()).doubleValue();
+			_dblIssuePrice = java.lang.Double.parseDouble (strIssuePrice.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -2386,7 +2386,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		if (null == strCoupon || strCoupon.isEmpty() || "null".equalsIgnoreCase (strCoupon)) _dblCoupon = 0.;
 
 		try {
-			_dblCoupon = new java.lang.Double (strCoupon.trim());
+			_dblCoupon = java.lang.Double.parseDouble (strCoupon.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {

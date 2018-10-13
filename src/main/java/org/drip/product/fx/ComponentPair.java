@@ -169,7 +169,7 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 				mapForwardLabel = comp.forwardLabel();
 
 			if (null != mapForwardLabel && 0 != mapForwardLabel.size())
-				forwardLabel = mapForwardLabel.get (0);
+				forwardLabel = mapForwardLabel.get ("BASE");
 		}
 
 		try { 

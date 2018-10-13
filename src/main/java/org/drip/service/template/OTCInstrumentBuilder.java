@@ -240,7 +240,7 @@ public class OTCInstrumentBuilder {
 
 		java.lang.String strForwardTenor = forwardLabel.tenor();
 
-		int iTenorInMonths = new java.lang.Integer (strForwardTenor.split ("M")[0]);
+		int iTenorInMonths = java.lang.Integer.parseInt (strForwardTenor.split ("M")[0]);
 
 		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency).addDays (2);
 
@@ -647,7 +647,7 @@ public class OTCInstrumentBuilder {
 
 		java.lang.String strForwardTenor = forwardLabel.tenor();
 
-		int iTenorInMonths = new java.lang.Integer (strForwardTenor.split ("M")[0]);
+		int iTenorInMonths = java.lang.Integer.parseInt (strForwardTenor.split ("M")[0]);
 
 		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (0, strCurrency).addDays (2);
 

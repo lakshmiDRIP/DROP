@@ -152,7 +152,7 @@ class CreditStaticAndMarks {
 		double dblMarkValue = java.lang.Double.NaN;
 
 		try {
-			dblMarkValue = new java.lang.Double (astrRecord[2].trim()).doubleValue();
+			dblMarkValue = java.lang.Double.parseDouble (astrRecord[2].trim());
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad mark " + astrRecord[2] + " for " + strIDType + " " + strID);
 
@@ -207,7 +207,7 @@ class CreditStaticAndMarks {
 		double dblCoupon = 0.;
 
 		try {
-			dblCoupon = new java.lang.Double (astrValRecord[4].trim()).doubleValue();
+			dblCoupon = java.lang.Double.parseDouble (astrValRecord[4].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog) System.out.println ("Bad coupon " + astrValRecord[4] + " for ISIN " + strISIN);
 		}
@@ -265,7 +265,7 @@ class CreditStaticAndMarks {
 		int iCouponFreq = 0;
 
 		try {
-			iCouponFreq = (int) new java.lang.Double (astrValRecord[12].trim()).doubleValue();
+			iCouponFreq = (int) java.lang.Double.parseDouble (astrValRecord[12].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog)
 				System.out.println ("Bad coupon freq " + astrValRecord[12] + " for ISIN " + strISIN);
@@ -279,7 +279,7 @@ class CreditStaticAndMarks {
 		double dblFloatSpread = 0.;
 
 		try {
-			dblFloatSpread = new java.lang.Double (astrValRecord[78].trim()).doubleValue();
+			dblFloatSpread = java.lang.Double.parseDouble (astrValRecord[78].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog)
 				System.out.println ("Bad float spread " + astrValRecord[78] + " for ISIN " + strISIN);
@@ -303,7 +303,7 @@ class CreditStaticAndMarks {
 		double dblAmountIssued = 0.;
 
 		try {
-			dblAmountIssued = new java.lang.Double (astrValRecord[21].trim()).doubleValue();
+			dblAmountIssued = java.lang.Double.parseDouble (astrValRecord[21].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog) System.out.println ("Bad issue amt " + astrValRecord[21] + " for ISIN " + strISIN);
 		}
@@ -311,7 +311,7 @@ class CreditStaticAndMarks {
 		double dblAmountOutstanding = 0.;
 
 		try {
-			dblAmountOutstanding = new java.lang.Double (astrValRecord[22].trim()).doubleValue();
+			dblAmountOutstanding = java.lang.Double.parseDouble (astrValRecord[22].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog)
 				System.out.println ("Bad outstanding amt " + astrValRecord[22] + " for ISIN " + strISIN);
@@ -470,7 +470,7 @@ class CreditStaticAndMarks {
 		double dblExerciseFactor = java.lang.Double.NaN;
 
 		try {
-			dblExerciseFactor = new java.lang.Double (astrEOS[6].trim()).doubleValue();
+			dblExerciseFactor = java.lang.Double.parseDouble (astrEOS[6].trim());
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad exercise factor " + astrEOS[6] + " for ISIN " + strISIN);
 
@@ -486,7 +486,7 @@ class CreditStaticAndMarks {
 		int iKnockoutOnDefault = 1;
 
 		try {
-			iKnockoutOnDefault = (int) new java.lang.Double (astrEOS[13].trim()).doubleValue();
+			iKnockoutOnDefault = (int) java.lang.Double.parseDouble (astrEOS[13].trim());
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad knockout on default " + astrEOS[13] + " for ISIN " + strISIN);
 
@@ -558,55 +558,55 @@ class CreditStaticAndMarks {
 			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate
 				(astrIREOD[1].trim());
 
-			dbl1D = new java.lang.Double (astrIREOD[5].trim()).doubleValue();
+			dbl1D = java.lang.Double.parseDouble (astrIREOD[5].trim());
 
-			dbl1M = new java.lang.Double (astrIREOD[6].trim()).doubleValue();
+			dbl1M = java.lang.Double.parseDouble (astrIREOD[6].trim());
 
-			dbl2M = new java.lang.Double (astrIREOD[7].trim()).doubleValue();
+			dbl2M = java.lang.Double.parseDouble (astrIREOD[7].trim());
 
-			dbl3M = new java.lang.Double (astrIREOD[8].trim()).doubleValue();
+			dbl3M = java.lang.Double.parseDouble (astrIREOD[8].trim());
 
-			dbl4M = new java.lang.Double (astrIREOD[9].trim()).doubleValue();
+			dbl4M = java.lang.Double.parseDouble (astrIREOD[9].trim());
 
-			dbl5M = new java.lang.Double (astrIREOD[10].trim()).doubleValue();
+			dbl5M = java.lang.Double.parseDouble (astrIREOD[10].trim());
 
-			dbl6M = new java.lang.Double (astrIREOD[11].trim()).doubleValue();
+			dbl6M = java.lang.Double.parseDouble (astrIREOD[11].trim());
 
-			dbl9M = new java.lang.Double (astrIREOD[12].trim()).doubleValue();
+			dbl9M = java.lang.Double.parseDouble (astrIREOD[12].trim());
 
-			dbl1Y = new java.lang.Double (astrIREOD[13].trim()).doubleValue();
+			dbl1Y = java.lang.Double.parseDouble (astrIREOD[13].trim());
 
-			dbl18M = new java.lang.Double (astrIREOD[14].trim()).doubleValue();
+			dbl18M = java.lang.Double.parseDouble (astrIREOD[14].trim());
 
-			dbl2Y = new java.lang.Double (astrIREOD[15].trim()).doubleValue();
+			dbl2Y = java.lang.Double.parseDouble (astrIREOD[15].trim());
 
-			dbl3Y = new java.lang.Double (astrIREOD[16].trim()).doubleValue();
+			dbl3Y = java.lang.Double.parseDouble (astrIREOD[16].trim());
 
-			dbl4Y = new java.lang.Double (astrIREOD[17].trim()).doubleValue();
+			dbl4Y = java.lang.Double.parseDouble (astrIREOD[17].trim());
 
-			dbl5Y = new java.lang.Double (astrIREOD[18].trim()).doubleValue();
+			dbl5Y = java.lang.Double.parseDouble (astrIREOD[18].trim());
 
-			dbl6Y = new java.lang.Double (astrIREOD[19].trim()).doubleValue();
+			dbl6Y = java.lang.Double.parseDouble (astrIREOD[19].trim());
 
-			dbl7Y = new java.lang.Double (astrIREOD[20].trim()).doubleValue();
+			dbl7Y = java.lang.Double.parseDouble (astrIREOD[20].trim());
 
-			dbl8Y = new java.lang.Double (astrIREOD[21].trim()).doubleValue();
+			dbl8Y = java.lang.Double.parseDouble (astrIREOD[21].trim());
 
-			dbl9Y = new java.lang.Double (astrIREOD[22].trim()).doubleValue();
+			dbl9Y = java.lang.Double.parseDouble (astrIREOD[22].trim());
 
-			dbl10Y = new java.lang.Double (astrIREOD[23].trim()).doubleValue();
+			dbl10Y = java.lang.Double.parseDouble (astrIREOD[23].trim());
 
-			dbl12Y = new java.lang.Double (astrIREOD[24].trim()).doubleValue();
+			dbl12Y = java.lang.Double.parseDouble (astrIREOD[24].trim());
 
-			dbl15Y = new java.lang.Double (astrIREOD[25].trim()).doubleValue();
+			dbl15Y = java.lang.Double.parseDouble (astrIREOD[25].trim());
 
-			dbl20Y = new java.lang.Double (astrIREOD[26].trim()).doubleValue();
+			dbl20Y = java.lang.Double.parseDouble (astrIREOD[26].trim());
 
-			dbl25Y = new java.lang.Double (astrIREOD[27].trim()).doubleValue();
+			dbl25Y = java.lang.Double.parseDouble (astrIREOD[27].trim());
 
-			dbl30Y = new java.lang.Double (astrIREOD[28].trim()).doubleValue();
+			dbl30Y = java.lang.Double.parseDouble (astrIREOD[28].trim());
 
-			dbl40Y = new java.lang.Double (astrIREOD[29].trim()).doubleValue();
+			dbl40Y = java.lang.Double.parseDouble (astrIREOD[29].trim());
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad input marks for ccy " + strCurrency);
 
@@ -829,47 +829,47 @@ class CreditStaticAndMarks {
 			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate
 				(astrCREOD[2].trim());
 
-			dblRecRate = new java.lang.Double (astrCREOD[7].trim()).doubleValue();
+			dblRecRate = java.lang.Double.parseDouble (astrCREOD[7].trim());
 
-			dblCR3M = new java.lang.Double (astrCREOD[8].trim()).doubleValue();
+			dblCR3M = java.lang.Double.parseDouble (astrCREOD[8].trim());
 
-			dblCR6M = new java.lang.Double (astrCREOD[9].trim()).doubleValue();
+			dblCR6M = java.lang.Double.parseDouble (astrCREOD[9].trim());
 
-			dblCR9M = new java.lang.Double (astrCREOD[10].trim()).doubleValue();
+			dblCR9M = java.lang.Double.parseDouble (astrCREOD[10].trim());
 
-			dblCR1Y = new java.lang.Double (astrCREOD[11].trim()).doubleValue();
+			dblCR1Y = java.lang.Double.parseDouble (astrCREOD[11].trim());
 
-			dblCR18M = new java.lang.Double (astrCREOD[12].trim()).doubleValue();
+			dblCR18M = java.lang.Double.parseDouble (astrCREOD[12].trim());
 
-			dblCR2Y = new java.lang.Double (astrCREOD[13].trim()).doubleValue();
+			dblCR2Y = java.lang.Double.parseDouble (astrCREOD[13].trim());
 
-			dblCR3Y = new java.lang.Double (astrCREOD[14].trim()).doubleValue();
+			dblCR3Y = java.lang.Double.parseDouble (astrCREOD[14].trim());
 
-			dblCR4Y = new java.lang.Double (astrCREOD[15].trim()).doubleValue();
+			dblCR4Y = java.lang.Double.parseDouble (astrCREOD[15].trim());
 
-			dblCR5Y = new java.lang.Double (astrCREOD[16].trim()).doubleValue();
+			dblCR5Y = java.lang.Double.parseDouble (astrCREOD[16].trim());
 
-			dblCR6Y = new java.lang.Double (astrCREOD[17].trim()).doubleValue();
+			dblCR6Y = java.lang.Double.parseDouble (astrCREOD[17].trim());
 
-			dblCR7Y = new java.lang.Double (astrCREOD[18].trim()).doubleValue();
+			dblCR7Y = java.lang.Double.parseDouble (astrCREOD[18].trim());
 
-			dblCR8Y = new java.lang.Double (astrCREOD[19].trim()).doubleValue();
+			dblCR8Y = java.lang.Double.parseDouble (astrCREOD[19].trim());
 
-			dblCR9Y = new java.lang.Double (astrCREOD[20].trim()).doubleValue();
+			dblCR9Y = java.lang.Double.parseDouble (astrCREOD[20].trim());
 
-			dblCR10Y = new java.lang.Double (astrCREOD[21].trim()).doubleValue();
+			dblCR10Y = java.lang.Double.parseDouble (astrCREOD[21].trim());
 
-			dblCR11Y = new java.lang.Double (astrCREOD[22].trim()).doubleValue();
+			dblCR11Y = java.lang.Double.parseDouble (astrCREOD[22].trim());
 
-			dblCR12Y = new java.lang.Double (astrCREOD[23].trim()).doubleValue();
+			dblCR12Y = java.lang.Double.parseDouble (astrCREOD[23].trim());
 
-			dblCR15Y = new java.lang.Double (astrCREOD[26].trim()).doubleValue();
+			dblCR15Y = java.lang.Double.parseDouble (astrCREOD[26].trim());
 
-			dblCR20Y = new java.lang.Double (astrCREOD[31].trim()).doubleValue();
+			dblCR20Y = java.lang.Double.parseDouble (astrCREOD[31].trim());
 
-			dblCR30Y = new java.lang.Double (astrCREOD[37].trim()).doubleValue();
+			dblCR30Y = java.lang.Double.parseDouble (astrCREOD[37].trim());
 
-			dblCR40Y = new java.lang.Double (astrCREOD[39].trim()).doubleValue();
+			dblCR40Y = java.lang.Double.parseDouble (astrCREOD[39].trim());
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad input marks for SPN " + strSPN);
 
@@ -970,7 +970,7 @@ class CreditStaticAndMarks {
 		double dblCoupon = 0.;
 
 		try {
-			dblCoupon = new java.lang.Double (astrBondRef2[11].trim()).doubleValue();
+			dblCoupon = java.lang.Double.parseDouble (astrBondRef2[11].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog) System.out.println ("Bad coupon " + astrBondRef2[11] + " for ISIN " + strISIN);
 		}
@@ -1034,7 +1034,7 @@ class CreditStaticAndMarks {
 		double dblFloatSpread = 0.;
 
 		try {
-			dblFloatSpread = new java.lang.Double (astrBondRef2[12].trim()).doubleValue();
+			dblFloatSpread = java.lang.Double.parseDouble (astrBondRef2[12].trim());
 		} catch (java.lang.Exception e) {
 			if (m_bBlog)
 				System.out.println ("Bad float spread " + astrBondRef2[12] + " for ISIN " + strISIN);
@@ -1189,7 +1189,7 @@ class CreditStaticAndMarks {
 		}
 
 		try {
-			dblPrincipalPaydown = new java.lang.Double (astrAmortizationSchedule[4].trim());
+			dblPrincipalPaydown = java.lang.Double.parseDouble (astrAmortizationSchedule[4].trim());
 		} catch (java.lang.Exception e) {
 			System.out.println ("Bad paydown factor " + astrAmortizationSchedule[4] + " for CUSIP " +
 				strCUSIP);

@@ -129,7 +129,7 @@ public class MarketCorrelation
 
 			java.lang.String latentStateLabelFQN = latentStateLabel.fullyQualifiedName();
 
-			if (_latentStateIndexMap.containsKey (_latentStateIndexMap))
+			if (_latentStateIndexMap.containsKey (latentStateLabelFQN))
 			{
 				throw new java.lang.Exception ("MarketCorrelation Constructor => Invalid Inputs");
 			}

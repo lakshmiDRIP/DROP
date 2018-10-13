@@ -146,7 +146,7 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 
 		for (java.lang.String strAssetID : setAsset) {
 			try {
-				lsValue.add (java.lang.Double.parseDouble (new java.lang.Boolean (membership
+				lsValue.add (java.lang.Double.parseDouble (java.lang.Boolean.toString (membership
 					(strAssetID)).toString()));
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();

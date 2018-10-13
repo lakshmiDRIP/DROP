@@ -84,9 +84,12 @@ public class CDXIdentifier {
 		if (null == astrFields || 4 > astrFields.length) return null;
 
 		try {
-			return new CDXIdentifier (new java.lang.Integer (astrFields[astrFields.length - 2]), new
-				java.lang.Integer (astrFields[astrFields.length - 1]), astrFields[astrFields.length - 3],
-					astrFields[astrFields.length - 4]);
+			return new CDXIdentifier (
+				java.lang.Integer.parseInt (astrFields[astrFields.length - 2]),
+				java.lang.Integer.parseInt (astrFields[astrFields.length - 1]),
+				astrFields[astrFields.length - 3],
+				astrFields[astrFields.length - 4]
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

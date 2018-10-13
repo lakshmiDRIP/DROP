@@ -336,7 +336,7 @@ public class FXRiskThresholdContainer20
 				("FXRiskThresholdContainer::CategoryVegaThreshold => Invalid Category");
 		}
 
-		return s_CategoryDelta.get (categoryVegaThresholdKey);
+		return s_CategoryVega.get (categoryVegaThresholdKey);
 	}
 
 	/**

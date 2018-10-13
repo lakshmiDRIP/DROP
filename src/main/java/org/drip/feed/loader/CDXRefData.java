@@ -121,7 +121,7 @@ public class CDXRefData {
 		double dblCoupon = java.lang.Double.NaN;
 
 		try {
-			dblCoupon = 0.0001 * new java.lang.Double (astrArgs[7]);
+			dblCoupon = 0.0001 * java.lang.Double.parseDouble (astrArgs[7]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 
@@ -150,7 +150,7 @@ public class CDXRefData {
 		double dblRecovery = java.lang.Double.NaN;
 
 		try {
-			dblRecovery = 0.01 * new java.lang.Double (astrArgs[11]);
+			dblRecovery = 0.01 * java.lang.Double.parseDouble (astrArgs[11]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 
@@ -184,7 +184,7 @@ public class CDXRefData {
 		int iIndexSeries = 0;
 
 		try {
-			iIndexSeries = new java.lang.Integer (astrArgs[15]);
+			iIndexSeries = java.lang.Integer.parseInt (astrArgs[15]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 		}
@@ -209,7 +209,7 @@ public class CDXRefData {
 		int iIndexVersion = 0;
 
 		try {
-			iIndexVersion = new java.lang.Integer (astrArgs[19]);
+			iIndexVersion = java.lang.Integer.parseInt (astrArgs[19]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 		}
@@ -219,7 +219,7 @@ public class CDXRefData {
 		int iIndexLifeSpan = 0;
 
 		try {
-			iIndexLifeSpan = new java.lang.Integer (astrArgs[20]);
+			iIndexLifeSpan = java.lang.Integer.parseInt (astrArgs[20]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 		}
@@ -234,7 +234,7 @@ public class CDXRefData {
 		double dblIndexFactor = java.lang.Double.NaN;
 
 		try {
-			dblIndexFactor = 0.01 * new java.lang.Double (astrArgs[22]);
+			dblIndexFactor = 0.01 * java.lang.Double.parseDouble (astrArgs[22]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 		}
@@ -244,7 +244,7 @@ public class CDXRefData {
 		int iOriginalComponentCount = 0;
 
 		try {
-			iOriginalComponentCount = new java.lang.Integer (astrArgs[23]);
+			iOriginalComponentCount = java.lang.Integer.parseInt (astrArgs[23]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 		}
@@ -254,7 +254,7 @@ public class CDXRefData {
 		int iDefaultedComponentCount = 0;
 
 		try {
-			new java.lang.Integer (astrArgs[24]);
+			java.lang.Integer.parseInt (astrArgs[24]);
 		} catch (java.lang.Exception e) {
 			if (!s_bSuppressErr) e.printStackTrace();
 		}

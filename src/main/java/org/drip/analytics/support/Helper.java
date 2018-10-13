@@ -507,7 +507,7 @@ public class Helper {
 		if (null == strBBGDCCode) return "Unknown BBG DC";
 
 		try {
-			return s_mapDCBBGCode.get ((int) new java.lang.Double (strBBGDCCode.trim()).doubleValue());
+			return s_mapDCBBGCode.get ((int) java.lang.Double.parseDouble (strBBGDCCode.trim()));
 		} catch (java.lang.Exception e) {
 		}
 
@@ -559,8 +559,8 @@ public class Helper {
 
 		char chTenor = strTenor.charAt (strTenor.length() - 1);
 
-		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -
-			1)).doubleValue();
+		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -
+			1));
 
 		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit * 12;
 
@@ -586,8 +586,8 @@ public class Helper {
 
 		char chTenor = strTenor.charAt (strTenor.length() - 1);
 
-		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -
-			1)).doubleValue();
+		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -
+			1));
 
 		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit * (iTimeUnit / 30);
 
@@ -621,8 +621,8 @@ public class Helper {
 
 		char chTenor = strTenor.charAt (strTenor.length() - 1);
 
-		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -
-			1)).doubleValue();
+		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -
+			1));
 
 		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit;
 
@@ -656,8 +656,8 @@ public class Helper {
 
 		char chTenor = strTenor.charAt (strTenor.length() - 1);
 
-		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -
-			1)).doubleValue();
+		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -
+			1));
 
 		if ('d' == chTenor || 'D' == chTenor) return ((double) iTimeUnit) / 365.25;
 
@@ -737,8 +737,8 @@ public class Helper {
 
 		char chTenor = strTenor.charAt (strTenor.length() - 1);
 
-		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -
-			1)).doubleValue();
+		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -
+			1));
 
 		if ('d' == chTenor || 'D' == chTenor) return (int) (365. / iTimeUnit);
 
@@ -941,7 +941,7 @@ public class Helper {
 		org.drip.param.market.LatentStateFixingsContainer lsfc = new
 			org.drip.param.market.LatentStateFixingsContainer();
 
-		return lsfc.add (dtFixing, bond.forwardLabel().get (0), dblFixing) ? lsfc : null;
+		return lsfc.add (dtFixing, bond.forwardLabel().get ("BASE"), dblFixing) ? lsfc : null;
 	}
 
 	/**
@@ -1257,11 +1257,11 @@ public class Helper {
 
 		if (chRollTenor != chBaseTenor) return null;
 
-		int iBaseTimeUnit = (int) new java.lang.Double (strBaseTenor.substring (0, strBaseTenor.length() -
-			1)).doubleValue();
+		int iBaseTimeUnit = (int) java.lang.Double.parseDouble (strBaseTenor.substring (0, strBaseTenor.length() -
+			1));
 
-		int iRollTimeUnit = (int) new java.lang.Double (strRollTenor.substring (0, strRollTenor.length() -
-			1)).doubleValue();
+		int iRollTimeUnit = (int) java.lang.Double.parseDouble (strRollTenor.substring (0, strRollTenor.length() -
+			1));
 
 		return "" + (iBaseTimeUnit + iRollTimeUnit) + chBaseTenor;
 	}

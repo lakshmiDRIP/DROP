@@ -657,7 +657,7 @@ public class BondProductBuilder {
 			_dblCoupon = 0.;
 
 		try {
-			_dblCoupon = new java.lang.Double (strCoupon.trim()).doubleValue();
+			_dblCoupon = java.lang.Double.parseDouble (strCoupon.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -706,7 +706,7 @@ public class BondProductBuilder {
 			_iCouponFreq = 0;
 		else {
 			try {
-				_iCouponFreq = (int) new java.lang.Double (strCouponFreq.trim()).doubleValue();
+				_iCouponFreq = (int) java.lang.Double.parseDouble (strCouponFreq.trim());
 			} catch (java.lang.Exception e) {
 				if (m_bBlog) System.out.println ("Bad Cpn Freq " + strCouponFreq + " for ISIN " + _strISIN);
 
@@ -801,7 +801,7 @@ public class BondProductBuilder {
 		final java.lang.String strRedemptionValue)
 	{
 		try {
-			_dblRedemptionValue = new java.lang.Double (strRedemptionValue.trim());
+			_dblRedemptionValue = java.lang.Double.parseDouble (strRedemptionValue.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {
@@ -1096,7 +1096,7 @@ public class BondProductBuilder {
 			_dblCurrentCoupon = 0.;
 		else {
 			try {
-				_dblCurrentCoupon = new java.lang.Double (strCurrentCoupon.trim()).doubleValue();
+				_dblCurrentCoupon = java.lang.Double.parseDouble (strCurrentCoupon.trim());
 
 				return true;
 			} catch (java.lang.Exception e) {
@@ -1207,7 +1207,7 @@ public class BondProductBuilder {
 		final java.lang.String strFloatSpread)
 	{
 		try {
-			_dblFloatSpread = new java.lang.Double (strFloatSpread.trim());
+			_dblFloatSpread = java.lang.Double.parseDouble (strFloatSpread.trim());
 
 			return true;
 		} catch (java.lang.Exception e) {

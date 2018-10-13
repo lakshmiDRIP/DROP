@@ -104,7 +104,7 @@ public class YylexTest {
                     System.out.println("error:"+err);
                     System.out.println (ParseException.ERROR_UNEXPECTED_CHAR == e.getErrorType());
                     System.out.println (0 == e.getPosition());
-                    System.out.println (new Character('\b') == e.getUnexpectedObject());
+                    System.out.println (Character.toString ('\b') == e.getUnexpectedObject());
             }
             catch(IOException ie){
                     throw ie;
@@ -124,7 +124,7 @@ public class YylexTest {
                     err=e;
                     System.out.println("error:"+err);
                     System.out.println (ParseException.ERROR_UNEXPECTED_CHAR == e.getErrorType());
-                    System.out.println (new Character('a') == e.getUnexpectedObject());
+                    System.out.println (Character.toString ('a') == e.getUnexpectedObject());
                     System.out.println (1 == e.getPosition());
             }
             catch(IOException ie){

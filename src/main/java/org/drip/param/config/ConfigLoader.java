@@ -93,7 +93,7 @@ public class ConfigLoader {
 		if (null == node || null == node.getNodeValue())
 			throw new java.lang.Exception ("Cannot get int value for <" + strTag + ">");
 
-		return new java.lang.Integer (node.getNodeValue()).intValue();
+		return Integer.parseInt (node.getNodeValue());
 	}
 
 	private static final boolean BooleanTagValue (
@@ -120,7 +120,7 @@ public class ConfigLoader {
 		if (null == node || null == node.getNodeValue())
 			throw new java.lang.Exception ("Cannot get bool value for <" + strTag + ">");
 
-		return new java.lang.Boolean (node.getNodeValue()).booleanValue();
+		return java.lang.Boolean.parseBoolean (node.getNodeValue());
 	}
 
 	private static final java.lang.String StringTagValue (
@@ -171,7 +171,7 @@ public class ConfigLoader {
 		int[] ai = new int[astrValue.length];
 
 		for (int i = 0; i < astrValue.length; ++i)
-			ai[i] = new java.lang.Integer (astrValue[i]).intValue();
+			ai[i] = Integer.parseInt (astrValue[i]);
 
 		return ai;
 	}

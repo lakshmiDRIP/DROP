@@ -371,7 +371,7 @@ public class CSVGrid {
 			if (null == strHeader || strHeader.isEmpty()) return null;
 
 			try {
-				dblHeader = new java.lang.Double (strHeader);
+				dblHeader = java.lang.Double.parseDouble (strHeader);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -401,7 +401,7 @@ public class CSVGrid {
 
 				try {
 					if (null != strClosingMark && !strClosingMark.isEmpty())
-						dblClosingMark = new java.lang.Double (strClosingMark);
+						dblClosingMark = java.lang.Double.parseDouble (strClosingMark);
 				} catch (java.lang.Exception e) {
 				}
 
@@ -473,7 +473,7 @@ public class CSVGrid {
 
 				try {
 					if (null != strClosingMark && !strClosingMark.isEmpty())
-						dblClosingMark = new java.lang.Double (strClosingMark);
+						dblClosingMark = java.lang.Double.parseDouble (strClosingMark);
 				} catch (java.lang.Exception e) {
 				}
 

@@ -249,7 +249,7 @@ public class StringUtil {
 		java.util.List<java.lang.Integer> li = new java.util.ArrayList<java.lang.Integer>();
 
 		while (st.hasMoreTokens())
-			li.add (new java.lang.Integer (st.nextToken()));
+			li.add (java.lang.Integer.parseInt (st.nextToken()));
 
 		if (0 == li.size()) return null;
 
@@ -279,7 +279,7 @@ public class StringUtil {
 		java.util.List<java.lang.Double> lsdbl = new java.util.ArrayList<java.lang.Double>();
 
 		while (stdbl.hasMoreTokens())
-			lsdbl.add (new java.lang.Double (stdbl.nextToken()));
+			lsdbl.add (java.lang.Double.parseDouble (stdbl.nextToken()));
 
 		if (0 == lsdbl.size()) return null;
 
@@ -340,9 +340,9 @@ public class StringUtil {
 				astrRecord[0].isEmpty() || null == astrRecord[1] || astrRecord[1].isEmpty())
 				return false;
 
-			lsdblKey.add (new java.lang.Double (astrRecord[0]).doubleValue());
+			lsdblKey.add (java.lang.Double.parseDouble (astrRecord[0]));
 
-			lsdblValue.add (new java.lang.Double (astrRecord[1]).doubleValue());
+			lsdblValue.add (java.lang.Double.parseDouble (astrRecord[1]));
 		}
 
 		return true;
@@ -373,7 +373,7 @@ public class StringUtil {
 		for (int i = 0; i < astr.length; ++i) {
 			if (null == astr[i] || astr[i].isEmpty()) continue;
 
-			lsi.add (new java.lang.Integer (astr[i]).intValue());
+			lsi.add (java.lang.Integer.parseInt (astr[i]));
 		}
 
 		return true;
@@ -404,7 +404,7 @@ public class StringUtil {
 		for (int i = 0; i < astr.length; ++i) {
 			if (null == astr[i] || astr[i].isEmpty()) continue;
 
-			lsb.add (new java.lang.Boolean (astr[i]).booleanValue());
+			lsb.add (java.lang.Boolean.parseBoolean (astr[i]));
 		}
 
 		return true;
