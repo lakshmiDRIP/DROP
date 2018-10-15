@@ -535,10 +535,10 @@ public class RatesCurrencyDeltaMargin20
 			bucketSensitivityIR
 		);
 
-		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR
+		RiskMeasureSensitivityIR riskMeasureSensitivityIR = new RiskMeasureSensitivityIR
 			(bucketSensitivityMap);
 
-		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.linearAggregate
+		RiskMeasureAggregateIR riskMeasureAggregateIR = riskMeasureSensitivityIR.linearAggregate
 			(riskMeasureSensitivitySettingsIR);
 
 		DeltaMarginCovarianceEntry (
