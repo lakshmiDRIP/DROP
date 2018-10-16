@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.BucketAggregateIR;
-import org.drip.simm.margin.IRSensitivityAggregate;
+import org.drip.simm.margin.SensitivityAggregateIR;
 import org.drip.simm.margin.RiskMeasureAggregateIR;
 import org.drip.simm.parameters.BucketCurvatureSettingsIR;
 import org.drip.simm.product.BucketSensitivityIR;
@@ -229,7 +229,7 @@ public class RatesCurrencyCurvatureMarginFlow20
 	}
 
 	private static final void CurvatureMarginCovarianceEntry (
-		final IRSensitivityAggregate irCurvatureAggregate)
+		final SensitivityAggregateIR irCurvatureAggregate)
 		throws Exception
 	{
 		double marginCovariance_OIS_OIS = irCurvatureAggregate.marginCovariance_OIS_OIS();
@@ -518,8 +518,8 @@ public class RatesCurrencyCurvatureMarginFlow20
 
 		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketCurvatureSettingsIR);
 
-		IRSensitivityAggregate irCurvatureAggregate =
-			bucketAggregateIR.riskFactorAggregateIR().curvatureMargin (bucketCurvatureSettingsIR);
+		SensitivityAggregateIR irCurvatureAggregate =
+			bucketAggregateIR.riskFactorAggregate().curvatureMargin (bucketCurvatureSettingsIR);
 
 		CurvatureMarginCovarianceEntry (irCurvatureAggregate);
 

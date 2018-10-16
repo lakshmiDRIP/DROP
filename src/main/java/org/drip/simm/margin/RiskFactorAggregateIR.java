@@ -388,7 +388,7 @@ public class RiskFactorAggregateIR
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::linearMarginCovariance_OIS_OIS => Invalid Inputs");
+				("RiskFactorAggregateIR::linearMarginCovariance_OIS_OIS => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
@@ -438,7 +438,7 @@ public class RiskFactorAggregateIR
 		if (null == bucketSensitivitySettingsIR)
 		{
 			throw new java.lang.Exception
-				("IRFactorAggregate::curvatureMarginCovariance_OIS_OIS => Invalid Inputs");
+				("RiskFactorAggregateIR::curvatureMarginCovariance_OIS_OIS => Invalid Inputs");
 		}
 
 		org.drip.measure.stochastic.LabelCorrelation tenorCorrelation =
@@ -3251,12 +3251,12 @@ public class RiskFactorAggregateIR
 	 * @return The Linear Margin Co-variance
 	 */
 
-	public org.drip.simm.margin.IRSensitivityAggregate linearMargin (
+	public org.drip.simm.margin.SensitivityAggregateIR linearMargin (
 		final org.drip.simm.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 	{
 		try
 		{
-			return new org.drip.simm.margin.IRSensitivityAggregate (
+			return new org.drip.simm.margin.SensitivityAggregateIR (
 				linearMarginCovariance_OIS_OIS (bucketSensitivitySettingsIR),
 				linearMarginCovariance_OIS_LIBOR1M (bucketSensitivitySettingsIR),
 				linearMarginCovariance_OIS_LIBOR3M (bucketSensitivitySettingsIR),
@@ -3304,12 +3304,12 @@ public class RiskFactorAggregateIR
 	 * @return The Curvature Margin Co-variance
 	 */
 
-	public org.drip.simm.margin.IRSensitivityAggregate curvatureMargin (
+	public org.drip.simm.margin.SensitivityAggregateIR curvatureMargin (
 		final org.drip.simm.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
 	{
 		try
 		{
-			return new org.drip.simm.margin.IRSensitivityAggregate (
+			return new org.drip.simm.margin.SensitivityAggregateIR (
 				curvatureMarginCovariance_OIS_OIS (bucketSensitivitySettingsIR),
 				curvatureMarginCovariance_OIS_LIBOR1M (bucketSensitivitySettingsIR),
 				curvatureMarginCovariance_OIS_LIBOR3M (bucketSensitivitySettingsIR),

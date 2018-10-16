@@ -138,8 +138,8 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 		{
 			return new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
-				bucketVegaSettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketVegaSettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.concentrationThreshold(),
 				bucketVegaSettingsCR.vegaScaler(),
 				bucketVegaSettingsCR.historicalVolatilityRatio(),
@@ -177,8 +177,8 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 		{
 			return new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
-				bucketVegaSettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketVegaSettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.concentrationThreshold(),
 				bucketVegaSettingsCR.vegaScaler(),
 				bucketVegaSettingsCR.historicalVolatilityRatio(),
@@ -216,8 +216,8 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 		{
 			return new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
-				bucketVegaSettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketVegaSettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.concentrationThreshold(),
 				bucketVegaSettingsCR.vegaScaler(),
 				bucketVegaSettingsCR.historicalVolatilityRatio(),
@@ -255,8 +255,8 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 		{
 			return new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
-				bucketVegaSettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketVegaSettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.concentrationThreshold(),
 				bucketVegaSettingsCR.vegaScaler(),
 				bucketVegaSettingsCR.historicalVolatilityRatio(),

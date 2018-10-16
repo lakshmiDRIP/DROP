@@ -81,13 +81,18 @@ public class BucketSensitivityIR
 	private org.drip.simm.product.RiskFactorTenorSensitivity _municipalTenorSensitivity = null;
 
 	private org.drip.simm.margin.BucketAggregateIR linearAggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
+		final org.drip.simm.parameters.BucketSensitivitySettingsIR bucketSensitivitySettings)
 	{
-		org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregateIR = curveAggregate
-			(bucketSensitivitySettingsIR);
+		org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate = curveAggregate
+			(bucketSensitivitySettings);
 
-		org.drip.simm.margin.IRSensitivityAggregate sensitivityAggregate =
-			riskFactorAggregateIR.linearMargin (bucketSensitivitySettingsIR);
+		if (null == riskFactorAggregate)
+		{
+			return null;
+		}
+
+		org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate = riskFactorAggregate.linearMargin
+			(bucketSensitivitySettings);
 
 		if (null == sensitivityAggregate)
 		{
@@ -97,10 +102,10 @@ public class BucketSensitivityIR
 		try
 		{
 			return new org.drip.simm.margin.BucketAggregateIR (
-				riskFactorAggregateIR,
+				riskFactorAggregate,
 				sensitivityAggregate,
 				sensitivityAggregate.cumulativeMarginCovariance(),
-				riskFactorAggregateIR.cumulativeSensitivityMargin()
+				riskFactorAggregate.cumulativeSensitivityMargin()
 			);
 		}
 		catch (java.lang.Exception e)
@@ -112,13 +117,18 @@ public class BucketSensitivityIR
 	}
 
 	private org.drip.simm.margin.BucketAggregateIR curvatureAggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettingsIR bucketSensitivitySettingsIR)
+		final org.drip.simm.parameters.BucketSensitivitySettingsIR bucketSensitivitySettings)
 	{
-		org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregateIR = curveAggregate
-			(bucketSensitivitySettingsIR);
+		org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate = curveAggregate
+			(bucketSensitivitySettings);
 
-		org.drip.simm.margin.IRSensitivityAggregate sensitivityAggregate =
-			riskFactorAggregateIR.curvatureMargin (bucketSensitivitySettingsIR);
+		if (null == riskFactorAggregate)
+		{
+			return null;
+		}
+
+		org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate =
+			riskFactorAggregate.curvatureMargin (bucketSensitivitySettings);
 
 		if (null == sensitivityAggregate)
 		{
@@ -128,10 +138,10 @@ public class BucketSensitivityIR
 		try
 		{
 			return new org.drip.simm.margin.BucketAggregateIR (
-				riskFactorAggregateIR,
+				riskFactorAggregate,
 				sensitivityAggregate,
 				sensitivityAggregate.cumulativeMarginCovariance(),
-				riskFactorAggregateIR.cumulativeSensitivityMargin()
+				riskFactorAggregate.cumulativeSensitivityMargin()
 			);
 		}
 		catch (java.lang.Exception e)

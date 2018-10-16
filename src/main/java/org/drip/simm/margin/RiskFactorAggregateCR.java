@@ -72,23 +72,26 @@ package org.drip.simm.margin;
 public class RiskFactorAggregateCR
 {
 	private double _concentrationRiskFactor = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorSensitivityMargin = null;
+	private java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Double>>
+		_componentSensitivityMarginMap = null;
 
 	/**
 	 * RiskFactorAggregateCR Constructor
 	 * 
-	 * @param tenorSensitivityMargin The Tenor Sensitivity Margin Map
+	 * @param componentSensitivityMarginMap The Component Sensitivity Margin Map
 	 * @param concentrationRiskFactor The Bucket Concentration Risk Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskFactorAggregateCR (
-		final java.util.Map<java.lang.String, java.lang.Double> tenorSensitivityMargin,
+		final java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Double>>
+			componentSensitivityMarginMap,
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		if (null == (_tenorSensitivityMargin = tenorSensitivityMargin) || 0 == _tenorSensitivityMargin.size() ||
+		if (null == (_componentSensitivityMarginMap = componentSensitivityMarginMap) ||
+			0 == _componentSensitivityMarginMap.size() ||
 			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		 {
 			 throw new java.lang.Exception ("RiskFactorAggregateCR Constructor => Invalid Inputs");
@@ -107,127 +110,308 @@ public class RiskFactorAggregateCR
 	}
 
 	/**
-	 * Retrieve the Tenor Sensitivity Margin Map
+	 * Retrieve the Component Tenor Sensitivity Margin Map
 	 * 
-	 * @return The Tenor Sensitivity Margin Map
+	 * @return The Component Tenor Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorSensitivityMargin()
+	public java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Double>>
+		componentSensitivityMarginMap()
 	{
-		return _tenorSensitivityMargin;
+		return _componentSensitivityMarginMap;
 	}
 
 	/**
-	 * Compute the Cumulative Tenor Sensitivity Margin
+	 * Retrieve the Component Tenor Sensitivity Margin
 	 * 
-	 * @return The Cumulative Tenor Sensitivity Margin
+	 * @param componentName The Component Name
+	 * 
+	 * @return The Component Tenor Sensitivity Margin
 	 */
 
-	public double cumulativeTenorSensitivityMargin()
+	public java.util.Map<java.lang.String, java.lang.Double> componentSensitivityMargin (
+		final java.lang.String componentName)
 	{
-		double cumulativeTenorSensitivityMargin = 0.;
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityMarginEntry :
-			_tenorSensitivityMargin.entrySet())
-		{
-			cumulativeTenorSensitivityMargin = cumulativeTenorSensitivityMargin +
-				tenorSensitivityMarginEntry.getValue();
-		}
-
-		return cumulativeTenorSensitivityMargin;
+		return null != componentName || _componentSensitivityMarginMap.containsKey (componentName) ?
+			_componentSensitivityMarginMap.get (componentName) : null;
 	}
 
 	/**
-	 * Compute the Linear Margin Covariance
+	 * Compute the Cumulative Sensitivity Margin for the specified Component
 	 * 
-	 * @param bucketSensitivitySettingsCR The Credit Bucket Sensitivity Settings
+	 * @param componentName The Component Name
 	 * 
-	 * @return The Linear Margin Covariance
+	 * @return The Cumulative Sensitivity Margin for the specified Component
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double linearMarginCovariance (
-		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+	public double cumulativeComponentSensitivityMargin (
+		final java.lang.String componentName)
 		throws java.lang.Exception
 	{
-		if (null == bucketSensitivitySettingsCR)
+		if (null == componentName || !_componentSensitivityMarginMap.containsKey (componentName))
 		{
 			throw new java.lang.Exception
-				("RiskFactorAggregateCR::linearMarginCovariance => Invalid Inputs");
+				("RiskFactorAggregateCR::cumulativeComponentSensitivityMargin => Invalid Inputs");
 		}
 
-		double linearMarginCovariance = 0.;
+		double cumulativeComponentSensitivityMargin = 0.;
 
-		double differentIssuerSeniorityCorrelation =
-			bucketSensitivitySettingsCR.differentIssuerSeniorityCorrelation();
+		java.util.Map<java.lang.String, java.lang.Double> componentTenorSensitivityMargin =
+			_componentSensitivityMarginMap.get (componentName);
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityMarginEntryOuter :
-			_tenorSensitivityMargin.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> componentTenorSensitivityMarginEntry :
+			componentTenorSensitivityMargin.entrySet())
 		{
-			java.lang.String outerTenor = tenorSensitivityMarginEntryOuter.getKey();
-
-			double outerSensitivityMargin = tenorSensitivityMarginEntryOuter.getValue();
-
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityMarginEntryInner :
-				_tenorSensitivityMargin.entrySet())
-			{
-				linearMarginCovariance = linearMarginCovariance +
-					(outerTenor.equalsIgnoreCase (tenorSensitivityMarginEntryInner.getKey()) ? 1. :
-					differentIssuerSeniorityCorrelation) * outerSensitivityMargin *
-					tenorSensitivityMarginEntryInner.getValue();
-			}
+			cumulativeComponentSensitivityMargin = cumulativeComponentSensitivityMargin +
+				componentTenorSensitivityMarginEntry.getValue();
 		}
 
-		return linearMarginCovariance;
+		return cumulativeComponentSensitivityMargin;
 	}
 
 	/**
-	 * Compute the Curvature Margin Covariance
+	 * Compute the Cumulative Sensitivity Margin
 	 * 
-	 * @param bucketSensitivitySettingsCR The Credit Bucket Sensitivity Settings
+	 * @return The Cumulative Sensitivity Margin
+	 */
+
+	public double cumulativeSensitivityMargin()
+	{
+		double cumulativeSensitivityMargin = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.util.Map<java.lang.String, java.lang.Double>>
+			componentSensitivityMarginMapEntry : _componentSensitivityMarginMap.entrySet())
+		{
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> componentTenorSensitivityMapEntry :
+				componentSensitivityMarginMapEntry.getValue().entrySet())
+			{
+				cumulativeSensitivityMargin = cumulativeSensitivityMargin +
+					componentTenorSensitivityMapEntry.getValue();
+			}
+		}
+
+		return cumulativeSensitivityMargin;
+	}
+
+	/**
+	 * Compute the Component Pair Linear Margin Covariance
 	 * 
-	 * @return The Curvature Margin Covariance
+	 * @param bucketSensitivitySettingsCR The CR Bucket Sensitivity Settings
+	 * @param componentName1 Component #1 Name
+	 * @param componentName2 Component #2 Name
+	 * 
+	 * @return The Component Pair Linear Margin Covariance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double curvatureMarginCovariance (
-		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+	public double componentLinearMarginCovariance (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR,
+		final java.lang.String componentName1,
+		final java.lang.String componentName2)
 		throws java.lang.Exception
 	{
-		if (null == bucketSensitivitySettingsCR)
+		if (null == bucketSensitivitySettingsCR ||
+			!_componentSensitivityMarginMap.containsKey (componentName1) ||
+			!_componentSensitivityMarginMap.containsKey (componentName2))
 		{
 			throw new java.lang.Exception
-				("RiskFactorAggregateCR::curvatureMarginCovariance => Invalid Inputs");
+				("RiskFactorAggregateCR::componentLinearMarginCovariance => Invalid Inputs");
 		}
 
-		double curvatureMarginCovariance = 0.;
+		double crossTenorCorrelation = bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation();
 
-		double differentIssuerSeniorityCorrelation =
-			bucketSensitivitySettingsCR.differentIssuerSeniorityCorrelation();
+		double componentLinearMarginCovariance = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityMarginEntryOuter :
-			_tenorSensitivityMargin.entrySet())
+		java.util.Map<java.lang.String, java.lang.Double> componentTenorSensitivityMargin1 =
+			_componentSensitivityMarginMap.get (componentName1);
+
+		java.util.Map<java.lang.String, java.lang.Double> componentTenorSensitivityMargin2 =
+			_componentSensitivityMarginMap.get (componentName2);
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> componentTenorSensitivityMargin1Entry :
+			componentTenorSensitivityMargin1.entrySet())
 		{
-			java.lang.String outerTenor = tenorSensitivityMarginEntryOuter.getKey();
+			java.lang.String component1Tenor = componentTenorSensitivityMargin1Entry.getKey();
 
-			double outerSensitivityMargin = tenorSensitivityMarginEntryOuter.getValue();
+			double component1SensitivityMargin = componentTenorSensitivityMargin1Entry.getValue();
 
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityMarginEntryInner :
-				_tenorSensitivityMargin.entrySet())
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double>
+				componentTenorSensitivityMargin2Entry : componentTenorSensitivityMargin2.entrySet())
 			{
-				java.lang.String innerTenor = tenorSensitivityMarginEntryInner.getKey();
-
-				double crossTenorCorrelation = outerTenor.equalsIgnoreCase (innerTenor) ? 1. :
-					differentIssuerSeniorityCorrelation;
-
-				curvatureMarginCovariance = curvatureMarginCovariance +
-					outerSensitivityMargin * tenorSensitivityMarginEntryInner.getValue() *
-						crossTenorCorrelation * crossTenorCorrelation;
+				componentLinearMarginCovariance = componentLinearMarginCovariance +
+					component1SensitivityMargin * componentTenorSensitivityMargin2Entry.getValue() * (
+						component1Tenor.equalsIgnoreCase (componentTenorSensitivityMargin2Entry.getKey()) ?
+							1. : crossTenorCorrelation
+					);
 			}
 		}
 
-		return curvatureMarginCovariance;
+		return componentLinearMarginCovariance;
+	}
+
+	/**
+	 * Compute the Component Pair Curvature Margin Covariance
+	 * 
+	 * @param bucketSensitivitySettingsCR The CR Bucket Sensitivity Settings
+	 * @param componentName1 Component #1 Name
+	 * @param componentName2 Component #2 Name
+	 * 
+	 * @return The Component Pair Curvature Margin Covariance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double componentCurvatureMarginCovariance (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR,
+		final java.lang.String componentName1,
+		final java.lang.String componentName2)
+		throws java.lang.Exception
+	{
+		if (null == bucketSensitivitySettingsCR ||
+			!_componentSensitivityMarginMap.containsKey (componentName1) ||
+			!_componentSensitivityMarginMap.containsKey (componentName2))
+		{
+			throw new java.lang.Exception
+				("RiskFactorAggregateCR::componentCurvatureMarginCovariance => Invalid Inputs");
+		}
+
+		double crossTenorCorrelation = bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation();
+
+		double componentCurvatureMarginCovariance = 0.;
+
+		java.util.Map<java.lang.String, java.lang.Double> componentTenorSensitivityMargin1 =
+			_componentSensitivityMarginMap.get (componentName1);
+
+		java.util.Map<java.lang.String, java.lang.Double> componentTenorSensitivityMargin2 =
+			_componentSensitivityMarginMap.get (componentName2);
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> componentTenorSensitivityMargin1Entry :
+			componentTenorSensitivityMargin1.entrySet())
+		{
+			java.lang.String component1Tenor = componentTenorSensitivityMargin1Entry.getKey();
+
+			double component1SensitivityMargin = componentTenorSensitivityMargin1Entry.getValue();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double>
+				componentTenorSensitivityMargin2Entry : componentTenorSensitivityMargin2.entrySet())
+			{
+				componentCurvatureMarginCovariance = componentCurvatureMarginCovariance +
+					component1SensitivityMargin * componentTenorSensitivityMargin2Entry.getValue() * (
+						component1Tenor.equalsIgnoreCase (componentTenorSensitivityMargin2Entry.getKey()) ?
+							1. : crossTenorCorrelation * crossTenorCorrelation
+					);
+			}
+		}
+
+		return componentCurvatureMarginCovariance;
+	}
+
+	/**
+	 * Compute the Linear Margin Co-variance
+	 * 
+	 * @param bucketSensitivitySettingsCR The CR Bucket Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The Linear Margin Co-variance
+	 */
+
+	public org.drip.simm.margin.SensitivityAggregateCR linearMargin (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+	{
+		java.util.Set<java.lang.String> componentNameSet = _componentSensitivityMarginMap.keySet();
+
+		java.util.Map<java.lang.String, java.lang.Double> componentMarginCovarianceMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		double cumulativeMarginSensitivity = 0.;
+
+		try
+		{
+			for (java.lang.String componentName1 : componentNameSet)
+			{
+				for (java.lang.String componentName2 : componentNameSet)
+				{
+					double componentLinearMarginCovariance = componentLinearMarginCovariance (
+						bucketSensitivitySettingsCR,
+						componentName1,
+						componentName2
+					);
+
+					cumulativeMarginSensitivity = cumulativeMarginSensitivity +
+						componentLinearMarginCovariance;
+
+					componentMarginCovarianceMap.put (
+						componentName1 + "_" + componentName2,
+						componentLinearMarginCovariance
+					);
+				}
+			}
+
+			return new SensitivityAggregateCR (
+				componentMarginCovarianceMap,
+				cumulativeMarginSensitivity
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Curvature Margin Co-variance
+	 * 
+	 * @param bucketSensitivitySettingsCR The CR Bucket Curve Tenor Sensitivity Settings
+	 * 
+	 * @return The Curvature Margin Co-variance
+	 */
+
+	public org.drip.simm.margin.SensitivityAggregateCR curvatureMargin (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+	{
+		java.util.Set<java.lang.String> componentNameSet = _componentSensitivityMarginMap.keySet();
+
+		java.util.Map<java.lang.String, java.lang.Double> componentMarginCovarianceMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		double cumulativeMarginSensitivity = 0.;
+
+		try
+		{
+			for (java.lang.String componentName1 : componentNameSet)
+			{
+				for (java.lang.String componentName2 : componentNameSet)
+				{
+					double componentCurvatureMarginCovariance = componentCurvatureMarginCovariance (
+						bucketSensitivitySettingsCR,
+						componentName1,
+						componentName2
+					);
+
+					cumulativeMarginSensitivity = cumulativeMarginSensitivity +
+						componentCurvatureMarginCovariance;
+
+					componentMarginCovarianceMap.put (
+						componentName1 + "_" + componentName2,
+						componentCurvatureMarginCovariance
+					);
+				}
+			}
+
+			return new SensitivityAggregateCR (
+				componentMarginCovarianceMap,
+				cumulativeMarginSensitivity
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

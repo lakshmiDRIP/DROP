@@ -98,8 +98,8 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 		{
 			return new BucketVegaSettingsCR (
 				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics20.VEGA_RISK_WEIGHT),
-				bucketSensitivitySettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketSensitivitySettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
 				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).vega(),
 				java.lang.Math.sqrt (365. / 14.) /
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
@@ -138,8 +138,8 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 		{
 			return new BucketVegaSettingsCR (
 				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics20.VEGA_RISK_WEIGHT),
-				bucketSensitivitySettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketSensitivitySettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
 				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).vega(),
 				java.lang.Math.sqrt (365. / 14.) /
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
@@ -178,8 +178,8 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 		{
 			return new BucketVegaSettingsCR (
 				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics21.VEGA_RISK_WEIGHT),
-				bucketSensitivitySettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketSensitivitySettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
 				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).vega(),
 				java.lang.Math.sqrt (365. / 14.) /
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
@@ -218,8 +218,8 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 		{
 			return new BucketVegaSettingsCR (
 				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics21.VEGA_RISK_WEIGHT),
-				bucketSensitivitySettingsCR.sameIssuerSeniorityCorrelation(),
-				bucketSensitivitySettingsCR.differentIssuerSeniorityCorrelation(),
+				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
 				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).vega(),
 				java.lang.Math.sqrt (365. / 14.) /
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),

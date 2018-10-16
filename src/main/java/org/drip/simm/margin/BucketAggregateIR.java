@@ -73,14 +73,14 @@ public class BucketAggregateIR
 {
 	private double _sensitivityMarginVariance = java.lang.Double.NaN;
 	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;
-	private org.drip.simm.margin.RiskFactorAggregateIR _riskFactorAggregateIR = null;
-	private org.drip.simm.margin.IRSensitivityAggregate _irSensitivityAggregate = null;
+	private org.drip.simm.margin.RiskFactorAggregateIR _riskFactorAggregate = null;
+	private org.drip.simm.margin.SensitivityAggregateIR _sensitivityAggregate = null;
 
 	/**
 	 * BucketAggregateIR Constructor
 	 * 
-	 * @param riskFactorAggregateIR The Risk Factor Aggregate IR
-	 * @param irSensitivityAggregate The IR Sensitivity Aggregate
+	 * @param riskFactorAggregate The IR Risk Factor Aggregate
+	 * @param sensitivityAggregate The IR Sensitivity Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
@@ -88,14 +88,14 @@ public class BucketAggregateIR
 	 */
 
 	public BucketAggregateIR (
-		final org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregateIR,
-		final org.drip.simm.margin.IRSensitivityAggregate irSensitivityAggregate,
+		final org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate,
+		final org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeSensitivityMargin)
 		throws java.lang.Exception
 	{
-		if (null == (_riskFactorAggregateIR = riskFactorAggregateIR) ||
-			null == (_irSensitivityAggregate = irSensitivityAggregate) ||
+		if (null == (_riskFactorAggregate = riskFactorAggregate) ||
+			null == (_sensitivityAggregate = sensitivityAggregate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
@@ -106,14 +106,14 @@ public class BucketAggregateIR
 	}
 
 	/**
-	 * Retrieve the Risk Factor Aggregate IR
+	 * Retrieve the IR Risk Factor Aggregate
 	 * 
-	 * @return The Risk Factor Aggregate IR
+	 * @return The IR Risk Factor Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregateIR()
+	public org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate()
 	{
-		return _riskFactorAggregateIR;
+		return _riskFactorAggregate;
 	}
 
 	/**
@@ -122,9 +122,9 @@ public class BucketAggregateIR
 	 * @return The IR Sensitivity Aggregate
 	 */
 
-	public org.drip.simm.margin.IRSensitivityAggregate irSensitivityAggregate()
+	public org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate()
 	{
-		return _irSensitivityAggregate;
+		return _sensitivityAggregate;
 	}
 
 	/**

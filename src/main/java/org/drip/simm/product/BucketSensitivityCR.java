@@ -76,12 +76,20 @@ public class BucketSensitivityCR
 		_tenorSensitivityMap = null;
 
 	private org.drip.simm.margin.BucketAggregateCR linearAggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
 	{
-		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregateCR = curveAggregate
-			(bucketSensitivitySettingsCR);
+		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate
+			(bucketSensitivitySettings);
 
-		if (null == riskFactorAggregateCR)
+		if (null == riskFactorAggregate)
+		{
+			return null;
+		}
+
+		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate = riskFactorAggregate.linearMargin
+			(bucketSensitivitySettings);
+
+		if (null == sensitivityAggregate)
 		{
 			return null;
 		}
@@ -89,9 +97,10 @@ public class BucketSensitivityCR
 		try
 		{
 			return new org.drip.simm.margin.BucketAggregateCR (
-				riskFactorAggregateCR,
-				riskFactorAggregateCR.linearMarginCovariance (bucketSensitivitySettingsCR),
-				riskFactorAggregateCR.cumulativeTenorSensitivityMargin()
+				riskFactorAggregate,
+				sensitivityAggregate,
+				sensitivityAggregate.cumulativeMarginCovariance(),
+				riskFactorAggregate.cumulativeSensitivityMargin()
 			);
 		}
 		catch (java.lang.Exception e)
@@ -103,12 +112,20 @@ public class BucketSensitivityCR
 	}
 
 	private org.drip.simm.margin.BucketAggregateCR curvatureAggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
 	{
-		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregateCR = curveAggregate
-			(bucketSensitivitySettingsCR);
+		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate
+			(bucketSensitivitySettings);
 
-		if (null == riskFactorAggregateCR)
+		if (null == riskFactorAggregate)
+		{
+			return null;
+		}
+
+		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate =
+			riskFactorAggregate.curvatureMargin (bucketSensitivitySettings);
+
+		if (null == sensitivityAggregate)
 		{
 			return null;
 		}
@@ -116,9 +133,10 @@ public class BucketSensitivityCR
 		try
 		{
 			return new org.drip.simm.margin.BucketAggregateCR (
-				riskFactorAggregateCR,
-				riskFactorAggregateCR.curvatureMarginCovariance (bucketSensitivitySettingsCR),
-				riskFactorAggregateCR.cumulativeTenorSensitivityMargin()
+				riskFactorAggregate,
+				sensitivityAggregate,
+				sensitivityAggregate.cumulativeMarginCovariance(),
+				riskFactorAggregate.cumulativeSensitivityMargin()
 			);
 		}
 		catch (java.lang.Exception e)
@@ -317,13 +335,12 @@ public class BucketSensitivityCR
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorSensitivityMargin =
-			_cumulativeTenorSensitivityMap.sensitivityMargin (bucketSensitivitySettings.tenorRiskWeight());
+		java.util.Set<java.lang.String> componentNameSet = _cumulativeTenorSensitivityMap.tenorSet();
 
-		if (null == tenorSensitivityMargin)
-		{
-			return null;
-		}
+		java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Double>>
+			componentTenorSensitivityMargin = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<java.util.Map<java.lang.String,
+					java.lang.Double>>();
 
 		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;
 
@@ -339,21 +356,35 @@ public class BucketSensitivityCR
 			return null;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityMarginEntry :
-			tenorSensitivityMargin.entrySet())
+		for (java.lang.String componentName : componentNameSet)
 		{
-			java.lang.String tenor = tenorSensitivityMarginEntry.getKey();
+			java.util.Map<java.lang.String, java.lang.Double> tenorSensitivity = _tenorSensitivityMap.get
+				(componentName).sensitivityMap();
 
-			tenorSensitivityMargin.put (
-				tenor,
-				tenorSensitivityMargin.get (tenor) * sensitivityConcentrationRiskFactor
+			java.util.Map<java.lang.String, java.lang.Double> tenorSensitivityMargin = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+			for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorSensitivityEntry :
+				tenorSensitivity.entrySet())
+			{
+				java.lang.String tenor = tenorSensitivityEntry.getKey();
+
+				tenorSensitivityMargin.put (
+					tenor,
+					tenorSensitivity.get (tenor) * sensitivityConcentrationRiskFactor
+				);
+			}
+
+			componentTenorSensitivityMargin.put (
+				componentName,
+				tenorSensitivityMargin
 			);
 		}
 
 		try
 		{
 			return new org.drip.simm.margin.RiskFactorAggregateCR (
-				tenorSensitivityMargin,
+				componentTenorSensitivityMargin,
 				sensitivityConcentrationRiskFactor
 			);
 		}

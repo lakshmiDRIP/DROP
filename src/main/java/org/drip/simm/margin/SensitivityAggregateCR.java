@@ -1,5 +1,5 @@
 
-package org.drip.simm.product;
+package org.drip.simm.margin;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,8 @@ package org.drip.simm.product;
  */
 
 /**
- * CreditEntity holds the SIMM specific Details of a Credit Entity. The References are:
+ * SensitivityAggregateCR holds the IM Margin Sensitivity Co-variances within a single Bucket for each of
+ *  the CR Component Risk Factors. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -68,66 +69,84 @@ package org.drip.simm.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditEntity
+public class SensitivityAggregateCR
 {
-	private java.lang.String _id = "";
-	private java.lang.String _name = "";
-	private java.lang.String _family = "";
+	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;
+	private java.util.Map<java.lang.String, java.lang.Double> _componentMarginCovarianceMap = null;
 
 	/**
-	 * CreditEntity Constructor
+	 * SensitivityAggregateCR Constructor
 	 * 
-	 * @param id The Credit Entity ID
-	 * @param name The Credit Entity Name
-	 * @param family The Credit Entity Family
+	 * @param componentMarginCovarianceMap The Component Margin Co-variance Map
+	 * @param cumulativeMarginSensitivity The Cumulative Margin Sensitivity
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CreditEntity (
-		final java.lang.String id,
-		final java.lang.String name,
-		final java.lang.String family)
+	public SensitivityAggregateCR (
+		final java.util.Map<java.lang.String, java.lang.Double> componentMarginCovarianceMap,
+		final double cumulativeMarginSensitivity)
 		throws java.lang.Exception
 	{
-		if (null == (_id = id) || _id.isEmpty() ||
-			null == (_name = name) || _name.isEmpty() ||
-			null == (_family = family) || _family.isEmpty())
+		if (null == (_componentMarginCovarianceMap = componentMarginCovarianceMap) ||
+				0 == _componentMarginCovarianceMap.size() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
+				cumulativeMarginSensitivity))
 		{
-			throw new java.lang.Exception ("CreditEntity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("SensitivityAggregateCR Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Credit Entity ID
+	 * Retrieve the Component Margin Covariance Map
 	 * 
-	 * @return The Credit Entity ID
+	 * @return The Component Margin Covariance Map
 	 */
 
-	public java.lang.String id()
+	public java.util.Map<java.lang.String, java.lang.Double> componentMarginCovarianceMap()
 	{
-		return _id;
+		return _componentMarginCovarianceMap;
 	}
 
 	/**
-	 * Retrieve the Credit Entity Name
+	 * Compute the Cumulative Margin Covariance
 	 * 
-	 * @return The Credit Entity Name
+	 * @return The Cumulative Margin Covariance
 	 */
 
-	public java.lang.String name()
+	public double cumulativeMarginCovariance()
 	{
-		return _name;
+		double cumulativeMarginCovariance = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> componentMarginCovarianceEntry :
+			_componentMarginCovarianceMap.entrySet())
+		{
+			cumulativeMarginCovariance = cumulativeMarginCovariance +
+				componentMarginCovarianceEntry.getValue();
+		}
+
+		return cumulativeMarginCovariance;
 	}
 
 	/**
-	 * Retrieve the Credit Entity Family
+	 * Compute the Cumulative Sensitivity Margin
 	 * 
-	 * @return The Credit Entity Family
+	 * @return The Cumulative Sensitivity Margin
 	 */
 
-	public java.lang.String family()
+	public double cumulativeMargin()
 	{
-		return _family;
+		return java.lang.Math.sqrt (cumulativeMarginCovariance());
+	}
+
+	/**
+	 * Retrieve the Cumulative Margin Sensitivity
+	 * 
+	 * @return The Cumulative Margin Sensitivity
+	 */
+
+	public double cumulativeMarginSensitivity()
+	{
+		return _cumulativeMarginSensitivity;
 	}
 }

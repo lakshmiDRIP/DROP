@@ -71,8 +71,8 @@ package org.drip.simm.parameters;
 
 public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.LiquiditySettings
 {
-	private double _sameIssuerSeniorityCorrelation = java.lang.Double.NaN;
-	private double _differentIssuerSeniorityCorrelation = java.lang.Double.NaN;
+	private double _extraFamilyCrossTenorCorrelation = java.lang.Double.NaN;
+	private double _intraFamilyCrossTenorCorrelation = java.lang.Double.NaN;
 	private java.util.Map<java.lang.String, java.lang.Double> _tenorRiskWeight = null;
 
 	protected static final java.util.Map<java.lang.String, java.lang.Double> TenorRiskWeightMap (
@@ -277,8 +277,8 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	 * BucketSensitivitySettingsCR Constructor
 	 * 
 	 * @param tenorRiskWeight The Tenor Risk Weight Map
-	 * @param sameIssuerSeniorityCorrelation Same Issuer/Seniority Correlation
-	 * @param differentIssuerSeniorityCorrelation Different Issuer/Seniority Correlation
+	 * @param intraFamilyCrossTenorCorrelation Intra-Family Cross Tenor Correlation 
+	 * @param extraFamilyCrossTenorCorrelation Extra-Family Cross Tenor Correlation
 	 * @param concentrationThreshold The Concentration Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -286,20 +286,20 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 
 	public BucketSensitivitySettingsCR (
 		final java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight,
-		final double sameIssuerSeniorityCorrelation,
-		final double differentIssuerSeniorityCorrelation,
+		final double intraFamilyCrossTenorCorrelation,
+		final double extraFamilyCrossTenorCorrelation,
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
 		super (concentrationThreshold);
 
 		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_sameIssuerSeniorityCorrelation =
-				sameIssuerSeniorityCorrelation) ||
-				1. <= _sameIssuerSeniorityCorrelation || -1. >= _sameIssuerSeniorityCorrelation ||
-			!org.drip.quant.common.NumberUtil.IsValid (_differentIssuerSeniorityCorrelation =
-				differentIssuerSeniorityCorrelation) ||
-				1. <= _differentIssuerSeniorityCorrelation || -1. >= _differentIssuerSeniorityCorrelation)
+			!org.drip.quant.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =
+				intraFamilyCrossTenorCorrelation) ||
+				1. <= _intraFamilyCrossTenorCorrelation || -1. >= _intraFamilyCrossTenorCorrelation ||
+			!org.drip.quant.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =
+				extraFamilyCrossTenorCorrelation) ||
+				1. <= _extraFamilyCrossTenorCorrelation || -1. >= _extraFamilyCrossTenorCorrelation)
 		{
 			throw new java.lang.Exception ("BucketSensitivitySettingsCR Constructor => Invalid Inputs");
 		}
@@ -317,24 +317,24 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	}
 
 	/**
-	 * Retrieve the Same Issuer/Seniority Correlation
+	 * Retrieve the Intra-Family Cross Tenor Correlation
 	 * 
-	 * @return The Same Issuer/Seniority Correlation
+	 * @return The Intra-Family Cross Tenor Correlation
 	 */
 
-	public double sameIssuerSeniorityCorrelation()
+	public double intraFamilyCrossTenorCorrelation()
 	{
-		return _sameIssuerSeniorityCorrelation;
+		return _intraFamilyCrossTenorCorrelation;
 	}
 
 	/**
-	 * Retrieve the Different Issuer/Seniority Correlation
+	 * Retrieve the Extra-Family Cross Tenor Correlation
 	 * 
-	 * @return The Different Issuer/Seniority Correlation
+	 * @return The Extra-Family Cross Tenor Correlation
 	 */
 
-	public double differentIssuerSeniorityCorrelation()
+	public double extraFamilyCrossTenorCorrelation()
 	{
-		return _differentIssuerSeniorityCorrelation;
+		return _extraFamilyCrossTenorCorrelation;
 	}
 }

@@ -74,11 +74,13 @@ public class BucketAggregateCR
 	private double _sensitivityMarginVariance = java.lang.Double.NaN;
 	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;
 	private org.drip.simm.margin.RiskFactorAggregateCR _riskFactorAggregate = null;
+	private org.drip.simm.margin.SensitivityAggregateCR _sensitivityAggregate = null;
 
 	/**
 	 * BucketAggregateCR Constructor
 	 * 
 	 * @param riskFactorAggregate The CR Risk Factor Aggregate
+	 * @param sensitivityAggregate THe CR Sensitivity Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
@@ -87,11 +89,13 @@ public class BucketAggregateCR
 
 	public BucketAggregateCR (
 		final org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate,
+		final org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeSensitivityMargin)
 		throws java.lang.Exception
 	{
 		if (null == (_riskFactorAggregate = riskFactorAggregate) ||
+			null == (_sensitivityAggregate = sensitivityAggregate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
@@ -132,6 +136,17 @@ public class BucketAggregateCR
 	public org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate()
 	{
 		return _riskFactorAggregate;
+	}
+
+	/**
+	 * Retrieve the CR Sensitivity Aggregate
+	 * 
+	 * @return The CR Sensitivity Aggregate
+	 */
+
+	public org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate()
+	{
+		return _sensitivityAggregate;
 	}
 
 	/**

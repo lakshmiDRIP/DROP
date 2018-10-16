@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.BucketAggregateIR;
-import org.drip.simm.margin.IRSensitivityAggregate;
+import org.drip.simm.margin.SensitivityAggregateIR;
 import org.drip.simm.margin.RiskMeasureAggregateIR;
 import org.drip.simm.parameters.BucketSensitivitySettingsIR;
 import org.drip.simm.parameters.BucketVegaSettingsIR;
@@ -230,7 +230,7 @@ public class RatesCurrencyVegaMarginFlow21
 	}
 
 	private static final void VegaMarginCovarianceEntry (
-		final IRSensitivityAggregate irSensitivityAggregate)
+		final SensitivityAggregateIR irSensitivityAggregate)
 		throws Exception
 	{
 		double marginCovariance_OIS_OIS = irSensitivityAggregate.marginCovariance_OIS_OIS();
@@ -519,7 +519,7 @@ public class RatesCurrencyVegaMarginFlow21
 
 		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);
 
-		IRSensitivityAggregate irVegaAggregate = bucketAggregateIR.riskFactorAggregateIR().linearMargin
+		SensitivityAggregateIR irVegaAggregate = bucketAggregateIR.riskFactorAggregate().linearMargin
 			(bucketSensitivitySettingsIR);
 
 		VegaMarginCovarianceEntry (irVegaAggregate);
