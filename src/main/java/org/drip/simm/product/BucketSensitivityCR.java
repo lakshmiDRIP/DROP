@@ -335,7 +335,7 @@ public class BucketSensitivityCR
 			return null;
 		}
 
-		java.util.Set<java.lang.String> componentNameSet = _cumulativeTenorSensitivityMap.tenorSet();
+		java.util.Set<java.lang.String> componentNameSet = _tenorSensitivityMap.keySet();
 
 		java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Double>>
 			componentTenorSensitivityMargin = new

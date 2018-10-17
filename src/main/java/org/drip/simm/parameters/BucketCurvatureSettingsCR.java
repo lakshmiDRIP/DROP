@@ -107,6 +107,8 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 				"10Y",
 				r1ToR1CurvatureTenorScaler.evaluate (3652.)
 			);
+
+			return tenorScalingFactorMap;
 		}
 		catch (java.lang.Exception e)
 		{

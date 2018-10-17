@@ -131,4 +131,15 @@ public class RiskClassAggregateCR
 	{
 		return _curvatureMargin;
 	}
+
+	/**
+	 * Compute the SBA Margin
+	 * 
+	 * @return The SBA Margin
+	 */
+
+	public double margin()
+	{
+		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();
+	}
 }

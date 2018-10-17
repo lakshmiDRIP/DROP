@@ -131,4 +131,36 @@ public class RiskClassSensitivityCR
 	{
 		return _curvature;
 	}
+
+	/**
+	 * Compute the Risk Class Sensitivity Aggregate
+	 * 
+	 * @param riskClassSensitivitySettingsCR The CR Risk Class Sensitivity Settings
+	 * 
+	 * @return The Risk Class Sensitivity Aggregate
+	 */
+
+	public org.drip.simm.margin.RiskClassAggregateCR aggregate (
+		final org.drip.simm.parameters.RiskClassSensitivitySettingsCR riskClassSensitivitySettingsCR)
+	{
+		if (null == riskClassSensitivitySettingsCR)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.simm.margin.RiskClassAggregateCR (
+				_delta.linearAggregate (riskClassSensitivitySettingsCR.delta()),
+				_vega.linearAggregate (riskClassSensitivitySettingsCR.vega()),
+				_curvature.curvatureAggregate (riskClassSensitivitySettingsCR.curvature())
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

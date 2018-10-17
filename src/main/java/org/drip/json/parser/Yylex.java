@@ -440,7 +440,6 @@ public class Yylex {
 	   *
 	   * All internal variables are reset, the old input stream 
 	   * <b>cannot</b> be reused (internal buffer is discarded and lost).
-	   * Lexical state is set to <tt>ZZ_INITIAL</tt>.
 	   *
 	   * @param reader   the new input stream 
 	   */
@@ -488,7 +487,7 @@ public class Yylex {
 
 
 	  /**
-	   * Returns the character at position <tt>pos</tt> from the 
+	   * Returns the character at position <b>pos</b> from the 
 	   * matched text. 
 	   * 
 	   * It is equivalent to yytext().charAt(pos), but faster

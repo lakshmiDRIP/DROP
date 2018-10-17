@@ -60,7 +60,7 @@ import org.drip.simm.product.RiskMeasureSensitivityCR;
 
 /**
  * CreditQualifyingBucketDeltaMargin20 illustrates the Computation of the SIMM 2.0 CR Delta Margin for a
- *  Bucket's CR Exposure Sensitivities. The References are:
+ *  Bucket's Credit Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
