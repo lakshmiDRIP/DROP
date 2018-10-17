@@ -71,8 +71,8 @@ package org.drip.simm.parameters;
 
 public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.LiquiditySettings
 {
-<span class="nc" id="L74">	private double _sameIssuerSeniorityCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _differentIssuerSeniorityCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _extraFamilyCrossTenorCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _intraFamilyCrossTenorCorrelation = java.lang.Double.NaN;</span>
 <span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorRiskWeight = null;</span>
 
 	protected static final java.util.Map&lt;java.lang.String, java.lang.Double&gt; TenorRiskWeightMap (
@@ -277,8 +277,8 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	 * BucketSensitivitySettingsCR Constructor
 	 * 
 	 * @param tenorRiskWeight The Tenor Risk Weight Map
-	 * @param sameIssuerSeniorityCorrelation Same Issuer/Seniority Correlation
-	 * @param differentIssuerSeniorityCorrelation Different Issuer/Seniority Correlation
+	 * @param intraFamilyCrossTenorCorrelation Intra-Family Cross Tenor Correlation 
+	 * @param extraFamilyCrossTenorCorrelation Extra-Family Cross Tenor Correlation
 	 * @param concentrationThreshold The Concentration Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -286,20 +286,20 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 
 	public BucketSensitivitySettingsCR (
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight,
-		final double sameIssuerSeniorityCorrelation,
-		final double differentIssuerSeniorityCorrelation,
+		final double intraFamilyCrossTenorCorrelation,
+		final double extraFamilyCrossTenorCorrelation,
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L294">		super (concentrationThreshold);</span>
 
 <span class="nc bnc" id="L296" title="All 4 branches missed.">		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||</span>
-<span class="nc bnc" id="L297" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sameIssuerSeniorityCorrelation =</span>
-				sameIssuerSeniorityCorrelation) ||
-				1. &lt;= _sameIssuerSeniorityCorrelation || -1. &gt;= _sameIssuerSeniorityCorrelation ||
-<span class="nc bnc" id="L300" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_differentIssuerSeniorityCorrelation =</span>
-				differentIssuerSeniorityCorrelation) ||
-				1. &lt;= _differentIssuerSeniorityCorrelation || -1. &gt;= _differentIssuerSeniorityCorrelation)
+<span class="nc bnc" id="L297" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =</span>
+				intraFamilyCrossTenorCorrelation) ||
+				1. &lt;= _intraFamilyCrossTenorCorrelation || -1. &gt;= _intraFamilyCrossTenorCorrelation ||
+<span class="nc bnc" id="L300" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =</span>
+				extraFamilyCrossTenorCorrelation) ||
+				1. &lt;= _extraFamilyCrossTenorCorrelation || -1. &gt;= _extraFamilyCrossTenorCorrelation)
 		{
 <span class="nc" id="L304">			throw new java.lang.Exception (&quot;BucketSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
@@ -317,25 +317,25 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	}
 
 	/**
-	 * Retrieve the Same Issuer/Seniority Correlation
+	 * Retrieve the Intra-Family Cross Tenor Correlation
 	 * 
-	 * @return The Same Issuer/Seniority Correlation
+	 * @return The Intra-Family Cross Tenor Correlation
 	 */
 
-	public double sameIssuerSeniorityCorrelation()
+	public double intraFamilyCrossTenorCorrelation()
 	{
-<span class="nc" id="L327">		return _sameIssuerSeniorityCorrelation;</span>
+<span class="nc" id="L327">		return _intraFamilyCrossTenorCorrelation;</span>
 	}
 
 	/**
-	 * Retrieve the Different Issuer/Seniority Correlation
+	 * Retrieve the Extra-Family Cross Tenor Correlation
 	 * 
-	 * @return The Different Issuer/Seniority Correlation
+	 * @return The Extra-Family Cross Tenor Correlation
 	 */
 
-	public double differentIssuerSeniorityCorrelation()
+	public double extraFamilyCrossTenorCorrelation()
 	{
-<span class="nc" id="L338">		return _differentIssuerSeniorityCorrelation;</span>
+<span class="nc" id="L338">		return _extraFamilyCrossTenorCorrelation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

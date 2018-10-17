@@ -495,7 +495,7 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 <span class="nc" id="L495">		org.drip.state.identifier.EntityCDSLabel creditLabel = comp.creditLabel();</span>
 
 <span class="nc bnc" id="L497" title="All 2 branches missed.">		org.drip.param.market.CreditCurveScenarioContainer scc = null == creditLabel ? null :</span>
-<span class="nc" id="L498">			_mapScenarioCreditCurve.get (creditLabel);</span>
+<span class="nc" id="L498">			_mapScenarioCreditCurve.get (creditLabel.fullyQualifiedName());</span>
 
 <span class="nc bnc" id="L500" title="All 2 branches missed.">		if (null != scc) {</span>
 <span class="nc bnc" id="L501" title="All 2 branches missed.">			if (&quot;FlatCreditBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
@@ -538,7 +538,7 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 <span class="nc" id="L538">		org.drip.state.identifier.EntityCDSLabel creditLabel = comp.creditLabel();</span>
 
 <span class="nc bnc" id="L540" title="All 2 branches missed.">		org.drip.param.market.CreditCurveScenarioContainer scc = null == creditLabel ? null :</span>
-<span class="nc" id="L541">			_mapScenarioCreditCurve.get (creditLabel);</span>
+<span class="nc" id="L541">			_mapScenarioCreditCurve.get (creditLabel.fullyQualifiedName());</span>
 
 <span class="nc bnc" id="L543" title="All 2 branches missed.">		org.drip.state.credit.CreditCurve cc = null == scc ? null : scc.base();</span>
 
@@ -593,102 +593,103 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 
 <span class="nc bnc" id="L594" title="All 2 branches missed.">		if (null == creditLabel) return null;</span>
 
-<span class="nc" id="L596">		org.drip.param.market.CreditCurveScenarioContainer scc = _mapScenarioCreditCurve.get (creditLabel);</span>
+<span class="nc" id="L596">		org.drip.param.market.CreditCurveScenarioContainer scc = _mapScenarioCreditCurve.get</span>
+<span class="nc" id="L597">			(creditLabel.fullyQualifiedName());</span>
 
-<span class="nc bnc" id="L598" title="All 2 branches missed.">		if (null == scc) return null;</span>
-
-		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
-<span class="nc" id="L601">			mapCCBumpUp = scc.tenorBumpUp();</span>
-
-<span class="nc bnc" id="L603" title="All 6 branches missed.">		if (bBumpUp &amp;&amp; (null == mapCCBumpUp || 0 == mapCCBumpUp.size())) return null;</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">		if (null == scc) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
-<span class="nc" id="L606">			mapCCBumpDown = scc.tenorBumpDown();</span>
+<span class="nc" id="L602">			mapCCBumpUp = scc.tenorBumpUp();</span>
 
-<span class="nc bnc" id="L608" title="All 6 branches missed.">		if (!bBumpUp &amp;&amp; (null == mapCCBumpDown || 0 == mapCCBumpDown.size())) return null;</span>
+<span class="nc bnc" id="L604" title="All 6 branches missed.">		if (bBumpUp &amp;&amp; (null == mapCCBumpUp || 0 == mapCCBumpUp.size())) return null;</span>
 
-<span class="nc" id="L610">		java.lang.String strPayCurrency = comp.payCurrency();</span>
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
+<span class="nc" id="L607">			mapCCBumpDown = scc.tenorBumpDown();</span>
 
-<span class="nc" id="L612">		org.drip.param.market.DiscountCurveScenarioContainer sdc = _mapScenarioDiscountCurve.get</span>
-<span class="nc" id="L613">			(strPayCurrency);</span>
+<span class="nc bnc" id="L609" title="All 6 branches missed.">		if (!bBumpUp &amp;&amp; (null == mapCCBumpDown || 0 == mapCCBumpDown.size())) return null;</span>
 
-<span class="nc bnc" id="L615" title="All 2 branches missed.">		if (null == sdc) return null;</span>
+<span class="nc" id="L611">		java.lang.String strPayCurrency = comp.payCurrency();</span>
 
-<span class="nc" id="L617">		org.drip.state.discount.MergedDiscountForwardCurve dc = sdc.base();</span>
+<span class="nc" id="L613">		org.drip.param.market.DiscountCurveScenarioContainer sdc = _mapScenarioDiscountCurve.get</span>
+<span class="nc" id="L614">			(strPayCurrency);</span>
+
+<span class="nc bnc" id="L616" title="All 2 branches missed.">		if (null == sdc) return null;</span>
+
+<span class="nc" id="L618">		org.drip.state.discount.MergedDiscountForwardCurve dc = sdc.base();</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L620">			mapCSQS = new</span>
+<span class="nc" id="L621">			mapCSQS = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="nc" id="L623">		java.lang.String strComponentName = comp.name();</span>
+<span class="nc" id="L624">		java.lang.String strComponentName = comp.name();</span>
 
-<span class="nc bnc" id="L625" title="All 2 branches missed.">		if (bBumpUp) {</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">		if (bBumpUp) {</span>
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.credit.CreditCurve&gt; meCC :
-<span class="nc bnc" id="L627" title="All 2 branches missed.">				mapCCBumpUp.entrySet()) {</span>
-<span class="nc bnc" id="L628" title="All 2 branches missed.">				if (null == meCC) continue;</span>
+<span class="nc bnc" id="L628" title="All 2 branches missed.">				mapCCBumpUp.entrySet()) {</span>
+<span class="nc bnc" id="L629" title="All 2 branches missed.">				if (null == meCC) continue;</span>
 
-<span class="nc" id="L630">				java.lang.String strKey = meCC.getKey();</span>
+<span class="nc" id="L631">				java.lang.String strKey = meCC.getKey();</span>
 
-<span class="nc" id="L632">				org.drip.state.credit.CreditCurve cc = meCC.getValue();</span>
+<span class="nc" id="L633">				org.drip.state.credit.CreditCurve cc = meCC.getValue();</span>
 
-<span class="nc bnc" id="L634" title="All 4 branches missed.">				if (null == strKey || strKey.isEmpty()) continue;</span>
+<span class="nc bnc" id="L635" title="All 4 branches missed.">				if (null == strKey || strKey.isEmpty()) continue;</span>
 
-<span class="nc" id="L636">				mapCSQS.put (strKey, org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, cc,</span>
-<span class="nc" id="L637">					strComponentName, _mapQuote.get (strComponentName), _mapTSYQuote, _lsfc));</span>
-<span class="nc" id="L638">			}</span>
+<span class="nc" id="L637">				mapCSQS.put (strKey, org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, cc,</span>
+<span class="nc" id="L638">					strComponentName, _mapQuote.get (strComponentName), _mapTSYQuote, _lsfc));</span>
+<span class="nc" id="L639">			}</span>
 		} else {
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.credit.CreditCurve&gt; meCC :
-<span class="nc bnc" id="L641" title="All 2 branches missed.">				mapCCBumpDown.entrySet()) {</span>
-<span class="nc bnc" id="L642" title="All 2 branches missed.">				if (null == meCC) continue;</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">				mapCCBumpDown.entrySet()) {</span>
+<span class="nc bnc" id="L643" title="All 2 branches missed.">				if (null == meCC) continue;</span>
 
-<span class="nc" id="L644">				java.lang.String strKey = meCC.getKey();</span>
+<span class="nc" id="L645">				java.lang.String strKey = meCC.getKey();</span>
 
-<span class="nc" id="L646">				org.drip.state.credit.CreditCurve cc = meCC.getValue();</span>
+<span class="nc" id="L647">				org.drip.state.credit.CreditCurve cc = meCC.getValue();</span>
 
-<span class="nc bnc" id="L648" title="All 4 branches missed.">				if (null == strKey || strKey.isEmpty()) continue;</span>
+<span class="nc bnc" id="L649" title="All 4 branches missed.">				if (null == strKey || strKey.isEmpty()) continue;</span>
 
-<span class="nc" id="L650">				mapCSQS.put (strKey, org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, cc,</span>
-<span class="nc" id="L651">					strComponentName, _mapQuote.get (strComponentName), _mapTSYQuote, _lsfc));</span>
-<span class="nc" id="L652">			}</span>
+<span class="nc" id="L651">				mapCSQS.put (strKey, org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, cc,</span>
+<span class="nc" id="L652">					strComponentName, _mapQuote.get (strComponentName), _mapTSYQuote, _lsfc));</span>
+<span class="nc" id="L653">			}</span>
 		}
 
-<span class="nc" id="L655">		return mapCSQS;</span>
+<span class="nc" id="L656">		return mapCSQS;</span>
 	}
 
 	@Override public org.drip.param.market.CurveSurfaceQuoteContainer scenarioMarketParams (
 		final org.drip.product.definition.BasketProduct bp,
 		final java.lang.String strScenario)
 	{
-<span class="nc bnc" id="L662" title="All 4 branches missed.">		if (null == strScenario || strScenario.isEmpty()) return null;</span>
+<span class="nc bnc" id="L663" title="All 4 branches missed.">		if (null == strScenario || strScenario.isEmpty()) return null;</span>
 
-<span class="nc bnc" id="L664" title="All 2 branches missed.">		if (&quot;Base&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L665">			return customMarketParams (dcSet (BASE), null, ccSet (BASE));</span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">		if (&quot;Base&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L666">			return customMarketParams (dcSet (BASE), null, ccSet (BASE));</span>
 
-<span class="nc bnc" id="L667" title="All 2 branches missed.">		if (&quot;FlatIRBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L668">			return customMarketParams (dcSet (BUMP_UP), null, ccSet (BASE));</span>
+<span class="nc bnc" id="L668" title="All 2 branches missed.">		if (&quot;FlatIRBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L669">			return customMarketParams (dcSet (BUMP_UP), null, ccSet (BASE));</span>
 
-<span class="nc bnc" id="L670" title="All 2 branches missed.">		if (&quot;FlatIRBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L671">			return customMarketParams (dcSet (BUMP_DN), null, ccSet (BASE));</span>
+<span class="nc bnc" id="L671" title="All 2 branches missed.">		if (&quot;FlatIRBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L672">			return customMarketParams (dcSet (BUMP_DN), null, ccSet (BASE));</span>
 
-<span class="nc bnc" id="L673" title="All 2 branches missed.">		if (&quot;FlatForwardBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L674">			return customMarketParams (dcSet (BASE), null, ccSet (BASE));</span>
+<span class="nc bnc" id="L674" title="All 2 branches missed.">		if (&quot;FlatForwardBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L675">			return customMarketParams (dcSet (BASE), null, ccSet (BASE));</span>
 
-<span class="nc bnc" id="L676" title="All 2 branches missed.">		if (&quot;FlatForwardBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L677">			return customMarketParams (dcSet (BASE), null, ccSet (BASE));</span>
+<span class="nc bnc" id="L677" title="All 2 branches missed.">		if (&quot;FlatForwardBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L678">			return customMarketParams (dcSet (BASE), null, ccSet (BASE));</span>
 
-<span class="nc bnc" id="L679" title="All 2 branches missed.">		if (&quot;FlatCreditBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L680">			return customMarketParams (dcSet (BASE), null, ccSet (BUMP_UP));</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">		if (&quot;FlatCreditBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L681">			return customMarketParams (dcSet (BASE), null, ccSet (BUMP_UP));</span>
 
-<span class="nc bnc" id="L682" title="All 2 branches missed.">		if (&quot;FlatCreditBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L683">			return customMarketParams (dcSet (BASE), null, ccSet (BUMP_DN));</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">		if (&quot;FlatCreditBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L684">			return customMarketParams (dcSet (BASE), null, ccSet (BUMP_DN));</span>
 
-<span class="nc bnc" id="L685" title="All 2 branches missed.">		if (&quot;FlatRRBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L686">			return customMarketParams (dcSet (BASE), null, ccSet (RR_BUMP_UP));</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">		if (&quot;FlatRRBumpUp&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L687">			return customMarketParams (dcSet (BASE), null, ccSet (RR_BUMP_UP));</span>
 
-<span class="nc bnc" id="L688" title="All 2 branches missed.">		if (&quot;FlatRRBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
-<span class="nc" id="L689">			return customMarketParams (dcSet (BASE), null, ccSet (RR_BUMP_DN));</span>
+<span class="nc bnc" id="L689" title="All 2 branches missed.">		if (&quot;FlatRRBumpDn&quot;.equalsIgnoreCase (strScenario))</span>
+<span class="nc" id="L690">			return customMarketParams (dcSet (BASE), null, ccSet (RR_BUMP_DN));</span>
 
-<span class="nc" id="L691">		return null;</span>
+<span class="nc" id="L692">		return null;</span>
 	}
 
 	@Override public
@@ -698,21 +699,21 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 				final boolean bBump)
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L701">			mapCSQS = new</span>
+<span class="nc" id="L702">			mapCSQS = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.DiscountCurveScenarioContainer&gt;
-<span class="nc bnc" id="L705" title="All 2 branches missed.">			meSDC : _mapScenarioDiscountCurve.entrySet()) {</span>
-<span class="nc bnc" id="L706" title="All 2 branches missed.">			if (null != meSDC) {</span>
-<span class="nc" id="L707">				java.lang.String strKey = meSDC.getKey();</span>
+<span class="nc bnc" id="L706" title="All 2 branches missed.">			meSDC : _mapScenarioDiscountCurve.entrySet()) {</span>
+<span class="nc bnc" id="L707" title="All 2 branches missed.">			if (null != meSDC) {</span>
+<span class="nc" id="L708">				java.lang.String strKey = meSDC.getKey();</span>
 
-<span class="nc bnc" id="L709" title="All 4 branches missed.">				if (null != strKey &amp;&amp; !strKey.isEmpty())</span>
-<span class="nc" id="L710">					mapCSQS.put (strKey, customMarketParams (specificIRFlatBumpDCSet (strKey, bBump), null,</span>
-<span class="nc" id="L711">						ccSet (BASE)));</span>
+<span class="nc bnc" id="L710" title="All 4 branches missed.">				if (null != strKey &amp;&amp; !strKey.isEmpty())</span>
+<span class="nc" id="L711">					mapCSQS.put (strKey, customMarketParams (specificIRFlatBumpDCSet (strKey, bBump), null,</span>
+<span class="nc" id="L712">						ccSet (BASE)));</span>
 			}
-<span class="nc" id="L713">		}</span>
+<span class="nc" id="L714">		}</span>
 
-<span class="nc" id="L715">		return mapCSQS;</span>
+<span class="nc" id="L716">		return mapCSQS;</span>
 	}
 
 	@Override public
@@ -722,21 +723,21 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 				final boolean bBump)
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L725">			mapCSQS = new</span>
+<span class="nc" id="L726">			mapCSQS = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CreditCurveScenarioContainer&gt; meSCC
-<span class="nc bnc" id="L729" title="All 2 branches missed.">			: _mapScenarioCreditCurve.entrySet()) {</span>
-<span class="nc bnc" id="L730" title="All 2 branches missed.">			if (null != meSCC) {</span>
-<span class="nc" id="L731">				java.lang.String strKey = meSCC.getKey();</span>
+<span class="nc bnc" id="L730" title="All 2 branches missed.">			: _mapScenarioCreditCurve.entrySet()) {</span>
+<span class="nc bnc" id="L731" title="All 2 branches missed.">			if (null != meSCC) {</span>
+<span class="nc" id="L732">				java.lang.String strKey = meSCC.getKey();</span>
 
-<span class="nc bnc" id="L733" title="All 4 branches missed.">				if (null != strKey &amp;&amp; !strKey.isEmpty())</span>
-<span class="nc" id="L734">					mapCSQS.put (strKey, customMarketParams (dcSet (BASE), null, specificCreditFlatBumpCCSet</span>
-<span class="nc" id="L735">						(strKey, bBump)));</span>
+<span class="nc bnc" id="L734" title="All 4 branches missed.">				if (null != strKey &amp;&amp; !strKey.isEmpty())</span>
+<span class="nc" id="L735">					mapCSQS.put (strKey, customMarketParams (dcSet (BASE), null, specificCreditFlatBumpCCSet</span>
+<span class="nc" id="L736">						(strKey, bBump)));</span>
 			}
-<span class="nc" id="L737">		}</span>
+<span class="nc" id="L738">		}</span>
 
-<span class="nc" id="L739">		return mapCSQS;</span>
+<span class="nc" id="L740">		return mapCSQS;</span>
 	}
 
 	@Override public
@@ -746,21 +747,21 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 				final boolean bBump)
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L749">			mapCSQS = new</span>
+<span class="nc" id="L750">			mapCSQS = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CreditCurveScenarioContainer&gt; meSCC
-<span class="nc bnc" id="L753" title="All 2 branches missed.">			: _mapScenarioCreditCurve.entrySet()) {</span>
-<span class="nc bnc" id="L754" title="All 2 branches missed.">			if (null != meSCC) {</span>
-<span class="nc" id="L755">				java.lang.String strKey = meSCC.getKey();</span>
+<span class="nc bnc" id="L754" title="All 2 branches missed.">			: _mapScenarioCreditCurve.entrySet()) {</span>
+<span class="nc bnc" id="L755" title="All 2 branches missed.">			if (null != meSCC) {</span>
+<span class="nc" id="L756">				java.lang.String strKey = meSCC.getKey();</span>
 
-<span class="nc bnc" id="L757" title="All 4 branches missed.">				if (null != strKey &amp;&amp; !strKey.isEmpty())</span>
-<span class="nc" id="L758">					mapCSQS.put (strKey, customMarketParams (dcSet (BASE), null, specificCreditFlatBumpRRSet</span>
-<span class="nc" id="L759">						(strKey, bBump)));</span>
+<span class="nc bnc" id="L758" title="All 4 branches missed.">				if (null != strKey &amp;&amp; !strKey.isEmpty())</span>
+<span class="nc" id="L759">					mapCSQS.put (strKey, customMarketParams (dcSet (BASE), null, specificCreditFlatBumpRRSet</span>
+<span class="nc" id="L760">						(strKey, bBump)));</span>
 			}
-<span class="nc" id="L761">		}</span>
+<span class="nc" id="L762">		}</span>
 
-<span class="nc" id="L763">		return mapCSQS;</span>
+<span class="nc" id="L764">		return mapCSQS;</span>
 	}
 
 	@Override public
@@ -769,57 +770,57 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 				final org.drip.product.definition.BasketProduct bp,
 				final boolean bBump)
 	{
-<span class="nc bnc" id="L772" title="All 2 branches missed.">		if (null == bp) return null;</span>
+<span class="nc bnc" id="L773" title="All 2 branches missed.">		if (null == bp) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;&gt;
-<span class="nc" id="L775">			mmFundingTenorCSQS = new</span>
+<span class="nc" id="L776">			mmFundingTenorCSQS = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.DiscountCurveScenarioContainer&gt;
-<span class="nc bnc" id="L779" title="All 2 branches missed.">			meSDC : _mapScenarioDiscountCurve.entrySet()) {</span>
-<span class="nc bnc" id="L780" title="All 2 branches missed.">			if (null == meSDC) continue;</span>
+<span class="nc bnc" id="L780" title="All 2 branches missed.">			meSDC : _mapScenarioDiscountCurve.entrySet()) {</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">			if (null == meSDC) continue;</span>
 
-<span class="nc" id="L782">			java.lang.String strOuterKey = meSDC.getKey();</span>
+<span class="nc" id="L783">			java.lang.String strOuterKey = meSDC.getKey();</span>
 
-<span class="nc" id="L784">			org.drip.param.market.DiscountCurveScenarioContainer sdc = meSDC.getValue();</span>
+<span class="nc" id="L785">			org.drip.param.market.DiscountCurveScenarioContainer sdc = meSDC.getValue();</span>
 
-<span class="nc bnc" id="L786" title="All 6 branches missed.">			if (null == sdc || null == strOuterKey || strOuterKey.isEmpty()) continue;</span>
-
-			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="nc" id="L789">				mapDCBumpUp = sdc.tenorBumpUp();</span>
-
-<span class="nc bnc" id="L791" title="All 6 branches missed.">			if (bBump &amp;&amp; (null == mapDCBumpUp || 0 == mapDCBumpUp.size())) return null;</span>
+<span class="nc bnc" id="L787" title="All 6 branches missed.">			if (null == sdc || null == strOuterKey || strOuterKey.isEmpty()) continue;</span>
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="nc" id="L794">				mapDCBumpDown = sdc.tenorBumpDown();</span>
+<span class="nc" id="L790">				mapDCBumpUp = sdc.tenorBumpUp();</span>
 
-<span class="nc bnc" id="L796" title="All 6 branches missed.">			if (!bBump &amp;&amp; (null == mapDCBumpDown || 0 == mapDCBumpDown.size())) return null;</span>
+<span class="nc bnc" id="L792" title="All 6 branches missed.">			if (bBump &amp;&amp; (null == mapDCBumpUp || 0 == mapDCBumpUp.size())) return null;</span>
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
+<span class="nc" id="L795">				mapDCBumpDown = sdc.tenorBumpDown();</span>
+
+<span class="nc bnc" id="L797" title="All 6 branches missed.">			if (!bBump &amp;&amp; (null == mapDCBumpDown || 0 == mapDCBumpDown.size())) return null;</span>
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L799">				mapTenorCSQS = new</span>
+<span class="nc" id="L800">				mapTenorCSQS = new</span>
 					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="nc bnc" id="L802" title="All 4 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt; meDC : (bBump</span>
-<span class="nc" id="L803">				? mapDCBumpUp.entrySet() : mapDCBumpDown.entrySet())) {</span>
-<span class="nc bnc" id="L804" title="All 2 branches missed.">				if (null == meDC) continue;</span>
+<span class="nc bnc" id="L803" title="All 4 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt; meDC : (bBump</span>
+<span class="nc" id="L804">				? mapDCBumpUp.entrySet() : mapDCBumpDown.entrySet())) {</span>
+<span class="nc bnc" id="L805" title="All 2 branches missed.">				if (null == meDC) continue;</span>
 
-<span class="nc" id="L806">				java.lang.String strInnerKey = meDC.getKey();</span>
+<span class="nc" id="L807">				java.lang.String strInnerKey = meDC.getKey();</span>
 
-<span class="nc" id="L808">				org.drip.state.discount.MergedDiscountForwardCurve dc = meDC.getValue();</span>
+<span class="nc" id="L809">				org.drip.state.discount.MergedDiscountForwardCurve dc = meDC.getValue();</span>
 
-<span class="nc bnc" id="L810" title="All 6 branches missed.">				if (null == dc || null == strInnerKey || strInnerKey.isEmpty()) continue;</span>
+<span class="nc bnc" id="L811" title="All 6 branches missed.">				if (null == dc || null == strInnerKey || strInnerKey.isEmpty()) continue;</span>
 
-<span class="nc" id="L812">				org.drip.param.market.CurveSurfaceQuoteContainer csqs = scenarioMarketParams (bp, &quot;Base&quot;);</span>
+<span class="nc" id="L813">				org.drip.param.market.CurveSurfaceQuoteContainer csqs = scenarioMarketParams (bp, &quot;Base&quot;);</span>
 
-<span class="nc bnc" id="L814" title="All 4 branches missed.">				if (null == csqs || !csqs.setFundingState (dc)) continue;</span>
+<span class="nc bnc" id="L815" title="All 4 branches missed.">				if (null == csqs || !csqs.setFundingState (dc)) continue;</span>
 
-<span class="nc" id="L816">				mapTenorCSQS.put (strInnerKey, csqs);</span>
-<span class="nc" id="L817">			}</span>
+<span class="nc" id="L817">				mapTenorCSQS.put (strInnerKey, csqs);</span>
+<span class="nc" id="L818">			}</span>
 
-<span class="nc" id="L819">			mmFundingTenorCSQS.put (strOuterKey, mapTenorCSQS);</span>
-<span class="nc" id="L820">		}</span>
+<span class="nc" id="L820">			mmFundingTenorCSQS.put (strOuterKey, mapTenorCSQS);</span>
+<span class="nc" id="L821">		}</span>
 
-<span class="nc" id="L822">		return mmFundingTenorCSQS;</span>
+<span class="nc" id="L823">		return mmFundingTenorCSQS;</span>
 	}
 
 	@Override public
@@ -828,71 +829,71 @@ public class CurveSurfaceScenarioContainer extends org.drip.param.definition.Sce
 				final org.drip.product.definition.BasketProduct bp,
 				final boolean bBump)
 	{
-<span class="nc bnc" id="L831" title="All 2 branches missed.">		if (null == bp) return null;</span>
+<span class="nc bnc" id="L832" title="All 2 branches missed.">		if (null == bp) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;&gt;
-<span class="nc" id="L834">			mmCreditTenorCSQS = new</span>
+<span class="nc" id="L835">			mmCreditTenorCSQS = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CreditCurveScenarioContainer&gt; meSCC
-<span class="nc bnc" id="L838" title="All 2 branches missed.">			: _mapScenarioCreditCurve.entrySet()) {</span>
-<span class="nc bnc" id="L839" title="All 2 branches missed.">			if (null == meSCC) continue;</span>
+<span class="nc bnc" id="L839" title="All 2 branches missed.">			: _mapScenarioCreditCurve.entrySet()) {</span>
+<span class="nc bnc" id="L840" title="All 2 branches missed.">			if (null == meSCC) continue;</span>
 
-<span class="nc" id="L841">			java.lang.String strOuterKey = meSCC.getKey();</span>
+<span class="nc" id="L842">			java.lang.String strOuterKey = meSCC.getKey();</span>
 
-<span class="nc" id="L843">			org.drip.param.market.CreditCurveScenarioContainer scc = meSCC.getValue();</span>
+<span class="nc" id="L844">			org.drip.param.market.CreditCurveScenarioContainer scc = meSCC.getValue();</span>
 
-<span class="nc bnc" id="L845" title="All 6 branches missed.">			if (null == scc || null == strOuterKey || strOuterKey.isEmpty()) continue;</span>
-
-			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
-<span class="nc" id="L848">				mapCCBumpUp = scc.tenorBumpUp();</span>
-
-<span class="nc bnc" id="L850" title="All 6 branches missed.">			if (bBump &amp;&amp; (null == mapCCBumpUp || 0 == mapCCBumpUp.size())) return null;</span>
+<span class="nc bnc" id="L846" title="All 6 branches missed.">			if (null == scc || null == strOuterKey || strOuterKey.isEmpty()) continue;</span>
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
-<span class="nc" id="L853">				mapCCBumpDown = scc.tenorBumpDown();</span>
+<span class="nc" id="L849">				mapCCBumpUp = scc.tenorBumpUp();</span>
 
-<span class="nc bnc" id="L855" title="All 6 branches missed.">			if (!bBump &amp;&amp; (null == mapCCBumpDown || 0 == mapCCBumpDown.size())) return null;</span>
+<span class="nc bnc" id="L851" title="All 6 branches missed.">			if (bBump &amp;&amp; (null == mapCCBumpUp || 0 == mapCCBumpUp.size())) return null;</span>
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
+<span class="nc" id="L854">				mapCCBumpDown = scc.tenorBumpDown();</span>
+
+<span class="nc bnc" id="L856" title="All 6 branches missed.">			if (!bBump &amp;&amp; (null == mapCCBumpDown || 0 == mapCCBumpDown.size())) return null;</span>
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L858">				mapTenorCSQS = new</span>
+<span class="nc" id="L859">				mapTenorCSQS = new</span>
 					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.credit.CreditCurve&gt; meCC :
-<span class="nc bnc" id="L862" title="All 4 branches missed.">				(bBump ? mapCCBumpUp.entrySet() : mapCCBumpDown.entrySet())) {</span>
-<span class="nc bnc" id="L863" title="All 2 branches missed.">				if (null == meCC) continue;</span>
+<span class="nc bnc" id="L863" title="All 4 branches missed.">				(bBump ? mapCCBumpUp.entrySet() : mapCCBumpDown.entrySet())) {</span>
+<span class="nc bnc" id="L864" title="All 2 branches missed.">				if (null == meCC) continue;</span>
 
-<span class="nc" id="L865">				java.lang.String strInnerKey = meCC.getKey();</span>
+<span class="nc" id="L866">				java.lang.String strInnerKey = meCC.getKey();</span>
 
-<span class="nc" id="L867">				org.drip.state.credit.CreditCurve cc = meCC.getValue();</span>
+<span class="nc" id="L868">				org.drip.state.credit.CreditCurve cc = meCC.getValue();</span>
 
-<span class="nc bnc" id="L869" title="All 6 branches missed.">				if (null == cc || null == strInnerKey || strInnerKey.isEmpty()) continue;</span>
+<span class="nc bnc" id="L870" title="All 6 branches missed.">				if (null == cc || null == strInnerKey || strInnerKey.isEmpty()) continue;</span>
 
-<span class="nc" id="L871">				org.drip.param.market.CurveSurfaceQuoteContainer csqs = scenarioMarketParams (bp, &quot;Base&quot;);</span>
+<span class="nc" id="L872">				org.drip.param.market.CurveSurfaceQuoteContainer csqs = scenarioMarketParams (bp, &quot;Base&quot;);</span>
 
-<span class="nc bnc" id="L873" title="All 4 branches missed.">				if (null == csqs || !csqs.setCreditState (cc)) continue;</span>
+<span class="nc bnc" id="L874" title="All 4 branches missed.">				if (null == csqs || !csqs.setCreditState (cc)) continue;</span>
 
-<span class="nc" id="L875">				mapTenorCSQS.put (strInnerKey, csqs);</span>
-<span class="nc" id="L876">			}</span>
+<span class="nc" id="L876">				mapTenorCSQS.put (strInnerKey, csqs);</span>
+<span class="nc" id="L877">			}</span>
 
-<span class="nc" id="L878">			mmCreditTenorCSQS.put (strOuterKey, mapTenorCSQS);</span>
-<span class="nc" id="L879">		}</span>
+<span class="nc" id="L879">			mmCreditTenorCSQS.put (strOuterKey, mapTenorCSQS);</span>
+<span class="nc" id="L880">		}</span>
 
-<span class="nc" id="L881">		return mmCreditTenorCSQS;</span>
+<span class="nc" id="L882">		return mmCreditTenorCSQS;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.DiscountCurveScenarioContainer&gt;
 			scenarioDiscountCurveMap()
 	{
-<span class="nc" id="L888">		return _mapScenarioDiscountCurve;</span>
+<span class="nc" id="L889">		return _mapScenarioDiscountCurve;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CreditCurveScenarioContainer&gt;
 			scenarioCreditCurveMap()
 	{
-<span class="nc" id="L895">		return _mapScenarioCreditCurve;</span>
+<span class="nc" id="L896">		return _mapScenarioCreditCurve;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

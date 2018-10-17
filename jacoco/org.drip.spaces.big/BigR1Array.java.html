@@ -158,30 +158,41 @@ public class BigR1Array {
 		final int iLow,
 		final int iHigh)
 	{
-<span class="pc bpc" id="L161" title="3 of 6 branches missed.">		if (iLow &lt; 0 || iLow &gt;= iHigh || iLow &gt;= _iLength) return false;</span>
+<span class="pc bpc" id="L161" title="3 of 6 branches missed.">		if (iLow &lt; 0 || iLow &gt;= iHigh || iLow &gt;= _iLength)</span>
+		{
+<span class="nc" id="L163">			return false;</span>
+		}
 
-<span class="fc" id="L163">		int iLeft = iLow;</span>
-<span class="fc" id="L164">		int iRight = iHigh;</span>
-<span class="fc" id="L165">		double dblPivot = _adblA[(iLow + iHigh) / 2];</span>
+<span class="fc" id="L166">		int iLeft = iLow;</span>
+<span class="fc" id="L167">		int iRight = iHigh;</span>
+<span class="fc" id="L168">		double dblPivot = _adblA[(iLow + iHigh) / 2];</span>
 
-<span class="fc bfc" id="L167" title="All 2 branches covered.">		while (iLeft &lt;= iRight) {</span>
-<span class="fc bfc" id="L168" title="All 2 branches covered.">			while (_adblA[iLeft] &lt; dblPivot) ++iLeft;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		while (iLeft &lt;= iRight)</span>
+		{
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			while (_adblA[iLeft] &lt; dblPivot)</span>
+			{
+<span class="fc" id="L174">				++iLeft;</span>
+			}
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">			while (_adblA[iRight] &gt; dblPivot) --iRight;</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">			while (_adblA[iRight] &gt; dblPivot)</span>
+			{
+<span class="fc" id="L179">				--iRight;</span>
+			}
 
-<span class="fc bfc" id="L172" title="All 2 branches covered.">			if (iLeft &lt;= iRight) {</span>
-<span class="fc" id="L173">				swapLocations (iLeft, iRight);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">			if (iLeft &lt;= iRight)</span>
+			{
+<span class="fc" id="L184">				swapLocations (iLeft, iRight);</span>
 
-<span class="fc" id="L175">				++iLeft;</span>
-<span class="fc" id="L176">				--iRight;</span>
+<span class="fc" id="L186">				++iLeft;</span>
+<span class="fc" id="L187">				--iRight;</span>
 			}
 		}
 
-<span class="pc bpc" id="L180" title="1 of 4 branches missed.">		if (iLow &lt; iRight &amp;&amp; !quickSort (iLow, iRight)) return false;</span>
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">		if (iLow &lt; iRight &amp;&amp; !quickSort (iLow, iRight)) return false;</span>
 
-<span class="pc bpc" id="L182" title="1 of 4 branches missed.">		if (iLeft &lt; iHigh &amp;&amp; !quickSort (iLeft, iHigh)) return false;</span>
+<span class="pc bpc" id="L193" title="1 of 4 branches missed.">		if (iLeft &lt; iHigh &amp;&amp; !quickSort (iLeft, iHigh)) return false;</span>
 
-<span class="fc" id="L184">		return true;</span>
+<span class="fc" id="L195">		return true;</span>
 	}
 
 	/**
@@ -192,7 +203,7 @@ public class BigR1Array {
 
 	public boolean quickSort()
 	{
-<span class="fc" id="L195">		return quickSort (0, _iLength - 1);</span>
+<span class="fc" id="L206">		return quickSort (0, _iLength - 1);</span>
 	}
 
 	/**
@@ -212,49 +223,49 @@ public class BigR1Array {
 		final int i2Start,
 		final int i2End)
 	{
-<span class="nc bnc" id="L215" title="All 8 branches missed.">		if (i1Start &gt;= _iLength || i1Start &gt; i1End || i2Start &gt; i2End || i1End &gt;= i2Start) return false;</span>
+<span class="nc bnc" id="L226" title="All 8 branches missed.">		if (i1Start &gt;= _iLength || i1Start &gt; i1End || i2Start &gt; i2End || i1End &gt;= i2Start) return false;</span>
 
-<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (i1Start == i1End &amp;&amp; i2Start == i2End) {</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">			if (_adblA[i1Start] &gt; _adblA[i2Start]) swapLocations (i1Start, i2Start);</span>
+<span class="nc bnc" id="L228" title="All 4 branches missed.">		if (i1Start == i1End &amp;&amp; i2Start == i2End) {</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (_adblA[i1Start] &gt; _adblA[i2Start]) swapLocations (i1Start, i2Start);</span>
 		} else {
-<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (i1Start == i1End) {</span>
-<span class="nc" id="L221">				int i2Mid = (i2Start + i2End) / 2;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">			if (i1Start == i1End) {</span>
+<span class="nc" id="L232">				int i2Mid = (i2Start + i2End) / 2;</span>
 
-<span class="nc bnc" id="L223" title="All 2 branches missed.">				if (!mergeSort (i2Start, i2Mid, i2Mid + 1, i2End)) return false;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">				if (!mergeSort (i2Start, i2Mid, i2Mid + 1, i2End)) return false;</span>
 			}
 		}
 
-<span class="nc" id="L227">		int i = 0;</span>
-<span class="nc" id="L228">		int i1 = i1Start;</span>
-<span class="nc" id="L229">		int i2 = i2Start;</span>
-<span class="nc" id="L230">		double[] adblMerged = new double[i1End - i1Start + i2End - i2Start + 2];</span>
+<span class="nc" id="L238">		int i = 0;</span>
+<span class="nc" id="L239">		int i1 = i1Start;</span>
+<span class="nc" id="L240">		int i2 = i2Start;</span>
+<span class="nc" id="L241">		double[] adblMerged = new double[i1End - i1Start + i2End - i2Start + 2];</span>
 
-<span class="nc bnc" id="L232" title="All 4 branches missed.">		while (i1 &lt;= i1End &amp;&amp; i2 &lt;= i2End) {</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">			if (_adblA[i1] &lt; _adblA[i2])</span>
-<span class="nc" id="L234">				adblMerged[i++] = _adblA[i1++];</span>
-<span class="nc bnc" id="L235" title="All 2 branches missed.">			else if (_adblA[i1] &gt; _adblA[i2])</span>
-<span class="nc" id="L236">				adblMerged[i++] = _adblA[i2++];</span>
+<span class="nc bnc" id="L243" title="All 4 branches missed.">		while (i1 &lt;= i1End &amp;&amp; i2 &lt;= i2End) {</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">			if (_adblA[i1] &lt; _adblA[i2])</span>
+<span class="nc" id="L245">				adblMerged[i++] = _adblA[i1++];</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			else if (_adblA[i1] &gt; _adblA[i2])</span>
+<span class="nc" id="L247">				adblMerged[i++] = _adblA[i2++];</span>
 			else {
-<span class="nc" id="L238">				adblMerged[i++] = _adblA[i1++];</span>
-<span class="nc" id="L239">				adblMerged[i++] = _adblA[i2++];</span>
+<span class="nc" id="L249">				adblMerged[i++] = _adblA[i1++];</span>
+<span class="nc" id="L250">				adblMerged[i++] = _adblA[i2++];</span>
 			}
 		}
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">		while (i1 &lt;= i1End)</span>
-<span class="nc" id="L244">			adblMerged[i++] = _adblA[i1++];</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		while (i1 &lt;= i1End)</span>
+<span class="nc" id="L255">			adblMerged[i++] = _adblA[i1++];</span>
 
-<span class="nc bnc" id="L246" title="All 2 branches missed.">		while (i2 &lt;= i2End)</span>
-<span class="nc" id="L247">			adblMerged[i++] = _adblA[i2++];</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		while (i2 &lt;= i2End)</span>
+<span class="nc" id="L258">			adblMerged[i++] = _adblA[i2++];</span>
 
-<span class="nc" id="L249">		i = 0;</span>
+<span class="nc" id="L260">		i = 0;</span>
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int j = i1Start; j &lt;= i1End; ++j)</span>
-<span class="nc" id="L252">			_adblA[j] = adblMerged[i++];</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">		for (int j = i1Start; j &lt;= i1End; ++j)</span>
+<span class="nc" id="L263">			_adblA[j] = adblMerged[i++];</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (int j = i2Start; j &lt;= i2End; ++j)</span>
-<span class="nc" id="L255">			_adblA[j] = adblMerged[i++];</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		for (int j = i2Start; j &lt;= i2End; ++j)</span>
+<span class="nc" id="L266">			_adblA[j] = adblMerged[i++];</span>
 
-<span class="nc" id="L257">		return true;</span>
+<span class="nc" id="L268">		return true;</span>
 	}
 
 	/**
@@ -270,54 +281,54 @@ public class BigR1Array {
 		final int iStart,
 		final int iEnd)
 	{
-<span class="pc bpc" id="L273" title="3 of 6 branches missed.">		if (iStart &lt; 0 || iStart &gt; iEnd || iStart &gt;= _iLength) return false;</span>
+<span class="pc bpc" id="L284" title="3 of 6 branches missed.">		if (iStart &lt; 0 || iStart &gt; iEnd || iStart &gt;= _iLength) return false;</span>
 
-<span class="fc bfc" id="L275" title="All 2 branches covered.">		if (iStart == iEnd) return true;</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">		if (iStart == iEnd) return true;</span>
 
-<span class="fc bfc" id="L277" title="All 2 branches covered.">		if (iStart == iEnd - 1) {</span>
-<span class="fc bfc" id="L278" title="All 2 branches covered.">			if (_adblA[iStart] &gt; _adblA[iEnd]) swapLocations (iStart, iEnd);</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">		if (iStart == iEnd - 1) {</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">			if (_adblA[iStart] &gt; _adblA[iEnd]) swapLocations (iStart, iEnd);</span>
 
-<span class="fc" id="L280">			return true;</span>
+<span class="fc" id="L291">			return true;</span>
 		}
 
-<span class="fc" id="L283">		double[] adblMerged = new double[iEnd - iStart + 1];</span>
-<span class="fc" id="L284">		int iMid = (iStart + iEnd) / 2;</span>
-<span class="fc" id="L285">		int iRightStart = iMid + 1;</span>
-<span class="fc" id="L286">		int iRight = iRightStart;</span>
-<span class="fc" id="L287">		int iLeftStart = iStart;</span>
-<span class="fc" id="L288">		int iLeft = iLeftStart;</span>
-<span class="fc" id="L289">		int iRightEnd = iEnd;</span>
-<span class="fc" id="L290">		int iLeftEnd = iMid;</span>
-<span class="fc" id="L291">		int i = 0;</span>
+<span class="fc" id="L294">		double[] adblMerged = new double[iEnd - iStart + 1];</span>
+<span class="fc" id="L295">		int iMid = (iStart + iEnd) / 2;</span>
+<span class="fc" id="L296">		int iRightStart = iMid + 1;</span>
+<span class="fc" id="L297">		int iRight = iRightStart;</span>
+<span class="fc" id="L298">		int iLeftStart = iStart;</span>
+<span class="fc" id="L299">		int iLeft = iLeftStart;</span>
+<span class="fc" id="L300">		int iRightEnd = iEnd;</span>
+<span class="fc" id="L301">		int iLeftEnd = iMid;</span>
+<span class="fc" id="L302">		int i = 0;</span>
 
-<span class="pc bpc" id="L293" title="2 of 4 branches missed.">		if (!mergeSort (iLeftStart, iLeftEnd) || !mergeSort (iRightStart, iRightEnd)) return false;</span>
+<span class="pc bpc" id="L304" title="2 of 4 branches missed.">		if (!mergeSort (iLeftStart, iLeftEnd) || !mergeSort (iRightStart, iRightEnd)) return false;</span>
 
-<span class="fc bfc" id="L295" title="All 4 branches covered.">		while (iLeft &lt;= iLeftEnd &amp;&amp; iRight &lt;= iRightEnd) {</span>
-<span class="fc bfc" id="L296" title="All 2 branches covered.">			if (_adblA[iLeft] &lt; _adblA[iRight])</span>
-<span class="fc" id="L297">				adblMerged[i++] = _adblA[iLeft++];</span>
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">			else if (_adblA[iLeft] &gt; _adblA[iRight])</span>
-<span class="fc" id="L299">				adblMerged[i++] = _adblA[iRight++];</span>
+<span class="fc bfc" id="L306" title="All 4 branches covered.">		while (iLeft &lt;= iLeftEnd &amp;&amp; iRight &lt;= iRightEnd) {</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">			if (_adblA[iLeft] &lt; _adblA[iRight])</span>
+<span class="fc" id="L308">				adblMerged[i++] = _adblA[iLeft++];</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">			else if (_adblA[iLeft] &gt; _adblA[iRight])</span>
+<span class="fc" id="L310">				adblMerged[i++] = _adblA[iRight++];</span>
 			else {
-<span class="nc" id="L301">				adblMerged[i++] = _adblA[iLeft++];</span>
-<span class="nc" id="L302">				adblMerged[i++] = _adblA[iRight++];</span>
+<span class="nc" id="L312">				adblMerged[i++] = _adblA[iLeft++];</span>
+<span class="nc" id="L313">				adblMerged[i++] = _adblA[iRight++];</span>
 			}
 		}
 
-<span class="fc bfc" id="L306" title="All 2 branches covered.">		while (iLeft &lt;= iLeftEnd)</span>
-<span class="fc" id="L307">			adblMerged[i++] = _adblA[iLeft++];</span>
+<span class="fc bfc" id="L317" title="All 2 branches covered.">		while (iLeft &lt;= iLeftEnd)</span>
+<span class="fc" id="L318">			adblMerged[i++] = _adblA[iLeft++];</span>
 
-<span class="fc bfc" id="L309" title="All 2 branches covered.">		while (iRight &lt;= iRightEnd)</span>
-<span class="fc" id="L310">			adblMerged[i++] = _adblA[iRight++];</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">		while (iRight &lt;= iRightEnd)</span>
+<span class="fc" id="L321">			adblMerged[i++] = _adblA[iRight++];</span>
 
-<span class="fc" id="L312">		i = 0;</span>
+<span class="fc" id="L323">		i = 0;</span>
 
-<span class="fc bfc" id="L314" title="All 2 branches covered.">		for (int j = iLeftStart; j &lt;= iLeftEnd; ++j)</span>
-<span class="fc" id="L315">			_adblA[j] = adblMerged[i++];</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int j = iLeftStart; j &lt;= iLeftEnd; ++j)</span>
+<span class="fc" id="L326">			_adblA[j] = adblMerged[i++];</span>
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (int j = iRightStart; j &lt;= iRightEnd; ++j)</span>
-<span class="fc" id="L318">			_adblA[j] = adblMerged[i++];</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">		for (int j = iRightStart; j &lt;= iRightEnd; ++j)</span>
+<span class="fc" id="L329">			_adblA[j] = adblMerged[i++];</span>
 
-<span class="fc" id="L320">		return true;</span>
+<span class="fc" id="L331">		return true;</span>
 	}
 
 	/**
@@ -328,7 +339,7 @@ public class BigR1Array {
 
 	public boolean mergeSort()
 	{
-<span class="fc" id="L331">		return mergeSort (0, _iLength - 1);</span>
+<span class="fc" id="L342">		return mergeSort (0, _iLength - 1);</span>
 	}
 
 	/**
@@ -339,27 +350,27 @@ public class BigR1Array {
 
 	public boolean heapSort()
 	{
-<span class="fc" id="L342">		org.drip.spaces.big.BinaryTree bt = null;</span>
+<span class="fc" id="L353">		org.drip.spaces.big.BinaryTree bt = null;</span>
 
 		try {
-<span class="fc" id="L345">			bt = new org.drip.spaces.big.BinaryTree (_adblA[0], null);</span>
-<span class="nc" id="L346">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L347">			e.printStackTrace();</span>
+<span class="fc" id="L356">			bt = new org.drip.spaces.big.BinaryTree (_adblA[0], null);</span>
+<span class="nc" id="L357">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L358">			e.printStackTrace();</span>
 
-<span class="nc" id="L349">			return false;</span>
-<span class="fc" id="L350">		}</span>
+<span class="nc" id="L360">			return false;</span>
+<span class="fc" id="L361">		}</span>
 
-<span class="fc bfc" id="L352" title="All 2 branches covered.">		for (int i = 1; i &lt; _iLength; ++i) {</span>
-<span class="pc bpc" id="L353" title="1 of 2 branches missed.">			if (null == bt.insert (_adblA[i])) return false;</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int i = 1; i &lt; _iLength; ++i) {</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">			if (null == bt.insert (_adblA[i])) return false;</span>
 		}
 
 		try {
-<span class="pc bpc" id="L357" title="1 of 2 branches missed.">			return _iLength == bt.ascendingNodeArray (_adblA, 0);</span>
-<span class="nc" id="L358">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L359">			e.printStackTrace();</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">			return _iLength == bt.ascendingNodeArray (_adblA, 0);</span>
+<span class="nc" id="L369">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L370">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L362">		return false;</span>
+<span class="nc" id="L373">		return false;</span>
 	}
 
 	/**
@@ -370,11 +381,11 @@ public class BigR1Array {
 
 	public boolean insertionSort()
 	{
-<span class="fc bfc" id="L373" title="All 2 branches covered.">		for (int iPickupIndex = 1; iPickupIndex &lt; _iLength; ++iPickupIndex) {</span>
-<span class="pc bpc" id="L374" title="1 of 2 branches missed.">			if (!transfer (iPickupIndex, dropOffIndex (iPickupIndex))) return false;</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">		for (int iPickupIndex = 1; iPickupIndex &lt; _iLength; ++iPickupIndex) {</span>
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">			if (!transfer (iPickupIndex, dropOffIndex (iPickupIndex))) return false;</span>
 		}
 
-<span class="fc" id="L377">		return true;</span>
+<span class="fc" id="L388">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
