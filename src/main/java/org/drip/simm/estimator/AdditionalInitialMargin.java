@@ -94,10 +94,10 @@ public class AdditionalInitialMargin
 		try
 		{
 			return new AdditionalInitialMargin (
-				org.drip.simm.estimator.ProductClassMultiplicativeScale.MS_RATESFX_DEFAULT,
-				org.drip.simm.estimator.ProductClassMultiplicativeScale.MS_CREDIT_DEFAULT,
-				org.drip.simm.estimator.ProductClassMultiplicativeScale.MS_EQUITY_DEFAULT,
-				org.drip.simm.estimator.ProductClassMultiplicativeScale.MS_COMMODITY_DEFAULT,
+				org.drip.simm.common.ProductClassMultiplicativeScale.MS_RATESFX_DEFAULT,
+				org.drip.simm.common.ProductClassMultiplicativeScale.MS_CREDIT_QUALIFYING_DEFAULT,
+				org.drip.simm.common.ProductClassMultiplicativeScale.MS_EQUITY_DEFAULT,
+				org.drip.simm.common.ProductClassMultiplicativeScale.MS_COMMODITY_DEFAULT,
 				addOnFixed,
 				productAddOnFactorMap
 			);

@@ -1,5 +1,5 @@
 
-package org.drip.simm.estimator;
+package org.drip.simm.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.estimator;
  */
 
 /**
- * PortfolioCompositeInitialMargin holds the Composite Initial Margin Estimates for a Portfolio that spans
- * 	across the Four Product Classes - RatesFX, Credit, Equity, and Commodity. The References are:
+ * ProductClassMultiplicativeScale holds the Multiplicative Scales Minimum/Default Values for the Four
+ *  Product Classes - RatesFX, Credit, Equity, and Commodity. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,92 +69,36 @@ package org.drip.simm.estimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PortfolioCompositeInitialMargin
+public class ProductClassMultiplicativeScale
 {
-	private double _credit = java.lang.Double.NaN;
-	private double _equity = java.lang.Double.NaN;
-	private double _ratesFX = java.lang.Double.NaN;
-	private double _commodity = java.lang.Double.NaN;
 
 	/**
-	 * PortfolioCompositeInitialMargin Constructor
-	 * 
-	 * @param ratesFX The RatesFX SIMM Component
-	 * @param credit The Credit SIMM Component
-	 * @param equity The Equity SIMM Component
-	 * @param commodity The Commodity SIMM Component
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * The RatesFX Multiplicative Factor Default (1.0)
 	 */
 
-	public PortfolioCompositeInitialMargin (
-		final double ratesFX,
-		final double credit,
-		final double equity,
-		final double commodity)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFX = ratesFX) || 0. > _ratesFX ||
-			!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) || 0. > _credit ||
-			!org.drip.quant.common.NumberUtil.IsValid (_equity = equity) || 0. > _equity ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commodity = commodity) ||  0. > _commodity)
-		{
-			throw new java.lang.Exception ("PortfolioCompositeInitialMargin Constructor => Invalid Inputs");
-		}
-	}
+	public static final double MS_RATESFX_DEFAULT = 1.0;
 
 	/**
-	 * Retrieve the RatesFX Initial Margin
-	 * 
-	 * @return The RatesFX Initial Margin
+	 * The Credit Qualifying Multiplicative Factor Default (1.0)
 	 */
 
-	public double ratesFX()
-	{
-		return _ratesFX;
-	}
+	public static final double MS_CREDIT_QUALIFYING_DEFAULT = 1.0;
 
 	/**
-	 * Retrieve the Credit Initial Margin
-	 * 
-	 * @return The Credit Initial Margin
+	 * The Credit Non-Qualifying Multiplicative Factor Default (1.0)
 	 */
 
-	public double credit()
-	{
-		return _credit;
-	}
+	public static final double MS_CREDIT_NON_QUALIFYING_DEFAULT = 1.0;
 
 	/**
-	 * Retrieve the Equity Initial Margin
-	 * 
-	 * @return The Equity Initial Margin
+	 * The Equity Multiplicative Factor Default (1.0)
 	 */
 
-	public double equity()
-	{
-		return _equity;
-	}
+	public static final double MS_EQUITY_DEFAULT = 1.0;
 
 	/**
-	 * Retrieve the Commodity Initial Margin
-	 * 
-	 * @return The Commodity Initial Margin
+	 * The Commodity Multiplicative Factor Default (1.0)
 	 */
 
-	public double commodity()
-	{
-		return _commodity;
-	}
-
-	/**
-	 * Retrieve the Total Initial Margin
-	 * 
-	 * @return The Total Initial Margin
-	 */
-
-	public double im()
-	{
-		return _ratesFX + _credit + _equity + _commodity;
-	}
+	public static final double MS_COMMODITY_DEFAULT = 1.0;
 }
