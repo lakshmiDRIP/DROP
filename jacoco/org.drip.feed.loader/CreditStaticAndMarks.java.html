@@ -152,7 +152,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L152">		double dblMarkValue = java.lang.Double.NaN;</span>
 
 		try {
-<span class="nc" id="L155">			dblMarkValue = new java.lang.Double (astrRecord[2].trim()).doubleValue();</span>
+<span class="nc" id="L155">			dblMarkValue = java.lang.Double.parseDouble (astrRecord[2].trim());</span>
 <span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L157">			System.out.println (&quot;Bad mark &quot; + astrRecord[2] + &quot; for &quot; + strIDType + &quot; &quot; + strID);</span>
 
@@ -207,7 +207,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L207">		double dblCoupon = 0.;</span>
 
 		try {
-<span class="nc" id="L210">			dblCoupon = new java.lang.Double (astrValRecord[4].trim()).doubleValue();</span>
+<span class="nc" id="L210">			dblCoupon = java.lang.Double.parseDouble (astrValRecord[4].trim());</span>
 <span class="nc" id="L211">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad coupon &quot; + astrValRecord[4] + &quot; for ISIN &quot; + strISIN);
 <span class="nc" id="L213">		}</span>
@@ -265,7 +265,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L265">		int iCouponFreq = 0;</span>
 
 		try {
-<span class="nc" id="L268">			iCouponFreq = (int) new java.lang.Double (astrValRecord[12].trim()).doubleValue();</span>
+<span class="nc" id="L268">			iCouponFreq = (int) java.lang.Double.parseDouble (astrValRecord[12].trim());</span>
 <span class="nc" id="L269">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog)
 				System.out.println (&quot;Bad coupon freq &quot; + astrValRecord[12] + &quot; for ISIN &quot; + strISIN);
@@ -279,7 +279,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L279">		double dblFloatSpread = 0.;</span>
 
 		try {
-<span class="nc" id="L282">			dblFloatSpread = new java.lang.Double (astrValRecord[78].trim()).doubleValue();</span>
+<span class="nc" id="L282">			dblFloatSpread = java.lang.Double.parseDouble (astrValRecord[78].trim());</span>
 <span class="nc" id="L283">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog)
 				System.out.println (&quot;Bad float spread &quot; + astrValRecord[78] + &quot; for ISIN &quot; + strISIN);
@@ -303,7 +303,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L303">		double dblAmountIssued = 0.;</span>
 
 		try {
-<span class="nc" id="L306">			dblAmountIssued = new java.lang.Double (astrValRecord[21].trim()).doubleValue();</span>
+<span class="nc" id="L306">			dblAmountIssued = java.lang.Double.parseDouble (astrValRecord[21].trim());</span>
 <span class="nc" id="L307">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad issue amt &quot; + astrValRecord[21] + &quot; for ISIN &quot; + strISIN);
 <span class="nc" id="L309">		}</span>
@@ -311,7 +311,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L311">		double dblAmountOutstanding = 0.;</span>
 
 		try {
-<span class="nc" id="L314">			dblAmountOutstanding = new java.lang.Double (astrValRecord[22].trim()).doubleValue();</span>
+<span class="nc" id="L314">			dblAmountOutstanding = java.lang.Double.parseDouble (astrValRecord[22].trim());</span>
 <span class="nc" id="L315">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog)
 				System.out.println (&quot;Bad outstanding amt &quot; + astrValRecord[22] + &quot; for ISIN &quot; + strISIN);
@@ -470,7 +470,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L470">		double dblExerciseFactor = java.lang.Double.NaN;</span>
 
 		try {
-<span class="nc" id="L473">			dblExerciseFactor = new java.lang.Double (astrEOS[6].trim()).doubleValue();</span>
+<span class="nc" id="L473">			dblExerciseFactor = java.lang.Double.parseDouble (astrEOS[6].trim());</span>
 <span class="nc" id="L474">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L475">			System.out.println (&quot;Bad exercise factor &quot; + astrEOS[6] + &quot; for ISIN &quot; + strISIN);</span>
 
@@ -486,7 +486,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L486">		int iKnockoutOnDefault = 1;</span>
 
 		try {
-<span class="nc" id="L489">			iKnockoutOnDefault = (int) new java.lang.Double (astrEOS[13].trim()).doubleValue();</span>
+<span class="nc" id="L489">			iKnockoutOnDefault = (int) java.lang.Double.parseDouble (astrEOS[13].trim());</span>
 <span class="nc" id="L490">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L491">			System.out.println (&quot;Bad knockout on default &quot; + astrEOS[13] + &quot; for ISIN &quot; + strISIN);</span>
 
@@ -558,55 +558,55 @@ package org.drip.feed.loader;
 <span class="nc" id="L558">			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
 <span class="nc" id="L559">				(astrIREOD[1].trim());</span>
 
-<span class="nc" id="L561">			dbl1D = new java.lang.Double (astrIREOD[5].trim()).doubleValue();</span>
+<span class="nc" id="L561">			dbl1D = java.lang.Double.parseDouble (astrIREOD[5].trim());</span>
 
-<span class="nc" id="L563">			dbl1M = new java.lang.Double (astrIREOD[6].trim()).doubleValue();</span>
+<span class="nc" id="L563">			dbl1M = java.lang.Double.parseDouble (astrIREOD[6].trim());</span>
 
-<span class="nc" id="L565">			dbl2M = new java.lang.Double (astrIREOD[7].trim()).doubleValue();</span>
+<span class="nc" id="L565">			dbl2M = java.lang.Double.parseDouble (astrIREOD[7].trim());</span>
 
-<span class="nc" id="L567">			dbl3M = new java.lang.Double (astrIREOD[8].trim()).doubleValue();</span>
+<span class="nc" id="L567">			dbl3M = java.lang.Double.parseDouble (astrIREOD[8].trim());</span>
 
-<span class="nc" id="L569">			dbl4M = new java.lang.Double (astrIREOD[9].trim()).doubleValue();</span>
+<span class="nc" id="L569">			dbl4M = java.lang.Double.parseDouble (astrIREOD[9].trim());</span>
 
-<span class="nc" id="L571">			dbl5M = new java.lang.Double (astrIREOD[10].trim()).doubleValue();</span>
+<span class="nc" id="L571">			dbl5M = java.lang.Double.parseDouble (astrIREOD[10].trim());</span>
 
-<span class="nc" id="L573">			dbl6M = new java.lang.Double (astrIREOD[11].trim()).doubleValue();</span>
+<span class="nc" id="L573">			dbl6M = java.lang.Double.parseDouble (astrIREOD[11].trim());</span>
 
-<span class="nc" id="L575">			dbl9M = new java.lang.Double (astrIREOD[12].trim()).doubleValue();</span>
+<span class="nc" id="L575">			dbl9M = java.lang.Double.parseDouble (astrIREOD[12].trim());</span>
 
-<span class="nc" id="L577">			dbl1Y = new java.lang.Double (astrIREOD[13].trim()).doubleValue();</span>
+<span class="nc" id="L577">			dbl1Y = java.lang.Double.parseDouble (astrIREOD[13].trim());</span>
 
-<span class="nc" id="L579">			dbl18M = new java.lang.Double (astrIREOD[14].trim()).doubleValue();</span>
+<span class="nc" id="L579">			dbl18M = java.lang.Double.parseDouble (astrIREOD[14].trim());</span>
 
-<span class="nc" id="L581">			dbl2Y = new java.lang.Double (astrIREOD[15].trim()).doubleValue();</span>
+<span class="nc" id="L581">			dbl2Y = java.lang.Double.parseDouble (astrIREOD[15].trim());</span>
 
-<span class="nc" id="L583">			dbl3Y = new java.lang.Double (astrIREOD[16].trim()).doubleValue();</span>
+<span class="nc" id="L583">			dbl3Y = java.lang.Double.parseDouble (astrIREOD[16].trim());</span>
 
-<span class="nc" id="L585">			dbl4Y = new java.lang.Double (astrIREOD[17].trim()).doubleValue();</span>
+<span class="nc" id="L585">			dbl4Y = java.lang.Double.parseDouble (astrIREOD[17].trim());</span>
 
-<span class="nc" id="L587">			dbl5Y = new java.lang.Double (astrIREOD[18].trim()).doubleValue();</span>
+<span class="nc" id="L587">			dbl5Y = java.lang.Double.parseDouble (astrIREOD[18].trim());</span>
 
-<span class="nc" id="L589">			dbl6Y = new java.lang.Double (astrIREOD[19].trim()).doubleValue();</span>
+<span class="nc" id="L589">			dbl6Y = java.lang.Double.parseDouble (astrIREOD[19].trim());</span>
 
-<span class="nc" id="L591">			dbl7Y = new java.lang.Double (astrIREOD[20].trim()).doubleValue();</span>
+<span class="nc" id="L591">			dbl7Y = java.lang.Double.parseDouble (astrIREOD[20].trim());</span>
 
-<span class="nc" id="L593">			dbl8Y = new java.lang.Double (astrIREOD[21].trim()).doubleValue();</span>
+<span class="nc" id="L593">			dbl8Y = java.lang.Double.parseDouble (astrIREOD[21].trim());</span>
 
-<span class="nc" id="L595">			dbl9Y = new java.lang.Double (astrIREOD[22].trim()).doubleValue();</span>
+<span class="nc" id="L595">			dbl9Y = java.lang.Double.parseDouble (astrIREOD[22].trim());</span>
 
-<span class="nc" id="L597">			dbl10Y = new java.lang.Double (astrIREOD[23].trim()).doubleValue();</span>
+<span class="nc" id="L597">			dbl10Y = java.lang.Double.parseDouble (astrIREOD[23].trim());</span>
 
-<span class="nc" id="L599">			dbl12Y = new java.lang.Double (astrIREOD[24].trim()).doubleValue();</span>
+<span class="nc" id="L599">			dbl12Y = java.lang.Double.parseDouble (astrIREOD[24].trim());</span>
 
-<span class="nc" id="L601">			dbl15Y = new java.lang.Double (astrIREOD[25].trim()).doubleValue();</span>
+<span class="nc" id="L601">			dbl15Y = java.lang.Double.parseDouble (astrIREOD[25].trim());</span>
 
-<span class="nc" id="L603">			dbl20Y = new java.lang.Double (astrIREOD[26].trim()).doubleValue();</span>
+<span class="nc" id="L603">			dbl20Y = java.lang.Double.parseDouble (astrIREOD[26].trim());</span>
 
-<span class="nc" id="L605">			dbl25Y = new java.lang.Double (astrIREOD[27].trim()).doubleValue();</span>
+<span class="nc" id="L605">			dbl25Y = java.lang.Double.parseDouble (astrIREOD[27].trim());</span>
 
-<span class="nc" id="L607">			dbl30Y = new java.lang.Double (astrIREOD[28].trim()).doubleValue();</span>
+<span class="nc" id="L607">			dbl30Y = java.lang.Double.parseDouble (astrIREOD[28].trim());</span>
 
-<span class="nc" id="L609">			dbl40Y = new java.lang.Double (astrIREOD[29].trim()).doubleValue();</span>
+<span class="nc" id="L609">			dbl40Y = java.lang.Double.parseDouble (astrIREOD[29].trim());</span>
 <span class="nc" id="L610">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L611">			System.out.println (&quot;Bad input marks for ccy &quot; + strCurrency);</span>
 
@@ -829,47 +829,47 @@ package org.drip.feed.loader;
 <span class="nc" id="L829">			strOracleCloseDate = org.drip.analytics.date.DateUtil.MakeOracleDateFromBBGDate</span>
 <span class="nc" id="L830">				(astrCREOD[2].trim());</span>
 
-<span class="nc" id="L832">			dblRecRate = new java.lang.Double (astrCREOD[7].trim()).doubleValue();</span>
+<span class="nc" id="L832">			dblRecRate = java.lang.Double.parseDouble (astrCREOD[7].trim());</span>
 
-<span class="nc" id="L834">			dblCR3M = new java.lang.Double (astrCREOD[8].trim()).doubleValue();</span>
+<span class="nc" id="L834">			dblCR3M = java.lang.Double.parseDouble (astrCREOD[8].trim());</span>
 
-<span class="nc" id="L836">			dblCR6M = new java.lang.Double (astrCREOD[9].trim()).doubleValue();</span>
+<span class="nc" id="L836">			dblCR6M = java.lang.Double.parseDouble (astrCREOD[9].trim());</span>
 
-<span class="nc" id="L838">			dblCR9M = new java.lang.Double (astrCREOD[10].trim()).doubleValue();</span>
+<span class="nc" id="L838">			dblCR9M = java.lang.Double.parseDouble (astrCREOD[10].trim());</span>
 
-<span class="nc" id="L840">			dblCR1Y = new java.lang.Double (astrCREOD[11].trim()).doubleValue();</span>
+<span class="nc" id="L840">			dblCR1Y = java.lang.Double.parseDouble (astrCREOD[11].trim());</span>
 
-<span class="nc" id="L842">			dblCR18M = new java.lang.Double (astrCREOD[12].trim()).doubleValue();</span>
+<span class="nc" id="L842">			dblCR18M = java.lang.Double.parseDouble (astrCREOD[12].trim());</span>
 
-<span class="nc" id="L844">			dblCR2Y = new java.lang.Double (astrCREOD[13].trim()).doubleValue();</span>
+<span class="nc" id="L844">			dblCR2Y = java.lang.Double.parseDouble (astrCREOD[13].trim());</span>
 
-<span class="nc" id="L846">			dblCR3Y = new java.lang.Double (astrCREOD[14].trim()).doubleValue();</span>
+<span class="nc" id="L846">			dblCR3Y = java.lang.Double.parseDouble (astrCREOD[14].trim());</span>
 
-<span class="nc" id="L848">			dblCR4Y = new java.lang.Double (astrCREOD[15].trim()).doubleValue();</span>
+<span class="nc" id="L848">			dblCR4Y = java.lang.Double.parseDouble (astrCREOD[15].trim());</span>
 
-<span class="nc" id="L850">			dblCR5Y = new java.lang.Double (astrCREOD[16].trim()).doubleValue();</span>
+<span class="nc" id="L850">			dblCR5Y = java.lang.Double.parseDouble (astrCREOD[16].trim());</span>
 
-<span class="nc" id="L852">			dblCR6Y = new java.lang.Double (astrCREOD[17].trim()).doubleValue();</span>
+<span class="nc" id="L852">			dblCR6Y = java.lang.Double.parseDouble (astrCREOD[17].trim());</span>
 
-<span class="nc" id="L854">			dblCR7Y = new java.lang.Double (astrCREOD[18].trim()).doubleValue();</span>
+<span class="nc" id="L854">			dblCR7Y = java.lang.Double.parseDouble (astrCREOD[18].trim());</span>
 
-<span class="nc" id="L856">			dblCR8Y = new java.lang.Double (astrCREOD[19].trim()).doubleValue();</span>
+<span class="nc" id="L856">			dblCR8Y = java.lang.Double.parseDouble (astrCREOD[19].trim());</span>
 
-<span class="nc" id="L858">			dblCR9Y = new java.lang.Double (astrCREOD[20].trim()).doubleValue();</span>
+<span class="nc" id="L858">			dblCR9Y = java.lang.Double.parseDouble (astrCREOD[20].trim());</span>
 
-<span class="nc" id="L860">			dblCR10Y = new java.lang.Double (astrCREOD[21].trim()).doubleValue();</span>
+<span class="nc" id="L860">			dblCR10Y = java.lang.Double.parseDouble (astrCREOD[21].trim());</span>
 
-<span class="nc" id="L862">			dblCR11Y = new java.lang.Double (astrCREOD[22].trim()).doubleValue();</span>
+<span class="nc" id="L862">			dblCR11Y = java.lang.Double.parseDouble (astrCREOD[22].trim());</span>
 
-<span class="nc" id="L864">			dblCR12Y = new java.lang.Double (astrCREOD[23].trim()).doubleValue();</span>
+<span class="nc" id="L864">			dblCR12Y = java.lang.Double.parseDouble (astrCREOD[23].trim());</span>
 
-<span class="nc" id="L866">			dblCR15Y = new java.lang.Double (astrCREOD[26].trim()).doubleValue();</span>
+<span class="nc" id="L866">			dblCR15Y = java.lang.Double.parseDouble (astrCREOD[26].trim());</span>
 
-<span class="nc" id="L868">			dblCR20Y = new java.lang.Double (astrCREOD[31].trim()).doubleValue();</span>
+<span class="nc" id="L868">			dblCR20Y = java.lang.Double.parseDouble (astrCREOD[31].trim());</span>
 
-<span class="nc" id="L870">			dblCR30Y = new java.lang.Double (astrCREOD[37].trim()).doubleValue();</span>
+<span class="nc" id="L870">			dblCR30Y = java.lang.Double.parseDouble (astrCREOD[37].trim());</span>
 
-<span class="nc" id="L872">			dblCR40Y = new java.lang.Double (astrCREOD[39].trim()).doubleValue();</span>
+<span class="nc" id="L872">			dblCR40Y = java.lang.Double.parseDouble (astrCREOD[39].trim());</span>
 <span class="nc" id="L873">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L874">			System.out.println (&quot;Bad input marks for SPN &quot; + strSPN);</span>
 
@@ -970,7 +970,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L970">		double dblCoupon = 0.;</span>
 
 		try {
-<span class="nc" id="L973">			dblCoupon = new java.lang.Double (astrBondRef2[11].trim()).doubleValue();</span>
+<span class="nc" id="L973">			dblCoupon = java.lang.Double.parseDouble (astrBondRef2[11].trim());</span>
 <span class="nc" id="L974">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad coupon &quot; + astrBondRef2[11] + &quot; for ISIN &quot; + strISIN);
 <span class="nc" id="L976">		}</span>
@@ -1034,7 +1034,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L1034">		double dblFloatSpread = 0.;</span>
 
 		try {
-<span class="nc" id="L1037">			dblFloatSpread = new java.lang.Double (astrBondRef2[12].trim()).doubleValue();</span>
+<span class="nc" id="L1037">			dblFloatSpread = java.lang.Double.parseDouble (astrBondRef2[12].trim());</span>
 <span class="nc" id="L1038">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog)
 				System.out.println (&quot;Bad float spread &quot; + astrBondRef2[12] + &quot; for ISIN &quot; + strISIN);
@@ -1189,7 +1189,7 @@ package org.drip.feed.loader;
 <span class="nc" id="L1189">		}</span>
 
 		try {
-<span class="nc" id="L1192">			dblPrincipalPaydown = new java.lang.Double (astrAmortizationSchedule[4].trim());</span>
+<span class="nc" id="L1192">			dblPrincipalPaydown = java.lang.Double.parseDouble (astrAmortizationSchedule[4].trim());</span>
 <span class="nc" id="L1193">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1194">			System.out.println (&quot;Bad paydown factor &quot; + astrAmortizationSchedule[4] + &quot; for CUSIP &quot; +</span>
 				strCUSIP);

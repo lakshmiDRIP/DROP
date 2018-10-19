@@ -507,7 +507,7 @@ package org.drip.analytics.support;
 <span class="nc bnc" id="L507" title="All 2 branches missed.">		if (null == strBBGDCCode) return &quot;Unknown BBG DC&quot;;</span>
 
 		try {
-<span class="nc" id="L510">			return s_mapDCBBGCode.get ((int) new java.lang.Double (strBBGDCCode.trim()).doubleValue());</span>
+<span class="nc" id="L510">			return s_mapDCBBGCode.get ((int) java.lang.Double.parseDouble (strBBGDCCode.trim()));</span>
 <span class="nc" id="L511">		} catch (java.lang.Exception e) {</span>
 		}
 
@@ -559,8 +559,8 @@ package org.drip.analytics.support;
 
 <span class="nc" id="L560">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="nc" id="L562">		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -</span>
-<span class="nc" id="L563">			1)).doubleValue();</span>
+<span class="nc" id="L562">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+			1));
 
 <span class="nc bnc" id="L565" title="All 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit * 12;</span>
 
@@ -586,8 +586,8 @@ package org.drip.analytics.support;
 
 <span class="fc" id="L587">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L589">		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -</span>
-<span class="fc" id="L590">			1)).doubleValue();</span>
+<span class="fc" id="L589">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+			1));
 
 <span class="pc bpc" id="L592" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit * (iTimeUnit / 30);</span>
 
@@ -621,8 +621,8 @@ package org.drip.analytics.support;
 
 <span class="fc" id="L622">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L624">		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -</span>
-<span class="fc" id="L625">			1)).doubleValue();</span>
+<span class="fc" id="L624">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+			1));
 
 <span class="pc bpc" id="L627" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit;</span>
 
@@ -656,8 +656,8 @@ package org.drip.analytics.support;
 
 <span class="fc" id="L657">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L659">		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -</span>
-<span class="fc" id="L660">			1)).doubleValue();</span>
+<span class="fc" id="L659">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+			1));
 
 <span class="pc bpc" id="L662" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return ((double) iTimeUnit) / 365.25;</span>
 
@@ -737,8 +737,8 @@ package org.drip.analytics.support;
 
 <span class="fc" id="L738">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L740">		int iTimeUnit = (int) new java.lang.Double (strTenor.substring (0, strTenor.length() -</span>
-<span class="fc" id="L741">			1)).doubleValue();</span>
+<span class="fc" id="L740">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+			1));
 
 <span class="pc bpc" id="L743" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return (int) (365. / iTimeUnit);</span>
 
@@ -941,7 +941,7 @@ package org.drip.analytics.support;
 <span class="fc" id="L941">		org.drip.param.market.LatentStateFixingsContainer lsfc = new</span>
 			org.drip.param.market.LatentStateFixingsContainer();
 
-<span class="pc bpc" id="L944" title="1 of 2 branches missed.">		return lsfc.add (dtFixing, bond.forwardLabel().get (0), dblFixing) ? lsfc : null;</span>
+<span class="pc bpc" id="L944" title="1 of 2 branches missed.">		return lsfc.add (dtFixing, bond.forwardLabel().get (&quot;BASE&quot;), dblFixing) ? lsfc : null;</span>
 	}
 
 	/**
@@ -1257,11 +1257,11 @@ package org.drip.analytics.support;
 
 <span class="pc bpc" id="L1258" title="1 of 2 branches missed.">		if (chRollTenor != chBaseTenor) return null;</span>
 
-<span class="fc" id="L1260">		int iBaseTimeUnit = (int) new java.lang.Double (strBaseTenor.substring (0, strBaseTenor.length() -</span>
-<span class="fc" id="L1261">			1)).doubleValue();</span>
+<span class="fc" id="L1260">		int iBaseTimeUnit = (int) java.lang.Double.parseDouble (strBaseTenor.substring (0, strBaseTenor.length() -</span>
+			1));
 
-<span class="fc" id="L1263">		int iRollTimeUnit = (int) new java.lang.Double (strRollTenor.substring (0, strRollTenor.length() -</span>
-<span class="fc" id="L1264">			1)).doubleValue();</span>
+<span class="fc" id="L1263">		int iRollTimeUnit = (int) java.lang.Double.parseDouble (strRollTenor.substring (0, strRollTenor.length() -</span>
+			1));
 
 <span class="fc" id="L1266">		return &quot;&quot; + (iBaseTimeUnit + iRollTimeUnit) + chBaseTenor;</span>
 	}

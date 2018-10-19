@@ -72,48 +72,48 @@ package org.drip.simm.margin;
 public class BucketAggregateIR
 {
 <span class="nc" id="L74">	private double _sensitivityMarginVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _cumulativeRiskFactorSensitivityMargin = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private org.drip.simm.margin.RiskFactorAggregateIR _riskFactorAggregateIR = null;</span>
-<span class="nc" id="L77">	private org.drip.simm.margin.IRSensitivityAggregate _irSensitivityAggregate = null;</span>
+<span class="nc" id="L75">	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private org.drip.simm.margin.RiskFactorAggregateIR _riskFactorAggregate = null;</span>
+<span class="nc" id="L77">	private org.drip.simm.margin.SensitivityAggregateIR _sensitivityAggregate = null;</span>
 
 	/**
 	 * BucketAggregateIR Constructor
 	 * 
-	 * @param riskFactorAggregateIR The Risk Factor Aggregate IR
-	 * @param irSensitivityAggregate The IR Sensitivity Aggregate
+	 * @param riskFactorAggregate The IR Risk Factor Aggregate
+	 * @param sensitivityAggregate The IR Sensitivity Aggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
-	 * @param cumulativeRiskFactorSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
+	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketAggregateIR (
-		final org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregateIR,
-		final org.drip.simm.margin.IRSensitivityAggregate irSensitivityAggregate,
+		final org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate,
+		final org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate,
 		final double sensitivityMarginVariance,
-		final double cumulativeRiskFactorSensitivityMargin)
+		final double cumulativeSensitivityMargin)
 		throws java.lang.Exception
 <span class="nc" id="L96">	{</span>
-<span class="nc bnc" id="L97" title="All 4 branches missed.">		if (null == (_riskFactorAggregateIR = riskFactorAggregateIR) ||</span>
-			null == (_irSensitivityAggregate = irSensitivityAggregate) ||
+<span class="nc bnc" id="L97" title="All 4 branches missed.">		if (null == (_riskFactorAggregate = riskFactorAggregate) ||</span>
+			null == (_sensitivityAggregate = sensitivityAggregate) ||
 <span class="nc bnc" id="L99" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =</span>
 				sensitivityMarginVariance) ||
-<span class="nc bnc" id="L101" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeRiskFactorSensitivityMargin =</span>
-				cumulativeRiskFactorSensitivityMargin))
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =</span>
+				cumulativeSensitivityMargin))
 		{
 <span class="nc" id="L104">			throw new java.lang.Exception (&quot;BucketAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 <span class="nc" id="L106">	}</span>
 
 	/**
-	 * Retrieve the Risk Factor Aggregate IR
+	 * Retrieve the IR Risk Factor Aggregate
 	 * 
-	 * @return The Risk Factor Aggregate IR
+	 * @return The IR Risk Factor Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregateIR()
+	public org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate()
 	{
-<span class="nc" id="L116">		return _riskFactorAggregateIR;</span>
+<span class="nc" id="L116">		return _riskFactorAggregate;</span>
 	}
 
 	/**
@@ -122,9 +122,9 @@ public class BucketAggregateIR
 	 * @return The IR Sensitivity Aggregate
 	 */
 
-	public org.drip.simm.margin.IRSensitivityAggregate irSensitivityAggregate()
+	public org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate()
 	{
-<span class="nc" id="L127">		return _irSensitivityAggregate;</span>
+<span class="nc" id="L127">		return _sensitivityAggregate;</span>
 	}
 
 	/**
@@ -144,9 +144,9 @@ public class BucketAggregateIR
 	 * @return The Bucket's Cumulative Risk Factor Sensitivity Margin
 	 */
 
-	public double cumulativeRiskFactorSensitivityMargin()
+	public double cumulativeSensitivityMargin()
 	{
-<span class="nc" id="L149">		return _cumulativeRiskFactorSensitivityMargin;</span>
+<span class="nc" id="L149">		return _cumulativeSensitivityMargin;</span>
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class BucketAggregateIR
 
 <span class="nc" id="L162">		return java.lang.Math.max (</span>
 <span class="nc" id="L163">			java.lang.Math.min (</span>
-				_cumulativeRiskFactorSensitivityMargin,
+				_cumulativeSensitivityMargin,
 				sensitivityMargin
 			),
 			-1. * sensitivityMargin

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.BucketAggregateIR;
-import org.drip.simm.margin.IRSensitivityAggregate;
+import org.drip.simm.margin.SensitivityAggregateIR;
 import org.drip.simm.margin.RiskMeasureAggregateIR;
 import org.drip.simm.parameters.BucketSensitivitySettingsIR;
 import org.drip.simm.product.BucketSensitivityIR;
@@ -229,7 +229,7 @@ import org.drip.simm.product.RiskFactorTenorSensitivity;
 <span class="nc" id="L229">	}</span>
 
 	private static final void DeltaMarginCovarianceEntry (
-		final IRSensitivityAggregate irDeltaAggregate)
+		final SensitivityAggregateIR irDeltaAggregate)
 		throws Exception
 	{
 <span class="nc" id="L235">		double marginCovariance_OIS_OIS = irDeltaAggregate.marginCovariance_OIS_OIS();</span>
@@ -519,7 +519,7 @@ import org.drip.simm.product.RiskFactorTenorSensitivity;
 
 <span class="nc" id="L520">		BucketAggregateIR bucketAggregateIR = bucketSensitivityIR.aggregate (bucketSensitivitySettingsIR);</span>
 
-<span class="nc" id="L522">		IRSensitivityAggregate irDeltaAggregate = bucketAggregateIR.riskFactorAggregateIR().linearMargin</span>
+<span class="nc" id="L522">		SensitivityAggregateIR irDeltaAggregate = bucketAggregateIR.riskFactorAggregate().linearMargin</span>
 <span class="nc" id="L523">			(bucketSensitivitySettingsIR);</span>
 
 <span class="nc" id="L525">		DeltaMarginCovarianceEntry (irDeltaAggregate);</span>

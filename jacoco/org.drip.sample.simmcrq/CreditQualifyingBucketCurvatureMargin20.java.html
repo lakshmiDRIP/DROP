@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditQualifyingBucketCurvatureMargin20.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.simmcrq</a> &gt; <span class="el_source">CreditQualifyingBucketCurvatureMargin20.java</span></div><h1>CreditQualifyingBucketCurvatureMargin20.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.simmcrq;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm.margin.RiskMeasureAggregateCR;
+import org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR;
+import org.drip.simm.product.BucketSensitivityCR;
+import org.drip.simm.product.RiskFactorTenorSensitivity;
+import org.drip.simm.product.RiskMeasureSensitivityCR;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CreditQualifyingBucketCurvatureMargin20 illustrates the Computation of the SIMM 2.0 CR Curvature Margin
+ *  for a Bucket's Credit Exposure Sensitivities. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L84">public class CreditQualifyingBucketCurvatureMargin20</span>
+{
+
+	private static final void AddTenorSensitivity (
+		final Map&lt;String, Double&gt; tenorSensitivityMap,
+		final double notional,
+		final String tenor)
+		throws Exception
+	{
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (tenorSensitivityMap.containsKey (tenor))</span>
+		{
+<span class="nc" id="L95">			tenorSensitivityMap.put (</span>
+				tenor,
+<span class="nc" id="L97">				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)</span>
+			);
+		}
+		else
+		{
+<span class="nc" id="L102">			tenorSensitivityMap.put (</span>
+				tenor,
+<span class="nc" id="L104">				notional * (Math.random() - 0.5)</span>
+			);
+		}
+<span class="nc" id="L107">	}</span>
+
+	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
+		final double notional)
+		throws Exception
+	{
+<span class="nc" id="L113">		Map&lt;String, Double&gt; tenorSensitivityMap = new HashMap&lt;String, Double&gt;();</span>
+
+<span class="nc" id="L115">		AddTenorSensitivity (</span>
+			tenorSensitivityMap,
+			notional,
+			&quot;1Y&quot;
+		);
+
+<span class="nc" id="L121">		AddTenorSensitivity (</span>
+			tenorSensitivityMap,
+			notional,
+			&quot;2Y&quot;
+		);
+
+<span class="nc" id="L127">		AddTenorSensitivity (</span>
+			tenorSensitivityMap,
+			notional,
+			&quot;3Y&quot;
+		);
+
+<span class="nc" id="L133">		AddTenorSensitivity (</span>
+			tenorSensitivityMap,
+			notional,
+			&quot;5Y&quot;
+		);
+
+<span class="nc" id="L139">		AddTenorSensitivity (</span>
+			tenorSensitivityMap,
+			notional,
+			&quot;10Y&quot;
+		);
+
+<span class="nc" id="L145">		return new RiskFactorTenorSensitivity (tenorSensitivityMap);</span>
+	}
+
+	private static final void DisplayComponentTenorSensitivity (
+		final String componentName,
+		final RiskFactorTenorSensitivity tenorSensitivityMap)
+		throws Exception
+	{
+<span class="nc" id="L153">		System.out.println();</span>
+
+<span class="nc" id="L155">		System.out.println (&quot;\t|--------------||&quot;);</span>
+
+<span class="nc" id="L157">		System.out.println (&quot;\t|  &quot; + componentName + &quot; VEGA    ||&quot;);</span>
+
+<span class="nc" id="L159">		System.out.println (&quot;\t|--------------||&quot;);</span>
+
+<span class="nc" id="L161">		System.out.println (&quot;\t|              ||&quot;);</span>
+
+<span class="nc" id="L163">		System.out.println (&quot;\t|  L -&gt; R:     ||&quot;);</span>
+
+<span class="nc" id="L165">		System.out.println (&quot;\t|    - Tenor   ||&quot;);</span>
+
+<span class="nc" id="L167">		System.out.println (&quot;\t|    - Delta   ||&quot;);</span>
+
+<span class="nc" id="L169">		System.out.println (&quot;\t|--------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, Double&gt; tenorSensitivityEntry :
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			tenorSensitivityMap.sensitivityMap().entrySet())</span>
+		{
+<span class="nc" id="L174">			System.out.println (</span>
+				&quot;\t| &quot; +
+<span class="nc" id="L176">				tenorSensitivityEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L177">				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + &quot; ||&quot;</span>
+			);
+<span class="nc" id="L179">		}</span>
+
+<span class="nc" id="L181">		System.out.println (&quot;\t|--------------||&quot;);</span>
+
+<span class="nc" id="L183">		System.out.println();</span>
+<span class="nc" id="L184">	}</span>
+
+	private static final void ComponentRiskFactorTenorSensitivity (
+		final Map&lt;String, RiskFactorTenorSensitivity&gt; tenorSensitivityMap,
+		final double notional,
+		final String componentName)
+		throws Exception
+	{
+<span class="nc" id="L192">		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);</span>
+
+<span class="nc" id="L194">		tenorSensitivityMap.put (</span>
+			componentName,
+			ustRiskFactorSensitivity
+		);
+<span class="nc" id="L198">	}</span>
+
+	private static final void DisplayRiskMeasureAggregate (
+		final RiskMeasureAggregateCR riskMeasureAggregateCR)
+		throws Exception
+	{
+<span class="nc" id="L204">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L206">		System.out.println (&quot;\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||&quot;);</span>
+
+<span class="nc" id="L208">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L210">		System.out.println (</span>
+			&quot;\t|| Core Vega SBA Variance      =&gt; &quot; +
+<span class="nc" id="L212">			FormatUtil.FormatDouble (riskMeasureAggregateCR.coreSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L215">		System.out.println (</span>
+			&quot;\t|| Residual Vega SBA Variance  =&gt; &quot; +
+<span class="nc" id="L217">			FormatUtil.FormatDouble (riskMeasureAggregateCR.residualSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L220">		System.out.println (</span>
+			&quot;\t|| Vega SBA                    =&gt; &quot; +
+<span class="nc" id="L222">			FormatUtil.FormatDouble (riskMeasureAggregateCR.sba(), 10, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L225">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L227">		System.out.println();</span>
+<span class="nc" id="L228">	}</span>
+
+	public static final void main (
+		final String[] inputs)
+		throws Exception
+	{
+<span class="nc" id="L234">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L236">		int bucketIndex = 1;</span>
+<span class="nc" id="L237">		double notional = 100.;</span>
+<span class="nc" id="L238">		String[] componentNameArray = new String[]</span>
+		{
+			&quot;UST&quot;,
+			&quot;BND&quot;,
+			&quot;FRT&quot;,
+			&quot;ITA&quot;,
+			&quot;ESP&quot;,
+			&quot;GLT&quot;,
+		};
+
+<span class="nc" id="L248">		Map&lt;String, RiskFactorTenorSensitivity&gt; tenorSensitivityMap = new</span>
+			CaseInsensitiveHashMap&lt;RiskFactorTenorSensitivity&gt;();
+
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (String componentName : componentNameArray)</span>
+		{
+<span class="nc" id="L253">			ComponentRiskFactorTenorSensitivity (</span>
+				tenorSensitivityMap,
+				notional,
+				componentName
+			);
+		}
+
+<span class="nc" id="L260">		BucketSensitivityCR bucketSensitivityCR = new BucketSensitivityCR (tenorSensitivityMap);</span>
+
+<span class="nc" id="L262">		DisplayComponentTenorSensitivity (</span>
+			&quot;NET&quot;,
+<span class="nc" id="L264">			bucketSensitivityCR.cumulativeTenorSensitivityMap()</span>
+		);
+
+		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettingsCR =
+<span class="nc" id="L268">			RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20();</span>
+
+<span class="nc" id="L270">		Map&lt;String, BucketSensitivityCR&gt; bucketSensitivityMap = new</span>
+			CaseInsensitiveHashMap&lt;BucketSensitivityCR&gt;();
+
+<span class="nc" id="L273">		bucketSensitivityMap.put (</span>
+			&quot;&quot; + bucketIndex,
+			bucketSensitivityCR
+		);
+
+<span class="nc" id="L278">		RiskMeasureSensitivityCR riskMeasureSensitivityCR = new RiskMeasureSensitivityCR</span>
+			(bucketSensitivityMap);
+
+<span class="nc" id="L281">		RiskMeasureAggregateCR riskMeasureAggregateCR = riskMeasureSensitivityCR.curvatureAggregate</span>
+<span class="nc" id="L282">			(riskMeasureSensitivitySettingsCR);</span>
+
+<span class="nc" id="L284">		DisplayRiskMeasureAggregate (riskMeasureAggregateCR);</span>
+
+<span class="nc" id="L286">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L287">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -169,17 +169,17 @@ public void reset(){
 <span class="pc bpc" id="L169" title="2 of 4 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_VALUE:
 <span class="nc" id="L171">                                            status=S_IN_FINISHED_VALUE;</span>
-<span class="nc" id="L172">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="nc" id="L172">                                            statusStack.addFirst(status);</span>
 <span class="nc" id="L173">                                            valueStack.addFirst(token.value);</span>
 <span class="nc" id="L174">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_BRACE:
 <span class="fc" id="L176">                                            status=S_IN_OBJECT;</span>
-<span class="fc" id="L177">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L177">                                            statusStack.addFirst(status);</span>
 <span class="fc" id="L178">                                            valueStack.addFirst(createObjectContainer(containerFactory));</span>
 <span class="fc" id="L179">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_SQUARE:
 <span class="fc" id="L181">                                            status=S_IN_ARRAY;</span>
-<span class="fc" id="L182">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L182">                                            statusStack.addFirst(status);</span>
 <span class="fc" id="L183">                                            valueStack.addFirst(createArrayContainer(containerFactory));</span>
 <span class="fc" id="L184">                                            break;</span>
                                     default:
@@ -202,7 +202,7 @@ public void reset(){
 <span class="fc" id="L202">                                                    String key=(String)token.value;</span>
 <span class="fc" id="L203">                                                    valueStack.addFirst(key);</span>
 <span class="fc" id="L204">                                                    status=S_PASSED_PAIR_KEY;</span>
-<span class="fc" id="L205">                                                    statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L205">                                                    statusStack.addFirst(status);</span>
 <span class="fc" id="L206">                                            }</span>
                                             else{
 <span class="nc" id="L208">                                                    status=S_IN_ERROR;</span>
@@ -242,7 +242,7 @@ public void reset(){
 <span class="fc" id="L242">                                            java.util.List newArray=createArrayContainer(containerFactory);</span>
 <span class="fc" id="L243">                                            parent.put(key,newArray);</span>
 <span class="fc" id="L244">                                            status=S_IN_ARRAY;</span>
-<span class="fc" id="L245">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L245">                                            statusStack.addFirst(status);</span>
 <span class="fc" id="L246">                                            valueStack.addFirst(newArray);</span>
 <span class="fc" id="L247">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_BRACE:
@@ -252,7 +252,7 @@ public void reset(){
 <span class="fc" id="L252">                                            java.util.Map newObject=createObjectContainer(containerFactory);</span>
 <span class="fc" id="L253">                                            parent.put(key,newObject);</span>
 <span class="fc" id="L254">                                            status=S_IN_OBJECT;</span>
-<span class="fc" id="L255">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L255">                                            statusStack.addFirst(status);</span>
 <span class="fc" id="L256">                                            valueStack.addFirst(newObject);</span>
 <span class="fc" id="L257">                                            break;</span>
                                     default:
@@ -283,7 +283,7 @@ public void reset(){
 <span class="fc" id="L283">                                            java.util.Map newObject=createObjectContainer(containerFactory);</span>
 <span class="fc" id="L284">                                            val.add(newObject);</span>
 <span class="fc" id="L285">                                            status=S_IN_OBJECT;</span>
-<span class="fc" id="L286">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L286">                                            statusStack.addFirst(status);</span>
 <span class="fc" id="L287">                                            valueStack.addFirst(newObject);</span>
 <span class="fc" id="L288">                                            break;</span>
                                     case Yytoken.TYPE_LEFT_SQUARE:
@@ -291,7 +291,7 @@ public void reset(){
 <span class="fc" id="L291">                                            java.util.List newArray=createArrayContainer(containerFactory);</span>
 <span class="fc" id="L292">                                            val.add(newArray);</span>
 <span class="fc" id="L293">                                            status=S_IN_ARRAY;</span>
-<span class="fc" id="L294">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L294">                                            statusStack.addFirst(status);</span>
 <span class="fc" id="L295">                                            valueStack.addFirst(newArray);</span>
 <span class="fc" id="L296">                                            break;</span>
                                     default:
@@ -399,19 +399,19 @@ public void reset(){
 <span class="pc bpc" id="L399" title="3 of 4 branches missed.">                                    switch(token.type){</span>
                                     case Yytoken.TYPE_VALUE:
 <span class="nc" id="L401">                                            status=S_IN_FINISHED_VALUE;</span>
-<span class="nc" id="L402">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="nc" id="L402">                                            statusStack.addFirst(status);</span>
 <span class="nc bnc" id="L403" title="All 2 branches missed.">                                            if(!contentHandler.primitive(token.value))</span>
 <span class="nc" id="L404">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
 <span class="fc" id="L407">                                            status=S_IN_OBJECT;</span>
-<span class="fc" id="L408">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L408">                                            statusStack.addFirst(status);</span>
 <span class="pc bpc" id="L409" title="1 of 2 branches missed.">                                            if(!contentHandler.startObject())</span>
 <span class="nc" id="L410">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
 <span class="nc" id="L413">                                            status=S_IN_ARRAY;</span>
-<span class="nc" id="L414">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="nc" id="L414">                                            statusStack.addFirst(status);</span>
 <span class="nc bnc" id="L415" title="All 2 branches missed.">                                            if(!contentHandler.startArray())</span>
 <span class="nc" id="L416">                                                    return;</span>
                                             break;
@@ -441,7 +441,7 @@ public void reset(){
 <span class="pc bpc" id="L441" title="1 of 2 branches missed.">                                            if(token.value instanceof String){</span>
 <span class="fc" id="L442">                                                    String key=(String)token.value;</span>
 <span class="fc" id="L443">                                                    status=S_PASSED_PAIR_KEY;</span>
-<span class="fc" id="L444">                                                    statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L444">                                                    statusStack.addFirst(status);</span>
 <span class="pc bpc" id="L445" title="1 of 2 branches missed.">                                                    if(!contentHandler.startObjectEntry(key))</span>
 <span class="nc" id="L446">                                                            return;</span>
 <span class="fc" id="L447">                                            }</span>
@@ -481,17 +481,17 @@ public void reset(){
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
 <span class="fc" id="L483">                                            statusStack.removeFirst();</span>
-<span class="fc" id="L484">                                            statusStack.addFirst(new Integer(S_IN_PAIR_VALUE));</span>
+<span class="fc" id="L484">                                            statusStack.addFirst(S_IN_PAIR_VALUE);</span>
 <span class="fc" id="L485">                                            status=S_IN_ARRAY;</span>
-<span class="fc" id="L486">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L486">                                            statusStack.addFirst(status);</span>
 <span class="pc bpc" id="L487" title="1 of 2 branches missed.">                                            if(!contentHandler.startArray())</span>
 <span class="nc" id="L488">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
 <span class="fc" id="L491">                                            statusStack.removeFirst();</span>
-<span class="fc" id="L492">                                            statusStack.addFirst(new Integer(S_IN_PAIR_VALUE));</span>
+<span class="fc" id="L492">                                            statusStack.addFirst(S_IN_PAIR_VALUE);</span>
 <span class="fc" id="L493">                                            status=S_IN_OBJECT;</span>
-<span class="fc" id="L494">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L494">                                            statusStack.addFirst(status);</span>
 <span class="pc bpc" id="L495" title="1 of 2 branches missed.">                                            if(!contentHandler.startObject())</span>
 <span class="nc" id="L496">                                                    return;</span>
                                             break;
@@ -533,13 +533,13 @@ public void reset(){
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
 <span class="fc" id="L535">                                            status=S_IN_OBJECT;</span>
-<span class="fc" id="L536">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="fc" id="L536">                                            statusStack.addFirst(status);</span>
 <span class="pc bpc" id="L537" title="1 of 2 branches missed.">                                            if(!contentHandler.startObject())</span>
 <span class="nc" id="L538">                                                    return;</span>
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
 <span class="nc" id="L541">                                            status=S_IN_ARRAY;</span>
-<span class="nc" id="L542">                                            statusStack.addFirst(new Integer(status));</span>
+<span class="nc" id="L542">                                            statusStack.addFirst(status);</span>
 <span class="nc bnc" id="L543" title="All 2 branches missed.">                                            if(!contentHandler.startArray())</span>
 <span class="nc" id="L544">                                                    return;</span>
                                             break;

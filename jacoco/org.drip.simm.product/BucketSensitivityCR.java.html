@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BucketSensitivityCR.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm.product</a> &gt; <span class="el_source">BucketSensitivityCR.java</span></div><h1>BucketSensitivityCR.java</h1><pre class="source lang-java linenums">
+package org.drip.simm.product;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BucketSensitivityCR holds the ISDA SIMM Risk Factor Tenor Bucket Sensitivities across CR Tenor Factors.
+ *  The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BucketSensitivityCR
+{
+<span class="nc" id="L74">	private org.drip.simm.product.RiskFactorTenorSensitivity _cumulativeTenorSensitivityMap = null;</span>
+<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;</span>
+		_tenorSensitivityMap = null;
+
+	private org.drip.simm.margin.BucketAggregateCR linearAggregate (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
+	{
+<span class="nc" id="L81">		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate</span>
+<span class="nc" id="L82">			(bucketSensitivitySettings);</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (null == riskFactorAggregate)</span>
+		{
+<span class="nc" id="L86">			return null;</span>
+		}
+
+<span class="nc" id="L89">		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate = riskFactorAggregate.linearMargin</span>
+<span class="nc" id="L90">			(bucketSensitivitySettings);</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (null == sensitivityAggregate)</span>
+		{
+<span class="nc" id="L94">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L99">			return new org.drip.simm.margin.BucketAggregateCR (</span>
+				riskFactorAggregate,
+				sensitivityAggregate,
+<span class="nc" id="L102">				sensitivityAggregate.cumulativeMarginCovariance(),</span>
+<span class="nc" id="L103">				riskFactorAggregate.cumulativeSensitivityMargin()</span>
+			);
+		}
+<span class="nc" id="L106">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L108">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L111">		return null;</span>
+	}
+
+	private org.drip.simm.margin.BucketAggregateCR curvatureAggregate (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
+	{
+<span class="nc" id="L117">		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate</span>
+<span class="nc" id="L118">			(bucketSensitivitySettings);</span>
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == riskFactorAggregate)</span>
+		{
+<span class="nc" id="L122">			return null;</span>
+		}
+
+<span class="nc" id="L125">		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate =</span>
+<span class="nc" id="L126">			riskFactorAggregate.curvatureMargin (bucketSensitivitySettings);</span>
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == sensitivityAggregate)</span>
+		{
+<span class="nc" id="L130">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L135">			return new org.drip.simm.margin.BucketAggregateCR (</span>
+				riskFactorAggregate,
+				sensitivityAggregate,
+<span class="nc" id="L138">				sensitivityAggregate.cumulativeMarginCovariance(),</span>
+<span class="nc" id="L139">				riskFactorAggregate.cumulativeSensitivityMargin()</span>
+			);
+		}
+<span class="nc" id="L142">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L144">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L147">		return null;</span>
+	}
+
+	/**
+	 * BucketSensitivityCR Constructor
+	 * 
+	 * @param tenorSensitivityMap The Risk Factor Tenor Sensitivity Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BucketSensitivityCR (
+		final java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;
+			tenorSensitivityMap)
+		throws java.lang.Exception
+<span class="nc" id="L162">	{</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">		if (null == (_tenorSensitivityMap = tenorSensitivityMap) || 0 == _tenorSensitivityMap.size())</span>
+		{
+<span class="nc" id="L165">			throw new java.lang.Exception (&quot;BucketSensitivityCR Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L168">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; riskFactorTenorSensitivityMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			tenorSensitivityMapEntry : _tenorSensitivityMap.entrySet())</span>
+		{
+<span class="nc" id="L174">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentRiskFactorTenorSensitivityMap =</span>
+<span class="nc" id="L175">				tenorSensitivityMapEntry.getValue().sensitivityMap();</span>
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
+				componentRiskFactorTenorSensitivityMapEntry :
+<span class="nc bnc" id="L179" title="All 2 branches missed.">				componentRiskFactorTenorSensitivityMap.entrySet())</span>
+			{
+<span class="nc" id="L181">				java.lang.String tenor = componentRiskFactorTenorSensitivityMapEntry.getKey();</span>
+
+<span class="nc bnc" id="L183" title="All 2 branches missed.">				if (riskFactorTenorSensitivityMap.containsKey (tenor))</span>
+				{
+<span class="nc" id="L185">					riskFactorTenorSensitivityMap.put (</span>
+						tenor,
+<span class="nc" id="L187">						riskFactorTenorSensitivityMap.get (tenor) +</span>
+<span class="nc" id="L188">							componentRiskFactorTenorSensitivityMap.get (tenor)</span>
+					);
+				}
+				else
+				{
+<span class="nc" id="L193">					riskFactorTenorSensitivityMap.put (</span>
+						tenor,
+<span class="nc" id="L195">						componentRiskFactorTenorSensitivityMap.get (tenor)</span>
+					);
+				}
+<span class="nc" id="L198">			}</span>
+<span class="nc" id="L199">		}</span>
+
+<span class="nc" id="L201">		_cumulativeTenorSensitivityMap = new org.drip.simm.product.RiskFactorTenorSensitivity</span>
+			(riskFactorTenorSensitivityMap);
+<span class="nc" id="L203">	}</span>
+
+	/**
+	 * Retrieve the Cumulative Risk Factor Tenor Sensitivity Map
+	 * 
+	 * @return The Cumulative Risk Factor Tenor Sensitivity Map
+	 */
+
+	public org.drip.simm.product.RiskFactorTenorSensitivity cumulativeTenorSensitivityMap()
+	{
+<span class="nc" id="L213">		return _cumulativeTenorSensitivityMap;</span>
+	}
+
+	/**
+	 * Retrieve the Risk Factor Tenor Sensitivity Map
+	 * 
+	 * @return The Risk Factor Tenor Sensitivity Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;
+		tenorSensitivityMap()
+	{
+<span class="nc" id="L225">		return _tenorSensitivityMap;</span>
+	}
+
+	/**
+	 * Generate the Cumulative Tenor Sensitivity
+	 * 
+	 * @return The Cumulative Tenor Sensitivity
+	 */
+
+	public double cumulativeTenorSensitivity()
+	{
+<span class="nc" id="L236">		return _cumulativeTenorSensitivityMap.cumulative();</span>
+	}
+
+	/**
+	 * Compute the Sensitivity Concentration Risk Factor
+	 * 
+	 * @param sensitivityConcentrationThreshold The Sensitivity Concentration Threshold
+	 * 
+	 * @return The Sensitivity Concentration Risk Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double sensitivityConcentrationRiskFactor (
+		final double sensitivityConcentrationThreshold)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (sensitivityConcentrationThreshold))</span>
+		{
+<span class="nc" id="L255">			throw new java.lang.Exception</span>
+				(&quot;BucketSensitivityCR::sensitivityConcentrationRiskFactor =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L259">		return java.lang.Math.max (</span>
+<span class="nc" id="L260">			java.lang.Math.sqrt (</span>
+<span class="nc" id="L261">				java.lang.Math.max (</span>
+<span class="nc" id="L262">					cumulativeTenorSensitivity(),</span>
+					0.
+				) / sensitivityConcentrationThreshold
+			),
+			1.
+		);
+	}
+
+	/**
+	 * Generate the Tenor Sensitivity Margin Map
+	 * 
+	 * @param bucketSensitivitySettings The Bucket Tenor Sensitivity Settings
+	 * 
+	 * @return The Tenor Sensitivity Margin Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
+	{
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (null == bucketSensitivitySettings)</span>
+		{
+<span class="nc" id="L283">			return null;</span>
+		}
+
+<span class="nc" id="L286">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin =</span>
+<span class="nc" id="L287">			_cumulativeTenorSensitivityMap.sensitivityMargin (bucketSensitivitySettings.tenorRiskWeight());</span>
+
+<span class="nc bnc" id="L289" title="All 2 branches missed.">		if (null == tenorSensitivityMargin)</span>
+		{
+<span class="nc" id="L291">			return tenorSensitivityMargin;</span>
+		}
+
+<span class="nc" id="L294">		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L298">			sensitivityConcentrationRiskFactor = sensitivityConcentrationRiskFactor</span>
+<span class="nc" id="L299">				(bucketSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L301">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L303">			e.printStackTrace();</span>
+
+<span class="nc" id="L305">			return null;</span>
+<span class="nc" id="L306">		}</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMarginEntry :
+<span class="nc bnc" id="L309" title="All 2 branches missed.">			tenorSensitivityMargin.entrySet())</span>
+		{
+<span class="nc" id="L311">			java.lang.String tenor = tenorSensitivityMarginEntry.getKey();</span>
+
+<span class="nc" id="L313">			tenorSensitivityMargin.put (</span>
+				tenor,
+<span class="nc" id="L315">				tenorSensitivityMargin.get (tenor) * sensitivityConcentrationRiskFactor</span>
+			);
+<span class="nc" id="L317">		}</span>
+
+<span class="nc" id="L319">		return tenorSensitivityMargin;</span>
+	}
+
+	/**
+	 * Generate the CR Margin Factor Curve Tenor Aggregate
+	 * 
+	 * @param bucketSensitivitySettings The Bucket Tenor Sensitivity Settings
+	 * 
+	 * @return The CR Margin Factor Curve Tenor Aggregate
+	 */
+
+	public org.drip.simm.margin.RiskFactorAggregateCR curveAggregate (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
+	{
+<span class="nc bnc" id="L333" title="All 2 branches missed.">		if (null == bucketSensitivitySettings)</span>
+		{
+<span class="nc" id="L335">			return null;</span>
+		}
+
+<span class="nc" id="L338">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _tenorSensitivityMap.keySet();</span>
+
+		java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;
+<span class="nc" id="L341">			componentTenorSensitivityMargin = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.String,
+					java.lang.Double&gt;&gt;();
+
+<span class="nc" id="L345">		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L349">			sensitivityConcentrationRiskFactor = sensitivityConcentrationRiskFactor</span>
+<span class="nc" id="L350">				(bucketSensitivitySettings.concentrationThreshold());</span>
+		}
+<span class="nc" id="L352">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L354">			e.printStackTrace();</span>
+
+<span class="nc" id="L356">			return null;</span>
+<span class="nc" id="L357">		}</span>
+
+<span class="nc bnc" id="L359" title="All 2 branches missed.">		for (java.lang.String componentName : componentNameSet)</span>
+		{
+<span class="nc" id="L361">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivity = _tenorSensitivityMap.get</span>
+<span class="nc" id="L362">				(componentName).sensitivityMap();</span>
+
+<span class="nc" id="L364">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityEntry :
+<span class="nc bnc" id="L368" title="All 2 branches missed.">				tenorSensitivity.entrySet())</span>
+			{
+<span class="nc" id="L370">				java.lang.String tenor = tenorSensitivityEntry.getKey();</span>
+
+<span class="nc" id="L372">				tenorSensitivityMargin.put (</span>
+					tenor,
+<span class="nc" id="L374">					tenorSensitivity.get (tenor) * sensitivityConcentrationRiskFactor</span>
+				);
+<span class="nc" id="L376">			}</span>
+
+<span class="nc" id="L378">			componentTenorSensitivityMargin.put (</span>
+				componentName,
+				tenorSensitivityMargin
+			);
+<span class="nc" id="L382">		}</span>
+
+		try
+		{
+<span class="nc" id="L386">			return new org.drip.simm.margin.RiskFactorAggregateCR (</span>
+				componentTenorSensitivityMargin,
+				sensitivityConcentrationRiskFactor
+			);
+		}
+<span class="nc" id="L391">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L393">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L396">		return null;</span>
+	}
+
+	/**
+	 * Generate the Bucket CR Sensitivity Margin Aggregate
+	 * 
+	 * @param bucketSensitivitySettingsCR The CR Bucket Sensitivity Settings
+	 * 
+	 * @return The Bucket IR Sensitivity Margin Aggregate
+	 */
+
+	public org.drip.simm.margin.BucketAggregateCR aggregate (
+		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
+	{
+<span class="nc bnc" id="L410" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
+		{
+<span class="nc" id="L412">			return null;</span>
+		}
+
+<span class="nc bnc" id="L415" title="All 2 branches missed.">		return bucketSensitivitySettingsCR instanceof org.drip.simm.parameters.BucketCurvatureSettingsCR ?</span>
+<span class="nc" id="L416">			curvatureAggregate (bucketSensitivitySettingsCR) : linearAggregate (bucketSensitivitySettingsCR);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
