@@ -13,7 +13,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.simm.estimator.ProductClassMargin;
 import org.drip.simm.estimator.ProductClassSensitivity;
 import org.drip.simm.estimator.ProductClassSettings;
-import org.drip.simm.fx.FXRiskThresholdContainer20;
+import org.drip.simm.fx.FXRiskThresholdContainer21;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskClassAggregateCR;
 import org.drip.simm.margin.RiskClassAggregateIR;
@@ -74,7 +74,7 @@ import org.drip.simm.product.RiskMeasureSensitivityIR;
  */
 
 /**
- * ProductMargin20 illustrates the Computation of the ISDA SIMM 2.0 Product Margin for across a Group of Risk
+ * ProductMargin21 illustrates the Computation of the ISDA SIMM 2.1 Product Margin for across a Group of Risk
  *  Factor Exposure Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -96,7 +96,7 @@ import org.drip.simm.product.RiskMeasureSensitivityIR;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProductMargin20
+public class ProductMargin21
 {
 
 	private static final void AddEquityBucketRiskFactorSensitivity (
@@ -149,7 +149,7 @@ public class ProductMargin20
 
 		for (String currency : currencyArray)
 		{
-			int categoryIndex = FXRiskThresholdContainer20.CurrencyCategory (currency);
+			int categoryIndex = FXRiskThresholdContainer21.CurrencyCategory (currency);
 
 			if (currencySentivityMap.containsKey ("" + categoryIndex))
 			{
@@ -1069,7 +1069,7 @@ public class ProductMargin20
 			fxCurrencyList.add (fxCurrency);
 		}
 
-		ProductClassSettings productClassSettings = ProductClassSettings.ISDA_20 (
+		ProductClassSettings productClassSettings = ProductClassSettings.ISDA_21 (
 			fxCurrencyList,
 			vegaDurationDays
 		);
