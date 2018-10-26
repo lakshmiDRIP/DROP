@@ -136,12 +136,14 @@ public class RiskClassSensitivityIR
 	 * Compute the Risk Class Sensitivity Aggregate
 	 * 
 	 * @param riskClassSensitivitySettingsIR The IR Risk Class Sensitivity Settings
+	 * @param marginEstimationSettings Margin Estimation Settings
 	 * 
 	 * @return The Risk Class Sensitivity Aggregate
 	 */
 
 	public org.drip.simm.margin.RiskClassAggregateIR aggregate (
-		final org.drip.simm.parameters.RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR)
+		final org.drip.simm.parameters.RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR,
+		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == riskClassSensitivitySettingsIR)
 		{
@@ -151,9 +153,18 @@ public class RiskClassSensitivityIR
 		try
 		{
 			return new org.drip.simm.margin.RiskClassAggregateIR (
-				_delta.linearAggregate (riskClassSensitivitySettingsIR.delta()),
-				_vega.linearAggregate (riskClassSensitivitySettingsIR.vega()),
-				_curvature.curvatureAggregate (riskClassSensitivitySettingsIR.curvature())
+				_delta.linearAggregate (
+					riskClassSensitivitySettingsIR.delta(),
+					marginEstimationSettings
+				),
+				_vega.linearAggregate (
+					riskClassSensitivitySettingsIR.vega(),
+					marginEstimationSettings
+				),
+				_curvature.curvatureAggregate (
+					riskClassSensitivitySettingsIR.curvature(),
+					marginEstimationSettings
+				)
 			);
 		}
 		catch (java.lang.Exception e)

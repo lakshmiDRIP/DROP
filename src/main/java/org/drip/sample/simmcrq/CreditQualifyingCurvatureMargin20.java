@@ -10,6 +10,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskMeasureAggregateCR;
 import org.drip.simm.margin.SensitivityAggregateCR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR;
 import org.drip.simm.product.BucketSensitivityCR;
 import org.drip.simm.product.RiskFactorTenorSensitivity;
@@ -336,11 +337,16 @@ public class CreditQualifyingCurvatureMargin20
 
 		RiskMeasureSensitivityCR riskClassSensitivity = new RiskMeasureSensitivityCR (bucketSensitivityMap);
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings =
 			RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20();
 
-		RiskMeasureAggregateCR riskMeasureAggregate = riskClassSensitivity.curvatureAggregate
-			(riskMeasureSensitivitySettings);
+		RiskMeasureAggregateCR riskMeasureAggregate = riskClassSensitivity.curvatureAggregate (
+			riskMeasureSensitivitySettings,
+			marginEstimationSettings
+		);
 
 		for (int bucketIndex : bucketIndexArray)
 		{

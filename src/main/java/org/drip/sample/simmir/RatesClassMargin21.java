@@ -10,6 +10,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskClassAggregateIR;
 import org.drip.simm.margin.RiskMeasureAggregateIR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
 import org.drip.simm.product.BucketSensitivityIR;
 import org.drip.simm.product.RiskClassSensitivityIR;
@@ -224,6 +225,9 @@ public class RatesClassMargin21
 			currencyList.add (currency);
 		}
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR =
 			RiskClassSensitivitySettingsIR.ISDA_21 (currencyList);
 
@@ -231,7 +235,10 @@ public class RatesClassMargin21
 			new RiskMeasureSensitivityIR (bucketDeltaSensitivityMap),
 			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap),
 			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap)
-		).aggregate (riskClassSensitivitySettingsIR);
+		).aggregate (
+			riskClassSensitivitySettingsIR,
+			marginEstimationSettings
+		);
 
 		RiskMeasureAggregateIR deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 

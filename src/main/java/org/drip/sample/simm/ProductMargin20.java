@@ -1113,8 +1113,10 @@ public class ProductMargin20
 			irNotionalArray
 		);
 
-		RiskClassAggregateIR irRiskClassAggregate = irRiskClassSensitivity.aggregate
-			(productClassSettings.irRiskClassSensitivitySettings());
+		RiskClassAggregateIR irRiskClassAggregate = irRiskClassSensitivity.aggregate (
+			productClassSettings.irRiskClassSensitivitySettings(),
+			marginEstimationSettings
+		);
 
 		RiskClassSensitivityCR crqRiskClassSensitivity = CreditSensitivity (
 			crqBucketComponentGrid,
@@ -1122,8 +1124,10 @@ public class ProductMargin20
 			notional
 		);
 
-		RiskClassAggregateCR crqRiskClassAggregate = crqRiskClassSensitivity.aggregate
-			(productClassSettings.creditQualifyingRiskClassSensitivitySettings());
+		RiskClassAggregateCR crqRiskClassAggregate = crqRiskClassSensitivity.aggregate (
+			productClassSettings.creditQualifyingRiskClassSensitivitySettings(),
+			marginEstimationSettings
+		);
 
 		RiskClassSensitivityCR crnqRiskClassSensitivity = CreditSensitivity (
 			crnqBucketComponentGrid,
@@ -1131,8 +1135,10 @@ public class ProductMargin20
 			notional
 		);
 
-		RiskClassAggregateCR crnqRiskClassAggregate = crnqRiskClassSensitivity.aggregate
-			(productClassSettings.creditNonQualifyingRiskClassSensitivitySettings());
+		RiskClassAggregateCR crnqRiskClassAggregate = crnqRiskClassSensitivity.aggregate (
+			productClassSettings.creditNonQualifyingRiskClassSensitivitySettings(),
+			marginEstimationSettings
+		);
 
 		System.out.println ("\t|-------------------------------------||");
 

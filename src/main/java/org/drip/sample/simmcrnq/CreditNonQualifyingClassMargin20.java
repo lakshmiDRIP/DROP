@@ -9,6 +9,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskClassAggregateCR;
 import org.drip.simm.margin.RiskMeasureAggregateCR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskClassSensitivitySettingsCR;
 import org.drip.simm.product.BucketSensitivityCR;
 import org.drip.simm.product.RiskClassSensitivityCR;
@@ -266,11 +267,16 @@ public class CreditNonQualifyingClassMargin20
 			new RiskMeasureSensitivityCR (bucketVegaSensitivityMap)
 		);
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskClassSensitivitySettingsCR riskClassSensitivitySettings =
 			RiskClassSensitivitySettingsCR.ISDA_CRNQ_20();
 
-		RiskClassAggregateCR riskClassAggregate = riskClassSensitivity.aggregate
-			(riskClassSensitivitySettings);
+		RiskClassAggregateCR riskClassAggregate = riskClassSensitivity.aggregate (
+			riskClassSensitivitySettings,
+			marginEstimationSettings
+		);
 
 		RiskMeasureAggregateCR deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 

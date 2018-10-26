@@ -146,12 +146,12 @@ public class BucketAggregate
 	{
 		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
 
-		return java.lang.Math.max (
-			java.lang.Math.min (
+		return java.lang.Math.min (
+			java.lang.Math.max (
 				_cumulativeSensitivityMargin,
-				sensitivityMargin
+				-1. * sensitivityMargin
 			),
-			-1. * sensitivityMargin
+			sensitivityMargin
 		);
 	}
 

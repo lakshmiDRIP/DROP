@@ -10,6 +10,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.SensitivityAggregateIR;
 import org.drip.simm.margin.RiskMeasureAggregateIR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR;
 import org.drip.simm.product.BucketSensitivityIR;
 import org.drip.simm.product.RiskFactorTenorSensitivity;
@@ -565,11 +566,16 @@ public class RatesCurvatureMargin21
 		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR
 			(bucketSensitivityMap);
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =
 			RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_21 (currencyList);
 
-		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.curvatureAggregate
-			(riskMeasureSensitivitySettingsIR);
+		RiskMeasureAggregateIR riskMeasureAggregateIR = riskClassSensitivityIR.curvatureAggregate (
+			riskMeasureSensitivitySettingsIR,
+			marginEstimationSettings
+		);
 
 		for (String currency : currencyArray)
 		{

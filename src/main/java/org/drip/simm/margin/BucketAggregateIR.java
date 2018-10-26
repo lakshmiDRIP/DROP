@@ -150,12 +150,12 @@ public class BucketAggregateIR
 	}
 
 	/**
-	 * Compute the Bounded Sensitivity Margin
+	 * Compute the ISDA SIMM Position Principal Component Co-variance
 	 * 
-	 * @return The Bounded Sensitivity Margin
+	 * @return The ISDA SIMM Position Principal Component Co-variance
 	 */
 
-	public double boundedSensitivityMargin()
+	public double positionPrincipalComponentCovarianceISDA()
 	{
 		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
 
@@ -166,5 +166,16 @@ public class BucketAggregateIR
 			),
 			-1. * sensitivityMargin
 		);
+	}
+
+	/**
+	 * Compute the FRTB SBA-C Position Principal Component Co-variance
+	 * 
+	 * @return The FRTB SBA-C Position Principal Component Co-variance
+	 */
+
+	public double positionPrincipalComponentCovarianceFRTB()
+	{
+		return _cumulativeSensitivityMargin;
 	}
 }

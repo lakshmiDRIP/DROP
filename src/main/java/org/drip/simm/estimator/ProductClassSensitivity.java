@@ -205,14 +205,20 @@ public class ProductClassSensitivity
 		try
 		{
 			return new ProductClassMargin (
-				null == _irRiskClassSensitivity ? null : _irRiskClassSensitivity.aggregate
-					(productClassSettings.irRiskClassSensitivitySettings()),
+				null == _irRiskClassSensitivity ? null : _irRiskClassSensitivity.aggregate (
+					productClassSettings.irRiskClassSensitivitySettings(),
+					marginEstimationSettings
+				),
 				null == _creditQualifyingRiskClassSensitivity ? null :
-					_creditQualifyingRiskClassSensitivity.aggregate
-						(productClassSettings.creditQualifyingRiskClassSensitivitySettings()),
+					_creditQualifyingRiskClassSensitivity.aggregate (
+						productClassSettings.creditQualifyingRiskClassSensitivitySettings(),
+						marginEstimationSettings
+					),
 				null == _creditNonQualifyingRiskClassSensitivity ? null :
-					_creditNonQualifyingRiskClassSensitivity.aggregate
-						(productClassSettings.creditNonQualifyingRiskClassSensitivitySettings()),
+					_creditNonQualifyingRiskClassSensitivity.aggregate (
+						productClassSettings.creditNonQualifyingRiskClassSensitivitySettings(),
+						marginEstimationSettings
+					),
 				null == _equityRiskClassSensitivity ? null : _equityRiskClassSensitivity.aggregate (
 					productClassSettings.equityRiskClassSensitivitySettings(),
 					marginEstimationSettings

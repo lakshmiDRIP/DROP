@@ -208,8 +208,8 @@ public class RiskMeasureSensitivity
 							weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (
 								"" + outerKey,
 								"" + innerKey
-							) * positionPrincipalComponentCovarianceOuter
-							* PositionPrincipalComponentCovariance (
+							) * positionPrincipalComponentCovarianceOuter *
+							PositionPrincipalComponentCovariance (
 								bucketAggregateMapInnerEntry.getValue(),
 								marginEstimationSettings
 							)

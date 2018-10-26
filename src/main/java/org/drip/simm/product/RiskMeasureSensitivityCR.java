@@ -74,6 +74,30 @@ public class RiskMeasureSensitivityCR
 	private java.util.Map<java.lang.String, org.drip.simm.product.BucketSensitivityCR> _bucketSensitivityMap
 		= null;
 
+	private static final double PositionPrincipalComponentCovariance (
+		final org.drip.simm.margin.BucketAggregateCR bucketAggregate,
+		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		throws java.lang.Exception
+	{
+		java.lang.String positionPrincipalComponentScheme =
+			marginEstimationSettings.positionPrincipalComponentScheme();
+
+		if (positionPrincipalComponentScheme.equalsIgnoreCase
+			(org.drip.simm.parameters.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))
+		{
+			return bucketAggregate.positionPrincipalComponentCovarianceFRTB();
+		}
+
+		if (positionPrincipalComponentScheme.equalsIgnoreCase
+			(org.drip.simm.parameters.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))
+		{
+			return bucketAggregate.positionPrincipalComponentCovarianceISDA();
+		}
+
+		throw new java.lang.Exception
+			("RiskMeasureSensitivityCR::PositionPrincipalComponentCovariance => Invalid Inputs");
+	}
+
 	/**
 	 * RiskMeasureSensitivityCR Constructor
 	 * 
@@ -108,14 +132,16 @@ public class RiskMeasureSensitivityCR
 	 * Generate the Linear Risk Measure Aggregate
 	 * 
 	 * @param riskMeasureSensitivitySettings The Risk Measure Sensitivity Settings
+	 * @param marginEstimationSettings Margin Estimation Settings
 	 * 
 	 * @return The Linear Risk Measure Aggregate
 	 */
 
 	public org.drip.simm.margin.RiskMeasureAggregateCR linearAggregate (
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings)
+		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings,
+		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
 	{
-		if (null == riskMeasureSensitivitySettings)
+		if (null == riskMeasureSensitivitySettings || null == marginEstimationSettings)
 		{
 			return null;
 		}
@@ -165,7 +191,10 @@ public class RiskMeasureSensitivityCR
 
 				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();
 
-				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedSensitivityMargin();
+				double positionPrincipalComponentCovarianceOuter = PositionPrincipalComponentCovariance (
+					bucketAggregateOuter,
+					marginEstimationSettings
+				);
 
 				for (java.util.Map.Entry<java.lang.String, org.drip.simm.margin.BucketAggregateCR>
 					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())
@@ -176,8 +205,11 @@ public class RiskMeasureSensitivityCR
 						weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (
 							outerKey,
 							innerKey
-						) * boundedWeightedSensitivityOuter *
-						bucketAggregateMapInnerEntry.getValue().boundedSensitivityMargin()
+						) * positionPrincipalComponentCovarianceOuter *
+						PositionPrincipalComponentCovariance (
+							bucketAggregateMapInnerEntry.getValue(),
+							marginEstimationSettings
+						)
 					);
 				}
 			}
@@ -200,14 +232,16 @@ public class RiskMeasureSensitivityCR
 	 * Generate the Curvature Risk Measure Aggregate
 	 * 
 	 * @param riskMeasureSensitivitySettings The Risk Measure Sensitivity Settings
+	 * @param marginEstimationSettings Margin Estimation Settings
 	 * 
 	 * @return The Curvature Risk Measure Aggregate
 	 */
 
 	public org.drip.simm.margin.RiskMeasureAggregateCR curvatureAggregate (
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings)
+		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings,
+		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
 	{
-		if (null == riskMeasureSensitivitySettings)
+		if (null == riskMeasureSensitivitySettings || null == marginEstimationSettings)
 		{
 			return null;
 		}
@@ -272,7 +306,10 @@ public class RiskMeasureSensitivityCR
 
 				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();
 
-				double boundedWeightedSensitivityOuter = bucketAggregateOuter.boundedSensitivityMargin();
+				double positionPrincipalComponentCovarianceOuter = PositionPrincipalComponentCovariance (
+					bucketAggregateOuter,
+					marginEstimationSettings
+				);
 
 				for (java.util.Map.Entry<java.lang.String, org.drip.simm.margin.BucketAggregateCR>
 					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())
@@ -291,8 +328,11 @@ public class RiskMeasureSensitivityCR
 						);
 
 						coreSBAVariance = coreSBAVariance + correlation * correlation *
-							boundedWeightedSensitivityOuter *
-							bucketAggregateMapInnerEntry.getValue().boundedSensitivityMargin();
+							positionPrincipalComponentCovarianceOuter *
+							PositionPrincipalComponentCovariance (
+								bucketAggregateMapInnerEntry.getValue(),
+								marginEstimationSettings
+							);
 					}
 				}
 			}

@@ -8,6 +8,7 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskMeasureAggregateCR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR;
 import org.drip.simm.product.BucketSensitivityCR;
 import org.drip.simm.product.RiskFactorTenorSensitivity;
@@ -264,6 +265,9 @@ public class CreditNonQualifyingBucketCurvatureMargin21
 			bucketSensitivityCR.cumulativeTenorSensitivityMap()
 		);
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettingsCR =
 			RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_21();
 
@@ -278,8 +282,10 @@ public class CreditNonQualifyingBucketCurvatureMargin21
 		RiskMeasureSensitivityCR riskMeasureSensitivityCR = new RiskMeasureSensitivityCR
 			(bucketSensitivityMap);
 
-		RiskMeasureAggregateCR riskMeasureAggregateCR = riskMeasureSensitivityCR.curvatureAggregate
-			(riskMeasureSensitivitySettingsCR);
+		RiskMeasureAggregateCR riskMeasureAggregateCR = riskMeasureSensitivityCR.curvatureAggregate (
+			riskMeasureSensitivitySettingsCR,
+			marginEstimationSettings
+		);
 
 		DisplayRiskMeasureAggregate (riskMeasureAggregateCR);
 
