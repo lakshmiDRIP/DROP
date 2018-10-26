@@ -10,6 +10,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskClassSensitivitySettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.RiskClassSensitivity;
@@ -309,6 +310,9 @@ public class FXClassMargin20
 			"IDR"
 		};
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX_20
 			(vegaDurationDays);
 
@@ -343,7 +347,10 @@ public class FXClassMargin20
 			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
 			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
 			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
-		).aggregate (riskClassSensitivitySettings);
+		).aggregate (
+			riskClassSensitivitySettings,
+			marginEstimationSettings
+		);
 
 		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 

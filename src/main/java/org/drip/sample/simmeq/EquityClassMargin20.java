@@ -10,6 +10,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskClassSensitivitySettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.RiskClassSensitivity;
@@ -296,6 +297,9 @@ public class EquityClassMargin20
 		double notional = 100.;
 		int vegaDurationDays = 365;
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ_20
 			(vegaDurationDays);
 
@@ -327,7 +331,10 @@ public class EquityClassMargin20
 			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
 			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
 			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
-		).aggregate (riskClassSensitivitySettings);
+		).aggregate (
+			riskClassSensitivitySettings,
+			marginEstimationSettings
+		);
 
 		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 

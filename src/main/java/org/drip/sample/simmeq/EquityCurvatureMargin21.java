@@ -9,6 +9,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.BucketAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.RiskMeasureSensitivity;
@@ -342,6 +343,9 @@ public class EquityCurvatureMargin21
 		double notional = 100.;
 		int vegaDurationDays = 365;
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
 			RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE_21 (vegaDurationDays);
 
@@ -396,7 +400,10 @@ public class EquityCurvatureMargin21
 		System.out.println();
 
 		RiskMeasureAggregate riskMeasureAggregate = new RiskMeasureSensitivity
-			(bucketSensitivityMap).curvatureAggregate (riskMeasureSensitivitySettings);
+			(bucketSensitivityMap).curvatureAggregate (
+				riskMeasureSensitivitySettings,
+				marginEstimationSettings
+			);
 
 		System.out.println ("\t|---------------------------------------------------------||");
 

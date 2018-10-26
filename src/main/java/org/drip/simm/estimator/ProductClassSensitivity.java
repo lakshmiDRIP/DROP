@@ -188,12 +188,14 @@ public class ProductClassSensitivity
 	 * Generate the Margin for the Product Class
 	 * 
 	 * @param productClassSettings The Product Class Settings
+	 * @param marginEstimationSettings Margin Estimation Settings
 	 * 
 	 * @return The Margin for the Product Class
 	 */
 
 	public org.drip.simm.estimator.ProductClassMargin estimate (
-		final org.drip.simm.estimator.ProductClassSettings productClassSettings)
+		final org.drip.simm.estimator.ProductClassSettings productClassSettings,
+		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == productClassSettings)
 		{
@@ -211,12 +213,18 @@ public class ProductClassSensitivity
 				null == _creditNonQualifyingRiskClassSensitivity ? null :
 					_creditNonQualifyingRiskClassSensitivity.aggregate
 						(productClassSettings.creditNonQualifyingRiskClassSensitivitySettings()),
-				null == _equityRiskClassSensitivity ? null : _equityRiskClassSensitivity.aggregate
-					(productClassSettings.equityRiskClassSensitivitySettings()),
-				null == _fxRiskClassSensitivity ? null : _fxRiskClassSensitivity.aggregate
-					(productClassSettings.fxRiskClassSensitivitySettings()),
-				null == _commodityRiskClassSensitivity ? null : _commodityRiskClassSensitivity.aggregate
-					(productClassSettings.commodityRiskClassSensitivitySettings())
+				null == _equityRiskClassSensitivity ? null : _equityRiskClassSensitivity.aggregate (
+					productClassSettings.equityRiskClassSensitivitySettings(),
+					marginEstimationSettings
+				),
+				null == _fxRiskClassSensitivity ? null : _fxRiskClassSensitivity.aggregate (
+					productClassSettings.fxRiskClassSensitivitySettings(),
+					marginEstimationSettings
+				),
+				null == _commodityRiskClassSensitivity ? null : _commodityRiskClassSensitivity.aggregate (
+					productClassSettings.commodityRiskClassSensitivitySettings(),
+					marginEstimationSettings
+				)
 			);
 		}
 		catch (java.lang.Exception e)

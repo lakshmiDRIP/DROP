@@ -1,5 +1,5 @@
 
-package org.drip.simm.product;
+package org.drip.simm.parameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,7 +47,7 @@ package org.drip.simm.product;
  */
 
 /**
- * RiskClassSensitivity holds the Risk Class Bucket Sensitivities for a single Risk Class. The References
+ * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
  *  are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -57,7 +57,7 @@ package org.drip.simm.product;
  *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
  *  
  *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting .Initial Margin Requirements,
+ *  	Framework for Forecasting Initial Margin Requirements,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
  *  
  *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
@@ -69,109 +69,50 @@ package org.drip.simm.product;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskClassSensitivity
+public class MarginEstimationSettings
 {
-	private org.drip.simm.product.RiskMeasureSensitivity _vega = null;
-	private org.drip.simm.product.RiskMeasureSensitivity _delta = null;
-	private org.drip.simm.product.RiskMeasureSensitivity _curvature = null;
 
 	/**
-	 * RiskClassSensitivity Constructor
-	 * 
-	 * @param delta The Delta Risk Measure Sensitivity
-	 * @param vega The Vega Risk Measure Sensitivity
-	 * @param curvature The Curvature Risk Measure Sensitivity
-	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * FRTB Based Position - Principal Component Estimator
 	 */
 
-	public RiskClassSensitivity (
-		final org.drip.simm.product.RiskMeasureSensitivity delta,
-		final org.drip.simm.product.RiskMeasureSensitivity vega,
-		final org.drip.simm.product.RiskMeasureSensitivity curvature)
+	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
+
+	/**
+	 * ISDA Based Position - Principal Component Estimator
+	 */
+
+	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
+
+	private java.lang.String _positionPrincipalComponentScheme = "";
+
+	/**
+	 * MarginEstimationSettings Constructor
+	 * 
+	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
+	 * 
+	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
+	 */
+
+	public MarginEstimationSettings (
+		final java.lang.String positionPrincipalComponentScheme)
 		throws java.lang.Exception
 	{
-		if (null == (_delta = delta) ||
-			null == (_vega = vega) ||
-			null == (_curvature = curvature))
+		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
+			_positionPrincipalComponentScheme.isEmpty())
 		{
-			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Delta Risk Measure Sensitivity
+	 * Retrieve the Position Principal Component Scheme
 	 * 
-	 * @return The Delta Risk Measure Sensitivity
+	 * @return The Position Principal Component Scheme
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivity delta()
+	public java.lang.String positionPrincipalComponentScheme()
 	{
-		return _delta;
-	}
-
-	/**
-	 * Retrieve the Vega Risk Measure Sensitivity
-	 * 
-	 * @return The Vega Risk Measure Sensitivity
-	 */
-
-	public org.drip.simm.product.RiskMeasureSensitivity vega()
-	{
-		return _vega;
-	}
-
-	/**
-	 * Retrieve the Curvature Risk Measure Sensitivity
-	 * 
-	 * @return The Curvature Risk Measure Sensitivity
-	 */
-
-	public org.drip.simm.product.RiskMeasureSensitivity curvature()
-	{
-		return _curvature;
-	}
-
-	/**
-	 * Compute the Risk Class Sensitivity Aggregate
-	 * 
-	 * @param riskClassSensitivitySettings The Risk Class Sensitivity Settings
-	 * @param marginEstimationSettings Margin Estimation Settings
-	 * 
-	 * @return The Risk Class Sensitivity Aggregate
-	 */
-
-	public org.drip.simm.margin.RiskClassAggregate aggregate (
-		final org.drip.simm.parameters.RiskClassSensitivitySettings riskClassSensitivitySettings,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
-	{
-		if (null == riskClassSensitivitySettings)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new org.drip.simm.margin.RiskClassAggregate (
-				_delta.linearAggregate (
-					riskClassSensitivitySettings.delta(),
-					marginEstimationSettings
-				),
-				_vega.linearAggregate (
-					riskClassSensitivitySettings.vega(),
-					marginEstimationSettings
-				),
-				_curvature.curvatureAggregate (
-					riskClassSensitivitySettings.curvature(),
-					marginEstimationSettings
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _positionPrincipalComponentScheme;
 	}
 }

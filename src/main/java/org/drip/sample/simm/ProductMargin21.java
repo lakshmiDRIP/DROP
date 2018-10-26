@@ -17,6 +17,7 @@ import org.drip.simm.fx.FXRiskThresholdContainer21;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskClassAggregateCR;
 import org.drip.simm.margin.RiskClassAggregateIR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.BucketSensitivityCR;
 import org.drip.simm.product.BucketSensitivityIR;
@@ -1069,6 +1070,9 @@ public class ProductMargin21
 			fxCurrencyList.add (fxCurrency);
 		}
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		ProductClassSettings productClassSettings = ProductClassSettings.ISDA_21 (
 			fxCurrencyList,
 			vegaDurationDays
@@ -1079,24 +1083,30 @@ public class ProductMargin21
 			vegaDurationDays
 		);
 
-		RiskClassAggregate equityRiskClassAggregate = equityRiskClassSensitivity.aggregate
-			(productClassSettings.equityRiskClassSensitivitySettings());
+		RiskClassAggregate equityRiskClassAggregate = equityRiskClassSensitivity.aggregate (
+			productClassSettings.equityRiskClassSensitivitySettings(),
+			marginEstimationSettings
+		);
 
 		RiskClassSensitivity commodityRiskClassSensitivity = CommoditySensitivity (
 			notional,
 			vegaDurationDays
 		);
 
-		RiskClassAggregate commodityRiskClassAggregate = commodityRiskClassSensitivity.aggregate
-			(productClassSettings.commodityRiskClassSensitivitySettings());
+		RiskClassAggregate commodityRiskClassAggregate = commodityRiskClassSensitivity.aggregate (
+			productClassSettings.commodityRiskClassSensitivitySettings(),
+			marginEstimationSettings
+		);
 
 		RiskClassSensitivity fxRiskClassSensitivity = FXSensitivity (
 			fxCurrencyArray,
 			notional
 		);
 
-		RiskClassAggregate fxRiskClassAggregate = fxRiskClassSensitivity.aggregate
-			(productClassSettings.fxRiskClassSensitivitySettings());
+		RiskClassAggregate fxRiskClassAggregate = fxRiskClassSensitivity.aggregate (
+			productClassSettings.fxRiskClassSensitivitySettings(),
+			marginEstimationSettings
+		);
 
 		RiskClassSensitivityIR irRiskClassSensitivity = IRSensitivity (
 			irCurrencyArray,
@@ -1183,7 +1193,10 @@ public class ProductMargin21
 			crnqRiskClassSensitivity
 		);
 
-		ProductClassMargin productClassMargin = productClassSensitivity.estimate (productClassSettings);
+		ProductClassMargin productClassMargin = productClassSensitivity.estimate (
+			productClassSettings,
+			marginEstimationSettings
+		);
 
 		System.out.println ("\t|-------------------------------------||");
 

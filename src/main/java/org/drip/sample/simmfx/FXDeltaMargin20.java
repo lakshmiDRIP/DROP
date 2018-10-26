@@ -10,6 +10,7 @@ import org.drip.service.env.EnvManager;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.margin.BucketAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.RiskMeasureSensitivity;
@@ -206,6 +207,9 @@ public class FXDeltaMargin20
 			"IDR"
 		};
 
+		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
+
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
 			RiskMeasureSensitivitySettings.ISDA_FX_DELTA_20();
 
@@ -262,7 +266,10 @@ public class FXDeltaMargin20
 		System.out.println();
 
 		RiskMeasureAggregate riskMeasureAggregate = new
-			RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);
+			RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (
+				riskMeasureSensitivitySettings,
+				marginEstimationSettings
+			);
 
 		System.out.println ("\t|--------------------------------------------------||");
 
