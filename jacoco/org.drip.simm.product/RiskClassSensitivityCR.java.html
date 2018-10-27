@@ -136,32 +136,43 @@ public class RiskClassSensitivityCR
 	 * Compute the Risk Class Sensitivity Aggregate
 	 * 
 	 * @param riskClassSensitivitySettingsCR The CR Risk Class Sensitivity Settings
+	 * @param marginEstimationSettings Margin Estimation Settings
 	 * 
 	 * @return The Risk Class Sensitivity Aggregate
 	 */
 
 	public org.drip.simm.margin.RiskClassAggregateCR aggregate (
-		final org.drip.simm.parameters.RiskClassSensitivitySettingsCR riskClassSensitivitySettingsCR)
+		final org.drip.simm.parameters.RiskClassSensitivitySettingsCR riskClassSensitivitySettingsCR,
+		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
 	{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == riskClassSensitivitySettingsCR)</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (null == riskClassSensitivitySettingsCR)</span>
 		{
-<span class="nc" id="L148">			return null;</span>
+<span class="nc" id="L150">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L153">			return new org.drip.simm.margin.RiskClassAggregateCR (</span>
-<span class="nc" id="L154">				_delta.linearAggregate (riskClassSensitivitySettingsCR.delta()),</span>
-<span class="nc" id="L155">				_vega.linearAggregate (riskClassSensitivitySettingsCR.vega()),</span>
-<span class="nc" id="L156">				_curvature.curvatureAggregate (riskClassSensitivitySettingsCR.curvature())</span>
+<span class="nc" id="L155">			return new org.drip.simm.margin.RiskClassAggregateCR (</span>
+<span class="nc" id="L156">				_delta.linearAggregate (</span>
+<span class="nc" id="L157">					riskClassSensitivitySettingsCR.delta(),</span>
+					marginEstimationSettings
+				),
+<span class="nc" id="L160">				_vega.linearAggregate (</span>
+<span class="nc" id="L161">					riskClassSensitivitySettingsCR.vega(),</span>
+					marginEstimationSettings
+				),
+<span class="nc" id="L164">				_curvature.curvatureAggregate (</span>
+<span class="nc" id="L165">					riskClassSensitivitySettingsCR.curvature(),</span>
+					marginEstimationSettings
+				)
 			);
 		}
-<span class="nc" id="L159">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L170">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L161">			e.printStackTrace();</span>
+<span class="nc" id="L172">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L164">		return null;</span>
+<span class="nc" id="L175">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

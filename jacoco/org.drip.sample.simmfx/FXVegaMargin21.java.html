@@ -9,6 +9,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.BucketAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.RiskMeasureSensitivity;
@@ -81,7 +82,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class FXVegaMargin21</span>
+<span class="nc" id="L85">public class FXVegaMargin21</span>
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -90,30 +91,30 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 		final double notional,
 		final String[] fxPairArray)
 	{
-<span class="nc" id="L93">		Map&lt;String, Double&gt; riskFactorSensitivityMap = new CaseInsensitiveHashMap&lt;Double&gt;();</span>
+<span class="nc" id="L94">		Map&lt;String, Double&gt; riskFactorSensitivityMap = new CaseInsensitiveHashMap&lt;Double&gt;();</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (String fxPair : fxPairArray)</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (String fxPair : fxPairArray)</span>
 		{
-<span class="nc" id="L97">			riskFactorSensitivityMap.put (</span>
+<span class="nc" id="L98">			riskFactorSensitivityMap.put (</span>
 				fxPair,
-<span class="nc" id="L99">				notional * (Math.random() - 0.5)</span>
+<span class="nc" id="L100">				notional * (Math.random() - 0.5)</span>
 			);
 		}
 
-<span class="nc" id="L103">		bucketRiskFactorSensitivityMap.put (</span>
+<span class="nc" id="L104">		bucketRiskFactorSensitivityMap.put (</span>
 			bucketKey,
 			riskFactorSensitivityMap
 		);
-<span class="nc" id="L107">	}</span>
+<span class="nc" id="L108">	}</span>
 
 	private static final Map&lt;String, Map&lt;String, Double&gt;&gt; BucketRiskFactorSensitivityMap (
 		final double notional)
 		throws Exception
 	{
-<span class="nc" id="L113">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap =</span>
+<span class="nc" id="L114">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap =</span>
 			new TreeMap&lt;String, Map&lt;String, Double&gt;&gt;();
 
-<span class="nc" id="L116">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L117">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;1__1&quot;,
 			notional,
@@ -126,7 +127,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L129">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L130">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;1__2&quot;,
 			notional,
@@ -139,7 +140,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L142">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L143">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;2__1&quot;,
 			notional,
@@ -152,7 +153,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L155">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L156">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;2__2&quot;,
 			notional,
@@ -165,7 +166,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L168">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L169">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;1__3&quot;,
 			notional,
@@ -178,7 +179,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L181">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L182">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;2__3&quot;,
 			notional,
@@ -191,7 +192,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L194">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L195">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;3__1&quot;,
 			notional,
@@ -204,7 +205,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L207">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L208">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;3__2&quot;,
 			notional,
@@ -217,7 +218,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L220">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L221">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			&quot;3__3&quot;,
 			notional,
@@ -230,152 +231,158 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L233">		return bucketRiskFactorSensitivityMap;</span>
+<span class="nc" id="L234">		return bucketRiskFactorSensitivityMap;</span>
 	}
 
 	private static final void DisplayBucketRiskFactorSensitivity (
 		final Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
-<span class="nc" id="L240">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+<span class="nc" id="L241">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
 
-<span class="nc" id="L242">		System.out.println (&quot;\t|     RISK FACTOR VEGA     ||&quot;);</span>
+<span class="nc" id="L243">		System.out.println (&quot;\t|     RISK FACTOR VEGA     ||&quot;);</span>
 
-<span class="nc" id="L244">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+<span class="nc" id="L245">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
 
-<span class="nc" id="L246">		System.out.println (&quot;\t|  L -&gt; R:                 ||&quot;);</span>
+<span class="nc" id="L247">		System.out.println (&quot;\t|  L -&gt; R:                 ||&quot;);</span>
 
-<span class="nc" id="L248">		System.out.println (&quot;\t|    - Ticker              ||&quot;);</span>
+<span class="nc" id="L249">		System.out.println (&quot;\t|    - Ticker              ||&quot;);</span>
 
-<span class="nc" id="L250">		System.out.println (&quot;\t|    - Bucket              ||&quot;);</span>
+<span class="nc" id="L251">		System.out.println (&quot;\t|    - Bucket              ||&quot;);</span>
 
-<span class="nc" id="L252">		System.out.println (&quot;\t|    - Vega                ||&quot;);</span>
+<span class="nc" id="L253">		System.out.println (&quot;\t|    - Vega                ||&quot;);</span>
 
-<span class="nc" id="L254">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+<span class="nc" id="L255">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
 
 		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketSensitivityMapEntry :
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			bucketRiskFactorSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			bucketRiskFactorSensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L259">			String bucketKey = bucketSensitivityMapEntry.getKey();</span>
+<span class="nc" id="L260">			String bucketKey = bucketSensitivityMapEntry.getKey();</span>
 
-<span class="nc" id="L261">			Map&lt;String, Double&gt; riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();</span>
+<span class="nc" id="L262">			Map&lt;String, Double&gt; riskFactorSensitivityMap = bucketSensitivityMapEntry.getValue();</span>
 
 			for (Map.Entry&lt;String, Double&gt; riskFactorSensitivityMapEntry :
-<span class="nc bnc" id="L264" title="All 2 branches missed.">				riskFactorSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">				riskFactorSensitivityMap.entrySet())</span>
 			{
-<span class="nc" id="L266">				String currency = riskFactorSensitivityMapEntry.getKey();</span>
+<span class="nc" id="L267">				String currency = riskFactorSensitivityMapEntry.getKey();</span>
 
-<span class="nc" id="L268">				double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();</span>
+<span class="nc" id="L269">				double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();</span>
 
-<span class="nc" id="L270">				System.out.println (</span>
+<span class="nc" id="L271">				System.out.println (</span>
 					&quot;\t| &quot; +
 					currency + &quot; =&gt; &quot; +
 					bucketKey + &quot; | &quot; +
-<span class="nc" id="L274">					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L275">					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + &quot; ||&quot;</span>
 				);
-<span class="nc" id="L276">			}</span>
-<span class="nc" id="L277">		}</span>
+<span class="nc" id="L277">			}</span>
+<span class="nc" id="L278">		}</span>
 
-<span class="nc" id="L279">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
+<span class="nc" id="L280">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
 
-<span class="nc" id="L281">		System.out.println();</span>
-<span class="nc" id="L282">	}</span>
+<span class="nc" id="L282">		System.out.println();</span>
+<span class="nc" id="L283">	}</span>
 
 	public static void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L288">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L289">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L290">		double notional = 100.;</span>
+<span class="nc" id="L291">		double notional = 100.;</span>
+
+<span class="nc" id="L293">		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings</span>
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-<span class="nc" id="L293">			RiskMeasureSensitivitySettings.ISDA_FX_VEGA_21();</span>
+<span class="nc" id="L297">			RiskMeasureSensitivitySettings.ISDA_FX_VEGA_21();</span>
 
-<span class="nc" id="L295">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap</span>
-<span class="nc" id="L296">			(notional);</span>
+<span class="nc" id="L299">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap</span>
+<span class="nc" id="L300">			(notional);</span>
 
-<span class="nc" id="L298">		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);</span>
+<span class="nc" id="L302">		DisplayBucketRiskFactorSensitivity (bucketRiskFactorSensitivityMap);</span>
 
-<span class="nc" id="L300">		Map&lt;String, BucketSensitivity&gt; bucketSensitivityMap = new TreeMap&lt;String, BucketSensitivity&gt;();</span>
-
-<span class="nc" id="L302">		System.out.println (&quot;\t|------------------------||&quot;);</span>
-
-<span class="nc" id="L304">		System.out.println (&quot;\t|    BUCKET AGGREGATE    ||&quot;);</span>
+<span class="nc" id="L304">		Map&lt;String, BucketSensitivity&gt; bucketSensitivityMap = new TreeMap&lt;String, BucketSensitivity&gt;();</span>
 
 <span class="nc" id="L306">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L308">		System.out.println (&quot;\t|  L -&gt; R:               ||&quot;);</span>
+<span class="nc" id="L308">		System.out.println (&quot;\t|    BUCKET AGGREGATE    ||&quot;);</span>
 
-<span class="nc" id="L310">		System.out.println (&quot;\t|    - Bucket Index      ||&quot;);</span>
+<span class="nc" id="L310">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L312">		System.out.println (&quot;\t|    - Bucket Margin     ||&quot;);</span>
+<span class="nc" id="L312">		System.out.println (&quot;\t|  L -&gt; R:               ||&quot;);</span>
 
-<span class="nc" id="L314">		System.out.println (&quot;\t|    - Bucket Vega       ||&quot;);</span>
+<span class="nc" id="L314">		System.out.println (&quot;\t|    - Bucket Index      ||&quot;);</span>
 
-<span class="nc" id="L316">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L316">		System.out.println (&quot;\t|    - Bucket Margin     ||&quot;);</span>
+
+<span class="nc" id="L318">		System.out.println (&quot;\t|    - Bucket Vega       ||&quot;);</span>
+
+<span class="nc" id="L320">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
 		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketSensitivityMapEntry :
-<span class="nc bnc" id="L319" title="All 2 branches missed.">			bucketRiskFactorSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">			bucketRiskFactorSensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L321">			String bucketKey = bucketSensitivityMapEntry.getKey();</span>
+<span class="nc" id="L325">			String bucketKey = bucketSensitivityMapEntry.getKey();</span>
 
-<span class="nc" id="L323">			BucketSensitivity bucketSensitivity = new BucketSensitivity</span>
-<span class="nc" id="L324">				(bucketSensitivityMapEntry.getValue());</span>
+<span class="nc" id="L327">			BucketSensitivity bucketSensitivity = new BucketSensitivity</span>
+<span class="nc" id="L328">				(bucketSensitivityMapEntry.getValue());</span>
 
-<span class="nc" id="L326">			bucketSensitivityMap.put (</span>
+<span class="nc" id="L330">			bucketSensitivityMap.put (</span>
 				bucketKey,
 				bucketSensitivity
 			);
 
-<span class="nc" id="L331">			BucketAggregate bucketAggregate = bucketSensitivity.aggregate</span>
-<span class="nc" id="L332">				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketKey));</span>
+<span class="nc" id="L335">			BucketAggregate bucketAggregate = bucketSensitivity.aggregate</span>
+<span class="nc" id="L336">				(riskMeasureSensitivitySettings.bucketSettingsMap().get (bucketKey));</span>
 
-<span class="nc" id="L334">			System.out.println (&quot;\t| &quot; +</span>
+<span class="nc" id="L338">			System.out.println (&quot;\t| &quot; +</span>
 				bucketKey + &quot; =&gt; &quot; +
-<span class="nc" id="L336">				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L337">				FormatUtil.FormatDouble (bucketAggregate.cumulativeSensitivityMargin(), 4, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L340">				FormatUtil.FormatDouble (Math.sqrt (bucketAggregate.sensitivityMarginVariance()), 5, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L341">				FormatUtil.FormatDouble (bucketAggregate.cumulativeSensitivityMargin(), 4, 0, 1.) + &quot; ||&quot;</span>
 			);
-<span class="nc" id="L339">		}</span>
+<span class="nc" id="L343">		}</span>
 
-<span class="nc" id="L341">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L345">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L343">		System.out.println();</span>
+<span class="nc" id="L347">		System.out.println();</span>
 
-<span class="nc" id="L345">		RiskMeasureAggregate riskMeasureAggregate =</span>
-<span class="nc" id="L346">			new RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (riskMeasureSensitivitySettings);</span>
+<span class="nc" id="L349">		RiskMeasureAggregate riskMeasureAggregate =</span>
+<span class="nc" id="L350">			new RiskMeasureSensitivity (bucketSensitivityMap).linearAggregate (</span>
+				riskMeasureSensitivitySettings,
+				marginEstimationSettings
+			);
 
-<span class="nc" id="L348">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L355">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L350">		System.out.println (&quot;\t|               SBA BASED VEGA MARGIN                 ||&quot;);</span>
+<span class="nc" id="L357">		System.out.println (&quot;\t|               SBA BASED VEGA MARGIN                 ||&quot;);</span>
 
-<span class="nc" id="L352">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L359">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L354">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
+<span class="nc" id="L361">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L356">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
+<span class="nc" id="L363">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
 
-<span class="nc" id="L358">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
+<span class="nc" id="L365">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L360">		System.out.println (&quot;\t|            - Core Vega SBA Margin                   ||&quot;);</span>
+<span class="nc" id="L367">		System.out.println (&quot;\t|            - Core Vega SBA Margin                   ||&quot;);</span>
 
-<span class="nc" id="L362">		System.out.println (&quot;\t|            - Residual Vega SBA Margin               ||&quot;);</span>
+<span class="nc" id="L369">		System.out.println (&quot;\t|            - Residual Vega SBA Margin               ||&quot;);</span>
 
-<span class="nc" id="L364">		System.out.println (&quot;\t|            - SBA Vega Margin                        ||&quot;);</span>
+<span class="nc" id="L371">		System.out.println (&quot;\t|            - SBA Vega Margin                        ||&quot;);</span>
 
-<span class="nc" id="L366">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L373">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L368">		System.out.println (&quot;\t| VEGA MARGIN COMPONENTS  =&gt; &quot; +</span>
-<span class="nc" id="L369">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L375">		System.out.println (&quot;\t| VEGA MARGIN COMPONENTS  =&gt; &quot; +</span>
+<span class="nc" id="L376">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L371">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L378">			FormatUtil.FormatDouble (Math.sqrt (riskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L373">			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L380">			FormatUtil.FormatDouble (riskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L376">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L383">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L378">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L379">	}</span>
+<span class="nc" id="L385">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L386">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -8,6 +8,7 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskMeasureAggregateCR;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR;
 import org.drip.simm.product.BucketSensitivityCR;
 import org.drip.simm.product.RiskFactorTenorSensitivity;
@@ -81,7 +82,7 @@ import org.drip.simm.product.RiskMeasureSensitivityCR;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class CreditQualifyingBucketCurvatureMargin20</span>
+<span class="nc" id="L85">public class CreditQualifyingBucketCurvatureMargin20</span>
 {
 
 	private static final void AddTenorSensitivity (
@@ -90,59 +91,59 @@ import org.drip.simm.product.RiskMeasureSensitivityCR;
 		final String tenor)
 		throws Exception
 	{
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (tenorSensitivityMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		if (tenorSensitivityMap.containsKey (tenor))</span>
 		{
-<span class="nc" id="L95">			tenorSensitivityMap.put (</span>
+<span class="nc" id="L96">			tenorSensitivityMap.put (</span>
 				tenor,
-<span class="nc" id="L97">				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)</span>
+<span class="nc" id="L98">				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)</span>
 			);
 		}
 		else
 		{
-<span class="nc" id="L102">			tenorSensitivityMap.put (</span>
+<span class="nc" id="L103">			tenorSensitivityMap.put (</span>
 				tenor,
-<span class="nc" id="L104">				notional * (Math.random() - 0.5)</span>
+<span class="nc" id="L105">				notional * (Math.random() - 0.5)</span>
 			);
 		}
-<span class="nc" id="L107">	}</span>
+<span class="nc" id="L108">	}</span>
 
 	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
 		final double notional)
 		throws Exception
 	{
-<span class="nc" id="L113">		Map&lt;String, Double&gt; tenorSensitivityMap = new HashMap&lt;String, Double&gt;();</span>
+<span class="nc" id="L114">		Map&lt;String, Double&gt; tenorSensitivityMap = new HashMap&lt;String, Double&gt;();</span>
 
-<span class="nc" id="L115">		AddTenorSensitivity (</span>
+<span class="nc" id="L116">		AddTenorSensitivity (</span>
 			tenorSensitivityMap,
 			notional,
 			&quot;1Y&quot;
 		);
 
-<span class="nc" id="L121">		AddTenorSensitivity (</span>
+<span class="nc" id="L122">		AddTenorSensitivity (</span>
 			tenorSensitivityMap,
 			notional,
 			&quot;2Y&quot;
 		);
 
-<span class="nc" id="L127">		AddTenorSensitivity (</span>
+<span class="nc" id="L128">		AddTenorSensitivity (</span>
 			tenorSensitivityMap,
 			notional,
 			&quot;3Y&quot;
 		);
 
-<span class="nc" id="L133">		AddTenorSensitivity (</span>
+<span class="nc" id="L134">		AddTenorSensitivity (</span>
 			tenorSensitivityMap,
 			notional,
 			&quot;5Y&quot;
 		);
 
-<span class="nc" id="L139">		AddTenorSensitivity (</span>
+<span class="nc" id="L140">		AddTenorSensitivity (</span>
 			tenorSensitivityMap,
 			notional,
 			&quot;10Y&quot;
 		);
 
-<span class="nc" id="L145">		return new RiskFactorTenorSensitivity (tenorSensitivityMap);</span>
+<span class="nc" id="L146">		return new RiskFactorTenorSensitivity (tenorSensitivityMap);</span>
 	}
 
 	private static final void DisplayComponentTenorSensitivity (
@@ -150,38 +151,38 @@ import org.drip.simm.product.RiskMeasureSensitivityCR;
 		final RiskFactorTenorSensitivity tenorSensitivityMap)
 		throws Exception
 	{
-<span class="nc" id="L153">		System.out.println();</span>
+<span class="nc" id="L154">		System.out.println();</span>
 
-<span class="nc" id="L155">		System.out.println (&quot;\t|--------------||&quot;);</span>
+<span class="nc" id="L156">		System.out.println (&quot;\t|--------------||&quot;);</span>
 
-<span class="nc" id="L157">		System.out.println (&quot;\t|  &quot; + componentName + &quot; VEGA    ||&quot;);</span>
+<span class="nc" id="L158">		System.out.println (&quot;\t|  &quot; + componentName + &quot; VEGA    ||&quot;);</span>
 
-<span class="nc" id="L159">		System.out.println (&quot;\t|--------------||&quot;);</span>
+<span class="nc" id="L160">		System.out.println (&quot;\t|--------------||&quot;);</span>
 
-<span class="nc" id="L161">		System.out.println (&quot;\t|              ||&quot;);</span>
+<span class="nc" id="L162">		System.out.println (&quot;\t|              ||&quot;);</span>
 
-<span class="nc" id="L163">		System.out.println (&quot;\t|  L -&gt; R:     ||&quot;);</span>
+<span class="nc" id="L164">		System.out.println (&quot;\t|  L -&gt; R:     ||&quot;);</span>
 
-<span class="nc" id="L165">		System.out.println (&quot;\t|    - Tenor   ||&quot;);</span>
+<span class="nc" id="L166">		System.out.println (&quot;\t|    - Tenor   ||&quot;);</span>
 
-<span class="nc" id="L167">		System.out.println (&quot;\t|    - Delta   ||&quot;);</span>
+<span class="nc" id="L168">		System.out.println (&quot;\t|    - Delta   ||&quot;);</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t|--------------||&quot;);</span>
+<span class="nc" id="L170">		System.out.println (&quot;\t|--------------||&quot;);</span>
 
 		for (Map.Entry&lt;String, Double&gt; tenorSensitivityEntry :
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			tenorSensitivityMap.sensitivityMap().entrySet())</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">			tenorSensitivityMap.sensitivityMap().entrySet())</span>
 		{
-<span class="nc" id="L174">			System.out.println (</span>
+<span class="nc" id="L175">			System.out.println (</span>
 				&quot;\t| &quot; +
-<span class="nc" id="L176">				tenorSensitivityEntry.getKey() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L177">				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L177">				tenorSensitivityEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L178">				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + &quot; ||&quot;</span>
 			);
-<span class="nc" id="L179">		}</span>
+<span class="nc" id="L180">		}</span>
 
-<span class="nc" id="L181">		System.out.println (&quot;\t|--------------||&quot;);</span>
+<span class="nc" id="L182">		System.out.println (&quot;\t|--------------||&quot;);</span>
 
-<span class="nc" id="L183">		System.out.println();</span>
-<span class="nc" id="L184">	}</span>
+<span class="nc" id="L184">		System.out.println();</span>
+<span class="nc" id="L185">	}</span>
 
 	private static final void ComponentRiskFactorTenorSensitivity (
 		final Map&lt;String, RiskFactorTenorSensitivity&gt; tenorSensitivityMap,
@@ -189,53 +190,53 @@ import org.drip.simm.product.RiskMeasureSensitivityCR;
 		final String componentName)
 		throws Exception
 	{
-<span class="nc" id="L192">		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);</span>
+<span class="nc" id="L193">		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);</span>
 
-<span class="nc" id="L194">		tenorSensitivityMap.put (</span>
+<span class="nc" id="L195">		tenorSensitivityMap.put (</span>
 			componentName,
 			ustRiskFactorSensitivity
 		);
-<span class="nc" id="L198">	}</span>
+<span class="nc" id="L199">	}</span>
 
 	private static final void DisplayRiskMeasureAggregate (
 		final RiskMeasureAggregateCR riskMeasureAggregateCR)
 		throws Exception
 	{
-<span class="nc" id="L204">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L206">		System.out.println (&quot;\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||&quot;);</span>
+<span class="nc" id="L207">		System.out.println (&quot;\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||&quot;);</span>
 
-<span class="nc" id="L208">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+<span class="nc" id="L209">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L210">		System.out.println (</span>
+<span class="nc" id="L211">		System.out.println (</span>
 			&quot;\t|| Core Vega SBA Variance      =&gt; &quot; +
-<span class="nc" id="L212">			FormatUtil.FormatDouble (riskMeasureAggregateCR.coreSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L213">			FormatUtil.FormatDouble (riskMeasureAggregateCR.coreSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L215">		System.out.println (</span>
+<span class="nc" id="L216">		System.out.println (</span>
 			&quot;\t|| Residual Vega SBA Variance  =&gt; &quot; +
-<span class="nc" id="L217">			FormatUtil.FormatDouble (riskMeasureAggregateCR.residualSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L218">			FormatUtil.FormatDouble (riskMeasureAggregateCR.residualSBAVariance(), 10, 0, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L220">		System.out.println (</span>
+<span class="nc" id="L221">		System.out.println (</span>
 			&quot;\t|| Vega SBA                    =&gt; &quot; +
-<span class="nc" id="L222">			FormatUtil.FormatDouble (riskMeasureAggregateCR.sba(), 10, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L223">			FormatUtil.FormatDouble (riskMeasureAggregateCR.sba(), 10, 0, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L225">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
+<span class="nc" id="L226">		System.out.println (&quot;\t||--------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L227">		System.out.println();</span>
-<span class="nc" id="L228">	}</span>
+<span class="nc" id="L228">		System.out.println();</span>
+<span class="nc" id="L229">	}</span>
 
 	public static final void main (
 		final String[] inputs)
 		throws Exception
 	{
-<span class="nc" id="L234">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L235">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L236">		int bucketIndex = 1;</span>
-<span class="nc" id="L237">		double notional = 100.;</span>
-<span class="nc" id="L238">		String[] componentNameArray = new String[]</span>
+<span class="nc" id="L237">		int bucketIndex = 1;</span>
+<span class="nc" id="L238">		double notional = 100.;</span>
+<span class="nc" id="L239">		String[] componentNameArray = new String[]</span>
 		{
 			&quot;UST&quot;,
 			&quot;BND&quot;,
@@ -245,45 +246,50 @@ import org.drip.simm.product.RiskMeasureSensitivityCR;
 			&quot;GLT&quot;,
 		};
 
-<span class="nc" id="L248">		Map&lt;String, RiskFactorTenorSensitivity&gt; tenorSensitivityMap = new</span>
+<span class="nc" id="L249">		Map&lt;String, RiskFactorTenorSensitivity&gt; tenorSensitivityMap = new</span>
 			CaseInsensitiveHashMap&lt;RiskFactorTenorSensitivity&gt;();
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (String componentName : componentNameArray)</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		for (String componentName : componentNameArray)</span>
 		{
-<span class="nc" id="L253">			ComponentRiskFactorTenorSensitivity (</span>
+<span class="nc" id="L254">			ComponentRiskFactorTenorSensitivity (</span>
 				tenorSensitivityMap,
 				notional,
 				componentName
 			);
 		}
 
-<span class="nc" id="L260">		BucketSensitivityCR bucketSensitivityCR = new BucketSensitivityCR (tenorSensitivityMap);</span>
+<span class="nc" id="L261">		BucketSensitivityCR bucketSensitivityCR = new BucketSensitivityCR (tenorSensitivityMap);</span>
 
-<span class="nc" id="L262">		DisplayComponentTenorSensitivity (</span>
+<span class="nc" id="L263">		DisplayComponentTenorSensitivity (</span>
 			&quot;NET&quot;,
-<span class="nc" id="L264">			bucketSensitivityCR.cumulativeTenorSensitivityMap()</span>
+<span class="nc" id="L265">			bucketSensitivityCR.cumulativeTenorSensitivityMap()</span>
 		);
 
-		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettingsCR =
-<span class="nc" id="L268">			RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20();</span>
+<span class="nc" id="L268">		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings</span>
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
-<span class="nc" id="L270">		Map&lt;String, BucketSensitivityCR&gt; bucketSensitivityMap = new</span>
+		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettingsCR =
+<span class="nc" id="L272">			RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20();</span>
+
+<span class="nc" id="L274">		Map&lt;String, BucketSensitivityCR&gt; bucketSensitivityMap = new</span>
 			CaseInsensitiveHashMap&lt;BucketSensitivityCR&gt;();
 
-<span class="nc" id="L273">		bucketSensitivityMap.put (</span>
+<span class="nc" id="L277">		bucketSensitivityMap.put (</span>
 			&quot;&quot; + bucketIndex,
 			bucketSensitivityCR
 		);
 
-<span class="nc" id="L278">		RiskMeasureSensitivityCR riskMeasureSensitivityCR = new RiskMeasureSensitivityCR</span>
+<span class="nc" id="L282">		RiskMeasureSensitivityCR riskMeasureSensitivityCR = new RiskMeasureSensitivityCR</span>
 			(bucketSensitivityMap);
 
-<span class="nc" id="L281">		RiskMeasureAggregateCR riskMeasureAggregateCR = riskMeasureSensitivityCR.curvatureAggregate</span>
-<span class="nc" id="L282">			(riskMeasureSensitivitySettingsCR);</span>
+<span class="nc" id="L285">		RiskMeasureAggregateCR riskMeasureAggregateCR = riskMeasureSensitivityCR.curvatureAggregate (</span>
+			riskMeasureSensitivitySettingsCR,
+			marginEstimationSettings
+		);
 
-<span class="nc" id="L284">		DisplayRiskMeasureAggregate (riskMeasureAggregateCR);</span>
+<span class="nc" id="L290">		DisplayRiskMeasureAggregate (riskMeasureAggregateCR);</span>
 
-<span class="nc" id="L286">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L287">	}</span>
+<span class="nc" id="L292">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L293">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -10,6 +10,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskClassSensitivitySettings;
 import org.drip.simm.product.BucketSensitivity;
 import org.drip.simm.product.RiskClassSensitivity;
@@ -83,7 +84,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class EquityClassMargin20</span>
+<span class="nc" id="L87">public class EquityClassMargin20</span>
 {
 
 	private static final void AddBucketRiskFactorSensitivity (
@@ -92,30 +93,30 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 		final double notional,
 		final String[] equityArray)
 	{
-<span class="nc" id="L95">		Map&lt;String, Double&gt; riskFactorSensitivityMap = new CaseInsensitiveHashMap&lt;Double&gt;();</span>
+<span class="nc" id="L96">		Map&lt;String, Double&gt; riskFactorSensitivityMap = new CaseInsensitiveHashMap&lt;Double&gt;();</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (String equity : equityArray)</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		for (String equity : equityArray)</span>
 		{
-<span class="nc" id="L99">			riskFactorSensitivityMap.put (</span>
+<span class="nc" id="L100">			riskFactorSensitivityMap.put (</span>
 				equity,
-<span class="nc" id="L101">				notional * (Math.random() - 0.5)</span>
+<span class="nc" id="L102">				notional * (Math.random() - 0.5)</span>
 			);
 		}
 
-<span class="nc" id="L105">		bucketRiskFactorSensitivityMap.put (</span>
+<span class="nc" id="L106">		bucketRiskFactorSensitivityMap.put (</span>
 			&quot;&quot; + bucketIndex,
 			riskFactorSensitivityMap
 		);
-<span class="nc" id="L109">	}</span>
+<span class="nc" id="L110">	}</span>
 
 	private static final Map&lt;String, Map&lt;String, Double&gt;&gt; BucketRiskFactorSensitivityMap (
 		final double notional)
 		throws Exception
 	{
-<span class="nc" id="L115">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap =</span>
+<span class="nc" id="L116">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketRiskFactorSensitivityMap =</span>
 			new TreeMap&lt;String, Map&lt;String, Double&gt;&gt;();
 
-<span class="nc" id="L118">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L119">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			-1,
 			notional,
@@ -128,7 +129,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L131">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L132">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			1,
 			notional,
@@ -141,7 +142,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L144">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L145">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			2,
 			notional,
@@ -154,7 +155,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L157">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L158">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			3,
 			notional,
@@ -167,7 +168,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L170">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L171">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			4,
 			notional,
@@ -180,7 +181,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L183">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L184">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			5,
 			notional,
@@ -193,7 +194,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L196">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L197">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			6,
 			notional,
@@ -206,7 +207,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L209">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L210">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			7,
 			notional,
@@ -219,7 +220,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L222">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L223">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			8,
 			notional,
@@ -232,7 +233,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L235">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L236">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			9,
 			notional,
@@ -245,7 +246,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L248">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L249">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			10,
 			notional,
@@ -258,7 +259,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L261">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L262">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			11,
 			notional,
@@ -271,7 +272,7 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L274">		AddBucketRiskFactorSensitivity (</span>
+<span class="nc" id="L275">		AddBucketRiskFactorSensitivity (</span>
 			bucketRiskFactorSensitivityMap,
 			12,
 			notional,
@@ -284,160 +285,166 @@ import org.drip.simm.product.RiskMeasureSensitivity;
 			}
 		);
 
-<span class="nc" id="L287">		return bucketRiskFactorSensitivityMap;</span>
+<span class="nc" id="L288">		return bucketRiskFactorSensitivityMap;</span>
 	}
 
 	public static final void main (
 		final String[] inputArray)
 		throws Exception
 	{
-<span class="nc" id="L294">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L295">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L296">		double notional = 100.;</span>
-<span class="nc" id="L297">		int vegaDurationDays = 365;</span>
+<span class="nc" id="L297">		double notional = 100.;</span>
+<span class="nc" id="L298">		int vegaDurationDays = 365;</span>
 
-<span class="nc" id="L299">		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ_20</span>
-<span class="nc" id="L300">			(vegaDurationDays);</span>
+<span class="nc" id="L300">		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings</span>
+			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
-<span class="nc" id="L302">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketDeltaMap = BucketRiskFactorSensitivityMap (notional);</span>
+<span class="nc" id="L303">		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ_20</span>
+<span class="nc" id="L304">			(vegaDurationDays);</span>
 
-<span class="nc" id="L304">		Map&lt;String, BucketSensitivity&gt; bucketDeltaSensitivityMap = new HashMap&lt;String, BucketSensitivity&gt;();</span>
+<span class="nc" id="L306">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketDeltaMap = BucketRiskFactorSensitivityMap (notional);</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketDeltaMapEntry : bucketDeltaMap.entrySet())</span>
+<span class="nc" id="L308">		Map&lt;String, BucketSensitivity&gt; bucketDeltaSensitivityMap = new HashMap&lt;String, BucketSensitivity&gt;();</span>
+
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketDeltaMapEntry : bucketDeltaMap.entrySet())</span>
 		{
-<span class="nc" id="L308">			bucketDeltaSensitivityMap.put (</span>
-<span class="nc" id="L309">				bucketDeltaMapEntry.getKey(),</span>
-<span class="nc" id="L310">				new BucketSensitivity (bucketDeltaMapEntry.getValue())</span>
+<span class="nc" id="L312">			bucketDeltaSensitivityMap.put (</span>
+<span class="nc" id="L313">				bucketDeltaMapEntry.getKey(),</span>
+<span class="nc" id="L314">				new BucketSensitivity (bucketDeltaMapEntry.getValue())</span>
 			);
-<span class="nc" id="L312">		}</span>
+<span class="nc" id="L316">		}</span>
 
-<span class="nc" id="L314">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketVegaMap = BucketRiskFactorSensitivityMap (notional);</span>
+<span class="nc" id="L318">		Map&lt;String, Map&lt;String, Double&gt;&gt; bucketVegaMap = BucketRiskFactorSensitivityMap (notional);</span>
 
-<span class="nc" id="L316">		Map&lt;String, BucketSensitivity&gt; bucketVegaSensitivityMap = new HashMap&lt;String, BucketSensitivity&gt;();</span>
+<span class="nc" id="L320">		Map&lt;String, BucketSensitivity&gt; bucketVegaSensitivityMap = new HashMap&lt;String, BucketSensitivity&gt;();</span>
 
-<span class="nc bnc" id="L318" title="All 2 branches missed.">		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketVegaMapEntry : bucketVegaMap.entrySet())</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		for (Map.Entry&lt;String, Map&lt;String, Double&gt;&gt; bucketVegaMapEntry : bucketVegaMap.entrySet())</span>
 		{
-<span class="nc" id="L320">			bucketVegaSensitivityMap.put (</span>
-<span class="nc" id="L321">				bucketVegaMapEntry.getKey(),</span>
-<span class="nc" id="L322">				new BucketSensitivity (bucketVegaMapEntry.getValue())</span>
+<span class="nc" id="L324">			bucketVegaSensitivityMap.put (</span>
+<span class="nc" id="L325">				bucketVegaMapEntry.getKey(),</span>
+<span class="nc" id="L326">				new BucketSensitivity (bucketVegaMapEntry.getValue())</span>
 			);
-<span class="nc" id="L324">		}</span>
+<span class="nc" id="L328">		}</span>
 
-<span class="nc" id="L326">		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (</span>
+<span class="nc" id="L330">		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (</span>
 			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
 			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
 			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
-<span class="nc" id="L330">		).aggregate (riskClassSensitivitySettings);</span>
-
-<span class="nc" id="L332">		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();</span>
-
-<span class="nc" id="L334">		RiskMeasureAggregate vegaRiskMeasureAggregate = riskClassAggregate.vegaMargin();</span>
-
-<span class="nc" id="L336">		RiskMeasureAggregate curvatureRiskMeasureAggregate = riskClassAggregate.curvatureMargin();</span>
-
-<span class="nc" id="L338">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L340">		System.out.println (&quot;\t|               SBA BASED DELTA MARGIN                ||&quot;);</span>
-
-<span class="nc" id="L342">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L344">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
-
-<span class="nc" id="L346">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
-
-<span class="nc" id="L348">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
-
-<span class="nc" id="L350">		System.out.println (&quot;\t|            - Core Delta SBA Margin                  ||&quot;);</span>
-
-<span class="nc" id="L352">		System.out.println (&quot;\t|            - Residual Delta SBA Margin              ||&quot;);</span>
-
-<span class="nc" id="L354">		System.out.println (&quot;\t|            - SBA Delta Margin                       ||&quot;);</span>
-
-<span class="nc" id="L356">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L358">		System.out.println (&quot;\t| DELTA MARGIN COMPONENTS =&gt; &quot; +</span>
-<span class="nc" id="L359">			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
-				&quot; | &quot; +
-<span class="nc" id="L361">			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
-				&quot; | &quot; +
-<span class="nc" id="L363">			FormatUtil.FormatDouble (deltaRiskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L334">		).aggregate (</span>
+			riskClassSensitivitySettings,
+			marginEstimationSettings
 		);
 
-<span class="nc" id="L366">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L339">		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();</span>
 
-<span class="nc" id="L368">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L341">		RiskMeasureAggregate vegaRiskMeasureAggregate = riskClassAggregate.vegaMargin();</span>
 
-<span class="nc" id="L370">		System.out.println (&quot;\t|               SBA BASED VEGA MARGIN                 ||&quot;);</span>
+<span class="nc" id="L343">		RiskMeasureAggregate curvatureRiskMeasureAggregate = riskClassAggregate.curvatureMargin();</span>
 
-<span class="nc" id="L372">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L345">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L374">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
+<span class="nc" id="L347">		System.out.println (&quot;\t|               SBA BASED DELTA MARGIN                ||&quot;);</span>
 
-<span class="nc" id="L376">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
+<span class="nc" id="L349">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L378">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
+<span class="nc" id="L351">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L380">		System.out.println (&quot;\t|            - Core Vega SBA Margin                   ||&quot;);</span>
+<span class="nc" id="L353">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
 
-<span class="nc" id="L382">		System.out.println (&quot;\t|            - Residual Vega SBA Margin               ||&quot;);</span>
+<span class="nc" id="L355">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L384">		System.out.println (&quot;\t|            - SBA Vega Margin                        ||&quot;);</span>
+<span class="nc" id="L357">		System.out.println (&quot;\t|            - Core Delta SBA Margin                  ||&quot;);</span>
 
-<span class="nc" id="L386">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L359">		System.out.println (&quot;\t|            - Residual Delta SBA Margin              ||&quot;);</span>
 
-<span class="nc" id="L388">		System.out.println (&quot;\t| VEGA MARGIN COMPONENTS  =&gt; &quot; +</span>
-<span class="nc" id="L389">			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L361">		System.out.println (&quot;\t|            - SBA Delta Margin                       ||&quot;);</span>
+
+<span class="nc" id="L363">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L365">		System.out.println (&quot;\t| DELTA MARGIN COMPONENTS =&gt; &quot; +</span>
+<span class="nc" id="L366">			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L391">			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L368">			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L393">			FormatUtil.FormatDouble (vegaRiskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L370">			FormatUtil.FormatDouble (deltaRiskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L396">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L373">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L398">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L375">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L400">		System.out.println (&quot;\t|                 SBA BASED CURVATURE MARGIN              ||&quot;);</span>
+<span class="nc" id="L377">		System.out.println (&quot;\t|               SBA BASED VEGA MARGIN                 ||&quot;);</span>
 
-<span class="nc" id="L402">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L379">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L404">		System.out.println (&quot;\t|                                                         ||&quot;);</span>
+<span class="nc" id="L381">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L406">		System.out.println (&quot;\t|    L -&gt; R:                                              ||&quot;);</span>
+<span class="nc" id="L383">		System.out.println (&quot;\t|    L -&gt; R:                                          ||&quot;);</span>
 
-<span class="nc" id="L408">		System.out.println (&quot;\t|                                                         ||&quot;);</span>
+<span class="nc" id="L385">		System.out.println (&quot;\t|                                                     ||&quot;);</span>
 
-<span class="nc" id="L410">		System.out.println (&quot;\t|            - Core Curvature SBA Margin                  ||&quot;);</span>
+<span class="nc" id="L387">		System.out.println (&quot;\t|            - Core Vega SBA Margin                   ||&quot;);</span>
 
-<span class="nc" id="L412">		System.out.println (&quot;\t|            - Residual Curvature SBA Margin              ||&quot;);</span>
+<span class="nc" id="L389">		System.out.println (&quot;\t|            - Residual Vega SBA Margin               ||&quot;);</span>
 
-<span class="nc" id="L414">		System.out.println (&quot;\t|            - SBA Curvature Margin                       ||&quot;);</span>
+<span class="nc" id="L391">		System.out.println (&quot;\t|            - SBA Vega Margin                        ||&quot;);</span>
 
-<span class="nc" id="L416">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L393">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L418">		System.out.println (&quot;\t| CURVATURE MARGIN COMPONENTS =&gt; &quot; +</span>
-<span class="nc" id="L419">			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L395">		System.out.println (&quot;\t| VEGA MARGIN COMPONENTS  =&gt; &quot; +</span>
+<span class="nc" id="L396">			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L421">			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
+<span class="nc" id="L398">			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
 				&quot; | &quot; +
-<span class="nc" id="L423">			FormatUtil.FormatDouble (curvatureRiskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L400">			FormatUtil.FormatDouble (vegaRiskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L426">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L403">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L428">		System.out.println();</span>
+<span class="nc" id="L405">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L430">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L407">		System.out.println (&quot;\t|                 SBA BASED CURVATURE MARGIN              ||&quot;);</span>
 
-<span class="nc" id="L432">		System.out.println (</span>
+<span class="nc" id="L409">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L411">		System.out.println (&quot;\t|                                                         ||&quot;);</span>
+
+<span class="nc" id="L413">		System.out.println (&quot;\t|    L -&gt; R:                                              ||&quot;);</span>
+
+<span class="nc" id="L415">		System.out.println (&quot;\t|                                                         ||&quot;);</span>
+
+<span class="nc" id="L417">		System.out.println (&quot;\t|            - Core Curvature SBA Margin                  ||&quot;);</span>
+
+<span class="nc" id="L419">		System.out.println (&quot;\t|            - Residual Curvature SBA Margin              ||&quot;);</span>
+
+<span class="nc" id="L421">		System.out.println (&quot;\t|            - SBA Curvature Margin                       ||&quot;);</span>
+
+<span class="nc" id="L423">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L425">		System.out.println (&quot;\t| CURVATURE MARGIN COMPONENTS =&gt; &quot; +</span>
+<span class="nc" id="L426">			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +</span>
+				&quot; | &quot; +
+<span class="nc" id="L428">			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +</span>
+				&quot; | &quot; +
+<span class="nc" id="L430">			FormatUtil.FormatDouble (curvatureRiskMeasureAggregate.sba(), 5, 0, 1.) + &quot; ||&quot;</span>
+		);
+
+<span class="nc" id="L433">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L435">		System.out.println();</span>
+
+<span class="nc" id="L437">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L439">		System.out.println (</span>
 			&quot;\t| TOTAL MARGIN =&gt; &quot; +
-<span class="nc" id="L434">			FormatUtil.FormatDouble (riskClassAggregate.margin(), 5, 0, 1.) + &quot; ||&quot;);</span>
+<span class="nc" id="L441">			FormatUtil.FormatDouble (riskClassAggregate.margin(), 5, 0, 1.) + &quot; ||&quot;);</span>
 
-<span class="nc" id="L436">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L443">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L438">		System.out.println();</span>
+<span class="nc" id="L445">		System.out.println();</span>
 
-<span class="nc" id="L440">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L441">	}</span>
+<span class="nc" id="L447">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L448">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
