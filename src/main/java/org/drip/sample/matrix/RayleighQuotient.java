@@ -2,7 +2,8 @@
 package org.drip.sample.matrix;
 
 import org.drip.quant.common.FormatUtil;
-import org.drip.quant.eigen.*;
+import org.drip.quant.common.NumberUtil;
+import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -11,9 +12,6 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
  *  	libraries targeting analysts and developers
@@ -54,57 +52,106 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * PrincipalComponent demonstrates how to generate the Principal eigenvalue and eigenvector for the Input
- *  Matrix.
- *
+ * RayleighQuotient demonstrates the Computation of an Approximate to the Eigenvalue using the Rayleigh
+ * 	Quotient. The References are:
+ *  
+ *  - Wikipedia - Power Iteration (2018): https://en.wikipedia.org/wiki/Power_iteration.
+ *  
+ *  - Wikipedia - Rayleigh Quotient Iteration (2018):
+ *  	https://en.wikipedia.org/wiki/Rayleigh_quotient_iteration.
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrincipalComponent {
+public class RayleighQuotient
+{
 
-	private static final void PrincipalComponentRun (
-		final PowerIterationComponentExtractor pice)
+	private static final void EigenDump (
+		final int iteration,
+		final double[] eigenvector,
+		final double eigenvalue)
 		throws Exception
 	{
-		double dblCorr1 = 0.5 * Math.random();
+		java.lang.String strDump = "\t|| Iteration => " + FormatUtil.FormatDouble (iteration, 2, 0, 1.) +
+			"[" + FormatUtil.FormatDouble (eigenvalue, 3, 4, 1.) + "] => ";
 
-		double dblCorr2 = 0.5 * Math.random();
+		for (int i = 0; i < eigenvector.length; ++i)
+			strDump += FormatUtil.FormatDouble (eigenvector[i], 1, 4, 1.) + " | ";
 
-		double[][] aadblA = {
-			{     1.0, dblCorr1,      0.0},
-			{dblCorr1,      1.0, dblCorr2},
-			{     0.0, dblCorr2,      1.0}
-		};
-
-		EigenComponent ec = pice.principalComponent (aadblA);
-
-		double[] adblEigenvector = ec.eigenvector();
-
-		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenvalue(), 1, 4, 1.) + "] => ";
-
-		for (int i = 0; i < adblEigenvector.length; ++i)
-			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
-
-		System.out.println (
-			"\t{" +
-			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||" +
-			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + "} => " + strDump
-		);
+		System.out.println ("\t" + strDump);
 	}
 
 	public static final void main (
-		final String[] astrArg)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		PowerIterationComponentExtractor pice = new PowerIterationComponentExtractor (
-			50,
-			0.000001,
-			false
+		int iterationCount = 5;
+		double eigenvalue = 200.;
+		double[][] a = {
+			{1., 2., 3.},
+			{1., 2., 1.},
+			{3., 2., 1.},
+		};
+		double[] eigenvector = {
+			1. / Math.sqrt (3.),
+			1. / Math.sqrt (3.),
+			1. / Math.sqrt (3.)
+		};
+
+		NumberUtil.PrintMatrix (
+			"\t|| A ",
+			a
 		);
 
-		for (int i = 0; i < 50; ++i)
-			PrincipalComponentRun (pice);
+		EigenDump (
+			0,
+			eigenvector,
+			eigenvalue
+		);
+
+		int iterationIndex = 0;
+
+		while (++iterationIndex < iterationCount)
+		{
+			double[][] deDiagonalized = new double[a.length][a.length];
+
+			for (int row = 0; row < a.length; ++row)
+			{
+				for (int column = 0; column < a.length; ++column)
+				{
+					deDiagonalized[row][column] = a[row][column];
+
+					if (row == column)
+					{
+						deDiagonalized[row][column] -= eigenvalue;
+					}
+				}
+			}
+
+			eigenvector = Matrix.Normalize (
+				Matrix.Product (
+					Matrix.InvertUsingGaussianElimination (deDiagonalized),
+					eigenvector
+				)
+			);
+
+			eigenvalue = Matrix.DotProduct (
+				eigenvector,
+				Matrix.Product (
+					a,
+					eigenvector
+				)
+			);
+
+			EigenDump (
+				iterationIndex,
+				eigenvector,
+				eigenvalue
+			);
+		}
+
+		EnvManager.TerminateEnv();
 	}
 }

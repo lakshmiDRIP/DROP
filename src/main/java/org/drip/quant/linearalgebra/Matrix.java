@@ -1009,4 +1009,29 @@ public class Matrix {
 
 		return NON_TRIANGULAR;
 	}
+
+	/**
+	 * Compute the Rayleigh Quotient given the Matrix and one of its Eigenvector
+	 * 
+	 * @param matrix The Given Matrix
+	 * @param eigenvector The corresponding Eigenvector
+	 * 
+	 * @return The Computed Rayleigh Quotient
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double RayleighQuotient (
+		final double[][] matrix,
+		final double[] eigenvector)
+		throws java.lang.Exception
+	{
+		return org.drip.quant.linearalgebra.Matrix.DotProduct (
+			eigenvector,
+			org.drip.quant.linearalgebra.Matrix.Product (
+				matrix,
+				eigenvector
+			)
+		);
+	}
 }

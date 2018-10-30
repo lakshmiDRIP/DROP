@@ -122,24 +122,20 @@ public class PowerIterationComponentExtractor implements org.drip.quant.eigen.Co
 		if (null == aadblA) return null;
 
 		int iIter = 0;
-		double dblEigenvalue = 0.;
 		int iSize = aadblA.length;
+		double dblEigenvalue = iSize;
 		double[] adblEigenvector = new double[iSize];
 		double[] adblUpdatedEigenvector = new double[iSize];
 
 		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;
 
 		for (int i = 0; i < iSize; ++i) {
-			adblEigenvector[i] = java.lang.Math.random();
-
-			dblEigenvalue += adblEigenvector[i] * adblEigenvector[i];
+			adblEigenvector[i] = 1.;
 		}
 
-		double dblEigenvalueOld = (dblEigenvalue = java.lang.Math.sqrt (dblEigenvalue));
+		adblEigenvector = org.drip.quant.linearalgebra.Matrix.Normalize (adblEigenvector);
 
-		for (int i = 0; i < iSize; ++i)
-			adblEigenvector[i] /= dblEigenvalue;
-
+		double dblEigenvalueOld = dblEigenvalue;
 		double dblAbsoluteTolerance = _bToleranceAbsolute ? _dblTolerance : dblEigenvalue * _dblTolerance;
 		dblAbsoluteTolerance = dblAbsoluteTolerance > _dblTolerance ? dblAbsoluteTolerance : _dblTolerance;
 
@@ -151,15 +147,19 @@ public class PowerIterationComponentExtractor implements org.drip.quant.eigen.Co
 					adblUpdatedEigenvector[i] += aadblA[i][j] * adblEigenvector[j];
 			}
 
-			dblEigenvalue = 0.;
+			adblUpdatedEigenvector = org.drip.quant.linearalgebra.Matrix.Normalize (adblUpdatedEigenvector);
 
-			for (int i = 0; i < iSize; ++i)
-				dblEigenvalue += adblUpdatedEigenvector[i] * adblUpdatedEigenvector[i];
+			try {
+				dblEigenvalue = org.drip.quant.linearalgebra.Matrix.RayleighQuotient (
+					aadblA,
+					adblUpdatedEigenvector
+				);
+			} catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
 
-			dblEigenvalue = java.lang.Math.sqrt (dblEigenvalue);
-
-			for (int i = 0; i < iSize; ++i)
-				adblUpdatedEigenvector[i] /= dblEigenvalue;
+				return null;
+			}
 
 			if (dblAbsoluteTolerance > java.lang.Math.abs (dblEigenvalue - dblEigenvalueOld)) break;
 
@@ -171,7 +171,7 @@ public class PowerIterationComponentExtractor implements org.drip.quant.eigen.Co
 		if (iIter >= _iMaxIteration) return null;
 
 		try {
-			return new org.drip.quant.eigen.EigenComponent (adblEigenvector, dblEigenvalue);
+			return new org.drip.quant.eigen.EigenComponent (adblUpdatedEigenvector, dblEigenvalue);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

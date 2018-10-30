@@ -1,20 +1,21 @@
 
 package org.drip.sample.simmvariance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.margin.RiskClassAggregate;
-import org.drip.simm.margin.RiskMeasureAggregate;
+import org.drip.simm.margin.RiskClassAggregateIR;
+import org.drip.simm.margin.RiskMeasureAggregateIR;
 import org.drip.simm.parameters.MarginEstimationSettings;
-import org.drip.simm.parameters.RiskClassSensitivitySettings;
-import org.drip.simm.product.BucketSensitivity;
-import org.drip.simm.product.RiskClassSensitivity;
-import org.drip.simm.product.RiskMeasureSensitivity;
+import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
+import org.drip.simm.product.BucketSensitivityIR;
+import org.drip.simm.product.RiskClassSensitivityIR;
+import org.drip.simm.product.RiskFactorTenorSensitivity;
+import org.drip.simm.product.RiskMeasureSensitivityIR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -62,8 +63,8 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  */
 
 /**
- * EquityMarginComparison illustrates the Comparison of the Equity Margin Estimates using difference Schemes
- * 	for Calculating the Position-Bucket Principal Component Co-variance. The References are:
+ * IRMarginComparison illustrates the Comparison of the Interest Rate Margin Estimates using difference
+ *  Schemes for Calculating the Position-Bucket Principal Component Co-variance. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -84,232 +85,116 @@ import org.drip.simm.product.RiskMeasureSensitivity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EquityMarginComparison
+public class IRMarginComparison
 {
 
-	private static final void AddBucketRiskFactorSensitivity (
-		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap,
-		final int bucketIndex,
-		final double notional,
-		final String[] equityArray)
-	{
-		Map<String, Double> riskFactorSensitivityMap = new CaseInsensitiveHashMap<Double>();
-
-		for (String equity : equityArray)
-		{
-			riskFactorSensitivityMap.put (
-				equity,
-				notional * (Math.random() - 0.5)
-			);
-		}
-
-		bucketRiskFactorSensitivityMap.put (
-			"" + bucketIndex,
-			riskFactorSensitivityMap
-		);
-	}
-
-	private static final Map<String, Map<String, Double>> BucketRiskFactorSensitivityMap (
+	private static final RiskFactorTenorSensitivity CurveTenorSensitivityMap (
 		final double notional)
 		throws Exception
 	{
-		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap =
-			new TreeMap<String, Map<String, Double>>();
+		Map<String, Double> tenorSensitivityMap = new HashMap<String, Double>();
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			-1,
-			notional,
-			new String[]
-			{
-				"BOEING  ",
-				"LOCKHEED",
-				"RAND    ",
-				"RAYTHEON",
-			}
+		tenorSensitivityMap.put (
+			"2W",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			1,
-			notional,
-			new String[]
-			{
-				"ADP     ",
-				"PSEANDG ",
-				"STAPLES ",
-				"U-HAUL  ",
-			}
+		tenorSensitivityMap.put (
+			"1M",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			2,
-			notional,
-			new String[]
-			{
-				"CISCO   ",
-				"DEERE   ",
-				"HALIBTN ",
-				"VERIZON ",
-			}
+		tenorSensitivityMap.put (
+			"3M",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			3,
-			notional,
-			new String[]
-			{
-				"DUKE    ",
-				"MONSANTO",
-				"MMM     ",
-				"VEDANTA ",
-			}
+		tenorSensitivityMap.put (
+			"6M",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			4,
-			notional,
-			new String[]
-			{
-				"AMAZON  ",
-				"GOLDMAN ",
-				"MORGAN  ",
-				"REMAX   ",
-			}
+		tenorSensitivityMap.put (
+			"1Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			5,
-			notional,
-			new String[]
-			{
-				"ALDI    ",
-				"INFOSYS ",
-				"OLLA    ",
-				"RELIANCE",
-			}
+		tenorSensitivityMap.put (
+			"2Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			6,
-			notional,
-			new String[]
-			{
-				"GCC     ",
-				"NOKIA   ",
-				"SIEMENS ",
-				"VODAFONE",
-			}
+		tenorSensitivityMap.put (
+			"3Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			7,
-			notional,
-			new String[]
-			{
-				"ADIDAS  ",
-				"BAYER   ",
-				"BILLERTN",
-				"DE BEER ",
-			}
+		tenorSensitivityMap.put (
+			"5Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			8,
-			notional,
-			new String[]
-			{
-				"NOKIA   ",
-				"NOMURA  ",
-				"QATARSOV",
-				"SOTHEBY ",
-			}
+		tenorSensitivityMap.put (
+			"10Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			9,
-			notional,
-			new String[]
-			{
-				"AUTODESK",
-				"CALYPSO ",
-				"NUMERIX ",
-				"WEBLOGIC",
-			}
+		tenorSensitivityMap.put (
+			"15Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			10,
-			notional,
-			new String[]
-			{
-				"COGNIZAN",
-				"TATAMOTO",
-				"TOBLERON",
-				"TVS     ",
-			}
+		tenorSensitivityMap.put (
+			"20Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			11,
-			notional,
-			new String[]
-			{
-				"DJIA    ",
-				"LEHMAN  ",
-				"RUSSELL ",
-				"SANDP   ",
-			}
+		tenorSensitivityMap.put (
+			"30Y",
+			notional * (Math.random() - 0.5)
 		);
 
-		AddBucketRiskFactorSensitivity (
-			bucketRiskFactorSensitivityMap,
-			12,
-			notional,
-			new String[]
-			{
-				"CBOE    ",
-				"CITI    ",
-				"RUSSELL ",
-				"VIX     ",
-			}
-		);
+		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+	}
 
-		return bucketRiskFactorSensitivityMap;
+	private static final BucketSensitivityIR CurrencyBucketSensitivity (
+		final String currency,
+		final double notional)
+		throws Exception
+	{
+		return new BucketSensitivityIR (
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional),
+			CurveTenorSensitivityMap (notional)
+		);
 	}
 
 	private static final void ISDABucketCovarianceMargin (
 		final String positionBucketCovarianceScheme,
-		final Map<String, BucketSensitivity> bucketDeltaSensitivityMap,
-		final Map<String, BucketSensitivity> bucketVegaSensitivityMap,
-		final RiskClassSensitivitySettings riskClassSensitivitySettings,
+		final Map<String, BucketSensitivityIR> bucketDeltaSensitivityMap,
+		final Map<String, BucketSensitivityIR> bucketVegaSensitivityMap,
+		final RiskClassSensitivitySettingsIR riskClassSensitivitySettings,
 		final MarginEstimationSettings marginEstimationSettings)
 		throws Exception
 	{
-		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (
-			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
+		RiskClassAggregateIR riskClassAggregate = new RiskClassSensitivityIR (
+			new RiskMeasureSensitivityIR (bucketDeltaSensitivityMap),
+			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap),
+			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap)
 		).aggregate (
 			riskClassSensitivitySettings,
 			marginEstimationSettings
 		);
 
-		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
+		RiskMeasureAggregateIR deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 
-		RiskMeasureAggregate vegaRiskMeasureAggregate = riskClassAggregate.vegaMargin();
+		RiskMeasureAggregateIR vegaRiskMeasureAggregate = riskClassAggregate.vegaMargin();
 
-		RiskMeasureAggregate curvatureRiskMeasureAggregate = riskClassAggregate.curvatureMargin();
+		RiskMeasureAggregateIR curvatureRiskMeasureAggregate = riskClassAggregate.curvatureMargin();
 
 		System.out.println ("\t|----------------------------------------||");
 
@@ -351,40 +236,59 @@ public class EquityMarginComparison
 	}
 
 	public static final void main (
-		final String[] inputArray)
+		final String[] inputs)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		double notional = 100.;
-		int vegaDurationDays = 365;
+		String[] currencyArray = {
+			"USD",
+			"EUR",
+			"CNY",
+			"INR",
+			"JPY"
+		};
 
-		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_EQ_20
-			(vegaDurationDays);
+		double[] notionalArray = {
+			100.,
+			108.,
+			119.,
+			 49.,
+			 28.
+		};
 
-		Map<String, Map<String, Double>> bucketDeltaMap = BucketRiskFactorSensitivityMap (notional);
+		Map<String, BucketSensitivityIR> bucketDeltaSensitivityMap = new HashMap<String, BucketSensitivityIR>();
 
-		Map<String, BucketSensitivity> bucketDeltaSensitivityMap = new HashMap<String, BucketSensitivity>();
+		Map<String, BucketSensitivityIR> bucketVegaSensitivityMap = new HashMap<String, BucketSensitivityIR>();
 
-		for (Map.Entry<String, Map<String, Double>> bucketDeltaMapEntry : bucketDeltaMap.entrySet())
+		for (int currencyIndex = 0; currencyIndex < currencyArray.length; ++currencyIndex)
 		{
 			bucketDeltaSensitivityMap.put (
-				bucketDeltaMapEntry.getKey(),
-				new BucketSensitivity (bucketDeltaMapEntry.getValue())
+				currencyArray[currencyIndex],
+				CurrencyBucketSensitivity (
+					currencyArray[currencyIndex],
+					notionalArray[currencyIndex]
+				)
 			);
-		}
 
-		Map<String, Map<String, Double>> bucketVegaMap = BucketRiskFactorSensitivityMap (notional);
-
-		Map<String, BucketSensitivity> bucketVegaSensitivityMap = new HashMap<String, BucketSensitivity>();
-
-		for (Map.Entry<String, Map<String, Double>> bucketVegaMapEntry : bucketVegaMap.entrySet())
-		{
 			bucketVegaSensitivityMap.put (
-				bucketVegaMapEntry.getKey(),
-				new BucketSensitivity (bucketVegaMapEntry.getValue())
+				currencyArray[currencyIndex],
+				CurrencyBucketSensitivity (
+					currencyArray[currencyIndex],
+					notionalArray[currencyIndex]
+				)
 			);
 		}
+
+		List<String> currencyList = new ArrayList<String>();
+
+		for (String currency : currencyArray)
+		{
+			currencyList.add (currency);
+		}
+
+		RiskClassSensitivitySettingsIR riskClassSensitivitySettings =
+			RiskClassSensitivitySettingsIR.ISDA_20 (currencyList);
 
 		ISDABucketCovarianceMargin (
 			MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA,
