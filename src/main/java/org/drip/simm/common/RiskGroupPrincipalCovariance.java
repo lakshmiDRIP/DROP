@@ -47,7 +47,7 @@ package org.drip.simm.common;
  */
 
 /**
- * RiskPairPrincipalCovariance contains the Cross Risk-Factor Principal Component Based Co-variance. The
+ * RiskGroupPrincipalCovariance contains the Cross Risk-Group Principal Component Based Co-variance. The
  *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
@@ -69,34 +69,34 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskPairPrincipalCovariance
+public class RiskGroupPrincipalCovariance
 {
-	private double _crossCorrelation = java.lang.Double.NaN;
+	private double _extraGroupCorrelation = java.lang.Double.NaN;
 	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;
 
 	/**
-	 * Construct the Standard RiskPairPrincipalCovariance Instance from the Bucket Correlation Matrix and the
-	 *  Cross Correlation Entry
+	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
+	 *  the Cross Correlation Entry
 	 * 
-	 * @param bucketCorrelationMatrix The Intra-Bucket Correlation Matrix
-	 * @param crossCorrelation Cross Bucket Correlation
+	 * @param intraGroupCorrelationMatrix The Intra-Group Correlation Matrix
+	 * @param extraGroupCorrelation Cross Group Correlation
 	 * 
-	 * @return The Standard RiskPairPrincipalCovariance Instance
+	 * @return The Standard RiskGroupPrincipalCovariance Instance
 	 */
 
-	public static final RiskPairPrincipalCovariance Standard (
-		final double[][] bucketCorrelationMatrix,
-		final double crossCorrelation)
+	public static final RiskGroupPrincipalCovariance Standard (
+		final double[][] intraGroupCorrelationMatrix,
+		final double extraGroupCorrelation)
 	{
 		try
 		{
-			return new RiskPairPrincipalCovariance (
+			return new RiskGroupPrincipalCovariance (
 				new org.drip.quant.eigen.PowerIterationComponentExtractor (
 					30,
 					0.000001,
 					false
-				).principalComponent (bucketCorrelationMatrix),
-				crossCorrelation
+				).principalComponent (intraGroupCorrelationMatrix),
+				extraGroupCorrelation
 			);
 		}
 		catch (java.lang.Exception e)
@@ -108,31 +108,31 @@ public class RiskPairPrincipalCovariance
 	}
 
 	/**
-	 * RiskPairPrincipalCovariance Constructor
+	 * RiskGroupPrincipalCovariance Constructor
 	 * 
-	 * @param principalEigenComponent Bucket's Principal Eigen-Component
-	 * @param crossCorrelation Cross Bucket Correlation
+	 * @param principalEigenComponent Intra-Group Principal Eigen-Component
+	 * @param extraGroupCorrelation Cross Group Correlation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskPairPrincipalCovariance (
+	public RiskGroupPrincipalCovariance (
 		final org.drip.quant.eigen.EigenComponent principalEigenComponent,
-		final double crossCorrelation)
+		final double extraGroupCorrelation)
 		throws java.lang.Exception
 	{
 		if (null == (_principalEigenComponent = principalEigenComponent) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_crossCorrelation = crossCorrelation) ||
-				-1. > _crossCorrelation || 1. < _crossCorrelation)
+			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
+				-1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
 		{
-			throw new java.lang.Exception ("RiskPairPrincipalCovariance Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskGroupPrincipalCovariance Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Principal Eigen-Component
+	 * Retrieve the Intra-Group Principal Eigen-Component
 	 * 
-	 * @return The Principal Eigen-Component
+	 * @return The Intra-Group Principal Eigen-Component
 	 */
 
 	public org.drip.quant.eigen.EigenComponent principalEigenComponent()
@@ -141,14 +141,14 @@ public class RiskPairPrincipalCovariance
 	}
 
 	/**
-	 * Retrieve the Bucket's Cross Correlation
+	 * Retrieve the Cross Group Correlation
 	 * 
-	 * @return The Bucket's Cross Correlation
+	 * @return The Cross Group Correlation
 	 */
 
-	public double crossCorrelation()
+	public double extraGroupCorrelation()
 	{
-		return _crossCorrelation;
+		return _extraGroupCorrelation;
 	}
 
 	/**
@@ -175,9 +175,9 @@ public class RiskPairPrincipalCovariance
 	}
 
 	/**
-	 * Retrieve the Unadjusted Cross-Bucket Co-variance
+	 * Retrieve the Unadjusted Cross-Group Co-variance
 	 * 
-	 * @return The Unadjusted Cross-Bucket Co-variance
+	 * @return The Unadjusted Cross-Group Co-variance
 	 */
 
 	public double[][] unadjustedCovariance()
@@ -191,16 +191,16 @@ public class RiskPairPrincipalCovariance
 	}
 
 	/**
-	 * Retrieve the Adjusted Cross-Bucket Co-variance
+	 * Retrieve the Adjusted Cross-Group Co-variance
 	 * 
-	 * @return The Adjusted Cross-Bucket Co-variance
+	 * @return The Adjusted Cross-Group Co-variance
 	 */
 
 	public double[][] adjustedCovariance()
 	{
 		return org.drip.quant.linearalgebra.Matrix.Scale2D (
 			unadjustedCovariance(),
-			_crossCorrelation
+			_extraGroupCorrelation
 		);
 	}
 }

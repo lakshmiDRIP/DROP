@@ -794,4 +794,42 @@ public class IRSettingsContainer21
 	{
 		return s_RiskWeightMap;
 	}
+
+	/**
+	 * Retrieve the Currency Pair Principal Co-variance Matrix
+	 * 
+	 * @param currency1 Currency #1
+	 * @param currency2 Currency #2
+	 * 
+	 * @return The Currency Pair Principal Co-variance Matrix
+	 */
+
+	public static final org.drip.simm.common.RiskGroupPrincipalCovariance CurrencyPairPrincipalCovariance (
+		final java.lang.String currency1,
+		final java.lang.String currency2)
+	{
+		if (null == currency1 || currency1.isEmpty() ||
+			null == currency2 || currency2.isEmpty())
+		{
+			return null;
+		}
+
+		org.drip.simm.rates.IRThreshold irThreshold1 = org.drip.simm.rates.IRThresholdContainer21.Threshold
+			(currency1);
+
+		org.drip.simm.rates.IRThreshold irThreshold2 = org.drip.simm.rates.IRThresholdContainer21.Threshold
+			(currency2);
+
+		if (null == irThreshold1 || null == irThreshold2)
+		{
+			return null;
+		}
+
+		return org.drip.simm.common.RiskGroupPrincipalCovariance.Standard (
+			s_SingleCurveTenorCorrelation.matrix(),
+			irThreshold1.currencyRiskGroup().volatilityType().equalsIgnoreCase (
+				irThreshold2.currencyRiskGroup().volatilityType()
+			) ? 1. : org.drip.simm.rates.IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
+		);
+	}
 }

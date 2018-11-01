@@ -383,4 +383,18 @@ public class EQSettingsContainer20
 	{
 		return s_BucketMap;
 	}
+
+	/**
+	 * Retrieve the Cross Bucket Co-variance Matrix
+	 * 
+	 * @return The Cross Bucket Co-variance Matrix
+	 */
+
+	public static final org.drip.simm.common.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
+	{
+		return org.drip.simm.common.RiskGroupPrincipalCovariance.Standard (
+			s_CrossBucketCorrelation.matrix(),
+			1.
+		);
+	}
 }

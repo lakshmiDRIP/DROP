@@ -54,8 +54,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * CrossBucketPrincipalCovariance demonstrates the Computation of the Cross Bucket Principal Component
- *  Co-variance using the Actual Bucket Principal Component. The References are:
+ * CrossGroupPrincipalCovariance demonstrates the Computation of the Cross Risk Group Principal Component
+ *  Co-variance using the Actual Risk Group Principal Component. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,7 +76,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossBucketPrincipalCovariance
+public class CrossGroupPrincipalCovariance
 {
 
 	public static final void main (
