@@ -5,6 +5,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
 import org.drip.quant.eigen.EigenComponent;
 import org.drip.quant.eigen.PowerIterationComponentExtractor;
+import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -53,9 +54,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * ActualFRTBISDA demonstrates a Comparison of the Position vs. Bucket Principal Component Co-variance using
- * 	using Three Methodologies: a) FTRB SBA-C Approximation, b) ISDA SIMM Approximation, and c) Actual Bucket
- * 	Principal Component . The References are:
+ * CrossBucketPrincipalCovariance demonstrates the Computation of the Cross Bucket Principal Component
+ *  Co-variance using the Actual Bucket Principal Component. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,7 +76,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ActualFRTBISDA
+public class CrossBucketPrincipalCovariance
 {
 
 	public static final void main (
@@ -100,11 +100,26 @@ public class ActualFRTBISDA
 			{0.16, 0.16, 0.23, 0.37, 0.54, 0.67, 0.75, 0.86, 0.96, 0.99, 1.00, 0.99},
 			{0.12, 0.12, 0.20, 0.32, 0.50, 0.63, 0.71, 0.82, 0.94, 0.98, 0.99, 1.00}
 		};
+		double crossBucketCorrelation = 0.27;
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println
+			("\t||                                                       TENOR CORRELATION MATRIX FOR GIRR                                                       |");
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------|");
 
 		NumberUtil.PrintMatrix (
-			"\t|| GIRR20",
+			"\t|| GIRR2.0",
 			correlationMatrix
 		);
+
+		System.out.println
+			("\t||-----------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println();
 
 		PowerIterationComponentExtractor pice = new PowerIterationComponentExtractor (
 			30,
@@ -112,16 +127,91 @@ public class ActualFRTBISDA
 			false
 		);
 
-		EigenComponent ec = pice.principalComponent (correlationMatrix);
+		EigenComponent principalComponent = pice.principalComponent (correlationMatrix);
 
-		double[] adblEigenvector = ec.eigenvector();
+		double[] rawEigenvector = principalComponent.eigenvector();
 
-		String strDump = "\t[" + FormatUtil.FormatDouble (ec.eigenvalue(), 1, 4, 1.) + "] => ";
+		double rawEigenvalue = principalComponent.eigenvalue();
 
-		for (int i = 0; i < adblEigenvector.length; ++i)
-			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
+		double scaledEigenvalue = Math.sqrt (rawEigenvalue);
 
-		System.out.println (strDump);
+		double[] scaledEigenvector = new double[rawEigenvector.length];
+
+		String rawEigenDump    = "\t||   RAW    || " +
+			"[" + FormatUtil.FormatDouble (rawEigenvalue, 1, 4, 1.) + "] => ";
+
+		String scaledEigenDump = "\t||  SCALED  || " +
+			"[" + FormatUtil.FormatDouble (scaledEigenvalue, 1, 4, 1.) + "] => ";
+
+		for (int i = 0; i < rawEigenvector.length; ++i)
+		{
+			rawEigenDump += FormatUtil.FormatDouble (rawEigenvector[i], 1, 4, 1.) + " | ";
+
+			scaledEigenDump += FormatUtil.FormatDouble (
+				scaledEigenvector[i] = scaledEigenvalue * rawEigenvector[i], 1, 4, 1.
+			) + " | ";
+		}
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println (rawEigenDump);
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println (scaledEigenDump);
+
+		System.out.println
+			("\t||------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println();
+
+		double[][] unadjustedOffDiagonalBlockMatrix = Matrix.CrossProduct (
+			scaledEigenvector,
+			scaledEigenvector
+		);
+
+		System.out.println
+			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println
+			("\t||                                                   GIRR 2.0 UNADJUSTED OFF-DIAGONAL COVARIANCE ENTRIES                                                    |");
+
+		System.out.println
+			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t|| OFF-DIAGONAL UNADJ",
+			unadjustedOffDiagonalBlockMatrix
+		);
+
+		System.out.println
+			("\t||----------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println();
+
+		double[][] adjustedOffDiagonalBlockMatrix = Matrix.Scale2D (
+			unadjustedOffDiagonalBlockMatrix,
+			crossBucketCorrelation
+		);
+
+		System.out.println
+			("\t||--------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println
+			("\t||                                                   GIRR 2.0 ADJUSTED OFF-DIAGONAL COVARIANCE ENTRIES                                                    |");
+
+		System.out.println
+			("\t||--------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t|| OFF-DIAGONAL ADJ",
+			adjustedOffDiagonalBlockMatrix
+		);
+
+		System.out.println
+			("\t||--------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
 		EnvManager.TerminateEnv();
 	}

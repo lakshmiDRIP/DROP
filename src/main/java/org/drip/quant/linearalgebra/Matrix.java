@@ -677,6 +677,44 @@ public class Matrix {
 	}
 
 	/**
+	 * Compute the Cross Product between the Specified Vectors
+	 * 
+	 * @param vector1 Vector #1
+	 * @param vector2 Vector #2
+	 * 
+	 * @return The Cross Product
+	 */
+
+	public static final double[][] CrossProduct (
+		final double[] vector1,
+		final double[] vector2)
+	{
+		if (null == vector1 || null == vector2)
+		{
+			return null;
+		}
+
+		int size1 = vector1.length;
+		int size2 = vector2.length;
+		double[][] crossProduct = 0 == size1 || 0 == size2 ? null : new double[size1][size2];
+
+		if (null == crossProduct)
+		{
+			return null;
+		}
+
+		for (int index1 = 0; index1 < size1; ++index1)
+		{
+			for (int index2 = 0; index2 < size2; ++index2)
+			{
+				crossProduct[index1][index2] = vector1[index1] * vector2[index2];
+			}
+		}
+
+		return crossProduct;
+	}
+
+	/**
 	 * Project the Vector A along the Vector E
 	 * 
 	 * @param adblA Vector A
@@ -1033,5 +1071,67 @@ public class Matrix {
 				eigenvector
 			)
 		);
+	}
+
+	/**
+	 * Scale the Entries of the Input Vector by the Factor
+	 * 
+	 * @param vector The Input Vector
+	 * @param scaleFactor The Scale Factor
+	 * 
+	 * @return The Scaled Matrix
+	 */
+
+	public static final double[] Scale1D (
+		final double[] vector,
+		final double scaleFactor)
+	{
+		if (null == vector || !org.drip.quant.common.NumberUtil.IsValid (scaleFactor))
+		{
+			return null;
+		}
+
+		int rowCount = vector.length;
+		double[] scaledVector = 0 == rowCount ? null : new double[rowCount];
+
+		for (int rowIndex = 0; rowIndex < rowCount ; ++rowIndex)
+		{
+			scaledVector[rowIndex] = vector[rowIndex] * scaleFactor;
+		}
+
+		return scaledVector;
+	}
+
+	/**
+	 * Scale the Entries of the Input Matrix by the Factor
+	 * 
+	 * @param matrix The Input Matrix
+	 * @param scaleFactor The Scale Factor
+	 * 
+	 * @return The Scaled Matrix
+	 */
+
+	public static final double[][] Scale2D (
+		final double[][] matrix,
+		final double scaleFactor)
+	{
+		if (null == matrix || !org.drip.quant.common.NumberUtil.IsValid (scaleFactor))
+		{
+			return null;
+		}
+
+		int rowCount = matrix.length;
+		int columnCount = 0 == rowCount || null == matrix[0] ? 0 : matrix[0].length;
+		double[][] scaledMatrix = 0 == columnCount ? null : new double[rowCount][columnCount];
+
+		for (int rowIndex = 0; rowIndex < rowCount ; ++rowIndex)
+		{
+			for (int columnIndex = 0; columnIndex < columnCount ; ++columnIndex)
+			{
+				scaledMatrix[rowIndex][columnIndex] = matrix[rowIndex][columnIndex] * scaleFactor;
+			}
+		}
+
+		return scaledMatrix;
 	}
 }

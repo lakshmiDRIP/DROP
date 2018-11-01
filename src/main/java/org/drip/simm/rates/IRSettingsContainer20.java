@@ -794,4 +794,18 @@ public class IRSettingsContainer20
 	{
 		return s_RiskWeightMap;
 	}
+
+	/**
+	 * Retrieve the Cross Curve Principal Co-variance Matrix
+	 * 
+	 * @return The Cross Curve Principal Co-variance Matrix
+	 */
+
+	public static final org.drip.simm.common.RiskPairPrincipalCovariance CrossCurvePrincipalCovariance()
+	{
+		return org.drip.simm.common.RiskPairPrincipalCovariance.Standard (
+			s_SingleCurveTenorCorrelation.matrix(),
+			org.drip.simm.rates.IRSystemics20.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
+		);
+	}
 }
