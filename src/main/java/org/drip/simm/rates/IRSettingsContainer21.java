@@ -804,7 +804,7 @@ public class IRSettingsContainer21
 	 * @return The Currency Pair Principal Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.common.RiskGroupPrincipalCovariance CurrencyPairPrincipalCovariance (
+	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CurrencyPairPrincipalCovariance (
 		final java.lang.String currency1,
 		final java.lang.String currency2)
 	{
@@ -825,7 +825,7 @@ public class IRSettingsContainer21
 			return null;
 		}
 
-		return org.drip.simm.common.RiskGroupPrincipalCovariance.Standard (
+		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
 			s_SingleCurveTenorCorrelation.matrix(),
 			irThreshold1.currencyRiskGroup().volatilityType().equalsIgnoreCase (
 				irThreshold2.currencyRiskGroup().volatilityType()

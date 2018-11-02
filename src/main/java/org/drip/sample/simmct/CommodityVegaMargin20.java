@@ -289,7 +289,7 @@ public class CommodityVegaMargin20
 
 		double notional = 100.;
 
-		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =

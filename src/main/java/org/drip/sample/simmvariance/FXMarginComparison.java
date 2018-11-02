@@ -407,7 +407,7 @@ public class FXMarginComparison
 			bucketDeltaSensitivityMap,
 			bucketVegaSensitivityMap,
 			riskClassSensitivitySettings,
-			new MarginEstimationSettings
+			MarginEstimationSettings.Standard
 				(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA)
 		);
 
@@ -416,7 +416,7 @@ public class FXMarginComparison
 			bucketDeltaSensitivityMap,
 			bucketVegaSensitivityMap,
 			riskClassSensitivitySettings,
-			new MarginEstimationSettings
+			MarginEstimationSettings.Standard
 				(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB)
 		);
 

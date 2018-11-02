@@ -1,5 +1,5 @@
 
-package org.drip.simm.parameters;
+package org.drip.simm.foundation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.parameters;
  */
 
 /**
- * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
- *  are:
+ * CurvatureResponse exposes the Calculation of the Curvature Co-variance Scaling Factor (lambda) using the
+ *  Cumulative Curvature Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,91 +69,22 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginEstimationSettings
+public interface CurvatureResponse
 {
 
 	/**
-	 * FRTB Based Position - Principal Component Estimator
+	 * Compute the Lambda from the Curvature Sensitivities
+	 * 
+	 * @param cumulativeRiskFactorSensitivity Cumulative Risk Factor Sensitivity
+	 * @param cumulativeRiskFactorSensitivityPositive Cumulative Risk Factor Sensitivity Positive
+	 * 
+	 * @return The Lambda
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
-
-	/**
-	 * ISDA Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
-
-	private java.lang.String _positionPrincipalComponentScheme = "";
-	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;
-
-	/**
-	 * Generate a Standard Instance of MarginEstimationSettings
-	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * 
-	 * @return Standard Instance of MarginEstimationSettings
-	 */
-
-	public static final MarginEstimationSettings Standard (
-		final java.lang.String positionPrincipalComponentScheme)
-	{
-		try
-		{
-			return new MarginEstimationSettings (
-				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard()
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * MarginEstimationSettings Constructor
-	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * @param curvatureResponse The Curvature Response Function
-	 * 
-	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
-	 */
-
-	public MarginEstimationSettings (
-		final java.lang.String positionPrincipalComponentScheme,
-		final org.drip.simm.foundation.CurvatureResponse curvatureResponse)
-		throws java.lang.Exception
-	{
-		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
-			_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureResponse = curvatureResponse))
-		{
-			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Position Principal Component Scheme
-	 * 
-	 * @return The Position Principal Component Scheme
-	 */
-
-	public java.lang.String positionPrincipalComponentScheme()
-	{
-		return _positionPrincipalComponentScheme;
-	}
-
-	/**
-	 * Retrieve the Curvature Response Function
-	 * 
-	 * @return The Curvature Response Function
-	 */
-
-	public org.drip.simm.foundation.CurvatureResponse curvatureResponse()
-	{
-		return _curvatureResponse;
-	}
+	public double lambda (
+		final double cumulativeRiskFactorSensitivity,
+		final double cumulativeRiskFactorSensitivityPositive)
+		throws java.lang.Exception;
 }

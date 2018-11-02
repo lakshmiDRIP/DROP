@@ -372,4 +372,34 @@ public class FXRiskThresholdContainer21
 	{
 		return s_CategoryVega;
 	}
+
+	/**
+	 * Retrieve the Cross Risk Group Co-variance Matrix
+	 * 
+	 * @return The Cross Risk Group Co-variance Matrix
+	 */
+
+	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossGroupPrincipalCovariance()
+	{
+		java.util.Set<java.lang.Integer> fxBucketSet = s_FXRiskGroupMap.keySet();
+
+		int fxRiskGroupCount = fxBucketSet.size();
+
+		double[][] crossGroupCorrelation = new double[fxRiskGroupCount][fxRiskGroupCount];
+
+		for (int fxRiskGroupIndexI = 0; fxRiskGroupIndexI < fxRiskGroupCount; ++fxRiskGroupIndexI)
+		{
+			for (int fxRiskGroupIndexJ = 0; fxRiskGroupIndexJ < fxRiskGroupCount; ++fxRiskGroupIndexJ)
+			{
+				crossGroupCorrelation[fxRiskGroupIndexI][fxRiskGroupIndexJ] =
+					fxRiskGroupIndexI == fxRiskGroupIndexJ ? 1. :
+					org.drip.simm.fx.FXSystemics21.CORRELATION;
+			}
+		}
+
+		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
+			crossGroupCorrelation,
+			1.
+		);
+	}
 }

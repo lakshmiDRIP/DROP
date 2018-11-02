@@ -566,7 +566,7 @@ public class RatesDeltaMargin20
 		RiskMeasureSensitivityIR riskClassSensitivityIR = new RiskMeasureSensitivityIR
 			(bucketSensitivityMap);
 
-		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettingsIR =

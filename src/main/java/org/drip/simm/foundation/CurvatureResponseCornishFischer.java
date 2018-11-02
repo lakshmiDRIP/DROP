@@ -1,5 +1,5 @@
 
-package org.drip.simm.common;
+package org.drip.simm.foundation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.common;
  */
 
 /**
- * RiskGroupPrincipalCovariance contains the Cross Risk-Group Principal Component Based Co-variance. The
- *  References are:
+ * CurvatureResponseCornishFischer computes the Curvature Co-variance Scaling Factor using the Cumulative
+ * 	Curvature Sensitivities. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,35 +69,29 @@ package org.drip.simm.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskGroupPrincipalCovariance
+public class CurvatureResponseCornishFischer implements org.drip.simm.foundation.CurvatureResponse
 {
-	private double _extraGroupCorrelation = java.lang.Double.NaN;
-	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;
 
 	/**
-	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
-	 *  the Cross Correlation Entry
-	 * 
-	 * @param intraGroupCorrelationMatrix The Intra-Group Correlation Matrix
-	 * @param extraGroupCorrelation Cross Group Correlation
-	 * 
-	 * @return The Standard RiskGroupPrincipalCovariance Instance
+	 * ISDA SIMM VaR Curvature Cut-off
 	 */
 
-	public static final RiskGroupPrincipalCovariance Standard (
-		final double[][] intraGroupCorrelationMatrix,
-		final double extraGroupCorrelation)
+	public static final double CURVATURE_VAR_CUT_OFF = 0.995;
+
+	private double _varCutoff = java.lang.Double.NaN;
+	private double _lambdaPlateauPeak = java.lang.Double.NaN;
+
+	/**
+	 * Construct the Standard Instance of CurvatureResponseCornishFischer
+	 * 
+	 * @return The Standard Instance of CurvatureResponseCornishFischer
+	 */
+
+	public static final CurvatureResponseCornishFischer Standard()
 	{
 		try
 		{
-			return new RiskGroupPrincipalCovariance (
-				new org.drip.quant.eigen.PowerIterationComponentExtractor (
-					30,
-					0.000001,
-					false
-				).principalComponent (intraGroupCorrelationMatrix),
-				extraGroupCorrelation
-			);
+			return new CurvatureResponseCornishFischer (CURVATURE_VAR_CUT_OFF);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -108,99 +102,79 @@ public class RiskGroupPrincipalCovariance
 	}
 
 	/**
-	 * RiskGroupPrincipalCovariance Constructor
+	 * CurvatureResponseCornishFischer Constructor
 	 * 
-	 * @param principalEigenComponent Intra-Group Principal Eigen-Component
-	 * @param extraGroupCorrelation Cross Group Correlation
+	 * @param varCutoff VaR Cut-off
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RiskGroupPrincipalCovariance (
-		final org.drip.quant.eigen.EigenComponent principalEigenComponent,
-		final double extraGroupCorrelation)
+	public CurvatureResponseCornishFischer (
+		final double varCutoff)
 		throws java.lang.Exception
 	{
-		if (null == (_principalEigenComponent = principalEigenComponent) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
-				-1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
+		if (!org.drip.quant.common.NumberUtil.IsValid (_varCutoff = varCutoff) ||
+				0. > _varCutoff || 1. < _varCutoff)
 		{
-			throw new java.lang.Exception ("RiskGroupPrincipalCovariance Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Intra-Group Principal Eigen-Component
-	 * 
-	 * @return The Intra-Group Principal Eigen-Component
-	 */
-
-	public org.drip.quant.eigen.EigenComponent principalEigenComponent()
-	{
-		return _principalEigenComponent;
-	}
-
-	/**
-	 * Retrieve the Cross Group Correlation
-	 * 
-	 * @return The Cross Group Correlation
-	 */
-
-	public double extraGroupCorrelation()
-	{
-		return _extraGroupCorrelation;
-	}
-
-	/**
-	 * Retrieve the Scaled Principal Eigen-vector
-	 * 
-	 * @return The Scaled Principal Eigen-vector
-	 */
-
-	public double[] scaledPrincipalEigenvector()
-	{
-		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());
-
-		double[] principalEigenvector = _principalEigenComponent.eigenvector();
-
-		int componentCount = principalEigenvector.length;
-		double[] scaledPrincipalEigenvector = new double[componentCount];
-
-		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex)
-		{
-			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;
+			throw new java.lang.Exception ("CurvatureResponseCornishFischer Constructor => Invalid Inputs");
 		}
 
-		return scaledPrincipalEigenvector;
+		double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (_varCutoff);
+
+		_lambdaPlateauPeak = tailVariate * tailVariate - 1.;
 	}
 
 	/**
-	 * Retrieve the Unadjusted Cross-Group Co-variance
+	 * Retrieve the VaR Cut-off
 	 * 
-	 * @return The Unadjusted Cross-Group Co-variance
+	 * @return The VaR Cut-off
 	 */
 
-	public double[][] unadjustedCovariance()
+	public double varCutoff()
 	{
-		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();
-
-		return org.drip.quant.linearalgebra.Matrix.CrossProduct (
-			scaledPrincipalEigenvector,
-			scaledPrincipalEigenvector
-		);
+		return _varCutoff;
 	}
 
 	/**
-	 * Retrieve the Adjusted Cross-Group Co-variance
+	 * Retrieve the Lambda Plateau Peak
 	 * 
-	 * @return The Adjusted Cross-Group Co-variance
+	 * @return The Lambda Plateau Peak
 	 */
 
-	public double[][] adjustedCovariance()
+	public double lambdaPlateauPeak()
 	{
-		return org.drip.quant.linearalgebra.Matrix.Scale2D (
-			unadjustedCovariance(),
-			_extraGroupCorrelation
+		return _lambdaPlateauPeak;
+	}
+
+	/**
+	 * Compute the Lambda from the Curvature Sensitivities
+	 * 
+	 * @param cumulativeRiskFactorSensitivity Cumulative Risk Factor Sensitivity
+	 * @param cumulativeRiskFactorSensitivityPositive Cumulative Risk Factor Sensitivity Positive
+	 * 
+	 * @return The Lambda
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double lambda (
+		final double cumulativeRiskFactorSensitivity,
+		final double cumulativeRiskFactorSensitivityPositive)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||
+			!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||
+				0. > cumulativeRiskFactorSensitivityPositive)
+		{
+			throw new java.lang.Exception ("CurvatureResponseCornishFischer::lambda => Invalid Inputs");
+		}
+
+		double theta = java.lang.Math.min (
+			0. == cumulativeRiskFactorSensitivityPositive ? 0. :
+				cumulativeRiskFactorSensitivity / cumulativeRiskFactorSensitivityPositive,
+			0.
 		);
+
+		return _lambdaPlateauPeak * (1. + theta) - theta;
 	}
 }

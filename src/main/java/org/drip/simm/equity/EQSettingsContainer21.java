@@ -390,9 +390,9 @@ public class EQSettingsContainer21
 	 * @return The Cross Bucket Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.common.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
+	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-		return org.drip.simm.common.RiskGroupPrincipalCovariance.Standard (
+		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
 			s_CrossBucketCorrelation.matrix(),
 			1.
 		);

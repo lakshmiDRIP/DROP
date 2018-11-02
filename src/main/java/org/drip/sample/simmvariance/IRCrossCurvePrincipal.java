@@ -4,7 +4,7 @@ package org.drip.sample.simmvariance;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.common.RiskGroupPrincipalCovariance;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 import org.drip.simm.rates.IRSettingsContainer20;
 import org.drip.simm.rates.IRSettingsContainer21;
 

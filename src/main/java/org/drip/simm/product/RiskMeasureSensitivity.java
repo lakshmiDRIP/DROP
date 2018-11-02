@@ -363,34 +363,24 @@ public class RiskMeasureSensitivity
 				}
 			}
 
-			double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.995);
-
-			double lambda = tailVariate * tailVariate - 1.;
-
-			double thetaCore = 0 == cumulativeRiskFactorSensitivityMarginCorePositive ? 0. :
-				java.lang.Math.min (
-					cumulativeRiskFactorSensitivityMarginCore /
-						cumulativeRiskFactorSensitivityMarginCorePositive,
-					0.
-				);
+			org.drip.simm.foundation.CurvatureResponse curvatureResponse =
+				marginEstimationSettings.curvatureResponse();
 
 			double coreSBAMargin = java.lang.Math.max (
 				cumulativeRiskFactorSensitivityMarginCore +
-					(lambda * (1. + thetaCore) - thetaCore) * java.lang.Math.sqrt (coreSBAVariance),
+					curvatureResponse.lambda (
+						cumulativeRiskFactorSensitivityMarginCore,
+						cumulativeRiskFactorSensitivityMarginCorePositive
+					) * java.lang.Math.sqrt (coreSBAVariance),
 				0.
 			);
 
-			double thetaResidual = 0 == cumulativeRiskFactorSensitivityMarginResidualPositive ? 0. :
-				java.lang.Math.min (
-					cumulativeRiskFactorSensitivityMarginResidual /
-						cumulativeRiskFactorSensitivityMarginResidualPositive,
-					0.
-				);
-
 			double residualSBAMargin = !bucketAggregateMap.containsKey ("-1") ? 0. : java.lang.Math.max (
 				cumulativeRiskFactorSensitivityMarginResidual +
-					(lambda * (1. + thetaResidual) - thetaResidual) *
-						java.lang.Math.sqrt (bucketAggregateMap.get ("-1").sensitivityMarginVariance()),
+					curvatureResponse.lambda (
+						cumulativeRiskFactorSensitivityMarginResidual,
+						cumulativeRiskFactorSensitivityMarginResidualPositive
+					) * java.lang.Math.sqrt (bucketAggregateMap.get ("-1").sensitivityMarginVariance()),
 				0.
 			);
 

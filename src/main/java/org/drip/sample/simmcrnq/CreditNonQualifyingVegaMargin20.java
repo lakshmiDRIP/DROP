@@ -317,7 +317,7 @@ public class CreditNonQualifyingVegaMargin20
 
 		RiskMeasureSensitivityCR riskClassSensitivity = new RiskMeasureSensitivityCR (bucketSensitivityMap);
 
-		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings =

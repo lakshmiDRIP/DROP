@@ -1,5 +1,5 @@
 
-package org.drip.simm.parameters;
+package org.drip.simm.foundation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.parameters;
  */
 
 /**
- * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
- *  are:
+ * RiskGroupPrincipalCovariance contains the Cross Risk-Group Principal Component Based Co-variance. The
+ *  References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,40 +69,34 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginEstimationSettings
+public class RiskGroupPrincipalCovariance
 {
+	private double _extraGroupCorrelation = java.lang.Double.NaN;
+	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;
 
 	/**
-	 * FRTB Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
-
-	/**
-	 * ISDA Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
-
-	private java.lang.String _positionPrincipalComponentScheme = "";
-	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;
-
-	/**
-	 * Generate a Standard Instance of MarginEstimationSettings
+	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
+	 *  the Cross Correlation Entry
 	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
+	 * @param intraGroupCorrelationMatrix The Intra-Group Correlation Matrix
+	 * @param extraGroupCorrelation Cross Group Correlation
 	 * 
-	 * @return Standard Instance of MarginEstimationSettings
+	 * @return The Standard RiskGroupPrincipalCovariance Instance
 	 */
 
-	public static final MarginEstimationSettings Standard (
-		final java.lang.String positionPrincipalComponentScheme)
+	public static final RiskGroupPrincipalCovariance Standard (
+		final double[][] intraGroupCorrelationMatrix,
+		final double extraGroupCorrelation)
 	{
 		try
 		{
-			return new MarginEstimationSettings (
-				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard()
+			return new RiskGroupPrincipalCovariance (
+				new org.drip.quant.eigen.PowerIterationComponentExtractor (
+					30,
+					0.000001,
+					false
+				).principalComponent (intraGroupCorrelationMatrix),
+				extraGroupCorrelation
 			);
 		}
 		catch (java.lang.Exception e)
@@ -114,46 +108,99 @@ public class MarginEstimationSettings
 	}
 
 	/**
-	 * MarginEstimationSettings Constructor
+	 * RiskGroupPrincipalCovariance Constructor
 	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * @param curvatureResponse The Curvature Response Function
+	 * @param principalEigenComponent Intra-Group Principal Eigen-Component
+	 * @param extraGroupCorrelation Cross Group Correlation
 	 * 
-	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarginEstimationSettings (
-		final java.lang.String positionPrincipalComponentScheme,
-		final org.drip.simm.foundation.CurvatureResponse curvatureResponse)
+	public RiskGroupPrincipalCovariance (
+		final org.drip.quant.eigen.EigenComponent principalEigenComponent,
+		final double extraGroupCorrelation)
 		throws java.lang.Exception
 	{
-		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
-			_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureResponse = curvatureResponse))
+		if (null == (_principalEigenComponent = principalEigenComponent) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
+				-1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
 		{
-			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiskGroupPrincipalCovariance Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Position Principal Component Scheme
+	 * Retrieve the Intra-Group Principal Eigen-Component
 	 * 
-	 * @return The Position Principal Component Scheme
+	 * @return The Intra-Group Principal Eigen-Component
 	 */
 
-	public java.lang.String positionPrincipalComponentScheme()
+	public org.drip.quant.eigen.EigenComponent principalEigenComponent()
 	{
-		return _positionPrincipalComponentScheme;
+		return _principalEigenComponent;
 	}
 
 	/**
-	 * Retrieve the Curvature Response Function
+	 * Retrieve the Cross Group Correlation
 	 * 
-	 * @return The Curvature Response Function
+	 * @return The Cross Group Correlation
 	 */
 
-	public org.drip.simm.foundation.CurvatureResponse curvatureResponse()
+	public double extraGroupCorrelation()
 	{
-		return _curvatureResponse;
+		return _extraGroupCorrelation;
+	}
+
+	/**
+	 * Retrieve the Scaled Principal Eigen-vector
+	 * 
+	 * @return The Scaled Principal Eigen-vector
+	 */
+
+	public double[] scaledPrincipalEigenvector()
+	{
+		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());
+
+		double[] principalEigenvector = _principalEigenComponent.eigenvector();
+
+		int componentCount = principalEigenvector.length;
+		double[] scaledPrincipalEigenvector = new double[componentCount];
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex)
+		{
+			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;
+		}
+
+		return scaledPrincipalEigenvector;
+	}
+
+	/**
+	 * Retrieve the Unadjusted Cross-Group Co-variance
+	 * 
+	 * @return The Unadjusted Cross-Group Co-variance
+	 */
+
+	public double[][] unadjustedCovariance()
+	{
+		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();
+
+		return org.drip.quant.linearalgebra.Matrix.CrossProduct (
+			scaledPrincipalEigenvector,
+			scaledPrincipalEigenvector
+		);
+	}
+
+	/**
+	 * Retrieve the Adjusted Cross-Group Co-variance
+	 * 
+	 * @return The Adjusted Cross-Group Co-variance
+	 */
+
+	public double[][] adjustedCovariance()
+	{
+		return org.drip.quant.linearalgebra.Matrix.Scale2D (
+			unadjustedCovariance(),
+			_extraGroupCorrelation
+		);
 	}
 }

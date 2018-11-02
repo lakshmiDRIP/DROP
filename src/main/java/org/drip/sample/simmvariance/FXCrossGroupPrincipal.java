@@ -4,9 +4,9 @@ package org.drip.sample.simmvariance;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.common.RiskGroupPrincipalCovariance;
-import org.drip.simm.equity.EQSettingsContainer20;
-import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
+import org.drip.simm.fx.FXRiskThresholdContainer20;
+import org.drip.simm.fx.FXRiskThresholdContainer21;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -54,8 +54,8 @@ import org.drip.simm.equity.EQSettingsContainer21;
  */
 
 /**
- * EQBucketCrossPrincipal demonstrates the Computation of the Cross EQ Bucket Principal Component Co-variance
- * 	using the EQ Bucket Principal Component. The References are:
+ * FXCrossGroupPrincipal demonstrates the Computation of the Cross FX Bucket Principal Component Co-variance
+ * 	using the FX Risk Group Principal Component. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -76,10 +76,10 @@ import org.drip.simm.equity.EQSettingsContainer21;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EQBucketCrossPrincipal
+public class FXCrossGroupPrincipal
 {
 
-	private static final void PrintBucketPrincipalCovariance (
+	private static final void PrintGroupPrincipalCovariance (
 		final String simmVersion,
 		final String displayLabel,
 		final RiskGroupPrincipalCovariance riskGroupPrincipalCovariance)
@@ -87,7 +87,7 @@ public class EQBucketCrossPrincipal
 	{
 		System.out.println ("\t||------------------------------------||");
 
-		System.out.println ("\t||    " + simmVersion + " CROSS BUCKET COVARIANCE     ||");
+		System.out.println ("\t||     " + simmVersion + " CROSS GROUP COVARIANCE     ||");
 
 		System.out.println ("\t||------------------------------------||");
 
@@ -105,24 +105,18 @@ public class EQBucketCrossPrincipal
 
 		System.out.println ("\t||------------------------------------||");
 
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------------------------------------------------|");
+		System.out.println ("\t||---------------------------------------------------|");
 
-		System.out.println
-			("\t||                                                          ADJUSTED CURVE PRINCIPAL COVARIANCE                                                          |");
+		System.out.println ("\t||         ADJUSTED CURVE PRINCIPAL COVARIANCE       |");
 
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------------------------------------------------|");
+		System.out.println ("\t||---------------------------------------------------|");
 
 		NumberUtil.PrintMatrix (
 			"\t|| " + displayLabel,
 			riskGroupPrincipalCovariance.adjustedCovariance()
 		);
 
-		System.out.println
-			("\t||-------------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println();
+		System.out.println ("\t||---------------------------------------------------|");
 	}
 
 	public static final void main (
@@ -131,16 +125,16 @@ public class EQBucketCrossPrincipal
 	{
 		EnvManager.InitEnv ("");
 
-		PrintBucketPrincipalCovariance (
+		PrintGroupPrincipalCovariance (
 			"2.0",
-			"EQ CROSS BUCKET",
-			EQSettingsContainer20.CrossBucketPrincipalCovariance()
+			"FX CROSS GROUP",
+			FXRiskThresholdContainer20.CrossGroupPrincipalCovariance()
 		);
 
-		PrintBucketPrincipalCovariance (
+		PrintGroupPrincipalCovariance (
 			"2.1",
-			"EQ CROSS BUCKET",
-			EQSettingsContainer21.CrossBucketPrincipalCovariance()
+			"FX CROSS GROUP",
+			FXRiskThresholdContainer21.CrossGroupPrincipalCovariance()
 		);
 
 		EnvManager.TerminateEnv();

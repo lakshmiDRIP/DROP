@@ -1,5 +1,12 @@
 
-package org.drip.simm.parameters;
+package org.drip.sample.simmvariance;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.NumberUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.simm.commodity.CTSettingsContainer20;
+import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +54,8 @@ package org.drip.simm.parameters;
  */
 
 /**
- * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
- *  are:
+ * CTCrossBucketPrincipal demonstrates the Computation of the Cross CT Bucket Principal Component Co-variance
+ * 	using the CT Bucket Principal Component. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,91 +76,73 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginEstimationSettings
+public class CTCrossBucketPrincipal
 {
 
-	/**
-	 * FRTB Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
-
-	/**
-	 * ISDA Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
-
-	private java.lang.String _positionPrincipalComponentScheme = "";
-	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;
-
-	/**
-	 * Generate a Standard Instance of MarginEstimationSettings
-	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * 
-	 * @return Standard Instance of MarginEstimationSettings
-	 */
-
-	public static final MarginEstimationSettings Standard (
-		final java.lang.String positionPrincipalComponentScheme)
+	private static final void PrintBucketPrincipalCovariance (
+		final String simmVersion,
+		final String displayLabel,
+		final RiskGroupPrincipalCovariance riskGroupPrincipalCovariance)
+		throws Exception
 	{
-		try
-		{
-			return new MarginEstimationSettings (
-				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard()
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
+		System.out.println ("\t||------------------------------------||");
 
-		return null;
+		System.out.println ("\t||    " + simmVersion + " CROSS BUCKET COVARIANCE     ||");
+
+		System.out.println ("\t||------------------------------------||");
+
+		System.out.println (
+			"\t|| Cross Group Correlation => " +
+			FormatUtil.FormatDouble (riskGroupPrincipalCovariance.extraGroupCorrelation(), 1, 4, 1.) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Principal Eigenvalue    => " +
+			FormatUtil.FormatDouble (
+				riskGroupPrincipalCovariance.principalEigenComponent().eigenvalue(), 1, 4, 1.
+			) + " ||"
+		);
+
+		System.out.println ("\t||------------------------------------||");
+
+		System.out.println
+			("\t||-------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println
+			("\t||                                                          ADJUSTED CURVE PRINCIPAL COVARIANCE                                                          |");
+
+		System.out.println
+			("\t||-------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t|| " + displayLabel,
+			riskGroupPrincipalCovariance.adjustedCovariance()
+		);
+
+		System.out.println
+			("\t||-------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+		System.out.println();
 	}
 
-	/**
-	 * MarginEstimationSettings Constructor
-	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * @param curvatureResponse The Curvature Response Function
-	 * 
-	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
-	 */
-
-	public MarginEstimationSettings (
-		final java.lang.String positionPrincipalComponentScheme,
-		final org.drip.simm.foundation.CurvatureResponse curvatureResponse)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
-			_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureResponse = curvatureResponse))
-		{
-			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
-		}
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve the Position Principal Component Scheme
-	 * 
-	 * @return The Position Principal Component Scheme
-	 */
+		PrintBucketPrincipalCovariance (
+			"2.0",
+			"CT CROSS BUCKET",
+			CTSettingsContainer20.CrossBucketPrincipalCovariance()
+		);
 
-	public java.lang.String positionPrincipalComponentScheme()
-	{
-		return _positionPrincipalComponentScheme;
-	}
+		PrintBucketPrincipalCovariance (
+			"2.1",
+			"CT CROSS BUCKET",
+			CTSettingsContainer21.CrossBucketPrincipalCovariance()
+		);
 
-	/**
-	 * Retrieve the Curvature Response Function
-	 * 
-	 * @return The Curvature Response Function
-	 */
-
-	public org.drip.simm.foundation.CurvatureResponse curvatureResponse()
-	{
-		return _curvatureResponse;
+		EnvManager.TerminateEnv();
 	}
 }

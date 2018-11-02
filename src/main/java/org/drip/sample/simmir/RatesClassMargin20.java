@@ -225,7 +225,7 @@ public class RatesClassMargin20
 			currencyList.add (currency);
 		}
 
-		MarginEstimationSettings marginEstimationSettings = new MarginEstimationSettings
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR =
