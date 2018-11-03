@@ -72,6 +72,25 @@ package org.drip.simm.foundation;
 public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.CurvatureEstimator
 {
 
+	/**
+	 * Construct the Standard CurvatureEstimatorISDADelta Instance
+	 * 
+	 * @return The Standard CurvatureEstimatorISDADelta Instance
+	 */
+
+	public static final CurvatureEstimatorISDADelta Standard()
+	{
+		return new CurvatureEstimatorISDADelta();
+	}
+
+	/**
+	 * Empty CurvatureEstimatorISDADelta Constructor
+	 */
+
+	public CurvatureEstimatorISDADelta()
+	{
+	}
+
 	@Override public double margin (
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive,
@@ -96,7 +115,7 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 
 	@Override public boolean isCorrelatorQuadratric()
 	{
-		return true;
+		return false;
 	}
 
 	@Override public double varianceModulator (

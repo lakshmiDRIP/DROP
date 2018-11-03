@@ -76,20 +76,20 @@ public class RiskMeasureSensitivityCR
 
 	private static final double PositionPrincipalComponentCovariance (
 		final org.drip.simm.margin.BucketAggregateCR bucketAggregate,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 		throws java.lang.Exception
 	{
 		java.lang.String positionPrincipalComponentScheme =
 			marginEstimationSettings.positionPrincipalComponentScheme();
 
 		if (positionPrincipalComponentScheme.equalsIgnoreCase
-			(org.drip.simm.parameters.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))
+			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))
 		{
 			return bucketAggregate.positionPrincipalComponentCovarianceFRTB();
 		}
 
 		if (positionPrincipalComponentScheme.equalsIgnoreCase
-			(org.drip.simm.parameters.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))
+			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))
 		{
 			return bucketAggregate.positionPrincipalComponentCovarianceISDA();
 		}
@@ -139,7 +139,7 @@ public class RiskMeasureSensitivityCR
 
 	public org.drip.simm.margin.RiskMeasureAggregateCR linearAggregate (
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == riskMeasureSensitivitySettings || null == marginEstimationSettings)
 		{
@@ -239,7 +239,7 @@ public class RiskMeasureSensitivityCR
 
 	public org.drip.simm.margin.RiskMeasureAggregateCR curvatureAggregate (
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettings,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == riskMeasureSensitivitySettings || null == marginEstimationSettings)
 		{

@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -51,9 +52,12 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * CompositePeriod implements the Composite Coupon Period Functionality. It contains the Composite Period
- * 	Coupon Frequency, Tenor, Accrual Compounding Rule, Day Count, Base Notional, Coupon/Notional Schedules,
- * 	Pay Currency, Credit Label, FX Fixing Setting, and the List of Composable Period Units.
+ * <i>CompositePeriod</i> implements the Composite Coupon Period Functionality. It contains the Composite
+ *  Period Coupon Frequency, Tenor, Accrual Compounding Rule, Day Count, Base Notional, Coupon/Notional
+ *  Schedules, Pay Currency, Credit Label, FX Fixing Setting, and the List of Composable Period Units.
+ *
+ *	<b>Module </b>  https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics
+ *	<b>Package</b>  https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow
  *
  * @author Lakshmi Krishnamurthy
  */

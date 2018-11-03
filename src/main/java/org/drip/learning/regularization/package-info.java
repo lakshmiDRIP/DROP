@@ -1,6 +1,6 @@
 
 /**
- * Statistical Learning Empircal Loss Regularizer
+ * Statistical Learning Empirical Loss Regularizer
  *
  * @author Lakshmi Krishnamurthy
  */

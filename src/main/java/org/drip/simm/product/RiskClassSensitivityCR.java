@@ -143,7 +143,7 @@ public class RiskClassSensitivityCR
 
 	public org.drip.simm.margin.RiskClassAggregateCR aggregate (
 		final org.drip.simm.parameters.RiskClassSensitivitySettingsCR riskClassSensitivitySettingsCR,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == riskClassSensitivitySettingsCR)
 		{

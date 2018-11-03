@@ -1,5 +1,5 @@
 
-package org.drip.simm.parameters;
+package org.drip.simm.foundation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,8 +47,8 @@ package org.drip.simm.parameters;
  */
 
 /**
- * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
- *  are:
+ * CurvatureEstimatorFRTB estimates the Curvature Margin from the Curvature Sensitivities using the FRTB
+ *  Curvature Margin Estimate. The References are:
  *  
  *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
  *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
@@ -69,91 +69,60 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarginEstimationSettings
+public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.CurvatureEstimator
 {
 
 	/**
-	 * FRTB Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
-
-	/**
-	 * ISDA Based Position - Principal Component Estimator
-	 */
-
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
-
-	private java.lang.String _positionPrincipalComponentScheme = "";
-	private org.drip.simm.foundation.CurvatureEstimator _curvatureEstimator = null;
-
-	/**
-	 * Generate a Cornish-Fischer Instance of MarginEstimationSettings
+	 * Construct the Standard CurvatureEstimatorFRTB Instance
 	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * 
-	 * @return Cornish-Fischer Instance of MarginEstimationSettings
+	 * @return The Standard CurvatureEstimatorISDADelta Instance
 	 */
 
-	public static final MarginEstimationSettings CornishFischer (
-		final java.lang.String positionPrincipalComponentScheme)
+	public static final CurvatureEstimatorFRTB Standard()
 	{
-		try
-		{
-			return new MarginEstimationSettings (
-				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureEstimatorResponseFunction.CornishFischer()
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return new CurvatureEstimatorFRTB();
 	}
 
 	/**
-	 * MarginEstimationSettings Constructor
-	 * 
-	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * @param curvatureEstimator The Curvature Estimator Function
-	 * 
-	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
+	 * Empty CurvatureEstimatorFRTB Constructor
 	 */
 
-	public MarginEstimationSettings (
-		final java.lang.String positionPrincipalComponentScheme,
-		final org.drip.simm.foundation.CurvatureEstimator curvatureEstimator)
+	public CurvatureEstimatorFRTB()
+	{
+	}
+
+	@Override public double margin (
+		final double cumulativeRiskFactorSensitivity,
+		final double cumulativeRiskFactorSensitivityPositive,
+		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
-			_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureEstimator = curvatureEstimator))
+		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
+			0. > riskFactorSensitivityVariance)
 		{
-			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("CurvatureEstimatorFRTB::margin => Invalid Inputs");
 		}
+
+		return java.lang.Math.sqrt (
+			java.lang.Math.max (
+				cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance,
+				0.
+			)
+		);
 	}
 
-	/**
-	 * Retrieve the Position Principal Component Scheme
-	 * 
-	 * @return The Position Principal Component Scheme
-	 */
-
-	public java.lang.String positionPrincipalComponentScheme()
+	@Override public boolean isCorrelatorQuadratric()
 	{
-		return _positionPrincipalComponentScheme;
+		return false;
 	}
 
-	/**
-	 * Retrieve the Curvature Estimator Function
-	 * 
-	 * @return The Curvature Estimator Function
-	 */
-
-	public org.drip.simm.foundation.CurvatureEstimator curvatureEstimator()
+	@Override public double varianceModulator (
+		final java.lang.String bucketKey1,
+		final double bucketVariance1,
+		final java.lang.String bucketKey2,
+		final double bucketVariance2)
+		throws java.lang.Exception
 	{
-		return _curvatureEstimator;
+		return 1.;
 	}
 }

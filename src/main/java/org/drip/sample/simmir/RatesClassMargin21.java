@@ -8,9 +8,9 @@ import java.util.Map;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.simm.foundation.MarginEstimationSettings;
 import org.drip.simm.margin.RiskClassAggregateIR;
 import org.drip.simm.margin.RiskMeasureAggregateIR;
-import org.drip.simm.parameters.MarginEstimationSettings;
 import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
 import org.drip.simm.product.BucketSensitivityIR;
 import org.drip.simm.product.RiskClassSensitivityIR;

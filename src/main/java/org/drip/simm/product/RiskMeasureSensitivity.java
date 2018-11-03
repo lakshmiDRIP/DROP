@@ -76,20 +76,20 @@ public class RiskMeasureSensitivity
 
 	private static final double PositionPrincipalComponentCovariance (
 		final org.drip.simm.margin.BucketAggregate bucketAggregate,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 		throws java.lang.Exception
 	{
 		java.lang.String positionPrincipalComponentScheme =
 			marginEstimationSettings.positionPrincipalComponentScheme();
 
 		if (positionPrincipalComponentScheme.equalsIgnoreCase
-			(org.drip.simm.parameters.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))
+			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))
 		{
 			return bucketAggregate.positionPrincipalComponentCovarianceFRTB();
 		}
 
 		if (positionPrincipalComponentScheme.equalsIgnoreCase
-			(org.drip.simm.parameters.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))
+			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))
 		{
 			return bucketAggregate.positionPrincipalComponentCovarianceISDA();
 		}
@@ -139,7 +139,7 @@ public class RiskMeasureSensitivity
 
 	public org.drip.simm.margin.RiskMeasureAggregate linearAggregate (
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettings riskMeasureSensitivitySettings,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == _bucketSensitivityMap ||
 			null == riskMeasureSensitivitySettings ||
@@ -244,7 +244,7 @@ public class RiskMeasureSensitivity
 
 	public org.drip.simm.margin.RiskMeasureAggregate curvatureAggregate (
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettings riskMeasureSensitivitySettings,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == _bucketSensitivityMap ||
 			null == riskMeasureSensitivitySettings ||

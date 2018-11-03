@@ -195,7 +195,7 @@ public class ProductClassSensitivity
 
 	public org.drip.simm.estimator.ProductClassMargin estimate (
 		final org.drip.simm.estimator.ProductClassSettings productClassSettings,
-		final org.drip.simm.parameters.MarginEstimationSettings marginEstimationSettings)
+		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
 		if (null == productClassSettings)
 		{
