@@ -50,8 +50,8 @@ package org.drip.learning.kernel;
  */
 
 /**
- * EigEigenFunctionRdToR1enFunction holds the Eigen-vector Function and its corresponding Space of the R^d To
- *  R^1 Kernel Linear Integral Operator defined by:
+ * EigenFunctionRdToR1 holds the Eigen-vector Function and its corresponding Space of the R^d To R^1 Kernel
+ *  Linear Integral Operator defined by:
  * 
  * 		T_k [f(.)] := Integral Over Input Space {k (., y) * f(y) * d[Prob(y)]}
  *  

@@ -289,7 +289,7 @@ public class CommodityDeltaMargin20
 
 		double notional = 100.;
 
-		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.CornishFischer
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =

@@ -261,6 +261,11 @@ public class RiskMeasureSensitivityIR
 		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =
 			riskMeasureSensitivitySettings.crossBucketCorrelation();
 
+		org.drip.simm.foundation.CurvatureEstimator curvatureEstimator =
+			marginEstimationSettings.curvatureEstimator();
+
+		boolean isCorrelatorQuadratric = curvatureEstimator.isCorrelatorQuadratric();
+
 		for (java.util.Map.Entry<java.lang.String, org.drip.simm.product.BucketSensitivityIR>
 			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())
 		{
@@ -329,31 +334,31 @@ public class RiskMeasureSensitivityIR
 							"" + innerKey
 						);
 
-						coreSBAVariance = coreSBAVariance + correlation * correlation *
+						double curvatureCorrelation = isCorrelatorQuadratric ? correlation * correlation
+							: correlation;
+
+						org.drip.simm.margin.BucketAggregateIR bucketAggregateInner =
+							bucketAggregateMapInnerEntry.getValue();
+
+						coreSBAVariance = coreSBAVariance + curvatureCorrelation *
 							positionPrincipalComponentCovarianceOuter *
-							PositionPrincipalComponentCovariance (
-								bucketAggregateMapInnerEntry.getValue(),
+							curvatureEstimator.varianceModulator (
+								outerKey,
+								weightedSensitivityVarianceOuter,
+								innerKey,
+								bucketAggregateInner.sensitivityMarginVariance()
+							) * PositionPrincipalComponentCovariance (
+								bucketAggregateInner,
 								marginEstimationSettings
 							);
 					}
 				}
 			}
 
-			double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.995);
-
-			double lambda = tailVariate * tailVariate - 1.;
-
-			double thetaCore = 0 == cumulativeRiskFactorSensitivityMarginCorePositive ? 0. :
-				java.lang.Math.min (
-					cumulativeRiskFactorSensitivityMarginCore /
-						cumulativeRiskFactorSensitivityMarginCorePositive,
-					0.
-				);
-
-			double coreSBAMargin = java.lang.Math.max (
-				cumulativeRiskFactorSensitivityMarginCore +
-					(lambda * (1. + thetaCore) - thetaCore) * java.lang.Math.sqrt (coreSBAVariance),
-				0.
+			double coreSBAMargin = curvatureEstimator.margin (
+				cumulativeRiskFactorSensitivityMarginCore,
+				cumulativeRiskFactorSensitivityMarginCorePositive,
+				coreSBAVariance
 			);
 
 			return new org.drip.simm.margin.RiskMeasureAggregateIR (

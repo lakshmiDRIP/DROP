@@ -243,7 +243,7 @@ public class CommodityClassMargin21
 		double notional = 100.;
 		int vegaDurationDays = 365;
 
-		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.CornishFischer
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_CT_21

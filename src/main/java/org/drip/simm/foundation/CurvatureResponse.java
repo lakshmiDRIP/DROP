@@ -83,7 +83,7 @@ public interface CurvatureResponse
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double lambda (
+	public abstract double lambda (
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive)
 		throws java.lang.Exception;

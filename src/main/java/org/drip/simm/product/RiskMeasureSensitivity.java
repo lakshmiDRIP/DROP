@@ -268,6 +268,11 @@ public class RiskMeasureSensitivity
 		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =
 			riskMeasureSensitivitySettings.crossBucketCorrelation();
 
+		org.drip.simm.foundation.CurvatureEstimator curvatureEstimator =
+			marginEstimationSettings.curvatureEstimator();
+
+		boolean isCorrelatorQuadratric = curvatureEstimator.isCorrelatorQuadratric();
+
 		for (java.util.Map.Entry<java.lang.String, org.drip.simm.product.BucketSensitivity>
 			bucketSensitivityEntry : _bucketSensitivityMap.entrySet())
 		{
@@ -352,10 +357,21 @@ public class RiskMeasureSensitivity
 								"" + innerKey
 							);
 
-							coreSBAVariance = coreSBAVariance + correlation * correlation *
+							double curvatureCorrelation = isCorrelatorQuadratric ? correlation * correlation
+								: correlation;
+
+							org.drip.simm.margin.BucketAggregate bucketAggregateInner =
+								bucketAggregateMapInnerEntry.getValue();
+
+							coreSBAVariance = coreSBAVariance + curvatureCorrelation *
 								positionPrincipalComponentCovarianceOuter *
-								PositionPrincipalComponentCovariance (
-									bucketAggregateMapInnerEntry.getValue(),
+								curvatureEstimator.varianceModulator (
+									outerKey,
+									weightedSensitivityVarianceOuter,
+									innerKey,
+									bucketAggregateInner.sensitivityMarginVariance()
+								) * PositionPrincipalComponentCovariance (
+									bucketAggregateInner,
 									marginEstimationSettings
 								);
 						}
@@ -363,26 +379,18 @@ public class RiskMeasureSensitivity
 				}
 			}
 
-			org.drip.simm.foundation.CurvatureResponse curvatureResponse =
-				marginEstimationSettings.curvatureResponse();
-
-			double coreSBAMargin = java.lang.Math.max (
-				cumulativeRiskFactorSensitivityMarginCore +
-					curvatureResponse.lambda (
-						cumulativeRiskFactorSensitivityMarginCore,
-						cumulativeRiskFactorSensitivityMarginCorePositive
-					) * java.lang.Math.sqrt (coreSBAVariance),
-				0.
+			double coreSBAMargin = curvatureEstimator.margin (
+				cumulativeRiskFactorSensitivityMarginCore,
+				cumulativeRiskFactorSensitivityMarginCorePositive,
+				coreSBAVariance
 			);
 
-			double residualSBAMargin = !bucketAggregateMap.containsKey ("-1") ? 0. : java.lang.Math.max (
-				cumulativeRiskFactorSensitivityMarginResidual +
-					curvatureResponse.lambda (
-						cumulativeRiskFactorSensitivityMarginResidual,
-						cumulativeRiskFactorSensitivityMarginResidualPositive
-					) * java.lang.Math.sqrt (bucketAggregateMap.get ("-1").sensitivityMarginVariance()),
-				0.
-			);
+			double residualSBAMargin = !bucketAggregateMap.containsKey ("-1") ? 0. :
+				curvatureEstimator.margin (
+					cumulativeRiskFactorSensitivityMarginResidual,
+					cumulativeRiskFactorSensitivityMarginResidualPositive,
+					bucketAggregateMap.get ("-1").sensitivityMarginVariance()
+				);
 
 			return new org.drip.simm.margin.RiskMeasureAggregate (
 				bucketAggregateMap,

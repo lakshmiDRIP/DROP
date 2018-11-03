@@ -157,7 +157,7 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double lambda (
+	@Override public double lambda (
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive)
 		throws java.lang.Exception

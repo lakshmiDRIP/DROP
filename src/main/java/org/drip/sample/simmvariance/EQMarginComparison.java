@@ -391,7 +391,7 @@ public class EQMarginComparison
 			bucketDeltaSensitivityMap,
 			bucketVegaSensitivityMap,
 			riskClassSensitivitySettings,
-			MarginEstimationSettings.Standard
+			MarginEstimationSettings.CornishFischer
 				(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA)
 		);
 
@@ -400,7 +400,7 @@ public class EQMarginComparison
 			bucketDeltaSensitivityMap,
 			bucketVegaSensitivityMap,
 			riskClassSensitivitySettings,
-			MarginEstimationSettings.Standard
+			MarginEstimationSettings.CornishFischer
 				(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB)
 		);
 

@@ -310,7 +310,7 @@ public class FXClassMargin21
 			"IDR"
 		};
 
-		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.CornishFischer
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX_21

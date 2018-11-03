@@ -1070,7 +1070,7 @@ public class ProductMargin20
 			fxCurrencyList.add (fxCurrency);
 		}
 
-		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.CornishFischer
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		ProductClassSettings productClassSettings = ProductClassSettings.ISDA_20 (

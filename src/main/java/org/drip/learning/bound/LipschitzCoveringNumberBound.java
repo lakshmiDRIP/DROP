@@ -51,9 +51,7 @@ package org.drip.learning.bound;
 
 /**
  * LipschitzCoveringNumberBound contains the Upper Bounds of the Covering Numbers induced by Lipschitz and
- * 	approximate Lipschitz Loss Function Class.
- *  
- * The Reference are:
+ * 	approximate Lipschitz Loss Function Class. The References are:
  *  
  *  1) Bartlett, P. L., P. Long, and R. C. Williamson (1996): Fat-shattering and the Learnability of Real-
  *  	Valued Functions, Journal of Computational System Science, 52 (3) 434-452.

@@ -265,7 +265,7 @@ public class CreditNonQualifyingBucketVegaMargin20
 			bucketSensitivityCR.cumulativeTenorSensitivityMap()
 		);
 
-		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.Standard
+		MarginEstimationSettings marginEstimationSettings = MarginEstimationSettings.CornishFischer
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettingsCR riskMeasureSensitivitySettingsCR =

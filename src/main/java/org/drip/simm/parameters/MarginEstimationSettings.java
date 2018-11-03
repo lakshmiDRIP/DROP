@@ -85,24 +85,24 @@ public class MarginEstimationSettings
 	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
 
 	private java.lang.String _positionPrincipalComponentScheme = "";
-	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;
+	private org.drip.simm.foundation.CurvatureEstimator _curvatureEstimator = null;
 
 	/**
-	 * Generate a Standard Instance of MarginEstimationSettings
+	 * Generate a Cornish-Fischer Instance of MarginEstimationSettings
 	 * 
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
 	 * 
-	 * @return Standard Instance of MarginEstimationSettings
+	 * @return Cornish-Fischer Instance of MarginEstimationSettings
 	 */
 
-	public static final MarginEstimationSettings Standard (
+	public static final MarginEstimationSettings CornishFischer (
 		final java.lang.String positionPrincipalComponentScheme)
 	{
 		try
 		{
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard()
+				org.drip.simm.foundation.CurvatureEstimatorResponseFunction.CornishFischer()
 			);
 		}
 		catch (java.lang.Exception e)
@@ -117,19 +117,19 @@ public class MarginEstimationSettings
 	 * MarginEstimationSettings Constructor
 	 * 
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
-	 * @param curvatureResponse The Curvature Response Function
+	 * @param curvatureEstimator The Curvature Estimator Function
 	 * 
 	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
 	 */
 
 	public MarginEstimationSettings (
 		final java.lang.String positionPrincipalComponentScheme,
-		final org.drip.simm.foundation.CurvatureResponse curvatureResponse)
+		final org.drip.simm.foundation.CurvatureEstimator curvatureEstimator)
 		throws java.lang.Exception
 	{
 		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
 			_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureResponse = curvatureResponse))
+			null == (_curvatureEstimator = curvatureEstimator))
 		{
 			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
 		}
@@ -147,13 +147,13 @@ public class MarginEstimationSettings
 	}
 
 	/**
-	 * Retrieve the Curvature Response Function
+	 * Retrieve the Curvature Estimator Function
 	 * 
-	 * @return The Curvature Response Function
+	 * @return The Curvature Estimator Function
 	 */
 
-	public org.drip.simm.foundation.CurvatureResponse curvatureResponse()
+	public org.drip.simm.foundation.CurvatureEstimator curvatureEstimator()
 	{
-		return _curvatureResponse;
+		return _curvatureEstimator;
 	}
 }
