@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CorrelatedRdSequenceAntithetic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.statistics</a> &gt; <span class="el_source">CorrelatedRdSequenceAntithetic.java</span></div><h1>CorrelatedRdSequenceAntithetic.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.statistics;
+
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.*;
+import org.drip.measure.statistics.MultivariateDiscrete;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CorrelatedRdSequenceAntithetic demonstrates the Generation of the Statistical Measures for the Input
+ *  Correlated Sequence Set created using the Multi-Path Correlated Random Variable Generator without
+ *  Quadratic Re-sampling, but with Antithetic Variables.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L64">public class CorrelatedRdSequenceAntithetic {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L70">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L72">		int iNumPath = 1;</span>
+<span class="fc" id="L73">		int iNumVertex = 50000;</span>
+<span class="fc" id="L74">		boolean bApplyAntithetic = true;</span>
+
+<span class="fc" id="L76">		double[][] aadblCorrelationInput = new double[][] {</span>
+			{1.000, 0.161, 0.245, 0.352, 0.259, 0.166, 0.003, 0.038, 0.114},	// USD_LIBOR_3M
+			{0.161, 1.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000},	// EUR_LIBOR_3M
+			{0.245, 0.000, 1.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000},	// JPY_LIBOR_3M
+			{0.352, 0.000, 0.000, 1.000, 0.000, 0.000, 0.000, 0.000, 0.000},	// CHF_LIBOR_3M
+			{0.259, 0.000, 0.000, 0.000, 1.000, 0.000, 0.000, 0.000, 0.000},	// GBP_LIBOR_3M
+			{0.166, 0.000, 0.000, 0.000, 0.000, 1.000, 0.000, 0.000, 0.000},	// EURUSD
+			{0.003, 0.000, 0.000, 0.000, 0.000, 0.000, 1.000, 0.000, 0.000},	// JPYUSD
+			{0.038, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 1.000, 0.000},	// CHFUSD
+			{0.114, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 1.000},	// GBPUSD
+		};
+
+<span class="fc" id="L88">		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (</span>
+			new RandomNumberGenerator(),
+			aadblCorrelationInput,
+			iNumVertex,
+			iNumPath,
+			bApplyAntithetic,
+			null
+		);
+
+<span class="fc" id="L97">		VertexRd vertexRd = cpvd.multiPathVertexRd()[0];</span>
+
+<span class="fc" id="L99">		MultivariateDiscrete mds = new MultivariateDiscrete (vertexRd.flatform());</span>
+
+<span class="fc" id="L101">		double[] adblMeanOutput = mds.mean();</span>
+
+<span class="fc" id="L103">		double[] adblErrorOutput = mds.error();</span>
+
+<span class="fc" id="L105">		double[] adblVarianceOutput = mds.variance();</span>
+
+<span class="fc" id="L107">		double[][] aadblCovarianceOutput = mds.covariance();</span>
+
+<span class="fc" id="L109">		double[][] aadblCorrelationOutput = mds.correlation();</span>
+
+<span class="fc" id="L111">		double[] adblStandardDeviationOutput = mds.standardDeviation();</span>
+
+<span class="fc" id="L113">		System.out.println();</span>
+
+<span class="fc" id="L115">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L117">		System.out.println (&quot;\t||                R^1 METRICS                ||&quot;);</span>
+
+<span class="fc" id="L119">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L121">		System.out.println (&quot;\t||    L -&gt; R:                                ||&quot;);</span>
+
+<span class="fc" id="L123">		System.out.println (&quot;\t||            - Mean                         ||&quot;);</span>
+
+<span class="fc" id="L125">		System.out.println (&quot;\t||            - Error                        ||&quot;);</span>
+
+<span class="fc" id="L127">		System.out.println (&quot;\t||            - Variance                     ||&quot;);</span>
+
+<span class="fc" id="L129">		System.out.println (&quot;\t||            - Standard Deviation           ||&quot;);</span>
+
+<span class="fc" id="L131">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i)</span>
+<span class="fc" id="L134">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L135">				FormatUtil.FormatDouble (adblMeanOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L136">				FormatUtil.FormatDouble (adblErrorOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L137">				FormatUtil.FormatDouble (adblVarianceOutput[i], 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L138">				FormatUtil.FormatDouble (adblStandardDeviationOutput[i], 1, 5, 1.) + &quot; ||&quot;</span>
+			);
+
+<span class="fc" id="L141">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L143">		System.out.println();</span>
+
+<span class="fc" id="L145">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L147">		System.out.println (&quot;\t||                                     INPUT CORRELATION                                    ||&quot;);</span>
+
+<span class="fc" id="L149">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
+<span class="fc" id="L152">			String strDump = &quot;\t|| &quot;;</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
+<span class="fc" id="L155">				strDump = strDump + FormatUtil.FormatDouble (aadblCorrelationInput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
+
+<span class="fc" id="L157">			System.out.println (strDump + &quot;|&quot;);</span>
+		}
+
+<span class="fc" id="L160">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L162">		System.out.println();</span>
+
+<span class="fc" id="L164">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L166">		System.out.println (&quot;\t||                                    OUTPUT CORRELATION                                    ||&quot;);</span>
+
+<span class="fc" id="L168">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
+<span class="fc" id="L171">			String strDump = &quot;\t|| &quot;;</span>
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
+<span class="fc" id="L174">				strDump = strDump + FormatUtil.FormatDouble (aadblCorrelationOutput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
+
+<span class="fc" id="L176">			System.out.println (strDump + &quot;|&quot;);</span>
+		}
+
+<span class="fc" id="L179">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L181">		System.out.println();</span>
+
+<span class="fc" id="L183">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L185">		System.out.println (&quot;\t||                                    OUTPUT COVARIANCE                                     ||&quot;);</span>
+
+<span class="fc" id="L187">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMeanOutput.length; ++i) {</span>
+<span class="fc" id="L190">			String strDump = &quot;\t|| &quot;;</span>
+
+<span class="fc bfc" id="L192" title="All 2 branches covered.">			for (int j = 0; j &lt; adblMeanOutput.length; ++j)</span>
+<span class="fc" id="L193">				strDump = strDump + FormatUtil.FormatDouble (aadblCovarianceOutput[i][j], 1, 5, 1.) + &quot; |&quot;;</span>
+
+<span class="fc" id="L195">			System.out.println (strDump + &quot;|&quot;);</span>
+		}
+
+<span class="fc" id="L198">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L200">		System.out.println();</span>
+<span class="fc" id="L201">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

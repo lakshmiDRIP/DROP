@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BestFitFlexurePenalizer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spline.segment</a> &gt; <span class="el_source">BestFitFlexurePenalizer.java</span></div><h1>BestFitFlexurePenalizer.java</h1><pre class="source lang-java linenums">
+package org.drip.spline.segment;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * This Class implements the Segment's Best Fit, Curvature, and Length Penalizers. It provides the
+ * 	following functionality:
+ * 	- Compute the Cross-Curvature Penalty for the given Basis Pair.
+ * 	- Compute the Cross-Length Penalty for the given Basis Pair.
+ * 	- Compute the Best Fit Cross-Product Penalty for the given Basis Pair.
+ * 	- Compute the Basis Pair Penalty Coefficient for the Best Fit and the Curvature Penalties.
+ * 	- Compute the Penalty Constraint for the Basis Pair.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BestFitFlexurePenalizer {
+<span class="fc" id="L67">	private org.drip.spline.segment.BasisEvaluator _lbe = null;</span>
+<span class="fc" id="L68">	private org.drip.spline.segment.LatentStateInelastic _ics = null;</span>
+<span class="fc" id="L69">	private org.drip.spline.params.SegmentBestFitResponse _sbfr = null;</span>
+<span class="fc" id="L70">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;</span>
+<span class="fc" id="L71">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;</span>
+
+	/**
+	 * BestFitFlexurePenalizer constructor
+	 * 
+	 * @param ics Segment Inelastics
+	 * @param sfpcCurvature Curvature Penalty Parameters
+	 * @param sfpcLength Length Penalty Parameters
+	 * @param sbfr Best Fit Weighted Response
+	 * @param lbe The Local Basis Evaluator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BestFitFlexurePenalizer (
+		final org.drip.spline.segment.LatentStateInelastic ics,
+		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcCurvature,
+		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcLength,
+		final org.drip.spline.params.SegmentBestFitResponse sbfr,
+		final org.drip.spline.segment.BasisEvaluator lbe)
+		throws java.lang.Exception
+<span class="fc" id="L92">	{</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">		if (null == (_lbe = lbe) || null == (_ics = ics))</span>
+<span class="nc" id="L94">			throw new java.lang.Exception (&quot;BestFitFlexurePenalizer ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L96">		_sbfr = sbfr;</span>
+<span class="fc" id="L97">		_sfpcLength = sfpcLength;</span>
+<span class="fc" id="L98">		_sfpcCurvature = sfpcCurvature;</span>
+<span class="fc" id="L99">	}</span>
+
+	/**
+	 * Compute the Cross-Curvature Penalty for the given Basis Pair
+	 * 
+	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
+	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * 
+	 * @return The Cross-Curvature Penalty for the given Basis Pair
+	 * 
+	 * @throws java.lang.Exception Thrown if the Cross-Curvature Penalty cannot be computed
+	 */
+
+	public double basisPairCurvaturePenalty (
+		final int iBasisIndexI,
+		final int iBasisIndexR)
+		throws java.lang.Exception
+	{
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		if (null == _sfpcCurvature) return 0.;</span>
+
+<span class="fc" id="L119">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L120">			(null) {</span>
+			@Override public double evaluate (
+				final double dblVariate)
+				throws Exception
+			{
+<span class="fc" id="L125">				int iOrder = _sfpcCurvature.derivativeOrder();</span>
+
+<span class="fc" id="L127">				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *</span>
+<span class="fc" id="L128">					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);</span>
+			}
+
+			@Override public double integrate (
+				final double dblBegin,
+				final double dblEnd)
+				throws java.lang.Exception
+			{
+<span class="fc" id="L136">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+			}
+		};
+
+<span class="fc" id="L140">		return _sfpcCurvature.amplitude() * au.integrate (_ics.left(), _ics.right());</span>
+	}
+
+	/**
+	 * Compute the Cross-Length Penalty for the given Basis Pair
+	 * 
+	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
+	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * 
+	 * @return The Cross-Length Penalty for the given Basis Pair
+	 * 
+	 * @throws java.lang.Exception Thrown if the Cross-Length Penalty cannot be computed
+	 */
+
+	public double basisPairLengthPenalty (
+		final int iBasisIndexI,
+		final int iBasisIndexR)
+		throws java.lang.Exception
+	{
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		if (null == _sfpcLength) return 0.;</span>
+
+<span class="fc" id="L161">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L162">			(null) {</span>
+			@Override public double evaluate (
+				final double dblVariate)
+				throws Exception
+			{
+<span class="fc" id="L167">				int iOrder = _sfpcLength.derivativeOrder();</span>
+
+<span class="fc" id="L169">				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *</span>
+<span class="fc" id="L170">					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);</span>
+			}
+
+			@Override public double integrate (
+				final double dblBegin,
+				final double dblEnd)
+				throws java.lang.Exception
+			{
+<span class="fc" id="L178">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+			}
+		};
+
+<span class="fc" id="L182">		return _sfpcLength.amplitude() * au.integrate (_ics.left(), _ics.right());</span>
+	}
+
+	/**
+	 * Compute the Best Fit Cross-Product Penalty for the given Basis Pair
+	 * 
+	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
+	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * 
+	 * @return The Best Fit Cross-Product Penalty for the given Basis Pair
+	 * 
+	 * @throws java.lang.Exception Thrown if the Best Fit Cross-Product Penalty cannot be computed
+	 */
+
+	public double basisBestFitPenalty (
+		final int iBasisIndexI,
+		final int iBasisIndexR)
+		throws java.lang.Exception
+	{
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		if (null == _sbfr) return 0.;</span>
+
+<span class="fc" id="L203">		int iNumPoint = _sbfr.numPoint();</span>
+
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (0 == iNumPoint) return 0.;</span>
+
+<span class="fc" id="L207">		double dblBasisPairFitnessPenalty = 0.;</span>
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
+<span class="fc" id="L210">			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);</span>
+
+<span class="fc" id="L212">			dblBasisPairFitnessPenalty += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse</span>
+<span class="fc" id="L213">				(dblPredictorOrdinate, iBasisIndexI) * _lbe.shapedBasisFunctionResponse</span>
+<span class="fc" id="L214">					(dblPredictorOrdinate, iBasisIndexR);</span>
+		}
+
+<span class="fc" id="L217">		return dblBasisPairFitnessPenalty / iNumPoint;</span>
+	}
+
+	/**
+	 * Compute the Basis Pair Penalty Coefficient for the Best Fit and the Curvature Penalties
+	 * 
+	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
+	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * 
+	 * @return The Basis Pair Penalty Coefficient for the Fitness and the Curvature Penalties
+	 */
+
+	public double basisPairConstraintCoefficient (
+		final int iBasisIndexI,
+		final int iBasisIndexR)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L236">		return basisPairCurvaturePenalty (iBasisIndexI, iBasisIndexR) + basisPairLengthPenalty (iBasisIndexI,</span>
+<span class="fc" id="L237">			iBasisIndexR) + basisBestFitPenalty (iBasisIndexI, iBasisIndexR);</span>
+	}
+
+	/**
+	 * Compute the Penalty Constraint for the Basis Pair
+	 * 
+	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * 
+	 * @return Penalty Constraint for the Basis Pair
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public double basisPairPenaltyConstraint (
+		final int iBasisIndexR)
+		throws java.lang.Exception
+	{
+<span class="fc bfc" id="L254" title="All 2 branches covered.">		if (null == _sbfr) return 0.;</span>
+
+<span class="fc" id="L256">		int iNumPoint = _sbfr.numPoint();</span>
+
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (0 == iNumPoint) return 0.;</span>
+
+<span class="fc" id="L260">		double dblBasisPairPenaltyConstraint = 0.;</span>
+
+<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
+<span class="fc" id="L263">			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);</span>
+
+<span class="fc" id="L265">			dblBasisPairPenaltyConstraint += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse</span>
+<span class="fc" id="L266">				(dblPredictorOrdinate, iBasisIndexR) * _sbfr.response (i);</span>
+		}
+
+<span class="fc" id="L269">		return dblBasisPairPenaltyConstraint / iNumPoint;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

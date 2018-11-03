@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReturnsConstrainedAllocationClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.service</a> &gt; <span class="el_source">ReturnsConstrainedAllocationClient.java</span></div><h1>ReturnsConstrainedAllocationClient.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.service;
+
+import org.drip.json.parser.Converter;
+import org.drip.json.simple.JSONObject;
+import org.drip.service.env.EnvManager;
+import org.drip.service.json.KeyHoleSkeleton;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ReturnsConstrainedAllocationClient demonstrates the Invocation and Examination of the JSON-based
+ *  Weight Normalized/Returns Constrained Portfolio Allocation Service Client.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L63">public class ReturnsConstrainedAllocationClient {</span>
+
+	@SuppressWarnings (&quot;unchecked&quot;) public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L71">		String[] astrAssetName = new String[] {</span>
+			&quot;TOK&quot;,
+			&quot;EWJ&quot;,
+			&quot;HYG&quot;,
+			&quot;LQD&quot;,
+			&quot;EMD&quot;,
+			&quot;GSG&quot;,
+			&quot;BWX&quot;
+		};
+
+<span class="fc" id="L81">		double[] adblAssetExpectedReturns = new double[] {</span>
+			0.008355,
+			0.007207,
+			0.006279,
+			0.002466,
+			0.004472,
+			0.006821,
+			0.001570
+		};
+
+<span class="fc" id="L91">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
+			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
+			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
+			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
+			{0.000488, 0.000457, 0.000639, 0.000608, 0.000663, 0.000042, 0.000370},
+			{0.001172, 0.001105, 0.001050, 0.000663, 0.001389, 0.000825, 0.000661},
+			{0.002312, 0.001647, 0.001110, 0.000042, 0.000825, 0.005211, 0.000749},
+			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
+		};
+
+<span class="fc" id="L101">		double[] adblAssetLowerBound = new double[] {</span>
+			0.05,
+			0.05,
+			0.05,
+			0.10,
+			0.05,
+			0.05,
+			0.03
+		};
+
+<span class="fc" id="L111">		double[] adblAssetUpperBound = new double[] {</span>
+			0.40,
+			0.40,
+			0.30,
+			0.60,
+			0.35,
+			0.15,
+			0.50
+		};
+
+<span class="fc" id="L121">		double[][] aadblBound = new double[adblAssetExpectedReturns.length][2];</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="fc" id="L124">			aadblBound[i][0] = adblAssetLowerBound[i];</span>
+<span class="fc" id="L125">			aadblBound[i][1] = adblAssetUpperBound[i];</span>
+		}
+
+<span class="fc" id="L128">		double dblPortfolioDesignReturn = 0.005262;</span>
+
+<span class="fc" id="L130">		JSONObject jsonParameters = new JSONObject();</span>
+
+<span class="fc" id="L132">		jsonParameters.put (&quot;AssetSet&quot;, Converter.Array (astrAssetName));</span>
+
+<span class="fc" id="L134">		jsonParameters.put (&quot;AssetReturnsMean&quot;, Converter.Array (adblAssetExpectedReturns));</span>
+
+<span class="fc" id="L136">		jsonParameters.put (&quot;AssetReturnsCovariance&quot;, Converter.Array (aadblAssetReturnsCovariance));</span>
+
+<span class="fc" id="L138">		jsonParameters.put (&quot;PortfolioDesignReturn&quot;, dblPortfolioDesignReturn);</span>
+
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="fc" id="L141">			jsonParameters.put (astrAssetName[i] + &quot;::LowerBound&quot;, aadblBound[i][0]);</span>
+
+<span class="fc" id="L143">			jsonParameters.put (astrAssetName[i] + &quot;::UpperBound&quot;, aadblBound[i][1]);</span>
+		}
+
+<span class="fc" id="L146">		JSONObject jsonRequest = new JSONObject();</span>
+
+<span class="fc" id="L148">		jsonRequest.put (&quot;API&quot;, &quot;PORTFOLIOALLOCATION::RETURNSCONSTRAINEDMEANVARIANCE&quot;);</span>
+
+<span class="fc" id="L150">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
+
+<span class="fc" id="L152">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
+
+<span class="fc" id="L154">		System.out.println (jsonRequest.toJSONString());</span>
+
+<span class="fc" id="L156">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
+
+<span class="fc" id="L158">		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));</span>
+<span class="fc" id="L159">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

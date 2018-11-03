@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathDateForwardCurves.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.govviemc</a> &gt; <span class="el_source">PathDateForwardCurves.java</span></div><h1>PathDateForwardCurves.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.govviemc;
+
+import org.drip.analytics.date.*;
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.sequence.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PathDateForwardCurves demonstrates the Simulations of the Per-Path Forward Vertex Date Govvie Yield
+ *  Curves.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L67">public class PathDateForwardCurves {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L73">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L75">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.MARCH,
+			24
+		);
+
+<span class="fc" id="L81">		int iNumPath = 50;</span>
+<span class="fc" id="L82">		double dblVolatility = 0.10;</span>
+<span class="fc" id="L83">		String strTreasuryCode = &quot;UST&quot;;</span>
+
+<span class="fc" id="L85">		String[] astrTenor = new String[] {</span>
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;,
+			&quot;20Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="fc" id="L96">		double[] adblTreasuryCoupon = new double[] {</span>
+			0.0100,
+			0.0100,
+			0.0125,
+			0.0150,
+			0.0200,
+			0.0225,
+			0.0250,
+			0.0300
+		};
+
+<span class="fc" id="L107">		double[] adblTreasuryYield = new double[] {</span>
+			0.0083,	//  1Y
+			0.0122, //  2Y
+			0.0149, //  3Y
+			0.0193, //  5Y
+			0.0227, //  7Y
+			0.0248, // 10Y
+			0.0280, // 20Y
+			0.0308  // 30Y
+		};
+<span class="fc" id="L117">		int[] aiEventDate = new int[] {</span>
+<span class="fc" id="L118">			DateUtil.CreateFromYMD (2020, 12,  1).julian(),</span>
+<span class="fc" id="L119">			DateUtil.CreateFromYMD (2022, 12,  1).julian(),</span>
+<span class="fc" id="L120">			DateUtil.CreateFromYMD (2024, 12,  1).julian(),</span>
+<span class="fc" id="L121">			DateUtil.CreateFromYMD (2026, 12,  1).julian(),</span>
+<span class="fc" id="L122">			DateUtil.CreateFromYMD (2028, 12,  1).julian(),</span>
+<span class="fc" id="L123">			DateUtil.CreateFromYMD (2030, 12,  1).julian(),</span>
+<span class="fc" id="L124">			DateUtil.CreateFromYMD (2032, 12,  1).julian(),</span>
+<span class="fc" id="L125">			DateUtil.CreateFromYMD (2034, 12,  1).julian(),</span>
+<span class="fc" id="L126">			DateUtil.CreateFromYMD (2036, 12,  1).julian(),</span>
+<span class="fc" id="L127">			DateUtil.CreateFromYMD (2038, 12,  1).julian(),</span>
+		};
+
+<span class="fc" id="L130">		int iNumVertex = aiEventDate.length;</span>
+<span class="fc" id="L131">		int iNumDimension = astrTenor.length;</span>
+<span class="fc" id="L132">		double[][] aadblCorrelation = new double[iNumDimension][iNumDimension];</span>
+
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDimension; ++i) {</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumDimension; ++j)</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">				aadblCorrelation[i][j] = i == j ? 1. : 0.;</span>
+		}
+
+<span class="fc" id="L139">		PathVertexGovvie mcrg = PathVertexGovvie.Standard (</span>
+			new GovvieBuilderSettings (
+				dtSpot,
+				strTreasuryCode,
+				astrTenor,
+				adblTreasuryCoupon,
+				adblTreasuryYield
+			),
+			new CorrelatedPathVertexDimension (
+				new RandomNumberGenerator(),
+				aadblCorrelation,
+				iNumVertex,
+				iNumPath,
+				false,
+				null
+			),
+			new DiffusionEvolver (
+<span class="fc" id="L156">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					0.,
+					dblVolatility
+				)
+			)
+		);
+
+<span class="fc" id="L163">		GovvieCurve[][] aaGC = mcrg.pathVertex (aiEventDate);</span>
+
+<span class="fc" id="L165">		System.out.println();</span>
+
+<span class="fc" id="L167">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L169">		String strDump = &quot;\t|| ## |&quot;;</span>
+
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex)</span>
+<span class="fc" id="L172">			strDump = strDump + &quot; &quot; + new JulianDate (aiEventDate[iVertex]) + &quot; |&quot;;</span>
+
+<span class="fc" id="L174">		System.out.println (strDump + &quot;|&quot;);</span>
+
+<span class="fc" id="L176">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc" id="L179">			strDump = &quot;\t||&quot; + FormatUtil.FormatDouble (iPath + 1, 2, 0, 1.) + &quot; |&quot;;</span>
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex)</span>
+<span class="fc" id="L182">				strDump = strDump + &quot;   &quot; + FormatUtil.FormatDouble (aaGC[iPath][iVertex].yield (&quot;5Y&quot;), 1, 3, 100.) + &quot;%   |&quot;;</span>
+
+<span class="fc" id="L184">			System.out.println (strDump + &quot;|&quot;);</span>
+		}
+
+<span class="fc" id="L187">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L189">		System.out.println();</span>
+<span class="fc" id="L190">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CDSCashFlowMeasures.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.credit</a> &gt; <span class="el_source">CDSCashFlowMeasures.java</span></div><h1>CDSCashFlowMeasures.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.credit;
+
+/*
+ * Credit Product import
+ */
+
+import org.drip.analytics.cashflow.*;
+import org.drip.analytics.date.*;
+import org.drip.analytics.daycount.Convention;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.*;
+import org.drip.product.definition.*;
+import org.drip.param.creator.*;
+import org.drip.product.creator.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.*;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CDSCashFlowMeasures contains a demo of the CDS Measures and Cash flow Generation Sample. It illustrates
+ *  the following:
+ *  
+ * - Credit Curve Creation: From flat Hazard Rate, and from an array of dates and their corresponding
+ * 		survival probabilities.
+ * - Create Credit Curve from CDS instruments, and recover the input measure quotes.
+ * - Create an SNAC CDS, price it, and display the coupon/loss cash flow.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L86">public class CDSCashFlowMeasures {</span>
+	private static final java.lang.String FIELD_SEPARATOR = &quot;   &quot;;
+
+	/*
+	 * Sample API demonstrating the creation/usage of the credit curve from survival and hazard rates
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void CreditCurveAPISample()
+		throws Exception
+	{
+<span class="fc" id="L98">		JulianDate dtStart = DateUtil.Today();</span>
+
+<span class="fc" id="L100">		JulianDate dt10Y = dtStart.addYears (10);</span>
+
+		/*
+		 * Create Credit Curve from flat Hazard Rate
+		 */
+
+<span class="fc" id="L106">		CreditCurve ccFlatHazard = ScenarioCreditCurveBuilder.FlatHazard (</span>
+<span class="fc" id="L107">			dtStart.julian(),</span>
+			&quot;CC&quot;,
+			&quot;USD&quot;,
+			0.02,
+			0.4
+		);
+
+<span class="fc" id="L114">		System.out.println (&quot;CCFromFlatHazard[&quot; + dt10Y.toString() + &quot;]; Survival=&quot; +</span>
+<span class="fc" id="L115">			ccFlatHazard.survival (&quot;10Y&quot;) + &quot;; Hazard=&quot; + ccFlatHazard.hazard (&quot;10Y&quot;));</span>
+
+<span class="fc" id="L117">		int[] aiDate = new int[5];</span>
+<span class="fc" id="L118">		double[] adblSurvival = new double[5];</span>
+
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i) {</span>
+<span class="fc" id="L121">			aiDate[i] = dtStart.addYears (2 * i + 2).julian();</span>
+
+<span class="fc" id="L123">			adblSurvival[i] = 1. - 0.1 * (i + 1);</span>
+		}
+
+		/*
+		 * Create Credit Curve from an array of dates and their corresponding survival probabilities
+		 */
+
+<span class="fc" id="L130">		CreditCurve ccFromSurvival = ScenarioCreditCurveBuilder.Survival (</span>
+<span class="fc" id="L131">			dtStart.julian(),</span>
+			&quot;CC&quot;,
+			&quot;USD&quot;,
+			aiDate,
+			adblSurvival,
+			0.4
+		);
+
+<span class="fc" id="L139">		System.out.println (&quot;CCFromSurvival[&quot; + dt10Y.toString() + &quot;]; Survival=&quot; +</span>
+<span class="fc" id="L140">			ccFromSurvival.survival (&quot;10Y&quot;) + &quot;; Hazard=&quot; + ccFromSurvival.hazard (&quot;10Y&quot;));</span>
+<span class="fc" id="L141">	}</span>
+
+	/*
+	 * Sample API demonstrating the creation of the Credit Curve from the CDS instruments
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static void CreateCreditCurveFromCDSInstruments()
+		throws Exception
+	{
+<span class="fc" id="L152">		JulianDate dtStart = DateUtil.Today();</span>
+
+		/*
+		 * Populate the instruments, the calibration measures, and the calibration quotes
+		 */
+
+<span class="fc" id="L158">		double[] adblQuotes = new double[5];</span>
+<span class="fc" id="L159">		String[] astrCalibMeasure = new String[5];</span>
+<span class="fc" id="L160">		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[5];</span>
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i) {</span>
+			/*
+			 * The Calibration CDS
+			 */
+
+<span class="fc" id="L167">			aCDS[i] = CDSBuilder.CreateSNAC (</span>
+				dtStart,
+				(i + 1) + &quot;Y&quot;,
+				0.01,
+				&quot;CORP&quot;
+			);
+
+			/*
+			 * Calibration Quote
+			 */
+
+<span class="fc" id="L178">			adblQuotes[i] = 100.;</span>
+
+			/*
+			 * Calibration Measure
+			 */
+
+<span class="fc" id="L184">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
+		}
+
+		/*
+		 * Flat Discount Curve
+		 */
+
+<span class="fc" id="L191">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+			dtStart,
+			&quot;USD&quot;,
+			0.05
+		);
+
+		/*
+		 * Create the Credit Curve from the give CDS instruments
+		 */
+
+<span class="fc" id="L201">		CreditCurve cc = ScenarioCreditCurveBuilder.Custom (</span>
+			&quot;CORP&quot;,
+			dtStart,
+			aCDS,
+			dc,
+			adblQuotes,
+			astrCalibMeasure,
+			0.4,
+			false
+		);
+
+		/*
+		 * Valuation Parameters
+		 */
+
+<span class="fc" id="L216">		ValuationParams valParams = ValuationParams.Spot (</span>
+			dtStart,
+			0,
+			&quot;&quot;,
+			Convention.DATE_ROLL_ACTUAL
+		);
+
+		/*
+		 * Standard Credit Pricer Parameters (check javadoc for details)
+		 */
+
+<span class="fc" id="L227">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+
+		/*
+		 * Re-calculate the input calibration measures for the input CDSes
+		 */
+
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		for (int i = 0; i &lt; aCDS.length; ++i)</span>
+<span class="fc" id="L234">			System.out.println (</span>
+				&quot;\t&quot; + astrCalibMeasure[i] + &quot;[&quot; + i + &quot;] = &quot; +
+<span class="fc" id="L236">				aCDS[i].measureValue (</span>
+<span class="fc" id="L237">					valParams, pricerParams, MarketParamsBuilder.Create (</span>
+						dc,
+						null,
+						null,
+						cc,
+						null,
+						null,
+						null,
+						null
+					),
+					null,
+					astrCalibMeasure[i]
+				)
+			);
+<span class="fc" id="L251">	}</span>
+
+	/*
+	 * Sample API demonstrating the display of the CDS coupon and loss cash flow
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void CDSAPISample()
+		throws Exception
+	{
+<span class="fc" id="L262">		JulianDate dtStart = DateUtil.Today();</span>
+
+		/*
+		 * Flat Discount Curve
+		 */
+
+<span class="fc" id="L268">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+			dtStart,
+			&quot;USD&quot;,
+			0.05
+		);
+
+		/*
+		 * Flat Credit Curve
+		 */
+
+<span class="fc" id="L278">		CreditCurve cc = ScenarioCreditCurveBuilder.FlatHazard (</span>
+<span class="fc" id="L279">			dtStart.julian(),</span>
+			&quot;CC&quot;,
+			&quot;USD&quot;,
+			0.02,
+			0.4
+		);
+
+		/*
+		 * Component Market Parameters built from the Discount and the Credit Curves
+		 */
+
+<span class="fc" id="L290">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Credit (</span>
+			dc,
+			cc
+		);
+
+		/*
+		 * Create an SNAC CDS
+		 */
+
+<span class="fc" id="L299">		CreditDefaultSwap cds = CDSBuilder.CreateSNAC (</span>
+			dtStart,
+			&quot;5Y&quot;,
+			0.1,
+			&quot;CC&quot;
+		);
+
+		/*
+		 * Valuation Parameters
+		 */
+
+<span class="fc" id="L310">		ValuationParams valParams = ValuationParams.Spot (</span>
+			dtStart,
+			0,
+			&quot;&quot;,
+			Convention.DATE_ROLL_ACTUAL
+		);
+
+		/*
+		 * Standard Credit Pricer Parameters (check javadoc for details)
+		 */
+
+<span class="fc" id="L321">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+
+<span class="fc" id="L323">		System.out.println (&quot;Loss Start     Loss End  Notl    Rec    EffDF    StartSurv  EndSurv&quot;);</span>
+
+<span class="fc" id="L325">		System.out.println (&quot;----------     --------  ----    ---    -----    ---------  -------&quot;);</span>
+
+		/*
+		 * CDS Loss Cash Flow
+		 */
+
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		for (LossQuadratureMetrics dp : cds.lossFlow (valParams, pricerParams, mktParams))</span>
+<span class="fc" id="L332">			System.out.println (</span>
+<span class="fc" id="L333">				DateUtil.YYYYMMDD (dp.startDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L334">				DateUtil.YYYYMMDD (dp.endDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L335">				FormatUtil.FormatDouble (dp.effectiveNotional(), 1, 0, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L336">				FormatUtil.FormatDouble (dp.effectiveRecovery(), 1, 2, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L337">				FormatUtil.FormatDouble (dp.effectiveDF(), 1, 4, 1.)  + FIELD_SEPARATOR +</span>
+<span class="fc" id="L338">				FormatUtil.FormatDouble (dp.startSurvival(), 1, 4, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L339">				FormatUtil.FormatDouble (dp.endSurvival(), 1, 4, 1.)</span>
+			);
+<span class="fc" id="L341">	}</span>
+
+	public static final void main (
+		final String astrArgs[])
+		throws Exception
+	{
+		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
+
+<span class="fc" id="L349">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L351">		CreditCurveAPISample();</span>
+
+<span class="fc" id="L353">		CreateCreditCurveFromCDSInstruments();</span>
+
+<span class="fc" id="L355">		CDSAPISample();</span>
+<span class="fc" id="L356">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

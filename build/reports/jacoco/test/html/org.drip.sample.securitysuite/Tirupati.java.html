@@ -1,0 +1,1685 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tirupati.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.securitysuite</a> &gt; <span class="el_source">Tirupati.java</span></div><h1>Tirupati.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.securitysuite;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.*;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.credit.BondComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+import org.drip.service.scenario.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Tirupati generates the Full Suite of Replication Metrics for Bond Tirupati.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L65">public class Tirupati {</span>
+
+	public static final void main (
+		final String[] astArgs)
+		throws Exception
+	{
+<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L73">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.OCTOBER,
+			5
+		);
+
+<span class="fc" id="L79">		String[] astrDepositTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="fc" id="L83">		double[] adblDepositQuote = new double[] {</span>
+			0.0130411 // 2D
+		};
+
+<span class="fc" id="L87">		double[] adblFuturesQuote = new double[] {</span>
+			0.01345,	// 98.655
+			0.01470,	// 98.530
+			0.01575,	// 98.425
+			0.01660,	// 98.340
+			0.01745,    // 98.255
+			0.01845     // 98.155
+		};
+
+<span class="fc" id="L96">		String[] astrFixFloatTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="fc" id="L116">		String[] astrGovvieTenor = new String[] {</span>
+			&quot;1Y&quot;,
+			&quot;2Y&quot;,
+			&quot;3Y&quot;,
+			&quot;5Y&quot;,
+			&quot;7Y&quot;,
+			&quot;10Y&quot;,
+			&quot;20Y&quot;,
+			&quot;30Y&quot;
+		};
+
+<span class="fc" id="L127">		double[] adblFixFloatQuote = new double[] {</span>
+			0.016410, //  2Y
+			0.017863, //  3Y
+			0.019030, //  4Y
+			0.020035, //  5Y
+			0.020902, //  6Y
+			0.021660, //  7Y
+			0.022307, //  8Y
+			0.022879, //  9Y
+			0.023363, // 10Y
+			0.023820, // 11Y
+			0.024172, // 12Y
+			0.024934, // 15Y
+			0.025581, // 20Y
+			0.025906, // 25Y
+			0.025973, // 30Y
+			0.025838, // 40Y
+			0.025560  // 50Y
+		};
+
+<span class="fc" id="L147">		double[] adblGovvieYield = new double[] {</span>
+			0.01219, //  1Y
+			0.01391, //  2Y
+			0.01590, //  3Y
+			0.01937, //  5Y
+			0.02200, //  7Y
+			0.02378, // 10Y
+			0.02677, // 20Y
+			0.02927  // 30Y
+		};
+
+<span class="fc" id="L158">		String[] astrCreditTenor = new String[] {</span>
+			&quot;06M&quot;,
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;
+		};
+
+<span class="fc" id="L169">		double[] adblCreditQuote = new double[] {</span>
+			 60.,	//  6M
+			 68.,	//  1Y
+			 88.,	//  2Y
+			102.,	//  3Y
+			121.,	//  4Y
+			138.,	//  5Y
+			168.,	//  7Y
+			188.	// 10Y
+		};
+
+<span class="fc" id="L180">		double dblFX = 1.;</span>
+<span class="fc" id="L181">		int iSettleLag = 3;</span>
+<span class="fc" id="L182">		int iCouponFreq = 12;</span>
+<span class="fc" id="L183">		String strName = &quot;Tirupati&quot;;</span>
+<span class="fc" id="L184">		double dblCleanPrice = 0.95;</span>
+<span class="fc" id="L185">		double dblIssuePrice = 1.;</span>
+<span class="fc" id="L186">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L187">		double dblSpreadBump = 20.;</span>
+<span class="fc" id="L188">		double dblCouponRate = 0.03; </span>
+<span class="fc" id="L189">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L190">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L191">		double dblSpreadDurationMultiplier = 5.;</span>
+
+<span class="fc" id="L193">		org.drip.analytics.date.JulianDate[] adtPeriodEnd = new org.drip.analytics.date.JulianDate[] {</span>
+<span class="fc" id="L194">			DateUtil.CreateFromYMD (2017, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L195">			DateUtil.CreateFromYMD (2017, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L196">			DateUtil.CreateFromYMD (2017, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L197">			DateUtil.CreateFromYMD (2018, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L198">			DateUtil.CreateFromYMD (2018, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L199">			DateUtil.CreateFromYMD (2018, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L200">			DateUtil.CreateFromYMD (2018, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L201">			DateUtil.CreateFromYMD (2018, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L202">			DateUtil.CreateFromYMD (2018, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L203">			DateUtil.CreateFromYMD (2018, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L204">			DateUtil.CreateFromYMD (2018, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L205">			DateUtil.CreateFromYMD (2018, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L206">			DateUtil.CreateFromYMD (2018, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L207">			DateUtil.CreateFromYMD (2018, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L208">			DateUtil.CreateFromYMD (2018, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L209">			DateUtil.CreateFromYMD (2019, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L210">			DateUtil.CreateFromYMD (2019, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L211">			DateUtil.CreateFromYMD (2019, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L212">			DateUtil.CreateFromYMD (2019, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L213">			DateUtil.CreateFromYMD (2019, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L214">			DateUtil.CreateFromYMD (2019, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L215">			DateUtil.CreateFromYMD (2019, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L216">			DateUtil.CreateFromYMD (2019, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L217">			DateUtil.CreateFromYMD (2019, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L218">			DateUtil.CreateFromYMD (2019, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L219">			DateUtil.CreateFromYMD (2019, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L220">			DateUtil.CreateFromYMD (2019, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L221">			DateUtil.CreateFromYMD (2020, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L222">			DateUtil.CreateFromYMD (2020, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L223">			DateUtil.CreateFromYMD (2020, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L224">			DateUtil.CreateFromYMD (2020, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L225">			DateUtil.CreateFromYMD (2020, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L226">			DateUtil.CreateFromYMD (2020, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L227">			DateUtil.CreateFromYMD (2020, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L228">			DateUtil.CreateFromYMD (2020, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L229">			DateUtil.CreateFromYMD (2020, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L230">			DateUtil.CreateFromYMD (2020, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L231">			DateUtil.CreateFromYMD (2020, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L232">			DateUtil.CreateFromYMD (2020, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L233">			DateUtil.CreateFromYMD (2021, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L234">			DateUtil.CreateFromYMD (2021, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L235">			DateUtil.CreateFromYMD (2021, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L236">			DateUtil.CreateFromYMD (2021, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L237">			DateUtil.CreateFromYMD (2021, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L238">			DateUtil.CreateFromYMD (2021, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L239">			DateUtil.CreateFromYMD (2021, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L240">			DateUtil.CreateFromYMD (2021, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L241">			DateUtil.CreateFromYMD (2021, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L242">			DateUtil.CreateFromYMD (2021, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L243">			DateUtil.CreateFromYMD (2021, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L244">			DateUtil.CreateFromYMD (2021, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L245">			DateUtil.CreateFromYMD (2022, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L246">			DateUtil.CreateFromYMD (2022, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L247">			DateUtil.CreateFromYMD (2022, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L248">			DateUtil.CreateFromYMD (2022, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L249">			DateUtil.CreateFromYMD (2022, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L250">			DateUtil.CreateFromYMD (2022, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L251">			DateUtil.CreateFromYMD (2022, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L252">			DateUtil.CreateFromYMD (2022, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L253">			DateUtil.CreateFromYMD (2022, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L254">			DateUtil.CreateFromYMD (2022, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L255">			DateUtil.CreateFromYMD (2022, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L256">			DateUtil.CreateFromYMD (2022, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L257">			DateUtil.CreateFromYMD (2023, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L258">			DateUtil.CreateFromYMD (2023, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L259">			DateUtil.CreateFromYMD (2023, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L260">			DateUtil.CreateFromYMD (2023, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L261">			DateUtil.CreateFromYMD (2023, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L262">			DateUtil.CreateFromYMD (2023, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L263">			DateUtil.CreateFromYMD (2023, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L264">			DateUtil.CreateFromYMD (2023, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L265">			DateUtil.CreateFromYMD (2023, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L266">			DateUtil.CreateFromYMD (2023, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L267">			DateUtil.CreateFromYMD (2023, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L268">			DateUtil.CreateFromYMD (2023, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L269">			DateUtil.CreateFromYMD (2024, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L270">			DateUtil.CreateFromYMD (2024, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L271">			DateUtil.CreateFromYMD (2024, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L272">			DateUtil.CreateFromYMD (2024, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L273">			DateUtil.CreateFromYMD (2024, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L274">			DateUtil.CreateFromYMD (2024, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L275">			DateUtil.CreateFromYMD (2024, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L276">			DateUtil.CreateFromYMD (2024, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L277">			DateUtil.CreateFromYMD (2024, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L278">			DateUtil.CreateFromYMD (2024, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L279">			DateUtil.CreateFromYMD (2024, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L280">			DateUtil.CreateFromYMD (2024, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L281">			DateUtil.CreateFromYMD (2025, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L282">			DateUtil.CreateFromYMD (2025, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L283">			DateUtil.CreateFromYMD (2025, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L284">			DateUtil.CreateFromYMD (2025, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L285">			DateUtil.CreateFromYMD (2025, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L286">			DateUtil.CreateFromYMD (2025, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L287">			DateUtil.CreateFromYMD (2025, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L288">			DateUtil.CreateFromYMD (2025, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L289">			DateUtil.CreateFromYMD (2025, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L290">			DateUtil.CreateFromYMD (2025, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L291">			DateUtil.CreateFromYMD (2025, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L292">			DateUtil.CreateFromYMD (2025, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L293">			DateUtil.CreateFromYMD (2026, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L294">			DateUtil.CreateFromYMD (2026, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L295">			DateUtil.CreateFromYMD (2026, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L296">			DateUtil.CreateFromYMD (2026, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L297">			DateUtil.CreateFromYMD (2026, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L298">			DateUtil.CreateFromYMD (2026, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L299">			DateUtil.CreateFromYMD (2026, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L300">			DateUtil.CreateFromYMD (2026, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L301">			DateUtil.CreateFromYMD (2026, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L302">			DateUtil.CreateFromYMD (2026, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L303">			DateUtil.CreateFromYMD (2026, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L304">			DateUtil.CreateFromYMD (2026, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L305">			DateUtil.CreateFromYMD (2027, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L306">			DateUtil.CreateFromYMD (2027, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L307">			DateUtil.CreateFromYMD (2027, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L308">			DateUtil.CreateFromYMD (2027, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L309">			DateUtil.CreateFromYMD (2027, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L310">			DateUtil.CreateFromYMD (2027, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L311">			DateUtil.CreateFromYMD (2027, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L312">			DateUtil.CreateFromYMD (2027, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L313">			DateUtil.CreateFromYMD (2027, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L314">			DateUtil.CreateFromYMD (2027, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L315">			DateUtil.CreateFromYMD (2027, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L316">			DateUtil.CreateFromYMD (2027, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L317">			DateUtil.CreateFromYMD (2028, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L318">			DateUtil.CreateFromYMD (2028, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L319">			DateUtil.CreateFromYMD (2028, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L320">			DateUtil.CreateFromYMD (2028, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L321">			DateUtil.CreateFromYMD (2028, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L322">			DateUtil.CreateFromYMD (2028, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L323">			DateUtil.CreateFromYMD (2028, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L324">			DateUtil.CreateFromYMD (2028, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L325">			DateUtil.CreateFromYMD (2028, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L326">			DateUtil.CreateFromYMD (2028, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L327">			DateUtil.CreateFromYMD (2028, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L328">			DateUtil.CreateFromYMD (2028, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L329">			DateUtil.CreateFromYMD (2029, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L330">			DateUtil.CreateFromYMD (2029, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L331">			DateUtil.CreateFromYMD (2029, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L332">			DateUtil.CreateFromYMD (2029, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L333">			DateUtil.CreateFromYMD (2029, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L334">			DateUtil.CreateFromYMD (2029, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L335">			DateUtil.CreateFromYMD (2029, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L336">			DateUtil.CreateFromYMD (2029, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L337">			DateUtil.CreateFromYMD (2029, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L338">			DateUtil.CreateFromYMD (2029, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L339">			DateUtil.CreateFromYMD (2029, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L340">			DateUtil.CreateFromYMD (2029, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L341">			DateUtil.CreateFromYMD (2030, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L342">			DateUtil.CreateFromYMD (2030, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L343">			DateUtil.CreateFromYMD (2030, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L344">			DateUtil.CreateFromYMD (2030, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L345">			DateUtil.CreateFromYMD (2030, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L346">			DateUtil.CreateFromYMD (2030, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L347">			DateUtil.CreateFromYMD (2030, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L348">			DateUtil.CreateFromYMD (2030, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L349">			DateUtil.CreateFromYMD (2030, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L350">			DateUtil.CreateFromYMD (2030, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L351">			DateUtil.CreateFromYMD (2030, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L352">			DateUtil.CreateFromYMD (2030, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L353">			DateUtil.CreateFromYMD (2031, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L354">			DateUtil.CreateFromYMD (2031, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L355">			DateUtil.CreateFromYMD (2031, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L356">			DateUtil.CreateFromYMD (2031, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L357">			DateUtil.CreateFromYMD (2031, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L358">			DateUtil.CreateFromYMD (2031, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L359">			DateUtil.CreateFromYMD (2031, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L360">			DateUtil.CreateFromYMD (2031, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L361">			DateUtil.CreateFromYMD (2031, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L362">			DateUtil.CreateFromYMD (2031, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L363">			DateUtil.CreateFromYMD (2031, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L364">			DateUtil.CreateFromYMD (2031, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L365">			DateUtil.CreateFromYMD (2032, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L366">			DateUtil.CreateFromYMD (2032, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L367">			DateUtil.CreateFromYMD (2032, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L368">			DateUtil.CreateFromYMD (2032, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L369">			DateUtil.CreateFromYMD (2032, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L370">			DateUtil.CreateFromYMD (2032, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L371">			DateUtil.CreateFromYMD (2032, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L372">			DateUtil.CreateFromYMD (2032, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L373">			DateUtil.CreateFromYMD (2032, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L374">			DateUtil.CreateFromYMD (2032, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L375">			DateUtil.CreateFromYMD (2032, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L376">			DateUtil.CreateFromYMD (2032, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L377">			DateUtil.CreateFromYMD (2033, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L378">			DateUtil.CreateFromYMD (2033, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L379">			DateUtil.CreateFromYMD (2033, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L380">			DateUtil.CreateFromYMD (2033, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L381">			DateUtil.CreateFromYMD (2033, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L382">			DateUtil.CreateFromYMD (2033, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L383">			DateUtil.CreateFromYMD (2033, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L384">			DateUtil.CreateFromYMD (2033, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L385">			DateUtil.CreateFromYMD (2033, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L386">			DateUtil.CreateFromYMD (2033, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L387">			DateUtil.CreateFromYMD (2033, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L388">			DateUtil.CreateFromYMD (2033, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L389">			DateUtil.CreateFromYMD (2034, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L390">			DateUtil.CreateFromYMD (2034, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L391">			DateUtil.CreateFromYMD (2034, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L392">			DateUtil.CreateFromYMD (2034, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L393">			DateUtil.CreateFromYMD (2034, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L394">			DateUtil.CreateFromYMD (2034, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L395">			DateUtil.CreateFromYMD (2034, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L396">			DateUtil.CreateFromYMD (2034, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L397">			DateUtil.CreateFromYMD (2034, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L398">			DateUtil.CreateFromYMD (2034, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L399">			DateUtil.CreateFromYMD (2034, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L400">			DateUtil.CreateFromYMD (2034, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L401">			DateUtil.CreateFromYMD (2035, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L402">			DateUtil.CreateFromYMD (2035, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L403">			DateUtil.CreateFromYMD (2035, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L404">			DateUtil.CreateFromYMD (2035, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L405">			DateUtil.CreateFromYMD (2035, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L406">			DateUtil.CreateFromYMD (2035, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L407">			DateUtil.CreateFromYMD (2035, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L408">			DateUtil.CreateFromYMD (2035, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L409">			DateUtil.CreateFromYMD (2035, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L410">			DateUtil.CreateFromYMD (2035, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L411">			DateUtil.CreateFromYMD (2035, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L412">			DateUtil.CreateFromYMD (2035, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L413">			DateUtil.CreateFromYMD (2036, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L414">			DateUtil.CreateFromYMD (2036, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L415">			DateUtil.CreateFromYMD (2036, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L416">			DateUtil.CreateFromYMD (2036, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L417">			DateUtil.CreateFromYMD (2036, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L418">			DateUtil.CreateFromYMD (2036, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L419">			DateUtil.CreateFromYMD (2036, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L420">			DateUtil.CreateFromYMD (2036, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L421">			DateUtil.CreateFromYMD (2036, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L422">			DateUtil.CreateFromYMD (2036, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L423">			DateUtil.CreateFromYMD (2036, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L424">			DateUtil.CreateFromYMD (2036, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L425">			DateUtil.CreateFromYMD (2037, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L426">			DateUtil.CreateFromYMD (2037, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L427">			DateUtil.CreateFromYMD (2037, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L428">			DateUtil.CreateFromYMD (2037, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L429">			DateUtil.CreateFromYMD (2037, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L430">			DateUtil.CreateFromYMD (2037, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L431">			DateUtil.CreateFromYMD (2037, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L432">			DateUtil.CreateFromYMD (2037, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L433">			DateUtil.CreateFromYMD (2037, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L434">			DateUtil.CreateFromYMD (2037, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L435">			DateUtil.CreateFromYMD (2037, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L436">			DateUtil.CreateFromYMD (2037, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L437">			DateUtil.CreateFromYMD (2038, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L438">			DateUtil.CreateFromYMD (2038, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L439">			DateUtil.CreateFromYMD (2038, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L440">			DateUtil.CreateFromYMD (2038, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L441">			DateUtil.CreateFromYMD (2038, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L442">			DateUtil.CreateFromYMD (2038, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L443">			DateUtil.CreateFromYMD (2038, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L444">			DateUtil.CreateFromYMD (2038, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L445">			DateUtil.CreateFromYMD (2038, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L446">			DateUtil.CreateFromYMD (2038, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L447">			DateUtil.CreateFromYMD (2038, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L448">			DateUtil.CreateFromYMD (2038, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L449">			DateUtil.CreateFromYMD (2039, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L450">			DateUtil.CreateFromYMD (2039, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L451">			DateUtil.CreateFromYMD (2039, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L452">			DateUtil.CreateFromYMD (2039, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L453">			DateUtil.CreateFromYMD (2039, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L454">			DateUtil.CreateFromYMD (2039, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L455">			DateUtil.CreateFromYMD (2039, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L456">			DateUtil.CreateFromYMD (2039, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L457">			DateUtil.CreateFromYMD (2039, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L458">			DateUtil.CreateFromYMD (2039, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L459">			DateUtil.CreateFromYMD (2039, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L460">			DateUtil.CreateFromYMD (2039, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L461">			DateUtil.CreateFromYMD (2040, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L462">			DateUtil.CreateFromYMD (2040, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L463">			DateUtil.CreateFromYMD (2040, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L464">			DateUtil.CreateFromYMD (2040, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L465">			DateUtil.CreateFromYMD (2040, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L466">			DateUtil.CreateFromYMD (2040, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L467">			DateUtil.CreateFromYMD (2040, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L468">			DateUtil.CreateFromYMD (2040, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L469">			DateUtil.CreateFromYMD (2040, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L470">			DateUtil.CreateFromYMD (2040, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L471">			DateUtil.CreateFromYMD (2040, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L472">			DateUtil.CreateFromYMD (2040, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L473">			DateUtil.CreateFromYMD (2041, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L474">			DateUtil.CreateFromYMD (2041, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L475">			DateUtil.CreateFromYMD (2041, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L476">			DateUtil.CreateFromYMD (2041, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L477">			DateUtil.CreateFromYMD (2041, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L478">			DateUtil.CreateFromYMD (2041, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L479">			DateUtil.CreateFromYMD (2041, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L480">			DateUtil.CreateFromYMD (2041, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L481">			DateUtil.CreateFromYMD (2041, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L482">			DateUtil.CreateFromYMD (2041, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L483">			DateUtil.CreateFromYMD (2041, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L484">			DateUtil.CreateFromYMD (2041, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L485">			DateUtil.CreateFromYMD (2042, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L486">			DateUtil.CreateFromYMD (2042, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L487">			DateUtil.CreateFromYMD (2042, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L488">			DateUtil.CreateFromYMD (2042, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L489">			DateUtil.CreateFromYMD (2042, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L490">			DateUtil.CreateFromYMD (2042, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L491">			DateUtil.CreateFromYMD (2042, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L492">			DateUtil.CreateFromYMD (2042, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L493">			DateUtil.CreateFromYMD (2042, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L494">			DateUtil.CreateFromYMD (2042, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L495">			DateUtil.CreateFromYMD (2042, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L496">			DateUtil.CreateFromYMD (2042, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L497">			DateUtil.CreateFromYMD (2043, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L498">			DateUtil.CreateFromYMD (2043, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L499">			DateUtil.CreateFromYMD (2043, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L500">			DateUtil.CreateFromYMD (2043, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L501">			DateUtil.CreateFromYMD (2043, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L502">			DateUtil.CreateFromYMD (2043, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L503">			DateUtil.CreateFromYMD (2043, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L504">			DateUtil.CreateFromYMD (2043, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L505">			DateUtil.CreateFromYMD (2043, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L506">			DateUtil.CreateFromYMD (2043, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L507">			DateUtil.CreateFromYMD (2043, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L508">			DateUtil.CreateFromYMD (2043, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L509">			DateUtil.CreateFromYMD (2044, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L510">			DateUtil.CreateFromYMD (2044, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L511">			DateUtil.CreateFromYMD (2044, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L512">			DateUtil.CreateFromYMD (2044, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L513">			DateUtil.CreateFromYMD (2044, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L514">			DateUtil.CreateFromYMD (2044, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L515">			DateUtil.CreateFromYMD (2044, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L516">			DateUtil.CreateFromYMD (2044, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L517">			DateUtil.CreateFromYMD (2044, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L518">			DateUtil.CreateFromYMD (2044, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L519">			DateUtil.CreateFromYMD (2044, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L520">			DateUtil.CreateFromYMD (2044, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L521">			DateUtil.CreateFromYMD (2045, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L522">			DateUtil.CreateFromYMD (2045, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L523">			DateUtil.CreateFromYMD (2045, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L524">			DateUtil.CreateFromYMD (2045, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L525">			DateUtil.CreateFromYMD (2045, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L526">			DateUtil.CreateFromYMD (2045, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L527">			DateUtil.CreateFromYMD (2045, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L528">			DateUtil.CreateFromYMD (2045, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L529">			DateUtil.CreateFromYMD (2045, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L530">			DateUtil.CreateFromYMD (2045, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L531">			DateUtil.CreateFromYMD (2045, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L532">			DateUtil.CreateFromYMD (2045, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L533">			DateUtil.CreateFromYMD (2046, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L534">			DateUtil.CreateFromYMD (2046, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L535">			DateUtil.CreateFromYMD (2046, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L536">			DateUtil.CreateFromYMD (2046, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L537">			DateUtil.CreateFromYMD (2046, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L538">			DateUtil.CreateFromYMD (2046, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L539">			DateUtil.CreateFromYMD (2046, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L540">			DateUtil.CreateFromYMD (2046, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L541">			DateUtil.CreateFromYMD (2046, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L542">			DateUtil.CreateFromYMD (2046, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L543">			DateUtil.CreateFromYMD (2046, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L544">			DateUtil.CreateFromYMD (2046, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L545">			DateUtil.CreateFromYMD (2047, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L546">			DateUtil.CreateFromYMD (2047, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L547">			DateUtil.CreateFromYMD (2047, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L548">			DateUtil.CreateFromYMD (2047, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L549">			DateUtil.CreateFromYMD (2047, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L550">			DateUtil.CreateFromYMD (2047, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L551">			DateUtil.CreateFromYMD (2047, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L552">			DateUtil.CreateFromYMD (2047, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L553">			DateUtil.CreateFromYMD (2047, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L554">			DateUtil.CreateFromYMD (2047, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L555">			DateUtil.CreateFromYMD (2047, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L556">			DateUtil.CreateFromYMD (2047, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L557">			DateUtil.CreateFromYMD (2048, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L558">			DateUtil.CreateFromYMD (2048, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L559">			DateUtil.CreateFromYMD (2048, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L560">			DateUtil.CreateFromYMD (2048, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L561">			DateUtil.CreateFromYMD (2048, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L562">			DateUtil.CreateFromYMD (2048, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L563">			DateUtil.CreateFromYMD (2048, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L564">			DateUtil.CreateFromYMD (2048, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L565">			DateUtil.CreateFromYMD (2048, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L566">			DateUtil.CreateFromYMD (2048, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L567">			DateUtil.CreateFromYMD (2048, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L568">			DateUtil.CreateFromYMD (2048, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L569">			DateUtil.CreateFromYMD (2049, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L570">			DateUtil.CreateFromYMD (2049, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L571">			DateUtil.CreateFromYMD (2049, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L572">			DateUtil.CreateFromYMD (2049, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L573">			DateUtil.CreateFromYMD (2049, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L574">			DateUtil.CreateFromYMD (2049, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L575">			DateUtil.CreateFromYMD (2049, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L576">			DateUtil.CreateFromYMD (2049, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L577">			DateUtil.CreateFromYMD (2049, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L578">			DateUtil.CreateFromYMD (2049, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L579">			DateUtil.CreateFromYMD (2049, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L580">			DateUtil.CreateFromYMD (2049, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L581">			DateUtil.CreateFromYMD (2050, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L582">			DateUtil.CreateFromYMD (2050, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L583">			DateUtil.CreateFromYMD (2050, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L584">			DateUtil.CreateFromYMD (2050, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L585">			DateUtil.CreateFromYMD (2050, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L586">			DateUtil.CreateFromYMD (2050, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L587">			DateUtil.CreateFromYMD (2050, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L588">			DateUtil.CreateFromYMD (2050, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L589">			DateUtil.CreateFromYMD (2050, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L590">			DateUtil.CreateFromYMD (2050, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L591">			DateUtil.CreateFromYMD (2050, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L592">			DateUtil.CreateFromYMD (2050, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L593">			DateUtil.CreateFromYMD (2051, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L594">			DateUtil.CreateFromYMD (2051, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L595">			DateUtil.CreateFromYMD (2051, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L596">			DateUtil.CreateFromYMD (2051, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L597">			DateUtil.CreateFromYMD (2051, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L598">			DateUtil.CreateFromYMD (2051, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L599">			DateUtil.CreateFromYMD (2051, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L600">			DateUtil.CreateFromYMD (2051, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L601">			DateUtil.CreateFromYMD (2051, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L602">			DateUtil.CreateFromYMD (2051, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L603">			DateUtil.CreateFromYMD (2051, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L604">			DateUtil.CreateFromYMD (2051, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L605">			DateUtil.CreateFromYMD (2052, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L606">			DateUtil.CreateFromYMD (2052, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L607">			DateUtil.CreateFromYMD (2052, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L608">			DateUtil.CreateFromYMD (2052, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L609">			DateUtil.CreateFromYMD (2052, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L610">			DateUtil.CreateFromYMD (2052, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L611">			DateUtil.CreateFromYMD (2052, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L612">			DateUtil.CreateFromYMD (2052, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L613">			DateUtil.CreateFromYMD (2052, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L614">			DateUtil.CreateFromYMD (2052, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L615">			DateUtil.CreateFromYMD (2052, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L616">			DateUtil.CreateFromYMD (2052, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L617">			DateUtil.CreateFromYMD (2053, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L618">			DateUtil.CreateFromYMD (2053, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L619">			DateUtil.CreateFromYMD (2053, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L620">			DateUtil.CreateFromYMD (2053, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L621">			DateUtil.CreateFromYMD (2053, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L622">			DateUtil.CreateFromYMD (2053, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L623">			DateUtil.CreateFromYMD (2053, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L624">			DateUtil.CreateFromYMD (2053, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L625">			DateUtil.CreateFromYMD (2053, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L626">			DateUtil.CreateFromYMD (2053, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L627">			DateUtil.CreateFromYMD (2053, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L628">			DateUtil.CreateFromYMD (2053, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L629">			DateUtil.CreateFromYMD (2054, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L630">			DateUtil.CreateFromYMD (2054, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L631">			DateUtil.CreateFromYMD (2054, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L632">			DateUtil.CreateFromYMD (2054, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L633">			DateUtil.CreateFromYMD (2054, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L634">			DateUtil.CreateFromYMD (2054, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L635">			DateUtil.CreateFromYMD (2054, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L636">			DateUtil.CreateFromYMD (2054, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L637">			DateUtil.CreateFromYMD (2054, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L638">			DateUtil.CreateFromYMD (2054, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L639">			DateUtil.CreateFromYMD (2054, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L640">			DateUtil.CreateFromYMD (2054, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L641">			DateUtil.CreateFromYMD (2055, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L642">			DateUtil.CreateFromYMD (2055, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L643">			DateUtil.CreateFromYMD (2055, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L644">			DateUtil.CreateFromYMD (2055, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L645">			DateUtil.CreateFromYMD (2055, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L646">			DateUtil.CreateFromYMD (2055, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L647">			DateUtil.CreateFromYMD (2055, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L648">			DateUtil.CreateFromYMD (2055, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L649">			DateUtil.CreateFromYMD (2055, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L650">			DateUtil.CreateFromYMD (2055, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L651">			DateUtil.CreateFromYMD (2055, DateUtil.NOVEMBER , 25),</span>
+<span class="fc" id="L652">			DateUtil.CreateFromYMD (2055, DateUtil.DECEMBER , 25),</span>
+<span class="fc" id="L653">			DateUtil.CreateFromYMD (2056, DateUtil.JANUARY  , 25),</span>
+<span class="fc" id="L654">			DateUtil.CreateFromYMD (2056, DateUtil.FEBRUARY , 25),</span>
+<span class="fc" id="L655">			DateUtil.CreateFromYMD (2056, DateUtil.MARCH    , 25),</span>
+<span class="fc" id="L656">			DateUtil.CreateFromYMD (2056, DateUtil.APRIL    , 25),</span>
+<span class="fc" id="L657">			DateUtil.CreateFromYMD (2056, DateUtil.MAY      , 25),</span>
+<span class="fc" id="L658">			DateUtil.CreateFromYMD (2056, DateUtil.JUNE     , 25),</span>
+<span class="fc" id="L659">			DateUtil.CreateFromYMD (2056, DateUtil.JULY     , 25),</span>
+<span class="fc" id="L660">			DateUtil.CreateFromYMD (2056, DateUtil.AUGUST   , 25),</span>
+<span class="fc" id="L661">			DateUtil.CreateFromYMD (2056, DateUtil.SEPTEMBER, 25),</span>
+<span class="fc" id="L662">			DateUtil.CreateFromYMD (2056, DateUtil.OCTOBER  , 25),</span>
+<span class="fc" id="L663">			DateUtil.CreateFromYMD (2056, DateUtil.NOVEMBER , 25),</span>
+		};
+
+<span class="fc" id="L666">		double[] adblPrincipalPayDown = new double[] {</span>
+			217350.70,
+			203908.42,
+			202631.56,
+			195957.39,
+			178857.66,
+			181354.46,
+			173715.67,
+			170408.51,
+			164761.17,
+			161664.07,
+			153221.95,
+			158639.07,
+			153953.13,
+			147363.66,
+			147849.35,
+			146306.70,
+			141575.60,
+			145385.54,
+			138676.46,
+			132353.55,
+			139524.66,
+			134678.63,
+			130463.98,
+			132475.98,
+			129736.41,
+			127476.10,
+			126858.11,
+			124509.24,
+			128708.93,
+			129180.76,
+			121723.68,
+			127444.00,
+			125587.84,
+			121428.61,
+			126008.04,
+			121807.22,
+			120927.24,
+			122671.09,
+			116365.97,
+			123266.68,
+			117850.15,
+			120931.84,
+			114630.67,
+			117707.97,
+			113914.77,
+			112200.87,
+			112116.41,
+			106786.98,
+			112282.69,
+			103468.39,
+			103340.68,
+			104757.67,
+			98672.47,
+			101660.82,
+			95101.32,
+			95095.03,
+			87713.36,
+			93758.68,
+			87435.23,
+			84060.79,
+			86320.39,
+			82404.21,
+			79206.79,
+			82316.21,
+			74774.21,
+			80412.86,
+			77714.97,
+			74658.45,
+			70150.47,
+			73347.22,
+			69628.08,
+			68466.86,
+			68399.16,
+			62964.04,
+			67228.59,
+			64704.07,
+			60425.11,
+			65059.71,
+			59765.37,
+			55537.06,
+			61562.94,
+			57380.49,
+			53576.06,
+			55412.08,
+			54688.64,
+			52320.77,
+			51366.25,
+			48670.33,
+			51926.23,
+			52366.11,
+			47289.16,
+			44664.05,
+			47935.22,
+			45646.84,
+			43400.55,
+			42219.96,
+			40003.57,
+			43261.40,
+			39664.93,
+			38844.20,
+			39100.13,
+			41009.48,
+			33402.37,
+			38042.93,
+			35893.32,
+			32408.89,
+			35438.42,
+			31956.91,
+			31219.63,
+			31814.69,
+			27013.55,
+			33016.89,
+			28263.58,
+			31572.88,
+			25237.64,
+			28559.32,
+			25173.91,
+			24499.07,
+			25149.98,
+			20455.36,
+			26467.80,
+			20449.64,
+			21140.20,
+			23148.11,
+			19828.51,
+			19178.53,
+			20998.57,
+			19038.54,
+			15755.90,
+			19141.40,
+			15873.64,
+			15263.85,
+			15987.66,
+			11413.17,
+			16119.29,
+			14208.34,
+			10979.71,
+			15693.15,
+			12479.55,
+			11912.41,
+			10047.78,
+			10809.69,
+			6297.07,
+			11024.85,
+			9164.88,
+			5988.28,
+			8090.42,
+			7561.47,
+			5570.12,
+			9008.02,
+			4550.47,
+			1409.32,
+			7489.76,
+			4362.91,
+			1471.35,
+			3611.01,
+			3141.64,
+			1340.36,
+			857.78,
+			0.00,
+			1599.33,
+			3385.49,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			0.00,
+			27279819.36,
+		};
+
+<span class="fc" id="L1139">		double[] adblCouponAmount = new double[] {</span>
+			48423.05,
+			52966.10,
+			46299.25,
+			47642.15,
+			59644.75,
+			51942.65,
+			55385.04,
+			55128.52,
+			56706.11,
+			54633.58,
+			59834.34,
+			52362.98,
+			53934.34,
+			57287.47,
+			53489.40,
+			53271.07,
+			54823.53,
+			49322.90,
+			54385.66,
+			57669.15,
+			48748.99,
+			52025.03,
+			55281.23,
+			51633.50,
+			51437.88,
+			52954.51,
+			52760.00,
+			54262.12,
+			48997.31,
+			48813.59,
+			55336.67,
+			48455.44,
+			49938.12,
+			53069.52,
+			47920.92,
+			51033.53,
+			50847.67,
+			49028.85,
+			53732.48,
+			45430.82,
+			50110.31,
+			45098.50,
+			51350.66,
+			46372.91,
+			49391.43,
+			49217.61,
+			47464.26,
+			52028.58,
+			43998.28,
+			50106.89,
+			48383.17,
+			45114.16,
+			48065.64,
+			43278.13,
+			47759.95,
+			46078.87,
+			50532.30,
+			42755.00,
+			47192.83,
+			48577.45,
+			43903.33,
+			46799.43,
+			48179.29,
+			43549.42,
+			49422.53,
+			41831.21,
+			43210.40,
+			44585.65,
+			47440.43,
+			42892.75,
+			45738.96,
+			45632.71,
+			44059.59,
+			48354.44,
+			42403.42,
+			43766.33,
+			46582.17,
+			40676.12,
+			44935.00,
+			47736.96,
+			40427.54,
+			43224.31,
+			46015.56,
+			43060.47,
+			42978.64,
+			44327.82,
+			44247.98,
+			45594.43,
+			41250.48,
+			39756.48,
+			43936.20,
+			45279.01,
+			40970.35,
+			42312.33,
+			43653.09,
+			43586.87,
+			44926.39,
+			40657.44,
+			43395.39,
+			43334.87,
+			41879.61,
+			39033.75,
+			45937.44,
+			40321.59,
+			41655.81,
+			44376.33,
+			40169.79,
+			42886.04,
+			42837.28,
+			41409.33,
+			45498.59,
+			38567.63,
+			42649.50,
+			38483.17,
+			43931.04,
+			39776.48,
+			42476.10,
+			42437.69,
+			41032.56,
+			45094.96,
+			38234.20,
+			43654.54,
+			42259.13,
+			39502.56,
+			42191.55,
+			42161.29,
+			39413.83,
+			40741.92,
+			43428.06,
+			39334.19,
+			42017.69,
+			41993.47,
+			40616.30,
+			44651.96,
+			39223.31,
+			40552.03,
+			43233.12,
+			37813.85,
+			40491.67,
+			40473.24,
+			41804.17,
+			40440.81,
+			44467.33,
+			39068.36,
+			40399.27,
+			43078.12,
+			40376.89,
+			40364.95,
+			41698.91,
+			37655.85,
+			41676.66,
+			44358.09,
+			37635.22,
+			40312.39,
+			42993.01,
+			40303.78,
+			40298.45,
+			41636.93,
+			41634.89,
+			42020.62,
+			39904.89,
+			37602.32,
+			40583.36,
+			40113.31,
+			39649.05,
+			39188.50,
+			38733.63,
+			38282.46,
+			37836.84,
+			37394.87,
+			36958.33,
+			36524.57,
+			36096.99,
+			35672.96,
+			35254.16,
+			34838.88,
+			34428.71,
+			34022.04,
+			33620.40,
+			33222.23,
+			32828.28,
+			32438.64,
+			32054.15,
+			31647.08,
+			31255.39,
+			30882.38,
+			30513.48,
+			30149.14,
+			29741.80,
+			29363.43,
+			29011.15,
+			28662.06,
+			28316.67,
+			27975.18,
+			27638.04,
+			27304.08,
+			26974.43,
+			26647.34,
+			26325.28,
+			26006.63,
+			25689.81,
+			25323.52,
+			25016.08,
+			24712.58,
+			24413.35,
+			24117.52,
+			23825.50,
+			23537.82,
+			23255.05,
+			22956.22,
+			22618.50,
+			22346.78,
+			22082.84,
+			21824.32,
+			21572.97,
+			21329.56,
+			21078.01,
+			20863.47,
+			20477.29,
+			19718.39,
+			74683.29,
+			10724.18,
+			10584.36,
+			10468.23,
+			10353.26,
+			10239.43,
+			10126.73,
+			10015.15,
+			9904.69,
+			9795.33,
+			9687.06,
+			9579.87,
+			9473.76,
+			9368.71,
+			9264.70,
+			9161.74,
+			9059.82,
+			8958.91,
+			8859.03,
+			8760.14,
+			8662.25,
+			8565.35,
+			8469.43,
+			8374.47,
+			8280.48,
+			8187.44,
+			8095.34,
+			8004.18,
+			7913.95,
+			7824.65,
+			7736.26,
+			7648.78,
+			7562.21,
+			7476.54,
+			7391.79,
+			7307.94,
+			7225.03,
+			7143.12,
+			7062.44,
+			6949.32,
+			6853.40,
+			6775.26,
+			6698.10,
+			6610.06,
+			6518.18,
+			6443.50,
+			6369.65,
+			6295.71,
+			6217.89,
+			6138.36,
+			6067.97,
+			5998.86,
+			5881.78,
+			5813.80,
+			5746.55,
+			5680.02,
+			5614.25,
+			5546.32,
+			5475.65,
+			5412.04,
+			5349.17,
+			5298.52,
+			5196.81,
+			5130.26,
+			5070.48,
+			5007.77,
+			4998.87,
+			4824.42,
+			4715.89,
+			4660.66,
+			4597.86,
+			4510.38,
+			4457.04,
+			4404.28,
+			4352.09,
+			6471.57,
+			4199.45,
+			4149.80,
+			4101.14,
+			4013.25,
+			3965.36,
+			3918.00,
+			3871.14,
+			3824.81,
+			3779.00,
+			3733.73,
+			3689.01,
+			3644.88,
+			3601.46,
+			3551.67,
+			3463.74,
+			3422.15,
+			3369.01,
+			3325.30,
+			3285.04,
+			3245.25,
+			3205.95,
+			3165.64,
+			3122.60,
+			3081.78,
+			3028.14,
+			2991.23,
+			2954.77,
+			2918.75,
+			3777.65,
+			2813.56,
+			2773.27,
+			2736.29,
+			2703.12,
+			2670.52,
+			2629.66,
+			2587.71,
+			2556.63,
+			2526.13,
+			2496.33,
+			2467.38,
+			2432.74,
+			2393.24,
+			2367.95,
+			17484.80,
+			1793.34,
+			932.22,
+			921.26,
+			910.42,
+			899.70,
+			889.10,
+			878.62,
+			868.26,
+			858.03,
+			845.49,
+			835.59,
+			823.05,
+			804.22,
+			794.68,
+			785.26,
+			775.95,
+			766.76,
+			756.71,
+			745.46,
+			736.83,
+			721.07,
+			691.07,
+			682.80,
+			674.61,
+			666.51,
+			658.50,
+			650.58,
+			642.73,
+			634.98,
+			627.30,
+			619.71,
+			612.20,
+			604.78,
+			597.43,
+			590.17,
+			582.98,
+			575.88,
+			568.85,
+			561.91,
+			555.05,
+			548.27,
+			541.59,
+			535.01,
+			527.73,
+			516.64,
+			507.00,
+			499.11,
+			492.96,
+			486.88,
+			480.88,
+			474.97,
+			469.17,
+			459.36,
+			450.18,
+			442.62,
+			434.25,
+			427.13,
+			421.77,
+			416.47,
+			411.24,
+			406.06,
+			400.95,
+			395.91,
+			390.92,
+			386.01,
+			381.17,
+			376.40,
+			371.75,
+			364.12,
+			354.06,
+			349.64,
+			344.87,
+			335.47,
+			331.09,
+			320.42,
+			316.39,
+			312.42,
+			308.52,
+			303.66,
+			291.88,
+			282.34,
+			265.91,
+			259.07,
+			250.51,
+			245.99,
+			242.56,
+			239.56,
+			234.71,
+			220.03,
+			215.50,
+			212.72,
+			209.99,
+			207.30,
+			204.68,
+			202.17,
+			192.19,
+			189.81,
+			178.72,
+			176.42,
+			174.17,
+			171.98,
+			169.85,
+			167.81,
+			165.92,
+			164.35,
+			142.62,
+			122.53,
+			118.83,
+			112.93,
+			100.59,
+			99.33,
+			92.37,
+			195.65,
+			80.50,
+			77.24,
+			76.36,
+			71.93,
+			71.13,
+			67.30,
+			64.92,
+			64.27,
+			62.16,
+			49.11,
+			46.33,
+			45.85,
+			45.42,
+			52.84,
+			30.13,
+			25.82,
+			4.88,
+		};
+
+<span class="fc" id="L1612">		double dblIssueAmount = Matrix.Sum (adblPrincipalPayDown);</span>
+
+<span class="fc" id="L1614">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.SEPTEMBER,
+			25
+		);
+
+<span class="fc" id="L1620">		BondComponent bond = BondBuilder.CreateBondFromCF (</span>
+			strName,
+			dtEffective,
+			strCurrency,
+			strName,
+			strCouponDayCount,
+			dblIssueAmount,
+			dblCouponRate,
+			iCouponFreq,
+			adtPeriodEnd,
+			adblCouponAmount,
+			adblPrincipalPayDown,
+			true
+		);
+
+<span class="fc" id="L1635">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
+			dblCleanPrice,
+			dblIssuePrice,
+			dblIssueAmount,
+			dtSpot,
+			astrDepositTenor,
+			adblDepositQuote,
+			adblFuturesQuote,
+			astrFixFloatTenor,
+			adblFixFloatQuote,
+			dblSpreadBump,
+			dblSpreadDurationMultiplier,
+			strTreasuryCode,
+			astrGovvieTenor,
+			adblGovvieYield,
+			astrCreditTenor,
+			adblCreditQuote,
+			dblFX,
+			Double.NaN,
+			iSettleLag,
+			bond
+		);
+
+<span class="fc" id="L1658">		BondReplicationRun abrr = abr.generateRun();</span>
+
+<span class="fc" id="L1660">		System.out.println (abrr.display());</span>
+
+<span class="fc" id="L1662">		double dblBalance = 1.;</span>
+
+<span class="fc bfc" id="L1664" title="All 2 branches covered.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
+<span class="fc" id="L1665">			int iEndDate = p.endDate();</span>
+
+<span class="fc" id="L1667">			int iStartDate = p.startDate();</span>
+
+<span class="fc" id="L1669">			double dblPrincipalPayDown = bond.notional (iStartDate) - bond.notional (iEndDate);</span>
+
+<span class="fc" id="L1671">			double dblInterest = dblCouponRate * p.couponDCF() * bond.notional (iStartDate) * bond.couponFactor (iEndDate);</span>
+
+<span class="fc" id="L1673">			dblBalance -= dblPrincipalPayDown;</span>
+
+<span class="fc" id="L1675">			System.out.println (</span>
+				&quot;\t&quot; + new JulianDate (iEndDate) + &quot; =&gt; &quot; +
+<span class="fc" id="L1677">				FormatUtil.FormatDouble (dblPrincipalPayDown, 8, 2, dblIssueAmount) + &quot; | &quot; +</span>
+<span class="fc" id="L1678">				FormatUtil.FormatDouble (dblInterest, 6, 2, dblIssueAmount) + &quot; | &quot; +</span>
+<span class="fc" id="L1679">				FormatUtil.FormatDouble (dblPrincipalPayDown + dblInterest, 8, 2, dblIssueAmount) + &quot; | &quot; +</span>
+<span class="fc" id="L1680">				FormatUtil.FormatDouble (dblBalance, 8, 2, dblIssueAmount) + &quot; ||&quot;</span>
+			);
+<span class="fc" id="L1682">		}</span>
+<span class="fc" id="L1683">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

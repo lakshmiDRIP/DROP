@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoundedSequenceAgnosticMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sequence.metrics</a> &gt; <span class="el_source">BoundedSequenceAgnosticMetrics.java</span></div><h1>BoundedSequenceAgnosticMetrics.java</h1><pre class="source lang-java linenums">
+package org.drip.sequence.metrics;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BoundedSequenceAgnosticMetrics contains the Sample Distribution Metrics and Agnostic Bounds related to the
+ *  specified Bounded Sequence.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BoundedSequenceAgnosticMetrics extends
+	org.drip.sequence.metrics.SingleSequenceAgnosticMetrics {
+<span class="fc" id="L61">	private double _dblSupport = java.lang.Double.NaN;</span>
+
+	/**
+	 * BoundedSequenceAgnosticMetrics Constructor
+	 * 
+	 * @param adblSequence The Random Sequence
+	 * @param distPopulation The Population Distribution
+	 * @param dblSupport The Support of the Underlying Random Variable
+	 * 
+	 * @throws java.lang.Exception Thrown if BoundedSequenceAgnosticMetrics cannot be constructed
+	 */
+
+	public BoundedSequenceAgnosticMetrics (
+		final double[] adblSequence,
+		final org.drip.measure.continuous.R1 distPopulation,
+		final double dblSupport)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L79">		super (adblSequence, distPopulation);</span>
+
+<span class="pc bpc" id="L81" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport)</span>
+<span class="nc" id="L82">			throw new java.lang.Exception (&quot;BoundedSequenceAgnosticMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L83">	}</span>
+
+	/**
+	 * Retrieve the Random Sequence Support
+	 * 
+	 * @return The Support Underlying the Random Sequence
+	 */
+
+	public double support()
+	{
+<span class="nc" id="L93">		return _dblSupport;</span>
+	}
+
+	/**
+	 * Estimate Mean Departure Bounds of the Average using the Chernoff-Hoeffding Bound
+	 * 
+	 * @param dblLevel The Level at which the Departure is sought
+	 * 
+	 * @return The Mean Departure Bounds
+	 */
+
+	public org.drip.sequence.metrics.PivotedDepartureBounds chernoffHoeffdingAverageBounds (
+		final double dblLevel)
+	{
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0) return null;</span>
+
+<span class="fc" id="L109">		double dblBound = java.lang.Math.exp (-2. * sequence().length * dblLevel * dblLevel / (_dblSupport *</span>
+			_dblSupport));
+
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+
+		try {
+<span class="fc" id="L115">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
+					java.lang.Double.NaN, dblBound, dblBound);
+<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L119">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L122">		return null;</span>
+	}
+
+	/**
+	 * Estimate Mean Departure Bounds of the Average using the Bennett Inequality Bounds
+	 * 
+	 * @param dblLevel The Level at which the Departure is sought
+	 * 
+	 * @return The Mean Departure Bounds
+	 */
+
+	public org.drip.sequence.metrics.PivotedDepartureBounds bennettAverageBounds (
+		final double dblLevel)
+	{
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+
+<span class="fc" id="L138">		double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="fc" id="L141">			dblPopulationVariance : empiricalVariance());</span>
+
+<span class="fc" id="L143">		double dblBennettFactor = _dblSupport * dblLevel / dblVariance;</span>
+
+<span class="fc" id="L145">		dblBennettFactor = (1. + dblBennettFactor) * java.lang.Math.log (1. + dblBennettFactor) -</span>
+			dblBennettFactor;
+
+<span class="fc" id="L148">		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblVariance * dblBennettFactor /</span>
+			(_dblSupport * _dblSupport));
+
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+
+		try {
+<span class="fc" id="L154">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
+					java.lang.Double.NaN, dblBound, dblBound);
+<span class="nc" id="L157">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L158">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L161">		return null;</span>
+	}
+
+	/**
+	 * Estimate Mean Departure Bounds of the Average using the Bernstein Inequality Bounds
+	 * 
+	 * @param dblLevel The Level at which the Departure is sought
+	 * 
+	 * @return The Mean Departure Bounds
+	 */
+
+	public org.drip.sequence.metrics.PivotedDepartureBounds bernsteinAverageBounds (
+		final double dblLevel)
+	{
+<span class="pc bpc" id="L175" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+
+<span class="fc" id="L177">		double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="fc" id="L180">			dblPopulationVariance : empiricalVariance());</span>
+
+<span class="fc" id="L182">		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *</span>
+			dblVariance + (2. * _dblSupport * dblLevel / 3.)));
+
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+
+		try {
+<span class="fc" id="L188">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
+					java.lang.Double.NaN, dblBound, dblBound);
+<span class="nc" id="L191">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L192">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L195">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

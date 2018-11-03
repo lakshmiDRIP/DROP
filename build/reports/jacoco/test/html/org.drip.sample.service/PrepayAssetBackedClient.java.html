@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrepayAssetBackedClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.service</a> &gt; <span class="el_source">PrepayAssetBackedClient.java</span></div><h1>PrepayAssetBackedClient.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.service;
+
+import org.drip.analytics.date.*;
+import org.drip.json.simple.JSONObject;
+import org.drip.service.env.EnvManager;
+import org.drip.service.json.KeyHoleSkeleton;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PrepayAssetBackedClient demonstrates the Invocation and Examination of the JSON-based Pre-payable
+ *  Constant Payment Asset Backed Loan Service Client.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L63">public class PrepayAssetBackedClient {</span>
+
+	@SuppressWarnings (&quot;unchecked&quot;) public static void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L69">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L71">		double dblBeginPrincipalFactor = 1.;</span>
+<span class="fc" id="L72">		double dblCouponRate = 0.1189;</span>
+<span class="fc" id="L73">		double dblServiceFeeRate = 0.00;</span>
+<span class="fc" id="L74">		double dblCPR = 0.01;</span>
+<span class="fc" id="L75">		double dblBondNotional = 147544.28;</span>
+<span class="fc" id="L76">		String strDayCount = &quot;Act/365&quot;;</span>
+<span class="fc" id="L77">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L78">		int iNumPayment = 48;</span>
+<span class="fc" id="L79">		int iPayFrequency = 12;</span>
+<span class="fc" id="L80">		double dblFixedMonthlyAmount = 3941.98;</span>
+
+<span class="fc" id="L82">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+			2015,
+			DateUtil.OCTOBER,
+			22
+		);
+
+<span class="fc" id="L88">		JulianDate dtSettle = DateUtil.CreateFromYMD (</span>
+			2015,
+			DateUtil.DECEMBER,
+			1
+		);
+
+<span class="fc" id="L94">		JSONObject jsonParameters = new JSONObject();</span>
+
+<span class="fc" id="L96">		jsonParameters.put (&quot;Name&quot;, &quot;FPMG 11.89 2019&quot;);</span>
+
+<span class="fc" id="L98">		jsonParameters.put (&quot;SettleDate&quot;, dtSettle.toString());</span>
+
+<span class="fc" id="L100">		jsonParameters.put (&quot;EffectiveDate&quot;, dtEffective.toString());</span>
+
+<span class="fc" id="L102">		jsonParameters.put (&quot;BeginPrincipalFactor&quot;, dblBeginPrincipalFactor);</span>
+
+<span class="fc" id="L104">		jsonParameters.put (&quot;CouponRate&quot;, dblCouponRate);</span>
+
+<span class="fc" id="L106">		jsonParameters.put (&quot;ServiceFeeRate&quot;, dblServiceFeeRate);</span>
+
+<span class="fc" id="L108">		jsonParameters.put (&quot;CPR&quot;, dblCPR);</span>
+
+<span class="fc" id="L110">		jsonParameters.put (&quot;BondNotional&quot;, dblBondNotional);</span>
+
+<span class="fc" id="L112">		jsonParameters.put (&quot;DayCount&quot;, strDayCount);</span>
+
+<span class="fc" id="L114">		jsonParameters.put (&quot;NumPayment&quot;, iNumPayment);</span>
+
+<span class="fc" id="L116">		jsonParameters.put (&quot;Currency&quot;, strCurrency);</span>
+
+<span class="fc" id="L118">		jsonParameters.put (&quot;PayFrequency&quot;, iPayFrequency);</span>
+
+<span class="fc" id="L120">		jsonParameters.put (&quot;FixedMonthlyAmount&quot;, dblFixedMonthlyAmount);</span>
+
+<span class="fc" id="L122">		JSONObject jsonRequest = new JSONObject();</span>
+
+<span class="fc" id="L124">		jsonRequest.put (&quot;API&quot;, &quot;PREPAYASSETBACKED::SECULARMETRICS&quot;);</span>
+
+<span class="fc" id="L126">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
+
+<span class="fc" id="L128">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
+
+<span class="fc" id="L130">		System.out.println (jsonRequest.toJSONString());</span>
+
+<span class="fc" id="L132">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
+
+<span class="fc" id="L134">		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));</span>
+<span class="fc" id="L135">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

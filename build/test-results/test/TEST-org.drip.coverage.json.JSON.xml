@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.drip.coverage.json.JSON" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-11-03T02:46:59" hostname="LAPTOP-2MU6A8KE" time="0.169">
+  <properties/>
+  <testcase name="codeCoverageTest" classname="org.drip.coverage.json.JSON" time="0.169"/>
+  <system-out><![CDATA[=======encode=======
+======array1==========
+["abc\u0010a\/","123","222.123","true"]
+
+false
+======obj1 with array1===========
+{"name":"fang","weight":"60.21","array1":["abc\u0010a\/","123","222.123","true"],"age":"27","is_developer":"true"}
+
+false
+======array1 with obj1========
+["abc\u0010a\/","123","222.123","true",{"name":"fang","weight":"60.21","age":"27","is_developer":"true"}]
+
+false
+======list==========
+["abc\u0010a\/","123","222.123","true",null]
+
+false
+======map with list===========
+{name=fang, weight=60.21, array1=[abc?a/, 123, 222.123, true, null], age=27, is_developer=true}
+
+false
+[{"k11":"v11","k12":"v12","k13":"v13"},{"k22":"v22","k21":"v21","k23":"v23"}]
+true
+[{"k11":"v11","k12":"v12","k13":"v13"},{"k22":"v22","k21":"v21","k23":"v23"}]
+true
+[{"k11":"v11","k12":"v12","k13":"v13","k14":{"k31":"v3","k32":"123.45","k33":"false","k34":null,"k35":["vvv","1.23456789123456789","true",null]}},{"k22":"v22","k21":"v21","k23":"v23"}]
+false
+=======decode=======
+======the 2nd element of array======
+{"1":{"2":{"3":{"4":[5,{"6":7}]}}}}
+
+true
+======field "1"==========
+{"2":{"3":{"4":[5,{"6":7}]}}}
+true
+true
+true
+true
+false
+true
+true
+true
+true
+true
+true
+true
+Error at character position: 24
+Unexpected token: RIGHT BRACE(})
+==iterate result==
+first=>123
+second=>[4, 5, 6]
+third=>789
+==toJSONString()==
+{"first":123,"second":[4,5,6],"third":789}
+true
+startJSON()
+startObject()
+startObjectEntry(), key:first
+primitive(): 123
+endObjectEntry()
+startObjectEntry(), key:second
+startArray()
+startObject()
+startObjectEntry(), key:s1
+startObject()
+startObjectEntry(), key:s11
+primitive(): v11
+endObjectEntry()
+endObject()
+endObjectEntry()
+endObject()
+primitive(): 4
+primitive(): 5
+primitive(): 6
+endArray()
+endObjectEntry()
+startObjectEntry(), key:third
+primitive(): 789
+endObjectEntry()
+endObject()
+endJSON()
+found id:
+id1
+true
+found id:
+123
+true
+true
+found id:
+null
+true
+"\/"
+true
+true
+"abc\/\r\b\n\t\f\\"
+true
+true
+[	 
+
+{ 	 	
+}
+true
+true
+true
+??{
+error:Unexpected character (?) at position 0.
+true
+true
+false
+true
+{a : b}
+error:Unexpected character (a) at position 1.
+true
+false
+true
+true
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

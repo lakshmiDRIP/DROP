@@ -1,0 +1,1948 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompositePeriod.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.analytics.cashflow</a> &gt; <span class="el_source">CompositePeriod.java</span></div><h1>CompositePeriod.java</h1><pre class="source lang-java linenums">
+package org.drip.analytics.cashflow;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for models for MPT framework, Black Litterman Strategy Incorporator,
+ *  	Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CompositePeriod implements the Composite Coupon Period Functionality. It contains the Composite Period
+ * 	Coupon Frequency, Tenor, Accrual Compounding Rule, Day Count, Base Notional, Coupon/Notional Schedules,
+ * 	Pay Currency, Credit Label, FX Fixing Setting, and the List of Composable Period Units.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class CompositePeriod {
+<span class="fc" id="L62">	private int _iFreq = -1;</span>
+<span class="fc" id="L63">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="fc" id="L64">	private int _iAccrualCompoundingRule = -1;</span>
+<span class="fc" id="L65">	private java.lang.String _strPayCurrency = &quot;&quot;;</span>
+<span class="fc" id="L66">	private int _iPayDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L67">	private double _dblBaseNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L68">	private org.drip.quant.common.Array2D _fsCoupon = null;</span>
+<span class="fc" id="L69">	private org.drip.quant.common.Array2D _fsNotional = null;</span>
+<span class="fc" id="L70">	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;</span>
+<span class="fc" id="L71">	private org.drip.param.period.FixingSetting _fxFixingSetting = null;</span>
+<span class="fc" id="L72">	private java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; _lsCUP = null;</span>
+
+	protected CompositePeriod (
+		final org.drip.param.period.CompositePeriodSetting cps,
+		final java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP)
+		throws java.lang.Exception
+<span class="fc" id="L78">	{</span>
+<span class="pc bpc" id="L79" title="2 of 4 branches missed.">		if (</span>
+			null == cps ||
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">			null == (_lsCUP = lsCUP) || 0 == _lsCUP.size()</span>
+		)
+<span class="nc" id="L83">			throw new java.lang.Exception (&quot;CompositePeriod Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L85">		_iFreq = cps.freq();</span>
+
+<span class="fc" id="L87">		_strTenor = cps.tenor();</span>
+
+<span class="fc" id="L89">		org.drip.analytics.daycount.DateAdjustParams dapPay = cps.dapPay();</span>
+
+<span class="fc" id="L91">		org.drip.analytics.cashflow.ComposableUnitPeriod cupFinal = _lsCUP.get (_lsCUP.size() - 1);</span>
+
+<span class="fc" id="L93">		_iAccrualCompoundingRule = cupFinal.accrualCompoundingRule();</span>
+
+<span class="fc" id="L95">		_iPayDate = cupFinal.endDate();</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		if (null != dapPay) _iPayDate = dapPay.roll (_iPayDate);</span>
+
+<span class="fc" id="L99">		_strPayCurrency = cps.payCurrency();</span>
+
+<span class="fc" id="L101">		_dblBaseNotional = cps.baseNotional();</span>
+
+<span class="fc" id="L103">		_fxFixingSetting = cps.fxFixingSetting();</span>
+
+<span class="fc" id="L105">		_creditLabel = cps.creditLabel();</span>
+
+<span class="fc" id="L107">		_fsNotional = cps.notionalSchedule();</span>
+
+<span class="fc" id="L109">		_fsCoupon = cps.couponSchedule();</span>
+<span class="fc" id="L110">	}</span>
+
+	/**
+	 * Retrieve the List of Composable Periods
+	 * 
+	 * @return The List of Composable Periods
+	 */
+
+	public java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; periods()
+	{
+<span class="fc" id="L120">		return _lsCUP;</span>
+	}
+
+	/**
+	 * Retrieve the Period Start Date
+	 * 
+	 * @return The Period Start Date
+	 */
+
+	public int startDate()
+	{
+<span class="fc" id="L131">		return _lsCUP.get (0).startDate();</span>
+	}
+
+	/**
+	 * Retrieve the Period End Date
+	 * 
+	 * @return The Period End Date
+	 */
+
+	public int endDate()
+	{
+<span class="fc" id="L142">		return _lsCUP.get (_lsCUP.size() - 1).endDate();</span>
+	}
+
+	/**
+	 * Check whether the supplied Date is inside the Period specified
+	 * 
+	 * @param iDate Date
+	 * 
+	 * @return TRUE - The specified Date is inside the Period
+	 */
+
+	public boolean contains (
+		final int iDate)
+	{
+<span class="fc bfc" id="L156" title="All 4 branches covered.">		return iDate &gt;= startDate() &amp;&amp; iDate &lt;= endDate();</span>
+	}
+
+	/**
+	 * Return the Unit Period to which the Date belongs
+	 * 
+	 * @param iDate Date
+	 * 
+	 * @return The Unit Period to which the Date belongs
+	 */
+
+	public org.drip.analytics.cashflow.ComposableUnitPeriod enclosingCUP (
+		final int iDate)
+	{
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (!contains (iDate)) return null;</span>
+
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.ComposableUnitPeriod cup : _lsCUP) {</span>
+<span class="nc" id="L173">			int iDateLocation = cup.dateLocation (iDate);</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_INSIDE_SEGMENT == iDateLocation)</span>
+<span class="nc" id="L176">				return cup;</span>
+<span class="nc" id="L177">		}</span>
+
+<span class="nc" id="L179">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Accrual Compounding Rule
+	 * 
+	 * @return The Accrual Compounding Rule
+	 */
+
+	public int accrualCompoundingRule()
+	{
+<span class="nc" id="L190">		return _iAccrualCompoundingRule;</span>
+	}
+
+	/**
+	 * Return the Period Pay Date
+	 * 
+	 * @return Period Pay Date
+	 */
+
+	public int payDate()
+	{
+<span class="fc" id="L201">		return _iPayDate;</span>
+	}
+
+	/**
+	 * Return the Period FX Fixing Date
+	 * 
+	 * @return Period FX Fixing Date
+	 * 
+	 * @throws java.lang.Exception Thrown if FX Fixing Date cannot be generated
+	 */
+
+	public int fxFixingDate()
+		throws java.lang.Exception
+	{
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		if (null == _fxFixingSetting) return _iPayDate;</span>
+
+<span class="fc" id="L217">		int iUnadjustedFixingDate = java.lang.Integer.MIN_VALUE;</span>
+
+<span class="fc" id="L219">		int iFixingType = _fxFixingSetting.type();</span>
+
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		if (org.drip.param.period.FixingSetting.FIXING_COMPOSITE_PERIOD_END == iFixingType)</span>
+<span class="nc" id="L222">			iUnadjustedFixingDate = endDate();</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		else if (org.drip.param.period.FixingSetting.FIXING_COMPOSITE_PERIOD_START == iFixingType)</span>
+<span class="nc" id="L224">			iUnadjustedFixingDate = startDate();</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">		else if (org.drip.param.period.FixingSetting.FIXING_PRESET_STATIC == iFixingType)</span>
+<span class="fc" id="L226">			iUnadjustedFixingDate = _fxFixingSetting.staticDate();</span>
+
+<span class="fc" id="L228">		org.drip.analytics.daycount.DateAdjustParams dapFixing = _fxFixingSetting.dap();</span>
+
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		if (null == dapFixing) return iUnadjustedFixingDate;</span>
+
+<span class="nc" id="L232">		return dapFixing.roll (iUnadjustedFixingDate);</span>
+	}
+
+	/**
+	 * Is this Cash Flow FX MTM?
+	 * 
+	 * @return TRUE - FX MTM is on (i.e., FX is not Driven by Fixing)
+	 */
+
+	public boolean isFXMTM()
+	{
+<span class="fc bfc" id="L243" title="All 2 branches covered.">		return null == _fxFixingSetting;</span>
+	}
+
+	/**
+	 * Coupon Period FX
+	 * 
+	 * @param csqc Market Parameters
+	 * 
+	 * @return The Period FX
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double fx (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L260">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+
+<span class="fc bfc" id="L262" title="All 2 branches covered.">		if (null == fxLabel) return 1.;</span>
+
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;CompositePeriod::fx =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L266" title="All 2 branches covered.">		if (!isFXMTM())</span>
+<span class="fc" id="L267">			return csqc.fixing (</span>
+<span class="fc" id="L268">				fxFixingDate(),</span>
+				fxLabel
+			);
+
+<span class="fc" id="L272">		org.drip.state.fx.FXCurve fxfc = csqc.fxState (fxLabel);</span>
+
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">		if (null == fxfc)</span>
+<span class="nc" id="L275">			throw new java.lang.Exception (&quot;CompositePeriod::fx =&gt; No Curve for &quot; +</span>
+<span class="nc" id="L276">				fxLabel.fullyQualifiedName());</span>
+
+<span class="fc" id="L278">		return fxfc.fx (_iPayDate);</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Frequency
+	 * 
+	 * @return The Coupon Frequency
+	 */
+
+	public int freq()
+	{
+<span class="fc" id="L289">		return _iFreq;</span>
+	}
+
+	/**
+	 * Convert the Coupon Frequency into a Tenor
+	 * 
+	 * @return The Coupon Frequency converted into a Tenor
+	 */
+
+	public java.lang.String tenor()
+	{
+<span class="pc bpc" id="L300" title="2 of 4 branches missed.">		if (null != _strTenor &amp;&amp; !_strTenor.isEmpty()) return _strTenor;</span>
+
+<span class="nc" id="L302">		int iTenorInMonths = 12 / freq() ;</span>
+
+<span class="nc bnc" id="L304" title="All 10 branches missed.">		return</span>
+			1 == iTenorInMonths ||
+			2 == iTenorInMonths ||
+			3 == iTenorInMonths ||
+			6 == iTenorInMonths ||
+			12 == iTenorInMonths ?
+			iTenorInMonths + &quot;M&quot; : &quot;ON&quot;;
+	}
+
+	/**
+	 * Retrieve the Pay Currency
+	 * 
+	 * @return The Pay Currency
+	 */
+
+	public java.lang.String payCurrency()
+	{
+<span class="fc" id="L321">		return _strPayCurrency;</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Currency
+	 * 
+	 * @return The Coupon Currency
+	 */
+
+	public java.lang.String couponCurrency()
+	{
+<span class="fc" id="L332">		return _lsCUP.get (0).couponCurrency();</span>
+	}
+
+	/**
+	 * Retrieve the Period Basis
+	 * 
+	 * @return The Period Basis
+	 */
+
+	public double basis()
+	{
+<span class="fc" id="L343">		return _lsCUP.get (0).basis();</span>
+	}
+
+	/**
+	 * Coupon Period Survival Probability
+	 * 
+	 * @param csqc Market Parameters
+	 * 
+	 * @return The Period Survival Probability
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double survival (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L360">		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();</span>
+
+<span class="fc bfc" id="L362" title="All 2 branches covered.">		if (null == creditLabel) return 1.;</span>
+
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;CompositePeriod::survival =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L366">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel);</span>
+
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (null == cc)</span>
+<span class="nc" id="L369">			throw new java.lang.Exception (&quot;CompositePeriod::survival =&gt; No Curve for &quot; +</span>
+<span class="nc" id="L370">				creditLabel.fullyQualifiedName());</span>
+
+<span class="fc" id="L372">		return cc.survival (_iPayDate);</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Period Recovery
+	 * 
+	 * @param csqc Market Parameters
+	 * 
+	 * @return The Period Recovery
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double recovery (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L389">		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();</span>
+
+<span class="fc bfc" id="L391" title="All 2 branches covered.">		if (null == creditLabel) return 1.;</span>
+
+<span class="pc bpc" id="L393" title="1 of 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;CompositePeriod::recovery =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L395">		org.drip.state.credit.CreditCurve cc = csqc.creditState (creditLabel);</span>
+
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">		if (null == cc)</span>
+<span class="nc" id="L398">			throw new java.lang.Exception (&quot;CompositePeriod::recovery =&gt; No Curve for &quot; +</span>
+<span class="nc" id="L399">				creditLabel.fullyQualifiedName());</span>
+
+<span class="fc" id="L401">		return cc.recovery (_iPayDate);</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Period Discount Factor
+	 * 
+	 * @param csqc Market Parameters
+	 * 
+	 * @return The Period Discount Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double df (
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L418">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
+
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;CompositePeriod::df =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L422">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqc.fundingState (fundingLabel);</span>
+
+<span class="pc bpc" id="L424" title="1 of 2 branches missed.">		if (null == dc)</span>
+<span class="nc" id="L425">			throw new java.lang.Exception (&quot;CompositePeriod::df =&gt; No Curve for &quot; +</span>
+<span class="nc" id="L426">				fundingLabel.fullyQualifiedName());</span>
+
+<span class="fc" id="L428">		return dc.df (_iPayDate);</span>
+	}
+
+	/**
+	 * Get the Period Base Notional
+	 * 
+	 * @return Period Base Notional
+	 */
+
+	public double baseNotional()
+	{
+<span class="fc" id="L439">		return _dblBaseNotional;</span>
+	}
+
+	/**
+	 * Get the Period Notional Schedule
+	 * 
+	 * @return Period Notional Schedule
+	 */
+
+	public org.drip.quant.common.Array2D notionalSchedule()
+	{
+<span class="nc" id="L450">		return _fsNotional;</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Period Notional Corresponding to the specified Date
+	 * 
+	 * @param iDate The Specified Date
+	 * 
+	 * @return The Period Notional Corresponding to the specified Date
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double notional (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">		if (!contains (iDate))</span>
+<span class="nc" id="L468">			throw new java.lang.Exception (&quot;CompositePeriod::notional =&gt; Invalid Inputs: &quot; + iDate + &quot; [&quot; +</span>
+<span class="nc" id="L469">				startDate() + &quot; =&gt; &quot; + endDate() + &quot;]&quot;);</span>
+
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">		return _dblBaseNotional * (null == _fsNotional ? 1. : _fsNotional.y (iDate));</span>
+	}
+
+	/**
+	 * Retrieve the Coupon Period Notional Aggregated over the specified Dates
+	 * 
+	 * @param iDate1 The Date #1
+	 * @param iDate2 The Date #2
+	 * 
+	 * @return The Period Notional Aggregated over the specified Dates
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double notional (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L490">		if (</span>
+<span class="pc bpc" id="L491" title="1 of 2 branches missed.">			!contains (iDate1) ||</span>
+<span class="pc bpc" id="L492" title="1 of 2 branches missed.">			!contains (iDate2)</span>
+		)
+<span class="nc" id="L494">			throw new java.lang.Exception (&quot;CompositePeriod::notional =&gt; Invalid Dates&quot;);</span>
+
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">		return _dblBaseNotional * (</span>
+<span class="fc" id="L497">			null == _fsNotional ? 1. : _fsNotional.y (</span>
+				iDate1,
+				iDate2
+			)
+		);
+	}
+
+	/**
+	 * Get the Period Coupon Schedule
+	 * 
+	 * @return Period Coupon Schedule
+	 */
+
+	public org.drip.quant.common.Array2D couponSchedule()
+	{
+<span class="nc" id="L512">		return _fsCoupon;</span>
+	}
+
+	/**
+	 * Retrieve the Period Coupon Schedule Factor Corresponding to the specified Date
+	 * 
+	 * @param iDate The Specified Date
+	 * 
+	 * @return The Period Coupon Schedule Factor Corresponding to the specified Date
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double couponFactor (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L529" title="1 of 2 branches missed.">		if (!contains (iDate))</span>
+<span class="nc" id="L530">			throw new java.lang.Exception (&quot;CompositePeriod::couponFactor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		return null == _fsCoupon ? 1. : _fsCoupon.y (iDate);</span>
+	}
+
+	/**
+	 * Retrieve the Period Coupon Schedule Factor Aggregated over the specified Dates
+	 * 
+	 * @param iDate1 The Date #1
+	 * @param iDate2 The Date #2
+	 * 
+	 * @return The Period Coupon Schedule Factor Aggregated over the specified Dates
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double couponFactor (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L551" title="All 4 branches missed.">		if (!contains (iDate1) || !contains (iDate2))</span>
+<span class="nc" id="L552">			throw new java.lang.Exception (&quot;CompositePeriod::couponFactor =&gt; Invalid Dates&quot;);</span>
+
+<span class="nc bnc" id="L554" title="All 2 branches missed.">		return null == _fsCoupon ? 1. : _fsCoupon.y (</span>
+			iDate1,
+			iDate2
+		);
+	}
+
+	/**
+	 * Return the Credit Label
+	 * 
+	 * @return The Credit Label
+	 */
+
+	public org.drip.state.identifier.EntityCDSLabel creditLabel()
+	{
+<span class="fc" id="L568">		return _creditLabel;</span>
+	}
+
+	/**
+	 * Return the Floater Label
+	 * 
+	 * @return The Floater Label
+	 */
+
+	public org.drip.state.identifier.FloaterLabel floaterLabel()
+	{
+<span class="fc" id="L579">		org.drip.analytics.cashflow.ComposableUnitPeriod cp = _lsCUP.get (0);</span>
+
+<span class="fc bfc" id="L581" title="All 2 branches covered.">		return cp instanceof org.drip.analytics.cashflow.ComposableUnitFixedPeriod ? null :</span>
+			((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)
+<span class="fc" id="L583">				cp).referenceIndexPeriod().floaterLabel();</span>
+	}
+
+	/**
+	 * Return the Funding Label
+	 * 
+	 * @return The Funding Label
+	 */
+
+	public org.drip.state.identifier.FundingLabel fundingLabel()
+	{
+<span class="fc" id="L594">		return org.drip.state.identifier.FundingLabel.Standard (_strPayCurrency);</span>
+	}
+
+	/**
+	 * Return the FX Label
+	 * 
+	 * @return The FX Label
+	 */
+
+	public org.drip.state.identifier.FXLabel fxLabel()
+	{
+<span class="fc" id="L605">		java.lang.String strCouponCurrency = couponCurrency();</span>
+
+<span class="fc bfc" id="L607" title="All 2 branches covered.">		return _strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :</span>
+<span class="fc" id="L608">			org.drip.state.identifier.FXLabel.Standard (_strPayCurrency + &quot;/&quot; + strCouponCurrency);</span>
+	}
+
+	/**
+	 * Compute the Convexity Adjustment for the Composable Periods that use Arithmetic Compounding using the
+	 *  specified Value Date using the Market Data provided
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curves/Surface
+	 * 
+	 * @return The List of Convexity Adjustments
+	 */
+
+	public java.util.List&lt;org.drip.analytics.output.ConvexityAdjustment&gt; periodWiseConvexityAdjustment (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+	{
+<span class="fc" id="L625">		java.util.List&lt;org.drip.analytics.output.ConvexityAdjustment&gt; lsConvAdj = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.output.ConvexityAdjustment&gt;();
+
+<span class="fc bfc" id="L628" title="All 4 branches covered.">		if (null == csqc || iValueDate &gt;= _iPayDate) {</span>
+<span class="fc bfc" id="L629" title="All 2 branches covered.">			for (int i = 0; i &lt; _lsCUP.size(); ++i)</span>
+<span class="fc" id="L630">				lsConvAdj.add (new org.drip.analytics.output.ConvexityAdjustment());</span>
+
+<span class="fc" id="L632">			return lsConvAdj;</span>
+		}
+
+<span class="fc" id="L635">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+
+<span class="fc" id="L637">		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();</span>
+
+<span class="fc" id="L639">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+
+<span class="pc bpc" id="L641" title="1 of 2 branches missed.">		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof</span>
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
+
+<span class="fc" id="L645">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
+
+<span class="fc" id="L647">		org.drip.state.volatility.VolatilityCurve vcFX = csqc.fxVolatility (fxLabel);</span>
+
+<span class="fc" id="L649">		org.drip.state.volatility.VolatilityCurve vcCredit = csqc.creditVolatility (creditLabel);</span>
+
+<span class="fc" id="L651">		org.drip.state.volatility.VolatilityCurve vcForward = csqc.forwardVolatility (forwardLabel);</span>
+
+<span class="fc" id="L653">		org.drip.state.volatility.VolatilityCurve vcFunding = csqc.fundingVolatility (fundingLabel);</span>
+
+<span class="fc" id="L655">		org.drip.function.definition.R1ToR1 r1ToR1CreditForwardCorr = csqc.creditForwardCorrelation (</span>
+			creditLabel,
+			forwardLabel
+		);
+
+<span class="fc" id="L660">		org.drip.function.definition.R1ToR1 r1ToR1ForwardFundingCorr = csqc.forwardFundingCorrelation (</span>
+			forwardLabel,
+			fundingLabel
+		);
+
+<span class="fc" id="L665">		org.drip.function.definition.R1ToR1 r1ToR1ForwardFXCorr = csqc.forwardFXCorrelation (</span>
+			forwardLabel,
+			fxLabel
+		);
+
+		try {
+<span class="fc" id="L671">			double dblCreditFundingConvexityAdjustment = java.lang.Math.exp (</span>
+<span class="fc" id="L672">				org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+					vcCredit,
+					vcFunding,
+<span class="fc" id="L675">					csqc.creditFundingCorrelation (</span>
+						creditLabel,
+						fundingLabel
+					),
+					iValueDate,
+					_iPayDate
+				)
+			);
+
+<span class="pc bpc" id="L684" title="1 of 2 branches missed.">			double dblCreditFXConvexityAdjustment = isFXMTM() ? java.lang.Math.exp (</span>
+<span class="fc" id="L685">				org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+					vcCredit,
+					vcFX,
+<span class="fc" id="L688">					csqc.creditFXCorrelation (</span>
+						creditLabel,
+						fxLabel
+					),
+					iValueDate,
+					_iPayDate
+				)
+			) : 1.;
+
+<span class="pc bpc" id="L697" title="1 of 2 branches missed.">			double dblFundingFXConvexityAdjustment = isFXMTM() ? java.lang.Math.exp (</span>
+<span class="fc" id="L698">				org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+					vcFunding,
+					vcFX,
+<span class="fc" id="L701">					csqc.fundingFXCorrelation (</span>
+						fundingLabel,
+						fxLabel
+					),
+					iValueDate,
+					_iPayDate
+				)
+			): 1.;
+
+<span class="fc bfc" id="L710" title="All 2 branches covered.">			for (org.drip.analytics.cashflow.ComposableUnitPeriod cup : _lsCUP) {</span>
+<span class="fc" id="L711">				org.drip.analytics.output.ConvexityAdjustment convAdj = new</span>
+					org.drip.analytics.output.ConvexityAdjustment();
+
+<span class="fc" id="L714">				if (</span>
+<span class="pc bpc" id="L715" title="1 of 2 branches missed.">					!convAdj.setCreditFunding (dblCreditFundingConvexityAdjustment) ||</span>
+<span class="pc bpc" id="L716" title="1 of 2 branches missed.">					!convAdj.setCreditFX (dblCreditFXConvexityAdjustment) ||</span>
+<span class="pc bpc" id="L717" title="1 of 2 branches missed.">					!convAdj.setFundingFX (dblFundingFXConvexityAdjustment)</span>
+				)
+<span class="nc" id="L719">					return null;</span>
+
+<span class="pc bpc" id="L721" title="1 of 2 branches missed.">				if (null != forwardLabel) {</span>
+<span class="pc bpc" id="L722" title="1 of 2 branches missed.">					if (!(cup instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod))</span>
+<span class="nc" id="L723">						return null;</span>
+
+<span class="fc" id="L725">					int iFixingDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L726">						cup).referenceIndexPeriod().fixingDate();</span>
+
+<span class="fc bfc" id="L728" title="All 2 branches covered.">					if (</span>
+<span class="pc bpc" id="L729" title="1 of 2 branches missed.">						!convAdj.setCreditForward (</span>
+<span class="fc" id="L730">							iValueDate &lt; iFixingDate ? java.lang.Math.exp (</span>
+<span class="fc" id="L731">								org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+									vcCredit,
+									vcForward,
+									r1ToR1CreditForwardCorr,
+									iValueDate,
+									iFixingDate
+								)
+							) : 1.
+						)
+					)
+<span class="nc" id="L741">						return null;</span>
+
+<span class="fc bfc" id="L743" title="All 2 branches covered.">					if (</span>
+<span class="pc bpc" id="L744" title="1 of 2 branches missed.">						!convAdj.setForwardFunding (</span>
+<span class="fc" id="L745">							iValueDate &lt; iFixingDate ? java.lang.Math.exp (</span>
+<span class="fc" id="L746">								org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+									vcForward,
+									vcFunding,
+									r1ToR1ForwardFundingCorr,
+									iValueDate,
+									iFixingDate
+								)
+							) : 1.
+						)
+					)
+<span class="nc" id="L756">						return null;</span>
+
+<span class="fc" id="L758">					if (</span>
+<span class="pc bpc" id="L759" title="1 of 2 branches missed.">						!convAdj.setForwardFX (</span>
+<span class="pc bpc" id="L760" title="1 of 4 branches missed.">							isFXMTM() &amp;&amp; iValueDate &lt; iFixingDate ? java.lang.Math.exp (</span>
+<span class="fc" id="L761">								org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+									vcForward,
+									vcFX,
+									r1ToR1ForwardFXCorr,
+									iValueDate,
+									iFixingDate
+								)
+							) : 1.
+						)
+					)
+<span class="nc" id="L771">						return null;</span>
+				}
+
+<span class="fc" id="L774">				lsConvAdj.add (convAdj);</span>
+<span class="fc" id="L775">			}</span>
+
+<span class="fc" id="L777">			return lsConvAdj;</span>
+<span class="nc" id="L778">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L779">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L782">		return null;</span>
+	}
+
+	/**
+	 * Compute the Convexity Adjustment for the Composable Periods that use geometric Compounding using the
+	 *  specified Value Date using the Market Data provided
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curves/Surface
+	 * 
+	 * @return The Convexity Adjustment
+	 */
+
+	public org.drip.analytics.output.ConvexityAdjustment terminalConvexityAdjustment (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+	{
+<span class="fc bfc" id="L799" title="All 4 branches covered.">		if (null == csqc || iValueDate &gt;= _iPayDate)</span>
+<span class="fc" id="L800">			return new org.drip.analytics.output.ConvexityAdjustment();</span>
+
+<span class="fc" id="L802">		boolean bFXIsMTM = isFXMTM();</span>
+
+<span class="fc" id="L804">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+
+<span class="fc" id="L806">		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();</span>
+
+<span class="fc" id="L808">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+
+<span class="fc bfc" id="L810" title="All 2 branches covered.">		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof</span>
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
+
+<span class="fc" id="L814">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
+
+<span class="fc" id="L816">		org.drip.state.volatility.VolatilityCurve vcFX = csqc.fxVolatility (fxLabel);</span>
+
+<span class="fc" id="L818">		org.drip.state.volatility.VolatilityCurve vcCredit = csqc.creditVolatility (creditLabel);</span>
+
+<span class="fc" id="L820">		org.drip.state.volatility.VolatilityCurve vcForward = csqc.forwardVolatility (forwardLabel);</span>
+
+<span class="fc" id="L822">		org.drip.state.volatility.VolatilityCurve vcFunding = csqc.fundingVolatility (fundingLabel);</span>
+
+<span class="fc" id="L824">		org.drip.analytics.output.ConvexityAdjustment convAdj = new</span>
+			org.drip.analytics.output.ConvexityAdjustment();
+
+		try {
+<span class="fc" id="L828">			if (</span>
+<span class="pc bpc" id="L829" title="1 of 2 branches missed.">				!convAdj.setCreditFunding (</span>
+<span class="fc" id="L830">					java.lang.Math.exp (</span>
+<span class="fc" id="L831">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+							vcCredit,
+							vcFunding,
+<span class="fc" id="L834">							csqc.creditFundingCorrelation (</span>
+								creditLabel,
+								fundingLabel
+							), iValueDate, _iPayDate
+						)
+					)
+				)
+			)
+<span class="nc" id="L842">				return null;</span>
+
+<span class="fc bfc" id="L844" title="All 2 branches covered.">			if (</span>
+<span class="pc bpc" id="L845" title="1 of 2 branches missed.">				bFXIsMTM &amp;&amp; !convAdj.setCreditFX (</span>
+<span class="fc" id="L846">					java.lang.Math.exp (</span>
+<span class="fc" id="L847">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+							vcCredit,
+							vcFX,
+<span class="fc" id="L850">							csqc.creditFXCorrelation (</span>
+								creditLabel,
+								fxLabel
+							),
+							iValueDate,
+							_iPayDate
+						)
+					)
+				)
+			)
+<span class="nc" id="L860">				return null;</span>
+
+<span class="fc bfc" id="L862" title="All 2 branches covered.">			if (</span>
+<span class="pc bpc" id="L863" title="1 of 2 branches missed.">				bFXIsMTM &amp;&amp; !convAdj.setFundingFX (</span>
+<span class="fc" id="L864">					java.lang.Math.exp (</span>
+<span class="fc" id="L865">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+							vcFunding,
+							vcFX,
+<span class="fc" id="L868">							csqc.fundingFXCorrelation (</span>
+								fundingLabel,
+								fxLabel
+							),
+							iValueDate,
+							_iPayDate
+						)
+					)
+				)
+			)
+<span class="nc" id="L878">				return null;</span>
+
+<span class="fc bfc" id="L880" title="All 2 branches covered.">			if (null == forwardLabel) return convAdj;</span>
+
+<span class="fc" id="L882">			org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (0);</span>
+
+<span class="pc bpc" id="L884" title="1 of 2 branches missed.">			if (!(cup instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)) return null;</span>
+
+<span class="fc" id="L886">			int iFixingDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L887">				cup).referenceIndexPeriod().fixingDate();</span>
+
+<span class="fc bfc" id="L889" title="All 2 branches covered.">			if (iValueDate &lt; iFixingDate) {</span>
+<span class="fc" id="L890">				if (</span>
+<span class="pc bpc" id="L891" title="1 of 2 branches missed.">					!convAdj.setCreditForward (</span>
+<span class="fc" id="L892">						java.lang.Math.exp (</span>
+<span class="fc" id="L893">							org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+								vcCredit,
+								vcForward,
+<span class="fc" id="L896">								csqc.creditForwardCorrelation (</span>
+									creditLabel,
+									forwardLabel
+								),
+								iValueDate,
+								iFixingDate
+							)
+						)
+					)
+				)
+<span class="nc" id="L906">					return null;</span>
+
+<span class="fc" id="L908">				if (</span>
+<span class="pc bpc" id="L909" title="1 of 2 branches missed.">					!convAdj.setForwardFunding (</span>
+<span class="fc" id="L910">						java.lang.Math.exp (</span>
+<span class="fc" id="L911">							org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+								vcForward,
+								vcFunding,
+<span class="fc" id="L914">								csqc.forwardFundingCorrelation (</span>
+									forwardLabel,
+									fundingLabel
+								),
+								iValueDate,
+								iFixingDate
+							)
+						)
+					)
+				)
+<span class="nc" id="L924">					return null;</span>
+
+<span class="fc bfc" id="L926" title="All 2 branches covered.">				if (</span>
+<span class="pc bpc" id="L927" title="1 of 2 branches missed.">					bFXIsMTM &amp;&amp; !convAdj.setForwardFX (</span>
+<span class="fc" id="L928">						java.lang.Math.exp (</span>
+<span class="fc" id="L929">							org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+								vcForward,
+								vcFX,
+<span class="fc" id="L932">								csqc.forwardFXCorrelation (</span>
+									forwardLabel,
+									fxLabel
+								),
+								iValueDate,
+								iFixingDate
+							)
+						)
+					)
+				)
+<span class="nc" id="L942">					return null;</span>
+			}
+
+<span class="fc" id="L945">			return convAdj;</span>
+<span class="nc" id="L946">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L947">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L950">		return null;</span>
+	}
+
+	/**
+	 * Compute the Unit Period Convexity Measures
+	 * 
+	 * @param iValueDate Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * 
+	 * @return The Unit Period Convexity Measures
+	 */
+
+	public java.util.List&lt;org.drip.analytics.output.UnitPeriodConvexityMetrics&gt; unitPeriodConvexityMetrics (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+	{
+<span class="fc" id="L966">		java.util.List&lt;org.drip.analytics.output.UnitPeriodConvexityMetrics&gt; lsUPCM = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.output.UnitPeriodConvexityMetrics&gt;();
+
+<span class="fc" id="L969">		int iNumPeriodUnit = _lsCUP.size();</span>
+
+		try {
+<span class="fc bfc" id="L972" title="All 2 branches covered.">			if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC ==</span>
+				_iAccrualCompoundingRule) {
+<span class="fc" id="L974">				java.util.List&lt;org.drip.analytics.output.ConvexityAdjustment&gt; lsConvAdj =</span>
+<span class="fc" id="L975">					periodWiseConvexityAdjustment (</span>
+						iValueDate,
+						csqc
+					);
+
+<span class="pc bpc" id="L980" title="2 of 4 branches missed.">				if (null == lsConvAdj || iNumPeriodUnit != lsConvAdj.size()) return null;</span>
+
+<span class="fc bfc" id="L982" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumPeriodUnit; ++i) {</span>
+<span class="fc" id="L983">					org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);</span>
+
+<span class="fc" id="L985">					lsUPCM.add (</span>
+						new org.drip.analytics.output.UnitPeriodConvexityMetrics (
+<span class="fc" id="L987">							cup.startDate(),</span>
+<span class="fc" id="L988">							cup.endDate(),</span>
+<span class="fc" id="L989">							lsConvAdj.get (i)</span>
+						)
+					);
+				}
+<span class="pc bpc" id="L993" title="1 of 2 branches missed.">			} else if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC</span>
+				== _iAccrualCompoundingRule)
+<span class="fc" id="L995">				lsUPCM.add (</span>
+					new org.drip.analytics.output.UnitPeriodConvexityMetrics (
+<span class="fc" id="L997">						startDate(),</span>
+<span class="fc" id="L998">						endDate(),</span>
+<span class="fc" id="L999">						terminalConvexityAdjustment (</span>
+							iValueDate,
+							csqc
+						)
+					)
+				);
+
+<span class="fc" id="L1006">			return lsUPCM;</span>
+<span class="nc" id="L1007">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1008">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1011">		return null;</span>
+	}
+
+	/**
+	 * Compute the Full Period Coupon Measures
+	 * 
+	 * @param iValueDate Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * 
+	 * @return The Full Period Coupon Measures
+	 */
+
+	public org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+	{
+<span class="pc bpc" id="L1027" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iValueDate)) return null;</span>
+
+<span class="fc" id="L1029">		java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; lsUPM = new</span>
+			java.util.ArrayList&lt;org.drip.analytics.output.UnitPeriodMetrics&gt;();
+
+<span class="fc" id="L1032">		int iNumPeriodUnit = _lsCUP.size();</span>
+
+<span class="fc" id="L1034">		double dblUnitAccrual = 1.;</span>
+
+		try {
+<span class="fc bfc" id="L1037" title="All 2 branches covered.">			if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC ==</span>
+				_iAccrualCompoundingRule) {
+<span class="fc" id="L1039">				java.util.List&lt;org.drip.analytics.output.ConvexityAdjustment&gt; lsConvAdj =</span>
+<span class="fc" id="L1040">					periodWiseConvexityAdjustment (</span>
+						iValueDate,
+						csqc
+					);
+
+<span class="pc bpc" id="L1045" title="2 of 4 branches missed.">				if (null == lsConvAdj || iNumPeriodUnit != lsConvAdj.size()) return null;</span>
+
+<span class="fc bfc" id="L1047" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumPeriodUnit; ++i) {</span>
+<span class="fc" id="L1048">					org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);</span>
+
+<span class="fc" id="L1050">					lsUPM.add (</span>
+						new org.drip.analytics.output.UnitPeriodMetrics (
+<span class="fc" id="L1052">							cup.startDate(),</span>
+<span class="fc" id="L1053">							cup.endDate(),</span>
+<span class="fc" id="L1054">							cup.fullCouponDCF(),</span>
+<span class="fc" id="L1055">							cup.fullCouponRate (csqc),</span>
+<span class="fc" id="L1056">							lsConvAdj.get (i)</span>
+						)
+					);
+				}
+<span class="pc bpc" id="L1060" title="1 of 2 branches missed.">			} else if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC</span>
+				== _iAccrualCompoundingRule) {
+<span class="fc" id="L1062">				double dblDCF = 0.;</span>
+
+<span class="fc bfc" id="L1064" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumPeriodUnit; ++i) {</span>
+<span class="fc" id="L1065">					org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);</span>
+
+<span class="fc" id="L1067">					double dblPeriodDCF = cup.fullCouponDCF();</span>
+
+<span class="fc" id="L1069">					dblDCF += dblPeriodDCF;</span>
+
+<span class="fc" id="L1071">					dblUnitAccrual *= (1. + cup.fullCouponRate (csqc) * dblPeriodDCF);</span>
+				}
+
+<span class="fc" id="L1074">				lsUPM.add (</span>
+					new org.drip.analytics.output.UnitPeriodMetrics (
+<span class="fc" id="L1076">						startDate(),</span>
+<span class="fc" id="L1077">						endDate(),</span>
+						dblDCF,
+						(dblUnitAccrual - 1.) / dblDCF,
+<span class="fc" id="L1080">						terminalConvexityAdjustment (</span>
+							iValueDate,
+							csqc
+						)
+					)
+				);
+			}
+
+<span class="fc" id="L1088">			return org.drip.analytics.output.CompositePeriodCouponMetrics.Create (lsUPM);</span>
+<span class="nc" id="L1089">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1090">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1093">		return null;</span>
+	}
+
+	/**
+	 * Compute the Coupon Accrual DCF to the specified Accrual End Date
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * 
+	 * @return The Coupon Accrual DCF to the specified Accrual End Date
+	 * 
+	 * @throws java.lang.Exception Thrown if the Accrual DCF cannot be calculated
+	 */
+
+	public double accrualDCF (
+		final int iValueDate)
+		throws java.lang.Exception
+	{
+<span class="fc bfc" id="L1110" title="All 2 branches covered.">		if (!contains (iValueDate)) return 0.;</span>
+
+<span class="fc" id="L1112">		int iNumPeriodUnit = _lsCUP.size();</span>
+
+<span class="fc" id="L1114">		double dblAccrualDCF = 0.;</span>
+
+<span class="fc bfc" id="L1116" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriodUnit; ++i) {</span>
+<span class="fc" id="L1117">			org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);</span>
+
+<span class="fc" id="L1119">			int iDateLocation = cup.dateLocation (iValueDate);</span>
+
+<span class="fc bfc" id="L1121" title="All 2 branches covered.">			if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_INSIDE_SEGMENT == iDateLocation)</span>
+<span class="fc" id="L1122">				dblAccrualDCF += cup.accrualDCF (iValueDate);</span>
+<span class="pc bpc" id="L1123" title="1 of 2 branches missed.">			else if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_RIGHT_OF_SEGMENT ==</span>
+				iDateLocation)
+<span class="nc" id="L1125">				dblAccrualDCF += cup.fullCouponDCF();</span>
+		}
+
+<span class="fc" id="L1128">		return dblAccrualDCF;</span>
+	}
+
+	/**
+	 * Compute the Full Coupon DCF
+	 * 
+	 * @return The Full Coupon DCF
+	 * 
+	 * @throws java.lang.Exception Thrown if the Full Coupon DCF cannot be calculated
+	 */
+
+	public double couponDCF()
+		throws java.lang.Exception
+	{
+<span class="fc" id="L1142">		int iNumPeriodUnit = _lsCUP.size();</span>
+
+<span class="fc" id="L1144">		double dblAccrualDCF = 0.;</span>
+
+<span class="fc bfc" id="L1146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriodUnit; ++i)</span>
+<span class="fc" id="L1147">			dblAccrualDCF += _lsCUP.get (i).fullCouponDCF();</span>
+
+<span class="fc" id="L1149">		return dblAccrualDCF;</span>
+	}
+
+	/**
+	 * Compute the Coupon Accrual Measures to the specified Accrual End Date
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * 
+	 * @return The Coupon Accrual Measures to the specified Accrual End Date
+	 */
+
+	public org.drip.analytics.output.CompositePeriodAccrualMetrics accrualMetrics (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+	{
+		try {
+<span class="fc bfc" id="L1166" title="All 2 branches covered.">			if (!contains (iValueDate)) return null;</span>
+
+<span class="fc" id="L1168">			java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; lsUPM = new</span>
+				java.util.ArrayList&lt;org.drip.analytics.output.UnitPeriodMetrics&gt;();
+
+<span class="fc" id="L1171">			int iNumPeriodUnit = _lsCUP.size();</span>
+
+<span class="fc" id="L1173">			int iResetDate = java.lang.Integer.MIN_VALUE;</span>
+
+<span class="fc bfc" id="L1175" title="All 2 branches covered.">			if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC ==</span>
+				_iAccrualCompoundingRule) {
+<span class="fc" id="L1177">				java.util.List&lt;org.drip.analytics.output.ConvexityAdjustment&gt; lsConvAdj =</span>
+<span class="fc" id="L1178">					periodWiseConvexityAdjustment (</span>
+						iValueDate,
+						csqc
+					);
+
+<span class="pc bpc" id="L1183" title="2 of 4 branches missed.">				if (null == lsConvAdj || iNumPeriodUnit != lsConvAdj.size()) return null;</span>
+
+<span class="fc bfc" id="L1185" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumPeriodUnit; ++i) {</span>
+<span class="fc" id="L1186">					org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);</span>
+
+<span class="fc" id="L1188">					int iDateLocation = cup.dateLocation (iValueDate);</span>
+
+<span class="fc bfc" id="L1190" title="All 2 branches covered.">					if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_INSIDE_SEGMENT ==</span>
+						iDateLocation) {
+<span class="pc bpc" id="L1192" title="1 of 2 branches missed.">						if (cup instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1193">							iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1194">								cup).referenceIndexPeriod().fixingDate();</span>
+
+<span class="fc" id="L1196">						lsUPM.add (</span>
+							new org.drip.analytics.output.UnitPeriodMetrics (
+<span class="fc" id="L1198">								cup.startDate(),</span>
+								iValueDate,
+<span class="fc" id="L1200">								cup.accrualDCF (iValueDate),</span>
+<span class="fc" id="L1201">								cup.fullCouponRate (csqc),</span>
+<span class="fc" id="L1202">								lsConvAdj.get (i)</span>
+							)
+						);
+<span class="fc bfc" id="L1205" title="All 2 branches covered.">					} else if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_RIGHT_OF_SEGMENT ==</span>
+						iDateLocation) {
+<span class="pc bpc" id="L1207" title="1 of 2 branches missed.">						if (cup instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1208">							iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1209">								cup).referenceIndexPeriod().fixingDate();</span>
+
+<span class="fc" id="L1211">						lsUPM.add (</span>
+							new org.drip.analytics.output.UnitPeriodMetrics (
+<span class="fc" id="L1213">								cup.startDate(),</span>
+<span class="fc" id="L1214">								cup.endDate(),</span>
+<span class="fc" id="L1215">								cup.fullCouponDCF(),</span>
+<span class="fc" id="L1216">								cup.fullCouponRate (csqc),</span>
+<span class="fc" id="L1217">								lsConvAdj.get (i)</span>
+							)
+						);
+					}
+				}
+<span class="pc bpc" id="L1222" title="1 of 2 branches missed.">			} else if (org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC</span>
+				== _iAccrualCompoundingRule) {
+<span class="fc" id="L1224">				double dblAccrualDCF = 0.;</span>
+<span class="fc" id="L1225">				double dblUnitAccrual = 1.;</span>
+
+<span class="fc bfc" id="L1227" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumPeriodUnit; ++i) {</span>
+<span class="fc" id="L1228">					org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (i);</span>
+
+<span class="fc" id="L1230">					int iDateLocation = cup.dateLocation (iValueDate);</span>
+
+<span class="fc bfc" id="L1232" title="All 2 branches covered.">					if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_INSIDE_SEGMENT ==</span>
+						iDateLocation) {
+<span class="fc" id="L1234">						double dblPeriodAccrualDCF = cup.accrualDCF (iValueDate);</span>
+
+<span class="fc" id="L1236">						dblAccrualDCF += dblPeriodAccrualDCF;</span>
+
+<span class="fc" id="L1238">						dblUnitAccrual *= (1. + cup.fullCouponRate (csqc) * dblPeriodAccrualDCF);</span>
+
+<span class="fc bfc" id="L1240" title="All 2 branches covered.">						if (cup instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1241">							iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1242">								cup).referenceIndexPeriod().fixingDate();</span>
+<span class="fc bfc" id="L1243" title="All 2 branches covered.">					} else if (org.drip.analytics.cashflow.ComposableUnitFixedPeriod.NODE_RIGHT_OF_SEGMENT ==</span>
+						iDateLocation) {
+<span class="fc" id="L1245">						double dblPeriodDCF = cup.fullCouponDCF();</span>
+
+<span class="fc" id="L1247">						dblAccrualDCF += dblPeriodDCF;</span>
+
+<span class="fc" id="L1249">						dblUnitAccrual *= (1. + cup.fullCouponRate (csqc) * dblPeriodDCF);</span>
+
+<span class="pc bpc" id="L1251" title="1 of 2 branches missed.">						if (cup instanceof org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1252">							iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="fc" id="L1253">								cup).referenceIndexPeriod().fixingDate();</span>
+					}
+				}
+
+<span class="fc bfc" id="L1257" title="All 2 branches covered.">				if (0. &lt; dblAccrualDCF)</span>
+<span class="fc" id="L1258">					lsUPM.add (</span>
+						new org.drip.analytics.output.UnitPeriodMetrics (
+<span class="fc" id="L1260">							startDate(),</span>
+							iValueDate,
+							dblAccrualDCF,
+<span class="fc" id="L1263">							(dblUnitAccrual - 1.) / dblAccrualDCF, terminalConvexityAdjustment (</span>
+								iValueDate,
+								csqc
+							)
+						)
+					);
+			}
+
+<span class="fc bfc" id="L1271" title="All 2 branches covered.">			return 0 == lsUPM.size() ? null : org.drip.analytics.output.CompositePeriodAccrualMetrics.Create (</span>
+				iResetDate,
+				lsUPM
+			);
+<span class="nc" id="L1275">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1276">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1279">		return null;</span>
+	}
+
+	/**
+	 * Create a List of Loss Period Measures
+	 * 
+	 * @param creditComponent Component for which the Measures are to be generated
+	 * @param valuationParameters Valuation Parameters from which the Periods are generated
+	 * @param cpp Pricer Parameters that control the Generation Characteristics
+	 * @param iWorkoutDate Date representing the Absolute End of all the generated Periods
+	 * @param csqc Market Parameters
+	 *  
+	 * @return The Generated Loss Quadrature Metrics
+	 */
+
+	public java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; lossMetrics (
+		final org.drip.product.definition.CreditComponent creditComponent,
+		final org.drip.param.valuation.ValuationParams valuationParameters,
+		final org.drip.param.pricer.CreditPricerParams cpp,
+		final int iWorkoutDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
+	{
+<span class="pc bpc" id="L1301" title="1 of 2 branches missed.">		if (</span>
+<span class="pc bpc" id="L1302" title="4 of 8 branches missed.">			null == creditComponent || null == csqc.creditState (creditComponent.creditLabel()) ||</span>
+			null == valuationParameters ||
+			null == cpp ||
+			null == csqc ||
+<span class="pc bpc" id="L1306" title="1 of 2 branches missed.">			startDate() &gt; iWorkoutDate</span>
+		)
+<span class="nc" id="L1308">			return null;</span>
+
+<span class="fc" id="L1310">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqc.fundingState</span>
+<span class="fc" id="L1311">			(org.drip.state.identifier.FundingLabel.Standard (_strPayCurrency));</span>
+
+<span class="pc bpc" id="L1313" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
+
+<span class="fc" id="L1315">		int iEndDate = endDate();</span>
+
+<span class="fc" id="L1317">		int iDiscretizationScheme = cpp.discretizationScheme();</span>
+
+<span class="pc bpc" id="L1319" title="1 of 2 branches missed.">		int iPeriodEndDate = iEndDate &lt; iWorkoutDate ? iEndDate : iWorkoutDate;</span>
+<span class="fc" id="L1320">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; lsLQM = null;</span>
+
+<span class="fc bfc" id="L1322" title="All 2 branches covered.">		if (</span>
+			org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP == iDiscretizationScheme
+			&amp;&amp; (
+				null == (
+<span class="pc bpc" id="L1326" title="1 of 2 branches missed.">					lsLQM = org.drip.analytics.support.LossQuadratureGenerator.GenerateDayStepLossPeriods (</span>
+						creditComponent,
+						valuationParameters,
+						this,
+						iPeriodEndDate,
+<span class="fc" id="L1331">						cpp.unitSize(),</span>
+						csqc
+					)
+<span class="pc bpc" id="L1334" title="1 of 2 branches missed.">				) || 0 == lsLQM.size()</span>
+			)
+		)
+<span class="nc" id="L1337">			return null;</span>
+
+<span class="pc bpc" id="L1339" title="1 of 2 branches missed.">		if (</span>
+			org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_PERIOD_STEP ==
+			iDiscretizationScheme &amp;&amp; (
+				null == (
+<span class="nc bnc" id="L1343" title="All 2 branches missed.">					lsLQM = org.drip.analytics.support.LossQuadratureGenerator.GeneratePeriodUnitLossPeriods (</span>
+						creditComponent,
+						valuationParameters,
+						this,
+						iPeriodEndDate,
+<span class="nc" id="L1348">						cpp.unitSize(),</span>
+						csqc
+					)
+<span class="nc bnc" id="L1351" title="All 2 branches missed.">				) || 0 == lsLQM.size()</span>
+			)
+		)
+<span class="nc" id="L1354">			return null;</span>
+
+<span class="fc bfc" id="L1356" title="All 2 branches covered.">		if (</span>
+			org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_FULL_COUPON ==
+			iDiscretizationScheme &amp;&amp; (
+				null == (
+<span class="pc bpc" id="L1360" title="1 of 2 branches missed.">					lsLQM = org.drip.analytics.support.LossQuadratureGenerator.GenerateWholeLossPeriods (</span>
+						creditComponent,
+						valuationParameters,
+						this,
+						iPeriodEndDate,
+						csqc
+					)
+<span class="pc bpc" id="L1367" title="1 of 2 branches missed.">				) || 0 == lsLQM.size()</span>
+			)
+		)
+<span class="nc" id="L1370">			return null;</span>
+
+<span class="fc" id="L1372">		return lsLQM;</span>
+	}
+
+	/**
+	 * Generate the Forward Predictor/Response Constraint
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * @param pqs Product Quote Set
+	 * 
+	 * @return The Forward Predictor/Response Constraint
+	 */
+
+	public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="pc bpc" id="L1390" title="1 of 2 branches missed.">		if (null == pqs) return null;</span>
+
+<span class="fc" id="L1392">		double dblDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L1393">		double dblFX = java.lang.Double.NaN;</span>
+<span class="fc" id="L1394">		double dblBasis = java.lang.Double.NaN;</span>
+<span class="fc" id="L1395">		double dblAccrued = java.lang.Double.NaN;</span>
+<span class="fc" id="L1396">		double dblBaseRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L1397">		double dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L1398">		double dblSurvival = java.lang.Double.NaN;</span>
+
+<span class="fc" id="L1400">		org.drip.product.calib.CompositePeriodQuoteSet cpqs = periodQuoteSet (</span>
+			pqs,
+			csqc
+		);
+
+		try {
+<span class="fc" id="L1406">			dblDF = df (csqc);</span>
+
+<span class="fc" id="L1408">			dblFX = fx (csqc);</span>
+
+<span class="fc" id="L1410">			dblSurvival = survival (csqc);</span>
+
+<span class="fc" id="L1412">			int iEndDate = endDate();</span>
+
+<span class="pc bpc" id="L1414" title="1 of 2 branches missed.">			dblBasis = cpqs.containsBasis() ? cpqs.basis() : 0.;</span>
+
+<span class="fc bfc" id="L1416" title="All 2 branches covered.">			dblBaseRate = cpqs.containsBaseRate() ? cpqs.baseRate() : 0.;</span>
+
+<span class="fc" id="L1418">			dblNotional = notional (iEndDate) * couponFactor (iEndDate);</span>
+
+<span class="fc" id="L1420">			dblAccrued = dblNotional * dblFX * accrualDCF (iValueDate) * (dblBaseRate + dblBasis);</span>
+<span class="nc" id="L1421">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1422">			e.printStackTrace();</span>
+
+<span class="nc" id="L1424">			return null;</span>
+<span class="fc" id="L1425">		}</span>
+
+<span class="fc" id="L1427">		org.drip.analytics.output.CompositePeriodCouponMetrics cpm = couponMetrics (</span>
+			iValueDate,
+			csqc
+		);
+
+<span class="pc bpc" id="L1432" title="1 of 2 branches missed.">		if (null == cpm) return null;</span>
+
+<span class="fc" id="L1434">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+			org.drip.state.estimator.PredictorResponseWeightConstraint();
+
+<span class="fc" id="L1437">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+
+<span class="fc bfc" id="L1439" title="All 2 branches covered.">		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof</span>
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
+
+<span class="fc bfc" id="L1443" title="All 2 branches covered.">		if (null == forwardLabel) {</span>
+<span class="fc bfc" id="L1444" title="All 2 branches covered.">			for (org.drip.analytics.output.UnitPeriodMetrics upm : cpm.unitMetrics()) {</span>
+<span class="pc bpc" id="L1445" title="1 of 2 branches missed.">				if (!prwc.updateValue (-1. * dblNotional * dblFX * upm.dcf() * (dblBaseRate + dblBasis) *</span>
+<span class="fc" id="L1446">					dblSurvival * dblDF * upm.convAdj().cumulative()))</span>
+<span class="nc" id="L1447">					return null;</span>
+<span class="fc" id="L1448">			}</span>
+
+<span class="pc bpc" id="L1450" title="1 of 2 branches missed.">			if (!prwc.updateValue (dblAccrued)) return null;</span>
+<span class="fc bfc" id="L1451" title="All 2 branches covered.">		} else if (!forwardLabel.match (pqs.forwardLabel())) {</span>
+<span class="fc" id="L1452">			java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; lsUPM = cpm.unitMetrics();</span>
+
+<span class="fc bfc" id="L1454" title="All 2 branches covered.">			for (int i = 0; i &lt; lsUPM.size(); ++i) {</span>
+<span class="fc" id="L1455">				org.drip.analytics.output.UnitPeriodMetrics upm = lsUPM.get (i);</span>
+
+				try {
+<span class="pc bpc" id="L1458" title="1 of 2 branches missed.">					if (!prwc.updateValue (-1. * dblNotional * dblFX * upm.dcf() * (_lsCUP.get (i).baseRate</span>
+<span class="fc" id="L1459">						(csqc) + dblBasis) * dblSurvival * dblDF * upm.convAdj().cumulative()))</span>
+<span class="nc" id="L1460">						return null;</span>
+<span class="nc" id="L1461">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1462">					e.printStackTrace();</span>
+
+<span class="nc" id="L1464">					return null;</span>
+<span class="fc" id="L1465">				}</span>
+			}
+
+<span class="pc bpc" id="L1468" title="1 of 2 branches missed.">			if (!prwc.updateValue (dblAccrued)) return null;</span>
+<span class="fc" id="L1469">		} else {</span>
+<span class="fc bfc" id="L1470" title="All 2 branches covered.">			for (org.drip.analytics.output.UnitPeriodMetrics upm : cpm.unitMetrics()) {</span>
+<span class="fc" id="L1471">				int iDateAnchor = upm.endDate();</span>
+
+<span class="fc bfc" id="L1473" title="All 2 branches covered.">				if (cpqs.containsBaseRate()) {</span>
+<span class="fc" id="L1474">					if (</span>
+<span class="pc bpc" id="L1475" title="1 of 2 branches missed.">						!prwc.addPredictorResponseWeight (</span>
+							iDateAnchor,
+							1.
+						)
+					)
+<span class="nc" id="L1480">						return null;</span>
+
+<span class="fc" id="L1482">					if (</span>
+<span class="pc bpc" id="L1483" title="1 of 2 branches missed.">						!prwc.addDResponseWeightDManifestMeasure (</span>
+							&quot;PV&quot;,
+							iDateAnchor,
+							1.
+						)
+<span class="nc" id="L1488">					) return null;</span>
+				} else {
+<span class="fc" id="L1490">					double dblForwardLoading = dblNotional * dblFX * upm.dcf() * dblSurvival * dblDF *</span>
+<span class="fc" id="L1491">						upm.convAdj().cumulative();</span>
+
+<span class="fc" id="L1493">					if (</span>
+<span class="pc bpc" id="L1494" title="1 of 2 branches missed.">						!prwc.addPredictorResponseWeight (</span>
+							iDateAnchor,
+							dblForwardLoading
+						)
+					)
+<span class="nc" id="L1499">						return null;</span>
+
+<span class="fc" id="L1501">					if (</span>
+<span class="pc bpc" id="L1502" title="1 of 2 branches missed.">						!prwc.addDResponseWeightDManifestMeasure (</span>
+							&quot;PV&quot;,
+							iDateAnchor,
+							dblForwardLoading
+						)
+					)
+<span class="nc" id="L1508">						return null;</span>
+
+<span class="pc bpc" id="L1510" title="1 of 2 branches missed.">					if (!prwc.updateValue (-1. * dblForwardLoading * dblBasis)) return null;</span>
+				}
+<span class="fc" id="L1512">			}</span>
+
+<span class="pc bpc" id="L1514" title="1 of 4 branches missed.">			if (!prwc.updateValue (cpqs.containsBaseRate() ? dblBaseRate : dblAccrued)) return null;</span>
+		}
+
+<span class="fc" id="L1517">		if (</span>
+<span class="pc bpc" id="L1518" title="1 of 2 branches missed.">			!prwc.updateDValueDManifestMeasure (</span>
+				&quot;PV&quot;,
+				1.
+			)
+		)
+<span class="nc" id="L1523">			return null;</span>
+
+<span class="fc" id="L1525">		return prwc;</span>
+	}
+
+	/**
+	 * Generate the Funding Predictor/Response Constraint
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * @param pqs Product Quote Set
+	 * 
+	 * @return The Funding Predictor/Response Constraint
+	 */
+
+	public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="pc bpc" id="L1543" title="1 of 2 branches missed.">		if (null == pqs) return null;</span>
+
+<span class="fc" id="L1545">		double dblDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L1546">		double dblFX = java.lang.Double.NaN;</span>
+<span class="fc" id="L1547">		double dblBasis = java.lang.Double.NaN;</span>
+<span class="fc" id="L1548">		double dblAccrued = java.lang.Double.NaN;</span>
+<span class="fc" id="L1549">		double dblBaseRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L1550">		double dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L1551">		double dblSurvival = java.lang.Double.NaN;</span>
+
+<span class="fc" id="L1553">		org.drip.product.calib.CompositePeriodQuoteSet cpqs = periodQuoteSet (</span>
+			pqs,
+			csqc
+		);
+
+		try {
+<span class="fc" id="L1559">			dblFX = fx (csqc);</span>
+
+<span class="fc" id="L1561">			dblSurvival = survival (csqc);</span>
+
+<span class="pc bpc" id="L1563" title="1 of 2 branches missed.">			dblBasis = cpqs.containsBasis() ? cpqs.basis() : 0.;</span>
+
+<span class="pc bpc" id="L1565" title="1 of 2 branches missed.">			dblBaseRate = cpqs.containsBaseRate() ? cpqs.baseRate() : 0.;</span>
+
+<span class="fc" id="L1567">			dblNotional = notional (_iPayDate) * couponFactor (_iPayDate);</span>
+
+<span class="fc" id="L1569">			dblAccrued = dblNotional * dblFX * accrualDCF (iValueDate) * (dblBaseRate + dblBasis);</span>
+<span class="nc" id="L1570">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1571">			e.printStackTrace();</span>
+
+<span class="nc" id="L1573">			return null;</span>
+<span class="fc" id="L1574">		}</span>
+
+<span class="fc" id="L1576">		org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = couponMetrics (</span>
+			iValueDate,
+			csqc
+		);
+
+<span class="pc bpc" id="L1581" title="1 of 2 branches missed.">		if (null == cpcm) return null;</span>
+
+<span class="fc" id="L1583">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+			org.drip.state.estimator.PredictorResponseWeightConstraint();
+
+<span class="fc" id="L1586">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
+
+<span class="pc bpc" id="L1588" title="1 of 2 branches missed.">		if (!fundingLabel.match (pqs.fundingLabel())) {</span>
+			try {
+<span class="nc" id="L1590">				dblDF = df (csqc);</span>
+<span class="nc" id="L1591">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1592">				e.printStackTrace();</span>
+
+<span class="nc" id="L1594">				return null;</span>
+<span class="nc" id="L1595">			}</span>
+
+<span class="nc bnc" id="L1597" title="All 2 branches missed.">			for (org.drip.analytics.output.UnitPeriodMetrics upm : cpcm.unitMetrics()) {</span>
+<span class="nc bnc" id="L1598" title="All 2 branches missed.">				if (!prwc.updateValue (-1. * dblNotional * dblFX * upm.dcf() * (dblBaseRate + dblBasis) *</span>
+<span class="nc" id="L1599">					dblSurvival * dblDF * upm.convAdj().cumulative()))</span>
+<span class="nc" id="L1600">					return null;</span>
+<span class="nc" id="L1601">			}</span>
+		} else {
+<span class="fc bfc" id="L1603" title="All 2 branches covered.">			for (org.drip.analytics.output.UnitPeriodMetrics upm : cpcm.unitMetrics()) {</span>
+<span class="fc" id="L1604">				double dblFundingLoading = dblNotional * dblFX * upm.dcf() * (dblBaseRate + dblBasis) *</span>
+<span class="fc" id="L1605">					dblSurvival * upm.convAdj().cumulative();</span>
+
+<span class="fc" id="L1607">				if (</span>
+<span class="pc bpc" id="L1608" title="1 of 2 branches missed.">					!prwc.addPredictorResponseWeight (</span>
+						_iPayDate,
+						dblFundingLoading
+					)
+				)
+<span class="nc" id="L1613">					return null;</span>
+
+<span class="fc" id="L1615">				if (</span>
+<span class="pc bpc" id="L1616" title="1 of 2 branches missed.">					!prwc.addDResponseWeightDManifestMeasure (</span>
+						&quot;PV&quot;,
+						_iPayDate,
+						dblFundingLoading
+					)
+				)
+<span class="nc" id="L1622">					return null;</span>
+<span class="fc" id="L1623">			}</span>
+		}
+
+<span class="pc bpc" id="L1626" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblAccrued)) return null;</span>
+
+<span class="fc" id="L1628">		if (</span>
+<span class="pc bpc" id="L1629" title="1 of 2 branches missed.">			!prwc.updateDValueDManifestMeasure (</span>
+				&quot;PV&quot;,
+				1.
+			)
+		)
+<span class="nc" id="L1634">			return null;</span>
+
+<span class="fc" id="L1636">		return prwc;</span>
+	}
+
+	/**
+	 * Generate the Merged Forward/Funding Predictor/Response Constraint
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * @param pqs Product Quote Set
+	 * 
+	 * @return The Merged Forward/Funding Predictor/Response Constraint
+	 */
+
+	public org.drip.state.estimator.PredictorResponseWeightConstraint forwardFundingPRWC (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="pc bpc" id="L1654" title="1 of 2 branches missed.">		if (null == pqs) return null;</span>
+
+<span class="fc" id="L1656">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+
+<span class="fc bfc" id="L1658" title="All 2 branches covered.">		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof</span>
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
+
+<span class="pc bpc" id="L1662" title="1 of 4 branches missed.">		if (null == forwardLabel || !fundingLabel().match (pqs.fundingLabel()))</span>
+<span class="fc" id="L1663">			return fundingPRWC (</span>
+				iValueDate,
+				csqc,
+				pqs
+			);
+
+<span class="fc" id="L1669">		double dblFX = java.lang.Double.NaN;</span>
+<span class="fc" id="L1670">		double dblAccrued = java.lang.Double.NaN;</span>
+<span class="fc" id="L1671">		double dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L1672">		double dblSurvival = java.lang.Double.NaN;</span>
+
+<span class="fc" id="L1674">		org.drip.product.calib.CompositePeriodQuoteSet cpqs = periodQuoteSet (</span>
+			pqs,
+			csqc
+		);
+
+		try {
+<span class="fc" id="L1680">			dblFX = fx (csqc);</span>
+
+<span class="fc" id="L1682">			dblSurvival = survival (csqc);</span>
+
+<span class="fc" id="L1684">			dblNotional = notional (_iPayDate) * couponFactor (_iPayDate);</span>
+
+<span class="fc" id="L1686">			dblAccrued = accrualDCF (iValueDate) * cpqs.basis() * dblNotional * dblFX;</span>
+<span class="nc" id="L1687">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1688">			e.printStackTrace();</span>
+
+<span class="nc" id="L1690">			return null;</span>
+<span class="fc" id="L1691">		}</span>
+
+<span class="fc" id="L1693">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+			org.drip.state.estimator.PredictorResponseWeightConstraint();
+
+<span class="fc bfc" id="L1696" title="All 2 branches covered.">		if (cpqs.containsBaseRate()) {</span>
+<span class="fc" id="L1697">			int iEndDate = endDate();</span>
+
+<span class="fc" id="L1699">			int iStartDate = startDate();</span>
+
+<span class="fc" id="L1701">			org.drip.analytics.cashflow.ComposableUnitPeriod cup = _lsCUP.get (0);</span>
+
+			try {
+<span class="fc" id="L1704">				double dblForwardDF = 1. / (</span>
+<span class="fc" id="L1705">					1. + org.drip.analytics.daycount.Convention.YearFraction (</span>
+						iStartDate,
+						iEndDate,
+<span class="fc" id="L1708">						cup.couponDC(),</span>
+						false,
+						null,
+<span class="fc" id="L1711">						cup.calendar()</span>
+<span class="fc" id="L1712">					) * cpqs.baseRate()</span>
+				);
+
+<span class="fc" id="L1715">				if (</span>
+<span class="pc bpc" id="L1716" title="1 of 2 branches missed.">					!prwc.addPredictorResponseWeight (</span>
+						iStartDate,
+						dblNotional * dblForwardDF
+					)
+				)
+<span class="nc" id="L1721">					return null;</span>
+
+<span class="fc" id="L1723">				if (</span>
+<span class="pc bpc" id="L1724" title="1 of 2 branches missed.">					!prwc.addDResponseWeightDManifestMeasure (</span>
+						&quot;PV&quot;,
+						iStartDate,
+						dblNotional * dblForwardDF
+					)
+				)
+<span class="nc" id="L1730">					return null;</span>
+<span class="nc" id="L1731">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1732">				e.printStackTrace();</span>
+
+<span class="nc" id="L1734">				return null;</span>
+<span class="fc" id="L1735">			}</span>
+
+<span class="fc" id="L1737">			if (</span>
+<span class="pc bpc" id="L1738" title="1 of 2 branches missed.">				!prwc.addPredictorResponseWeight (</span>
+					iEndDate,
+					-1. * dblNotional
+				)
+			)
+<span class="nc" id="L1743">				return null;</span>
+
+<span class="fc" id="L1745">			if (</span>
+<span class="pc bpc" id="L1746" title="1 of 2 branches missed.">				!prwc.addDResponseWeightDManifestMeasure (</span>
+					&quot;PV&quot;,
+					iEndDate,
+					-1. * dblNotional
+				)
+			)
+<span class="nc" id="L1752">				return null;</span>
+<span class="fc" id="L1753">		} else {</span>
+<span class="fc" id="L1754">			java.util.List&lt;org.drip.analytics.output.UnitPeriodConvexityMetrics&gt; lsUPCM =</span>
+<span class="fc" id="L1755">				unitPeriodConvexityMetrics (</span>
+					iValueDate,
+					csqc
+				);
+
+<span class="pc bpc" id="L1760" title="2 of 4 branches missed.">			if (null == lsUPCM || 0 == lsUPCM.size()) return null;</span>
+
+<span class="fc bfc" id="L1762" title="All 2 branches covered.">			for (org.drip.analytics.output.UnitPeriodConvexityMetrics upcm : lsUPCM) {</span>
+<span class="fc" id="L1763">				double dblFundingLoading = dblNotional * dblFX * dblSurvival * upcm.convAdj().cumulative();</span>
+
+<span class="fc" id="L1765">				int iStartDate = upcm.startDate();</span>
+
+<span class="fc" id="L1767">				int iEndDate = upcm.endDate();</span>
+
+<span class="fc" id="L1769">				if (</span>
+<span class="pc bpc" id="L1770" title="1 of 2 branches missed.">					!prwc.addPredictorResponseWeight (</span>
+						iStartDate,
+						dblFundingLoading
+					)
+				)
+<span class="nc" id="L1775">					return null;</span>
+
+<span class="fc" id="L1777">				if (</span>
+<span class="pc bpc" id="L1778" title="1 of 2 branches missed.">					!prwc.addPredictorResponseWeight (</span>
+						iEndDate,
+						-1. * dblFundingLoading
+					)
+				)
+<span class="nc" id="L1783">					return null;</span>
+
+<span class="fc" id="L1785">				if (</span>
+<span class="pc bpc" id="L1786" title="1 of 2 branches missed.">					!prwc.addDResponseWeightDManifestMeasure (</span>
+						&quot;PV&quot;,
+						iStartDate,
+						dblFundingLoading
+					)
+				)
+<span class="nc" id="L1792">					return null;</span>
+
+<span class="fc" id="L1794">				if (</span>
+<span class="pc bpc" id="L1795" title="1 of 2 branches missed.">					!prwc.addDResponseWeightDManifestMeasure (</span>
+						&quot;PV&quot;,
+						iEndDate,
+						-1. * dblFundingLoading
+					)
+				)
+<span class="nc" id="L1801">					return null;</span>
+<span class="fc" id="L1802">			}</span>
+
+<span class="pc bpc" id="L1804" title="1 of 2 branches missed.">			if (!prwc.updateValue (dblAccrued)) return null;</span>
+		}
+
+<span class="fc" id="L1807">		if (</span>
+<span class="pc bpc" id="L1808" title="1 of 2 branches missed.">			!prwc.updateDValueDManifestMeasure (</span>
+				&quot;PV&quot;,
+				1.
+			)
+		)
+<span class="nc" id="L1813">			return null;</span>
+
+<span class="pc bpc" id="L1815" title="1 of 2 branches missed.">		if (!prwc.addMergeLabel (forwardLabel)) return null;</span>
+
+<span class="fc" id="L1817">		return prwc;</span>
+	}
+
+	/**
+	 * Generate the FX Predictor/Response Constraint
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * @param pqs Product Quote Set
+	 * 
+	 * @return The FX Predictor/Response Constraint
+	 */
+
+	public org.drip.state.estimator.PredictorResponseWeightConstraint fxPRWC (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="nc bnc" id="L1835" title="All 2 branches missed.">		if (null == pqs) return null;</span>
+
+<span class="nc" id="L1837">		int iEndDate = endDate();</span>
+
+<span class="nc bnc" id="L1839" title="All 2 branches missed.">		if (iValueDate &gt; iEndDate) return null;</span>
+
+<span class="nc" id="L1841">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+
+<span class="nc bnc" id="L1843" title="All 4 branches missed.">		if (null == fxLabel || !fxLabel.match (pqs.fxLabel())) return null;</span>
+
+<span class="nc" id="L1845">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+			org.drip.state.estimator.PredictorResponseWeightConstraint();
+
+<span class="nc" id="L1848">		if (</span>
+<span class="nc bnc" id="L1849" title="All 2 branches missed.">			!prwc.addPredictorResponseWeight (</span>
+				iEndDate,
+				1.
+			)
+		)
+<span class="nc" id="L1854">			return null;</span>
+
+<span class="nc" id="L1856">		if (</span>
+<span class="nc bnc" id="L1857" title="All 2 branches missed.">			!prwc.addDResponseWeightDManifestMeasure (</span>
+				&quot;Outright&quot;,
+				iEndDate,
+				1.
+			)
+		)
+<span class="nc" id="L1863">			return null;</span>
+
+<span class="nc" id="L1865">		return prwc;</span>
+	}
+
+	/**
+	 * Generate the Volatility Predictor/Response Constraint
+	 * 
+	 * @param iValueDate The Valuation Date
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * @param pqs Product Quote Set
+	 * 
+	 * @return The Volatility Predictor/Response Constraint
+	 */
+
+	public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
+		final int iValueDate,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.product.calib.ProductQuoteSet pqs)
+	{
+<span class="nc bnc" id="L1883" title="All 2 branches missed.">		if (null == pqs) return null;</span>
+
+<span class="nc" id="L1885">		int iEndDate = endDate();</span>
+
+<span class="nc bnc" id="L1887" title="All 2 branches missed.">		if (iValueDate &gt; iEndDate) return null;</span>
+
+<span class="nc" id="L1889">		org.drip.state.identifier.VolatilityLabel volLabel = pqs.volatilityLabel();</span>
+
+<span class="nc bnc" id="L1891" title="All 2 branches missed.">		if (null == volLabel) return null;</span>
+
+<span class="nc" id="L1893">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+
+<span class="nc bnc" id="L1895" title="All 2 branches missed.">		org.drip.state.identifier.ForwardLabel forwardLabel = floaterLabel instanceof</span>
+			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
+				null;
+
+<span class="nc bnc" id="L1899" title="All 4 branches missed.">		if (null == forwardLabel || !forwardLabel.match (volLabel.underlyingLatentState())) return null;</span>
+
+<span class="nc" id="L1901">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+			org.drip.state.estimator.PredictorResponseWeightConstraint();
+
+<span class="nc" id="L1904">		if (</span>
+<span class="nc bnc" id="L1905" title="All 2 branches missed.">			!prwc.addPredictorResponseWeight (</span>
+				iEndDate,
+				1.
+			)
+		)
+<span class="nc" id="L1910">			return null;</span>
+
+<span class="nc" id="L1912">		if (</span>
+<span class="nc bnc" id="L1913" title="All 2 branches missed.">			!prwc.addDResponseWeightDManifestMeasure (</span>
+				&quot;OptionPV&quot;,
+				iEndDate,
+				1.
+			)
+		)
+<span class="nc" id="L1919">			return null;</span>
+
+<span class="nc" id="L1921">		return prwc;</span>
+	}
+
+	/**
+	 * Retrieve the Period Calibration Quotes from the specified product quote set
+	 * 
+	 * @param pqs The Product Quote Set
+	 * @param csqc The Market Curve Surface/Quote Set
+	 * 
+	 * @return The Composed Period Quote Set
+	 */
+
+	public abstract org.drip.product.calib.CompositePeriodQuoteSet periodQuoteSet (
+		final org.drip.product.calib.ProductQuoteSet pqs,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc);
+
+	/**
+	 * Retrieve the Period Calibration Basis Quote from the specified product quote set
+	 * 
+	 * @param pqs The Product Quote Set
+	 * 
+	 * @return The Period Calibration Basis Quote
+	 */
+
+	public abstract double basisQuote (
+		final org.drip.product.calib.ProductQuoteSet pqs);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

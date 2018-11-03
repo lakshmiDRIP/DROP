@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrnsteinUhlenbeckPair.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.process</a> &gt; <span class="el_source">OrnsteinUhlenbeckPair.java</span></div><h1>OrnsteinUhlenbeckPair.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.process;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OrnsteinUhlenbeckPair guides the Random Variable Evolution according to 2D Ornstein-Uhlenbeck Mean
+ *  Reverting Process. The References are:
+ * 
+ * 	- Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
+ * 		https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf.
+ *
+ * 	- Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility, SIAM Journal of
+ * 		Financial Mathematics  3 (1) 163-181.
+ * 
+ * 	- Geman, H., D. B. Madan, and M. Yor (2001): Time Changes for Levy Processes, Mathematical Finance 11 (1)
+ * 		79-96.
+ * 
+ * 	- Jones, C. M., G. Kaul, and M. L. Lipson (1994): Transactions, Volume, and Volatility, Review of
+ * 		Financial Studies 7 (4) 631-651.
+ * 
+ * 	- Walia, N. (2006): Optimal Trading - Dynamic Stock Liquidation Strategies, Senior Thesis, Princeton
+ * 		University.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinUhlenbeck {
+<span class="nc" id="L74">	private double _dblCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck _deouDerived = null;</span>
+<span class="nc" id="L76">	private org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck _deouReference = null;</span>
+
+	/**
+	 * OrnsteinUhlenbeckPair Constructor
+	 * 
+	 * @param deouReference The Reference R^1 Ornstein-Uhlenbeck Evaluator
+	 * @param deouDerived The Derived R^1 Ornstein-Uhlenbeck Evaluator
+	 * @param dblCorrelation The Correlation between the Two Ornstein-Uhlenbeck Processes
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public OrnsteinUhlenbeckPair (
+		final org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck deouReference,
+		final org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck deouDerived,
+		final double dblCorrelation)
+		throws java.lang.Exception
+<span class="nc" id="L93">	{</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">		if (null == (_deouReference = deouReference) || null == (_deouDerived = deouDerived) ||</span>
+<span class="nc bnc" id="L95" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || _dblCorrelation &lt;</span>
+				-1. || _dblCorrelation &gt; 1.)
+<span class="nc" id="L97">			throw new java.lang.Exception (&quot;OrnsteinUhlenbeckPair Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L98">	}</span>
+
+	/**
+	 * Retrieve the Reference R^1 Ornstein-Uhlenbeck Evaluator
+	 * 
+	 * @return The Reference R^1 Ornstein-Uhlenbeck Evaluator
+	 */
+
+	public org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck reference()
+	{
+<span class="nc" id="L108">		return _deouReference;</span>
+	}
+
+	/**
+	 * Retrieve the Derived R^1 Ornstein-Uhlenbeck Evaluator
+	 * 
+	 * @return The Derived R^1 Ornstein-Uhlenbeck Evaluator
+	 */
+
+	public org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck derived()
+	{
+<span class="nc" id="L119">		return _deouDerived;</span>
+	}
+
+	/**
+	 * Retrieve the Correlation between the Ornstein-Uhlenbeck Processes
+	 * 
+	 * @return The Correlation between the Ornstein-Uhlenbeck Processes
+	 */
+
+	public double correlation()
+	{
+<span class="nc" id="L130">		return _dblCorrelation;</span>
+	}
+
+	/**
+	 * Generate the Adjacent JumpDiffusionEdge Increment Array from the specified Ornstein Uhlenbeck Random
+	 * 		Variate Pair
+	 * 
+	 * @param adblVariatePair The Pair of the Ornstein Uhlenbeck Random Variates
+	 * @param adblDiffusionPair The Pair of Diffusion Realizations
+	 * @param dblTimeIncrement The Time Increment Evolution Unit
+	 * 
+	 * @return The Adjacent JumpDiffusionEdge Increment Array
+	 */
+
+	public org.drip.measure.realization.JumpDiffusionEdge[] increment (
+		final double[] adblVariatePair,
+		final double[] adblDiffusionPair,
+		final double dblTimeIncrement)
+	{
+<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (null == adblVariatePair || 2 != adblVariatePair.length ||</span>
+<span class="nc bnc" id="L150" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariatePair) || null == adblDiffusionPair || 2 !=</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">				adblDiffusionPair.length || !org.drip.quant.common.NumberUtil.IsValid (adblDiffusionPair) ||</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement) || 0. &gt;= dblTimeIncrement)</span>
+<span class="nc" id="L153">			return null;</span>
+
+<span class="nc" id="L155">		double dblRelaxationTime0 = _deouReference.relaxationTime();</span>
+
+<span class="nc" id="L157">		double dblRelaxationTime1 = _deouDerived.relaxationTime();</span>
+
+		try {
+<span class="nc" id="L160">			return new org.drip.measure.realization.JumpDiffusionEdge[] {</span>
+<span class="nc" id="L161">				org.drip.measure.realization.JumpDiffusionEdge.Standard (</span>
+					adblVariatePair[0],
+					-1. * adblVariatePair[0] / dblRelaxationTime0 * dblTimeIncrement,
+<span class="nc" id="L164">					_deouReference.burstiness() * adblDiffusionPair[0] * java.lang.Math.sqrt (dblTimeIncrement / dblRelaxationTime0),</span>
+					null,
+					new org.drip.measure.realization.JumpDiffusionEdgeUnit (
+						dblTimeIncrement,
+						adblDiffusionPair[0],
+						0.
+					)
+				),
+<span class="nc" id="L172">				org.drip.measure.realization.JumpDiffusionEdge.Standard (</span>
+					adblVariatePair[1],
+					-1. * adblVariatePair[1] / dblRelaxationTime1 * dblTimeIncrement,
+<span class="nc" id="L175">					_deouDerived.burstiness() * adblDiffusionPair[1] * java.lang.Math.sqrt (dblTimeIncrement / dblRelaxationTime1),</span>
+					null,
+					new org.drip.measure.realization.JumpDiffusionEdgeUnit (
+						dblTimeIncrement,
+						adblDiffusionPair[1],
+						0.
+					)
+				)
+			};
+<span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L185">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L188">		return null;</span>
+	}
+
+	/**
+	 * Generate the Weiner Based JumpDiffusionEdge Increment Sequence from the Current Ornstein Uhlenbeck
+	 * 		Random Variate
+	 * 
+	 * @param adblVariatePair The Ornstein Uhlenbeck Random Variate Pair
+	 * @param dblTimeIncrement The Time Increment
+	 * 
+	 * @return The Weiner Based JumpDiffusionEdge Increment Sequence from the Current Ornstein Uhlenbeck
+	 * 		Random Variate
+	 */
+
+	public org.drip.measure.realization.JumpDiffusionEdge[] weinerIncrement (
+		final double[] adblVariatePair,
+		final double dblTimeIncrement)
+	{
+		try {
+<span class="nc" id="L207">			double dblFirstWeiner = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+
+<span class="nc" id="L209">			return increment (adblVariatePair, new double[] {dblFirstWeiner, dblFirstWeiner * _dblCorrelation</span>
+<span class="nc" id="L210">				+ org.drip.measure.gaussian.NormalQuadrature.Random() * java.lang.Math.sqrt (1. -</span>
+					_dblCorrelation * _dblCorrelation)}, dblTimeIncrement);
+<span class="nc" id="L212">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L213">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L216">		return null;</span>
+	}
+
+	@Override public double referenceRelaxationTime()
+	{
+<span class="nc" id="L221">		return _deouReference.relaxationTime();</span>
+	}
+
+	@Override public double referenceBurstiness()
+	{
+<span class="nc" id="L226">		return _deouReference.burstiness();</span>
+	}
+
+	@Override public double referenceMeanReversionLevel()
+	{
+<span class="nc" id="L231">		return _deouReference.meanReversionLevel();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

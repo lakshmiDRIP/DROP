@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InvocationRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.env</a> &gt; <span class="el_source">InvocationRecord.java</span></div><h1>InvocationRecord.java</h1><pre class="source lang-java linenums">
+package org.drip.service.env;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * InvocationRecord implements the Invocation Start/Finish Times of a given Invocation.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class InvocationRecord
+{
+<span class="fc" id="L58">	private long _lBeginNanos = -1L;</span>
+<span class="fc" id="L59">	private long _lSetupNanos = -1L;</span>
+<span class="fc" id="L60">	private long _lFinishNanos = -1L;</span>
+<span class="fc" id="L61">	private java.util.Date _dtBegin = null;</span>
+<span class="fc" id="L62">	private java.util.Date _dtSetup = null;</span>
+<span class="fc" id="L63">	private java.util.Date _dtFinish = null;</span>
+
+	/**
+	 * InvocationTimes Constructor
+	 */
+
+	public InvocationRecord()
+<span class="fc" id="L70">	{</span>
+<span class="fc" id="L71">		_dtBegin = new java.util.Date();</span>
+
+<span class="fc" id="L73">		_lBeginNanos = System.nanoTime();</span>
+<span class="fc" id="L74">	}</span>
+
+	/**
+	 * Record the Setup of the Invocation Record
+	 * 
+	 * @return TRUE - The Invocation Record Setup successfully recorded
+	 */
+
+	public boolean recordSetup()
+	{
+<span class="fc" id="L84">		_lSetupNanos = System.nanoTime();</span>
+
+<span class="fc" id="L86">		_dtSetup = new java.util.Date();</span>
+
+<span class="fc" id="L88">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Setup Time
+	 * 
+	 * @param bHMS Generate the Result in Hours-Minutes-Seconds Format
+	 * 
+	 * @return The Setup Time
+	 */
+
+	public java.lang.String setup (
+		final boolean bHMS)
+	{
+<span class="fc" id="L102">		long lElapsedNanos = _lSetupNanos - _lBeginNanos;</span>
+
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : &quot;&quot; + lElapsedNanos;</span>
+	}
+
+	/**
+	 * Record the Finish of the Invocation Record
+	 * 
+	 * @return TRUE - The Invocation Record Finish successfully recorded
+	 */
+
+	public boolean recordFinish()
+	{
+<span class="fc" id="L115">		_lFinishNanos = System.nanoTime();</span>
+
+<span class="fc" id="L117">		_dtFinish = new java.util.Date();</span>
+
+<span class="fc" id="L119">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Elapsed Time
+	 * 
+	 * @param bHMS Generate the Result in Hours-Minutes-Seconds Format
+	 * 
+	 * @return The Elapsed Time
+	 */
+
+	public java.lang.String elapsed (
+		final boolean bHMS)
+	{
+<span class="fc" id="L133">		long lElapsedNanos = _lFinishNanos - _lSetupNanos;</span>
+
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : &quot;&quot; + lElapsedNanos;</span>
+	}
+
+	/**
+	 * Retrieve the Begin Snapshot
+	 * 
+	 * @return The Begin Snapshot
+	 */
+
+	public java.util.Date startSnap()
+	{
+<span class="fc" id="L146">		return _dtBegin;</span>
+	}
+
+	/**
+	 * Retrieve the Setup Snapshot
+	 * 
+	 * @return The Setup Snapshot
+	 */
+
+	public java.util.Date setupSnap()
+	{
+<span class="fc" id="L157">		return _dtSetup;</span>
+	}
+
+	/**
+	 * Retrieve the Finish Snapshot
+	 * 
+	 * @return The Finish Snapshot
+	 */
+
+	public java.util.Date finishSnap()
+	{
+<span class="fc" id="L168">		return _dtFinish;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

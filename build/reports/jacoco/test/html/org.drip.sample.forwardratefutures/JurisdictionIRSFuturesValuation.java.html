@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JurisdictionIRSFuturesValuation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.forwardratefutures</a> &gt; <span class="el_source">JurisdictionIRSFuturesValuation.java</span></div><h1>JurisdictionIRSFuturesValuation.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.forwardratefutures;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.CompositePeriodBuilder;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.market.exchange.*;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.period.*;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.SingleStreamComponentBuilder;
+import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.estimator.LatentStateStretchBuilder;
+import org.drip.state.identifier.*;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * JurisdictionIRSFuturesValuation contains the demonstration of the construction and the Valuation of the
+ *  Exchange-Traded IRS Futures Contract.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L81">public class JurisdictionIRSFuturesValuation {</span>
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="fc" id="L89">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="fc" id="L96">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final int[] aiDay)
+		throws Exception
+	{
+<span class="fc" id="L117">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+
+<span class="fc" id="L119">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
+			&quot;3M&quot;,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
+			null,
+<span class="fc" id="L123">			ForwardLabel.Create (</span>
+				strCurrency,
+				&quot;3M&quot;
+			),
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+<span class="fc" id="L131">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
+			4,
+			&quot;3M&quot;,
+			strCurrency,
+			null,
+			1.,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="fc" id="L143">		CashSettleParams csp = new CashSettleParams (</span>
+			0,
+			strCurrency,
+			0
+		);
+
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
+<span class="fc" id="L150">			aDeposit[i] = new SingleStreamComponent (</span>
+				&quot;DEPOSIT_&quot; + aiDay[i],
+				new Stream (
+<span class="fc" id="L153">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L154">						CompositePeriodBuilder.EdgePair (</span>
+							dtEffective,
+<span class="fc" id="L156">							dtEffective.addBusDays (</span>
+								aiDay[i],
+								strCurrency
+							)
+						),
+						cps,
+						cfus
+					)
+				),
+				csp
+			);
+
+<span class="fc" id="L168">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
+		}
+
+<span class="fc" id="L171">		return aDeposit;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor)
+		throws Exception
+	{
+<span class="fc" id="L186">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L189">			aIRS[i] = OTCIRS (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				0.
+			);
+
+<span class="fc" id="L196">		return aIRS;</span>
+	}
+
+	/*
+	 * This sample demonstrates discount curve calibration and input instrument calibration quote recovery.
+	 * 	It shows the following:
+	 * 	- Construct the Array of Cash/Swap Instruments and their Quotes from the given set of parameters.
+	 * 	- Construct the Cash/Swap Instrument Set Stretch Builder.
+	 * 	- Set up the Linear Curve Calibrator using the following parameters:
+	 * 		- Cubic Exponential Mixture Basis Spline Set
+	 * 		- Ck = 2, Segment Curvature Penalty = 2
+	 * 		- Quadratic Rational Shape Controller
+	 * 		- Natural Boundary Setting
+	 * 	- Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+	 * 		of Cash and Swap Stretches.
+	 * 	- Cross-Comparison of the Cash/Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+	 * 		construction methodologies.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void OTCInstrumentCurve (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L226">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			strCurrency,
+			new int[] {
+				1, 2, 7, 14, 30, 60
+			}
+		);
+
+<span class="fc" id="L234">		double[] adblDepositQuote = new double[] {</span>
+			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
+		};
+
+		/*
+		 * Construct the Deposit Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L242">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;DEPOSIT&quot;,
+			aDepositComp,
+			&quot;ForwardRate&quot;,
+			adblDepositQuote
+		);
+
+		/*
+		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L253">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtSpot,
+			8,
+			strCurrency
+		);
+
+<span class="fc" id="L259">		double[] adblEDFQuote = new double[] {</span>
+			0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
+		};
+
+		/*
+		 * Construct the EDF Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L267">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;EDF&quot;,
+			aEDFComp,
+			&quot;ForwardRate&quot;,
+			adblEDFQuote
+		);
+
+		/*
+		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L278">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;
+			}
+		);
+
+<span class="fc" id="L286">		double[] adblSwapQuote = new double[] {</span>
+			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
+		};
+
+		/*
+		 * Construct the Swap Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L294">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;SWAP&quot;,
+			aSwapComp,
+			&quot;SwapRate&quot;,
+			adblSwapQuote
+		);
+
+<span class="fc" id="L301">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {depositStretch, edfStretch, swapStretch};</span>
+
+		/*
+		 * Set up the Linear Curve Calibrator using the following parameters:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L311">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="fc" id="L315">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+<span class="fc" id="L325">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+<span class="fc" id="L331">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+		/*
+		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+		 *  of Deposit, Futures, and Swap Stretches.
+		 */
+
+<span class="fc" id="L342">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+			strCurrency,
+			lcc,
+			aStretchSpec,
+			valParams,
+			null,
+			null,
+			null,
+			1.
+		);
+
+<span class="fc" id="L353">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Cross-Comparison of the Deposit Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L368">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L370">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L372">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L374" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L375">			System.out.println (&quot;\t[&quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L376">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null, csqs,</span>
+<span class="fc" id="L377">					null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Cross-Comparison of the EDF Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L384">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L386">		System.out.println (&quot;\t     EDF INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L388">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		for (int i = 0; i &lt; aEDFComp.length; ++i)</span>
+<span class="fc" id="L391">			System.out.println (&quot;\t[&quot; + aEDFComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L392">				FormatUtil.FormatDouble (aEDFComp[i].measureValue (valParams, null, csqs, null, &quot;Rate&quot;), 1, 6, 1.)</span>
+<span class="fc" id="L393">					+ &quot; | &quot; + FormatUtil.FormatDouble (adblEDFQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Cross-Comparison of the Swap Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L400">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L402">		System.out.println (&quot;\t     SWAP INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L404">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L406" title="All 2 branches covered.">		for (int i = 0; i &lt; aSwapComp.length; ++i)</span>
+<span class="fc" id="L407">			System.out.println (&quot;\t[&quot; + aSwapComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L408">				FormatUtil.FormatDouble (aSwapComp[i].measureValue (valParams, null, csqs, null, &quot;CalibSwapRate&quot;), 1, 6, 1.)</span>
+<span class="fc" id="L409">					+ &quot; | &quot; + FormatUtil.FormatDouble (adblSwapQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L410">						FormatUtil.FormatDouble (aSwapComp[i].measureValue (valParams, null, csqs, null, &quot;FairPremium&quot;), 1, 6, 1.));</span>
+
+<span class="fc" id="L412">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L414">		System.out.println (&quot;\t     EXCHANGE-TRADED SWAP INSTRUMENTS VALUATION&quot;);</span>
+
+<span class="fc" id="L416">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L418">		String[] astrExchangeTenor = new String[] {&quot;2Y&quot;, &quot;5Y&quot;, &quot;10Y&quot;, &quot;30Y&quot;};</span>
+
+<span class="fc" id="L420">		double[] adblCoupon = new double[] {0.0075, 0.0200, 0.0325, 0.0400};</span>
+
+<span class="fc bfc" id="L422" title="All 2 branches covered.">		for (int i = 0; i &lt; astrExchangeTenor.length; ++i) {</span>
+<span class="fc" id="L423">			DeliverableSwapFutures dsf = DeliverableSwapFuturesContainer.ProductInfo (</span>
+				strCurrency,
+				astrExchangeTenor[i]
+			);
+
+<span class="fc" id="L428">			FixFloatComponent swapExchange = dsf.Create (</span>
+				dtSpot,
+				adblCoupon[i]
+			);
+
+<span class="fc" id="L433">			System.out.println (&quot;\t[&quot; + swapExchange.maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L434">				FormatUtil.FormatDouble (swapExchange.measureValue (valParams, null, csqs, null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L435">				FormatUtil.FormatDouble (swapExchange.measureValue (valParams, null, csqs, null, &quot;FairPremium&quot;), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L436">				FormatUtil.FormatDouble (swapExchange.measureValue (valParams, null, csqs, null, &quot;PV&quot;), 4, 0, 1.) + &quot; | &quot; +</span>
+				astrExchangeTenor[i]
+			);
+		}
+<span class="fc" id="L440">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L450">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L452">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+
+<span class="fc" id="L454">		String strCurrency = &quot;USD&quot;;</span>
+
+<span class="fc" id="L456">		OTCInstrumentCurve (</span>
+			dtToday,
+			strCurrency
+		);
+<span class="fc" id="L460">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FRAStandardPeriods.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.cashflow</a> &gt; <span class="el_source">FRAStandardPeriods.java</span></div><h1>FRAStandardPeriods.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.cashflow;
+
+import org.drip.analytics.cashflow.*;
+import org.drip.analytics.date.*;
+import org.drip.analytics.output.ConvexityAdjustment;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.fra.FRAStandardComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.*;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FRAStandardPeriods demonstrates the Cash Flow Period Details for a Standard FRA.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L69">public class FRAStandardPeriods {</span>
+
+	private static final MergedDiscountForwardCurve FundingCurve (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final double dblBump)
+		throws Exception
+	{
+<span class="fc" id="L77">		String[] astrDepositMaturityTenor = new String[] {</span>
+			&quot;2D&quot;
+		};
+
+<span class="fc" id="L81">		double[] adblDepositQuote = new double[] {</span>
+			0.0111956 + dblBump // 2D
+		};
+
+<span class="fc" id="L85">		double[] adblFuturesQuote = new double[] {</span>
+			0.011375 + dblBump,	// 98.8625
+			0.013350 + dblBump,	// 98.6650
+			0.014800 + dblBump,	// 98.5200
+			0.016450 + dblBump,	// 98.3550
+			0.017850 + dblBump,	// 98.2150
+			0.019300 + dblBump	// 98.0700
+		};
+
+<span class="fc" id="L94">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;06Y&quot;,
+			&quot;07Y&quot;,
+			&quot;08Y&quot;,
+			&quot;09Y&quot;,
+			&quot;10Y&quot;,
+			&quot;11Y&quot;,
+			&quot;12Y&quot;,
+			&quot;15Y&quot;,
+			&quot;20Y&quot;,
+			&quot;25Y&quot;,
+			&quot;30Y&quot;,
+			&quot;40Y&quot;,
+			&quot;50Y&quot;
+		};
+
+<span class="fc" id="L114">		double[] adblFixFloatQuote = new double[] {</span>
+			0.017029 + dblBump, //  2Y
+			0.019354 + dblBump, //  3Y
+			0.021044 + dblBump, //  4Y
+			0.022291 + dblBump, //  5Y
+			0.023240 + dblBump, //  6Y
+			0.024025 + dblBump, //  7Y
+			0.024683 + dblBump, //  8Y
+			0.025243 + dblBump, //  9Y
+			0.025720 + dblBump, // 10Y
+			0.026130 + dblBump, // 11Y
+			0.026495 + dblBump, // 12Y
+			0.027230 + dblBump, // 15Y
+			0.027855 + dblBump, // 20Y
+			0.028025 + dblBump, // 25Y
+			0.028028 + dblBump, // 30Y
+			0.027902 + dblBump, // 40Y
+			0.027655 + dblBump  // 50Y
+		};
+
+<span class="fc" id="L134">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			astrDepositMaturityTenor,
+			adblDepositQuote,
+			&quot;ForwardRate&quot;,
+			adblFuturesQuote,
+			&quot;ForwardRate&quot;,
+			astrFixFloatMaturityTenor,
+			adblFixFloatQuote,
+			&quot;SwapRate&quot;
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L152">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L154">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.MARCH,
+			10
+		);
+
+<span class="fc" id="L160">		String strCurrency = &quot;USD&quot;;</span>
+
+<span class="fc" id="L162">		FRAStandardComponent fraStandard = OTCInstrumentBuilder.FRAStandard (</span>
+			dtSpot,
+<span class="fc" id="L164">			ForwardLabel.Create (</span>
+				strCurrency,
+				&quot;3M&quot;
+			),
+			&quot;2Y&quot;,
+			0.01
+		);
+
+<span class="fc" id="L172">		System.out.println();</span>
+
+<span class="fc" id="L174">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			0.
+		); 
+
+<span class="fc" id="L180">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
+			mdfc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="fc" id="L190">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+
+<span class="fc" id="L192">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L194">		System.out.println (&quot;\t||                                                            CASH FLOW PERIOD DATES AND FACTORS                                                            ||&quot;);</span>
+
+<span class="fc" id="L196">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L198">		System.out.println (&quot;\t||   L -&gt; R:                                                                                                                                                ||&quot;);</span>
+
+<span class="fc" id="L200">		System.out.println (&quot;\t||           - Period Start Date                                                                                                                            ||&quot;);</span>
+
+<span class="fc" id="L202">		System.out.println (&quot;\t||           - Period End Date                                                                                                                              ||&quot;);</span>
+
+<span class="fc" id="L204">		System.out.println (&quot;\t||           - Period Index Reference Start Date                                                                                                            ||&quot;);</span>
+
+<span class="fc" id="L206">		System.out.println (&quot;\t||           - Period Index Reference End Date                                                                                                              ||&quot;);</span>
+
+<span class="fc" id="L208">		System.out.println (&quot;\t||           - Period Reset Date                                                                                                                            ||&quot;);</span>
+
+<span class="fc" id="L210">		System.out.println (&quot;\t||           - Period Pay Date                                                                                                                              ||&quot;);</span>
+
+<span class="fc" id="L212">		System.out.println (&quot;\t||           - Period FX Fixing Date                                                                                                                        ||&quot;);</span>
+
+<span class="fc" id="L214">		System.out.println (&quot;\t||           - Period Is FX MTM?                                                                                                                            ||&quot;);</span>
+
+<span class="fc" id="L216">		System.out.println (&quot;\t||           - Period Tenor                                                                                                                                 ||&quot;);</span>
+
+<span class="fc" id="L218">		System.out.println (&quot;\t||           - Period Coupon Frequency                                                                                                                      ||&quot;);</span>
+
+<span class="fc" id="L220">		System.out.println (&quot;\t||           - Period Pay Currency                                                                                                                          ||&quot;);</span>
+
+<span class="fc" id="L222">		System.out.println (&quot;\t||           - Period Coupon Currency                                                                                                                       ||&quot;);</span>
+
+<span class="fc" id="L224">		System.out.println (&quot;\t||           - Period Basis                                                                                                                                 ||&quot;);</span>
+
+<span class="fc" id="L226">		System.out.println (&quot;\t||           - Period Base Notional                                                                                                                         ||&quot;);</span>
+
+<span class="fc" id="L228">		System.out.println (&quot;\t||           - Period Notional                                                                                                                              ||&quot;);</span>
+
+<span class="fc" id="L230">		System.out.println (&quot;\t||           - Period Coupon Factor                                                                                                                         ||&quot;);</span>
+
+<span class="fc" id="L232">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L234" title="All 2 branches covered.">		for (CompositePeriod p : fraStandard.couponPeriods()) {</span>
+<span class="fc" id="L235">			int iEndDate = p.endDate();</span>
+
+<span class="fc" id="L237">			CompositeFloatingPeriod cfp = (CompositeFloatingPeriod) p;</span>
+
+<span class="fc" id="L239">			ComposableUnitFloatingPeriod cufp = (ComposableUnitFloatingPeriod) cfp.periods().get(0);</span>
+
+<span class="fc" id="L241">			ReferenceIndexPeriod rip = cufp.referenceIndexPeriod();</span>
+
+<span class="fc" id="L243">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L244">				DateUtil.YYYYMMDD (p.startDate()) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L245">				DateUtil.YYYYMMDD (iEndDate) + &quot; | &quot; +</span>
+<span class="fc" id="L246">				DateUtil.YYYYMMDD (rip.startDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L247">				DateUtil.YYYYMMDD (rip.endDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L248">				DateUtil.YYYYMMDD (rip.fixingDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L249">				DateUtil.YYYYMMDD (p.payDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L250">				DateUtil.YYYYMMDD (p.fxFixingDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L251">				p.isFXMTM() + &quot; | &quot; +</span>
+<span class="fc" id="L252">				p.tenor() + &quot; | &quot; +</span>
+<span class="fc" id="L253">				p.freq() + &quot; | &quot; +</span>
+<span class="fc" id="L254">				p.payCurrency() + &quot; | &quot; +</span>
+<span class="fc" id="L255">				p.couponCurrency() + &quot; | &quot; +</span>
+<span class="fc" id="L256">				FormatUtil.FormatDouble (p.basis(), 1, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L257">				FormatUtil.FormatDouble (p.baseNotional(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L258">				FormatUtil.FormatDouble (p.notional (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L259">				FormatUtil.FormatDouble (p.couponFactor (iEndDate), 1, 4, 1.) + &quot; ||&quot;</span>
+			);
+<span class="fc" id="L261">		}</span>
+
+<span class="fc" id="L263">		System.out.println (&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L265">		System.out.println();</span>
+
+<span class="fc" id="L267">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L269">		System.out.println (&quot;\t||                                 PERIOD LABELS AND CURVE FACTORS                                ||&quot;);</span>
+
+<span class="fc" id="L271">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L273">		System.out.println (&quot;\t||   L -&gt; R:                                                                                      ||&quot;);</span>
+
+<span class="fc" id="L275">		System.out.println (&quot;\t||           - Period Start Date                                                                  ||&quot;);</span>
+
+<span class="fc" id="L277">		System.out.println (&quot;\t||           - Period End Date                                                                    ||&quot;);</span>
+
+<span class="fc" id="L279">		System.out.println (&quot;\t||           - Period Funding Label                                                               ||&quot;);</span>
+
+<span class="fc" id="L281">		System.out.println (&quot;\t||           - Period Coupon Rate (%)                                                             ||&quot;);</span>
+
+<span class="fc" id="L283">		System.out.println (&quot;\t||           - Period Coupon Year Fraction                                                        ||&quot;);</span>
+
+<span class="fc" id="L285">		System.out.println (&quot;\t||           - Period Coupon Amount                                                               ||&quot;);</span>
+
+<span class="fc" id="L287">		System.out.println (&quot;\t||           - Period Principal Amount                                                            ||&quot;);</span>
+
+<span class="fc" id="L289">		System.out.println (&quot;\t||           - Period Discount Factor                                                             ||&quot;);</span>
+
+<span class="fc" id="L291">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L293" title="All 2 branches covered.">		for (CompositePeriod p : fraStandard.couponPeriods()) {</span>
+<span class="fc" id="L294">			int iEndDate = p.endDate();</span>
+
+<span class="fc" id="L296">			int iPayDate = p.payDate();</span>
+
+<span class="fc" id="L298">			int iStartDate = p.startDate();</span>
+
+<span class="fc" id="L300">			double dblCouponRate = fraStandard.couponMetrics (</span>
+				iPayDate,
+				valParams,
+				csqc
+<span class="fc" id="L304">			).rate();</span>
+
+<span class="fc" id="L306">			double dblCouponDCF = p.couponDCF();</span>
+
+<span class="fc" id="L308">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L309">				DateUtil.YYYYMMDD (iStartDate) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L310">				DateUtil.YYYYMMDD (iEndDate) + &quot; | &quot; +</span>
+<span class="fc" id="L311">				p.fundingLabel().fullyQualifiedName() + &quot; | &quot; +</span>
+<span class="fc" id="L312">				p.floaterLabel().fullyQualifiedName() + &quot; | &quot; +</span>
+<span class="fc" id="L313">				FormatUtil.FormatDouble (dblCouponRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L314">				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L315">				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L316">				FormatUtil.FormatDouble (p.notional (iStartDate) - p.notional (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L317">				FormatUtil.FormatDouble (p.df (csqc), 1, 4, 1.) + &quot; ||&quot;</span>
+			);
+<span class="fc" id="L319">		}</span>
+
+<span class="fc" id="L321">		System.out.println (&quot;\t||------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L323">		System.out.println();</span>
+
+<span class="fc" id="L325">		System.out.println();</span>
+
+<span class="fc" id="L327">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L329">		System.out.println (&quot;\t||                                       CASH FLOW PERIODS CONVEXITY CORRECTION                                       ||&quot;);</span>
+
+<span class="fc" id="L331">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L333">		System.out.println (&quot;\t||    L -&gt; R:                                                                                                         ||&quot;);</span>
+
+<span class="fc" id="L335">		System.out.println (&quot;\t||            - Collateral Credit Adjustment                                                                          ||&quot;);</span>
+
+<span class="fc" id="L337">		System.out.println (&quot;\t||            - Collateral Forward Adjustment                                                                         ||&quot;);</span>
+
+<span class="fc" id="L339">		System.out.println (&quot;\t||            - Collateral Funding Adjustment                                                                         ||&quot;);</span>
+
+<span class="fc" id="L341">		System.out.println (&quot;\t||            - Collateral FX Adjustment                                                                              ||&quot;);</span>
+
+<span class="fc" id="L343">		System.out.println (&quot;\t||            - Credit Forward Adjustment                                                                             ||&quot;);</span>
+
+<span class="fc" id="L345">		System.out.println (&quot;\t||            - Credit Funding Adjustment                                                                             ||&quot;);</span>
+
+<span class="fc" id="L347">		System.out.println (&quot;\t||            - Credit FX Adjustment                                                                                  ||&quot;);</span>
+
+<span class="fc" id="L349">		System.out.println (&quot;\t||            - Forward Funding Adjustment                                                                            ||&quot;);</span>
+
+<span class="fc" id="L351">		System.out.println (&quot;\t||            - Forward FX Adjustment                                                                                 ||&quot;);</span>
+
+<span class="fc" id="L353">		System.out.println (&quot;\t||            - Funding FX Adjustment                                                                                 ||&quot;);</span>
+
+<span class="fc" id="L355">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L357" title="All 2 branches covered.">		for (CompositePeriod p : fraStandard.couponPeriods()) {</span>
+<span class="fc" id="L358">			ConvexityAdjustment ca = p.terminalConvexityAdjustment (</span>
+<span class="fc" id="L359">				dtSpot.julian(),</span>
+				csqc
+			);
+
+<span class="fc" id="L363">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L364">				DateUtil.YYYYMMDD (p.startDate()) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L365">				DateUtil.YYYYMMDD (p.endDate()) + &quot; | &quot; +</span>
+<span class="fc" id="L366">				FormatUtil.FormatDouble (ca.collateralCredit(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L367">				FormatUtil.FormatDouble (ca.collateralForward(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L368">				FormatUtil.FormatDouble (ca.collateralFunding(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L369">				FormatUtil.FormatDouble (ca.collateralFX(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L370">				FormatUtil.FormatDouble (ca.creditForward(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L371">				FormatUtil.FormatDouble (ca.creditFunding(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L372">				FormatUtil.FormatDouble (ca.creditFX(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L373">				FormatUtil.FormatDouble (ca.forwardFunding(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L374">				FormatUtil.FormatDouble (ca.forwardFX(), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L375">				FormatUtil.FormatDouble (ca.fundingFX(), 1, 3, 1.) + &quot; ||&quot;</span>
+			);
+<span class="fc" id="L377">		}</span>
+
+<span class="fc" id="L379">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L381">		System.out.println();</span>
+<span class="fc" id="L382">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

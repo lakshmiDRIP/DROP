@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RiskGroupPrincipalCovariance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm.foundation</a> &gt; <span class="el_source">RiskGroupPrincipalCovariance.java</span></div><h1>RiskGroupPrincipalCovariance.java</h1><pre class="source lang-java linenums">
+package org.drip.simm.foundation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RiskGroupPrincipalCovariance contains the Cross Risk-Group Principal Component Based Co-variance. The
+ *  References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class RiskGroupPrincipalCovariance
+{
+<span class="nc" id="L74">	private double _extraGroupCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;</span>
+
+	/**
+	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
+	 *  the Cross Correlation Entry
+	 * 
+	 * @param intraGroupCorrelationMatrix The Intra-Group Correlation Matrix
+	 * @param extraGroupCorrelation Cross Group Correlation
+	 * 
+	 * @return The Standard RiskGroupPrincipalCovariance Instance
+	 */
+
+	public static final RiskGroupPrincipalCovariance Standard (
+		final double[][] intraGroupCorrelationMatrix,
+		final double extraGroupCorrelation)
+	{
+		try
+		{
+<span class="nc" id="L93">			return new RiskGroupPrincipalCovariance (</span>
+				new org.drip.quant.eigen.PowerIterationComponentExtractor (
+					30,
+					0.000001,
+					false
+<span class="nc" id="L98">				).principalComponent (intraGroupCorrelationMatrix),</span>
+				extraGroupCorrelation
+			);
+		}
+<span class="nc" id="L102">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L104">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L107">		return null;</span>
+	}
+
+	/**
+	 * RiskGroupPrincipalCovariance Constructor
+	 * 
+	 * @param principalEigenComponent Intra-Group Principal Eigen-Component
+	 * @param extraGroupCorrelation Cross Group Correlation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RiskGroupPrincipalCovariance (
+		final org.drip.quant.eigen.EigenComponent principalEigenComponent,
+		final double extraGroupCorrelation)
+		throws java.lang.Exception
+<span class="nc" id="L123">	{</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == (_principalEigenComponent = principalEigenComponent) ||</span>
+<span class="nc bnc" id="L125" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||</span>
+				-1. &gt; _extraGroupCorrelation || 1. &lt; _extraGroupCorrelation)
+		{
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;RiskGroupPrincipalCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L130">	}</span>
+
+	/**
+	 * Retrieve the Intra-Group Principal Eigen-Component
+	 * 
+	 * @return The Intra-Group Principal Eigen-Component
+	 */
+
+	public org.drip.quant.eigen.EigenComponent principalEigenComponent()
+	{
+<span class="nc" id="L140">		return _principalEigenComponent;</span>
+	}
+
+	/**
+	 * Retrieve the Cross Group Correlation
+	 * 
+	 * @return The Cross Group Correlation
+	 */
+
+	public double extraGroupCorrelation()
+	{
+<span class="nc" id="L151">		return _extraGroupCorrelation;</span>
+	}
+
+	/**
+	 * Retrieve the Scaled Principal Eigen-vector
+	 * 
+	 * @return The Scaled Principal Eigen-vector
+	 */
+
+	public double[] scaledPrincipalEigenvector()
+	{
+<span class="nc" id="L162">		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());</span>
+
+<span class="nc" id="L164">		double[] principalEigenvector = _principalEigenComponent.eigenvector();</span>
+
+<span class="nc" id="L166">		int componentCount = principalEigenvector.length;</span>
+<span class="nc" id="L167">		double[] scaledPrincipalEigenvector = new double[componentCount];</span>
+
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int componentIndex = 0; componentIndex &lt; componentCount; ++componentIndex)</span>
+		{
+<span class="nc" id="L171">			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;</span>
+		}
+
+<span class="nc" id="L174">		return scaledPrincipalEigenvector;</span>
+	}
+
+	/**
+	 * Retrieve the Unadjusted Cross-Group Co-variance
+	 * 
+	 * @return The Unadjusted Cross-Group Co-variance
+	 */
+
+	public double[][] unadjustedCovariance()
+	{
+<span class="nc" id="L185">		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();</span>
+
+<span class="nc" id="L187">		return org.drip.quant.linearalgebra.Matrix.CrossProduct (</span>
+			scaledPrincipalEigenvector,
+			scaledPrincipalEigenvector
+		);
+	}
+
+	/**
+	 * Retrieve the Adjusted Cross-Group Co-variance
+	 * 
+	 * @return The Adjusted Cross-Group Co-variance
+	 */
+
+	public double[][] adjustedCovariance()
+	{
+<span class="nc" id="L201">		return org.drip.quant.linearalgebra.Matrix.Scale2D (</span>
+<span class="nc" id="L202">			unadjustedCovariance(),</span>
+			_extraGroupCorrelation
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

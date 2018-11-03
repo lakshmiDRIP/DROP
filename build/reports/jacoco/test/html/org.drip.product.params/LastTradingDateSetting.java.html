@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LastTradingDateSetting.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.product.params</a> &gt; <span class="el_source">LastTradingDateSetting.java</span></div><h1>LastTradingDateSetting.java</h1><pre class="source lang-java linenums">
+package org.drip.product.params;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LastTradingDateSeting contains the Last Trading Date Generation Scheme for the given Option.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LastTradingDateSetting {
+
+	/**
+	 * Quarterly Mid-Curve Option
+	 */
+
+	public static final int MID_CURVE_OPTION_QUARTERLY = 0;
+
+	/**
+	 * Serial Mid-Curve Option
+	 */
+
+	public static final int MID_CURVE_OPTION_SERIAL = 1;
+
+	/**
+	 * Generic Mid-Curve Option
+	 */
+
+	public static final int MID_CURVE_OPTION = 2;
+
+<span class="fc" id="L79">	private int _iMidCurveOptionType = -1;</span>
+<span class="fc" id="L80">	private java.lang.String _strLastTradeExerciseLag = &quot;&quot;;</span>
+<span class="fc" id="L81">	private int _iLastTradingDate = java.lang.Integer.MIN_VALUE;</span>
+
+	/**
+	 * Retrieve the String Version of the Mid Curve Option Setting
+	 * 
+	 * @param iMidCurveOptionType The Mid Curve Option Type
+	 * 
+	 * @return String Version of the Mid Curve Option Setting
+	 */
+
+	public static final java.lang.String MidCurveOptionString (
+		final int iMidCurveOptionType)
+	{
+<span class="fc bfc" id="L94" title="All 2 branches covered.">		if (MID_CURVE_OPTION_QUARTERLY == iMidCurveOptionType) return &quot;QUARTERLY&quot;;</span>
+
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (MID_CURVE_OPTION_SERIAL == iMidCurveOptionType) return &quot;SERIAL&quot;;</span>
+
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		if (MID_CURVE_OPTION == iMidCurveOptionType) return &quot;REGULAR&quot;;</span>
+
+<span class="nc" id="L100">		return null;</span>
+	}
+
+	/**
+	 * LastTradingDateSetting Constructor
+	 * 
+	 * @param iMidCurveOptionType Mid Curve Option Type
+	 * @param strLastTradeExerciseLag Lag between the Exercise Date and the Last Option Trading Date
+	 * @param iLastTradingDate The Last Trading Date
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public LastTradingDateSetting (
+		final int iMidCurveOptionType,
+		final java.lang.String strLastTradeExerciseLag,
+		final int iLastTradingDate)
+		throws java.lang.Exception
+<span class="fc" id="L118">	{</span>
+<span class="pc bpc" id="L119" title="2 of 6 branches missed.">		if (MID_CURVE_OPTION_QUARTERLY != (_iMidCurveOptionType = iMidCurveOptionType) &amp;&amp;</span>
+			MID_CURVE_OPTION_SERIAL != _iMidCurveOptionType &amp;&amp; MID_CURVE_OPTION != _iMidCurveOptionType)
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;LastTradingDateSetting ctr =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L123">		_iLastTradingDate = iLastTradingDate;</span>
+<span class="fc" id="L124">		_strLastTradeExerciseLag = strLastTradeExerciseLag;</span>
+
+<span class="pc bpc" id="L126" title="1 of 4 branches missed.">		if ((MID_CURVE_OPTION == _iMidCurveOptionType &amp;&amp; (null == _strLastTradeExerciseLag ||</span>
+<span class="pc bpc" id="L127" title="2 of 4 branches missed.">			_strLastTradeExerciseLag.isEmpty())) || (MID_CURVE_OPTION_SERIAL == _iMidCurveOptionType &amp;&amp;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_iLastTradingDate)))</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;LastTradingDateSetting ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L130">	}</span>
+
+	/**
+	 * Retrieve the Mid-Curve Option Type
+	 * 
+	 * @return The Mid-Curve Option Type
+	 */
+
+	public int midCurveOptionType()
+	{
+<span class="nc" id="L140">		return _iMidCurveOptionType;</span>
+	}
+
+	/**
+	 * Retrieve the Lag between the Last Trading and Exercise Date
+	 * 
+	 * @return The Lag between the Last Trading and Exercise Date
+	 */
+
+	public java.lang.String lastTradeExerciseLag()
+	{
+<span class="nc" id="L151">		return _strLastTradeExerciseLag;</span>
+	}
+
+	/**
+	 * Retrieve the Last Trading Date
+	 * 
+	 * @return The Last Trading Date
+	 */
+
+	public double lastTradingDate()
+	{
+<span class="nc" id="L162">		return _iLastTradingDate;</span>
+	}
+
+	/**
+	 * Compute the Last Trading Date
+	 * 
+	 * @param iUnderlyingLastTradingDate The Last Trading Date for the Underlying
+	 * @param strCalendar The Calendar
+	 * 
+	 * @return The Last Trading Date
+	 */
+
+	public int lastTradingDate (
+		final int iUnderlyingLastTradingDate,
+		final java.lang.String strCalendar)
+	{
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (MID_CURVE_OPTION_SERIAL == _iMidCurveOptionType) return _iLastTradingDate;</span>
+
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (MID_CURVE_OPTION_QUARTERLY == _iMidCurveOptionType) return iUnderlyingLastTradingDate;</span>
+
+<span class="nc" id="L182">		return new org.drip.analytics.date.JulianDate (iUnderlyingLastTradingDate).subtractTenorAndAdjust</span>
+<span class="nc" id="L183">			(_strLastTradeExerciseLag, strCalendar).julian();</span>
+	}
+
+	@Override public java.lang.String toString()
+	{
+<span class="fc" id="L188">		java.lang.String str = &quot;MID CURVE OPTION::&quot; + MidCurveOptionString (_iMidCurveOptionType);</span>
+
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		if (MID_CURVE_OPTION_QUARTERLY == _iMidCurveOptionType) return str;</span>
+
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if (MID_CURVE_OPTION == _iMidCurveOptionType) return str + &quot;@&quot; + _strLastTradeExerciseLag;</span>
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (MID_CURVE_OPTION_SERIAL == _iMidCurveOptionType) return str + &quot;@&quot; + _iLastTradingDate;</span>
+
+<span class="nc" id="L196">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

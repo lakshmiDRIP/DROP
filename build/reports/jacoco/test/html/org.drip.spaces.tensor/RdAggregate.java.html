@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RdAggregate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.tensor</a> &gt; <span class="el_source">RdAggregate.java</span></div><h1>RdAggregate.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.tensor;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RdAggregate exposes the basic Properties of the R^d as a Sectional Super-position of R^1 Vector Spaces.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class RdAggregate implements org.drip.spaces.tensor.RdGeneralizedVector {
+<span class="nc" id="L59">	private org.drip.spaces.tensor.R1GeneralizedVector[] _aR1GV = null;</span>
+
+	protected RdAggregate (
+		final org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV)
+		throws java.lang.Exception
+<span class="nc" id="L64">	{</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">		if (null == (_aR1GV = aR1GV)) throw new java.lang.Exception (&quot;RdAggregate ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L67">		int iDimension = _aR1GV.length;</span>
+
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		if (0 == iDimension) throw new java.lang.Exception (&quot;RdAggregate ctr: Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">			if (null == _aR1GV[i]) throw new java.lang.Exception (&quot;RdAggregate ctr: Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L74">	}</span>
+
+	@Override public int dimension()
+	{
+<span class="nc" id="L78">		return _aR1GV.length;</span>
+	}
+
+	@Override public org.drip.spaces.tensor.R1GeneralizedVector[] vectorSpaces()
+	{
+<span class="nc" id="L83">		return _aR1GV;</span>
+	}
+
+	@Override public boolean validateInstance (
+		final double[] adblInstance)
+	{
+<span class="nc bnc" id="L89" title="All 2 branches missed.">		if (null == adblInstance) return false;</span>
+
+<span class="nc" id="L91">		int iDimension = _aR1GV.length;</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (adblInstance.length != iDimension) return false;</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (!_aR1GV[i].validateInstance (adblInstance[i])) return false;</span>
+		}
+
+<span class="nc" id="L99">		return true;</span>
+	}
+
+	@Override public boolean match (
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+	{
+<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof RdAggregate)) return false;</span>
+
+<span class="nc" id="L107">		RdAggregate rdaOther = (RdAggregate) gvOther;</span>
+
+<span class="nc" id="L109">		int iDimensionOther = rdaOther.dimension();</span>
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (iDimensionOther != dimension()) return false;</span>
+
+<span class="nc" id="L113">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GVOther = rdaOther.vectorSpaces();</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimensionOther; ++i) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			if (!aR1GVOther[i].match (_aR1GV[i])) return false;</span>
+		}
+
+<span class="nc" id="L119">		return true;</span>
+	}
+
+	@Override public boolean subset (
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+	{
+<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof RdAggregate)) return false;</span>
+
+<span class="nc" id="L127">		int iDimensionOther = _aR1GV.length;</span>
+<span class="nc" id="L128">		RdAggregate rdaOther = (RdAggregate) gvOther;</span>
+
+<span class="nc" id="L130">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GVOther = rdaOther.vectorSpaces();</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimensionOther; ++i) {</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (!aR1GVOther[i].match (_aR1GV[i])) return false;</span>
+		}
+
+<span class="nc" id="L136">		return true;</span>
+	}
+
+	@Override public boolean isPredictorBounded()
+	{
+<span class="nc" id="L141">		int iDimension = _aR1GV.length;</span>
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (!_aR1GV[i].isPredictorBounded()) return false;</span>
+		}
+
+<span class="nc" id="L147">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

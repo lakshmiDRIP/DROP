@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserConfidenceProjectionCalibration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.idzorek</a> &gt; <span class="el_source">UserConfidenceProjectionCalibration.java</span></div><h1>UserConfidenceProjectionCalibration.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.idzorek;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.bayesian.ProjectionDistributionLoading;
+import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.asset.Portfolio;
+import org.drip.portfolioconstruction.bayesian.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * UserConfidenceProjectionCalibration calibrates the Black Litterman Projection Variance using the Implied
+ * 	Allocation Tilts. The References are:
+ *  
+ *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
+ *  	Sachs Asset Management
+ *  
+ *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
+ *  	Confidence Levels, Ibbotson Associates, Chicago
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L74">public class UserConfidenceProjectionCalibration {</span>
+
+	private static final void IdzorekImpliedProjectionConfidence (
+		final BlackLittermanCombinationEngine blce,
+		final int iViewIndex,
+		final double[] adblImpliedTilt,
+		final double dblProjectionUserConfidence)
+		throws Exception
+	{
+<span class="fc" id="L83">		System.out.println (&quot;\t|-----------------------------||&quot;);</span>
+
+<span class="fc" id="L85">		System.out.println (</span>
+			&quot;\t|            VIEW #&quot; + iViewIndex + &quot;          ||&quot;
+		);
+
+<span class="fc" id="L89">		System.out.println (&quot;\t|-----------------------------||&quot;);</span>
+
+<span class="fc" id="L91">		System.out.println (</span>
+			&quot;\t|     CONFIDENCE =&gt;&quot; +
+<span class="fc" id="L93">			FormatUtil.FormatDouble (dblProjectionUserConfidence, 2, 2, 100.) + &quot;%    ||&quot;</span>
+		);
+
+<span class="fc" id="L96">		System.out.println (&quot;\t|-----------------------------||&quot;);</span>
+
+<span class="fc" id="L98">		R1ToR1 r1ToR1TiltDeparture = blce.tiltDepartureR1ToR1 (</span>
+			adblImpliedTilt,
+			iViewIndex,
+			false
+		);
+
+<span class="fc" id="L104">		R1ToR1 r1ToR1TiltDerivative = blce.tiltDepartureR1ToR1 (</span>
+			adblImpliedTilt,
+			iViewIndex,
+			true
+		);
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (int i = 1; i &lt;= 15; ++i)</span>
+<span class="fc" id="L111">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc" id="L112">				FormatUtil.FormatDouble (0.01 * i, 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L113">				FormatUtil.FormatDouble (r1ToR1TiltDeparture.evaluate (0.01 * i), 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L114">				FormatUtil.FormatDouble (r1ToR1TiltDerivative.evaluate (0.01 * i), 2, 2, 100.) + &quot;% ||&quot;</span>
+			);
+
+		/* FixedPointFinderOutput fpfo = new FixedPointFinderBrent (0., r1ToR1TiltDerivative, false).findRoot();
+
+		System.out.println (fpfo.getRoot()); */
+
+<span class="fc" id="L121">		System.out.println (&quot;\t|-----------------------------||\n&quot;);</span>
+<span class="fc" id="L122">	}</span>
+
+	public static final void main (
+		final String[] astArgs)
+		throws Exception
+	{
+<span class="fc" id="L128">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L130">		double dblTau = 0.025;</span>
+<span class="fc" id="L131">		double dblRiskAversion = 3.07;</span>
+<span class="fc" id="L132">		double dblRiskFreeRate = 0.00;</span>
+
+<span class="fc" id="L134">		String[] astrAssetID = new String[] {</span>
+			&quot;US BONDS                       &quot;,
+			&quot;INTERNATIONAL BONDS            &quot;,
+			&quot;US LARGE GROWTH                &quot;,
+			&quot;US LARGE VALUE                 &quot;,
+			&quot;US SMALL GROWTH                &quot;,
+			&quot;US SMALL VALUE                 &quot;,
+			&quot;INTERNATIONAL DEVELOPED EQUITY &quot;,
+			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
+		};
+
+<span class="fc" id="L145">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+			0.1934,
+			0.2613,
+			0.1209,
+			0.1209,
+			0.0134,
+			0.0134,
+			0.2418,
+			0.0349
+		};
+
+<span class="fc" id="L156">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
+			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
+			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
+			{-0.000675, -0.000610,  0.027588,  0.029609,  0.026572,  0.021465,  0.020697,  0.029854},
+			{ 0.000121, -0.002237,  0.063497,  0.026572,  0.102488,  0.042744,  0.039943,  0.065994},
+			{ 0.000128, -0.000989,  0.023036,  0.021465,  0.042744,  0.032056,  0.019881,  0.032235},
+			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
+			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
+		};
+
+<span class="fc" id="L167">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
+			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
+			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
+		};
+
+<span class="fc" id="L173">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+			0.0525,
+			0.0025,
+			0.0200
+		};
+
+<span class="fc" id="L179">		double[] adblUserSpecifiedProjectionConfidence = new double[] {</span>
+			0.25,
+			0.50,
+			0.65
+		};
+
+<span class="fc" id="L185">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
+			aadblAssetExcessReturnsCovariance,
+			aadblAssetSpaceViewProjection,
+			dblTau
+		);
+
+<span class="fc" id="L191">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+			new MultivariateMeta (
+				new String[] {
+					&quot;PROJECTION #1&quot;,
+					&quot;PROJECTION #2&quot;,
+					&quot;PROJECTION #3&quot;
+				}
+			),
+			adblProjectionExpectedExcessReturns,
+			aadblProjectionExcessReturnsCovariance
+		);
+
+<span class="fc" id="L203">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L204">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L205">				Portfolio.Standard (</span>
+					astrAssetID,
+					adblAssetEquilibriumWeight
+				),
+				aadblAssetExcessReturnsCovariance,
+				dblRiskAversion
+			),
+			new PriorControlSpecification (
+				true,
+				dblRiskFreeRate,
+				dblTau
+			),
+			new ProjectionSpecification (
+				viewDistribution,
+				aadblAssetSpaceViewProjection
+			)
+		);
+
+<span class="fc" id="L223">		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTilt (adblUserSpecifiedProjectionConfidence);</span>
+
+<span class="fc" id="L225">		System.out.println (&quot;\n\n&quot;);</span>
+
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		for (int i = 0; i &lt; adblUserSpecifiedProjectionConfidence.length; ++i)</span>
+<span class="fc" id="L228">			IdzorekImpliedProjectionConfidence (</span>
+				blce,
+				i,
+				aadblProjectionTilt[i],
+				adblUserSpecifiedProjectionConfidence[i]
+			);
+<span class="fc" id="L234">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

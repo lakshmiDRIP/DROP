@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LongFloatClassicalPlusTimeline.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.mporstream</a> &gt; <span class="el_source">LongFloatClassicalPlusTimeline.java</span></div><h1>LongFloatClassicalPlusTimeline.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.mporstream;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.csatimeline.AndersenPykhtinSokolLag;
+import org.drip.exposure.csatimeline.LastFlowDates;
+import org.drip.exposure.evolver.EntityDynamicsContainer;
+import org.drip.exposure.evolver.LatentStateDynamicsContainer;
+import org.drip.exposure.evolver.LatentStateVertexContainer;
+import org.drip.exposure.evolver.PrimarySecurity;
+import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
+import org.drip.exposure.evolver.TerminalLatentState;
+import org.drip.exposure.generator.FloatStreamMPoR;
+import org.drip.exposure.mpor.PathVariationMarginTrajectoryEstimator;
+import org.drip.exposure.mpor.VariationMarginTradeVertexExposure;
+import org.drip.exposure.universe.LatentStateWeiner;
+import org.drip.exposure.universe.MarketPath;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexGenerator;
+import org.drip.market.otc.FixedFloatSwapConvention;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
+import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
+import org.drip.measure.dynamics.HazardJumpEvaluator;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.process.JumpDiffusionEvolver;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.EntityFundingLabel;
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.identifier.OvernightLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LongFloatClassicalPlusTimeline displays the MPoR-related Exposure Metrics Suite for the given Long Float
+ *  Coupon Stream on a Daily Grid using the &quot;Classical+&quot; CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
+ *  The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L114">public class LongFloatClassicalPlusTimeline</span>
+{
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate spotDate,
+		final String currency,
+		final String maturityTenor,
+		final double coupon)
+	{
+<span class="nc" id="L123">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			currency,
+			&quot;ALL&quot;,
+			maturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="nc" id="L130">		return ffConv.createFixFloatComponent (</span>
+			spotDate,
+			maturityTenor,
+			coupon,
+			0.,
+			1.
+		);
+	}
+
+	private static final PrimarySecurity OvernightReplicator (
+		final String currency,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L144">		double overnightReplicatorDrift = 0.0025;</span>
+<span class="nc" id="L145">		double overnightReplicatorVolatility = 0.001;</span>
+<span class="nc" id="L146">		double overnightReplicatorRepo = 0.0;</span>
+
+<span class="nc" id="L148">		LatentStateLabel overnightLabel = OvernightLabel.Create (currency);</span>
+
+<span class="nc" id="L150">		latentStateLabelList.add (overnightLabel);</span>
+
+<span class="nc" id="L152">		return new PrimarySecurity (</span>
+			currency + &quot;_OVERNIGHT&quot;,
+			overnightLabel,
+			new DiffusionEvolver (
+<span class="nc" id="L156">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					overnightReplicatorDrift,
+					overnightReplicatorVolatility
+				)
+			),
+			overnightReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity CSAReplicator (
+		final String currency,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L170">		double csaReplicatorDrift = 0.01;</span>
+<span class="nc" id="L171">		double csaReplicatorVolatility = 0.002;</span>
+<span class="nc" id="L172">		double csaReplicatorRepo = 0.005;</span>
+
+<span class="nc" id="L174">		LatentStateLabel csaLabel = CSALabel.ISDA (currency);</span>
+
+<span class="nc" id="L176">		latentStateLabelList.add (csaLabel);</span>
+
+<span class="nc" id="L178">		return new PrimarySecurity (</span>
+			currency + &quot;_CSA&quot;,
+			csaLabel,
+			new DiffusionEvolver (
+<span class="nc" id="L182">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					csaReplicatorDrift,
+					csaReplicatorVolatility
+				)
+			),
+			csaReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity DealerSeniorFundingReplicator (
+		final String currency,
+		final String dealer,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L197">		double dealerSeniorFundingReplicatorDrift = 0.03;</span>
+<span class="nc" id="L198">		double dealerSeniorFundingReplicatorVolatility = 0.002;</span>
+<span class="nc" id="L199">		double dealerSeniorFundingReplicatorRepo = 0.028;</span>
+
+<span class="nc" id="L201">		LatentStateLabel dealerSeniorFundingLabel = EntityFundingLabel.Senior (</span>
+			dealer,
+			currency
+		);
+
+<span class="nc" id="L206">		latentStateLabelList.add (dealerSeniorFundingLabel);</span>
+
+<span class="nc" id="L208">		return new PrimarySecurity (</span>
+			dealer + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
+			dealerSeniorFundingLabel,
+			new JumpDiffusionEvolver (
+<span class="nc" id="L212">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerSeniorFundingReplicatorDrift,
+					dealerSeniorFundingReplicatorVolatility
+				),
+<span class="nc" id="L216">				HazardJumpEvaluator.Standard (</span>
+					0.3,
+					0.45
+				)
+			),
+			dealerSeniorFundingReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity DealerSubordinateFundingReplicator (
+		final String currency,
+		final String dealer,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L231">		double dealerSubordinateFundingReplicatorDrift = 0.045;</span>
+<span class="nc" id="L232">		double dealerSubordinateFundingReplicatorVolatility = 0.002;</span>
+<span class="nc" id="L233">		double dealerSubordinateFundingReplicatorRepo = 0.028;</span>
+
+<span class="nc" id="L235">		LatentStateLabel dealerSubordinateFundingLabel = EntityFundingLabel.Subordinate (</span>
+			dealer,
+			currency
+		);
+
+<span class="nc" id="L240">		latentStateLabelList.add (dealerSubordinateFundingLabel);</span>
+
+<span class="nc" id="L242">		return new PrimarySecurity (</span>
+			dealer + &quot;_&quot; + currency + &quot;_SUBORDINATE_ZERO&quot;,
+			dealerSubordinateFundingLabel,
+			new JumpDiffusionEvolver (
+<span class="nc" id="L246">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerSubordinateFundingReplicatorDrift,
+					dealerSubordinateFundingReplicatorVolatility
+				),
+<span class="nc" id="L250">				HazardJumpEvaluator.Standard (</span>
+					0.3,
+					0.25
+				)
+			),
+			dealerSubordinateFundingReplicatorRepo
+		);
+	}
+
+	private static final PrimarySecurity ClientFundingReplicator (
+		final String currency,
+		final String client,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L265">		double clientFundingReplicatorDrift = 0.03;</span>
+<span class="nc" id="L266">		double clientFundingReplicatorVolatility = 0.003;</span>
+<span class="nc" id="L267">		double clientFundingReplicatorRepo = 0.028;</span>
+
+<span class="nc" id="L269">		LatentStateLabel clientFundingLabel = EntityFundingLabel.Senior (</span>
+			client,
+			currency
+		);
+
+<span class="nc" id="L274">		latentStateLabelList.add (clientFundingLabel);</span>
+
+<span class="nc" id="L276">		return new PrimarySecurity (</span>
+			client + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
+			clientFundingLabel,
+			new JumpDiffusionEvolver (
+<span class="nc" id="L280">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					clientFundingReplicatorDrift,
+					clientFundingReplicatorVolatility
+				),
+<span class="nc" id="L284">				HazardJumpEvaluator.Standard (</span>
+					0.5,
+					0.30
+				)
+			),
+			clientFundingReplicatorRepo
+		);
+	}
+
+	private static final TerminalLatentState DealerHazard (
+		final String currency,
+		final String dealer,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L299">		double dealerHazardDrift = 0.0002;</span>
+<span class="nc" id="L300">		double dealerHazardVolatility = 0.02;</span>
+
+<span class="nc" id="L302">		LatentStateLabel dealerHazardLabel = EntityHazardLabel.Standard (</span>
+			dealer,
+			currency
+		);
+
+<span class="nc" id="L307">		latentStateLabelList.add (dealerHazardLabel);</span>
+
+<span class="nc" id="L309">		return new TerminalLatentState (</span>
+			dealerHazardLabel,
+			new DiffusionEvolver (
+<span class="nc" id="L312">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerHazardDrift,
+					dealerHazardVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState DealerRecovery (
+		final String currency,
+		final String dealer,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L326">		double dealerRecoveryDrift = 0.0002;</span>
+<span class="nc" id="L327">		double dealerRecoveryVolatility = 0.02;</span>
+
+<span class="nc" id="L329">		LatentStateLabel dealerRecoveryLabel = EntityRecoveryLabel.Senior (</span>
+			dealer,
+			currency
+		);
+
+<span class="nc" id="L334">		latentStateLabelList.add (dealerRecoveryLabel);</span>
+
+<span class="nc" id="L336">		return new TerminalLatentState (</span>
+			dealerRecoveryLabel,
+			new DiffusionEvolver (
+<span class="nc" id="L339">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					dealerRecoveryDrift,
+					dealerRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState ClientHazard (
+		final String currency,
+		final String client,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L353">		double clientHazardDrift = 0.0002;</span>
+<span class="nc" id="L354">		double clientHazardVolatility = 0.02;</span>
+
+<span class="nc" id="L356">		LatentStateLabel clientHazardLabel = EntityHazardLabel.Standard (</span>
+			client,
+			currency
+		);
+
+<span class="nc" id="L361">		latentStateLabelList.add (clientHazardLabel);</span>
+
+<span class="nc" id="L363">		return new TerminalLatentState (</span>
+			clientHazardLabel,
+			new DiffusionEvolver (
+<span class="nc" id="L366">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					clientHazardDrift,
+					clientHazardVolatility
+				)
+			)
+		);
+	}
+
+	private static final TerminalLatentState ClientRecovery (
+		final String currency,
+		final String client,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L380">		double clientRecoveryDrift = 0.0002;</span>
+<span class="nc" id="L381">		double clientRecoveryVolatility = 0.02;</span>
+
+<span class="nc" id="L383">		LatentStateLabel clientRecoveryLabel = EntityRecoveryLabel.Senior (</span>
+			client,
+			currency
+		);
+
+<span class="nc" id="L388">		latentStateLabelList.add (clientRecoveryLabel);</span>
+
+<span class="nc" id="L390">		return new TerminalLatentState (</span>
+			clientRecoveryLabel,
+			new DiffusionEvolver (
+<span class="nc" id="L393">				DiffusionEvaluatorLogarithmic.Standard (</span>
+					clientRecoveryDrift,
+					clientRecoveryVolatility
+				)
+			)
+		);
+	}
+
+	private static final EntityDynamicsContainer EntityEvolver (
+		final String currency,
+		final String dealer,
+		final String client,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L408">		return new EntityDynamicsContainer (</span>
+<span class="nc" id="L409">			DealerHazard (</span>
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+<span class="nc" id="L414">			DealerRecovery (</span>
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+			null,
+<span class="nc" id="L420">			ClientHazard (</span>
+				currency,
+				client,
+				latentStateLabelList
+			),
+<span class="nc" id="L425">			ClientRecovery (</span>
+				currency,
+				client,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final PrimarySecurityDynamicsContainer PrimarySecurityEvolver (
+		final String currency,
+		final String dealer,
+		final String client,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L440">		return new PrimarySecurityDynamicsContainer (</span>
+			null,
+<span class="nc" id="L442">			OvernightReplicator (</span>
+				currency,
+				latentStateLabelList
+			),
+<span class="nc" id="L446">			CSAReplicator (</span>
+				currency,
+				latentStateLabelList
+			),
+<span class="nc" id="L450">			DealerSeniorFundingReplicator (</span>
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+<span class="nc" id="L455">			DealerSubordinateFundingReplicator (</span>
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+<span class="nc" id="L460">			ClientFundingReplicator (</span>
+				currency,
+				client,
+				latentStateLabelList
+			)
+		);
+	}
+
+	private static final LatentStateDynamicsContainer LatentStateEvolver (
+		final ForwardLabel forwardLabel,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L473">		double forwardNumeraireDrift = 0.0;</span>
+<span class="nc" id="L474">		double forwardNumeraireVolatility = 0.25;</span>
+
+<span class="nc" id="L476">		latentStateLabelList.add (forwardLabel);</span>
+
+<span class="nc" id="L478">		LatentStateDynamicsContainer latentStateDynamicsContainer = new LatentStateDynamicsContainer();</span>
+
+<span class="nc" id="L480">		latentStateDynamicsContainer.addForward (</span>
+			new TerminalLatentState (
+				forwardLabel,
+				new DiffusionEvolver (
+<span class="nc" id="L484">					DiffusionEvaluatorLinear.Standard (</span>
+						forwardNumeraireDrift,
+						forwardNumeraireVolatility
+					)
+				)
+			)
+		);
+
+<span class="nc" id="L492">		return latentStateDynamicsContainer;</span>
+	}
+
+	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
+		final JulianDate spotDate,
+		final String exposureSamplingTenor,
+		final int exposureSamplingNodeCount,
+		final String currency,
+		final String dealer,
+		final String client,
+		final ForwardLabel forwardLabel,
+		final List&lt;LatentStateLabel&gt; latentStateLabelList)
+		throws Exception
+	{
+<span class="nc" id="L506">		JulianDate terminationDate = spotDate;</span>
+<span class="nc" id="L507">		int[] eventVertexArray = new int[exposureSamplingNodeCount];</span>
+
+<span class="nc bnc" id="L509" title="All 2 branches missed.">		for (int i = 0; i &lt; exposureSamplingNodeCount; ++i)</span>
+		{
+<span class="nc" id="L511">			terminationDate = terminationDate.addTenor (exposureSamplingTenor);</span>
+
+<span class="nc" id="L513">			eventVertexArray[i] = terminationDate.julian();</span>
+		}
+
+<span class="nc" id="L516">		return new MarketVertexGenerator (</span>
+<span class="nc" id="L517">			spotDate.julian(),</span>
+			eventVertexArray,
+<span class="nc" id="L519">			EntityEvolver (</span>
+				currency,
+				dealer,
+				client,
+				latentStateLabelList
+			),
+<span class="nc" id="L525">			PrimarySecurityEvolver (</span>
+				currency,
+				dealer,
+				client,
+				latentStateLabelList
+			),
+<span class="nc" id="L531">			LatentStateEvolver (</span>
+				forwardLabel,
+				latentStateLabelList
+			)
+		);
+	}
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="nc" id="L542">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L544">		JulianDate spotDate = DateUtil.CreateFromYMD (</span>
+			2018,
+			DateUtil.APRIL,
+			19
+		);
+
+<span class="nc" id="L550">		int pathCount = 1000;</span>
+<span class="nc" id="L551">		String exposurePeriodTenor = &quot;1D&quot;;</span>
+<span class="nc" id="L552">		int exposurePeriodCount = 390;</span>
+<span class="nc" id="L553">		int vertexGenerationPeriodCount = exposurePeriodCount + 10;</span>
+<span class="nc" id="L554">		String currency = &quot;USD&quot;;</span>
+<span class="nc" id="L555">		String dealer = &quot;NOM&quot;;</span>
+<span class="nc" id="L556">		String client = &quot;SSGA&quot;;</span>
+<span class="nc" id="L557">		double[][] correlationMatrix = new double[][] {</span>
+			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0  DEALER HAZARD
+			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1  DEALER SENIOR RECOVERY
+			{0.20, 0.00, 1.00, 0.13, 0.25, 0.00, 0.00, 0.00, 0.00, 0.00}, // #2  CLIENT HAZARD
+			{0.15, 0.00, 0.13, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #3  CLIENT RECOVERY
+			{0.05, 0.00, 0.25, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #4  OVERNIGHT REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00}, // #5  CSA REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00}, // #6  DEALER SENIOR FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00}, // #7  DEALER SUBORDINATE FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #8  CLIENT FUNDING REPLICATOR
+			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #9  FORWARD NUMERAIRE
+		};
+<span class="nc" id="L569">		String fixFloatMaturityTenor = &quot;1Y&quot;;</span>
+<span class="nc" id="L570">		double fixFloatCoupon = 0.03;</span>
+<span class="nc" id="L571">		double fixFloatNotional = -1.e+06;</span>
+
+<span class="nc" id="L573">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+			currency,
+			&quot;3M&quot;
+		);
+
+<span class="nc" id="L578">		List&lt;LatentStateLabel&gt; latentStateLabelList = new ArrayList&lt;LatentStateLabel&gt;();</span>
+
+<span class="nc" id="L580">		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (</span>
+			spotDate,
+			exposurePeriodTenor,
+			vertexGenerationPeriodCount,
+			currency,
+			dealer,
+			client,
+			forwardLabel,
+			latentStateLabelList
+		);
+
+<span class="nc" id="L591">		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
+
+<span class="nc" id="L593">		latentStateVertexContainer.add (</span>
+			forwardLabel,
+			0.02
+		);
+
+<span class="nc" id="L598">		MarketVertex initialMarketVertex = MarketVertex.Epochal (</span>
+			spotDate,
+			1.000, 				// dblOvernightNumeraireInitial
+			1.000, 				// dblCSANumeraire
+			0.015, 				// dblBankHazardRate
+			0.400, 				// dblBankRecoveryRate
+			0.015 / (1 - 0.40), // dblBankFundingSpread
+			0.030, 				// dblCounterPartyHazardRate
+			0.300, 				// dblCounterPartyRecoveryRate
+			0.030 / (1 - 0.30),	// dblCounterPartyFundingSpread
+			latentStateVertexContainer
+		);
+
+<span class="nc" id="L611">		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalPlus();</span>
+
+<span class="nc" id="L613">		FixFloatComponent fixFloatComponent = OTCIRS (</span>
+			spotDate,
+			currency,
+			fixFloatMaturityTenor,
+			fixFloatCoupon
+		);
+
+<span class="nc" id="L620">		FloatStreamMPoR floatCouponStream = new FloatStreamMPoR (</span>
+<span class="nc" id="L621">			fixFloatComponent.derivedStream(),</span>
+			fixFloatNotional
+		);
+
+<span class="nc" id="L625">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
+			new RandomNumberGenerator(),
+			correlationMatrix,
+			vertexGenerationPeriodCount,
+			1,
+			true,
+			null
+		);
+
+<span class="nc" id="L634">		JulianDate exposureDate = spotDate;</span>
+<span class="nc" id="L635">		int[] exposureDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L636">		int[] variationMarginGapEndDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L637">		int[] variationMarginGapStartDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L638">		double[] tradePaymentGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L639">		double[] variationMarginGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L640">		double[] clientTradePaymentGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L641">		double[] collateralizedExposureArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L642">		double[] variationMarginPostingArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L643">		double[] variationMarginEstimateArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L644">		double[] clientDealerTradePaymentGapArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L645">		double[] collateralizedPositiveExposureArray = new double[exposurePeriodCount + 1];</span>
+<span class="nc" id="L646">		int[] clientTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L647">		int[] clientTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L648">		int[] clientDealerTradePaymentGapEndDateArray = new int[exposurePeriodCount + 1];</span>
+<span class="nc" id="L649">		int[] clientDealerTradePaymentGapStartDateArray = new int[exposurePeriodCount + 1];</span>
+
+<span class="nc bnc" id="L651" title="All 2 branches missed.">		for (int i = 0; i &lt;= exposurePeriodCount; ++i)</span>
+		{
+<span class="nc" id="L653">			tradePaymentGapArray[i] = 0.;</span>
+<span class="nc" id="L654">			variationMarginGapArray[i] = 0.;</span>
+<span class="nc" id="L655">			clientTradePaymentGapArray[i] = 0.;</span>
+<span class="nc" id="L656">			collateralizedExposureArray[i] = 0.;</span>
+<span class="nc" id="L657">			variationMarginPostingArray[i] = 0.;</span>
+<span class="nc" id="L658">			variationMarginEstimateArray[i] = 0.;</span>
+<span class="nc" id="L659">			clientDealerTradePaymentGapArray[i] = 0.;</span>
+<span class="nc" id="L660">			collateralizedPositiveExposureArray[i] = 0.;</span>
+
+<span class="nc" id="L662">			exposureDateArray[i] = exposureDate.julian();</span>
+
+<span class="nc" id="L664">			exposureDate = exposureDate.addTenor (exposurePeriodTenor);</span>
+		}
+
+<span class="nc bnc" id="L667" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+		{
+<span class="nc" id="L669">			MarketPath marketPath = new MarketPath (</span>
+<span class="nc" id="L670">				marketVertexGenerator.marketVertex (</span>
+					initialMarketVertex,
+<span class="nc" id="L672">					LatentStateWeiner.FromUnitRandom (</span>
+						latentStateLabelList,
+<span class="nc" id="L674">						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())</span>
+					)
+				)
+			);
+
+<span class="nc" id="L679">			PathVariationMarginTrajectoryEstimator marginTradeFlowTrajectory =</span>
+<span class="nc" id="L680">				PathVariationMarginTrajectoryEstimator.Standard (</span>
+					exposureDateArray,
+					currency,
+					floatCouponStream,
+					marketPath,
+					andersenPykhtinSokolLag
+				);
+
+<span class="nc" id="L688">			Map&lt;Integer, VariationMarginTradeVertexExposure&gt; mapMarginTradeFlowEntry =</span>
+<span class="nc" id="L689">				marginTradeFlowTrajectory.trajectory();</span>
+
+<span class="nc bnc" id="L691" title="All 2 branches missed.">			for (int i = 0; i &lt;= exposurePeriodCount; ++i)</span>
+			{
+<span class="nc" id="L693">				VariationMarginTradeVertexExposure marginTradeFlowEntry = mapMarginTradeFlowEntry.get (exposureDateArray[i]);</span>
+
+<span class="nc" id="L695">				LastFlowDates lastFlowDates = marginTradeFlowEntry.lastFlowDates();</span>
+
+<span class="nc" id="L697">				tradePaymentGapArray[i] += marginTradeFlowEntry.tradePaymentGap();</span>
+
+<span class="nc" id="L699">				clientTradePaymentGapArray[i] += marginTradeFlowEntry.clientTradePaymentGap();</span>
+
+<span class="nc" id="L701">				clientDealerTradePaymentGapArray[i] += marginTradeFlowEntry.clientDealerTradePaymentGap();</span>
+
+<span class="nc" id="L703">				collateralizedExposureArray[i] += marginTradeFlowEntry.collateralizedExposure();</span>
+
+<span class="nc" id="L705">				collateralizedPositiveExposureArray[i] += marginTradeFlowEntry.collateralizedPositiveExposure();</span>
+
+<span class="nc" id="L707">				variationMarginEstimateArray[i] += marginTradeFlowEntry.variationMarginEstimate();</span>
+
+<span class="nc" id="L709">				variationMarginPostingArray[i] += marginTradeFlowEntry.variationMarginPosting();</span>
+
+<span class="nc" id="L711">				variationMarginGapArray[i] += marginTradeFlowEntry.variationMarginGap();</span>
+
+<span class="nc" id="L713">				variationMarginGapStartDateArray[i] = lastFlowDates.clientVariationMarginPosting().julian();</span>
+
+<span class="nc" id="L715">				variationMarginGapEndDateArray[i] = lastFlowDates.dealerVariationMarginPosting().julian();</span>
+
+<span class="nc" id="L717">				clientTradePaymentGapStartDateArray[i] = lastFlowDates.clientTradePayment().julian();</span>
+
+<span class="nc" id="L719">				clientTradePaymentGapEndDateArray[i] = lastFlowDates.dealerTradePayment().julian();</span>
+
+<span class="nc" id="L721">				clientDealerTradePaymentGapStartDateArray[i] = lastFlowDates.dealerTradePayment().julian();</span>
+
+<span class="nc" id="L723">				clientDealerTradePaymentGapEndDateArray[i] = lastFlowDates.variationMarginPeriodEnd().julian();</span>
+			}
+		}
+
+<span class="nc" id="L727">		System.out.println();</span>
+
+<span class="nc" id="L729">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L731">		System.out.println (&quot;\t|                                                                            FIXED STREAM MARGIN/TRADE FLOW EXPOSURES AND DATES                                                                               ||&quot;);</span>
+
+<span class="nc" id="L733">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L735">		System.out.println (&quot;\t|                                                                                                                                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L737">		System.out.println (&quot;\t|  L -&gt; R:                                                                                                                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L739">		System.out.println (&quot;\t|                                                                                                                                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L741">		System.out.println (&quot;\t|    - Exposure Date                                                                                                                                                                                          ||&quot;);</span>
+
+<span class="nc" id="L743">		System.out.println (&quot;\t|    - Variation Margin Gap Start Date                                                                                                                                                                        ||&quot;);</span>
+
+<span class="nc" id="L745">		System.out.println (&quot;\t|    - Variation Margin Gap End Date                                                                                                                                                                          ||&quot;);</span>
+
+<span class="nc" id="L747">		System.out.println (&quot;\t|    - Variation Margin Estimate                                                                                                                                                                              ||&quot;);</span>
+
+<span class="nc" id="L749">		System.out.println (&quot;\t|    - Variation Margin Posting                                                                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L751">		System.out.println (&quot;\t|    - Variation Margin Gap                                                                                                                                                                                   ||&quot;);</span>
+
+<span class="nc" id="L753">		System.out.println (&quot;\t|    - Client Trade Payment Gap Start Date                                                                                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L755">		System.out.println (&quot;\t|    - Client Trade Payment Gap End Date                                                                                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L757">		System.out.println (&quot;\t|    - Client Trade Payment Gap                                                                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L759">		System.out.println (&quot;\t|    - Net Trade Payment Gap Start Date                                                                                                                                                                       ||&quot;);</span>
+
+<span class="nc" id="L761">		System.out.println (&quot;\t|    - Net Trade Payment Gap End Date                                                                                                                                                                         ||&quot;);</span>
+
+<span class="nc" id="L763">		System.out.println (&quot;\t|    - Net Trade Payment Gap                                                                                                                                                                                  ||&quot;);</span>
+
+<span class="nc" id="L765">		System.out.println (&quot;\t|    - Trade Payment Gap                                                                                                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L767">		System.out.println (&quot;\t|    - Exposure                                                                                                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L769">		System.out.println (&quot;\t|    - Positive Exposure                                                                                                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L771">		System.out.println (&quot;\t|                                                                                                                                                                                                             ||&quot;);</span>
+
+<span class="nc" id="L773">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L775" title="All 2 branches missed.">		for (int i = 0; i &lt;= exposurePeriodCount; ++i)</span>
+		{
+<span class="nc" id="L777">			System.out.println (</span>
+				&quot;\t| [&quot; +
+				new JulianDate (exposureDateArray[i]) + &quot;] =&gt; [&quot; +
+				new JulianDate (variationMarginGapStartDateArray[i]) + &quot; -&gt; &quot; +
+				new JulianDate (variationMarginGapEndDateArray[i]) + &quot;] | &quot; +
+<span class="nc" id="L782">				FormatUtil.FormatDouble (variationMarginEstimateArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L783">				FormatUtil.FormatDouble (variationMarginPostingArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L784">				FormatUtil.FormatDouble (variationMarginGapArray[i] / pathCount, 5, 2, 1) + &quot; | [&quot; +</span>
+				new JulianDate (clientTradePaymentGapStartDateArray[i]) + &quot; -&gt; &quot; +
+				new JulianDate (clientTradePaymentGapEndDateArray[i]) + &quot;] | &quot; +
+<span class="nc" id="L787">				FormatUtil.FormatDouble (clientTradePaymentGapArray[i] / pathCount, 5, 2, 1) + &quot; | [&quot; +</span>
+				new JulianDate (clientDealerTradePaymentGapStartDateArray[i]) + &quot; -&gt; &quot; +
+				new JulianDate (clientDealerTradePaymentGapEndDateArray[i]) + &quot;] | &quot; +
+<span class="nc" id="L790">				FormatUtil.FormatDouble (clientDealerTradePaymentGapArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L791">				FormatUtil.FormatDouble (tradePaymentGapArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L792">				FormatUtil.FormatDouble (collateralizedExposureArray[i] / pathCount, 5, 2, 1) + &quot; | &quot; +</span>
+<span class="nc" id="L793">				FormatUtil.FormatDouble (collateralizedPositiveExposureArray[i] / pathCount, 5, 2, 1) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L797">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L799">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L800">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

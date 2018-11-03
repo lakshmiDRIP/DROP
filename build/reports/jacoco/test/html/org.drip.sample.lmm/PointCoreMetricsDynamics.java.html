@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PointCoreMetricsDynamics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.lmm</a> &gt; <span class="el_source">PointCoreMetricsDynamics.java</span></div><h1>PointCoreMetricsDynamics.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.lmm;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.MarketSurface;
+import org.drip.dynamics.lmm.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.*;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.creator.*;
+import org.drip.state.discount.*;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PointCoreMetricsDynamics demonstrates the Construction and Usage of the Point LIBOR State Evolver, and the
+ *  eventual Evolution of the related Core bDiscount/Forward Latent State Quantification Metrics. The
+ *   References are:
+ * 
+ *  1) Goldys, B., M. Musiela, and D. Sondermann (1994): Log-normality of Rates and Term Structure Models,
+ *  	The University of New South Wales.
+ * 
+ *  2) Musiela, M. (1994): Nominal Annual Rates and Log-normal Volatility Structure, The University of New
+ *   	South Wales.
+ * 
+ * 	3) Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
+ * 		Finance 7 (2), 127-155.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L83">public class PointCoreMetricsDynamics {</span>
+
+	private static final MarketSurface FlatVolatilitySurface (
+		final JulianDate dtStart,
+		final String strCurrency,
+		final double dblFlatVol)
+		throws Exception
+	{
+<span class="fc" id="L91">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
+			dtStart,
+			strCurrency,
+			new double[] {
+<span class="fc" id="L96">				dtStart.julian(),</span>
+<span class="fc" id="L97">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L98">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L99">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L100">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L101">				dtStart.addYears (10).julian()</span>
+			},
+			new double[] {
+<span class="fc" id="L104">				dtStart.julian(),</span>
+<span class="fc" id="L105">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L106">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L107">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L108">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L109">				dtStart.addYears (10).julian()</span>
+			},
+			new double[][] {
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
+			},
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="fc" id="L122">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				null,
+				null
+			),
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="fc" id="L132">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				null,
+				null
+			)
+		);
+	}
+
+	private static final LognormalLIBORVolatility LLVInstance (
+		final int iSpotDate,
+		final ForwardLabel forwardLabel,
+		final MarketSurface[] aMS,
+		final double[][] aadblCorrelation,
+		final int iNumFactor)
+		throws Exception
+	{
+<span class="fc" id="L150">		UnivariateSequenceGenerator[] aUSG = new UnivariateSequenceGenerator[aMS.length];</span>
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int i = 0; i &lt; aUSG.length; ++i)</span>
+<span class="fc" id="L153">			aUSG[i] = new BoxMullerGaussian (</span>
+				0.,
+				1.
+			);
+
+<span class="fc" id="L158">		return new LognormalLIBORVolatility (</span>
+			iSpotDate,
+			forwardLabel,
+			aMS,
+			new PrincipalFactorSequenceGenerator (
+				aUSG,
+				aadblCorrelation,
+				iNumFactor
+			)
+		);
+	}
+
+	private static final void DisplayRunSnap (
+		final BGMPointUpdate bgmRunSnap)
+		throws Exception
+	{
+<span class="fc" id="L174">		System.out.println (</span>
+<span class="fc" id="L175">			&quot;\t| [&quot; + new JulianDate (bgmRunSnap.evolutionStartDate()) +</span>
+<span class="fc" id="L176">			&quot; -&gt; &quot; + new JulianDate (bgmRunSnap.evolutionFinishDate()) +</span>
+<span class="fc" id="L177">			&quot;]  =&gt; &quot; + FormatUtil.FormatDouble (bgmRunSnap.libor(), 1, 2, 100.) +</span>
+<span class="fc" id="L178">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.liborIncrement(), 2, 0, 10000.) +</span>
+<span class="fc" id="L179">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.continuousForwardRate(), 1, 2, 100.) +</span>
+<span class="fc" id="L180">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.continuousForwardRateIncrement(), 2, 0, 10000.) +</span>
+<span class="fc" id="L181">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.spotRate(), 1, 2, 100.) +</span>
+<span class="fc" id="L182">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.spotRateIncrement(), 2, 0, 10000.) +</span>
+<span class="fc" id="L183">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.discountFactor(), 1, 2, 100.) +</span>
+<span class="fc" id="L184">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.discountFactorIncrement(), 2, 0, 10000.) +</span>
+<span class="fc" id="L185">			&quot; | &quot; + FormatUtil.FormatDouble (bgmRunSnap.lognormalLIBORVolatility(), 2, 0, 100.) +</span>
+<span class="fc" id="L186">			&quot;% | &quot; + FormatUtil.FormatDouble (bgmRunSnap.continuouslyCompoundedForwardVolatility(), 1, 2, 100.) +</span>
+			&quot;% | &quot;
+		);
+<span class="fc" id="L189">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L195">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L197">		String strTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L198">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L199">		double dblFlatVol1 = 0.35;</span>
+<span class="fc" id="L200">		double dblFlatVol2 = 0.42;</span>
+<span class="fc" id="L201">		double dblFlatVol3 = 0.27;</span>
+<span class="fc" id="L202">		double dblZeroRate = 0.02;</span>
+<span class="fc" id="L203">		double dblFlatForwardRate = 0.02;</span>
+<span class="fc" id="L204">		int iNumRun = 20;</span>
+
+<span class="fc" id="L206">		int[] aiNumFactor = {</span>
+			1, 2, 3
+		};
+
+<span class="fc" id="L210">		double[][] aadblCorrelation = new double[][] {</span>
+			{1.0, 0.1, 0.2},
+			{0.1, 1.0, 0.2},
+			{0.2, 0.1, 1.0}
+		};
+
+<span class="fc" id="L216">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+			strCurrency,
+			strTenor
+		);
+
+<span class="fc" id="L221">		FundingLabel fundingLabel = FundingLabel.Standard (</span>
+			strCurrency
+		);
+
+<span class="fc" id="L225">		JulianDate dtSpot = org.drip.analytics.date.DateUtil.Today();</span>
+
+<span class="fc" id="L227">		MarketSurface[] aMS = new MarketSurface[] {</span>
+<span class="fc" id="L228">			FlatVolatilitySurface (</span>
+				dtSpot,
+				strCurrency,
+				dblFlatVol1
+			),
+<span class="fc" id="L233">			FlatVolatilitySurface (</span>
+				dtSpot,
+				strCurrency,
+				dblFlatVol2
+			),
+<span class="fc" id="L238">			FlatVolatilitySurface (</span>
+				dtSpot,
+				strCurrency,
+				dblFlatVol3
+			)
+		};
+
+<span class="fc" id="L245">		ForwardCurve fc = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+			dtSpot,
+			forwardLabel,
+			dblFlatForwardRate
+		);
+
+<span class="fc" id="L251">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+			dtSpot,
+			strCurrency,
+			dblZeroRate
+		);
+
+<span class="fc" id="L257">		int iSpotDate = dtSpot.julian();</span>
+
+<span class="fc" id="L259">		int iViewDate = dtSpot.addTenor (&quot;1Y&quot;).julian();</span>
+
+<span class="fc" id="L261">		int iViewTimeIncrement = 1;</span>
+
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		for (int iNumFactor : aiNumFactor) {</span>
+<span class="fc" id="L264">			System.out.println (&quot;\n\n\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L266">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
+
+<span class="fc" id="L268">			System.out.println (&quot;\t|                             LOG-NORMAL LIBOR EVOLVER                                                     |&quot;);</span>
+
+<span class="fc" id="L270">			System.out.println (&quot;\t|                             ---------- ----- -------                                                     |&quot;);</span>
+
+<span class="fc" id="L272">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
+
+<span class="fc" id="L274">			System.out.println (&quot;\t|       Num Factors: &quot; + iNumFactor + &quot;                                                                                     |&quot;);</span>
+
+<span class="fc" id="L276">			System.out.println (&quot;\t|       Start Date                                                                                         |&quot;);</span>
+
+<span class="fc" id="L278">			System.out.println (&quot;\t|       End Date                                                                                           |&quot;);</span>
+
+<span class="fc" id="L280">			System.out.println (&quot;\t|       Adjacent Step LIBOR (%)                                                                            |&quot;);</span>
+
+<span class="fc" id="L282">			System.out.println (&quot;\t|       Adjacent Step LIBOR Increment (bp)                                                                 |&quot;);</span>
+
+<span class="fc" id="L284">			System.out.println (&quot;\t|       Adjacent Step Continuously Compounded Forward Rate (%)                                             |&quot;);</span>
+
+<span class="fc" id="L286">			System.out.println (&quot;\t|       Adjacent Step Continuously Compounded Forward Rate Increment (bp)                                  |&quot;);</span>
+
+<span class="fc" id="L288">			System.out.println (&quot;\t|       Adjacent Step Spot Rate (%)                                                                        |&quot;);</span>
+
+<span class="fc" id="L290">			System.out.println (&quot;\t|       Adjacent Step Spot Rate Increment (bp)                                                             |&quot;);</span>
+
+<span class="fc" id="L292">			System.out.println (&quot;\t|       Adjacent Step Discount Function                                                                    |&quot;);</span>
+
+<span class="fc" id="L294">			System.out.println (&quot;\t|       Adjacent Step Discount Function Increment (c)                                                      |&quot;);</span>
+
+<span class="fc" id="L296">			System.out.println (&quot;\t|       Log-normal LIBOR Rate Volatility (%)                                                               |&quot;);</span>
+
+<span class="fc" id="L298">			System.out.println (&quot;\t|       Continuously Compounded Forward Rate Volatility (%)                                                |&quot;);</span>
+
+<span class="fc" id="L300">			System.out.println (&quot;\t|                                                                                                          |&quot;);</span>
+
+<span class="fc" id="L302">			System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L304">			LognormalLIBORPointEvolver lle = new LognormalLIBORPointEvolver (</span>
+				fundingLabel,
+				forwardLabel,
+<span class="fc" id="L307">				LLVInstance (</span>
+<span class="fc" id="L308">					dtSpot.julian(),</span>
+					forwardLabel,
+					aMS,
+					aadblCorrelation,
+					iNumFactor
+				),
+				fc,
+				dc
+			);
+
+<span class="fc bfc" id="L318" title="All 2 branches covered.">			for (int iRun = 0; iRun &lt; iNumRun; ++iRun)</span>
+<span class="fc" id="L319">				DisplayRunSnap (</span>
+<span class="fc" id="L320">					lle.evolve (</span>
+						iSpotDate,
+						iViewDate,
+						iViewTimeIncrement,
+						null
+					)
+				);
+
+<span class="fc" id="L328">			System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------|&quot;);</span>
+		}
+<span class="fc" id="L330">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

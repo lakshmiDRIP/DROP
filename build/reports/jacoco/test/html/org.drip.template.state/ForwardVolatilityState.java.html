@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForwardVolatilityState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.template.state</a> &gt; <span class="el_source">ForwardVolatilityState.java</span></div><h1>ForwardVolatilityState.java</h1><pre class="source lang-java linenums">
+package org.drip.template.state;
+
+import org.drip.analytics.date.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.volatility.VolatilityCurve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ForwardVolatilityState sets up the Calibration and the Construction of the Volatility Latent State for the
+ * 	Forward Latent State and examine the Emitted Metrics.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L67">public class ForwardVolatilityState {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L73">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L75">		String strFRATenor = &quot;3M&quot;;</span>
+<span class="fc" id="L76">		String strCurrency = &quot;GBP&quot;;</span>
+
+<span class="fc" id="L78">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			2017,
+			DateUtil.DECEMBER,
+			19
+		);
+
+<span class="fc" id="L84">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+			strCurrency,
+			strFRATenor
+		);
+
+<span class="fc" id="L89">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+			dtSpot,
+			strCurrency,
+			new String[] {
+				 &quot;30D&quot;,
+				 &quot;60D&quot;,
+				 &quot;91D&quot;,
+				&quot;182D&quot;,
+				&quot;273D&quot;
+			},
+			new double[] {
+				0.0668750,	//  30D
+				0.0675000,	//  60D
+				0.0678125,	//  91D
+				0.0712500,	// 182D
+				0.0750000	// 273D
+			},
+			&quot;ForwardRate&quot;,
+			null,
+			&quot;ForwardRate&quot;,
+			new String[] {
+				&quot;2Y&quot;,
+				&quot;3Y&quot;,
+				&quot;4Y&quot;,
+				&quot;5Y&quot;,
+				&quot;7Y&quot;,
+				&quot;10Y&quot;
+			},
+			new double[] {
+				0.08265,    //  2Y
+				0.08550,    //  3Y
+				0.08655,    //  4Y
+				0.08770,    //  5Y
+				0.08910,    //  7Y
+				0.08920     // 10Y
+			},
+			&quot;SwapRate&quot;
+		);
+
+<span class="fc" id="L128">		String[] astrMaturityTenor = new String[] {</span>
+			&quot;01Y&quot;,
+			&quot;02Y&quot;,
+			&quot;03Y&quot;,
+			&quot;04Y&quot;,
+			&quot;05Y&quot;,
+			&quot;07Y&quot;,
+			&quot;10Y&quot;
+		};
+
+<span class="fc" id="L138">		double[] adblStrike = new double[] {</span>
+			0.0788, //  &quot;1Y&quot;,
+			0.0839, // 	&quot;2Y&quot;,
+			0.0864, //  &quot;3Y&quot;,
+			0.0869, //  &quot;4Y&quot;,
+			0.0879, //  &quot;5Y&quot;,
+			0.0890, //  &quot;7Y&quot;,
+			0.0889  // &quot;10Y&quot;
+		};
+
+<span class="fc" id="L148">		double[] adblPrice = new double[] {</span>
+			0.0017, //  &quot;1Y&quot;,
+			0.0132, // 	&quot;2Y&quot;,
+			0.0234, //  &quot;3Y&quot;,
+			0.0343, //  &quot;4Y&quot;,
+			0.0491, //  &quot;5Y&quot;,
+			0.0868, //  &quot;7Y&quot;
+			0.1175  // &quot;10Y&quot;
+		};
+
+<span class="fc" id="L158">		VolatilityCurve vcForward = LatentMarketStateBuilder.ForwardRateVolatilityCurve (</span>
+			dtSpot,
+			forwardLabel,
+			true,
+			astrMaturityTenor,
+			adblStrike,
+			adblPrice,
+			&quot;Price&quot;,
+			dcFunding,
+<span class="fc" id="L167">			dcFunding.nativeForwardCurve (strFRATenor)</span>
+		);
+
+<span class="fc" id="L170">		String strLatentStateLabel = vcForward.label().fullyQualifiedName();</span>
+
+<span class="fc" id="L172">		System.out.println (&quot;\n\n\t||-----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L175">			System.out.println (</span>
+				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  CAP PRICE  | &quot; +
+<span class="fc" id="L177">				astrMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblPrice[i], 1, 4, 1.) +</span>
+				&quot; | Forward Implied Vol | &quot; +
+<span class="fc" id="L179">				FormatUtil.FormatDouble (vcForward.impliedVol (astrMaturityTenor[i]), 2, 2, 100.) +</span>
+				&quot;% ||&quot;
+			);
+
+<span class="fc" id="L183">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L184">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarketCorrelation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.universe</a> &gt; <span class="el_source">MarketCorrelation.java</span></div><h1>MarketCorrelation.java</h1><pre class="source lang-java linenums">
+package org.drip.exposure.universe;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MarketCorrelation holds the Cross Latent State Correlations needed for computing the Valuation Adjustment.
+ *  The References are:&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Strategies, Funding Costs &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (12)&lt;/b&gt;
+ *  	82-87.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75.&lt;br&gt;&lt;br&gt;
+ *  
+ *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  	86-90.&lt;br&gt;&lt;br&gt;
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  	&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102.&lt;br&gt;&lt;br&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MarketCorrelation
+{
+<span class="nc" id="L72">	private double[][] _matrix = null;</span>
+<span class="nc" id="L73">	private java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; _latentStateLabelList = null;</span>
+
+<span class="nc" id="L75">	private java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _latentStateIndexMap = new</span>
+		java.util.HashMap&lt;java.lang.String, java.lang.Integer&gt;();
+
+	/**
+	 * MarketCorrelation Constructor
+	 * 
+	 * @param latentStateLabelList The Latent State Label List
+	 * @param matrix The Square Correlation Matrix
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MarketCorrelation (
+		final java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; latentStateLabelList,
+		final double[][] matrix)
+		throws java.lang.Exception
+<span class="nc" id="L91">	{</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">		if (null == (_latentStateLabelList = latentStateLabelList) ||</span>
+			null == (_matrix = matrix))
+		{
+<span class="nc" id="L95">			throw new java.lang.Exception (&quot;MarketCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L98">		int latentStateCount = _latentStateLabelList.size();</span>
+
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (0 == latentStateCount || latentStateCount != _matrix.length)</span>
+		{
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;MarketCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (int latentStateIndex = 0; latentStateIndex &lt; latentStateCount; ++latentStateIndex)</span>
+		{
+<span class="nc" id="L107">			org.drip.state.identifier.LatentStateLabel latentStateLabel = _latentStateLabelList.get</span>
+<span class="nc" id="L108">				(latentStateIndex);</span>
+
+<span class="nc bnc" id="L110" title="All 6 branches missed.">			if (null == latentStateLabel ||</span>
+				null == _matrix[latentStateIndex] ||
+				latentStateCount != _matrix[latentStateIndex].length)
+			{
+<span class="nc" id="L114">				throw new java.lang.Exception (&quot;MarketCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			for (int matrixColumnIndex = 0; matrixColumnIndex &lt; latentStateCount; ++matrixColumnIndex)</span>
+			{
+<span class="nc" id="L119">				double correlationEntry = _matrix[latentStateIndex][matrixColumnIndex];</span>
+
+<span class="nc bnc" id="L121" title="All 12 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (correlationEntry) ||</span>
+					(latentStateIndex == matrixColumnIndex &amp;&amp; 1 != correlationEntry) ||
+					(latentStateIndex != matrixColumnIndex &amp;&amp; (1 &lt; correlationEntry ||
+						-1 &lt; correlationEntry)))
+				{
+<span class="nc" id="L126">					throw new java.lang.Exception (&quot;MarketCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+				}
+			}
+
+<span class="nc" id="L130">			java.lang.String latentStateLabelFQN = latentStateLabel.fullyQualifiedName();</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">			if (_latentStateIndexMap.containsKey (latentStateLabelFQN))</span>
+			{
+<span class="nc" id="L134">				throw new java.lang.Exception (&quot;MarketCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+
+<span class="nc" id="L137">			_latentStateIndexMap.put (</span>
+				latentStateLabelFQN,
+<span class="nc" id="L139">				latentStateIndex</span>
+			);
+		}
+<span class="nc" id="L142">	}</span>
+
+	/**
+	 * Retrieve the Latent State Label List
+	 * 
+	 * @return The Latent State Label List
+	 */
+
+	public java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; latentStateLabelList()
+	{
+<span class="nc" id="L152">		return _latentStateLabelList;</span>
+	}
+
+	/**
+	 * Retrieve the Cross-Latent State Correlation Matrix
+	 * 
+	 * @return The Cross-Latent State Correlation Matrix
+	 */
+
+	public double[][] matrix()
+	{
+<span class="nc" id="L163">		return _matrix;</span>
+	}
+
+	/**
+	 * Check if the Latent State  is available in the Correlation Matrix
+	 * 
+	 * @param latentStateLabel The Latent State Label
+	 * 
+	 * @return TRUE - The Latent State  is available in the Correlation Matrix
+	 */
+
+	public boolean latentStateExists (
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
+	{
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		return null != latentStateLabel &amp;&amp; _latentStateIndexMap.containsKey</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			(latentStateLabel.fullyQualifiedName());</span>
+	}
+
+	/**
+	 * Retrieve the Cross State Correlation
+	 * 
+	 * @param latentStateLabel1 Latent State Label #1
+	 * @param latentStateLabel2 Latent State Label #2
+	 * 
+	 * @return The Cross State Correlation
+	 */
+
+	public double entry (
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel1,
+		final org.drip.state.identifier.LatentStateLabel latentStateLabel2)
+	{
+<span class="nc bnc" id="L194" title="All 4 branches missed.">		return !latentStateExists (latentStateLabel1) || !latentStateExists (latentStateLabel2) ? 0. :</span>
+<span class="nc" id="L195">			_matrix[_latentStateIndexMap.get (latentStateLabel1.fullyQualifiedName())]</span>
+<span class="nc" id="L196">				[_latentStateIndexMap.get (latentStateLabel2.fullyQualifiedName())];</span>
+	}
+
+	/**
+	 * Synthesize a MarketCorrelation Instance for the Custom Latent State List
+	 * 
+	 * @param customLatentStateLabelList The Custom Latent State List
+	 * 
+	 * @return The MarketCorrelation Instance for the Custom Latent State List
+	 */
+
+	public MarketCorrelation customMarketCorrelation (
+		final java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; customLatentStateLabelList)
+	{
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (null == customLatentStateLabelList)</span>
+		{
+<span class="nc" id="L212">			return null;</span>
+		}
+
+<span class="nc" id="L215">		int customLatentStateCount = customLatentStateLabelList.size();</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (0 == customLatentStateCount)</span>
+		{
+<span class="nc" id="L219">			return null;</span>
+		}
+
+<span class="nc" id="L222">		double[][] customMatix = new double[customLatentStateCount][customLatentStateCount];</span>
+
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int customLatentStateIndexOuter = 0; customLatentStateIndexOuter &lt; customLatentStateCount;</span>
+<span class="nc" id="L225">			++customLatentStateIndexOuter)</span>
+		{
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			for (int customLatentStateIndexInner = 0; customLatentStateIndexInner &lt; customLatentStateCount;</span>
+<span class="nc" id="L228">				++customLatentStateIndexInner)</span>
+			{
+<span class="nc bnc" id="L230" title="All 2 branches missed.">				customMatix[customLatentStateIndexOuter][customLatentStateIndexInner] =</span>
+					customLatentStateIndexOuter == customLatentStateIndexInner ? 1. :
+<span class="nc" id="L232">					entry (</span>
+<span class="nc" id="L233">						customLatentStateLabelList.get (customLatentStateIndexOuter),</span>
+<span class="nc" id="L234">						customLatentStateLabelList.get (customLatentStateIndexInner)</span>
+					);
+			}
+		}
+
+		try
+		{
+<span class="nc" id="L241">			return new MarketCorrelation (</span>
+				customLatentStateLabelList,
+				customMatix
+			);
+		}
+<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L248">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L251">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

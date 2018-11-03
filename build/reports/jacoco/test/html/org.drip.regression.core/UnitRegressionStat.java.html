@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnitRegressionStat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.regression.core</a> &gt; <span class="el_source">UnitRegressionStat.java</span></div><h1>UnitRegressionStat.java</h1><pre class="source lang-java linenums">
+package org.drip.regression.core;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * UnitRegressionStat creates the statistical details for the Unit Regressor. It holds the following:
+ * 	- Execution Initialization Delay
+ * 	- Execution time mean, variance, maximum, and minimum
+ * 	- The full list of individual execution times
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class UnitRegressionStat {
+<span class="fc" id="L65">	private long _lExecTimeMean = 0L;</span>
+<span class="fc" id="L66">	private long _lExecTimeMaximum = 0L;</span>
+<span class="fc" id="L67">	private long _lExecTimeMinimum = 0L;</span>
+<span class="fc" id="L68">	private long _lExecTimeVariance = 0L;</span>
+<span class="fc" id="L69">	private long _lInitializationDelay = 0L;</span>
+<span class="fc" id="L70">	private java.util.List&lt;java.lang.Long&gt; _llExecTime = null;</span>
+
+	/**
+	 * Empty Constructor
+	 */
+
+	public UnitRegressionStat()
+<span class="fc" id="L77">	{</span>
+<span class="fc" id="L78">		_llExecTime = new java.util.ArrayList&lt;java.lang.Long&gt;();</span>
+<span class="fc" id="L79">	}</span>
+
+	/**
+	 * Add another run execution time
+	 * 
+	 * @param lExecTime Execution Time
+	 * 
+	 * @return TRUE - Executed time run successfully added
+	 */
+
+	public boolean addExecTime (
+		final long lExecTime)
+	{
+<span class="fc" id="L92">		_llExecTime.add (lExecTime);</span>
+
+<span class="fc" id="L94">		return true;</span>
+	}
+
+	/**
+	 * Generate the statistics across all the execution times generated
+	 * 
+	 * @return TRUE - Statistics successfully generated
+	 */
+
+	public boolean generateStat()
+	{
+<span class="fc" id="L105">		boolean bFirstRun = true;</span>
+
+<span class="fc" id="L107">		int iNumRuns = _llExecTime.size();</span>
+
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (0 == iNumRuns) return false;</span>
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		for (long lExecTime : _llExecTime) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			if (bFirstRun) {</span>
+<span class="fc" id="L113">				_lExecTimeMaximum = lExecTime;</span>
+<span class="fc" id="L114">				_lExecTimeMinimum = lExecTime;</span>
+<span class="fc" id="L115">				_lInitializationDelay = lExecTime;</span>
+			} else {
+<span class="fc" id="L117">				_lExecTimeMean += lExecTime;</span>
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">				if (_lExecTimeMaximum &lt; lExecTime) _lExecTimeMaximum = lExecTime;</span>
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">				if (_lExecTimeMinimum &gt; lExecTime) _lExecTimeMinimum = lExecTime;</span>
+			}
+
+<span class="fc" id="L124">			bFirstRun = false;</span>
+<span class="fc" id="L125">		}</span>
+
+<span class="fc" id="L127">		_lExecTimeMean /= (iNumRuns - 1);</span>
+<span class="fc" id="L128">		bFirstRun = true;</span>
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (long lExecTime : _llExecTime) {</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">			if (!bFirstRun)</span>
+<span class="fc" id="L132">				_lExecTimeVariance += (lExecTime - _lExecTimeMean) * (lExecTime - _lExecTimeMean);</span>
+
+<span class="fc" id="L134">			bFirstRun = false;</span>
+<span class="fc" id="L135">		}</span>
+
+<span class="fc" id="L137">		_lExecTimeVariance = (long) java.lang.Math.sqrt (_lExecTimeVariance / (iNumRuns - 1));</span>
+
+<span class="fc" id="L139">		_lInitializationDelay -= _lExecTimeMean;</span>
+<span class="fc" id="L140">		return true;</span>
+	}
+
+	/**
+	 * Get the number of runs for the statistics
+	 * 
+	 * @return Number of runs
+	 */
+
+	public int getRuns()
+	{
+<span class="nc" id="L151">		return _llExecTime.size();</span>
+	}
+
+	/**
+	 * Get the Mean in the execution time
+	 * 
+	 * @return Execution Time Mean
+	 */
+
+	public long getMean()
+	{
+<span class="nc" id="L162">		return _lExecTimeMean;</span>
+	}
+
+	/**
+	 * Get the Minimum in the execution time
+	 * 
+	 * @return Execution Time Minimum
+	 */
+
+	public long getMin()
+	{
+<span class="nc" id="L173">		return _lExecTimeMinimum;</span>
+	}
+
+	/**
+	 * Get the Maximum in the execution time
+	 * 
+	 * @return Execution Time Maximum
+	 */
+
+	public long getMax()
+	{
+<span class="nc" id="L184">		return _lExecTimeMaximum;</span>
+	}
+
+	/**
+	 * Get the variance in the execution time
+	 * 
+	 * @return Execution Time Variance
+	 */
+
+	public long getVariance()
+	{
+<span class="nc" id="L195">		return _lExecTimeVariance;</span>
+	}
+
+	/**
+	 * Get the delay when the regressor is invoked for the first time
+	 * 
+	 * @return Initialization Delay
+	 */
+
+	public long getInitializationDelay()
+	{
+<span class="nc" id="L206">		return _lInitializationDelay;</span>
+	}
+
+	/**
+	 * Return the string version of the statistics
+	 * 
+	 * @param strRegressionUnit Name the unit for which the regression run was done
+	 * 
+	 * @return String holding the content of the unit regression statistics
+	 */
+
+	public java.lang.String displayString (
+		final java.lang.String strRegressionUnit)
+	{
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">		if (null == strRegressionUnit || strRegressionUnit.isEmpty()) return null;</span>
+
+<span class="fc" id="L222">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+
+<span class="fc" id="L224">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.NumRuns=&quot; + _llExecTime.size() + &quot;\n&quot;);</span>
+
+<span class="fc" id="L226">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMean=&quot; + _lExecTimeMean + &quot;\n&quot;);</span>
+
+<span class="fc" id="L228">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMaximum=&quot; + _lExecTimeMaximum + &quot;\n&quot;);</span>
+
+<span class="fc" id="L230">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMinimum=&quot; + _lExecTimeMinimum + &quot;\n&quot;);</span>
+
+<span class="fc" id="L232">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeVariance=&quot; + _lExecTimeVariance + &quot;\n&quot;);</span>
+
+<span class="fc" id="L234">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.InitializationDelay=&quot; + _lInitializationDelay + &quot;\n&quot;);</span>
+
+<span class="fc" id="L236">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeList=&quot; + _llExecTime.toString() + &quot;\n&quot;);</span>
+
+<span class="fc" id="L238">		return sb.toString();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

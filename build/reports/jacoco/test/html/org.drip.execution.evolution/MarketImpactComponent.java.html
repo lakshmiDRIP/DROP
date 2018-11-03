@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarketImpactComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.evolution</a> &gt; <span class="el_source">MarketImpactComponent.java</span></div><h1>MarketImpactComponent.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.evolution;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MarketImpactComponent exposes the Evolution Increment Components of the Movements exhibited by an Asset's
+ *  Manifest Measures owing to either Stochastic or Deterministic Factors. The References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
+ * 		1, 1-50.
+ *
+ * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
+ * 		Journal of Finance, 50, 1147-1174.
+ *
+ * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MarketImpactComponent {
+<span class="nc" id="L73">	private double _dblCurrentStep = java.lang.Double.NaN;</span>
+<span class="nc" id="L74">	private double _dblPreviousStep = java.lang.Double.NaN;</span>
+<span class="nc" id="L75">	private double _dblPermanentImpact = java.lang.Double.NaN;</span>
+<span class="nc" id="L76">	private double _dblTemporaryImpact = java.lang.Double.NaN;</span>
+
+	/**
+	 * MarketImpactComponent Constructor
+	 * 
+	 * @param dblCurrentStep The Current Step Volatility Component Contribution
+	 * @param dblPreviousStep The Previous Step Volatility Component Contribution
+	 * @param dblPermanentImpact The Permanent Market Impact Contribution
+	 * @param dblTemporaryImpact The Temporary Market Impact Contribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MarketImpactComponent (
+		final double dblCurrentStep,
+		final double dblPreviousStep,
+		final double dblPermanentImpact,
+		final double dblTemporaryImpact)
+		throws java.lang.Exception
+<span class="nc" id="L95">	{</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))</span>
+<span class="nc" id="L100">			throw new java.lang.Exception (&quot;MarketImpactComponent Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L101">	}</span>
+
+	/**
+	 * Retrieve the Previous Step Contribution
+	 * 
+	 * @return The Previous Step Contribution
+	 */
+
+	public double previousStep()
+	{
+<span class="nc" id="L111">		return _dblPreviousStep;</span>
+	}
+
+	/**
+	 * Retrieve the Current Step Contribution
+	 * 
+	 * @return The Current Step Contribution
+	 */
+
+	public double currentStep()
+	{
+<span class="nc" id="L122">		return _dblCurrentStep;</span>
+	}
+
+	/**
+	 * Retrieve the Permanent Market Impact Contribution
+	 * 
+	 * @return The Permanent Market Impact Contribution
+	 */
+
+	public double permanentImpact()
+	{
+<span class="nc" id="L133">		return _dblPermanentImpact;</span>
+	}
+
+	/**
+	 * Retrieve the Temporary Market Impact Contribution
+	 * 
+	 * @return The Temporary Market Impact Contribution
+	 */
+
+	public double temporaryImpact()
+	{
+<span class="nc" id="L144">		return _dblTemporaryImpact;</span>
+	}
+
+	/**
+	 * Retrieve the Total Component Impact
+	 * 
+	 * @return The Total Component Impact
+	 */
+
+	public double total()
+	{
+<span class="nc" id="L155">		return previousStep() + currentStep() + permanentImpact() + temporaryImpact();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

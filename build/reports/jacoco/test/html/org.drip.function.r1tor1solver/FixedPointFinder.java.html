@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixedPointFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.r1tor1solver</a> &gt; <span class="el_source">FixedPointFinder.java</span></div><h1>FixedPointFinder.java</h1><pre class="source lang-java linenums">
+package org.drip.function.r1tor1solver;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FixedPointFinder is the base abstract class that is implemented by customized invocations, e.g., Newton's
+ * 	method, or any of the bracketing methodologies.
+ * 
+ * FixedPointFinder invokes the core routine for determining the fixed point from the goal. The
+ * 	ExecutionControl determines the execution termination. The initialization heuristics implements
+ * 	targeted customization of the search.
+ * 
+ * FixedPointFinder main flow comprises of the following steps:
+ * 	- Initialize the fixed point search zone by determining either a) the brackets, or b) the starting
+ * 		variate.
+ * 	- Compute the absolute OF tolerance that establishes the attainment of the fixed point.
+ * 	- Launch the variate iterator that iterates the variate.
+ * 	- Iterate until the desired tolerance has been attained
+ * 	- Return the fixed point output.
+ * 
+ * Fixed point finders that derive from this provide implementations for the following:
+ * 	- Variate initialization: They may choose either bracketing initializer, or the convergence initializer -
+ * 		functionality is provided for both in this module.
+ * 	- Variate Iteration: Variates are iterated using a) any of the standard primitive built-in variate
+ * 		iterators (or custom ones), or b) a variate selector scheme for each iteration.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class FixedPointFinder {
+<span class="fc" id="L81">	protected boolean _bWhine = false;</span>
+<span class="fc" id="L82">	protected double _dblOFGoal = java.lang.Double.NaN;</span>
+<span class="fc" id="L83">	protected org.drip.function.r1tor1solver.ExecutionControl _ec = null;</span>
+<span class="fc" id="L84">	protected org.drip.function.definition.R1ToR1 _of = null;</span>
+
+	protected FixedPointFinder (
+		final double dblOFGoal,
+		final org.drip.function.definition.R1ToR1 of,
+		final org.drip.function.r1tor1solver.ExecutionControl ec,
+		final boolean bWhine)
+		throws java.lang.Exception
+<span class="fc" id="L92">	{</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoal = dblOFGoal) || null == (_of = of))</span>
+<span class="nc" id="L94">			throw new java.lang.Exception (&quot;FixedPointFinder constructor: Invalid inputs&quot;);</span>
+
+<span class="fc" id="L96">		_ec = new org.drip.function.r1tor1solver.ExecutionControl (of, null);</span>
+
+<span class="fc" id="L98">		_bWhine = bWhine;</span>
+<span class="fc" id="L99">	}</span>
+
+	protected abstract boolean iterateVariate (
+		final org.drip.function.r1tor1solver.IteratedVariate vi,
+		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop);
+
+	protected abstract org.drip.function.r1tor1solver.ExecutionInitializationOutput initializeVariateZone (
+		final org.drip.function.r1tor1solver.InitializationHeuristics ih);
+
+	/**
+	 * Invoke the solution 1D root finding sequence
+	 * 
+	 * @param ih Optional Initialization Heuristics
+	 * 
+	 * @return Root finder Solution Object for the variate
+	 */
+
+	public org.drip.function.r1tor1solver.FixedPointFinderOutput findRoot (
+		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
+	{
+<span class="fc" id="L119">		org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = null;</span>
+
+<span class="fc" id="L121">		org.drip.function.r1tor1solver.ExecutionInitializationOutput eiop = initializeVariateZone (ih);</span>
+
+<span class="fc bfc" id="L123" title="All 4 branches covered.">		if (null == eiop || !eiop.isDone()) return null;</span>
+
+		try {
+<span class="fc" id="L126">			rfop = new org.drip.function.r1tor1solver.FixedPointFinderOutput (eiop);</span>
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			if (!rfop.incrOFCalcs()) return rfop;</span>
+
+<span class="fc" id="L130">			double dblOF = _of.evaluate (eiop.getStartingVariate());</span>
+
+<span class="fc" id="L132">			double dblAbsoluteTolerance = _ec.calcAbsoluteOFTolerance (dblOF);</span>
+
+<span class="fc" id="L134">			double dblAbsoluteConvergence = _ec.calcAbsoluteVariateConvergence (eiop.getStartingVariate());</span>
+
+<span class="fc" id="L136">			org.drip.function.r1tor1solver.IteratedVariate iv = new</span>
+				org.drip.function.r1tor1solver.IteratedVariate (eiop, dblOF);
+
+<span class="fc" id="L139">			int iNumIterationsPending = _ec.getNumIterations();</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">			while (!_ec.hasOFReachedGoal (dblAbsoluteTolerance, iv.getOF(), _dblOFGoal)) {</span>
+<span class="fc" id="L142">				double dblPrevVariate = iv.getVariate();</span>
+
+<span class="pc bpc" id="L144" title="2 of 6 branches missed.">				if (!rfop.incrIterations() || 0 == --iNumIterationsPending || !iterateVariate (iv, rfop))</span>
+<span class="fc" id="L145">					return rfop;</span>
+
+<span class="pc bpc" id="L147" title="3 of 4 branches missed.">				if (_ec.isVariateConvergenceCheckEnabled() &amp;&amp; (java.lang.Math.abs (dblPrevVariate -</span>
+<span class="nc" id="L148">					iv.getVariate()) &lt; dblAbsoluteConvergence))</span>
+<span class="nc" id="L149">					break;</span>
+<span class="fc" id="L150">			}</span>
+
+<span class="fc" id="L152">			rfop.setRoot (iv.getVariate());</span>
+<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
+<span class="fc" id="L155">		}</span>
+
+<span class="fc" id="L157">		return rfop;</span>
+	}
+
+	/**
+	 * Invoke the solution 1D root finding sequence
+	 * 
+	 * @return Root finder Solution Object for the variate
+	 */
+
+	public org.drip.function.r1tor1solver.FixedPointFinderOutput findRoot()
+	{
+<span class="fc" id="L168">		return findRoot (null);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

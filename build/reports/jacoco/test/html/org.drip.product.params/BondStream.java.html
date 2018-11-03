@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BondStream.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.product.params</a> &gt; <span class="el_source">BondStream.java</span></div><h1>BondStream.java</h1><pre class="source lang-java linenums">
+package org.drip.product.params;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BondStream is the place-holder for the bond's period generation parameters. Contains the bond's
+ * 	date adjustment parameters for period start/end, period accrual start/end, effective, maturity, pay and
+ * 	reset, first coupon date, and interest accrual start date. It exports serialization into and
+ *  de-serialization out of byte arrays.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BondStream extends org.drip.product.rates.Stream {
+<span class="fc" id="L66">	private java.lang.String _strMaturityType = &quot;&quot;;</span>
+<span class="fc" id="L67">	private int _iFinalMaturityDate = java.lang.Integer.MIN_VALUE;</span>
+
+	/**
+	 * Construct an Instance of BondStream from the First/Penultimate Dates using the specified Parameters
+	 * 
+	 * @param iMaturityDate Maturity Date
+	 * @param iEffectiveDate Effective Date
+	 * @param iFinalMaturityDate Final Maturity Date
+	 * @param iFirstCouponDate First Coupon Date
+	 * @param iPenultimateCouponDate Penultimate Coupon Date
+	 * @param iFreq Coupon Frequency
+	 * @param dblCoupon Coupon Rate
+	 * @param strCouponDC Coupon day count convention
+	 * @param strAccrualDC Accrual day count convention
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * @param strMaturityType Maturity Type
+	 * @param bPeriodsFromForward Generate Periods forward (True) or Backward (False)
+	 * @param strCalendar Optional Holiday Calendar for Accrual Calculations
+	 * @param strCurrency Coupon Currency
+	 * @param floaterLabel The Floater Label
+	 * @param creditLabel The Credit Label
+	 * 
+	 * @return The BondStream Instance
+	 */
+
+	public static final BondStream FromFirstPenultimateCouponDate (
+		final int iMaturityDate,
+		final int iEffectiveDate,
+		final int iFinalMaturityDate,
+		final int iFirstCouponDate,
+		final int iPenultimateCouponDate,
+		final int iFreq,
+		final double dblCoupon,
+		final java.lang.String strCouponDC,
+		final java.lang.String strAccrualDC,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
+		final java.lang.String strMaturityType,
+		final boolean bPeriodsFromForward,
+		final java.lang.String strCalendar,
+		final java.lang.String strCurrency,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
+	{
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = null == floaterLabel ?</span>
+<span class="fc" id="L125">			org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedStream (</span>
+				iEffectiveDate,
+				iMaturityDate,
+				iFirstCouponDate,
+				iPenultimateCouponDate,
+				iFreq,
+				dblCoupon,
+				strCouponDC,
+				strAccrualDC,
+				dapPay,
+				dapMaturity,
+				dapAccrualEnd,
+				strCurrency,
+				creditLabel
+<span class="fc" id="L139">			) : org.drip.product.creator.StreamBuilder.FirstPenultimateDateFloatStream (</span>
+				iEffectiveDate,
+				iMaturityDate,
+				iFirstCouponDate,
+				iPenultimateCouponDate,
+				iFreq,
+				dblCoupon,
+				dapPay,
+				dapMaturity,
+				dapAccrualEnd,
+				floaterLabel,
+				creditLabel
+			);
+
+		try {
+<span class="fc" id="L154">			return new BondStream (</span>
+				lsCouponPeriod,
+				iFinalMaturityDate,
+				strMaturityType
+			);
+<span class="nc" id="L159">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L160">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L163">		return null;</span>
+	}
+
+	/**
+	 * Construct and Instance of BondStream from the specified Parameters
+	 * 
+	 * @param iMaturityDate Maturity Date
+	 * @param iEffectiveDate Effective Date
+	 * @param iFinalMaturityDate Final Maturity Date
+	 * @param iFirstCouponDate First Coupon Date
+	 * @param iInterestAccrualStartDate Interest Accrual Start Date
+	 * @param iFreq Coupon Frequency
+	 * @param dblCoupon Coupon Rate
+	 * @param strCouponDC Coupon day count convention
+	 * @param strAccrualDC Accrual day count convention
+	 * @param dapPay Pay Date Adjustment Parameters
+	 * @param dapReset Reset Date Adjustment Parameters
+	 * @param dapMaturity Maturity Date Adjustment Parameters
+	 * @param dapEffective Effective Date Adjustment Parameters
+	 * @param dapPeriodEnd Period End Date Adjustment Parameters
+	 * @param dapAccrualEnd Accrual Date Adjustment Parameters
+	 * @param dapPeriodStart Period Start Date Adjustment Parameters
+	 * @param dapAccrualStart Accrual Start  Date Adjustment Parameters
+	 * @param strMaturityType Maturity Type
+	 * @param bPeriodsFromForward Generate Periods forward (True) or Backward (False)
+	 * @param strCalendar Optional Holiday Calendar for accrual calculations
+	 * @param strCurrency Coupon Currency
+	 * @param floaterLabel The Floater Label
+	 * @param creditLabel The Credit Label
+	 * 
+	 * @return The BondStream Instance
+	 */
+
+	public static final BondStream Create (
+		final int iMaturityDate,
+		final int iEffectiveDate,
+		final int iFinalMaturityDate,
+		final int iFirstCouponDate,
+		final int iInterestAccrualStartDate,
+		final int iFreq,
+		final double dblCoupon,
+		final java.lang.String strCouponDC,
+		final java.lang.String strAccrualDC,
+		final org.drip.analytics.daycount.DateAdjustParams dapPay,
+		final org.drip.analytics.daycount.DateAdjustParams dapReset,
+		final org.drip.analytics.daycount.DateAdjustParams dapMaturity,
+		final org.drip.analytics.daycount.DateAdjustParams dapEffective,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
+		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
+		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
+		final java.lang.String strMaturityType,
+		final boolean bPeriodsFromForward,
+		final java.lang.String strCalendar,
+		final java.lang.String strCurrency,
+		final org.drip.state.identifier.FloaterLabel floaterLabel,
+		final org.drip.state.identifier.EntityCDSLabel creditLabel)
+	{
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains (&quot;EOM&quot;);</span>
+
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		int iCouponDCIndex = null == strCouponDC ? -1 : strCouponDC.indexOf (&quot; NON&quot;);</span>
+
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		java.lang.String strCouponDCAdj = -1 != iCouponDCIndex ? strCouponDC.substring (0, iCouponDCIndex) :</span>
+			strCouponDC;
+
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">		boolean bAccrualEOMAdj = null == strAccrualDC ? false : strAccrualDC.toUpperCase().contains (&quot;EOM&quot;);</span>
+
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		int iAccrualDCIndex = null == strAccrualDC ? -1 : strAccrualDC.indexOf (&quot; NON&quot;);</span>
+
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		java.lang.String strAccrualDCAdj = -1 != iAccrualDCIndex ? strAccrualDC.substring (0,</span>
+			iAccrualDCIndex) : strAccrualDC;
+
+<span class="fc" id="L235">		org.drip.analytics.date.JulianDate dtEffective = new org.drip.analytics.date.JulianDate</span>
+			(iEffectiveDate);
+
+<span class="fc" id="L238">		org.drip.analytics.date.JulianDate dtMaturity = new org.drip.analytics.date.JulianDate</span>
+			(iMaturityDate);
+
+<span class="fc" id="L241">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
+<span class="fc" id="L242">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = null;</span>
+
+		try {
+<span class="fc" id="L245">			org.drip.param.period.UnitCouponAccrualSetting ucas = new</span>
+				org.drip.param.period.UnitCouponAccrualSetting (iFreq, strCouponDCAdj, bCouponEOMAdj,
+					strAccrualDCAdj, bAccrualEOMAdj, strCurrency, false,
+						org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L250">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, dapPay, 1., null,
+					null, null, creditLabel);
+
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate = bPeriodsFromForward ?</span>
+<span class="pc" id="L255">				org.drip.analytics.support.CompositePeriodBuilder.ForwardEdgeDates (dtEffective, dtMaturity,</span>
+					strTenor, dapAccrualEnd, org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB) :
+<span class="fc" id="L257">						org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (dtEffective,</span>
+							dtMaturity, strTenor, dapAccrualEnd,
+								org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB);
+
+<span class="fc bfc" id="L261" title="All 2 branches covered.">			if (null == floaterLabel) {</span>
+<span class="fc" id="L262">				org.drip.param.period.ComposableFixedUnitSetting cfus = new</span>
+					org.drip.param.period.ComposableFixedUnitSetting (strTenor,
+						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
+							dblCoupon, 0., strCurrency);
+
+<span class="fc" id="L267">				lsCouponPeriod = org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit</span>
+<span class="fc" id="L268">					(lsStreamEdgeDate, cps, ucas, cfus);</span>
+<span class="fc" id="L269">			} else {</span>
+<span class="fc" id="L270">				org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+					org.drip.param.period.ComposableFloatingUnitSetting (strTenor,
+						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
+							floaterLabel,
+								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+					dblCoupon);
+
+<span class="fc" id="L277">				lsCouponPeriod = org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit</span>
+<span class="fc" id="L278">					(lsStreamEdgeDate, cps, cfus);</span>
+			}
+
+<span class="fc" id="L281">			return new BondStream (lsCouponPeriod, iFinalMaturityDate, strMaturityType);</span>
+<span class="nc" id="L282">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L283">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L286">		return null;</span>
+	}
+
+	/**
+	 * Construct the BondStream instance from the list of coupon periods
+	 * 
+	 * @param lsCouponPeriod List of Coupon Period
+	 * @param iFinalMaturityDate Final Maturity Date
+	 * @param strMaturityType Maturity Type
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 */
+
+	public BondStream (
+		final java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod,
+		final int iFinalMaturityDate,
+		final java.lang.String strMaturityType)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L305">		super (lsCouponPeriod);</span>
+
+<span class="fc" id="L307">		_strMaturityType = strMaturityType;</span>
+<span class="fc" id="L308">		_iFinalMaturityDate = iFinalMaturityDate;</span>
+<span class="fc" id="L309">	}</span>
+
+	/**
+	 * Return the first Coupon period
+	 * 
+	 * @return The first Coupon period
+	 */
+
+	public org.drip.analytics.cashflow.CompositePeriod firstPeriod()
+	{
+<span class="nc" id="L319">		return periods().get (0);</span>
+	}
+
+	/**
+	 * Returns the final Coupon period
+	 * 
+	 * @return The final Coupon period
+	 */
+
+	public org.drip.analytics.cashflow.CompositePeriod lastPeriod()
+	{
+<span class="nc" id="L330">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = periods();</span>
+
+<span class="nc" id="L332">		return lsCouponPeriod.get (lsCouponPeriod.size() - 1);</span>
+	}
+
+	/**
+	 * Return the period index containing the specified date
+	 * 
+	 * @param iDate Date input
+	 * 
+	 * @return Period index containing the date
+	 * 
+	 * @throws java.lang.Exception Thrown if the input date not in the period set range
+	 */
+
+	public int periodIndex (
+		final int iDate)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L349">		int i = 0;</span>
+
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : periods()) {</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">			if (period.contains (iDate)) return i;</span>
+
+<span class="fc" id="L354">			++i;</span>
+<span class="fc" id="L355">		}</span>
+
+<span class="nc" id="L357">		throw new java.lang.Exception (&quot;BondStream::periodIndex =&gt; Input date not in the period set range!&quot;);</span>
+	}
+	
+	/**
+	 * Retrieve the period corresponding to the given index
+	 * 
+	 * @param iIndex Period index
+	 * 
+	 * @return Period object corresponding to the input index
+	 */
+
+	public org.drip.analytics.cashflow.CompositePeriod period (
+		final int iIndex)
+	{
+		try {
+<span class="fc" id="L372">			return periods().get (iIndex);</span>
+<span class="nc" id="L373">		} catch (java.lang.Exception e) {</span>
+		}
+
+<span class="nc" id="L376">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Maturity Type
+	 * 
+	 * @return The Maturity Type
+	 */
+
+	public java.lang.String maturityType()
+	{
+<span class="nc" id="L387">		return _strMaturityType;</span>
+	}
+
+	/**
+	 * Retrieve the Final Maturity Date
+	 * 
+	 * @return The Final Maturity Date
+	 */
+
+	public int finalMaturityDate()
+	{
+<span class="nc" id="L398">		return _iFinalMaturityDate;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

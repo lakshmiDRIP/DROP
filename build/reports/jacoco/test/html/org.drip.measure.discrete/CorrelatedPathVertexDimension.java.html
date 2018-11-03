@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CorrelatedPathVertexDimension.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.discrete</a> &gt; <span class="el_source">CorrelatedPathVertexDimension.java</span></div><h1>CorrelatedPathVertexDimension.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.discrete;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CorrelatedPathVertexDimension generates Correlated R^d Random Numbers at the specified Vertexes, over the
+ * 	Specified Paths.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CorrelatedPathVertexDimension {
+<span class="fc" id="L58">	private int _iNumPath = -1;</span>
+<span class="fc" id="L59">	private int _iNumVertex = -1;</span>
+<span class="fc" id="L60">	private double[][] _aadblCholesky = null;</span>
+<span class="fc" id="L61">	private boolean _bApplyAntithetic = false;</span>
+<span class="fc" id="L62">	private double[][] _aadblCorrelation = null;</span>
+<span class="fc" id="L63">	private org.drip.measure.crng.RandomNumberGenerator _rng = null;</span>
+<span class="fc" id="L64">	private org.drip.measure.discrete.QuadraticResampler _qr = null;</span>
+
+	/**
+	 * CorrelatedPathVertexDimension Constructor
+	 * 
+	 * @param rng The Random Number Generator
+	 * @param aadblCorrelation The Correlation Matrix
+	 * @param iNumVertex Number of Vertexes
+	 * @param iNumPath Number of Paths
+	 * @param bApplyAntithetic TRUE - Apply Antithetic Variables Based Variance Reduction
+	 * @param qr Quadratic Resampler Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CorrelatedPathVertexDimension (
+		final org.drip.measure.crng.RandomNumberGenerator rng,
+		final double[][] aadblCorrelation,
+		final int iNumVertex,
+		final int iNumPath,
+		final boolean bApplyAntithetic,
+		final org.drip.measure.discrete.QuadraticResampler qr)
+		throws java.lang.Exception
+<span class="fc" id="L87">	{</span>
+<span class="pc bpc" id="L88" title="3 of 6 branches missed.">		if (null == (_rng = rng) || 0 &gt;= (_iNumVertex = iNumVertex) || 0 &gt;= (_iNumPath = iNumPath))</span>
+<span class="nc" id="L89">			throw new java.lang.Exception (&quot;CorrelatedPathVertexDimension Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L91">		_qr = qr;</span>
+<span class="fc" id="L92">		_bApplyAntithetic = bApplyAntithetic;</span>
+
+<span class="fc" id="L94">		if (null == (_aadblCholesky = org.drip.quant.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">			(_aadblCorrelation = aadblCorrelation)))</span>
+<span class="nc" id="L96">			throw new java.lang.Exception (&quot;CorrelatedPathVertexDimension Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L97">	}</span>
+
+	/**
+	 * Retrieve the Random Number Generator
+	 * 
+	 * @return The Random Number Generator Instance
+	 */
+
+	public org.drip.measure.crng.RandomNumberGenerator randomNumberGenerator()
+	{
+<span class="nc" id="L107">		return _rng;</span>
+	}
+
+	/**
+	 * Retrieve the Correlation Matrix
+	 * 
+	 * @return The Correlation Matrix
+	 */
+
+	public double[][] correlation()
+	{
+<span class="nc" id="L118">		return _aadblCorrelation;</span>
+	}
+
+	/**
+	 * Retrieve the Cholesky Matrix
+	 * 
+	 * @return The Cholesky Matrix
+	 */
+
+	public double[][] cholesky()
+	{
+<span class="nc" id="L129">		return _aadblCholesky;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Vertexes
+	 * 
+	 * @return The Number of Vertexes
+	 */
+
+	public int numVertex()
+	{
+<span class="fc" id="L140">		return _iNumVertex;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Paths
+	 * 
+	 * @return The Number of Paths
+	 */
+
+	public int numPath()
+	{
+<span class="fc" id="L151">		return _iNumPath;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Dimensions
+	 * 
+	 * @return The Number of Dimensions
+	 */
+
+	public int numDimension()
+	{
+<span class="fc" id="L162">		return _aadblCholesky.length;</span>
+	}
+
+	/**
+	 * Indicate if the Antithetic Variable Generation is to be applied
+	 * 
+	 * @return TRUE - Apply Antithetic Variables Based Variance Reduction
+	 */
+
+	public boolean applyAntithetic()
+	{
+<span class="nc" id="L173">		return _bApplyAntithetic;</span>
+	}
+
+	/**
+	 * Retrieve the Quadratic Resampler Instance
+	 * 
+	 * @return The Quadratic Resampler Instance
+	 */
+
+	public org.drip.measure.discrete.QuadraticResampler quadraticResampler()
+	{
+<span class="nc" id="L184">		return _qr;</span>
+	}
+
+	/**
+	 * Generate a Straight Single R^d Vertex Realization
+	 * 
+	 * @return Straight Single R^d Vertex Realization
+	 */
+
+	public double[] straightVertexRealization()
+	{
+<span class="fc" id="L195">		int iDimension = _aadblCholesky.length;</span>
+<span class="fc" id="L196">		double[] adblRdCorrelated = new double[iDimension];</span>
+<span class="fc" id="L197">		double[] adblRdUncorrelated = new double[iDimension];</span>
+
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+			try {
+<span class="fc" id="L201">				adblRdUncorrelated[i] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
+<span class="fc" id="L202">					(_rng.nextDouble01());</span>
+<span class="nc" id="L203">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L204">				e.printStackTrace();</span>
+
+<span class="nc" id="L206">				return null;</span>
+<span class="fc" id="L207">			}</span>
+		}
+
+<span class="fc bfc" id="L210" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc" id="L211">			adblRdCorrelated[i] = 0.;</span>
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L214">				adblRdCorrelated[i] += _aadblCholesky[i][j] * adblRdUncorrelated[j];</span>
+		}
+
+<span class="fc" id="L217">		return adblRdCorrelated;</span>
+	}
+
+	/**
+	 * Generate an Antithetic R^d Vertex Pair Realization
+	 * 
+	 * @return Antithetic R^d Vertex Pair Realization
+	 */
+
+	public double[][] antitheticVertexPairRealization()
+	{
+<span class="nc" id="L228">		double[] adblStraightVertexRealization = straightVertexRealization();</span>
+
+<span class="nc" id="L230">		int iDimension = _aadblCholesky.length;</span>
+<span class="nc" id="L231">		double[] adblAntitheticVertexRealization = new double[iDimension];</span>
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L234">			adblAntitheticVertexRealization[i] = -1. * adblStraightVertexRealization[i];</span>
+
+<span class="nc" id="L236">		return new double[][] {adblStraightVertexRealization, adblAntitheticVertexRealization};</span>
+	}
+
+	/**
+	 * Generate a Single Straight Path R^d Vertex Realization
+	 * 
+	 * @return Single Straight Path R^d Vertex Realization
+	 */
+
+	public org.drip.measure.discrete.VertexRd straightPathVertexRd()
+	{
+<span class="fc" id="L247">		org.drip.measure.discrete.VertexRd vertexRealization = new</span>
+			org.drip.measure.discrete.VertexRd();
+
+<span class="fc bfc" id="L250" title="All 2 branches covered.">		for (int i = 0; i &lt; _iNumVertex; ++i) {</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">			if (!vertexRealization.add (i, straightVertexRealization())) return null;</span>
+		}
+
+<span class="fc bfc" id="L254" title="All 2 branches covered.">		return null != _qr ? org.drip.measure.discrete.VertexRd.FromFlatForm (_qr.transform</span>
+<span class="fc" id="L255">			(vertexRealization.flatform())) : vertexRealization;</span>
+	}
+
+	/**
+	 * Generate an Antithetic Pair Path R^d Vertex Realizations
+	 * 
+	 * @return Antithetic Pair Path R^d Vertex Realizations
+	 */
+
+	public org.drip.measure.discrete.VertexRd[] antitheticPairPathVertexRd()
+	{
+<span class="nc" id="L266">		org.drip.measure.discrete.VertexRd straightVertexRealization = new</span>
+			org.drip.measure.discrete.VertexRd();
+
+<span class="nc" id="L269">		org.drip.measure.discrete.VertexRd antitheticVertexRealization = new</span>
+			org.drip.measure.discrete.VertexRd();
+
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		for (int i = 0; i &lt; _iNumVertex; ++i) {</span>
+<span class="nc" id="L273">			double[][] aadblStraightAntitheticRealization = antitheticVertexPairRealization();</span>
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			if (!straightVertexRealization.add (i, aadblStraightAntitheticRealization[0]) ||</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">				!antitheticVertexRealization.add (i, aadblStraightAntitheticRealization[1]))</span>
+<span class="nc" id="L277">				return null;</span>
+		}
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (null == _qr)</span>
+<span class="nc" id="L281">			return new org.drip.measure.discrete.VertexRd[] {straightVertexRealization,</span>
+				antitheticVertexRealization};
+
+<span class="nc" id="L284">		return new org.drip.measure.discrete.VertexRd[] {org.drip.measure.discrete.VertexRd.FromFlatForm</span>
+<span class="nc" id="L285">			(_qr.transform (straightVertexRealization.flatform())),</span>
+<span class="nc" id="L286">				org.drip.measure.discrete.VertexRd.FromFlatForm (_qr.transform</span>
+<span class="nc" id="L287">					(antitheticVertexRealization.flatform()))};</span>
+	}
+
+	/**
+	 * Generate Straight Multi-Path R^d Vertex Realizations Array
+	 * 
+	 * @return Straight Multi-Path R^d Vertex Realizations Array
+	 */
+
+	public org.drip.measure.discrete.VertexRd[] straightMultiPathVertexRd()
+	{
+<span class="fc" id="L298">		org.drip.measure.discrete.VertexRd[] aVertexRd = new</span>
+			org.drip.measure.discrete.VertexRd[_iNumPath];
+
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		for (int i = 0; i &lt; _iNumPath; ++i) {</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">			if (null == (aVertexRd[i] = straightPathVertexRd())) return null;</span>
+		}
+
+<span class="fc" id="L305">		return aVertexRd;</span>
+	}
+
+	/**
+	 * Generate Antithetic Multi-Path R^d Vertex Realizations Array
+	 * 
+	 * @return Antithetic Multi-Path R^d Vertex Realizations Array
+	 */
+
+	public org.drip.measure.discrete.VertexRd[] antitheticMultiPathVertexRd()
+	{
+<span class="fc" id="L316">		org.drip.measure.discrete.VertexRd[] aVertexRd = new</span>
+			org.drip.measure.discrete.VertexRd[_iNumPath];
+
+<span class="fc" id="L319">		int iNumGeneration = _iNumPath / 2;</span>
+
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumGeneration; ++i) {</span>
+<span class="nc" id="L322">			org.drip.measure.discrete.VertexRd[] aAntitheticVertexRd = antitheticPairPathVertexRd();</span>
+
+<span class="nc bnc" id="L324" title="All 4 branches missed.">			if (null == aAntitheticVertexRd || 2 != aAntitheticVertexRd.length) return null;</span>
+
+<span class="nc bnc" id="L326" title="All 4 branches missed.">			if (null == (aVertexRd[i] = aAntitheticVertexRd[0]) || null == (aVertexRd[i + iNumGeneration] =</span>
+				aAntitheticVertexRd[1]))
+<span class="nc" id="L328">				return null;</span>
+		}
+
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">		if (1 == (_iNumPath % 2)) aVertexRd[_iNumPath - 1] = straightPathVertexRd();</span>
+
+<span class="fc" id="L333">		return aVertexRd;</span>
+	}
+
+	/**
+	 * Generate Multi-Path R^d Vertex Realizations Array
+	 * 
+	 * @return Multi-Path R^d Vertex Realizations Array
+	 */
+
+	public org.drip.measure.discrete.VertexRd[] multiPathVertexRd()
+	{
+<span class="fc bfc" id="L344" title="All 2 branches covered.">		return _bApplyAntithetic ? antitheticMultiPathVertexRd() : straightMultiPathVertexRd();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

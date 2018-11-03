@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TwoFactorLIBORVolatility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.lmm</a> &gt; <span class="el_source">TwoFactorLIBORVolatility.java</span></div><h1>TwoFactorLIBORVolatility.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.lmm;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.definition.MarketSurface;
+import org.drip.dynamics.lmm.LognormalLIBORVolatility;
+import org.drip.market.otc.*;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.creator.SingleStreamComponentBuilder;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.*;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.creator.*;
+import org.drip.state.discount.*;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TwoFactorLIBORVolatility demonstrates the Construction and Usage of the 2 Factor LIBOR Forward Rate
+ *  Volatility. The References are:
+ * 
+ *  1) Goldys, B., M. Musiela, and D. Sondermann (1994): Log-normality of Rates and Term Structure Models,
+ *  	The University of New South Wales.
+ * 
+ *  2) Musiela, M. (1994): Nominal Annual Rates and Log-normal Volatility Structure, The University of New
+ *   	South Wales.
+ * 
+ * 	3) Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
+ * 		Finance 7 (2), 127-155.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L87">public class TwoFactorLIBORVolatility {</span>
+
+	private static final FixFloatComponent OTCFixFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="fc" id="L95">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="fc" id="L102">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	private static final CalibratableComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final int[] aiDay,
+		final int iNumFuture,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L118">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
+
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L121">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="fc" id="L123">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="fc" id="L127">				ForwardLabel.Create (</span>
+					strCurrency,
+					&quot;3M&quot;
+				)
+			);
+
+<span class="fc" id="L133">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtEffective,
+			iNumFuture,
+			strCurrency
+		);
+
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
+<span class="nc" id="L140">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+
+<span class="fc" id="L142">		return aCalibComp;</span>
+	}
+
+	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="fc" id="L152">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L155">			aIRS[i] = OTCFixFloat (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="fc" id="L162">		return aIRS;</span>
+	}
+
+	private static final MergedDiscountForwardCurve MakeDC (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the array of Deposit instruments and their quotes.
+		 */
+
+<span class="fc" id="L174">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			new int[] {
+				30,
+				60,
+				91,
+				182,
+				273
+			},
+			0,
+			strCurrency
+		);
+
+<span class="fc" id="L187">		double[] adblDepositQuote = new double[] {</span>
+			0.0668750,	//  30D
+			0.0675000,	//  60D
+			0.0678125,	//  91D
+			0.0712500,	// 182D
+			0.0750000	// 273D
+		};
+
+<span class="fc" id="L195">		String[] astrDepositManifestMeasure = new String[] {</span>
+			&quot;ForwardRate&quot;, //  30D
+			&quot;ForwardRate&quot;, //  60D
+			&quot;ForwardRate&quot;, //  91D
+			&quot;ForwardRate&quot;, // 182D
+			&quot;ForwardRate&quot;  // 273D
+		};
+
+		/*
+		 * Construct the array of Swap instruments and their quotes.
+		 */
+
+<span class="fc" id="L207">		double[] adblSwapQuote = new double[] {</span>
+			0.08265,    //  2Y
+			0.08550,    //  3Y
+			0.08655,    //  4Y
+			0.08770,    //  5Y
+			0.08910,    //  7Y
+			0.08920     // 10Y
+		};
+
+<span class="fc" id="L216">		String[] astrSwapManifestMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,    //  2Y
+			&quot;SwapRate&quot;,    //  3Y
+			&quot;SwapRate&quot;,    //  4Y
+			&quot;SwapRate&quot;,    //  5Y
+			&quot;SwapRate&quot;,    //  7Y
+			&quot;SwapRate&quot;     // 10Y
+		};
+
+<span class="fc" id="L225">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;2Y&quot;,
+				&quot;3Y&quot;,
+				&quot;4Y&quot;,
+				&quot;5Y&quot;,
+				&quot;7Y&quot;,
+				&quot;10Y&quot;
+			},
+			adblSwapQuote
+		);
+
+		/*
+		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+		 */
+
+<span class="fc" id="L243">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			false
+		);
+	}
+
+	private static final MarketSurface FactorFlatVolatilitySurface (
+		final JulianDate dtStart,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblFactorFlatVolatility,
+		final double[] adblTermStructureLoading)
+		throws Exception
+	{
+<span class="fc" id="L268">		int iNumNode = astrMaturityTenor.length + 1;</span>
+<span class="fc" id="L269">		double[] adblDate = new double[iNumNode];</span>
+<span class="fc" id="L270">		double[][] aadblVolatility = new double[iNumNode][iNumNode];</span>
+
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i)</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">			adblDate[i] = 0 == i ? adblDate[i] = dtStart.julian() : dtStart.addTenor (astrMaturityTenor[i - 1]).julian();</span>
+
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumNode; ++j)</span>
+<span class="fc bfc" id="L277" title="All 4 branches covered.">				aadblVolatility[i][j] =</span>
+					0 == i || 0 == j ?
+					adblFactorFlatVolatility[0] :
+					adblTermStructureLoading[i - 1] * adblFactorFlatVolatility[j - 1];
+		}
+
+<span class="fc" id="L283">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
+			dtStart,
+			strCurrency,
+			adblDate,
+			adblDate,
+			aadblVolatility,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (2),
+<span class="fc" id="L293">				SegmentInelasticDesignControl.Create (</span>
+					0,
+					2
+				),
+				null,
+				null
+			),
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="fc" id="L303">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				null,
+				null
+			)
+		);
+	}
+
+	private static final void DisplayVolArray (
+		final String strTenor,
+		final double[] adblVol)
+	{
+<span class="fc" id="L317">		String strDump = &quot;\t | &quot; + strTenor + &quot; =&gt;  &quot;;</span>
+
+<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int i = 0; i &lt; adblVol.length; ++i)</span>
+<span class="fc" id="L320">			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + &quot;% | &quot;;</span>
+
+<span class="fc" id="L322">		System.out.println (strDump);</span>
+<span class="fc" id="L323">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L329">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L331">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+			1995,
+			DateUtil.FEBRUARY,
+			3
+		);
+
+<span class="fc" id="L337">		String strFRATenor = &quot;3M&quot;;</span>
+<span class="fc" id="L338">		String strCurrency = &quot;GBP&quot;;</span>
+
+<span class="fc" id="L340">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+			strCurrency,
+			strFRATenor
+		);
+
+<span class="fc" id="L345">		MergedDiscountForwardCurve dc = MakeDC (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L350">		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);</span>
+
+<span class="fc" id="L352">		String[] astrMaturityTenor = new String[] {</span>
+			 &quot;3M&quot;,
+			 &quot;6M&quot;,
+			&quot;12M&quot;,
+			&quot;18M&quot;,
+			&quot;24M&quot;,
+			&quot;30M&quot;,
+			 &quot;3Y&quot;,
+			 &quot;4Y&quot;,
+			 &quot;5Y&quot;,
+			 &quot;7Y&quot;,
+			 &quot;9Y&quot;,
+			&quot;11Y&quot;
+		};
+
+<span class="fc" id="L367">		double[] adblFlatTermStructure = new double[] {</span>
+			1.00000000, //  &quot;3M&quot;,
+			1.00000000, //  &quot;6M&quot;,
+			0.99168448, // &quot;12M&quot;,
+			1.00388389, // &quot;18M&quot;,
+			1.00388389, // &quot;24M&quot;,
+			1.07602593, // &quot;30M&quot;,
+			1.07602593, //  &quot;3Y&quot;,
+			1.04727642, //  &quot;4Y&quot;,
+			1.02727799, //  &quot;5Y&quot;,
+			0.96660430, //  &quot;7Y&quot;,
+			0.93012459, //  &quot;9Y&quot;,
+			0.81425256  // &quot;11Y&quot;
+		};
+
+<span class="fc" id="L382">		double[] adblFlatVolFactor1 = new double[] {</span>
+			0.09481393, //  &quot;3M&quot;,
+			0.08498925, //  &quot;6M&quot;,
+			0.22939966, // &quot;12M&quot;,
+			0.19166872, // &quot;18M&quot;,
+			0.08232925, // &quot;24M&quot;,
+			0.18548202, // &quot;30M&quot;,
+			0.13817885, //  &quot;3Y&quot;,
+			0.08562258, //  &quot;4Y&quot;,
+			0.14547123, //  &quot;5Y&quot;,
+			0.08869328, //  &quot;7Y&quot;,
+			0.04121240, //  &quot;9Y&quot;,
+			0.15206796  // &quot;11Y&quot;
+		};
+
+<span class="fc" id="L397">		double[] adblFlatVolFactor2 = new double[] {</span>
+			 0.12146092, //  &quot;3M&quot;,
+			 0.05117321, //  &quot;6M&quot;,
+			 0.09100802, // &quot;12M&quot;,
+			 0.02876211, // &quot;18M&quot;,
+			 0.01172983, // &quot;24M&quot;,
+			 0.00047705, // &quot;30M&quot;,
+			-0.01160086, //  &quot;3Y&quot;,
+			-0.04673283, //  &quot;4Y&quot;,
+			-0.04181446, //  &quot;5Y&quot;,
+			-0.05459175, //  &quot;7Y&quot;,
+			-0.03631021, //  &quot;9Y&quot;,
+			-0.16626765  // &quot;11Y&quot;
+		};
+
+<span class="fc" id="L412">		MarketSurface mktSurf1 = FactorFlatVolatilitySurface (</span>
+			dtSpot,
+			strCurrency,
+			astrMaturityTenor,
+			adblFlatVolFactor1,
+			adblFlatTermStructure
+		);
+
+<span class="fc" id="L420">		MarketSurface mktSurf2 = FactorFlatVolatilitySurface (</span>
+			dtSpot,
+			strCurrency,
+			astrMaturityTenor,
+			adblFlatVolFactor2,
+			adblFlatTermStructure
+		);
+
+<span class="fc" id="L428">		LognormalLIBORVolatility llv = new LognormalLIBORVolatility (</span>
+<span class="fc" id="L429">			dtSpot.julian(),</span>
+			forwardLabel,
+			new MarketSurface[] {
+				mktSurf1,
+				mktSurf2
+			},
+			new PrincipalFactorSequenceGenerator (
+				new UnivariateSequenceGenerator[] {
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					)
+				},
+				new double[][] {
+					{1.0, 0.1},
+					{0.1, 1.0},
+				},
+				2
+			)
+		);
+
+<span class="fc" id="L454">		String[] astrForwardTenor = {</span>
+			&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;
+		};
+
+<span class="fc" id="L458">		System.out.println (&quot;\n\t |------------------------------|&quot;);</span>
+
+<span class="fc" id="L460">		System.out.println (&quot;\t |  CONTINUOUS FORWARD RATE VOL |&quot;);</span>
+
+<span class="fc" id="L462">		System.out.println (&quot;\t |------------------------------|&quot;);</span>
+
+<span class="fc bfc" id="L464" title="All 2 branches covered.">		for (String strForwardTenor : astrForwardTenor)</span>
+<span class="fc" id="L465">			DisplayVolArray (</span>
+				strForwardTenor,
+<span class="fc" id="L467">				llv.continuousForwardVolatility (</span>
+<span class="fc" id="L468">					dtSpot.addTenor (strForwardTenor).julian(),</span>
+					fcNative
+				)
+			);
+
+<span class="fc" id="L473">		System.out.println (&quot;\t |------------------------------|&quot;);</span>
+<span class="fc" id="L474">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

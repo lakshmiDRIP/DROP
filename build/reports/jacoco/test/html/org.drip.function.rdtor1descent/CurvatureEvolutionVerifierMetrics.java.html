@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurvatureEvolutionVerifierMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.rdtor1descent</a> &gt; <span class="el_source">CurvatureEvolutionVerifierMetrics.java</span></div><h1>CurvatureEvolutionVerifierMetrics.java</h1><pre class="source lang-java linenums">
+package org.drip.function.rdtor1descent;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CurvatuveEvolutionVerifierMetrics implements the Armijo Criterion used for the Inexact Line Search
+ *  Increment Generation to ascertain that the Gradient of the Function has reduced sufficiently. The
+ *  References are:
+ * 
+ * 	- Wolfe, P. (1969): Convergence Conditions for Ascent Methods, SIAM Review 11 (2) 226-235.
+ * 
+ * 	- Wolfe, P. (1971): Convergence Conditions for Ascent Methods; II: Some Corrections, SIAM Review 13 (2)
+ * 		185-188.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CurvatureEvolutionVerifierMetrics extends
+	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
+<span class="fc" id="L66">	private boolean _bStrongCurvatureCriterion = false;</span>
+<span class="fc" id="L67">	private double[] _adblNextVariateFunctionJacobian = null;</span>
+<span class="fc" id="L68">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
+
+	/**
+	 * CurvatureEvolutionVerifierMetrics Constructor
+	 * 
+	 * @param dblCurvatureParameter The Curvature Criterion Parameter
+	 * @param bStrongCurvatureCriterion TRUE - Apply the &quot;Strong&quot; Curvature Criterion
+	 * @param uvTargetDirection The Target Direction Unit Vector
+	 * @param adblCurrentVariate Array of Current Variate
+	 * @param dblStepLength The Incremental Step Length
+	 * @param adblCurrentVariateFunctionJacobian The Function Jacobian at the Current Variate
+	 * @param adblNextVariateFunctionJacobian The Function Jacobian at the Next Variate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CurvatureEvolutionVerifierMetrics (
+		final double dblCurvatureParameter,
+		final boolean bStrongCurvatureCriterion,
+		final org.drip.function.definition.UnitVector uvTargetDirection,
+		final double[] adblCurrentVariate,
+		final double dblStepLength,
+		final double[] adblCurrentVariateFunctionJacobian,
+		final double[] adblNextVariateFunctionJacobian)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L94">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+
+<span class="pc bpc" id="L96" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
+			null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
+				adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
+<span class="nc" id="L99">			throw new java.lang.Exception</span>
+				(&quot;CurvatureEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);
+
+<span class="fc" id="L102">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
+<span class="fc" id="L103">	}</span>
+
+	/**
+	 * Retrieve the Curvature Parameter
+	 * 
+	 * @return The Curvature Parameter
+	 */
+
+	public double curvatureParameter()
+	{
+<span class="nc" id="L113">		return _dblCurvatureParameter;</span>
+	}
+
+	/**
+	 * Retrieve Whether of not the &quot;Strong&quot; Curvature Criterion needs to be met
+	 * 
+	 * @return TRUE - The &quot;Strong&quot; Curvature Criterion needs to be met
+	 */
+
+	public boolean strongCriterion()
+	{
+<span class="nc" id="L124">		return _bStrongCurvatureCriterion;</span>
+	}
+
+	/**
+	 * Retrieve the Function Jacobian at the Next Variate
+	 * 
+	 * @return The Function Jacobian at the Next Variate
+	 */
+
+	public double[] nextVariateFunctionJacobian()
+	{
+<span class="nc" id="L135">		return _adblNextVariateFunctionJacobian;</span>
+	}
+
+	/**
+	 * Indicate if the Curvature Criterion has been met
+	 * 
+	 * @return TRUE - The Curvature Criterion has been met
+	 */
+
+	public boolean verify()
+	{
+<span class="fc" id="L146">		double[] adblDirectionVector = targetDirection().component();</span>
+
+		try {
+<span class="fc" id="L149">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="fc" id="L150">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
+
+<span class="fc" id="L152">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
+<span class="fc" id="L153">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L154">					currentVariateFunctionJacobian());</span>
+
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>
+<span class="fc bfc" id="L157" title="All 4 branches covered.">				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement &gt;=</span>
+					dblParametrizedCurrentFunctionIncrement;
+<span class="nc" id="L159">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L160">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L163">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

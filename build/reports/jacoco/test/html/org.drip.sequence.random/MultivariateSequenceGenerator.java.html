@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultivariateSequenceGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sequence.random</a> &gt; <span class="el_source">MultivariateSequenceGenerator.java</span></div><h1>MultivariateSequenceGenerator.java</h1><pre class="source lang-java linenums">
+package org.drip.sequence.random;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MultivariateSequenceGenerator implements the Multivariate Random Sequence Generator Functionality.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MultivariateSequenceGenerator {
+<span class="fc" id="L59">	private double[][] _aadblCholesky = null;</span>
+<span class="fc" id="L60">	private double[][] _aadblCorrelation = null;</span>
+<span class="fc" id="L61">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aUSG = null;</span>
+
+	/**
+	 * MultivariateSequenceGenerator Constructor
+	 * 
+	 * @param aUSG Array of Univariate Sequence Generators
+	 * @param aadblCorrelation The Correlation Matrix
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public MultivariateSequenceGenerator (
+		final org.drip.sequence.random.UnivariateSequenceGenerator[] aUSG,
+		final double[][] aadblCorrelation)
+		throws java.lang.Exception
+<span class="fc" id="L76">	{</span>
+<span class="pc bpc" id="L77" title="2 of 4 branches missed.">		if (null == (_aUSG = aUSG) || null == (_aadblCorrelation = aadblCorrelation))</span>
+<span class="nc" id="L78">			throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L80">		_aadblCholesky = org.drip.quant.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
+<span class="fc" id="L81">			(aadblCorrelation);</span>
+
+<span class="fc" id="L83">		int iNumVariate = aUSG.length;</span>
+
+<span class="pc bpc" id="L85" title="4 of 8 branches missed.">		if (null == _aadblCholesky || null == _aadblCholesky[0] || iNumVariate != _aadblCholesky.length ||</span>
+			iNumVariate != _aadblCholesky[0].length)
+<span class="nc" id="L87">			throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">			if (null == _aUSG[i])</span>
+<span class="nc" id="L91">				throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (_aadblCorrelation[i][j]))</span>
+<span class="nc" id="L95">					throw new java.lang.Exception (&quot;MultivariateSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="fc" id="L98">	}</span>
+
+	/**
+	 * Retrieve the Array of Univariate Sequence Generators
+	 * 
+	 * @return Array of Univariate Sequence Generators
+	 */
+
+	public org.drip.sequence.random.UnivariateSequenceGenerator[] usg()
+	{
+<span class="nc" id="L108">		return _aUSG;</span>
+	}
+
+	/**
+	 * Retrieve the Correlation Matrix
+	 * 
+	 * @return The Correlation Matrix
+	 */
+
+	public double[][] correlation()
+	{
+<span class="nc" id="L119">		return _aadblCorrelation;</span>
+	}
+
+	/**
+	 * Retrieve the Cholesky Factorial
+	 * 
+	 * @return The Cholesky Factorial
+	 */
+
+	public double[][] cholesky()
+	{
+<span class="nc" id="L130">		return _aadblCholesky;</span>
+	}
+
+	/**
+	 * Retrieve the Number of Variates
+	 * 
+	 * @return The Number of Variates
+	 */
+
+	public int numVariate()
+	{
+<span class="nc" id="L141">		return _aUSG.length;</span>
+	}
+
+	/**
+	 * Generate the Set of Multivariate Random Numbers according to the specified rule
+	 * 
+	 * @return The Set of Multivariate Random Numbers
+	 */
+
+	public double[] random()
+	{
+<span class="fc" id="L152">		int iNumVariate = _aUSG.length;</span>
+<span class="fc" id="L153">		double[] adblRandom = new double[iNumVariate];</span>
+<span class="fc" id="L154">		double[] adblUncorrelatedRandom = new double[iNumVariate];</span>
+
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L157">			adblUncorrelatedRandom[i] = _aUSG[i].random();</span>
+
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="fc" id="L160">			adblRandom[i] = 0.;</span>
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L163">				adblRandom[i] += _aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
+		}
+
+<span class="fc" id="L166">		return adblRandom;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

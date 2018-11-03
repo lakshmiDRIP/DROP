@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GroupPathExposureAdjustment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.gross</a> &gt; <span class="el_source">GroupPathExposureAdjustment.java</span></div><h1>GroupPathExposureAdjustment.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.gross;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * GroupPathExposureAdjustment cumulates the Exposures and the Adjustments across Multiple Netting/Funding
+ *  Groups on a Single Path Projection Run across multiple Counter Party Groups the constitute a Book. The
+ *  References are:
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2013): Funding Costs, Funding Strategies, Risk, 23 (12) 82-87.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class GroupPathExposureAdjustment implements org.drip.xva.gross.PathExposureAdjustment
+{
+<span class="nc" id="L73">	private org.drip.xva.gross.MonoPathExposureAdjustment[] _monoPathExposureAdjustmentArray = null;</span>
+
+	/**
+	 * GroupPathExposureAdjustment Constructor
+	 * 
+	 * @param monoPathExposureAdjustmentArray Array of Single Counter Party Path Exposure Adjustments
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public GroupPathExposureAdjustment (
+		final org.drip.xva.gross.MonoPathExposureAdjustment[] monoPathExposureAdjustmentArray)
+		throws java.lang.Exception
+<span class="nc" id="L86">	{</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">		if (null == (_monoPathExposureAdjustmentArray = monoPathExposureAdjustmentArray) ||</span>
+			0 == _monoPathExposureAdjustmentArray.length)
+		{
+<span class="nc" id="L90">			throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L93">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (0 == adiabatGroupCount)</span>
+		{
+<span class="nc" id="L97">			throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc bnc" id="L102" title="All 2 branches missed.">			if (null == _monoPathExposureAdjustmentArray[adiabatGroupIndex])</span>
+			{
+<span class="nc" id="L104">				throw new java.lang.Exception (&quot;GroupPathExposureAdjustment Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="nc" id="L107">	}</span>
+
+	/**
+	 * Retrieve the Array of Counter Party Group Paths
+	 * 
+	 * @return Array of Counter Party Group Paths
+	 */
+
+	public org.drip.xva.gross.MonoPathExposureAdjustment[] adiabatGroupPaths()
+	{
+<span class="nc" id="L117">		return _monoPathExposureAdjustmentArray;</span>
+	}
+
+	@Override public org.drip.analytics.date.JulianDate[] vertexDates()
+	{
+<span class="nc" id="L122">		return _monoPathExposureAdjustmentArray[0].vertexDates();</span>
+	}
+
+	@Override public double[] vertexCollateralizedExposure()
+	{
+<span class="nc" id="L127">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L129">		double[] collateralizedExposure = new double[vertexCount];</span>
+<span class="nc" id="L130">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L134">			collateralizedExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L139">			double[] counterPartyGroupCollateralizedExposure =</span>
+<span class="nc" id="L140">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedExposure();</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L144">				collateralizedExposure[vertexIndex] += counterPartyGroupCollateralizedExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L148">		return collateralizedExposure;</span>
+	}
+
+	@Override public double[] vertexCollateralizedExposurePV()
+	{
+<span class="nc" id="L153">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L155">		double[] collateralizedExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L156">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		for (int j = 0; j &lt; vertexCount; ++j)</span>
+		{
+<span class="nc" id="L160">			collateralizedExposurePV[j] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L165">			double[] counterPartyGroupCollateralizedExposurePV =</span>
+<span class="nc" id="L166">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedExposurePV();</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L170">				collateralizedExposurePV[vertexIndex] +=</span>
+					counterPartyGroupCollateralizedExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L175">		return collateralizedExposurePV;</span>
+	}
+
+	@Override public double[] vertexUncollateralizedExposure()
+	{
+<span class="nc" id="L180">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L182">		double[] uncollateralizedExposure = new double[vertexCount];</span>
+<span class="nc" id="L183">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L187">			uncollateralizedExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L192">			double[] pathUncollateralizedExposure =</span>
+<span class="nc" id="L193">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedExposure();</span>
+
+<span class="nc bnc" id="L195" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L197">				uncollateralizedExposure[vertexIndex] += pathUncollateralizedExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L201">		return uncollateralizedExposure;</span>
+	}
+
+	@Override public double[] vertexUncollateralizedExposurePV()
+	{
+<span class="nc" id="L206">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L208">		double[] uncollateralizedExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L209">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L213">			uncollateralizedExposurePV[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L218">			double[] pathUncollateralizedExposurePV =</span>
+<span class="nc" id="L219">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedExposurePV();</span>
+
+<span class="nc bnc" id="L221" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L223">				uncollateralizedExposurePV[vertexIndex] += pathUncollateralizedExposurePV[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L227">		return uncollateralizedExposurePV;</span>
+	}
+
+	@Override public double[] vertexCollateralizedPositiveExposure()
+	{
+<span class="nc" id="L232">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L234">		double[] collateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L235">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L239">			collateralizedPositiveExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L244">			double[] pathCollateralizedPositiveExposure =</span>
+<span class="nc" id="L245">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedPositiveExposure();</span>
+
+<span class="nc bnc" id="L247" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L249">				collateralizedPositiveExposure[vertexIndex] +=</span>
+					pathCollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L254">		return collateralizedPositiveExposure;</span>
+	}
+
+	@Override public double[] vertexCollateralizedPositiveExposurePV()
+	{
+<span class="nc" id="L259">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L261">		double[] collateralizedPositiveExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L262">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L266">			collateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L271">			double[] pathCollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L272">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedPositiveExposurePV();</span>
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L276">				collateralizedPositiveExposurePV[vertexIndex] +=</span>
+					pathCollateralizedPositiveExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L281">		return collateralizedPositiveExposurePV;</span>
+	}
+
+	@Override public double[] vertexUncollateralizedPositiveExposure()
+	{
+<span class="nc" id="L286">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L288">		double[] uncollateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L289">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L293">			uncollateralizedPositiveExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L296" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L298">			double[] pathUncollateralizedPositiveExposure =</span>
+<span class="nc" id="L299">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedPositiveExposure();</span>
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L303">				uncollateralizedPositiveExposure[vertexIndex] +=</span>
+					pathUncollateralizedPositiveExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L308">		return uncollateralizedPositiveExposure;</span>
+	}
+
+	@Override public double[] vertexUncollateralizedPositiveExposurePV()
+	{
+<span class="nc" id="L313">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L315">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L316">		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];</span>
+
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L320">			uncollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L323" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L325">			double[] pathUncollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L326">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedPositiveExposurePV();</span>
+
+<span class="nc bnc" id="L328" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L330">				uncollateralizedPositiveExposurePV[vertexIndex] +=</span>
+					pathUncollateralizedPositiveExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L335">		return uncollateralizedPositiveExposurePV;</span>
+	}
+
+	@Override public double[] vertexCollateralizedNegativeExposure()
+	{
+<span class="nc" id="L340">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L342">		double[] collateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="nc" id="L343">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L345" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L347">			collateralizedNegativeExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L352">			double[] pathCollateralizedNegativeExposure =</span>
+<span class="nc" id="L353">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedNegativeExposure();</span>
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L357">				collateralizedNegativeExposure[vertexIndex] +=</span>
+					pathCollateralizedNegativeExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L362">		return collateralizedNegativeExposure;</span>
+	}
+
+	@Override public double[] vertexCollateralizedNegativeExposurePV()
+	{
+<span class="nc" id="L367">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L369">		double[] collateralizedNegativeExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L370">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L372" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L374">			collateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L377" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L379">			double[] pathCollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L380">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexCollateralizedNegativeExposurePV();</span>
+
+<span class="nc bnc" id="L382" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L384">				collateralizedNegativeExposurePV[vertexIndex] +=</span>
+					pathCollateralizedNegativeExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L389">		return collateralizedNegativeExposurePV;</span>
+	}
+
+	@Override public double[] vertexUncollateralizedNegativeExposure()
+	{
+<span class="nc" id="L394">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L396">		double[] uncollateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="nc" id="L397">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L399" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L401">			uncollateralizedNegativeExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L404" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L406">			double[] adblPathUncollateralizedNegativeExposure =</span>
+<span class="nc" id="L407">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedNegativeExposure();</span>
+
+<span class="nc bnc" id="L409" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L411">				uncollateralizedNegativeExposure[vertexIndex] +=</span>
+					adblPathUncollateralizedNegativeExposure[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L416">		return uncollateralizedNegativeExposure;</span>
+	}
+
+	@Override public double[] vertexUncollateralizedNegativeExposurePV()
+	{
+<span class="nc" id="L421">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L423">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L424">		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];</span>
+
+<span class="nc bnc" id="L426" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L428">			uncollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L431" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L433">			double[] pathUncollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L434">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexUncollateralizedNegativeExposurePV();</span>
+
+<span class="nc bnc" id="L436" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L438">				uncollateralizedNegativeExposurePV[vertexIndex] +=</span>
+					pathUncollateralizedNegativeExposurePV[vertexIndex];
+			}
+		}
+
+<span class="nc" id="L443">		return uncollateralizedNegativeExposurePV;</span>
+	}
+
+	@Override public double[] vertexFundingExposure()
+	{
+<span class="nc" id="L448">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L450">		double[] fundingExposure = new double[vertexCount];</span>
+<span class="nc" id="L451">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L453" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L455">			fundingExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L458" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L460">			double[] pathFundingExposure =</span>
+<span class="nc" id="L461">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexFundingExposure();</span>
+
+<span class="nc bnc" id="L463" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L465">				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L469">		return fundingExposure;</span>
+	}
+
+	@Override public double[] vertexFundingExposurePV()
+	{
+<span class="nc" id="L474">		int vertexCount = vertexDates().length;</span>
+
+<span class="nc" id="L476">		double[] fundingExposure = new double[vertexCount];</span>
+<span class="nc" id="L477">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L479" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L481">			fundingExposure[vertexIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L484" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L486">			double[] pathFundingExposure =</span>
+<span class="nc" id="L487">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].vertexFundingExposurePV();</span>
+
+<span class="nc bnc" id="L489" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+			{
+<span class="nc" id="L491">				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];</span>
+			}
+		}
+
+<span class="nc" id="L495">		return fundingExposure;</span>
+	}
+
+	@Override public double unilateralCollateralAdjustment()
+	{
+<span class="nc" id="L500">		double unilateralCollateralAdjustment = 0.;</span>
+<span class="nc" id="L501">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L505">			unilateralCollateralAdjustment +=</span>
+<span class="nc" id="L506">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].unilateralCollateralAdjustment();</span>
+		}
+
+<span class="nc" id="L509">		return unilateralCollateralAdjustment;</span>
+	}
+
+	@Override public double bilateralCollateralAdjustment()
+	{
+<span class="nc" id="L514">		double bilateralCollateralAdjustment = 0.;</span>
+<span class="nc" id="L515">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L517" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L519">			bilateralCollateralAdjustment +=</span>
+<span class="nc" id="L520">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].bilateralCollateralAdjustment();</span>
+		}
+
+<span class="nc" id="L523">		return bilateralCollateralAdjustment;</span>
+	}
+
+	@Override public double collateralAdjustment()
+	{
+<span class="nc" id="L528">		return bilateralCollateralAdjustment();</span>
+	}
+
+	@Override public double unilateralCreditAdjustment()
+	{
+<span class="nc" id="L533">		double unilateralCreditAdjustment = 0.;</span>
+<span class="nc" id="L534">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L536" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L538">			unilateralCreditAdjustment +=</span>
+<span class="nc" id="L539">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].unilateralCreditAdjustment();</span>
+		}
+
+<span class="nc" id="L542">		return unilateralCreditAdjustment;</span>
+	}
+
+	@Override public double bilateralCreditAdjustment()
+	{
+<span class="nc" id="L547">		double bilateralCreditAdjustment = 0.;</span>
+<span class="nc" id="L548">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L550" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L552">			bilateralCreditAdjustment +=</span>
+<span class="nc" id="L553">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].bilateralCreditAdjustment();</span>
+		}
+
+<span class="nc" id="L556">		return bilateralCreditAdjustment;</span>
+	}
+
+	@Override public double creditAdjustment()
+	{
+<span class="nc" id="L561">		return bilateralCreditAdjustment();</span>
+	}
+
+	@Override public double contraLiabilityCreditAdjustment()
+	{
+<span class="nc" id="L566">		double contraLiabilityCreditAdjustment = 0.;</span>
+<span class="nc" id="L567">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L569" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L571">			contraLiabilityCreditAdjustment +=</span>
+<span class="nc" id="L572">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].contraLiabilityCreditAdjustment();</span>
+		}
+
+<span class="nc" id="L575">		return contraLiabilityCreditAdjustment;</span>
+	}
+
+	@Override public double unilateralDebtAdjustment()
+	{
+<span class="nc" id="L580">		double unilateralDebtAdjustment = 0.;</span>
+<span class="nc" id="L581">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L583" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L585">			unilateralDebtAdjustment +=</span>
+<span class="nc" id="L586">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].unilateralDebtAdjustment();</span>
+		}
+
+<span class="nc" id="L589">		return unilateralDebtAdjustment;</span>
+	}
+
+	@Override public double bilateralDebtAdjustment()
+	{
+<span class="nc" id="L594">		double bilateralDebtAdjustment = 0.;</span>
+<span class="nc" id="L595">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L597" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L599">			bilateralDebtAdjustment +=</span>
+<span class="nc" id="L600">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].bilateralDebtAdjustment();</span>
+		}
+
+<span class="nc" id="L603">		return bilateralDebtAdjustment;</span>
+	}
+
+	@Override public double debtAdjustment()
+	{
+<span class="nc" id="L608">		double debtAdjustment = 0.;</span>
+<span class="nc" id="L609">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L611" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L613">			debtAdjustment += _monoPathExposureAdjustmentArray[adiabatGroupIndex].debtAdjustment();</span>
+		}
+
+<span class="nc" id="L616">		return debtAdjustment;</span>
+	}
+
+	@Override public double contraAssetDebtAdjustment()
+	{
+<span class="nc" id="L621">		double contraAssetDebtAdjustment = 0.;</span>
+<span class="nc" id="L622">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L624" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L626">			contraAssetDebtAdjustment +=</span>
+<span class="nc" id="L627">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].contraAssetDebtAdjustment();</span>
+		}
+
+<span class="nc" id="L630">		return contraAssetDebtAdjustment;</span>
+	}
+
+	@Override public double unilateralFundingValueAdjustment()
+	{
+<span class="nc" id="L635">		double unilateralFundingValueAdjustment = 0.;</span>
+<span class="nc" id="L636">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L638" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L640">			unilateralFundingValueAdjustment +=</span>
+<span class="nc" id="L641">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].unilateralFundingValueAdjustment();</span>
+		}
+
+<span class="nc" id="L644">		return unilateralFundingValueAdjustment;</span>
+	}
+
+	@Override public double bilateralFundingValueAdjustment()
+	{
+<span class="nc" id="L649">		double bilateralFundingValueAdjustment = 0.;</span>
+<span class="nc" id="L650">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L652" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L654">			bilateralFundingValueAdjustment +=</span>
+<span class="nc" id="L655">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].bilateralFundingValueAdjustment();</span>
+		}
+
+<span class="nc" id="L658">		return bilateralFundingValueAdjustment;</span>
+	}
+
+	@Override public double fundingValueAdjustment()
+	{
+<span class="nc" id="L663">		double fundingValueAdjustment = 0.;</span>
+<span class="nc" id="L664">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L666" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L668">			fundingValueAdjustment +=</span>
+<span class="nc" id="L669">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingValueAdjustment();</span>
+		}
+
+<span class="nc" id="L672">		return fundingValueAdjustment;</span>
+	}
+
+	@Override public double fundingDebtAdjustment()
+	{
+<span class="nc" id="L677">		double fundingDebtAdjustment = 0.;</span>
+<span class="nc" id="L678">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L680" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L682">			fundingDebtAdjustment +=</span>
+<span class="nc" id="L683">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingDebtAdjustment();</span>
+		}
+
+<span class="nc" id="L686">		return fundingDebtAdjustment;</span>
+	}
+
+	@Override public double fundingCostAdjustment()
+	{
+<span class="nc" id="L691">		double fundingCostAdjustment = 0.;</span>
+<span class="nc" id="L692">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L694" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L696">			fundingCostAdjustment +=</span>
+<span class="nc" id="L697">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingCostAdjustment();</span>
+		}
+
+<span class="nc" id="L700">		return fundingCostAdjustment;</span>
+	}
+
+	@Override public double fundingBenefitAdjustment()
+	{
+<span class="nc" id="L705">		double fundingBenefitAdjustment = 0.;</span>
+<span class="nc" id="L706">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L708" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L710">			fundingBenefitAdjustment +=</span>
+<span class="nc" id="L711">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingBenefitAdjustment();</span>
+		}
+
+<span class="nc" id="L714">		return fundingBenefitAdjustment;</span>
+	}
+
+	@Override public double symmetricFundingValueAdjustment()
+	{
+<span class="nc" id="L719">		double symmetricFundingValueAdjustment = 0.;</span>
+<span class="nc" id="L720">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L722" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L724">			symmetricFundingValueAdjustment +=</span>
+<span class="nc" id="L725">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].symmetricFundingValueAdjustment();</span>
+		}
+
+<span class="nc" id="L728">		return symmetricFundingValueAdjustment;</span>
+	}
+
+	@Override public double totalAdjustment()
+	{
+<span class="nc" id="L733">		double totalAdjustment = 0.;</span>
+<span class="nc" id="L734">		int adiabatGroupCount = _monoPathExposureAdjustmentArray.length;</span>
+
+<span class="nc bnc" id="L736" title="All 2 branches missed.">		for (int adiabatGroupIndex = 0; adiabatGroupIndex &lt; adiabatGroupCount; ++adiabatGroupIndex)</span>
+		{
+<span class="nc" id="L738">			totalAdjustment +=</span>
+<span class="nc" id="L739">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].creditAdjustment() +</span>
+<span class="nc" id="L740">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].debtAdjustment() +</span>
+<span class="nc" id="L741">				_monoPathExposureAdjustmentArray[adiabatGroupIndex].fundingValueAdjustment();</span>
+		}
+
+<span class="nc" id="L744">		return totalAdjustment;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

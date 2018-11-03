@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlackHestonForwardOption.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.option</a> &gt; <span class="el_source">BlackHestonForwardOption.java</span></div><h1>BlackHestonForwardOption.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.option;
+
+import org.drip.analytics.date.*;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.market.otc.*;
+import org.drip.param.pricer.HestonOptionPricerParams;
+import org.drip.param.valuation.*;
+import org.drip.pricer.option.*;
+import org.drip.product.creator.*;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.option.EuropeanCallPut;
+import org.drip.product.rates.*;
+import org.drip.quant.fourier.PhaseAdjuster;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BlackHestonForwardOption illustrates pricing a forward using the Black '76 variant and the Heston's
+ *  stochastic Volatility Models.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L76">public class BlackHestonForwardOption {</span>
+
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="fc" id="L84">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="fc" id="L91">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final CalibratableComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final int[] aiDay,
+		final int iNumFutures,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L113">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
+
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L116">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="fc" id="L118">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="fc" id="L122">				ForwardLabel.Create (</span>
+					strCurrency,
+					&quot;3M&quot;
+				)
+			);
+
+<span class="fc" id="L128">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtEffective,
+			iNumFutures,
+			strCurrency
+		);
+
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
+<span class="nc" id="L135">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+
+<span class="fc" id="L137">		return aCalibComp;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="fc" id="L153">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L156">			FixFloatComponent irs = OTCIRS (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="fc" id="L163">			irs.setPrimaryCode (&quot;IRS.&quot; + astrMaturityTenor[i] + &quot;.&quot; + strCurrency);</span>
+
+<span class="fc" id="L165">			aIRS[i] = irs;</span>
+		}
+
+<span class="fc" id="L168">		return aIRS;</span>
+	}
+
+	/*
+	 * Construct the discount curve using the following steps:
+	 * 	- Construct the array of cash instruments and their quotes.
+	 * 	- Construct the array of swap instruments and their quotes.
+	 * 	- Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final MergedDiscountForwardCurve MakeDC (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the array of Deposit instruments and their quotes.
+		 */
+
+<span class="fc" id="L189">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
+			0,
+			strCurrency
+		);
+
+<span class="fc" id="L198">		double[] adblDepositQuote = new double[] {</span>
+			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850
+		};
+
+<span class="fc" id="L202">		String[] astrDepositManifestMeasure = new String[] {</span>
+			&quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;, &quot;ForwardRate&quot;
+		};
+
+		/*
+		 * Construct the array of Swap instruments and their quotes.
+		 */
+
+<span class="fc" id="L210">		double[] adblSwapQuote = new double[] {</span>
+			0.02604,    //  4Y
+			0.02808,    //  5Y
+			0.02983,    //  6Y
+			0.03136,    //  7Y
+			0.03268,    //  8Y
+			0.03383,    //  9Y
+			0.03488,    // 10Y
+			0.03583,    // 11Y
+			0.03668,    // 12Y
+			0.03833,    // 15Y
+			0.03854,    // 20Y
+			0.03672,    // 25Y
+			0.03510,    // 30Y
+			0.03266,    // 40Y
+			0.03145     // 50Y
+		};
+
+<span class="fc" id="L228">		String[] astrSwapManifestMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,    //  4Y
+			&quot;SwapRate&quot;,    //  5Y
+			&quot;SwapRate&quot;,    //  6Y
+			&quot;SwapRate&quot;,    //  7Y
+			&quot;SwapRate&quot;,    //  8Y
+			&quot;SwapRate&quot;,    //  9Y
+			&quot;SwapRate&quot;,    // 10Y
+			&quot;SwapRate&quot;,    // 11Y
+			&quot;SwapRate&quot;,    // 12Y
+			&quot;SwapRate&quot;,    // 15Y
+			&quot;SwapRate&quot;,    // 20Y
+			&quot;SwapRate&quot;,    // 25Y
+			&quot;SwapRate&quot;,    // 30Y
+			&quot;SwapRate&quot;,    // 40Y
+			&quot;SwapRate&quot;     // 50Y
+		};
+
+<span class="fc" id="L246">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;
+			},
+			adblSwapQuote
+		);
+
+		/*
+		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+		 */
+
+<span class="fc" id="L259">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
+			aDepositComp,
+			adblDepositQuote,
+			astrDepositManifestMeasure,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			true
+		);
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L284">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L286">		JulianDate dtToday = DateUtil.Today();</span>
+
+<span class="fc" id="L288">		ValuationParams valParams = new ValuationParams (</span>
+			dtToday,
+			dtToday,
+			&quot;USD&quot;
+		);
+
+		/*
+		 * Construct the Discount Curve using its instruments and quotes
+		 */
+
+<span class="fc" id="L298">		MergedDiscountForwardCurve dc = MakeDC (</span>
+			dtToday,
+			&quot;USD&quot;
+		);
+
+<span class="fc" id="L303">		JulianDate dtMaturity = dtToday.addTenor (&quot;6M&quot;);</span>
+
+<span class="fc" id="L305">		double dblStrike = 1.;</span>
+
+<span class="fc" id="L307">		EuropeanCallPut option = new EuropeanCallPut (</span>
+			dtMaturity,
+			dblStrike
+		);
+
+<span class="fc" id="L312">		double dblSpot = 1.;</span>
+
+<span class="fc" id="L314">		double dblRho = 0.3;</span>
+<span class="fc" id="L315">		double dblKappa = 1.;</span>
+<span class="fc" id="L316">		double dblSigma = 0.5;</span>
+<span class="fc" id="L317">		double dblTheta = 0.2;</span>
+<span class="fc" id="L318">		double dblLambda = 0.;</span>
+<span class="fc" id="L319">		double dblSpotVolatility = 0.2;</span>
+
+<span class="fc" id="L321">		HestonOptionPricerParams fphp = new HestonOptionPricerParams (</span>
+			HestonStochasticVolatilityAlgorithm.PAYOFF_TRANSFORM_SCHEME_HESTON_1993,
+			dblRho, 			// Rho
+			dblKappa,			// Kappa
+			dblSigma,			// Sigma
+			dblTheta,			// Theta
+			dblLambda,			// Lambda
+			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL // Indicates Apply Phase Tracking Adjustment for Log + Power
+		);
+
+<span class="fc" id="L331">		FokkerPlanckGenerator fpg = new HestonStochasticVolatilityAlgorithm (</span>
+			fphp				// FP Heston Parameters
+		);
+
+<span class="fc" id="L335">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L337">		System.out.println (&quot;\t\t HESTON 1993 SPOT OPTION PRICING&quot;);</span>
+
+<span class="fc" id="L339">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L341">		System.out.println (</span>
+<span class="fc" id="L342">			option.value (</span>
+				valParams,
+				dblSpot,
+				false,
+				dc,
+				new FlatUnivariate (dblSpotVolatility),
+				fpg
+			)
+		);
+
+<span class="fc" id="L352">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L354">		System.out.println (&quot;\t\t HESTON 1993 FORWARD OPTION PRICING&quot;);</span>
+
+<span class="fc" id="L356">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L358">		System.out.println (</span>
+<span class="fc" id="L359">			option.value (</span>
+				valParams,
+				dblSpot,
+				true,
+				dc,
+				new FlatUnivariate (dblSpotVolatility),
+				fpg
+			)
+		);
+
+<span class="fc" id="L369">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L371">		System.out.println (&quot;\t\t BLACK SCHOLES SPOT OPTION PRICING&quot;);</span>
+
+<span class="fc" id="L373">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L375">		System.out.println (</span>
+<span class="fc" id="L376">			option.value (</span>
+				valParams,
+				dblSpot,
+				false,
+				dc,
+				new FlatUnivariate (dblSpotVolatility),
+				new BlackScholesAlgorithm()
+			)
+		);
+
+<span class="fc" id="L386">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L388">		System.out.println (&quot;\t\t BLACK '76 FORWARD OPTION PRICING&quot;);</span>
+
+<span class="fc" id="L390">		System.out.println (&quot;---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L392">		System.out.println (</span>
+<span class="fc" id="L393">			option.value (</span>
+				valParams,
+				dblSpot,
+				true,
+				dc,
+				new FlatUnivariate (dblSpotVolatility),
+				new BlackScholesAlgorithm()
+			)
+		);
+<span class="fc" id="L402">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

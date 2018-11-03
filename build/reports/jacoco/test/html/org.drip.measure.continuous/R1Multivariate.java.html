@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1Multivariate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.continuous</a> &gt; <span class="el_source">R1Multivariate.java</span></div><h1>R1Multivariate.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.continuous;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * R1Multivariate contains the Generalized Joint Multivariate R^1 Distributions.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class R1Multivariate {
+<span class="fc" id="L58">	private org.drip.measure.continuous.MultivariateMeta _meta = null;</span>
+
+	protected R1Multivariate (
+		final org.drip.measure.continuous.MultivariateMeta meta)
+		throws java.lang.Exception
+<span class="fc" id="L63">	{</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">		if (null == (_meta = meta))</span>
+<span class="nc" id="L65">			throw new java.lang.Exception (&quot;R1Multivariate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L66">	}</span>
+
+	/**
+	 * Retrieve the Multivariate Meta Instance
+	 * 
+	 * @return The Multivariate Meta Instance
+	 */
+
+	public org.drip.measure.continuous.MultivariateMeta meta()
+	{
+<span class="fc" id="L76">		return _meta;</span>
+	}
+
+	/**
+	 * Retrieve the Left Edge Bounding Multivariate
+	 * 
+	 * @return The Left Edge Bounding Multivariate
+	 */
+
+	public double[] leftEdge()
+	{
+<span class="nc" id="L87">		int iNumVariate = _meta.numVariable();</span>
+
+<span class="nc" id="L89">		double[] adblLeftEdge = new double[iNumVariate];</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L92">			adblLeftEdge[i] = java.lang.Double.MIN_NORMAL;</span>
+
+<span class="nc" id="L94">		return adblLeftEdge;</span>
+	}
+
+	/**
+	 * Retrieve the Right Edge Bounding Multivariate
+	 * 
+	 * @return The Right Edge Bounding Multivariate
+	 */
+
+	public double[] rightEdge()
+	{
+<span class="nc" id="L105">		int iNumVariate = _meta.numVariable();</span>
+
+<span class="nc" id="L107">		double[] adblRightEdge = new double[iNumVariate];</span>
+
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L110">			adblRightEdge[i] = java.lang.Double.MAX_VALUE;</span>
+
+<span class="nc" id="L112">		return adblRightEdge;</span>
+	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Multivariate
+	 * 
+	 * @param adblVariate The Multivariate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws java.lang.Exception Thrown if the Density cannot be computed
+	 */
+
+	public abstract double density (
+		final double[] adblVariate)
+		throws java.lang.Exception;
+
+	/**
+	 * Convert the Multivariate Density into an RdToR1 Functions Instance
+	 * 
+	 * @return The Multivariate Density converted into an RdToR1 Functions Instance
+	 */
+
+	public org.drip.function.definition.RdToR1 densityRdToR1()
+	{
+<span class="nc" id="L137">		return new org.drip.function.definition.RdToR1 (null) {</span>
+			@Override public int dimension()
+			{
+<span class="nc" id="L140">				return _meta.numVariable();</span>
+			}
+
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L147">				return density (adblVariate);</span>
+			}
+		};
+	}
+
+	/**
+	 * Compute the Cumulative under the Distribution to the given Variate Values
+	 * 
+	 * @param adblVariate Array of Variate Values to which the Cumulative is to be computed
+	 * 
+	 * @return The Cumulative
+	 * 
+	 * @throws java.lang.Exception Thrown if the Cumulative cannot be computed
+	 */
+
+	public double cumulative (
+		final double[] adblVariate)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L166">		return densityRdToR1().integrate (leftEdge(), adblVariate);</span>
+	}
+
+	/**
+	 * Compute the Incremental under the Distribution between the 2 Multivariate Instances
+	 * 
+	 * @param adblVariateLeft Left Multivariate Instance to which the Cumulative is to be computed
+	 * @param adblVariateRight Right Multivariate Instance to which the Cumulative is to be computed
+	 * 
+	 * @return The Incremental
+	 * 
+	 * @throws java.lang.Exception Thrown if the Incremental cannot be computed
+	 */
+
+	public double incremental (
+		final double[] adblVariateLeft,
+		final double[] adblVariateRight)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L185">		return densityRdToR1().integrate (adblVariateLeft, adblVariateRight);</span>
+	}
+
+	/**
+	 * Compute the Expectation of the Specified R^d To R^1 Function Instance
+	 * 
+	 * @param funcRdToR1 The R^d To R^1 Function Instance
+	 * 
+	 * @return The Expectation of the Specified R^d To R^1 Function Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double expectation (
+		final org.drip.function.definition.RdToR1 funcRdToR1)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == funcRdToR1)</span>
+<span class="nc" id="L203">			throw new java.lang.Exception (&quot;R1Multivariate::expectation =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L205">		return new org.drip.function.definition.RdToR1 (null) {</span>
+			@Override public int dimension()
+			{
+<span class="nc" id="L208">				return _meta.numVariable();</span>
+			}
+
+			@Override public double evaluate (
+				final double[] adblVariate)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L215">				return density (adblVariate) * funcRdToR1.evaluate (adblVariate);</span>
+			}
+<span class="nc" id="L217">		}.integrate (leftEdge(), rightEdge());</span>
+	}
+
+	/**
+	 * Compute the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 */
+
+	public double[] mean()
+	{
+<span class="nc" id="L228">		int iNumVariate = _meta.numVariable();</span>
+
+<span class="nc" id="L230">		double[] adblMean = new double[iNumVariate];</span>
+
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L233">			final int iVariate = i;</span>
+
+			try {
+<span class="nc" id="L236">				adblMean[i] = expectation (new org.drip.function.definition.RdToR1 (null) {</span>
+					@Override public int dimension()
+					{
+<span class="nc" id="L239">						return _meta.numVariable();</span>
+					}
+
+					@Override public double evaluate (
+						final double[] adblVariate)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L246">						return density (adblVariate) * adblVariate[iVariate];</span>
+					}
+				});
+<span class="nc" id="L249">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L250">				e.printStackTrace();</span>
+
+<span class="nc" id="L252">				return null;</span>
+<span class="nc" id="L253">			}</span>
+		}
+
+<span class="nc" id="L256">		return adblMean;</span>
+	}
+
+	/**
+	 * Compute the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 */
+
+	public double[] variance()
+	{
+<span class="nc" id="L267">		final double[] adblMean = mean();</span>
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (null == adblMean) return null;</span>
+
+<span class="nc" id="L271">		final int iNumVariate = adblMean.length;</span>
+<span class="nc" id="L272">		double[] adblVariance = new double[iNumVariate];</span>
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L275">			final int iVariate = i;</span>
+
+			try {
+<span class="nc" id="L278">				adblVariance[i] = expectation (new org.drip.function.definition.RdToR1 (null) {</span>
+					@Override public int dimension()
+					{
+<span class="nc" id="L281">						return _meta.numVariable();</span>
+					}
+
+					@Override public double evaluate (
+						final double[] adblVariate)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L288">						double dblSecondMoment = 0.;</span>
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">						for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L291">							double dblOffset = adblVariate[iVariate] - adblMean[iVariate];</span>
+<span class="nc" id="L292">							dblSecondMoment = dblSecondMoment + dblOffset * dblOffset;</span>
+						}
+
+<span class="nc" id="L295">						return density (adblVariate) * dblSecondMoment;</span>
+					}
+				});
+<span class="nc" id="L298">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L299">				e.printStackTrace();</span>
+
+<span class="nc" id="L301">				return null;</span>
+<span class="nc" id="L302">			}</span>
+		}
+
+<span class="nc" id="L305">		return adblVariance;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

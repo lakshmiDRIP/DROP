@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1Combinatorial.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.metric</a> &gt; <span class="el_source">R1Combinatorial.java</span></div><h1>R1Combinatorial.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.metric;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * R1Combinatorial implements the Normed, Bounded/Unbounded Combinatorial l^p R^1 Spaces.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVector implements
+	org.drip.spaces.metric.R1Normed {
+<span class="nc" id="L65">	private int _iPNorm = -1;</span>
+<span class="nc" id="L66">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
+
+	/**
+	 * Construct the Standard l^p R^1 Combinatorial Space Instance
+	 * 
+	 * @param lsElementSpace The List Space of Elements
+	 * @param distR1 The R^1 Borel Sigma Measure
+	 * @param iPNorm The p-norm of the Space
+	 * 
+	 * @return The Standard l^p R^1 Combinatorial Space Instance
+	 */
+
+	public static final R1Combinatorial Standard (
+		final java.util.List&lt;java.lang.Double&gt; lsElementSpace,
+		final org.drip.measure.continuous.R1 distR1,
+		final int iPNorm)
+	{
+		try {
+<span class="nc" id="L84">			return new R1Combinatorial (lsElementSpace, distR1, iPNorm);</span>
+<span class="nc" id="L85">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L86">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L89">		return null;</span>
+	}
+
+	/**
+	 * Construct the Supremum (i.e., l^Infinity) R^1 Combinatorial Space Instance
+	 * 
+	 * @param lsElementSpace The List Space of Elements
+	 * @param distR1 The R^1 Borel Sigma Measure
+	 * 
+	 * @return The Supremum (i.e., l^Infinity) R^1 Combinatorial Space Instance
+	 */
+
+	public static final R1Combinatorial Supremum (
+		final java.util.List&lt;java.lang.Double&gt; lsElementSpace,
+		final org.drip.measure.continuous.R1 distR1)
+	{
+		try {
+<span class="nc" id="L106">			return new R1Combinatorial (lsElementSpace, distR1, java.lang.Integer.MAX_VALUE);</span>
+<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L108">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L111">		return null;</span>
+	}
+
+	/**
+	 * R1Combinatorial Space Constructor
+	 * 
+	 * @param lsElementSpace The List Space of Elements
+	 * @param distR1 The R^1 Borel Sigma Measure
+	 * @param iPNorm The p-norm of the Space
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1Combinatorial (
+		final java.util.List&lt;java.lang.Double&gt; lsElementSpace,
+		final org.drip.measure.continuous.R1 distR1,
+		final int iPNorm)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L130">		super (lsElementSpace);</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;R1Combinatorial Constructor: Invalid p-norm&quot;);</span>
+
+<span class="nc" id="L135">		_distR1 = distR1;</span>
+<span class="nc" id="L136">	}</span>
+
+	@Override public int pNorm()
+	{
+<span class="nc" id="L140">		return _iPNorm;</span>
+	}
+
+	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
+	{
+<span class="nc" id="L145">		return _distR1;</span>
+	}
+
+	@Override public double sampleMetricNorm (
+		final double dblX)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
+<span class="nc" id="L153">			throw new java.lang.Exception (&quot;R1Combinatorial::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L155">		return java.lang.Math.abs (dblX);</span>
+	}
+
+	@Override public double populationMode()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;R1Combinatorial::populationMode =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L164">		double dblMode = java.lang.Double.NaN;</span>
+<span class="nc" id="L165">		double dblModeProbability = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMode))</span>
+<span class="nc" id="L169">				dblModeProbability = _distR1.density (dblMode = dblElement);</span>
+			else {
+<span class="nc" id="L171">				double dblElementProbability = _distR1.density (dblElement);</span>
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">				if (dblElementProbability &gt; dblModeProbability) {</span>
+<span class="nc" id="L174">					dblMode = dblElement;</span>
+<span class="nc" id="L175">					dblModeProbability = dblElementProbability;</span>
+				}
+			}
+<span class="nc" id="L178">		}</span>
+
+<span class="nc" id="L180">		return dblMode;</span>
+	}
+
+	@Override public double populationMetricNorm()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L187">			throw new java.lang.Exception (&quot;R1Combinatorial::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L189">		double dblNorm = 0.;</span>
+<span class="nc" id="L190">		double dblNormalizer = 0.;</span>
+
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
+<span class="nc" id="L193">			double dblElementProbability = _distR1.density (dblElement);</span>
+
+<span class="nc" id="L195">			dblNormalizer += dblElementProbability;</span>
+
+<span class="nc" id="L197">			dblNorm += sampleMetricNorm (dblElement) * dblElementProbability;</span>
+<span class="nc" id="L198">		}</span>
+
+<span class="nc" id="L200">		return dblNorm / dblNormalizer;</span>
+	}
+
+	@Override public double borelMeasureSpaceExpectation (
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L207" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
+<span class="nc" id="L208">			throw new java.lang.Exception</span>
+				(&quot;R1Combinatorial::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);
+
+<span class="nc" id="L211">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L212">		double dblBorelMeasureSpaceExpectation = 0.;</span>
+
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
+<span class="nc" id="L215">			double dblElementProbability = _distR1.density (dblElement);</span>
+
+<span class="nc" id="L217">			dblNormalizer += dblElementProbability;</span>
+
+<span class="nc" id="L219">			dblBorelMeasureSpaceExpectation += funcR1ToR1.evaluate (dblElement) * dblElementProbability;</span>
+<span class="nc" id="L220">		}</span>
+
+<span class="nc" id="L222">		return dblBorelMeasureSpaceExpectation / dblNormalizer;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

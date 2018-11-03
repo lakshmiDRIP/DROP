@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinaryTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.big</a> &gt; <span class="el_source">BinaryTree.java</span></div><h1>BinaryTree.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.big;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * BinaryTree contains an Implementation of the Left/Right Binary Tree.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BinaryTree {
+<span class="fc" id="L59">	private int _iCount = 1;</span>
+<span class="fc" id="L60">	private BinaryTree _btParent = null;</span>
+<span class="fc" id="L61">	private BinaryTree _btLeftChild = null;</span>
+<span class="fc" id="L62">	private BinaryTree _btRightChild = null;</span>
+<span class="fc" id="L63">	private double _dblNode = java.lang.Double.NaN;</span>
+
+	/**
+	 * BinaryTree Constructor
+	 * 
+	 * @param dblNode The Node Value
+	 * @param btParent The BinaryTree Parent
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public BinaryTree (
+		final double dblNode,
+		final BinaryTree btParent)
+		throws java.lang.Exception
+<span class="fc" id="L78">	{</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNode = dblNode))</span>
+<span class="nc" id="L80">			throw new java.lang.Exception (&quot;BinaryTree ctr =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L82">		_iCount = 1;</span>
+<span class="fc" id="L83">		_btParent = btParent;</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * Retrieve the BinaryTree Node Value
+	 * 
+	 * @return The BinaryTree Node Value
+	 */
+
+	public double node()
+	{
+<span class="nc" id="L94">		return _dblNode;</span>
+	}
+
+	/**
+	 * Retrieve the Parent BinaryTree Instance
+	 * 
+	 * @return The Parent BinaryTree Instance
+	 */
+
+	public BinaryTree parent()
+	{
+<span class="nc" id="L105">		return _btParent;</span>
+	}
+
+	/**
+	 * Retrieve the Left Child BinaryTree Instance
+	 * 
+	 * @return The Left Child BinaryTree Instance
+	 */
+
+	public BinaryTree leftChild()
+	{
+<span class="nc" id="L116">		return _btLeftChild;</span>
+	}
+
+	/**
+	 * Retrieve the Right Child BinaryTree Instance
+	 * 
+	 * @return The Right Child BinaryTree Instance
+	 */
+
+	public BinaryTree rightChild()
+	{
+<span class="nc" id="L127">		return _btRightChild;</span>
+	}
+
+	/**
+	 * Retrieve the Node Instance Count
+	 * 
+	 * @return The Node Instance Count
+	 */
+
+	public int count()
+	{
+<span class="nc" id="L138">		return _iCount;</span>
+	}
+
+	/**
+	 * Insert a Node into the Tree
+	 * 
+	 * @param dblNode The Node to be inserted
+	 * 
+	 * @return The Inserted Node
+	 */
+
+	public BinaryTree insert (
+		final double dblNode)
+	{
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNode)) return null;</span>
+
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (_dblNode == dblNode) {</span>
+<span class="nc" id="L155">			++_iCount;</span>
+<span class="nc" id="L156">			return this;</span>
+		}
+
+		try {
+<span class="fc bfc" id="L160" title="All 2 branches covered.">			if (dblNode &lt; _dblNode)</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">				return null == _btLeftChild ? _btLeftChild = new BinaryTree (dblNode, this) :</span>
+<span class="fc" id="L162">					_btLeftChild.insert (dblNode);</span>
+
+<span class="fc bfc" id="L164" title="All 2 branches covered.">			return null == _btRightChild ? _btRightChild = new BinaryTree (dblNode, this) :</span>
+<span class="fc" id="L165">				_btRightChild.insert (dblNode);</span>
+<span class="nc" id="L166">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L167">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L170">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Left Most Child
+	 * 
+	 * @return The Left Most Child BinaryTree Instance
+	 */
+
+	public BinaryTree leftMostChild()
+	{
+<span class="nc" id="L181">		BinaryTree btParent = this;</span>
+
+<span class="nc" id="L183">		BinaryTree btLeftChild = leftChild();</span>
+
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		while (null != btLeftChild) {</span>
+<span class="nc" id="L186">			btParent = btLeftChild;</span>
+
+<span class="nc" id="L188">			btLeftChild = btParent.leftChild();</span>
+		}
+
+<span class="nc" id="L191">		return btParent;</span>
+	}
+
+	/**
+	 * Retrieve the Right Most Child
+	 * 
+	 * @return The Right Most Child BinaryTree Instance
+	 */
+
+	public BinaryTree rightMostChild()
+	{
+<span class="nc" id="L202">		BinaryTree btParent = this;</span>
+
+<span class="nc" id="L204">		BinaryTree btRightChild = rightChild();</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		while (null != btRightChild) {</span>
+<span class="nc" id="L207">			btParent = btRightChild;</span>
+
+<span class="nc" id="L209">			btRightChild = btParent.rightChild();</span>
+		}
+
+<span class="nc" id="L212">		return btParent;</span>
+	}
+
+	/**
+	 * Build a Consolidated Ascending List of all the Constituent Nodes
+	 * 
+	 * @param lsNode The Node List
+	 * 
+	 * @return TRUE - The Ascending Node List Successfully Built
+	 */
+
+	public boolean ascendingNodeList (
+		final java.util.List&lt;java.lang.Double&gt; lsNode)
+	{
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (null == lsNode) return false;</span>
+
+<span class="nc bnc" id="L228" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.ascendingNodeList (lsNode)) return false;</span>
+
+<span class="nc" id="L230">		lsNode.add (_dblNode);</span>
+
+<span class="nc bnc" id="L232" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.ascendingNodeList (lsNode)) return false;</span>
+
+<span class="nc" id="L234">		return true;</span>
+	}
+
+	/**
+	 * Build a Consolidated Ascending List of all the Constituent Nodes
+	 * 
+	 * @return The Node List
+	 */
+
+	public java.util.List&lt;java.lang.Double&gt; ascendingNodeList()
+	{
+<span class="nc" id="L245">		java.util.List&lt;java.lang.Double&gt; lsNode = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		return ascendingNodeList (lsNode) ? lsNode : null;</span>
+	}
+
+	/**
+	 * Build a Consolidated Ascending Array of all the Constituent Nodes
+	 * 
+	 * @param adblNode The Node Array
+	 * @param iUpdateStartIndex The Update Start Index
+	 * 
+	 * @return TRUE - The Ascending Node Array Successfully Built
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public int ascendingNodeArray (
+		final double[] adblNode,
+		final int iUpdateStartIndex)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L266" title="2 of 4 branches missed.">		if (null == adblNode || 0 == adblNode.length)</span>
+<span class="nc" id="L267">			throw new java.lang.Exception (&quot;BinaryTree::ascendingNodeArray =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L269" title="All 2 branches covered.">		int iIndexToUpdate = null == _btLeftChild ? iUpdateStartIndex : _btLeftChild.ascendingNodeArray</span>
+<span class="fc" id="L270">			(adblNode, iUpdateStartIndex);</span>
+
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (iIndexToUpdate &gt;= adblNode.length)</span>
+<span class="nc" id="L273">			throw new java.lang.Exception (&quot;BinaryTree::ascendingNodeArray =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L275">		adblNode[iIndexToUpdate++] = _dblNode;</span>
+
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		return null == _btRightChild ? iIndexToUpdate : _btRightChild.ascendingNodeArray (adblNode,</span>
+			iIndexToUpdate);
+	}
+
+	/**
+	 * Build a Consolidated Descending List of all the Constituent Nodes
+	 * 
+	 * @param lsNode The Node List
+	 * 
+	 * @return TRUE - The Descending Node List Successfully Built
+	 */
+
+	public boolean descendingNodeList (
+		final java.util.List&lt;java.lang.Double&gt; lsNode)
+	{
+<span class="nc bnc" id="L292" title="All 2 branches missed.">		if (null == lsNode) return false;</span>
+
+<span class="nc bnc" id="L294" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.descendingNodeList (lsNode)) return false;</span>
+
+<span class="nc" id="L296">		lsNode.add (_dblNode);</span>
+
+<span class="nc bnc" id="L298" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.descendingNodeList (lsNode)) return false;</span>
+
+<span class="nc" id="L300">		return true;</span>
+	}
+
+	/**
+	 * Build a Consolidated Descending Array of all the Constituent Nodes
+	 * 
+	 * @param adblNode The Node Array
+	 * @param iIndexToUpdate The Index To Update
+	 * 
+	 * @return TRUE - The Descending Node Array Successfully Built
+	 */
+
+	public boolean descendingNodeArray (
+		final double[] adblNode,
+		final int iIndexToUpdate)
+	{
+<span class="nc bnc" id="L316" title="All 4 branches missed.">		if (null == adblNode || 0 == adblNode.length) return false;</span>
+
+<span class="nc bnc" id="L318" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.descendingNodeArray (adblNode, iIndexToUpdate))</span>
+<span class="nc" id="L319">			return false;</span>
+
+<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (iIndexToUpdate &gt;= adblNode.length) return false;</span>
+
+<span class="nc" id="L323">		adblNode[iIndexToUpdate] = _dblNode;</span>
+
+<span class="nc bnc" id="L325" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.descendingNodeArray (adblNode, iIndexToUpdate + 1))</span>
+<span class="nc" id="L326">			return false;</span>
+
+<span class="nc" id="L328">		return true;</span>
+	}
+
+	/**
+	 * Build a Consolidated Descending List of all the Constituent Nodes
+	 * 
+	 * @return The Node List
+	 */
+
+	public java.util.List&lt;java.lang.Double&gt; descendingNodeList()
+	{
+<span class="nc" id="L339">		java.util.List&lt;java.lang.Double&gt; lsNode = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc bnc" id="L341" title="All 2 branches missed.">		return descendingNodeList (lsNode) ? lsNode : null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

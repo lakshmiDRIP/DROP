@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JurisdictionIBORIndexDefinition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.forward</a> &gt; <span class="el_source">JurisdictionIBORIndexDefinition.java</span></div><h1>JurisdictionIBORIndexDefinition.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.forward;
+
+import org.drip.analytics.support.CompositePeriodBuilder;
+import org.drip.market.definition.*;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * JurisdictionIBORIndexDefinition demonstrates the functionality to retrieve the IBOR settings for the
+ *  various Jurisdictions.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L64">public class JurisdictionIBORIndexDefinition {</span>
+	private static final String AccrualType (
+		final int iAccrualCompounding)
+	{
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		return CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompounding ? &quot;ARITHMETIC&quot; : &quot; GEOMETRIC&quot;;</span>
+	}
+
+	private static final void DisplayNameOvernightSetting (
+		final String strName)
+	{
+<span class="nc" id="L74">		IBORIndex index = IBORIndexContainer.IndexFromName (strName);</span>
+
+<span class="nc" id="L76">		String strLongestMaturity = index.longestMaturity();</span>
+
+<span class="nc" id="L78">		String strShortestMaturity = index.shortestMaturity();</span>
+
+<span class="nc" id="L80">		System.out.println (&quot;\t[&quot; +</span>
+<span class="nc" id="L81">			index.currency() + &quot;] =&gt; &quot; +</span>
+<span class="nc" id="L82">			index.dayCount() + &quot; | &quot; +</span>
+<span class="nc" id="L83">			index.spotLag() + &quot; | &quot; +</span>
+<span class="nc" id="L84">			AccrualType (index.accrualCompoundingRule()) + &quot; | &quot; +</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">			(strShortestMaturity.isEmpty() ? &quot;  &quot; : strShortestMaturity) + &quot; | &quot; +</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">			(strLongestMaturity.isEmpty() ? &quot;   &quot; : strLongestMaturity) + &quot; | &quot; +</span>
+<span class="nc" id="L87">			index.name()</span>
+		);
+<span class="nc" id="L89">	}</span>
+
+	public static final void main (
+		String[] args)
+	{
+<span class="nc" id="L94">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L96">		System.out.println (&quot;\n\t---------------\n\t---------------\n&quot;);</span>
+
+<span class="nc" id="L98">		DisplayNameOvernightSetting (&quot;CHF-LIBOR&quot;);</span>
+
+<span class="nc" id="L100">		DisplayNameOvernightSetting (&quot;EUR-EURIBOR&quot;);</span>
+
+<span class="nc" id="L102">		DisplayNameOvernightSetting (&quot;EUR-LIBOR&quot;);</span>
+
+<span class="nc" id="L104">		DisplayNameOvernightSetting (&quot;GBP-LIBOR&quot;);</span>
+
+<span class="nc" id="L106">		DisplayNameOvernightSetting (&quot;JPY-LIBOR&quot;);</span>
+
+<span class="nc" id="L108">		DisplayNameOvernightSetting (&quot;USD-LIBOR&quot;);</span>
+
+<span class="nc" id="L110">		System.out.println (&quot;\n\t---------------\n\t---------------\n&quot;);</span>
+
+<span class="nc" id="L112">		DisplayNameOvernightSetting (&quot;AUD-LIBOR&quot;);</span>
+
+<span class="nc" id="L114">		DisplayNameOvernightSetting (&quot;CAD-LIBOR&quot;);</span>
+
+<span class="nc" id="L116">		DisplayNameOvernightSetting (&quot;CZK-LIBOR&quot;);</span>
+
+<span class="nc" id="L118">		DisplayNameOvernightSetting (&quot;DKK-LIBOR&quot;);</span>
+
+<span class="nc" id="L120">		DisplayNameOvernightSetting (&quot;HKD-LIBOR&quot;);</span>
+
+<span class="nc" id="L122">		DisplayNameOvernightSetting (&quot;HUF-LIBOR&quot;);</span>
+
+<span class="nc" id="L124">		DisplayNameOvernightSetting (&quot;IDR-LIBOR&quot;);</span>
+
+<span class="nc" id="L126">		DisplayNameOvernightSetting (&quot;INR-LIBOR&quot;);</span>
+
+<span class="nc" id="L128">		DisplayNameOvernightSetting (&quot;NOK-LIBOR&quot;);</span>
+
+<span class="nc" id="L130">		DisplayNameOvernightSetting (&quot;NZD-LIBOR&quot;);</span>
+
+<span class="nc" id="L132">		DisplayNameOvernightSetting (&quot;PLN-LIBOR&quot;);</span>
+
+<span class="nc" id="L134">		DisplayNameOvernightSetting (&quot;RMB-LIBOR&quot;);</span>
+
+<span class="nc" id="L136">		DisplayNameOvernightSetting (&quot;SGD-LIBOR&quot;);</span>
+
+<span class="nc" id="L138">		DisplayNameOvernightSetting (&quot;SEK-LIBOR&quot;);</span>
+
+<span class="nc" id="L140">		DisplayNameOvernightSetting (&quot;SKK-LIBOR&quot;);</span>
+
+<span class="nc" id="L142">		DisplayNameOvernightSetting (&quot;ZAR-LIBOR&quot;);</span>
+<span class="nc" id="L143">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

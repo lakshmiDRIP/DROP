@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComplexNumber.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.quant.fourier</a> &gt; <span class="el_source">ComplexNumber.java</span></div><h1>ComplexNumber.java</h1><pre class="source lang-java linenums">
+package org.drip.quant.fourier;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ComplexNumber implements the functionality for dealing with Complex Numbers.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ComplexNumber {
+<span class="fc" id="L60">	private double _dblReal = java.lang.Double.NaN;</span>
+<span class="fc" id="L61">	private double _dblImaginary = java.lang.Double.NaN;</span>
+
+	/**
+	 * Add the 2 Complex Numbers
+	 * 
+	 * @param cn1 The First Complex Number
+	 * @param cn2 The Second Complex Number
+	 * 
+	 * @return The Complex Number instance that is a sum of the two
+	 */
+
+	public static final ComplexNumber Add (
+		final ComplexNumber cn1,
+		final ComplexNumber cn2)
+	{
+<span class="pc bpc" id="L76" title="2 of 4 branches missed.">		if (null == cn1 || null == cn2) return null;</span>
+
+		try {
+<span class="fc" id="L79">			return new ComplexNumber (cn1.real() + cn2.real(), cn1.imaginary() + cn2.imaginary());</span>
+<span class="nc" id="L80">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L81">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L84">		return null;</span>
+	}
+
+	/**
+	 * Scale the Complex Number with the factor
+	 * 
+	 * @param cn The Complex Number
+	 * @param dblScale The Scaling Factor
+	 * 
+	 * @return The Scaled Complex Number
+	 */
+
+	public static final ComplexNumber Scale (
+		final ComplexNumber cn,
+		final double dblScale)
+	{
+<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (null == cn || !org.drip.quant.common.NumberUtil.IsValid (dblScale)) return null;</span>
+
+		try {
+<span class="fc" id="L103">			return new ComplexNumber (dblScale * cn.real(), dblScale * cn.imaginary());</span>
+<span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L105">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L108">		return null;</span>
+	}
+
+	/**
+	 * Subtract the Second Complex Number from the First
+	 * 
+	 * @param cn1 The First Complex Number
+	 * @param cn2 The Second Complex Number
+	 * 
+	 * @return The &quot;Difference&quot; Complex Number
+	 */
+
+	public static final ComplexNumber Subtract (
+		final ComplexNumber cn1,
+		final ComplexNumber cn2)
+	{
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == cn1 || null == cn2) return null;</span>
+
+		try {
+<span class="fc" id="L127">			return new ComplexNumber (cn1.real() - cn2.real(), cn1.imaginary() - cn2.imaginary());</span>
+<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L129">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L132">		return null;</span>
+	}
+
+	/**
+	 * Multiply the 2 Complex Numbers
+	 * 
+	 * @param cn1 The First Complex Number
+	 * @param cn2 The Second Complex Number
+	 * 
+	 * @return The Complex Number instance that is a product of the two
+	 */
+
+	public static final ComplexNumber Multiply (
+		final ComplexNumber cn1,
+		final ComplexNumber cn2)
+	{
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == cn1 || null == cn2) return null;</span>
+
+<span class="fc" id="L150">		double dblReal1 = cn1.real();</span>
+
+<span class="fc" id="L152">		double dblReal2 = cn2.real();</span>
+
+<span class="fc" id="L154">		double dblImaginary1 = cn1.imaginary();</span>
+
+<span class="fc" id="L156">		double dblImaginary2 = cn2.imaginary();</span>
+
+		try {
+<span class="fc" id="L159">			return new ComplexNumber (dblReal1 * dblReal2 - dblImaginary1 * dblImaginary2, dblReal1 *</span>
+				dblImaginary2 + dblReal2 * dblImaginary1);
+<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L162">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L165">		return null;</span>
+	}
+
+	/**
+	 * Divide the Numerator Complex Number by the Denominator
+	 * 
+	 * @param cnNumerator The Numerator Complex Number
+	 * @param cnDenominator The Denominator Complex Number
+	 * 
+	 * @return The &quot;Divided&quot; Complex Number
+	 */
+
+	public static final ComplexNumber Divide (
+		final ComplexNumber cnNumerator,
+		final ComplexNumber cnDenominator)
+	{
+<span class="pc bpc" id="L181" title="2 of 4 branches missed.">		if (null == cnNumerator || null == cnDenominator) return null;</span>
+
+<span class="fc" id="L183">		double dblRealNumerator = cnNumerator.real();</span>
+
+<span class="fc" id="L185">		double dblRealDenominator = cnDenominator.real();</span>
+
+<span class="fc" id="L187">		double dblImaginaryNumerator = cnNumerator.imaginary();</span>
+
+<span class="fc" id="L189">		double dblImaginaryDenominator = cnDenominator.imaginary();</span>
+
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">		if (0. == dblRealDenominator &amp;&amp; 0. == dblImaginaryDenominator) return null;</span>
+
+<span class="fc" id="L193">		double dblInverseDenominatorModulus = 1. / cnDenominator.modulus();</span>
+
+		try {
+<span class="fc" id="L196">			return new ComplexNumber ((dblRealNumerator * dblRealDenominator + dblImaginaryNumerator *</span>
+				dblImaginaryDenominator) * dblInverseDenominatorModulus, (dblRealDenominator *
+					dblImaginaryNumerator - dblRealNumerator * dblImaginaryDenominator) *
+						dblInverseDenominatorModulus);
+<span class="nc" id="L200">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L201">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L204">		return null;</span>
+	}
+
+	/**
+	 * Square the Complex Number
+	 * 
+	 * @param cn The Complex Number
+	 * 
+	 * @return The Squared Complex Number Instance
+	 */
+
+	public static final ComplexNumber Square (
+		final ComplexNumber cn)
+	{
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (null == cn) return null;</span>
+
+<span class="fc" id="L220">		double dblRealOther = cn.real();</span>
+
+<span class="fc" id="L222">		double dblImaginaryOther = cn.imaginary();</span>
+
+		try {
+<span class="fc" id="L225">			return new ComplexNumber (dblRealOther * dblRealOther - dblImaginaryOther * dblImaginaryOther, 2.</span>
+				* dblRealOther * dblImaginaryOther);
+<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L231">		return null;</span>
+	}
+
+	/**
+	 * Compute the Square Root of the Complex Number
+	 * 
+	 * @param cn The Complex Number
+	 * 
+	 * @return The Square Root Complex Number Instance
+	 */
+
+	public static final ComplexNumber SquareRoot (
+		final ComplexNumber cn)
+	{
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		if (null == cn) return null;</span>
+
+<span class="fc" id="L247">		double dblModulus = cn.modulus();</span>
+
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (0. == dblModulus) {</span>
+			try {
+<span class="nc" id="L251">				return new ComplexNumber (0., 0.);</span>
+<span class="nc" id="L252">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L253">				e.printStackTrace();</span>
+			}
+
+<span class="nc" id="L256">			return null;</span>
+		}
+
+<span class="fc" id="L259">		double dblReal = java.lang.Math.sqrt (0.5 * (cn.real() + java.lang.Math.sqrt (dblModulus)));</span>
+
+		try {
+<span class="fc" id="L262">			return new ComplexNumber (dblReal, 0.5 * cn.imaginary() / dblReal);</span>
+<span class="nc" id="L263">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L264">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L267">		return null;</span>
+	}
+
+	/**
+	 * Exponentiate the  Complex Number
+	 * 
+	 * @param cn The Complex Number
+	 * 
+	 * @return The Exponentiated Complex Number Instance
+	 */
+
+	public static final ComplexNumber Exponentiate (
+		final ComplexNumber cn)
+	{
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (null == cn) return null;</span>
+
+<span class="fc" id="L283">		double dblImaginary = cn.imaginary();</span>
+
+<span class="fc" id="L285">		double dblCoefficient = java.lang.Math.exp (cn.real());</span>
+
+		try {
+<span class="fc" id="L288">			return new ComplexNumber (dblCoefficient * java.lang.Math.cos (dblImaginary), dblCoefficient *</span>
+<span class="fc" id="L289">				java.lang.Math.sin (dblImaginary));</span>
+<span class="nc" id="L290">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L291">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L294">		return null;</span>
+	}
+
+	/**
+	 * Compute Logarithm of the Complex Number
+	 * 
+	 * @param cn The Complex Number
+	 * 
+	 * @return The Complex Number Logarithm Instance
+	 */
+
+	public static final ComplexNumber Logarithm (
+		final ComplexNumber cn)
+	{
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">		if (null == cn) return null;</span>
+
+<span class="fc" id="L310">		double dblModulus = cn.modulus();</span>
+
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">		if (0. == dblModulus) return null;</span>
+
+		try {
+<span class="fc" id="L315">			return new ComplexNumber (0.5 * java.lang.Math.log (dblModulus), java.lang.Math.atan</span>
+<span class="fc" id="L316">				(cn.imaginary() / cn.real()));</span>
+<span class="nc" id="L317">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L318">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L321">		return null;</span>
+	}
+
+	/**
+	 * ComplexNumber constructor
+	 * 
+	 * @param dblReal Real Part
+	 * @param dblImaginary Imaginary Part
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public ComplexNumber (
+		final double dblReal,
+		final double dblImaginary)
+		throws java.lang.Exception
+<span class="fc" id="L337">	{</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblReal = dblReal) ||</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblImaginary = dblImaginary))</span>
+<span class="nc" id="L340">			throw new java.lang.Exception (&quot;ComplexNumber ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L341">	}</span>
+
+	/**
+	 * Retrieve the Real Part
+	 * 
+	 * @return The Real Part
+	 */
+
+	public double real()
+	{
+<span class="fc" id="L351">		return _dblReal;</span>
+	}
+
+	/**
+	 * Retrieve the Imaginary Part
+	 * 
+	 * @return The Imaginary Part
+	 */
+
+	public double imaginary()
+	{
+<span class="fc" id="L362">		return _dblImaginary;</span>
+	}
+
+	/**
+	 * Retrieve the Modulus
+	 * 
+	 * @return The Modulus
+	 */
+
+	public double modulus()
+	{
+<span class="fc" id="L373">		return _dblReal * _dblReal + _dblImaginary * _dblImaginary;</span>
+	}
+
+	/**
+	 * Retrieve the Absolute Value
+	 * 
+	 * @return The Absolute Value
+	 */
+
+	public double abs()
+	{
+<span class="fc" id="L384">		return java.lang.Math.sqrt (modulus());</span>
+	}
+
+	/**
+	 * Retrieve the Argument
+	 * 
+	 * @return The Argument
+	 */
+
+	public double argument()
+	{
+<span class="fc" id="L395">		return java.lang.Math.atan (_dblImaginary / _dblReal);</span>
+	}
+
+	/**
+	 * Display the Real/Imaginary Contents
+	 * 
+	 * @return The Real/Imaginary Contents
+	 */
+
+	public java.lang.String display()
+	{
+<span class="nc" id="L406">		return &quot;\t[&quot; + _dblReal + &quot;, &quot; + _dblImaginary + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PiecewiseDisplacedLebesgue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.measure</a> &gt; <span class="el_source">PiecewiseDisplacedLebesgue.java</span></div><h1>PiecewiseDisplacedLebesgue.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.measure;
+
+import org.drip.analytics.date.*;
+import org.drip.measure.lebesgue.R1PiecewiseDisplaced;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PiecewiseDisplacedLebesgue demonstrates the Generation, the Reconciliation, and the Usage of a Piece-wise
+ *  Displaced Linear Lebesgue Measure.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L63">public class PiecewiseDisplacedLebesgue {</span>
+
+	private static final void RPDL (
+		final String strMessage,
+		final double dblXMin,
+		final double dblXMax,
+		final double[] adblX,
+		final double[] adblProb,
+		final double dblXMean)
+		throws Exception
+	{
+<span class="fc" id="L74">		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (</span>
+			dblXMin,
+			dblXMax,
+			adblX,
+			adblProb,
+			dblXMean
+		);
+
+<span class="fc" id="L82">		double[] adblQuintile = new double[] {</span>
+			0.25,
+			0.50,
+			0.75
+		};
+
+<span class="fc" id="L88">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
+
+		/* for (int i = 0; i &lt; adblX.length; ++i)
+			strDump +=
+				FormatUtil.FormatDouble (adblX[i], 3, 3, 1.) + &quot; =&gt;&quot; +
+				FormatUtil.FormatDouble (rpdl.cumulative (adblX[i]), 1, 2, 1.) + &quot; | &quot;; */
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
+<span class="fc" id="L96">			strDump += &quot; &quot; +</span>
+<span class="fc" id="L97">				FormatUtil.FormatDouble (rpdl.invCumulative (adblQuintile[i]), 3, 3, 1.) + &quot; =&gt;&quot; +</span>
+<span class="fc" id="L98">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot;   | &quot;;</span>
+
+<span class="fc" id="L100">		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensitySlope.length; ++i)</span>
+<span class="fc" id="L103">			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + &quot;,&quot;;</span>
+
+<span class="fc" id="L105">		System.out.println (strDump + FormatUtil.FormatDouble (rpdl.densityDisplacement(), 1, 9, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L106">	}</span>
+
+	private static final void DateRPDL (
+		final String strMessage,
+		final double dblXMin,
+		final double dblXMax,
+		final double[] adblX,
+		final double[] adblProb,
+		final double dblXMean)
+		throws Exception
+	{
+<span class="fc" id="L117">		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (</span>
+			dblXMin,
+			dblXMax,
+			adblX,
+			adblProb,
+			dblXMean
+		);
+
+<span class="fc" id="L125">		double[] adblQuintile = new double[] {</span>
+			0.25,
+			0.50,
+			0.75
+		};
+
+<span class="fc" id="L131">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
+<span class="fc" id="L134">			strDump +=</span>
+<span class="fc" id="L135">				new JulianDate ((int) rpdl.invCumulative (adblQuintile[i])) + &quot; =&gt;&quot; +</span>
+<span class="fc" id="L136">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot; | &quot;;</span>
+
+<span class="fc" id="L138">		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();</span>
+
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensitySlope.length; ++i)</span>
+<span class="fc" id="L141">			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + &quot;,&quot;;</span>
+
+<span class="fc" id="L143">		System.out.println (strDump + FormatUtil.FormatDouble (rpdl.densityDisplacement(), 1, 9, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L144">	}</span>
+
+	public static final void main (
+		final String[] args)
+		throws Exception
+	{
+<span class="fc" id="L150">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L152">		System.out.println();</span>
+
+<span class="fc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L156">		System.out.println (&quot;\t||             FIELD                |                       CUMULATIVE PROBABILITY                    |                  PROBABILITY DENSITY PARAMETERS                  ||&quot;);</span>
+
+<span class="fc" id="L158">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L160">		RPDL (</span>
+			&quot;Age (Months In Balance)         &quot;,
+			0.,
+			60.,
+			new double[] {3., 8., 15.},
+			new double[] {0.25, 0.50, 0.75},
+			10.1
+		);
+
+<span class="fc" id="L169">		DateRPDL (</span>
+			&quot;Vintage                         &quot;,
+<span class="fc" id="L171">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2007&quot;).julian(),</span>
+<span class="fc" id="L172">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2015&quot;).julian(),</span>
+			new double[] {
+<span class="fc" id="L174">				DateUtil.CreateFromDDMMMYYYY (&quot;15-APR-2012&quot;).julian(),</span>
+<span class="fc" id="L175">				DateUtil.CreateFromDDMMMYYYY (&quot;15-MAR-2013&quot;).julian(),</span>
+<span class="fc" id="L176">				DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2014&quot;).julian()</span>
+			},
+			new double[] {0.25, 0.50, 0.75},
+<span class="fc" id="L179">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2013&quot;).julian()</span>
+		);
+
+<span class="fc" id="L182">		RPDL (</span>
+			&quot;Original Principal ('000s)      &quot;,
+			0.5,
+			35.,
+			new double[] {8., 12., 20.},
+			new double[] {0.25, 0.50, 0.75},
+			14.254
+		);
+
+<span class="fc" id="L191">		RPDL (</span>
+			&quot;Monthly Gross Income ('000s)    &quot;,
+			0.25,
+			725.549,
+			new double[] {3.75, 5.167, 7.333},
+			new double[] {0.25, 0.50, 0.75},
+			6.066
+		);
+
+<span class="fc" id="L200">		RPDL (</span>
+			&quot;Coupon (%)                      &quot;,
+			5.3,
+			29.,
+			new double[] {10.6, 13.5, 16.3},
+			new double[] {0.25, 0.50, 0.75},
+			13.70
+		);
+
+<span class="fc" id="L209">		RPDL (</span>
+			&quot;FICO At Origination             &quot;,
+			612.,
+			847.,
+			new double[] {677., 692., 717.},
+			new double[] {0.25, 0.50, 0.75},
+			699.
+		);
+
+<span class="fc" id="L218">		RPDL (</span>
+			&quot;DTI ex Mortgage (%)             &quot;,
+			0.,
+			39.,
+			new double[] {11., 16., 22.},
+			new double[] {0.25, 0.50, 0.75},
+			16.6
+		);
+
+<span class="fc" id="L227">		RPDL (</span>
+			&quot;Total Borrower Accounts         &quot;,
+			1,
+			162,
+			new double[] {16., 23., 31.},
+			new double[] {0.25, 0.50, 0.75},
+			25
+		);
+
+<span class="fc" id="L236">		RPDL (</span>
+			&quot;Revolving Utilization Rate (%)  &quot;,
+			0.,
+			892.,
+			new double[] {40., 58., 75.},
+			new double[] {0.25, 0.50, 0.75},
+			57.
+		);
+
+<span class="fc" id="L245">		RPDL (</span>
+			&quot;Inquiries in Last 6 Months      &quot;,
+			0.,
+			33.,
+			new double[] {1.},
+			new double[] {0.75},
+			0.9
+		);
+<span class="fc" id="L253">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

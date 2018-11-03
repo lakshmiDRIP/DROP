@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OTCCrossCurrencySwaps.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.xccy</a> &gt; <span class="el_source">OTCCrossCurrencySwaps.java</span></div><h1>OTCCrossCurrencySwaps.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.xccy;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.market.otc.*;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.*;
+import org.drip.product.params.CurrencyPair;
+import org.drip.product.rates.FloatFloatComponent;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.creator.*;
+import org.drip.state.discount.*;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OTCCrossCurrencySwaps demonstrates the Construction and Valuation of the Cross-Currency Floating Swap of
+ *  OTC contracts.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L74">public class OTCCrossCurrencySwaps {</span>
+
+	private static final FloatFloatComponent OTCCrossCurrencyFloatFloat (
+		final String strReferenceCurrency,
+		final String strDerivedCurrency,
+		final JulianDate dtSpot,
+		final String strMaturityTenor,
+		final double dblBasis,
+		final double dblDerivedNotionalScaler)
+	{
+<span class="fc" id="L84">		CrossFloatSwapConvention ccfc = CrossFloatConventionContainer.ConventionFromJurisdiction (</span>
+			strReferenceCurrency,
+			strDerivedCurrency
+		);
+
+<span class="fc" id="L89">		return ccfc.createFloatFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblBasis,
+			1.,
+			-1. * dblDerivedNotionalScaler
+		);
+	}
+
+	private static final void OTCCrossCurrencyRun (
+		final JulianDate dtSpot,
+		final String strReferenceCurrency,
+		final String strDerivedCurrency,
+		final String strMaturityTenor,
+		final double dblBasis,
+		final double dblReferenceDerivedFXRate)
+		throws Exception
+	{
+<span class="fc" id="L107">		double dblReferenceFundingRate = 0.02;</span>
+<span class="fc" id="L108">		double dblDerived3MForwardRate = 0.02;</span>
+
+<span class="fc" id="L110">		double dblReferenceFundingVol = 0.3;</span>
+<span class="fc" id="L111">		double dblDerivedForward3MVol = 0.3;</span>
+<span class="fc" id="L112">		double dblReferenceDerivedFXVol = 0.3;</span>
+
+<span class="fc" id="L114">		double dblDerived3MReferenceDerivedFXCorr = 0.1;</span>
+<span class="fc" id="L115">		double dblReferenceFundingDerived3MCorr = 0.1;</span>
+<span class="fc" id="L116">		double dblReferenceFundingReferenceDerivedFXCorr = 0.1;</span>
+
+<span class="fc" id="L118">		MergedDiscountForwardCurve dcReferenceFunding = ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate (</span>
+			dtSpot,
+			strReferenceCurrency,
+			dblReferenceFundingRate
+		);
+
+<span class="fc" id="L124">		ForwardLabel friDerived3M = ForwardLabel.Create (</span>
+			strDerivedCurrency,
+			&quot;3M&quot;
+		);
+
+<span class="fc" id="L129">		ForwardCurve fcDerived3M = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+			dtSpot,
+			friDerived3M,
+			dblDerived3MForwardRate
+		);
+
+<span class="fc" id="L135">		CurrencyPair cp = CurrencyPair.FromCode (</span>
+			strReferenceCurrency + &quot;/&quot; + strDerivedCurrency
+		);
+
+<span class="fc" id="L139">		FXLabel fxLabel = FXLabel.Standard (cp);</span>
+
+<span class="fc" id="L141">		FundingLabel fundingLabelReference = org.drip.state.identifier.FundingLabel.Standard (</span>
+			strReferenceCurrency
+		);
+
+<span class="fc" id="L145">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
+
+<span class="fc" id="L147">		mktParams.setForwardState (</span>
+			fcDerived3M
+		);
+
+<span class="fc" id="L151">		mktParams.setFundingState (</span>
+			dcReferenceFunding
+		);
+
+<span class="fc" id="L155">		mktParams.setFXState (</span>
+<span class="fc" id="L156">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
+<span class="fc" id="L157">				&quot;FX::&quot; + cp.code(),</span>
+				dtSpot,
+				cp,
+				new String[] {&quot;10Y&quot;},
+				new double[] {dblReferenceDerivedFXRate},
+				dblReferenceDerivedFXRate
+			)
+		);
+
+<span class="fc" id="L166">		mktParams.setForwardVolatility (</span>
+<span class="fc" id="L167">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L168">				dtSpot.julian(),</span>
+<span class="fc" id="L169">				VolatilityLabel.Standard (friDerived3M),</span>
+				strDerivedCurrency,
+				dblDerivedForward3MVol
+			)
+		);
+
+<span class="fc" id="L175">		mktParams.setFundingVolatility (</span>
+<span class="fc" id="L176">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L177">				dtSpot.julian(),</span>
+<span class="fc" id="L178">				VolatilityLabel.Standard (fundingLabelReference),</span>
+				strReferenceCurrency,
+				dblReferenceFundingVol
+			)
+		);
+
+<span class="fc" id="L184">		mktParams.setFXVolatility (</span>
+<span class="fc" id="L185">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L186">				dtSpot.julian(),</span>
+<span class="fc" id="L187">				VolatilityLabel.Standard (fxLabel),</span>
+				strDerivedCurrency,
+				dblReferenceDerivedFXVol
+			)
+		);
+
+<span class="fc" id="L193">		mktParams.setForwardFundingCorrelation (</span>
+			friDerived3M,
+			fundingLabelReference,
+			new FlatUnivariate (
+				dblReferenceFundingDerived3MCorr
+			)
+		);
+
+<span class="fc" id="L201">		mktParams.setForwardFXCorrelation (</span>
+			friDerived3M,
+			fxLabel,
+			new FlatUnivariate (
+				dblDerived3MReferenceDerivedFXCorr
+			)
+		);
+
+<span class="fc" id="L209">		mktParams.setFundingFXCorrelation (</span>
+			fundingLabelReference,
+			fxLabel,
+			new FlatUnivariate (
+				dblReferenceFundingReferenceDerivedFXCorr
+			)
+		);
+
+<span class="fc" id="L217">		FloatFloatComponent xccySwap = OTCCrossCurrencyFloatFloat (</span>
+			strReferenceCurrency,
+			strDerivedCurrency,
+			dtSpot,
+			strMaturityTenor,
+			dblBasis,
+			1. / dblReferenceDerivedFXRate
+		);
+
+<span class="fc" id="L226">		xccySwap.setPrimaryCode (</span>
+			strDerivedCurrency + &quot;_&quot; + strReferenceCurrency + &quot;_OTC::FLOATFLOAT::&quot; + strMaturityTenor
+		);
+
+<span class="fc" id="L230">		mktParams.setFixing (</span>
+<span class="fc" id="L231">			xccySwap.effectiveDate(),</span>
+			fxLabel,
+			dblReferenceDerivedFXRate
+		);
+
+<span class="fc" id="L236">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strReferenceCurrency + &quot;,&quot; + strDerivedCurrency
+		);
+
+<span class="fc" id="L242">		CaseInsensitiveTreeMap&lt;Double&gt; mapXCcyOutput = xccySwap.value (</span>
+			valParams,
+			null,
+			mktParams,
+			null
+		);
+
+<span class="fc" id="L249">		System.out.println (</span>
+<span class="fc" id="L250">			&quot;\t| &quot; + xccySwap.name() + &quot;  [&quot; + xccySwap.effectiveDate() + &quot; -&gt; &quot; + xccySwap.maturityDate() + &quot;]  =&gt;  &quot; +</span>
+<span class="fc" id="L251">			FormatUtil.FormatDouble (mapXCcyOutput.get (&quot;Price&quot;), 1, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L252">			FormatUtil.FormatDouble (mapXCcyOutput.get (&quot;DerivedParBasisSpread&quot;), 1, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L253">			FormatUtil.FormatDouble (mapXCcyOutput.get (&quot;ReferenceParBasisSpread&quot;), 1, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L254">			FormatUtil.FormatDouble (mapXCcyOutput.get (&quot;DerivedCleanDV01&quot;), 1, 2, 10000.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L255">			FormatUtil.FormatDouble (mapXCcyOutput.get (&quot;ReferenceCleanDV01&quot;), 1, 2, 10000.) + &quot;  |&quot;</span>
+		);
+<span class="fc" id="L257">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L268">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L270">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="fc" id="L272">		System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L274">		System.out.println (&quot;\t\tCROSS-CURRENCY FLOAT-FLOAT COMPONENT RUNS&quot;);</span>
+
+<span class="fc" id="L276">		System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L278">		System.out.println (&quot;\tL -&gt; R:&quot;);</span>
+
+<span class="fc" id="L280">		System.out.println (&quot;\t\tCross Currency Swap Name&quot;);</span>
+
+<span class="fc" id="L282">		System.out.println (&quot;\t\tFloat-Float Effective&quot;);</span>
+
+<span class="fc" id="L284">		System.out.println (&quot;\t\tFloat-Float Maturity&quot;);</span>
+
+<span class="fc" id="L286">		System.out.println (&quot;\t\tPrice&quot;);</span>
+
+<span class="fc" id="L288">		System.out.println (&quot;\t\tDerived Stream Par Basis Spread&quot;);</span>
+
+<span class="fc" id="L290">		System.out.println (&quot;\t\tReference Stream Par Basis Spread&quot;);</span>
+
+<span class="fc" id="L292">		System.out.println (&quot;\t\tAnnualized Derived Stream Duration&quot;);</span>
+
+<span class="fc" id="L294">		System.out.println (&quot;\t\tAnnualized Reference Stream Duration&quot;);</span>
+
+<span class="fc" id="L296">		System.out.println (&quot;\t------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L298">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;AUD&quot;, &quot;2Y&quot;, 0.0003, 0.7769);</span>
+
+<span class="fc" id="L300">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;CAD&quot;, &quot;2Y&quot;, 0.0003, 0.7861);</span>
+
+<span class="fc" id="L302">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;CHF&quot;, &quot;2Y&quot;, 0.0003, 1.0811);</span>
+
+<span class="fc" id="L304">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;CLP&quot;, &quot;2Y&quot;, 0.0003, 0.0016);</span>
+
+<span class="fc" id="L306">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;DKK&quot;, &quot;2Y&quot;, 0.0003, 0.1517);</span>
+
+<span class="fc" id="L308">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;EUR&quot;, &quot;2Y&quot;, 0.0003, 1.1294);</span>
+
+<span class="fc" id="L310">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;GBP&quot;, &quot;2Y&quot;, 0.0003, 1.5004);</span>
+
+<span class="fc" id="L312">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;JPY&quot;, &quot;2Y&quot;, 0.0003, 0.0085);</span>
+
+<span class="fc" id="L314">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;MXN&quot;, &quot;2Y&quot;, 0.0003, 0.0666);</span>
+
+<span class="fc" id="L316">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;NOK&quot;, &quot;2Y&quot;, 0.0003, 0.1288);</span>
+
+<span class="fc" id="L318">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;PLN&quot;, &quot;2Y&quot;, 0.0003, 0.2701);</span>
+
+<span class="fc" id="L320">		OTCCrossCurrencyRun (dtSpot, &quot;USD&quot;, &quot;SEK&quot;, &quot;2Y&quot;, 0.0003, 0.1211);</span>
+
+<span class="fc" id="L322">		System.out.println (&quot;\t------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L323">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IdzorekAndrogue2003.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.blacklitterman</a> &gt; <span class="el_source">IdzorekAndrogue2003.java</span></div><h1>IdzorekAndrogue2003.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.blacklitterman;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * IdzorekAndrogue2003 reconciles the Outputs of the Black-Litterman Model Process. The References are:
+ *  
+ *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
+ *  	Sachs Asset Management
+ *  
+ *  - Idzorek, T., and J. Androgue (2003):
+ *  	https://faculty.fuqua.duke.edu/~charvey/Teaching/BA453_2005/Black%20Litterman.pdf
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L67">public class IdzorekAndrogue2003 {</span>
+
+	public static final void main (
+		final String[] astArgs)
+		throws Exception
+	{
+<span class="fc" id="L73">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="fc" id="L78">		String[] astrAssetClass = new String[] {</span>
+			&quot;US Bonds            &quot;,
+			&quot;Global Bonds xUSD   &quot;,
+			&quot;World Equity xUS    &quot;,
+			&quot;Emerging Equity     &quot;,
+			&quot;US Large Cap Growth &quot;,
+			&quot;US Large Cap Value  &quot;,
+			&quot;US Small Cap Growth &quot;,
+			&quot;US Small Cap Value  &quot;
+		};
+
+<span class="fc" id="L89">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
+			 8360741000000.,
+			11583275710000.,
+			 9212460000000.,
+			  964647000000.,
+			 5217844438500.,
+			 5217844438500.,
+			  459897061500.,
+			  459897061500.
+		};
+
+<span class="fc" id="L100">		double dblDelta = 3.37;</span>
+
+<span class="fc" id="L102">		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {</span>
+			{ 0.0014,  0.0015, -0.0008, -0.0017, -0.0010, -0.0007, -0.0015, -0.0006},
+			{ 0.0015,  0.0076,  0.0026, -0.0006, -0.0013, -0.0003, -0.0002,  0.0005},
+			{-0.0008,  0.0026,  0.0251,  0.0292,  0.0208,  0.0147,  0.0248,  0.0134},
+			{-0.0017, -0.0006,  0.0292,  0.0663,  0.0359,  0.0244,  0.0490,  0.0268},
+			{-0.0010, -0.0013,  0.0208,  0.0359,  0.0468,  0.0283,  0.0520,  0.0260},
+			{-0.0007, -0.0003,  0.0147,  0.0244,  0.0283,  0.0252,  0.0314,  0.0215},
+			{-0.0015, -0.0002,  0.0248,  0.0490,  0.0520,  0.0314,  0.0809,  0.0411},
+			{-0.0006,  0.0005,  0.0134,  0.0268,  0.0260,  0.0215,  0.0411,  0.0276}
+		};
+
+<span class="fc" id="L113">		double[] adblMarketCapitalizationWeightReconciler = new double[] {</span>
+			0.2016,
+			0.2793,
+			0.2221,
+			0.0233,
+			0.1258,
+			0.1258,
+			0.0111,
+			0.0111
+		};
+
+<span class="fc" id="L124">		double[] adblImpliedReturnsReconciler = new double[] {</span>
+			0.0008,
+			0.0094,
+			0.0395,
+			0.0537,
+			0.0513,
+			0.0368,
+			0.0612,
+			0.0349
+		};
+
+<span class="fc" id="L135">		double dblTotalMarketCapitalization = 0.;</span>
+<span class="fc" id="L136">		double[] adblMarketCapitalizationWeight = new double[adblMarketCapitalizationEstimate.length];</span>
+
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L139">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L142">			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
+
+<span class="fc" id="L144">		double[] adblImpliedReturns = Matrix.Product (</span>
+			aadblAssetExcessReturnsCorrelation,
+			adblMarketCapitalizationWeight
+		);
+
+<span class="fc" id="L149">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L151">		System.out.println (&quot;\t|                                          CO-VARIANCE MATRIX                                          ||&quot;);</span>
+
+<span class="fc" id="L153">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetClass.length; ++i) {</span>
+<span class="fc" id="L156">			String strDump = &quot;\t| &quot; + astrAssetClass[i] + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetClass.length; ++j)</span>
+<span class="fc" id="L159">				strDump += &quot;| &quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 4, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L161">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L164">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L166">		System.out.println (&quot;\n\t||-------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L168">		System.out.println (&quot;\t||         MARKET CAPITALIZATION AND EQUILIBRIUM WEIGHTS       ||&quot;);</span>
+
+<span class="fc" id="L170">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L172">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  CAPITALIZATION |  OUTPUT |  PAPER  ||&quot;);</span>
+
+<span class="fc" id="L174">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L177">			System.out.println (</span>
+				&quot;\t|| &quot; + astrAssetClass[i] + &quot; =&gt; &quot; +
+<span class="fc" id="L179">				FormatUtil.FormatDouble (adblMarketCapitalizationEstimate[i], 14, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L180">				FormatUtil.FormatDouble (adblMarketCapitalizationWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L181">				FormatUtil.FormatDouble (adblMarketCapitalizationWeightReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+			);
+
+<span class="fc" id="L184">		System.out.println (&quot;\t||-------------------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L186">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L188">		System.out.println (&quot;\t||         RISK PREMIUM IMPLIED RETURNS      ||&quot;);</span>
+
+<span class="fc" id="L190">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L192">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  OUTPUT |  PAPER  ||&quot;);</span>
+
+<span class="fc" id="L194">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedReturns.length; ++i)</span>
+<span class="fc" id="L197">			System.out.println (</span>
+				&quot;\t|| &quot; + astrAssetClass[i] + &quot; =&gt; &quot; +
+<span class="fc" id="L199">				FormatUtil.FormatDouble (dblDelta * adblImpliedReturns[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L200">				FormatUtil.FormatDouble (adblImpliedReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+			);
+
+<span class="fc" id="L203">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L205">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L206">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

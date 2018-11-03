@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultiStretchCurveBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.overnight</a> &gt; <span class="el_source">MultiStretchCurveBuilder.java</span></div><h1>MultiStretchCurveBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.overnight;
+
+import org.drip.analytics.date.*;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.*;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.*;
+import org.drip.state.estimator.LatentStateStretchBuilder;
+import org.drip.state.identifier.*;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MultiStretchCurveBuilder contains a sample of the construction and usage of the Overnight Curve built
+ *  using the Overnight Indexed Swap Product Instruments in their distinct stretches. The Tenors/Quotes to
+ *  replicate are taken from:
+ * 
+ *  - Ametrano, F., and M. Bianchetti (2013): Everything You Always Wanted to Know About Multiple Interest
+ *  	Rate Curve Bootstrapping but Were Afraid to Ask,
+ *  		http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2219548
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L84">public class MultiStretchCurveBuilder {</span>
+
+	private static final FixFloatComponent OTCOISFixFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="fc" id="L92">		FixedFloatSwapConvention ffConv = OvernightFixedFloatContainer.FundConventionFromJurisdiction (</span>
+			strCurrency
+		);
+
+<span class="fc" id="L96">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final int[] aiDay)
+		throws Exception
+	{
+<span class="fc" id="L117">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L120">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="fc" id="L122">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="fc" id="L126">				OvernightLabel.Create (</span>
+					strCurrency
+				)
+			);
+
+<span class="fc" id="L131">		return aDeposit;</span>
+	}
+
+	/*
+	 * Construct the Array of Overnight Index Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] OISFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="fc" id="L147">		FixFloatComponent[] aOIS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L150">			aOIS[i] = OTCOISFixFloat (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="fc" id="L157">		return aOIS;</span>
+	}
+
+	private static final FixFloatComponent[] OISFuturesFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrStartTenor,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="fc" id="L168">		FixFloatComponent[] aOISFutures = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L171">			aOISFutures[i] = OTCOISFixFloat (</span>
+<span class="fc" id="L172">				dtSpot.addTenor (astrStartTenor[i]),</span>
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="fc" id="L178">		return aOISFutures;</span>
+	}
+
+	/*
+	 * Construct the Array of Overnight Index Future Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final void CustomOISCurveBuilderSample (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strHeaderComment)
+		throws Exception
+	{
+<span class="fc" id="L193">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L195">		System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
+
+<span class="fc" id="L197">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+		/*
+		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L203">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+			dtSpot,
+			strCurrency,
+			new int[] {
+				1, 2, 3
+			}
+		);
+
+<span class="fc" id="L211">		double[] adblDepositQuote = new double[] {</span>
+			0.0004,		// 1D
+			0.0004,		// 2D
+			0.0004		// 3D
+		};
+
+<span class="fc" id="L217">		String[] astrDepositMeasure = new String[] {</span>
+			&quot;ForwardRate&quot;,		// 1D
+			&quot;ForwardRate&quot;,		// 2D
+			&quot;ForwardRate&quot;		// 3D
+		};
+
+		/*
+		 * Construct the Deposit Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L227">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;DEPOSIT&quot;,
+			aDepositComp,
+			astrDepositMeasure,
+			adblDepositQuote
+		);
+
+		/*
+		 * Construct the Array of Short End OIS Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L238">		double[] adblShortEndOISQuote = new double[] {</span>
+			0.00070,    //   1W
+			0.00069,    //   2W
+			0.00078,    //   3W
+			0.00074     //   1M
+		};
+
+<span class="fc" id="L245">		CalibratableComponent[] aShortEndOISComp = OISFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new String[] {
+				&quot;1W&quot;,
+				&quot;2W&quot;,
+				&quot;3W&quot;,
+				&quot;1M&quot;
+			},
+			adblShortEndOISQuote
+		);
+
+<span class="fc" id="L257">		String[] astrShortEndOISMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,    //   1W
+			&quot;SwapRate&quot;,    //   2W
+			&quot;SwapRate&quot;,    //   3W
+			&quot;SwapRate&quot;     //   1M
+		};
+
+		/*
+		 * Construct the Short End OIS Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L268">		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;OIS_SHORT_END&quot;,
+			aShortEndOISComp,
+			astrShortEndOISMeasure,
+			adblShortEndOISQuote
+		);
+
+		/*
+		 * Construct the Array of OIS Futures Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L279">		double[] adblOISFutureQuote = new double[] {</span>
+			 0.00046,    //   1M x 1M
+			 0.00016,    //   2M x 1M
+			-0.00007,    //   3M x 1M
+			-0.00013,    //   4M x 1M
+			-0.00014     //   5M x 1M
+		};
+
+<span class="fc" id="L287">		CalibratableComponent[] aOISFutureComp = OISFuturesFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new String[] {
+				&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;, &quot;4M&quot;, &quot;5M&quot;
+			},
+			new String[] {
+				&quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;, &quot;1M&quot;
+			},
+			adblOISFutureQuote
+		);
+
+<span class="fc" id="L299">		String[] astrOISFutureMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,    //   1M
+			&quot;SwapRate&quot;,    //   2M
+			&quot;SwapRate&quot;,    //   3M
+			&quot;SwapRate&quot;,    //   4M
+			&quot;SwapRate&quot;     //   5M
+		};
+
+		/*
+		 * Construct the OIS Future Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L311">		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;OIS_FUTURE&quot;,
+			aOISFutureComp,
+			astrOISFutureMeasure,
+			adblOISFutureQuote
+		);
+
+		/*
+		 * Construct the Array of Long End OIS Instruments and their Quotes from the given set of parameters
+		 */
+
+<span class="fc" id="L322">		double[] adblLongEndOISQuote = new double[] {</span>
+			0.00002,    //  15M
+			0.00008,    //  18M
+			0.00021,    //  21M
+			0.00036,    //   2Y
+			0.00127,    //   3Y
+			0.00274,    //   4Y
+			0.00456,    //   5Y
+			0.00647,    //   6Y
+			0.00827,    //   7Y
+			0.00996,    //   8Y
+			0.01147,    //   9Y
+			0.01280,    //  10Y
+			0.01404,    //  11Y
+			0.01516,    //  12Y
+			0.01764,    //  15Y
+			0.01939,    //  20Y
+			0.02003,    //  25Y
+			0.02038     //  30Y
+		};
+
+<span class="fc" id="L343">		String[] adblLongEndOISMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,    //  15M
+			&quot;SwapRate&quot;,    //  18M
+			&quot;SwapRate&quot;,    //  21M
+			&quot;SwapRate&quot;,    //   2Y
+			&quot;SwapRate&quot;,    //   3Y
+			&quot;SwapRate&quot;,    //   4Y
+			&quot;SwapRate&quot;,    //   5Y
+			&quot;SwapRate&quot;,    //   6Y
+			&quot;SwapRate&quot;,    //   7Y
+			&quot;SwapRate&quot;,    //   8Y
+			&quot;SwapRate&quot;,    //   9Y
+			&quot;SwapRate&quot;,    //  10Y
+			&quot;SwapRate&quot;,    //  11Y
+			&quot;SwapRate&quot;,    //  12Y
+			&quot;SwapRate&quot;,    //  15Y
+			&quot;SwapRate&quot;,    //  20Y
+			&quot;SwapRate&quot;,    //  25Y
+			&quot;SwapRate&quot;     //  30Y
+		};
+
+<span class="fc" id="L364">		CalibratableComponent[] aLongEndOISComp = OISFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new String[] {
+				&quot;15M&quot;,
+				&quot;18M&quot;,
+				&quot;21M&quot;,
+				&quot;2Y&quot;,
+				&quot;3Y&quot;,
+				&quot;4Y&quot;,
+				&quot;5Y&quot;,
+				&quot;6Y&quot;,
+				&quot;7Y&quot;,
+				&quot;8Y&quot;,
+				&quot;9Y&quot;,
+				&quot;10Y&quot;,
+				&quot;11Y&quot;,
+				&quot;12Y&quot;,
+				&quot;15Y&quot;,
+				&quot;20Y&quot;,
+				&quot;25Y&quot;,
+				&quot;30Y&quot;
+			},
+			adblLongEndOISQuote
+		);
+
+		/*
+		 * Construct the Long End OIS Instrument Set Stretch Builder
+		 */
+
+<span class="fc" id="L394">		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+			&quot;OIS_LONG_END&quot;,
+			aLongEndOISComp,
+			adblLongEndOISMeasure,
+			adblLongEndOISQuote
+		);
+
+<span class="fc" id="L401">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+			depositStretch,
+			oisShortEndStretch,
+			oisFutureStretch,
+			oisLongEndStretch
+		};
+
+		/*
+		 * Set up the Linear Curve Calibrator using the following parameters:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L416">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+<span class="fc" id="L420">				SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+<span class="fc" id="L430">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
+		 *  of Deposit and Swap Stretches.
+		 */
+
+<span class="fc" id="L441">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L447">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+			strCurrency,
+			lcc,
+			aStretchSpec,
+			valParams,
+			null,
+			null,
+			null,
+			1.
+		);
+
+		/*
+		 * Cross-Comparison of the Deposit Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L463">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L465">		System.out.println (&quot;\t     DEPOSIT INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L467">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L469" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L470">			System.out.println (&quot;\t[&quot; + aDepositComp[i].effectiveDate() + &quot; =&gt; &quot; + aDepositComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L471">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L472">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L473">						null, &quot;Rate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));</span>
+
+		/*
+		 * Cross-Comparison of the Short End OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L480">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L482">		System.out.println (&quot;\t     OIS SHORT END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L484">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		for (int i = 0; i &lt; aShortEndOISComp.length; ++i)</span>
+<span class="fc" id="L487">			System.out.println (&quot;\t[&quot; + aShortEndOISComp[i].effectiveDate() + &quot; =&gt; &quot; + aShortEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L488">				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L489">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L490">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L491">							FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L492">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+									null, &quot;FairPremium&quot;), 1, 6, 1.));
+
+		/*
+		 * Cross-Comparison of the OIS Future Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L500">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L502">		System.out.println (&quot;\t     OIS FUTURE INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L504">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L506" title="All 2 branches covered.">		for (int i = 0; i &lt; aOISFutureComp.length; ++i)</span>
+<span class="fc" id="L507">			System.out.println (&quot;\t[&quot; + aOISFutureComp[i].effectiveDate() + &quot; =&gt; &quot; + aOISFutureComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L508">				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L509">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L510">						null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L511">							FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L512">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+									null, &quot;FairPremium&quot;), 1, 6, 1.));
+
+		/*
+		 * Cross-Comparison of the Long End OIS Calibration Instrument &quot;Rate&quot; metric across the different curve
+		 * 	construction methodologies.
+		 */
+
+<span class="fc" id="L520">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L522">		System.out.println (&quot;\t     OIS LONG END INSTRUMENTS CALIBRATION RECOVERY&quot;);</span>
+
+<span class="fc" id="L524">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L526" title="All 2 branches covered.">		for (int i = 0; i &lt; aLongEndOISComp.length; ++i)</span>
+<span class="fc" id="L527">			System.out.println (&quot;\t[&quot; + aLongEndOISComp[i].effectiveDate() + &quot; =&gt; &quot; + aLongEndOISComp[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L528">				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L529">					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+<span class="fc" id="L530">						null, &quot;CalibSwapRate&quot;), 1, 6, 1.) + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L531">							FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,</span>
+<span class="fc" id="L532">								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),</span>
+									null, &quot;FairPremium&quot;), 1, 6, 1.));
+<span class="fc" id="L534">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L544">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L546">		String strCurrency = &quot;EUR&quot;;</span>
+
+<span class="fc" id="L548">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
+
+<span class="fc" id="L554">		CustomOISCurveBuilderSample (</span>
+			dtToday,
+			strCurrency,
+			&quot;OVERNIGHT INDEX RUN RECONCILIATION&quot;
+		);
+<span class="fc" id="L559">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

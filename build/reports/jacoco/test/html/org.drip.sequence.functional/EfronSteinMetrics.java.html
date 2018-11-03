@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EfronSteinMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sequence.functional</a> &gt; <span class="el_source">EfronSteinMetrics.java</span></div><h1>EfronSteinMetrics.java</h1><pre class="source lang-java linenums">
+package org.drip.sequence.functional;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * EfronSteinMetrics contains the Variance-based non-exponential Sample Distribution/Bounding Metrics and
+ *  Agnostic Bounds related to the Functional Transformation of the specified Sequence.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class EfronSteinMetrics {
+<span class="fc" id="L60">	private org.drip.sequence.functional.MultivariateRandom _func = null;</span>
+<span class="fc" id="L61">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] _aSSAM = null;</span>
+
+	private double[] demotedSequence (
+		final double[] adblSequence,
+		final int iDemoteIndex)
+	{
+<span class="fc" id="L67">		int iSequenceLength = adblSequence.length;</span>
+<span class="fc" id="L68">		double[] adblDemotedSequence = new double[iSequenceLength - 1];</span>
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceLength; ++i) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">			if (i &lt; iDemoteIndex)</span>
+<span class="fc" id="L72">				adblDemotedSequence[i] = adblSequence[i];</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			else if (i &gt; iDemoteIndex)</span>
+<span class="fc" id="L74">				adblDemotedSequence[i - 1] = adblSequence[i];</span>
+		}
+
+<span class="fc" id="L77">		return adblDemotedSequence;</span>
+	}
+
+	/**
+	 * EfronSteinMetrics Constructor
+	 * 
+	 * @param func Multivariate Objective Function
+	 * @param aSSAM Array of the individual Single Sequence Metrics
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EfronSteinMetrics (
+		final org.drip.sequence.functional.MultivariateRandom func,
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
+		throws java.lang.Exception
+<span class="fc" id="L93">	{</span>
+<span class="pc bpc" id="L94" title="2 of 4 branches missed.">		if (null == (_func = func) || null == (_aSSAM = aSSAM))</span>
+<span class="nc" id="L95">			throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L97">		int iNumVariable = _aSSAM.length;</span>
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (0 == iNumVariable)</span>
+<span class="nc" id="L100">			throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L102">		int iSequenceLength = _aSSAM[0].sequence().length;</span>
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumVariable; ++i) {</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">			if (null == _aSSAM[i] || _aSSAM[i].sequence().length != iSequenceLength)</span>
+<span class="nc" id="L106">				throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L108">	}</span>
+
+	/**
+	 * Retrieve the Multivariate Objective Function
+	 * 
+	 * @return The Multivariate Objective Function Instance
+	 */
+
+	public org.drip.function.definition.RdToR1 function()
+	{
+<span class="nc" id="L118">		return _func;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Single Sequence Agnostic Metrics
+	 * 
+	 * @return The Array of the Single Sequence Agnostic Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] sequenceMetrics()
+	{
+<span class="nc" id="L129">		return _aSSAM;</span>
+	}
+
+	/**
+	 * Extract the Full Variate Array Sequence
+	 * 
+	 * @param aSSAM Array of the individual Single Sequence Metrics
+	 * 
+	 * @return The Full Variate Array Sequence
+	 */
+
+	public double[][] variateSequence (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
+	{
+<span class="fc" id="L143">		int iNumVariate = _aSSAM.length;</span>
+
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">		if (null == aSSAM || aSSAM.length != iNumVariate) return null;</span>
+
+<span class="fc" id="L147">		int iSequenceSize = aSSAM[0].sequence().length;</span>
+
+<span class="fc" id="L149">		double[][] aadblVariateSequence = new double[iSequenceSize][iNumVariate];</span>
+
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc" id="L152">			double[] adblVariate = aSSAM[iVariateIndex].sequence();</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">			for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex)</span>
+<span class="fc" id="L155">				aadblVariateSequence[iSequenceIndex][iVariateIndex] = adblVariate[iSequenceIndex];</span>
+		}
+
+<span class="fc" id="L158">		return aadblVariateSequence;</span>
+	}
+
+	/**
+	 * Compute the Function Sequence Agnostic Metrics associated with the Variance of each Variate
+	 * 
+	 * @return The Array of the Associated Sequence Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] variateFunctionVarianceMetrics()
+	{
+<span class="fc" id="L169">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L170">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = new</span>
+			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			if (null == (aSSAM[i] = _func.unconditionalTargetVariateMetrics (_aSSAM, i))) return null;</span>
+		}
+
+<span class="fc" id="L177">		return aSSAM;</span>
+	}
+
+	/**
+	 * Compute the Function Sequence Agnostic Metrics associated with the Variance of each Variate Using the
+	 * 	Supplied Ghost Variate Sequence
+	 * 
+	 * @param aSSAMGhost Array of the Ghost Single Sequence Metrics
+	 * 
+	 * @return The Array of the Associated Sequence Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] ghostVariateVarianceMetrics (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
+	{
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if (null == aSSAMGhost) return null;</span>
+
+<span class="fc" id="L194">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L195">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = new</span>
+			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
+
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">			if (null == aSSAMGhost[i] || null == (aSSAM[i] = _func.ghostTargetVariateMetrics (_aSSAM, i,</span>
+<span class="fc" id="L200">				aSSAMGhost[i].sequence())))</span>
+<span class="nc" id="L201">				return null;</span>
+		}
+
+<span class="fc" id="L204">		return aSSAM;</span>
+	}
+
+	/**
+	 * Compute the Function Sequence Agnostic Metrics associated with each Variate using the specified Ghost
+	 * 	Symmetric Variable Copy
+	 * 
+	 * @param aSSAMGhost Array of the Ghost Single Sequence Metrics
+	 * 
+	 * @return The Array of the Associated Sequence Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] symmetrizedDifferenceSequenceMetrics (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
+	{
+<span class="fc" id="L219">		double[][] aadblSequenceVariate = variateSequence (_aSSAM);</span>
+
+<span class="fc" id="L221">		double[][] aadblGhostSequenceVariate = variateSequence (aSSAMGhost);</span>
+
+<span class="pc bpc" id="L223" title="3 of 6 branches missed.">		if (null == aadblGhostSequenceVariate || aadblSequenceVariate.length !=</span>
+			aadblGhostSequenceVariate.length || aadblSequenceVariate[0].length !=
+				aadblGhostSequenceVariate[0].length)
+<span class="nc" id="L226">			return null;</span>
+
+<span class="fc" id="L228">		int iSequenceSize = _aSSAM[0].sequence().length;</span>
+
+<span class="fc" id="L230">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L231">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMFunction = new</span>
+			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
+
+		try {
+<span class="fc bfc" id="L235" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc" id="L236">				double[] adblSymmetrizedFunctionDifference = new double[iSequenceSize];</span>
+
+<span class="fc bfc" id="L238" title="All 2 branches covered.">				for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex) {</span>
+<span class="fc" id="L239">					double[] adblVariate = aadblSequenceVariate[iSequenceIndex];</span>
+
+<span class="fc" id="L241">					adblSymmetrizedFunctionDifference[iSequenceIndex] = _func.evaluate (adblVariate);</span>
+
+<span class="fc" id="L243">					double dblVariateOrig = adblVariate[iVariateIndex];</span>
+<span class="fc" id="L244">					adblVariate[iVariateIndex] = aadblGhostSequenceVariate[iSequenceIndex][iVariateIndex];</span>
+
+<span class="fc" id="L246">					adblSymmetrizedFunctionDifference[iSequenceIndex] -= _func.evaluate (adblVariate);</span>
+
+<span class="fc" id="L248">					adblVariate[iVariateIndex] = dblVariateOrig;</span>
+				}
+
+<span class="fc" id="L251">				aSSAMFunction[iVariateIndex] = new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics</span>
+					(adblSymmetrizedFunctionDifference, null);
+			}
+
+<span class="fc" id="L255">			return aSSAMFunction;</span>
+<span class="nc" id="L256">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L257">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L260">		return null;</span>
+	}
+
+	/**
+	 * Compute the Function Sequence Agnostic Metrics associated with each Variate around the Pivot Point
+	 *  provided by the Pivot Function
+	 * 
+	 * @param funcPivot The Pivot Function
+	 * 
+	 * @return The Array of the Associated Sequence Metrics
+	 */
+
+	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] pivotedDifferenceSequenceMetrics (
+		final org.drip.sequence.functional.MultivariateRandom funcPivot)
+	{
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">		if (null == funcPivot) return null;</span>
+
+<span class="fc" id="L277">		double[][] aadblSequenceVariate = variateSequence (_aSSAM);</span>
+
+<span class="fc" id="L279">		int iSequenceSize = _aSSAM[0].sequence().length;</span>
+
+<span class="fc" id="L281">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L282">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMFunction = new</span>
+			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
+
+		try {
+<span class="fc bfc" id="L286" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc" id="L287">				double[] adblSymmetrizedFunctionDifference = new double[iSequenceSize];</span>
+
+<span class="fc bfc" id="L289" title="All 2 branches covered.">				for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex) {</span>
+<span class="fc" id="L290">					double[] adblVariate = aadblSequenceVariate[iSequenceIndex];</span>
+
+<span class="fc" id="L292">					adblSymmetrizedFunctionDifference[iSequenceIndex] = _func.evaluate (adblVariate) -</span>
+<span class="fc" id="L293">						funcPivot.evaluate (demotedSequence (adblVariate, iVariateIndex));</span>
+				}
+
+<span class="fc" id="L296">				aSSAMFunction[iVariateIndex] = new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics</span>
+					(adblSymmetrizedFunctionDifference, null);
+			}
+
+<span class="fc" id="L300">			return aSSAMFunction;</span>
+<span class="nc" id="L301">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L302">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L305">		return null;</span>
+	}
+
+	/**
+	 * Compute the Multivariate Variance Upper Bound using the Martingale Differences Method
+	 * 
+	 * @return The Multivariate Variance Upper Bound using the Martingale Differences Method
+	 * 
+	 * @throws java.lang.Exception Thrown if the Upper Bound cannot be calculated
+	 */
+
+	public double martingaleVarianceUpperBound()
+		throws java.lang.Exception
+	{
+<span class="fc" id="L319">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L320">		double dblVarianceUpperBound = 0.;</span>
+
+<span class="fc" id="L322">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = variateFunctionVarianceMetrics();</span>
+
+<span class="pc bpc" id="L324" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L325">			throw new java.lang.Exception</span>
+				(&quot;EfronSteinMetrics::martingaleVarianceUpperBound =&gt; Cannot compute Univariate Variance Metrics&quot;);
+
+<span class="fc bfc" id="L328" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L329">			dblVarianceUpperBound += aSSAM[i].empiricalExpectation();</span>
+
+<span class="fc" id="L331">		return dblVarianceUpperBound;</span>
+	}
+
+	/**
+	 * Compute the Variance Upper Bound using the Ghost Variables
+	 * 
+	 * @param aSSAMGhost Array of the Ghost Single Sequence Metrics
+	 * 
+	 * @return The Variance Upper Bound using the Ghost Variables
+	 * 
+	 * @throws java.lang.Exception Thrown if the Upper Bound cannot be calculated
+	 */
+
+	public double ghostVarianceUpperBound (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L348">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L349">		double dblVarianceUpperBound = 0.;</span>
+
+<span class="fc" id="L351">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = ghostVariateVarianceMetrics</span>
+<span class="fc" id="L352">			(aSSAMGhost);</span>
+
+<span class="pc bpc" id="L354" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L355">			throw new java.lang.Exception</span>
+				(&quot;EfronSteinMetrics::ghostVarianceUpperBound =&gt; Cannot compute Target Ghost Variance Metrics&quot;);
+
+<span class="fc bfc" id="L358" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L359">			dblVarianceUpperBound += aSSAM[i].empiricalExpectation();</span>
+
+<span class="fc" id="L361">		return dblVarianceUpperBound;</span>
+	}
+
+	/**
+	 * Compute the Efron-Stein-Steele Variance Upper Bound using the Ghost Variables
+	 * 
+	 * @param aSSAMGhost Array of the Ghost Single Sequence Metrics
+	 * 
+	 * @return The Efron-Stein-Steele Variance Upper Bound using the Ghost Variables
+	 * 
+	 * @throws java.lang.Exception Thrown if the Upper Bound cannot be calculated
+	 */
+
+	public double efronSteinSteeleBound (
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L378">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L379">		double dblVarianceUpperBound = 0.;</span>
+
+<span class="fc" id="L381">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM =</span>
+<span class="fc" id="L382">			symmetrizedDifferenceSequenceMetrics (aSSAMGhost);</span>
+
+<span class="pc bpc" id="L384" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L385">			throw new java.lang.Exception</span>
+				(&quot;EfronSteinMetrics::efronSteinSteeleBound =&gt; Cannot compute Symmetrized Difference Metrics&quot;);
+
+<span class="fc bfc" id="L388" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L389">			dblVarianceUpperBound += aSSAM[i].empiricalRawMoment (2, false);</span>
+
+<span class="fc" id="L391">		return 0.5 * dblVarianceUpperBound;</span>
+	}
+
+	/**
+	 * Compute the Function Variance Upper Bound using the supplied Multivariate Pivoting Function
+	 * 
+	 * @param funcPivot The Custom Multivariate Pivoting Function
+	 * 
+	 * @return The Function Variance Upper Bound using the supplied Multivariate Pivot Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Variance Upper Bound cannot be calculated
+	 */
+
+	public double pivotVarianceUpperBound (
+		final org.drip.sequence.functional.MultivariateRandom funcPivot)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L408">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L409">		double dblVarianceUpperBound = 0.;</span>
+
+<span class="fc" id="L411">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = pivotedDifferenceSequenceMetrics</span>
+<span class="fc" id="L412">			(funcPivot);</span>
+
+<span class="pc bpc" id="L414" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L415">			throw new java.lang.Exception</span>
+				(&quot;EfronSteinMetrics::pivotVarianceUpperBound =&gt; Cannot compute Pivoted Difference Metrics&quot;);
+
+<span class="fc bfc" id="L418" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L419">			dblVarianceUpperBound += aSSAM[i].empiricalRawMoment (2, false);</span>
+
+<span class="fc" id="L421">		return 0.5 * dblVarianceUpperBound;</span>
+	}
+
+	/**
+	 * Compute the Multivariate Variance Upper Bound using the Bounded Differences Support
+	 * 
+	 * @return The Multivariate Variance Upper Bound using the Bounded Differences Support
+	 * 
+	 * @throws java.lang.Exception Thrown if the Upper Bound cannot be calculated
+	 */
+
+	public double boundedVarianceUpperBound()
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L435" title="1 of 2 branches missed.">		if (!(_func instanceof org.drip.sequence.functional.BoundedMultivariateRandom))</span>
+<span class="nc" id="L436">			throw new java.lang.Exception</span>
+				(&quot;EfronSteinMetrics::boundedVarianceUpperBound =&gt; Invalid Bounded Metrics&quot;);
+
+<span class="fc" id="L439">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L440">		double dblVarianceUpperBound = 0.;</span>
+<span class="fc" id="L441">		org.drip.sequence.functional.BoundedMultivariateRandom boundedFunc =</span>
+			(org.drip.sequence.functional.BoundedMultivariateRandom) _func;
+
+<span class="fc bfc" id="L444" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L445">			dblVarianceUpperBound += boundedFunc.targetVariateVarianceBound (i);</span>
+
+<span class="fc" id="L447">		return 0.5 * dblVarianceUpperBound;</span>
+	}
+
+	/**
+	 * Compute the Multivariate Variance Upper Bound using the Separable Variance Bound
+	 * 
+	 * @return The Multivariate Variance Upper Bound using the Separable Variance Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Upper Bound cannot be calculated
+	 */
+
+	public double separableVarianceUpperBound()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L461" title="All 2 branches missed.">		if (!(_func instanceof org.drip.sequence.functional.SeparableMultivariateRandom))</span>
+<span class="nc" id="L462">			throw new java.lang.Exception</span>
+				(&quot;EfronSteinMetrics::separableVarianceUpperBound =&gt; Invalid Bounded Metrics&quot;);
+
+<span class="nc" id="L465">		int iNumVariate = _aSSAM.length;</span>
+<span class="nc" id="L466">		double dblVarianceUpperBound = 0.;</span>
+<span class="nc" id="L467">		org.drip.sequence.functional.SeparableMultivariateRandom separableFunc =</span>
+			(org.drip.sequence.functional.SeparableMultivariateRandom) _func;
+
+<span class="nc bnc" id="L470" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L471">			dblVarianceUpperBound += separableFunc.targetVariateVariance (i);</span>
+
+<span class="nc" id="L473">		return 0.5 * dblVarianceUpperBound;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

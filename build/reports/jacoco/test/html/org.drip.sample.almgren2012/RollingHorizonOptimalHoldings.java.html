@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RollingHorizonOptimalHoldings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.almgren2012</a> &gt; <span class="el_source">RollingHorizonOptimalHoldings.java</span></div><h1>RollingHorizonOptimalHoldings.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.almgren2012;
+
+import org.drip.execution.adaptive.*;
+import org.drip.execution.hjb.NonDimensionalCostEvolverSystemic;
+import org.drip.execution.latent.*;
+import org.drip.execution.risk.MeanVarianceObjectiveUtility;
+import org.drip.execution.strategy.OrderSpecification;
+import org.drip.execution.tradingtime.CoordinatedVariation;
+import org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * RollingHorizonOptimalHoldings simulates the Holdings from the Sample Realization of the Adaptive Cost
+ *  Strategy using the Market State Trajectory the follows the Zero Mean Ornstein-Uhlenbeck Evolution
+ *  Dynamics. Instead of a HJB Based Truly Adaptive Strategy, a Rolling Horizon Approximation is used. The
+ *  References are:
+ * 
+ * 	- Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3
+ * 		(2) 5-39.
+ *
+ * 	- Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
+ * 		https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf.
+ *
+ * 	- Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility, SIAM Journal of
+ * 		Financial Mathematics  3 (1) 163-181.
+ * 
+ * 	- Geman, H., D. B. Madan, and M. Yor (2001): Time Changes for Levy Processes, Mathematical Finance 11 (1)
+ * 		79-96.
+ * 
+ * 	- Walia, N. (2006): Optimal Trading: Dynamic Stock Liquidation Strategies, Senior Thesis, Princeton
+ * 		University.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L85">public class RollingHorizonOptimalHoldings {</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+<span class="fc" id="L91">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="fc" id="L96">		double dblSize = 1.;</span>
+<span class="fc" id="L97">		int iNumTimeNode = 51;</span>
+<span class="fc" id="L98">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L99">		double dblExecutionTime = 10.;</span>
+<span class="fc" id="L100">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L101">		double dblReferenceLiquidity = 1.;</span>
+<span class="fc" id="L102">		double dblReferenceVolatility = 1.;</span>
+<span class="fc" id="L103">		double dblInitialMarketState = -0.5;</span>
+<span class="fc" id="L104">		double[] adblRiskAversion = new double[] {</span>
+			0.01,
+			0.04,
+			0.09,
+			0.16,
+			0.36,
+			0.64,
+			1.00
+		};
+
+<span class="fc" id="L114">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
+<span class="fc" id="L115">		double[][] aadblAdjustedNonDimensionalHoldings = new double[adblRiskAversion.length][];</span>
+
+<span class="fc" id="L117">		OrderSpecification os = new OrderSpecification (</span>
+			dblSize,
+			dblExecutionTime
+		);
+
+<span class="fc" id="L122">		CoordinatedVariation cv = new CoordinatedVariation (</span>
+			dblReferenceVolatility,
+			dblReferenceLiquidity
+		);
+
+<span class="fc" id="L127">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+			dblBurstiness,
+			dblRelaxationTime
+		);
+
+<span class="fc" id="L132">		MarketState[] aMS = OrnsteinUhlenbeckSequence.Systemic (</span>
+			oup1D,
+			dblNonDimensionalTimeInterval * dblRelaxationTime,
+			dblInitialMarketState,
+			iNumTimeNode
+<span class="fc" id="L137">		).realizedMarketState();</span>
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; adblRiskAversion.length; ++i)</span>
+<span class="fc" id="L140">			aadblAdjustedNonDimensionalHoldings[i] = new CoordinatedVariationTrajectoryGenerator (</span>
+				os,
+				cv,
+				new MeanVarianceObjectiveUtility (adblRiskAversion[i]),
+<span class="fc" id="L144">				NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
+				CoordinatedVariationTrajectoryGenerator.TRADE_RATE_ZERO_INITIALIZATION
+<span class="fc" id="L146">			).rollingHorizon (aMS).nonDimensionalHoldings();</span>
+
+<span class="fc" id="L148">		System.out.println();</span>
+
+<span class="fc" id="L150">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L152">		System.out.println (&quot;\t||                 ROLLING HORIZON OPTIMAL TRAJECTORY HOLDINGS                 ||&quot;);</span>
+
+<span class="fc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L156">		System.out.println (&quot;\t||     L -&gt; R:                                                                 ||&quot;);</span>
+
+<span class="fc" id="L158">		System.out.println (&quot;\t||             - Time                                                          ||&quot;);</span>
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
+<span class="fc" id="L161">			System.out.println (</span>
+				&quot;\t||             - Non Dimensional Risk Aversion =&gt;&quot; +
+<span class="fc" id="L163">				FormatUtil.FormatDouble (dblRelaxationTime * dblReferenceVolatility * Math.sqrt (adblRiskAversion[j] / dblReferenceLiquidity), 1, 2, 1.) +</span>
+				&quot;                         ||&quot;
+			);
+
+<span class="fc" id="L167">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
+<span class="fc" id="L170">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
+<span class="fc" id="L173">				strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (aadblAdjustedNonDimensionalHoldings[j][i], 1, 4, 1.);</span>
+
+<span class="fc" id="L175">			System.out.println (strDump + &quot; ||&quot;);</span>
+		}
+
+<span class="fc" id="L178">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L180">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L181">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

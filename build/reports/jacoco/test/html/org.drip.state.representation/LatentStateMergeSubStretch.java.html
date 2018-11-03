@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LatentStateMergeSubStretch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.state.representation</a> &gt; <span class="el_source">LatentStateMergeSubStretch.java</span></div><h1>LatentStateMergeSubStretch.java</h1><pre class="source lang-java linenums">
+package org.drip.state.representation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * LatentStateMergeSubStretch implements merged stretch that is common to multiple latent states. It is
+ *  identified by the start/end date predictor ordinates, and the Latent State Label. Its methods provide the
+ *  following functionality:
+ *  - Identify if the specified predictor ordinate belongs to the sub stretch
+ *  - Shift that sub stretch start/end
+ *  - Identify if the this overlaps the supplied sub stretch, and coalesce them if possible
+ *  - Retrieve the label, start, and end
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class LatentStateMergeSubStretch {
+<span class="fc" id="L67">	private double _dblEndDate = java.lang.Double.NaN;</span>
+<span class="fc" id="L68">	private double _dblStartDate = java.lang.Double.NaN;</span>
+<span class="fc" id="L69">	private org.drip.state.identifier.LatentStateLabel _lsl = null;</span>
+
+	/**
+	 * LatentStateMergeSubStretch constructor
+	 * 
+	 * @param dblStartDate Merge Stretch Start Date
+	 * @param dblEndDate Merge Stretch End Date
+	 * @param lsl The Latent State Label
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 */
+
+	public LatentStateMergeSubStretch (
+		final double dblStartDate,
+		final double dblEndDate,
+		final org.drip.state.identifier.LatentStateLabel lsl)
+		throws java.lang.Exception
+<span class="fc" id="L86">	{</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStartDate = dblStartDate) ||</span>
+<span class="pc bpc" id="L88" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEndDate = dblEndDate) || _dblStartDate &gt;=</span>
+				_dblEndDate || null == (_lsl = lsl))
+<span class="nc" id="L90">			throw new java.lang.Exception (&quot;LatentStateMergeSubStretch ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L91">	}</span>
+
+	/**
+	 * Retrieve the Merge Stretch Start Date
+	 * 
+	 * @return The Merge Stretch Start Date
+	 */
+
+	public double start()
+	{
+<span class="fc" id="L101">		return _dblStartDate;</span>
+	}
+
+	/**
+	 * Shift/Adjust the Start Date
+	 * 
+	 * @param dblNewStartDate The new Date to be Shifted to
+	 * 
+	 * @return TRUE - Start Date successfully shifted
+	 */
+
+	public boolean shiftStart (
+		final double dblNewStartDate)
+	{
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNewStartDate)) return false;</span>
+
+<span class="nc" id="L117">		_dblStartDate = dblNewStartDate;</span>
+<span class="nc" id="L118">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Merge Stretch End Date
+	 * 
+	 * @return The Merge Stretch End Date
+	 */
+
+	public double end()
+	{
+<span class="fc" id="L129">		return _dblEndDate;</span>
+	}
+
+	/**
+	 * Shift/Adjust the End Date
+	 * 
+	 * @param dblNewEndDate The new Date to be Shifted to
+	 * 
+	 * @return TRUE - End Date successfully shifted
+	 */
+
+	public boolean shiftEnd (
+		final double dblNewEndDate)
+	{
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNewEndDate)) return false;</span>
+
+<span class="nc" id="L145">		_dblEndDate = dblNewEndDate;</span>
+<span class="nc" id="L146">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Latent State Label
+	 * 
+	 * @return The Latent State Label
+	 */
+
+	public org.drip.state.identifier.LatentStateLabel label()
+	{
+<span class="nc" id="L157">		return _lsl;</span>
+	}
+
+	/**
+	 * Indicate whether Specified Merge Stretch's Label matches with the current one
+	 * 
+	 * @param lsmsOther The Supplied Merge Stretch
+	 * 
+	 * @return TRUE - Merge Stretches Index Match
+	 */
+
+	public boolean indexMatch (
+		final LatentStateMergeSubStretch lsmsOther)
+	{
+<span class="nc bnc" id="L171" title="All 6 branches missed.">		return null != _lsl &amp;&amp; null != lsmsOther &amp;&amp; lsmsOther.label().match (label());</span>
+	}
+
+	/**
+	 * Indicate whether the specified Date is &quot;inside&quot; the Stretch Range.
+	 * 
+	 * @param dblDate Date whose &quot;inside&quot;ness is asked for
+	 * 
+	 * @return TRUE - Date is Inside
+	 */
+
+	public boolean in (
+		final double dblDate)
+	{
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate)) return false;</span>
+
+<span class="nc bnc" id="L187" title="All 4 branches missed.">		return dblDate &gt;= _dblStartDate &amp;&amp; dblDate &lt;= _dblEndDate;</span>
+	}
+
+	/**
+	 * Identify if the Supplied Merge Stretch overlaps with the provided one.
+	 * 
+	 * @param lsmlOther The Supplied Merge Stretch
+	 * 
+	 * @return TRUE - Merge Stretches Overlap
+	 */
+
+	public boolean overlap (
+		final LatentStateMergeSubStretch lsmlOther)
+	{
+<span class="pc bpc" id="L201" title="4 of 6 branches missed.">		return null == lsmlOther || lsmlOther.start() &gt;= end() || lsmlOther.end() &lt;= start() ? false : true;</span>
+	}
+
+	/**
+	 * Coalesce the supplied Merge Stretch with the current one (if possible) to create a new Merge Stretch
+	 * 
+	 * @param lsmlOther The Supplied Merge Stretch
+	 * 
+	 * @return The Coalesced Merge Stretch
+	 */
+
+	public LatentStateMergeSubStretch coalesce (
+		final LatentStateMergeSubStretch lsmlOther)
+	{
+<span class="pc bpc" id="L215" title="3 of 4 branches missed.">		if (!overlap (lsmlOther) || !indexMatch (lsmlOther)) return null;</span>
+
+		try {
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			return new LatentStateMergeSubStretch (start() &lt; lsmlOther.start() ? start() :</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">				lsmlOther.start(), end() &gt; lsmlOther.end() ? end() : lsmlOther.end(), label());</span>
+<span class="nc" id="L220">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L221">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L224">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

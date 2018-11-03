@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JSONValue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.json.simple</a> &gt; <span class="el_source">JSONValue.java</span></div><h1>JSONValue.java</h1><pre class="source lang-java linenums">
+package org.drip.json.simple;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * JSONValue is an Adaptation of the JSONValue Class from the RFC4627 compliant JSON Simple
+ *  (https://code.google.com/p/json-simple/).
+ *
+ * @author Fang Yidong
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L60">public class JSONValue {</span>
+    /**
+     * Parse JSON text into java object from the input source. 
+     * Please use parseWithException() if you don't want to ignore the exception.
+     * 
+     * @see org.drip.json.parser.JSONParser#parse(Reader)
+     * @see #parseWithException(Reader)
+     * 
+     * @param in Input Reader
+     * 
+     * @return Instance of the following:
+     *      org.drip.json.simple.JSONObject,
+     *      org.drip.json.simple.JSONArray,
+     *      java.lang.String,
+     *      java.lang.Number,
+     *      java.lang.Boolean,
+     *      null
+     * 
+     */
+    public static Object parse(java.io.Reader in){
+            try{
+<span class="fc" id="L81">                    org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="fc" id="L82">                    return parser.parse(in);</span>
+            }
+<span class="nc" id="L84">            catch(Exception e){</span>
+<span class="nc" id="L85">                    return null;</span>
+            }
+    }
+    
+    public static Object parse(String s){
+<span class="fc" id="L90">    	java.io.StringReader in=new java.io.StringReader(s);</span>
+<span class="fc" id="L91">            return parse(in);</span>
+    }
+    
+    /**
+     * Parse JSON text into java object from the input source.
+     * 
+     * @see org.drip.json.parser.JSONParser
+     * 
+     * @param in Input Reader
+     * @return Instance of the following:
+     *      org.json.simple.JSONObject,
+     *      org.json.simple.JSONArray,
+     *      java.lang.String,
+     *      java.lang.Number,
+     *      java.lang.Boolean,
+     *      null
+     * 
+     * @throws java.io.IOException Thrown if the Inputs are Invalid
+     * 
+     * @throws org.drip.json.parser.ParseException Thrown if the Inputs are Invalid
+     */
+    public static Object parseWithException(java.io.Reader in) throws java.io.IOException, org.drip.json.parser.ParseException{
+<span class="nc" id="L113">    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="nc" id="L114">            return parser.parse(in);</span>
+    }
+    
+    public static Object parseWithException(String s) throws org.drip.json.parser.ParseException{
+<span class="nc" id="L118">    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="nc" id="L119">            return parser.parse(s);</span>
+    }
+    
+/**
+ * Encode an object into JSON text and write it to out.
+ * &lt;p&gt;
+ * If this object is a Map or a List, and it's also a JSONStreamAware or a JSONAware, JSONStreamAware or JSONAware will be considered firstly.
+ * &lt;p&gt;
+ * DO NOT call this method from writeJSONString(Writer) of a class that implements both JSONStreamAware and (Map or List) with 
+ * &quot;this&quot; as the first parameter, use JSONObject.writeJSONString(Map, Writer) or JSONArray.writeJSONString(List, Writer) instead. 
+ * 
+ * @see org.drip.json.simple.JSONObject#writeJSONString(Map, Writer)
+ * @see org.drip.json.simple.JSONArray#writeJSONString(List, Writer)
+ * 
+ * @param value The JSON Object
+ * @param out The JSON Writer
+ * 
+ * @throws java.io.IOException Thrown if the Inputs are Invalid
+ */
+    @SuppressWarnings (&quot;rawtypes&quot;) public static void writeJSONString(Object value, java.io.Writer out) throws java.io.IOException {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if(value == null){</span>
+<span class="fc" id="L140">                    out.write(&quot;null&quot;);</span>
+<span class="fc" id="L141">                    return;</span>
+            }
+            
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            if(value instanceof String){            </span>
+<span class="fc" id="L145">        out.write('\&quot;');</span>
+<span class="fc" id="L146">                    out.write(escape((String)value));</span>
+<span class="fc" id="L147">        out.write('\&quot;');</span>
+<span class="fc" id="L148">                    return;</span>
+            }
+            
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">            if(value instanceof Double){</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
+<span class="nc" id="L153">                            out.write(&quot;null&quot;);</span>
+                    else
+<span class="nc" id="L155">                            out.write(value.toString());</span>
+<span class="nc" id="L156">                    return;</span>
+            }
+            
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
+<span class="nc" id="L161">                            out.write(&quot;null&quot;);</span>
+                    else
+<span class="nc" id="L163">                            out.write(value.toString());</span>
+<span class="nc" id="L164">                    return;</span>
+            }               
+            
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            if(value instanceof Number){</span>
+<span class="nc" id="L168">                    out.write(value.toString());</span>
+<span class="nc" id="L169">                    return;</span>
+            }
+            
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">            if(value instanceof Boolean){</span>
+<span class="nc" id="L173">                    out.write(value.toString());</span>
+<span class="nc" id="L174">                    return;</span>
+            }
+            
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if((value instanceof JSONStreamAware)){</span>
+<span class="nc" id="L178">                    ((JSONStreamAware)value).writeJSONString(out);</span>
+<span class="nc" id="L179">                    return;</span>
+            }
+            
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if((value instanceof JSONAware)){</span>
+<span class="nc" id="L183">                    out.write(((JSONAware)value).toJSONString());</span>
+<span class="nc" id="L184">                    return;</span>
+            }
+            
+<span class="fc bfc" id="L187" title="All 2 branches covered.">            if(value instanceof java.util.Map){</span>
+<span class="fc" id="L188">            	org.drip.json.simple.JSONObject.writeJSONString((java.util.Map)value, out);</span>
+<span class="fc" id="L189">                    return;</span>
+            }
+            
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if(value instanceof java.util.List){</span>
+<span class="fc" id="L193">                    JSONArray.writeJSONString((java.util.List)value, out);</span>
+<span class="fc" id="L194">        return;</span>
+            }
+            
+<span class="nc" id="L197">            out.write(value.toString());</span>
+<span class="nc" id="L198">    }</span>
+
+    /**
+     * Convert an object to JSON text.
+     * &lt;p&gt;
+     * If this object is a Map or a List, and it's also a JSONAware, JSONAware will be considered firstly.
+     * &lt;p&gt;
+     * DO NOT call this method from toJSONString() of a class that implements both JSONAware and Map or List with 
+     * &quot;this&quot; as the parameter, use JSONObject.toJSONString(Map) or JSONArray.toJSONString(List) instead. 
+     * 
+     * @see org.drip.json.simple.JSONObject#toJSONString(Map)
+     * @see org.drip.json.simple.JSONArray#toJSONString(List)
+     * 
+     * @param value The JSON Object
+     * 
+     * @return JSON text, or &quot;null&quot; if value is null or it's an NaN or an INF number.
+     */
+
+    @SuppressWarnings (&quot;rawtypes&quot;) public static String toJSONString(Object value){
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if(value == null)</span>
+<span class="nc" id="L218">                    return &quot;null&quot;;</span>
+            
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            if(value instanceof String)</span>
+<span class="fc" id="L221">                    return &quot;\&quot;&quot;+escape((String)value)+&quot;\&quot;&quot;;</span>
+            
+<span class="fc bfc" id="L223" title="All 2 branches covered.">            if(value instanceof Double){</span>
+<span class="pc bpc" id="L224" title="1 of 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
+<span class="fc" id="L225">                            return &quot;null&quot;;</span>
+                    else
+<span class="fc" id="L227">                            return value.toString();</span>
+            }
+            
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
+<span class="nc" id="L232">                            return &quot;null&quot;;</span>
+                    else
+<span class="nc" id="L234">                            return value.toString();</span>
+            }               
+            
+<span class="fc bfc" id="L237" title="All 2 branches covered.">            if(value instanceof Number)</span>
+<span class="fc" id="L238">                    return value.toString();</span>
+            
+<span class="fc bfc" id="L240" title="All 2 branches covered.">            if(value instanceof Boolean)</span>
+<span class="fc" id="L241">                    return value.toString();</span>
+            
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            if((value instanceof JSONAware))</span>
+<span class="fc" id="L244">                    return ((JSONAware)value).toJSONString();</span>
+            
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            if(value instanceof java.util.Map)</span>
+<span class="fc" id="L247">                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);</span>
+            
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">            if(value instanceof java.util.List)</span>
+<span class="fc" id="L250">                    return org.drip.json.simple.JSONArray.toJSONString((java.util.List)value);</span>
+            
+<span class="nc" id="L252">            return value.toString();</span>
+    }
+
+    /**
+     * Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F).
+     * 
+     * @param s Pre-escape String
+     * 
+     * @return The Escape String
+     */
+    public static String escape(String s){
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">            if(s==null)</span>
+<span class="nc" id="L264">                    return null;</span>
+<span class="fc" id="L265">    StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L266">    escape(s, sb);</span>
+<span class="fc" id="L267">    return sb.toString();</span>
+}
+
+/**
+ * @param s - Must not be null.
+ * @param sb The StringBuffer
+ */
+static void escape(String s, StringBuffer sb) {
+<span class="fc bfc" id="L275" title="All 2 branches covered.">            for(int i=0;i&lt;s.length();i++){</span>
+<span class="fc" id="L276">                    char ch=s.charAt(i);</span>
+<span class="pc bpc" id="L277" title="7 of 9 branches missed.">                    switch(ch){</span>
+                    case '&quot;':
+<span class="nc" id="L279">                            sb.append(&quot;\\\&quot;&quot;);</span>
+<span class="nc" id="L280">                            break;</span>
+                    case '\\':
+<span class="nc" id="L282">                            sb.append(&quot;\\\\&quot;);</span>
+<span class="nc" id="L283">                            break;</span>
+                    case '\b':
+<span class="nc" id="L285">                            sb.append(&quot;\\b&quot;);</span>
+<span class="nc" id="L286">                            break;</span>
+                    case '\f':
+<span class="nc" id="L288">                            sb.append(&quot;\\f&quot;);</span>
+<span class="nc" id="L289">                            break;</span>
+                    case '\n':
+<span class="nc" id="L291">                            sb.append(&quot;\\n&quot;);</span>
+<span class="nc" id="L292">                            break;</span>
+                    case '\r':
+<span class="nc" id="L294">                            sb.append(&quot;\\r&quot;);</span>
+<span class="nc" id="L295">                            break;</span>
+                    case '\t':
+<span class="nc" id="L297">                            sb.append(&quot;\\t&quot;);</span>
+<span class="nc" id="L298">                            break;</span>
+                    case '/':
+<span class="fc" id="L300">                            sb.append(&quot;\\/&quot;);</span>
+<span class="fc" id="L301">                            break;</span>
+                    default:
+            //Reference: http://www.unicode.org/versions/Unicode5.1.0/
+<span class="pc bpc" id="L304" title="7 of 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
+<span class="fc" id="L305">                                    String ss=Integer.toHexString(ch);</span>
+<span class="fc" id="L306">                                    sb.append(&quot;\\u&quot;);</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">                                    for(int k=0;k&lt;4-ss.length();k++){</span>
+<span class="fc" id="L308">                                            sb.append('0');</span>
+                                    }
+<span class="fc" id="L310">                                    sb.append(ss.toUpperCase());</span>
+<span class="fc" id="L311">                            }</span>
+                            else{
+<span class="fc" id="L313">                                    sb.append(ch);</span>
+                            }
+                    }
+            }//for
+<span class="fc" id="L317">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

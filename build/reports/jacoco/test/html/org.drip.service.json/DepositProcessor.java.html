@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DepositProcessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.service.json</a> &gt; <span class="el_source">DepositProcessor.java</span></div><h1>DepositProcessor.java</h1><pre class="source lang-java linenums">
+package org.drip.service.json;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * DepositProcessor Sets Up and Executes a JSON Based In/Out Deposit Valuation Processor.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L57">public class DepositProcessor {</span>
+
+	/**
+	 * JSON Based in/out Deposit Curve Metrics Thunker
+	 * 
+	 * @param jsonParameter JSON Deposit Request Parameters
+	 * 
+	 * @return JSON Funding Deposit Curve Metrics Response
+	 */
+
+	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject CurveMetrics (
+		final org.drip.json.simple.JSONObject jsonParameter)
+	{
+<span class="fc" id="L70">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L71">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+
+<span class="fc" id="L75">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+			org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
+
+<span class="fc" id="L80">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
+
+<span class="fc" id="L82">		org.drip.product.rates.SingleStreamComponent deposit =</span>
+<span class="fc" id="L83">			org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtSpot, dcFunding.currency(),</span>
+<span class="fc" id="L84">				org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;DepositMaturity&quot;));</span>
+
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if (null == deposit) return null;</span>
+
+<span class="fc" id="L88">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapResult = deposit.value</span>
+<span class="fc" id="L89">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
+
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == mapResult) return null;</span>
+
+<span class="fc" id="L93">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapResult.entrySet())</span>
+<span class="fc" id="L96">			jsonResponse.put (me.getKey(), me.getValue());</span>
+
+<span class="fc" id="L98">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : deposit.couponPeriods()) {</span>
+<span class="fc" id="L101">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
+
+			try {
+<span class="fc" id="L104">				jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L105">					(cp.startDate()).toString());</span>
+
+<span class="fc" id="L107">				jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L108">					(cp.endDate()).toString());</span>
+
+<span class="fc" id="L110">				jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L111">					(cp.payDate()).toString());</span>
+
+<span class="fc" id="L113">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L114">					(cp.fxFixingDate()).toString());</span>
+
+<span class="fc" id="L116">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
+
+<span class="fc" id="L118">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
+<span class="nc" id="L119">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">				e.printStackTrace();</span>
+
+<span class="nc" id="L122">				return null;</span>
+<span class="fc" id="L123">			}</span>
+
+<span class="fc" id="L125">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional());</span>
+
+<span class="fc" id="L127">			jsonCashFlow.put (&quot;Tenor&quot;, cp.tenor());</span>
+
+<span class="fc" id="L129">			jsonCashFlow.put (&quot;FundingLabel&quot;, cp.fundingLabel().fullyQualifiedName());</span>
+
+<span class="fc" id="L131">			jsonCashFlow.put (&quot;ForwardLabel&quot;, ((org.drip.state.identifier.ForwardLabel)</span>
+<span class="fc" id="L132">				cp.floaterLabel()).fullyQualifiedName());</span>
+
+<span class="fc" id="L134">			jsonCashFlow.put (&quot;ReferenceRate&quot;, cp.couponMetrics (dtSpot.julian(), csqc).rate());</span>
+
+<span class="fc" id="L136">			jsonCashFlowArray.add (jsonCashFlow);</span>
+<span class="fc" id="L137">		}</span>
+
+<span class="fc" id="L139">		jsonResponse.put (&quot;FloatingCashFlow&quot;, jsonCashFlowArray);</span>
+
+<span class="fc" id="L141">		return jsonResponse;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZeroCurveRegressor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.regression.curve</a> &gt; <span class="el_source">ZeroCurveRegressor.java</span></div><h1>ZeroCurveRegressor.java</h1><pre class="source lang-java linenums">
+package org.drip.regression.curve;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ZeroCurveRegressor implements the regression analysis set for the Zero Curve. The  regression tests do the
+ *  consists of the following:
+ *  - Build a discount curve, followed by the zero curve
+ *  - Regressor #1: Compute zero curve discount factors
+ *  - Regressor #2: Compute zero curve zero rates
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ZeroCurveRegressor implements org.drip.regression.core.RegressorSet {
+<span class="fc" id="L66">	private org.drip.state.discount.ZeroCurve _zc = null;</span>
+<span class="fc" id="L67">	private java.lang.String _strRegressionScenario = &quot;org.drip.analytics.curve.ZeroCurve&quot;;</span>
+
+<span class="fc" id="L69">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
+
+	/**
+	 * ZeroCurveRegressor constructor - Creates the base zero curve and initializes the regression objects
+	 */
+
+	public ZeroCurveRegressor()
+<span class="fc" id="L77">	{</span>
+<span class="fc" id="L78">	}</span>
+
+	/*
+	 * Setting up of the zero curve regressor set
+	 */
+
+	@Override public boolean setupRegressors()
+	{
+		/*
+		 * Zero Curve Creation unit regressor - implements the pre-regression, the post-regression, and the
+		 * 	actual regression functionality of the UnitRegressorExecutor class.
+		 */
+
+		try {
+<span class="fc" id="L92">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+				(&quot;CreateZeroCurveFromPeriods&quot;, _strRegressionScenario)
+<span class="fc" id="L94">			{</span>
+				private static final double s_dblZSpread = 0.01;
+
+<span class="fc" id="L97">				private org.drip.analytics.date.JulianDate _dtStart = null;</span>
+<span class="fc" id="L98">				private org.drip.state.discount.ExplicitBootDiscountCurve _dc = null;</span>
+
+<span class="fc" id="L100">				private java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; _lsCouponPeriod = new</span>
+					java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
+
+				@Override public boolean preRegression()
+				{
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">					if (null == (_dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2010,</span>
+						org.drip.analytics.date.DateUtil.MAY, 12)))
+<span class="nc" id="L107">						return false;</span>
+
+<span class="fc" id="L109">					final int NUM_DC_NODES = 5;</span>
+<span class="fc" id="L110">					final int NUM_PERIOD_NODES  = 40;</span>
+<span class="fc" id="L111">					int aiDate[] = new int[NUM_DC_NODES];</span>
+<span class="fc" id="L112">					double adblRate[] = new double[NUM_DC_NODES];</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_NODES; ++i) {</span>
+<span class="fc" id="L115">						aiDate[i] = _dtStart.addYears (2 * i + 1).julian();</span>
+
+<span class="fc" id="L117">						adblRate[i] = 0.05 + 0.001 * (NUM_DC_NODES - i);</span>
+					}
+
+<span class="fc" id="L120">					if (null == (_dc = org.drip.state.creator.ScenarioDiscountCurveBuilder.PiecewiseForward</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">						(_dtStart, &quot;CHF&quot;, aiDate, adblRate)))</span>
+<span class="nc" id="L122">						return false;</span>
+
+					try {
+<span class="fc" id="L125">						org.drip.param.period.UnitCouponAccrualSetting ucas = new</span>
+							org.drip.param.period.UnitCouponAccrualSetting (2, &quot;30/360&quot;, false, &quot;30/360&quot;,
+								false, &quot;ZAR&quot;, false,
+									org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+<span class="fc" id="L130">						org.drip.param.period.ComposableFixedUnitSetting cfus = new</span>
+							org.drip.param.period.ComposableFixedUnitSetting (&quot;6M&quot;,
+								org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+							null, s_dblZSpread, 0., &quot;ZAR&quot;);
+
+<span class="fc" id="L135">						org.drip.param.period.CompositePeriodSetting cps = new</span>
+							org.drip.param.period.CompositePeriodSetting (2, &quot;6M&quot;, &quot;ZAR&quot;, null, 1., null,
+								null, null, null);
+
+<span class="fc" id="L139">						java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate =</span>
+<span class="fc" id="L140">							org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (_dtStart,</span>
+								&quot;6M&quot;, (NUM_PERIOD_NODES * 6) + &quot;M&quot;, null);
+
+<span class="fc" id="L143">						_lsCouponPeriod =</span>
+<span class="fc" id="L144">							org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (</span>
+								lsStreamEdgeDate, cps, ucas, cfus);
+<span class="nc" id="L146">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L147">						e.printStackTrace();</span>
+
+<span class="nc" id="L149">						return false;</span>
+<span class="fc" id="L150">					}</span>
+
+<span class="fc" id="L152">					return true;</span>
+				}
+
+				@Override public boolean execRegression()
+				{
+					try {
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">						if (null == (_zc = org.drip.state.curve.DerivedZeroRate.FromBaseCurve (2, &quot;30/360&quot;,</span>
+<span class="fc" id="L159">							_dc.currency(), true, _lsCouponPeriod, _lsCouponPeriod.get</span>
+<span class="fc" id="L160">								(_lsCouponPeriod.size() - 1).endDate(), _dtStart.julian(), _dtStart.addDays</span>
+<span class="fc" id="L161">									(2).julian(), _dc, s_dblZSpread, null, new</span>
+										org.drip.spline.params.SegmentCustomBuilderControl
+											(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+							new org.drip.spline.basis.PolynomialFunctionSetParams (4),
+<span class="fc" id="L165">								org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+									org.drip.spline.params.ResponseScalingShapeControl (true, new
+										org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+											null))))
+<span class="nc" id="L169">							return false;</span>
+<span class="nc" id="L170">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L171">						e.printStackTrace();</span>
+
+<span class="nc" id="L173">						return false;</span>
+<span class="fc" id="L174">					}</span>
+
+<span class="fc" id="L176">					return true;</span>
+				}
+			});
+
+			/*
+			 * Get Zero Discount Factor unit regressor - implements the pre-regression, the post-regression,
+			 *	and the actual regression functionality of the UnitRegressorExecutor class.
+			 */
+
+<span class="fc" id="L185">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;getZeroDF&quot;,</span>
+				_strRegressionScenario)
+<span class="fc" id="L187">			{</span>
+				private static final int NUM_DF_NODES = 30;
+
+<span class="fc" id="L190">				private int _aiDate[] = new int[NUM_DF_NODES];</span>
+<span class="fc" id="L191">				private double _adblDiscFactor[] = new double[NUM_DF_NODES];</span>
+
+				@Override public boolean preRegression()
+				{
+<span class="fc" id="L195">					org.drip.analytics.date.JulianDate dtStart =</span>
+<span class="fc" id="L196">						org.drip.analytics.date.DateUtil.CreateFromYMD (2008,</span>
+							org.drip.analytics.date.DateUtil.SEPTEMBER, 25);
+
+<span class="fc bfc" id="L199" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DF_NODES; ++i)</span>
+<span class="fc" id="L200">						_aiDate[i] = dtStart.addMonths (6 * i + 6).julian();</span>
+
+<span class="fc" id="L202">					return true;</span>
+				}
+
+				@Override public boolean execRegression()
+				{
+					try {
+<span class="fc bfc" id="L208" title="All 2 branches covered.">						for (int i = 0; i &lt; NUM_DF_NODES; ++i)</span>
+<span class="fc" id="L209">							_adblDiscFactor[i] = _zc.df (_aiDate[i]);</span>
+<span class="nc" id="L210">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L211">						e.printStackTrace();</span>
+
+<span class="nc" id="L213">						return false;</span>
+<span class="fc" id="L214">					}</span>
+
+<span class="fc" id="L216">					return true;</span>
+				}
+
+				@Override public boolean postRegression (
+					final org.drip.regression.core.RegressionRunDetail rnvd)
+				{
+					try {
+<span class="fc bfc" id="L223" title="All 2 branches covered.">						for (int i = 0; i &lt; NUM_DF_NODES; ++i)</span>
+<span class="fc" id="L224">							rnvd.set (&quot;ZeroDF[&quot; + new org.drip.analytics.date.JulianDate (_aiDate[i]) +</span>
+								&quot;]&quot;, &quot;&quot; + _adblDiscFactor[i]);
+<span class="nc" id="L226">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L227">						e.printStackTrace();</span>
+
+<span class="nc" id="L229">						return false;</span>
+<span class="fc" id="L230">					}</span>
+
+<span class="fc" id="L232">					return true;</span>
+				}
+			});
+
+			/*
+			 * Get Zero Rate unit regressor - implements the pre-regression, the post-regression, and the
+			 * 	actual regression functionality of the UnitRegressorExecutor class.
+			 */
+
+<span class="fc" id="L241">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;getZeroRate&quot;,</span>
+				_strRegressionScenario)
+<span class="fc" id="L243">			{</span>
+				private static final int NUM_DF_NODES = 30;
+
+<span class="fc" id="L246">				private int _aiDate[] = new int[NUM_DF_NODES];</span>
+<span class="fc" id="L247">				private double _adblRate[] = new double[NUM_DF_NODES];</span>
+
+				@Override public boolean preRegression()
+				{
+<span class="fc" id="L251">					org.drip.analytics.date.JulianDate dtStart =</span>
+<span class="fc" id="L252">						org.drip.analytics.date.DateUtil.CreateFromYMD (2008,</span>
+							org.drip.analytics.date.DateUtil.SEPTEMBER, 25);
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DF_NODES; ++i)</span>
+<span class="fc" id="L256">						_aiDate[i] = dtStart.addMonths (6 * i + 6).julian();</span>
+
+<span class="fc" id="L258">					return true;</span>
+				}
+
+				@Override public boolean execRegression()
+				{
+					try {
+<span class="fc bfc" id="L264" title="All 2 branches covered.">						for (int i = 0; i &lt; NUM_DF_NODES; ++i)</span>
+<span class="fc" id="L265">							_adblRate[i] = _zc.zeroRate (_aiDate[i]);</span>
+<span class="nc" id="L266">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L267">						e.printStackTrace();</span>
+
+<span class="nc" id="L269">						return false;</span>
+<span class="fc" id="L270">					}</span>
+
+<span class="fc" id="L272">					return true;</span>
+				}
+
+				@Override public boolean postRegression (
+					final org.drip.regression.core.RegressionRunDetail rnvd)
+				{
+					try {
+<span class="fc bfc" id="L279" title="All 2 branches covered.">						for (int i = 0; i &lt; NUM_DF_NODES; ++i)</span>
+<span class="fc" id="L280">							rnvd.set (&quot;ZeroRate[&quot; + new org.drip.analytics.date.JulianDate (_aiDate[i]) +</span>
+								&quot;]&quot;, &quot;&quot; + _adblRate[i]);
+<span class="nc" id="L282">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L283">						e.printStackTrace();</span>
+
+<span class="nc" id="L285">						return false;</span>
+<span class="fc" id="L286">					}</span>
+
+<span class="fc" id="L288">					return true;</span>
+				}
+			});
+<span class="nc" id="L291">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L292">			e.printStackTrace();</span>
+
+<span class="nc" id="L294">			return false;</span>
+<span class="fc" id="L295">		}</span>
+
+<span class="fc" id="L297">		return true;</span>
+	}
+
+	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
+	{
+<span class="fc" id="L302">		return _setRegressors;</span>
+	}
+
+	@Override public java.lang.String getSetName()
+	{
+<span class="fc" id="L307">		return _strRegressionScenario;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

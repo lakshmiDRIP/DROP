@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrossGroupPrincipalCovariance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.simmvariance</a> &gt; <span class="el_source">CrossGroupPrincipalCovariance.java</span></div><h1>CrossGroupPrincipalCovariance.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.simmvariance;
+
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.NumberUtil;
+import org.drip.quant.eigen.EigenComponent;
+import org.drip.quant.eigen.PowerIterationComponentExtractor;
+import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CrossGroupPrincipalCovariance demonstrates the Computation of the Cross Risk Group Principal Component
+ *  Co-variance using the Actual Risk Group Principal Component. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L79">public class CrossGroupPrincipalCovariance</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L86">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L88">		double[][] correlationMatrix =</span>
+		{
+			{1.00, 0.99, 0.79, 0.67, 0.53, 0.42, 0.37, 0.30, 0.22, 0.18, 0.16, 0.12},
+			{0.99, 1.00, 0.79, 0.67, 0.53, 0.42, 0.37, 0.30, 0.22, 0.18, 0.16, 0.12},
+			{0.79, 0.79, 1.00, 0.85, 0.69, 0.57, 0.50, 0.42, 0.32, 0.25, 0.23, 0.20},
+			{0.67, 0.67, 0.85, 1.00, 0.86, 0.76, 0.69, 0.59, 0.47, 0.40, 0.37, 0.32},
+			{0.53, 0.53, 0.69, 0.86, 1.00, 0.93, 0.87, 0.77, 0.63, 0.57, 0.54, 0.50},
+			{0.42, 0.42, 0.57, 0.76, 0.93, 1.00, 0.98, 0.90, 0.77, 0.70, 0.67, 0.63},
+			{0.37, 0.37, 0.50, 0.69, 0.87, 0.98, 1.00, 0.96, 0.84, 0.78, 0.75, 0.71},
+			{0.30, 0.30, 0.42, 0.59, 0.77, 0.90, 0.96, 1.00, 0.93, 0.89, 0.86, 0.82},
+			{0.22, 0.22, 0.32, 0.47, 0.63, 0.77, 0.84, 0.93, 1.00, 0.98, 0.96, 0.94},
+			{0.18, 0.18, 0.25, 0.40, 0.57, 0.70, 0.78, 0.89, 0.98, 1.00, 0.99, 0.98},
+			{0.16, 0.16, 0.23, 0.37, 0.54, 0.67, 0.75, 0.86, 0.96, 0.99, 1.00, 0.99},
+			{0.12, 0.12, 0.20, 0.32, 0.50, 0.63, 0.71, 0.82, 0.94, 0.98, 0.99, 1.00}
+		};
+<span class="nc" id="L103">		double crossBucketCorrelation = 0.27;</span>
+
+<span class="nc" id="L105">		System.out.println</span>
+<span class="nc" id="L106">			(&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L108">		System.out.println</span>
+<span class="nc" id="L109">			(&quot;\t||                                                       TENOR CORRELATION MATRIX FOR GIRR                                                       |&quot;);</span>
+
+<span class="nc" id="L111">		System.out.println</span>
+<span class="nc" id="L112">			(&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L114">		NumberUtil.PrintMatrix (</span>
+			&quot;\t|| GIRR2.0&quot;,
+			correlationMatrix
+		);
+
+<span class="nc" id="L119">		System.out.println</span>
+<span class="nc" id="L120">			(&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L122">		System.out.println();</span>
+
+<span class="nc" id="L124">		PowerIterationComponentExtractor pice = new PowerIterationComponentExtractor (</span>
+			30,
+			0.000001,
+			false
+		);
+
+<span class="nc" id="L130">		EigenComponent principalComponent = pice.principalComponent (correlationMatrix);</span>
+
+<span class="nc" id="L132">		double[] rawEigenvector = principalComponent.eigenvector();</span>
+
+<span class="nc" id="L134">		double rawEigenvalue = principalComponent.eigenvalue();</span>
+
+<span class="nc" id="L136">		double scaledEigenvalue = Math.sqrt (rawEigenvalue);</span>
+
+<span class="nc" id="L138">		double[] scaledEigenvector = new double[rawEigenvector.length];</span>
+
+<span class="nc" id="L140">		String rawEigenDump    = &quot;\t||   RAW    || &quot; +</span>
+<span class="nc" id="L141">			&quot;[&quot; + FormatUtil.FormatDouble (rawEigenvalue, 1, 4, 1.) + &quot;] =&gt; &quot;;</span>
+
+<span class="nc" id="L143">		String scaledEigenDump = &quot;\t||  SCALED  || &quot; +</span>
+<span class="nc" id="L144">			&quot;[&quot; + FormatUtil.FormatDouble (scaledEigenvalue, 1, 4, 1.) + &quot;] =&gt; &quot;;</span>
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int i = 0; i &lt; rawEigenvector.length; ++i)</span>
+		{
+<span class="nc" id="L148">			rawEigenDump += FormatUtil.FormatDouble (rawEigenvector[i], 1, 4, 1.) + &quot; | &quot;;</span>
+
+<span class="nc" id="L150">			scaledEigenDump += FormatUtil.FormatDouble (</span>
+				scaledEigenvector[i] = scaledEigenvalue * rawEigenvector[i], 1, 4, 1.
+			) + &quot; | &quot;;
+		}
+
+<span class="nc" id="L155">		System.out.println</span>
+<span class="nc" id="L156">			(&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L158">		System.out.println (rawEigenDump);</span>
+
+<span class="nc" id="L160">		System.out.println</span>
+<span class="nc" id="L161">			(&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L163">		System.out.println (scaledEigenDump);</span>
+
+<span class="nc" id="L165">		System.out.println</span>
+<span class="nc" id="L166">			(&quot;\t||------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L168">		System.out.println();</span>
+
+<span class="nc" id="L170">		double[][] unadjustedOffDiagonalBlockMatrix = Matrix.CrossProduct (</span>
+			scaledEigenvector,
+			scaledEigenvector
+		);
+
+<span class="nc" id="L175">		System.out.println</span>
+<span class="nc" id="L176">			(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println</span>
+<span class="nc" id="L179">			(&quot;\t||                                                   GIRR 2.0 UNADJUSTED OFF-DIAGONAL COVARIANCE ENTRIES                                                    |&quot;);</span>
+
+<span class="nc" id="L181">		System.out.println</span>
+<span class="nc" id="L182">			(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L184">		NumberUtil.PrintMatrix (</span>
+			&quot;\t|| OFF-DIAGONAL UNADJ&quot;,
+			unadjustedOffDiagonalBlockMatrix
+		);
+
+<span class="nc" id="L189">		System.out.println</span>
+<span class="nc" id="L190">			(&quot;\t||----------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L192">		System.out.println();</span>
+
+<span class="nc" id="L194">		double[][] adjustedOffDiagonalBlockMatrix = Matrix.Scale2D (</span>
+			unadjustedOffDiagonalBlockMatrix,
+			crossBucketCorrelation
+		);
+
+<span class="nc" id="L199">		System.out.println</span>
+<span class="nc" id="L200">			(&quot;\t||--------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L202">		System.out.println</span>
+<span class="nc" id="L203">			(&quot;\t||                                                   GIRR 2.0 ADJUSTED OFF-DIAGONAL COVARIANCE ENTRIES                                                    |&quot;);</span>
+
+<span class="nc" id="L205">		System.out.println</span>
+<span class="nc" id="L206">			(&quot;\t||--------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L208">		NumberUtil.PrintMatrix (</span>
+			&quot;\t|| OFF-DIAGONAL ADJ&quot;,
+			adjustedOffDiagonalBlockMatrix
+		);
+
+<span class="nc" id="L213">		System.out.println</span>
+<span class="nc" id="L214">			(&quot;\t||--------------------------------------------------------------------------------------------------------------------------------------------------------|&quot;);</span>
+
+<span class="nc" id="L216">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L217">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Component.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.product.definition</a> &gt; <span class="el_source">Component.java</span></div><h1>Component.java</h1><pre class="source lang-java linenums">
+package org.drip.product.definition;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * Copyright (C) 2011 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * Component abstract class extends the ComponentMarketParamRef and provides the following methods:
+ *  - Get the product's initial notional, notional, and coupon.
+ *  - Get the Effective date, Maturity date, First Coupon Date.
+ *  - List the coupon periods.
+ *  - Set the market curves - discount, TSY, forward, and Credit curves.
+ *  - Retrieve the product's settlement parameters.
+ *  - Value the product's using standard/custom market parameters.
+ *  - Retrieve the product's named measures and named measure values.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="fc" id="L69">public abstract class Component implements org.drip.product.definition.ComponentMarketParamRef {</span>
+
+	protected double measureValue (
+		final java.lang.String strMeasure,
+		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalc)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L76" title="3 of 6 branches missed.">		if (null == strMeasure || strMeasure.isEmpty() || null == mapCalc || !mapCalc.containsKey</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">			(strMeasure))</span>
+<span class="nc" id="L78">			throw new java.lang.Exception (&quot;Component::measureValue =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L80">		return mapCalc.get (strMeasure);</span>
+	}
+
+	protected boolean adjustForCashSettle (
+		final int iSettleDate,
+		final double dblPV,
+		final org.drip.state.discount.MergedDiscountForwardCurve dc,
+		final org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack)
+	{
+<span class="nc" id="L89">		org.drip.quant.calculus.WengertJacobian wjCashSettleDFDF = dc.jackDDFDManifestMeasure (iSettleDate,</span>
+			&quot;Rate&quot;);
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (null == wjCashSettleDFDF) return false;</span>
+
+<span class="nc" id="L94">		double dblDFCashSettle = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L96">		int iNumParameters = wjCashSettleDFDF.numParameters();</span>
+
+		try {
+<span class="nc" id="L99">			dblDFCashSettle = dc.df (iSettleDate);</span>
+<span class="nc" id="L100">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L101">			e.printStackTrace();</span>
+
+<span class="nc" id="L103">			return false;</span>
+<span class="nc" id="L104">		}</span>
+
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (!wjPVDFMicroJack.scale (1. / dblDFCashSettle)) return false;</span>
+
+<span class="nc" id="L108">		double dblSettleJackAdjust = -1. * dblPV / dblDFCashSettle / dblDFCashSettle;</span>
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		for (int k = 0; k &lt; iNumParameters; ++k) {</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">			if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, k, dblSettleJackAdjust *</span>
+<span class="nc" id="L112">				wjCashSettleDFDF.firstDerivative (0, k)))</span>
+<span class="nc" id="L113">				return false;</span>
+		}
+
+<span class="nc" id="L116">		return true;</span>
+	}
+
+	/**
+	 * Get the Initial Notional for the Product
+	 * 
+	 * @return Initial Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if Initial Notional cannot be computed
+	 */
+
+	public abstract double initialNotional()
+		throws java.lang.Exception;
+
+	/**
+	 * Get the Notional for the Product at the given date
+	 * 
+	 * @param iDate Date
+	 * 
+	 * @return Product Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if Notional cannot be computed
+	 */
+
+	public abstract double notional (
+		final int iDate)
+		throws java.lang.Exception;
+
+	/**
+	 * Get the time-weighted Notional for the Product between 2 dates
+	 * 
+	 * @param iDate1 Date #1
+	 * @param iDate2 Date #2
+	 * 
+	 * @return The Product Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if Notional cannot be computed
+	 */
+
+	public abstract double notional (
+		final int iDate1,
+		final int iDate2)
+		throws java.lang.Exception;
+
+	/**
+	 * Get the Effective Date
+	 * 
+	 * @return Effective Date
+	 */
+
+	public abstract org.drip.analytics.date.JulianDate effectiveDate();
+
+	/**
+	 * Get the Maturity Date
+	 * 
+	 * @return Maturity Date
+	 */
+
+	public abstract org.drip.analytics.date.JulianDate maturityDate();
+
+	/**
+	 * Get the First Coupon Date
+	 * 
+	 * @return First Coupon Date
+	 */
+
+	public abstract org.drip.analytics.date.JulianDate firstCouponDate();
+
+	/**
+	 * Retrieve the Coupon Frequency
+	 * 
+	 * @return The Coupon Frequency
+	 */
+
+	public abstract int freq();
+
+	/**
+	 * Get the Product's Cash Flow Periods
+	 * 
+	 * @return List of the Product's Cash Flow Periods
+	 */
+
+	public abstract java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriods();
+
+	/**
+	 * Get the Product's coupon Metrics at the specified accrual date
+	 * 
+	 * @param iAccrualEndDate Accrual End Date
+	 * @param valParams The Valuation Parameters
+	 * @param csqs Component Market Parameters
+	 * 
+	 * @return The Product's coupon Nominal/Adjusted Coupon Measures
+	 */
+
+	public abstract org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
+		final int iAccrualEndDate,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs);
+
+	/**
+	 * Get the Product's cash settlement parameters
+	 * 
+	 * @return Cash settlement Parameters
+	 */
+
+	public abstract org.drip.param.valuation.CashSettleParams cashSettleParams();
+
+	/**
+	 * Generate a full list of the Product measures for the full input set of market parameters
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param csqs Market Parameters
+	 * @param vcp Valuation Customization Parameters
+	 * 
+	 * @return Map of measure name and value
+	 */
+
+	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp);
+
+	/**
+	 * Retrieve the ordered set of the measure names whose values will be calculated
+	 * 
+	 * @return Set of Measure Names
+	 */
+
+	public abstract java.util.Set&lt;java.lang.String&gt; measureNames();
+
+	/**
+	 * Compute the PV for the specified Market Parameters
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param csqc Market Parameters
+	 * @param vcp Valuation Customization Parameters
+	 * 
+	 * @return The PV
+	 * 
+	 * @throws java.lang.Exception Thrown if the PV cannot be computed
+	 */
+
+	public abstract double pv (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		throws java.lang.Exception;
+
+	/**
+	 * Get the Maturity Pay Date
+	 * 
+	 * @return Maturity Pay Date
+	 */
+
+	public org.drip.analytics.date.JulianDate maturityPayDate()
+	{
+<span class="nc" id="L276">		return maturityDate();</span>
+	}
+
+	/**
+	 * Calculate the value of the given Product's measure
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param csqs ComponentMarketParams
+	 * @param strMeasure Measure String
+	 * @param vcp Valuation Customization Parameters
+	 * 
+	 * @return Double measure value
+	 * 
+	 * @throws java.lang.Exception Thrown if the measure cannot be calculated
+	 */
+
+	public double measureValue (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		final java.lang.String strMeasure)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L301">		return measureValue (strMeasure, value (valParams, pricerParams, csqs, vcp));</span>
+	}
+
+	/**
+	 * Retrieve the Instrument's Imputed Tenor
+	 * 
+	 * @return The Instrument's Imputed Tenor
+	 */
+
+	public java.lang.String tenor()
+	{
+<span class="fc" id="L312">		int iNumDays = maturityDate().julian() - effectiveDate().julian();</span>
+
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		if (365 &gt; iNumDays) {</span>
+<span class="nc" id="L315">			int iNumMonth = (int) (0.5 + (iNumDays / 30.));</span>
+
+<span class="nc bnc" id="L317" title="All 2 branches missed.">			return 12 == iNumMonth ? &quot;1Y&quot; : iNumMonth + &quot;M&quot;;</span>
+		}
+
+<span class="fc" id="L320">		 return ((int) (0.5 + (iNumDays / 365.))) + &quot;Y&quot;;</span>
+	}
+
+	/**
+	 * Generate a full list of the Product's measures for the set of scenario market parameters present in
+	 * 	the org.drip.param.definition.MarketParams
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param mpc org.drip.param.definition.MarketParams
+	 * @param vcp Valuation Customization Parameters
+	 * 
+	 * @return ComponentOutput object
+	 */
+
+	public org.drip.analytics.output.ComponentMeasures measures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.definition.ScenarioMarketParams mpc,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	{
+<span class="nc bnc" id="L341" title="All 4 branches missed.">		if (null == valParams || null == mpc) return null;</span>
+
+<span class="nc" id="L343">		org.drip.param.market.CurveSurfaceQuoteContainer csqsBase = mpc.scenarioMarketParams (this, &quot;Base&quot;);</span>
+
+<span class="nc bnc" id="L345" title="All 2 branches missed.">		if (null == csqsBase) return null;</span>
+
+<span class="nc" id="L347">		org.drip.analytics.output.ComponentMeasures compOp = new</span>
+			org.drip.analytics.output.ComponentMeasures();
+
+<span class="nc" id="L350">		long lStart = System.nanoTime();</span>
+
+<span class="nc" id="L352">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBaseMeasures = value</span>
+<span class="nc" id="L353">			(valParams, pricerParams, csqsBase, vcp);</span>
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		if (!compOp.setBaseMeasures (mapBaseMeasures)) return null;</span>
+
+<span class="nc" id="L357">		org.drip.param.market.CurveSurfaceQuoteContainer csqsFlatCreditBumpUp = mpc.scenarioMarketParams (this,</span>
+			&quot;FlatCreditBumpUp&quot;);
+
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (null != csqsFlatCreditBumpUp) {</span>
+<span class="nc" id="L361">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatCreditBumpUpMeasures =</span>
+<span class="nc" id="L362">				value (valParams, pricerParams, csqsFlatCreditBumpUp, vcp);</span>
+
+<span class="nc bnc" id="L364" title="All 2 branches missed.">			java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapFlatCreditBumpUpES =</span>
+<span class="nc" id="L365">				null == mapFlatCreditBumpUpMeasures ? null : mapFlatCreditBumpUpMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L367" title="All 4 branches missed.">			if (null != mapFlatCreditBumpUpES &amp;&amp; 0 != mapFlatCreditBumpUpES.size()) {</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
+<span class="nc" id="L369">					mapFlatCreditDeltaMeasures = new</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L372" title="All 2 branches missed.">				for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapFlatCreditBumpUpES) {</span>
+<span class="nc" id="L373">					java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L375">					mapFlatCreditDeltaMeasures.put (strKey, me.getValue() - mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L376">				}</span>
+
+<span class="nc" id="L378">				org.drip.param.market.CurveSurfaceQuoteContainer csqsFlatCreditBumpDown = mpc.scenarioMarketParams</span>
+<span class="nc" id="L379">					(this, &quot;FlatCreditBumpDn&quot;);</span>
+
+<span class="nc bnc" id="L381" title="All 4 branches missed.">				if (compOp.setFlatCreditDeltaMeasures (mapFlatCreditDeltaMeasures) &amp;&amp; null !=</span>
+					csqsFlatCreditBumpDown) {
+					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
+<span class="nc" id="L384">						mapFlatCreditBumpDownMeasures = value (valParams, pricerParams,</span>
+							csqsFlatCreditBumpDown, vcp);
+
+					java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt;
+<span class="nc bnc" id="L388" title="All 2 branches missed.">						mapFlatCreditBumpDownES = null == mapFlatCreditBumpDownMeasures ? null :</span>
+<span class="nc" id="L389">							mapFlatCreditBumpDownMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L391" title="All 4 branches missed.">					if (null != mapFlatCreditBumpDownES &amp;&amp; 0 != mapFlatCreditBumpDownES.size()) {</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
+<span class="nc" id="L393">							mapFlatCreditGammaMeasures = new</span>
+								org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+						for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me :
+<span class="nc bnc" id="L397" title="All 2 branches missed.">							mapFlatCreditBumpDownES) {</span>
+<span class="nc" id="L398">							java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L400">							mapFlatCreditGammaMeasures.put (strKey, me.getValue() +</span>
+<span class="nc" id="L401">								mapFlatCreditBumpUpMeasures.get (strKey) - 2. * mapBaseMeasures.get</span>
+<span class="nc" id="L402">									(strKey));</span>
+<span class="nc" id="L403">						}</span>
+
+<span class="nc" id="L405">						compOp.setFlatCreditGammaMeasures (mapFlatCreditGammaMeasures);</span>
+					}
+				}
+			}
+		}
+
+<span class="nc" id="L411">		org.drip.param.market.CurveSurfaceQuoteContainer csqsRRBumpUp = mpc.scenarioMarketParams (this, &quot;RRBumpUp&quot;);</span>
+
+<span class="nc bnc" id="L413" title="All 2 branches missed.">		if (null != csqsRRBumpUp) {</span>
+<span class="nc" id="L414">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapRRBumpUpMeasures = value</span>
+<span class="nc" id="L415">				(valParams, pricerParams, csqsRRBumpUp, vcp);</span>
+
+<span class="nc bnc" id="L417" title="All 2 branches missed.">			java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapRRBumpUpES = null ==</span>
+<span class="nc" id="L418">				mapRRBumpUpMeasures ? null : mapRRBumpUpMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L420" title="All 4 branches missed.">			if (null != mapRRBumpUpES &amp;&amp; 0 != mapRRBumpUpES.size()) {</span>
+<span class="nc" id="L421">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatRRDeltaMeasures =</span>
+					new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L424" title="All 2 branches missed.">				for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapRRBumpUpES) {</span>
+<span class="nc" id="L425">					java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L427">					mapFlatRRDeltaMeasures.put (strKey, me.getValue() - mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L428">				}</span>
+
+<span class="nc" id="L430">				org.drip.param.market.CurveSurfaceQuoteContainer csqsRRBumpDown = mpc.scenarioMarketParams (this,</span>
+					&quot;RRBumpDn&quot;);
+
+<span class="nc bnc" id="L433" title="All 4 branches missed.">				if (compOp.setFlatRRDeltaMeasures (mapFlatRRDeltaMeasures) &amp;&amp; null != csqsRRBumpDown) {</span>
+<span class="nc" id="L434">					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapRRBumpDownMeasures</span>
+<span class="nc" id="L435">						= value (valParams, pricerParams, csqsRRBumpDown, vcp);</span>
+
+<span class="nc bnc" id="L437" title="All 2 branches missed.">					java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapRRBumpDownES =</span>
+<span class="nc" id="L438">						null == mapRRBumpDownMeasures ? null : mapRRBumpDownMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L440" title="All 4 branches missed.">					if (null != mapRRBumpDownES &amp;&amp; 0 != mapRRBumpDownES.size()) {</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
+<span class="nc" id="L442">							mapFlatRRGammaMeasures = new</span>
+								org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L445" title="All 2 branches missed.">						for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapRRBumpDownES) {</span>
+<span class="nc" id="L446">							java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L448">							mapFlatRRGammaMeasures.put (strKey, me.getValue() + mapRRBumpUpMeasures.get</span>
+<span class="nc" id="L449">								(strKey) - 2. * mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L450">						}</span>
+
+<span class="nc" id="L452">						compOp.setFlatRRGammaMeasures (mapFlatRRGammaMeasures);</span>
+					}
+				}
+			}
+		}
+
+<span class="nc" id="L458">		org.drip.param.market.CurveSurfaceQuoteContainer csqsIRCreditBumpUp = mpc.scenarioMarketParams (this,</span>
+			&quot;IRCreditBumpUp&quot;);
+
+<span class="nc bnc" id="L461" title="All 2 branches missed.">		if (null != csqsIRCreditBumpUp) {</span>
+<span class="nc" id="L462">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapIRCreditBumpUpMeasures =</span>
+<span class="nc" id="L463">				value (valParams, pricerParams, csqsIRCreditBumpUp, vcp);</span>
+
+<span class="nc bnc" id="L465" title="All 2 branches missed.">			java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapIRCreditBumpUpES = null</span>
+<span class="nc" id="L466">				== mapIRCreditBumpUpMeasures ? null : mapIRCreditBumpUpMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L468" title="All 4 branches missed.">			if (null != mapIRCreditBumpUpES &amp;&amp; 0 != mapIRCreditBumpUpES.size()) {</span>
+<span class="nc" id="L469">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatIRDeltaMeasures =</span>
+					new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L472" title="All 2 branches missed.">				for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapIRCreditBumpUpES) {</span>
+<span class="nc" id="L473">					java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L475">					mapFlatIRDeltaMeasures.put (strKey, me.getValue() - mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L476">				}</span>
+
+<span class="nc" id="L478">				org.drip.param.market.CurveSurfaceQuoteContainer csqsIRCreditBumpDown = mpc.scenarioMarketParams (this,</span>
+					&quot;IRCreditBumpDn&quot;);
+
+<span class="nc bnc" id="L481" title="All 4 branches missed.">				if (compOp.setFlatIRDeltaMeasures (mapFlatIRDeltaMeasures) &amp;&amp; null != csqsIRCreditBumpDown) {</span>
+					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
+<span class="nc" id="L483">						mapIRCreditBumpDownMeasures = value (valParams, pricerParams, csqsIRCreditBumpDown,</span>
+							vcp);
+
+					java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt;
+<span class="nc bnc" id="L487" title="All 2 branches missed.">						mapIRCreditBumpDownES = null == mapIRCreditBumpDownMeasures ? null :</span>
+<span class="nc" id="L488">							mapIRCreditBumpDownMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L490" title="All 4 branches missed.">					if (null != mapIRCreditBumpDownES &amp;&amp; 0 != mapIRCreditBumpDownES.size()) {</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
+<span class="nc" id="L492">							mapFlatIRGammaMeasures = new</span>
+								org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+						for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me :
+<span class="nc bnc" id="L496" title="All 2 branches missed.">							mapIRCreditBumpDownES) {</span>
+<span class="nc" id="L497">							java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L499">							mapFlatIRGammaMeasures.put (strKey, me.getValue() +</span>
+<span class="nc" id="L500">								mapIRCreditBumpUpMeasures.get (strKey) - 2. * mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L501">						}</span>
+
+<span class="nc" id="L503">						compOp.setFlatIRGammaMeasures (mapFlatIRGammaMeasures);</span>
+					}
+				}
+			}
+		}
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L510">			mapCCTenorUpCSQS = mpc.creditTenorMarketParams (this, true);</span>
+
+<span class="nc bnc" id="L512" title="All 2 branches missed.">		if (null != mapCCTenorUpCSQS) {</span>
+<span class="nc" id="L513">			compOp.setTenorCreditDeltaMeasures (new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;());
+
+<span class="nc bnc" id="L516" title="All 4 branches missed.">			if (null != mapCCTenorUpCSQS &amp;&amp; null != mapCCTenorUpCSQS.entrySet()) {</span>
+				for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc bnc" id="L518" title="All 2 branches missed.">					meTenorUpMP : mapCCTenorUpCSQS.entrySet()) {</span>
+<span class="nc bnc" id="L519" title="All 4 branches missed.">					if (null == meTenorUpMP || null == meTenorUpMP.getValue()) continue;</span>
+
+<span class="nc" id="L521">					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCCTenorUp = value</span>
+<span class="nc" id="L522">						(valParams, pricerParams, meTenorUpMP.getValue(), vcp);</span>
+
+<span class="nc bnc" id="L524" title="All 4 branches missed.">					if (null == mapCCTenorUp || null == mapCCTenorUp.entrySet()) continue;</span>
+
+<span class="nc" id="L526">					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalcUp = new</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+					for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me :
+<span class="nc bnc" id="L530" title="All 2 branches missed.">						mapCCTenorUp.entrySet()) {</span>
+<span class="nc" id="L531">						java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L533">						mapCalcUp.put (strKey, me.getValue() - mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L534">					}</span>
+
+<span class="nc" id="L536">					compOp.tenorCreditDeltaMeasures().put (meTenorUpMP.getKey(), mapCalcUp);</span>
+<span class="nc" id="L537">				}</span>
+
+<span class="nc bnc" id="L539" title="All 2 branches missed.">				if (null != mpc.creditTenorMarketParams (this, false)) {</span>
+<span class="nc" id="L540">					compOp.setTenorCreditGammaMeasures (new</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;());
+
+					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L544">						mapCCTenorDnCSQS = mpc.creditTenorMarketParams (this, false);</span>
+
+<span class="nc bnc" id="L546" title="All 4 branches missed.">					if (null != mapCCTenorDnCSQS &amp;&amp; null != mapCCTenorDnCSQS.entrySet()) {</span>
+						for (java.util.Map.Entry&lt;java.lang.String,
+							org.drip.param.market.CurveSurfaceQuoteContainer&gt; meTenorDnMP :
+<span class="nc bnc" id="L549" title="All 2 branches missed.">								mapCCTenorDnCSQS.entrySet()) {</span>
+<span class="nc bnc" id="L550" title="All 4 branches missed.">							if (null == meTenorDnMP || null == meTenorDnMP.getValue()) continue;</span>
+
+<span class="nc" id="L552">							org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCCTenorDn</span>
+<span class="nc" id="L553">								= value (valParams, pricerParams, meTenorDnMP.getValue(), vcp);</span>
+
+<span class="nc bnc" id="L555" title="All 4 branches missed.">							if (null == mapCCTenorDn || null == mapCCTenorDn.entrySet()) continue;</span>
+
+<span class="nc" id="L557">							org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalcDn =</span>
+								new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+							for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me :
+<span class="nc bnc" id="L561" title="All 2 branches missed.">								mapCCTenorDn.entrySet()) {</span>
+<span class="nc" id="L562">								java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L564">								mapCalcDn.put (strKey, me.getValue() - mapBaseMeasures.get (strKey) +</span>
+<span class="nc" id="L565">									compOp.tenorCreditDeltaMeasures().get (meTenorDnMP.getKey()).get</span>
+<span class="nc" id="L566">										(strKey));</span>
+<span class="nc" id="L567">							}</span>
+
+<span class="nc" id="L569">							compOp.tenorCreditGammaMeasures().put (meTenorDnMP.getKey(), mapCalcDn);</span>
+<span class="nc" id="L570">						}</span>
+					}
+				}
+			}
+		}
+
+<span class="nc bnc" id="L576" title="All 2 branches missed.">		if (null != mpc.fundingTenorMarketParams (this, true)) {</span>
+<span class="nc" id="L577">			compOp.setTenorIRDeltaMeasures (new</span>
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;());
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L581">				mapIRTenorUpCSQS = mpc.fundingTenorMarketParams (this, true);</span>
+
+<span class="nc bnc" id="L583" title="All 4 branches missed.">			if (null != mapIRTenorUpCSQS &amp;&amp; null != mapIRTenorUpCSQS.entrySet()) {</span>
+				for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc bnc" id="L585" title="All 2 branches missed.">					meTenorUpMP : mapIRTenorUpCSQS.entrySet()) {</span>
+<span class="nc" id="L586">					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCCTenorUp = value</span>
+<span class="nc" id="L587">						(valParams, pricerParams, meTenorUpMP.getValue(), vcp);</span>
+
+<span class="nc bnc" id="L589" title="All 4 branches missed.">					if (null == mapCCTenorUp || null == mapCCTenorUp.entrySet()) continue;</span>
+
+<span class="nc" id="L591">					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalcUp = new</span>
+						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+					for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me :
+<span class="nc bnc" id="L595" title="All 2 branches missed.">						mapCCTenorUp.entrySet()) {</span>
+<span class="nc" id="L596">						java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L598">						mapCalcUp.put (strKey, me.getValue() - mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L599">					}</span>
+
+<span class="nc" id="L601">					compOp.tenorIRDeltaMeasures().put (meTenorUpMP.getKey(), mapCalcUp);</span>
+<span class="nc" id="L602">				}</span>
+			}
+
+<span class="nc bnc" id="L605" title="All 2 branches missed.">			if (null != mpc.fundingTenorMarketParams (this, false)) {</span>
+<span class="nc" id="L606">				compOp.setTenorIRGammaMeasures (new</span>
+					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;());
+
+				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc" id="L610">					mapIRTenorDnCSQS = mpc.fundingTenorMarketParams (this, false);</span>
+
+<span class="nc bnc" id="L612" title="All 6 branches missed.">				if (null != mapIRTenorDnCSQS &amp; null != mapIRTenorDnCSQS.entrySet()) {</span>
+					for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
+<span class="nc bnc" id="L614" title="All 2 branches missed.">						meTenorDnMP : mapIRTenorDnCSQS.entrySet()) {</span>
+<span class="nc" id="L615">						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCCTenorDn = value</span>
+<span class="nc" id="L616">							(valParams, pricerParams, meTenorDnMP.getValue(), vcp);</span>
+
+<span class="nc" id="L618">						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalcDn = new</span>
+							org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L621" title="All 4 branches missed.">						if (null == mapCalcDn || null == mapCalcDn.entrySet()) continue;</span>
+
+						for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me :
+<span class="nc bnc" id="L624" title="All 2 branches missed.">							mapCCTenorDn.entrySet()) {</span>
+<span class="nc" id="L625">							java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L627">							mapCalcDn.put (strKey, me.getValue() - mapBaseMeasures.get (strKey) +</span>
+<span class="nc" id="L628">								compOp.tenorIRDeltaMeasures().get (meTenorDnMP.getKey()).get (strKey));</span>
+<span class="nc" id="L629">						}</span>
+
+<span class="nc" id="L631">						compOp.tenorIRGammaMeasures().put (meTenorDnMP.getKey(), mapCalcDn);</span>
+<span class="nc" id="L632">					}</span>
+				}
+			}
+		}
+
+<span class="nc" id="L637">		compOp.setCalcTime ((System.nanoTime() - lStart) * 1.e-09);</span>
+
+<span class="nc" id="L639">		return compOp;</span>
+	}
+
+	/**
+	 * Generate a full list of custom measures for the set of scenario market parameters present in
+	 * 	the org.drip.param.definition.MarketParams
+	 * 
+	 * @param valParams ValuationParams
+	 * @param pricerParams PricerParams
+	 * @param mpc org.drip.param.definition.MarketParams
+	 * @param strCustomScenName Custom Scenario Name
+	 * @param vcp Valuation Customization Parameters
+	 * @param mapBaseMeasures Base Measures from used to calculate the desired delta measure. If null, the
+	 *  base measures will be generated.
+	 * 
+	 * @return Custom Scenarios Measures output set
+	 */
+
+	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; customScenarioMeasures (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.definition.ScenarioMarketParams mpc,
+		final java.lang.String strCustomScenName,
+		final org.drip.param.valuation.ValuationCustomizationParams vcp,
+		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBaseMeasures)
+	{
+<span class="nc bnc" id="L665" title="All 8 branches missed.">		if (null == strCustomScenName || strCustomScenName.isEmpty() || null == valParams || null == mpc)</span>
+<span class="nc" id="L666">			return null;</span>
+
+<span class="nc" id="L668">		org.drip.param.market.CurveSurfaceQuoteContainer csqsCustom = mpc.scenarioMarketParams (this,</span>
+			strCustomScenName);
+
+<span class="nc bnc" id="L671" title="All 2 branches missed.">		if (null == csqsCustom) return null;</span>
+
+<span class="nc bnc" id="L673" title="All 2 branches missed.">		if (null == mapBaseMeasures) {</span>
+<span class="nc" id="L674">			org.drip.param.market.CurveSurfaceQuoteContainer csqsBase = mpc.scenarioMarketParams (this, &quot;Base&quot;);</span>
+
+<span class="nc bnc" id="L676" title="All 4 branches missed.">			if (null == csqsBase || null == (mapBaseMeasures = value (valParams, pricerParams, csqsBase,</span>
+				vcp)))
+<span class="nc" id="L678">				return null;</span>
+		}
+
+<span class="nc" id="L681">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCustomMeasures = value</span>
+<span class="nc" id="L682">			(valParams, pricerParams, csqsCustom, vcp);</span>
+
+<span class="nc bnc" id="L684" title="All 2 branches missed.">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapCustomMeasuresES = null ==</span>
+<span class="nc" id="L685">			mapCustomMeasures ? null : mapCustomMeasures.entrySet();</span>
+
+<span class="nc bnc" id="L687" title="All 4 branches missed.">		if (null == mapCustomMeasuresES || 0 == mapCustomMeasuresES.size()) return null;</span>
+
+<span class="nc" id="L689">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCustomDeltaMeasures = new</span>
+			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L692" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapCustomMeasuresES) {</span>
+<span class="nc" id="L693">			java.lang.String strKey = me.getKey();</span>
+
+<span class="nc" id="L695">			mapCustomDeltaMeasures.put (strKey, me.getValue() - mapBaseMeasures.get (strKey));</span>
+<span class="nc" id="L696">		}</span>
+
+<span class="nc" id="L698">		return mapCustomDeltaMeasures;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

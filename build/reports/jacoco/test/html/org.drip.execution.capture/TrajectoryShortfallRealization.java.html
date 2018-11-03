@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrajectoryShortfallRealization.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.execution.capture</a> &gt; <span class="el_source">TrajectoryShortfallRealization.java</span></div><h1>TrajectoryShortfallRealization.java</h1><pre class="source lang-java linenums">
+package org.drip.execution.capture;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * TrajectoryShortfallRealization holds Execution Cost Realization across each Interval in the Trade during a
+ * 	Single Simulation Run. The  References are:
+ * 
+ * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * 
+ * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
+ * 		5-39.
+ * 
+ * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
+ * 		1, 1-50.
+ *
+ * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
+ * 		Journal of Finance, 50, 1147-1174.
+ *
+ * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class TrajectoryShortfallRealization {
+<span class="nc" id="L73">	private java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; _lsSI = null;</span>
+
+	/**
+	 * TrajectoryShortfallRealization Constructor
+	 * 
+	 * @param lsSI List of the Composite Slice Short-fall Increments
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TrajectoryShortfallRealization (
+		final java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; lsSI)
+		throws java.lang.Exception
+<span class="nc" id="L86">	{</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (null == (_lsSI = lsSI))</span>
+<span class="nc" id="L88">			throw new java.lang.Exception (&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L90">		int iNumSlice = _lsSI.size();</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (0 == iNumSlice)</span>
+<span class="nc" id="L93">			throw new java.lang.Exception (&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (org.drip.execution.discrete.ShortfallIncrement si : _lsSI) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (null == si)</span>
+<span class="nc" id="L97">				throw new java.lang.Exception</span>
+					(&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);
+<span class="nc" id="L99">		}</span>
+<span class="nc" id="L100">	}</span>
+
+	/**
+	 * Retrieve the List of the Realized Composite Cost Increments
+	 * 
+	 * @return The List of the Realized Composite Cost Increments
+	 */
+
+	public java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; list()
+	{
+<span class="nc" id="L110">		return _lsSI;</span>
+	}
+
+	/**
+	 * Generate the Array of Incremental Market Dynamic Cost Drift
+	 * 
+	 * @return The Array of Incremental Market Dynamic Cost Drift
+	 */
+
+	public double[] incrementalMarketDynamicDrift()
+	{
+<span class="nc" id="L121">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L123">		double[] adblIncrementalMarketDynamicDrift = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L126">			adblIncrementalMarketDynamicDrift[i] = _lsSI.get (i).marketDynamicDrift();</span>
+
+<span class="nc" id="L128">		return adblIncrementalMarketDynamicDrift;</span>
+	}
+
+	/**
+	 * Generate the Array of Cumulative Market Dynamic Cost Drift
+	 * 
+	 * @return The Array of Cumulative Market Dynamic Cost Drift
+	 */
+
+	public double[] cumulativeMarketDynamicDrift()
+	{
+<span class="nc" id="L139">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L141">		double[] adblCumulativeMarketDynamicDrift = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			adblCumulativeMarketDynamicDrift[i] = 0 == i ? _lsSI.get (i).marketDynamicDrift() : _lsSI.get</span>
+<span class="nc" id="L145">				(i).marketDynamicDrift() + adblCumulativeMarketDynamicDrift[i - 1];</span>
+
+<span class="nc" id="L147">		return adblCumulativeMarketDynamicDrift;</span>
+	}
+
+	/**
+	 * Generate the Total Market Dynamic Cost Drift
+	 * 
+	 * @return The Total Market Dynamic Cost Drift
+	 */
+
+	public double totalMarketDynamicDrift()
+	{
+<span class="nc" id="L158">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L160">		double dblTotalMarketDynamicDrift = 0.;</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L163">			dblTotalMarketDynamicDrift = dblTotalMarketDynamicDrift + _lsSI.get (i).marketDynamicDrift();</span>
+
+<span class="nc" id="L165">		return dblTotalMarketDynamicDrift;</span>
+	}
+
+	/**
+	 * Generate the Array of Incremental Market Dynamic Cost Wander
+	 * 
+	 * @return The Array of Incremental Market Dynamic Cost Wander
+	 */
+
+	public double[] incrementalMarketDynamicWander()
+	{
+<span class="nc" id="L176">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L178">		double[] adblIncrementalMarketDynamicWander = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L181">			adblIncrementalMarketDynamicWander[i] = _lsSI.get (i).marketDynamicWander();</span>
+
+<span class="nc" id="L183">		return adblIncrementalMarketDynamicWander;</span>
+	}
+
+	/**
+	 * Generate the Array of Cumulative Market Dynamic Cost Wander
+	 * 
+	 * @return The Array of Cumulative Market Dynamic Cost Wander
+	 */
+
+	public double[] cumulativeMarketDynamicWander()
+	{
+<span class="nc" id="L194">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L196">		double[] adblCumulativeMarketDynamicWander = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			adblCumulativeMarketDynamicWander[i] = 0 == i ? _lsSI.get (i).marketDynamicWander() : _lsSI.get</span>
+<span class="nc" id="L200">				(i).marketDynamicWander() + adblCumulativeMarketDynamicWander[i - 1];</span>
+
+<span class="nc" id="L202">		return adblCumulativeMarketDynamicWander;</span>
+	}
+
+	/**
+	 * Generate the Total Market Dynamic Cost Wander
+	 * 
+	 * @return The Total Market Dynamic Cost Wander
+	 */
+
+	public double totalMarketDynamicWander()
+	{
+<span class="nc" id="L213">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L215">		double dblTotalMarketDynamicWander = 0.;</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L218">			dblTotalMarketDynamicWander = dblTotalMarketDynamicWander + _lsSI.get (i).marketDynamicWander();</span>
+
+<span class="nc" id="L220">		return dblTotalMarketDynamicWander;</span>
+	}
+
+	/**
+	 * Generate the Array of Incremental Permanent Cost Drift
+	 * 
+	 * @return The Array of Incremental Permanent Cost Drift
+	 */
+
+	public double[] incrementalPermanentDrift()
+	{
+<span class="nc" id="L231">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L233">		double[] adblIncrementalPermanentDrift = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L236">			adblIncrementalPermanentDrift[i] = _lsSI.get (i).permanentImpactDrift();</span>
+
+<span class="nc" id="L238">		return adblIncrementalPermanentDrift;</span>
+	}
+
+	/**
+	 * Generate the Array of Cumulative Permanent Cost Drift
+	 * 
+	 * @return The Array of Cumulative Permanent Cost Drift
+	 */
+
+	public double[] cumulativePermanentDrift()
+	{
+<span class="nc" id="L249">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L251">		double[] adblCumulativePermanentDrift = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			adblCumulativePermanentDrift[i] = 0 == i ? _lsSI.get (i).permanentImpactDrift() : _lsSI.get</span>
+<span class="nc" id="L255">				(i).permanentImpactDrift() + adblCumulativePermanentDrift[i - 1];</span>
+
+<span class="nc" id="L257">		return adblCumulativePermanentDrift;</span>
+	}
+
+	/**
+	 * Generate the Total Permanent Cost Drift
+	 * 
+	 * @return The Total Permanent Cost Drift
+	 */
+
+	public double totalPermanentDrift()
+	{
+<span class="nc" id="L268">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L270">		double dblTotalPermanentDrift = 0.;</span>
+
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L273">			dblTotalPermanentDrift = dblTotalPermanentDrift + _lsSI.get (i).permanentImpactDrift();</span>
+
+<span class="nc" id="L275">		return dblTotalPermanentDrift;</span>
+	}
+
+	/**
+	 * Generate the Array of Incremental Permanent Cost Wander
+	 * 
+	 * @return The Array of Incremental Permanent Cost Wander
+	 */
+
+	public double[] incrementalPermanentWander()
+	{
+<span class="nc" id="L286">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L288">		double[] adblIncrementalPermanentWander = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L291">			adblIncrementalPermanentWander[i] = _lsSI.get (i).permanentImpactWander();</span>
+
+<span class="nc" id="L293">		return adblIncrementalPermanentWander;</span>
+	}
+
+	/**
+	 * Generate the Array of Cumulative Permanent Cost Wander
+	 * 
+	 * @return The Array of Cumulative Permanent Cost Wander
+	 */
+
+	public double[] cumulativePermanentWander()
+	{
+<span class="nc" id="L304">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L306">		double[] adblCumulativePermanentWander = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">			adblCumulativePermanentWander[i] = 0 == i ? _lsSI.get (i).permanentImpactWander() : _lsSI.get</span>
+<span class="nc" id="L310">				(i).permanentImpactWander() + adblCumulativePermanentWander[i - 1];</span>
+
+<span class="nc" id="L312">		return adblCumulativePermanentWander;</span>
+	}
+
+	/**
+	 * Generate the Total Permanent Cost Wander
+	 * 
+	 * @return The Total Permanent Cost Wander
+	 */
+
+	public double totalPermanentWander()
+	{
+<span class="nc" id="L323">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L325">		double dblTotalPermanentWander = 0.;</span>
+
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L328">			dblTotalPermanentWander = dblTotalPermanentWander + _lsSI.get (i).permanentImpactWander();</span>
+
+<span class="nc" id="L330">		return dblTotalPermanentWander;</span>
+	}
+
+	/**
+	 * Generate the Array of Incremental Temporary Cost Drift
+	 * 
+	 * @return The Array of Incremental Temporary Cost Drift
+	 */
+
+	public double[] incrementalTemporaryDrift()
+	{
+<span class="nc" id="L341">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L343">		double[] adblIncrementalTemporaryDrift = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L345" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L346">			adblIncrementalTemporaryDrift[i] = _lsSI.get (i).temporaryImpactDrift();</span>
+
+<span class="nc" id="L348">		return adblIncrementalTemporaryDrift;</span>
+	}
+
+	/**
+	 * Generate the Array of Cumulative Temporary Cost Drift
+	 * 
+	 * @return The Array of Cumulative Temporary Cost Drift
+	 */
+
+	public double[] cumulativeTemporaryDrift()
+	{
+<span class="nc" id="L359">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L361">		double[] adblCumulativeTemporaryDrift = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L363" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">			adblCumulativeTemporaryDrift[i] = 0 == i ? _lsSI.get (i).temporaryImpactDrift() : _lsSI.get</span>
+<span class="nc" id="L365">				(i).temporaryImpactDrift() + adblCumulativeTemporaryDrift[i - 1];</span>
+
+<span class="nc" id="L367">		return adblCumulativeTemporaryDrift;</span>
+	}
+
+	/**
+	 * Generate the Total Temporary Cost Drift
+	 * 
+	 * @return The Total Temporary Cost Drift
+	 */
+
+	public double totalTemporaryDrift()
+	{
+<span class="nc" id="L378">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L380">		double dblTotalTemporaryDrift = 0.;</span>
+
+<span class="nc bnc" id="L382" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L383">			dblTotalTemporaryDrift = dblTotalTemporaryDrift + _lsSI.get (i).temporaryImpactDrift();</span>
+
+<span class="nc" id="L385">		return dblTotalTemporaryDrift;</span>
+	}
+
+	/**
+	 * Generate the Array of Incremental Temporary Cost Wander
+	 * 
+	 * @return The Array of Incremental Temporary Cost Wander
+	 */
+
+	public double[] incrementalTemporaryWander()
+	{
+<span class="nc" id="L396">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L398">		double[] adblIncrementalTemporaryWander = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L401">			adblIncrementalTemporaryWander[i] = _lsSI.get (i).temporaryImpactWander();</span>
+
+<span class="nc" id="L403">		return adblIncrementalTemporaryWander;</span>
+	}
+
+	/**
+	 * Generate the Array of Cumulative Temporary Cost Wander
+	 * 
+	 * @return The Array of Cumulative Temporary Cost Wander
+	 */
+
+	public double[] cumulativeTemporaryWander()
+	{
+<span class="nc" id="L414">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L416">		double[] adblCumulativeTemporaryWander = new double[iNumInterval];</span>
+
+<span class="nc bnc" id="L418" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">			adblCumulativeTemporaryWander[i] = 0 == i ? _lsSI.get (i).temporaryImpactWander() : _lsSI.get</span>
+<span class="nc" id="L420">				(i).temporaryImpactWander() + adblCumulativeTemporaryWander[i - 1];</span>
+
+<span class="nc" id="L422">		return adblCumulativeTemporaryWander;</span>
+	}
+
+	/**
+	 * Generate the Total Temporary Cost Wander
+	 * 
+	 * @return The Total Temporary Cost Wander
+	 */
+
+	public double totalTemporaryWander()
+	{
+<span class="nc" id="L433">		int iNumInterval = _lsSI.size();</span>
+
+<span class="nc" id="L435">		double dblTotalTemporaryWander = 0.;</span>
+
+<span class="nc bnc" id="L437" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L438">			dblTotalTemporaryWander = dblTotalTemporaryWander + _lsSI.get (i).temporaryImpactWander();</span>
+
+<span class="nc" id="L440">		return dblTotalTemporaryWander;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

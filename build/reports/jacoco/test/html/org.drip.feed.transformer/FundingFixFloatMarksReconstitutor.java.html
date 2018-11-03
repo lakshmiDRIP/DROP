@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FundingFixFloatMarksReconstitutor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.feed.transformer</a> &gt; <span class="el_source">FundingFixFloatMarksReconstitutor.java</span></div><h1>FundingFixFloatMarksReconstitutor.java</h1><pre class="source lang-java linenums">
+package org.drip.feed.transformer;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * FundingFixFloatMarksReconstitutor transforms the Funding Instrument Manifest Measures (e.g., Forward Rate
+ *  for Deposits, Forward Rate for Futures, and Swap Rates for Fix/Float Swap) Feed Inputs into Formats
+ *  appropriate for Funding Curve Construction and Measure Generation.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L59">public class FundingFixFloatMarksReconstitutor {</span>
+
+	/**
+	 * The Standard Funding Input Calibration Manifest Measure Scaler
+	 */
+
+	public static final double s_dblScaler = 0.01;
+
+	/**
+	 * The Standard Deposit Maturity Tenors
+	 */
+
+<span class="nc" id="L71">	public static final java.lang.String[] s_astrDepositTenor = new java.lang.String[] {&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;,</span>
+		&quot;4M&quot;, &quot;5M&quot;, &quot;6M&quot;};
+
+	/**
+	 * The Standard Fix Float Maturity Tenors
+	 */
+
+<span class="nc" id="L78">	public static final java.lang.String[] s_astrFixFloatTenor = new java.lang.String[] {&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;,</span>
+		&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;};
+
+	/**
+	 * Dump the Regularized Marks of the ISTQ Map
+	 * 
+	 * @param strCurrency Currency
+	 * @param mapISTQ The ISTQ Map
+	 * @param iLatentStateType SHAPE PRESERVING/SMOOTH
+	 * 
+	 * @return TRUE - The Regularized ISTQ Map Successfully Dumped
+	 */
+
+	public static final boolean RegularizeMarks (
+		final java.lang.String strCurrency,
+		final java.util.Map&lt;org.drip.analytics.date.JulianDate, org.drip.feed.loader.InstrumentSetTenorQuote&gt;
+			mapISTQ,
+		final int iLatentStateType)
+	{
+<span class="nc bnc" id="L97" title="All 4 branches missed.">		if (null == mapISTQ || 0 == mapISTQ.size()) return false;</span>
+
+<span class="nc" id="L99">		java.lang.String strHeader = &quot;Date,&quot;;</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrDepositTenor)</span>
+<span class="nc" id="L102">			strHeader += &quot;DEPOSITPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrFixFloatTenor)</span>
+<span class="nc" id="L105">			strHeader += &quot;FIXFLOATPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrDepositTenor)</span>
+<span class="nc" id="L108">			strHeader += &quot;&lt;&lt;DEPOSITRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrFixFloatTenor)</span>
+<span class="nc" id="L111">			strHeader += &quot;&lt;&lt;FIXFLOATRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
+
+<span class="nc" id="L113">		System.out.println (strHeader);</span>
+
+		for (java.util.Map.Entry&lt;org.drip.analytics.date.JulianDate,
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			org.drip.feed.loader.InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
+
+<span class="nc" id="L119">			org.drip.analytics.date.JulianDate dtSpot = meISTQ.getKey();</span>
+
+<span class="nc" id="L121">			org.drip.feed.loader.InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
+
+<span class="nc bnc" id="L123" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
+
+<span class="nc" id="L125">			java.lang.String strDump = dtSpot.toString() + &quot;,&quot;;</span>
+
+<span class="nc" id="L127">			double[] adblDepositQuote = istq.instrumentQuote (&quot;DEPOSIT&quot;);</span>
+
+<span class="nc" id="L129">			java.lang.String[] astrDepositMaturityTenor = istq.instrumentTenor (&quot;DEPOSIT&quot;);</span>
+
+<span class="nc" id="L131">			double[] adblFixFloatQuote = istq.instrumentQuote (&quot;FIXFLOAT&quot;);</span>
+
+<span class="nc" id="L133">			java.lang.String[] astrFixFloatMaturityTenor = istq.instrumentTenor (&quot;FIXFLOAT&quot;);</span>
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">			int iNumDepositTenor = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			int iNumFixFloatTenor = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
+
+<span class="nc bnc" id="L140" title="All 6 branches missed.">			if (0 == iNumFixFloatQuote || iNumDepositQuote != iNumDepositTenor || iNumFixFloatQuote !=</span>
+				iNumFixFloatTenor)
+<span class="nc" id="L142">				continue;</span>
+
+<span class="nc" id="L144">			org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="nc" id="L145">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, strCurrency,</span>
+					astrDepositMaturityTenor, adblDepositQuote, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;,
+						astrFixFloatMaturityTenor, adblFixFloatQuote, &quot;SwapRate&quot;, iLatentStateType);
+
+<span class="nc" id="L149">			org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+				org.drip.param.market.CurveSurfaceQuoteContainer();
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			if (!csqc.setFundingState (dcFunding)) continue;</span>
+
+<span class="nc" id="L154">			org.drip.param.valuation.ValuationParams valParams =</span>
+<span class="nc" id="L155">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
+
+<span class="nc" id="L157">			org.drip.product.rates.SingleStreamComponent[] aSSCDeposit =</span>
+<span class="nc" id="L158">				org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtSpot, strCurrency,</span>
+					s_astrDepositTenor);
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">			for (org.drip.product.rates.SingleStreamComponent sscDeposit : aSSCDeposit) {</span>
+				try {
+<span class="nc" id="L163">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (sscDeposit.measureValue</span>
+<span class="nc" id="L164">						(valParams, null, csqc, null, &quot;ForwardRate&quot;), 1, 6, 1.) + &quot;,&quot;;</span>
+<span class="nc" id="L165">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L166">					e.printStackTrace();</span>
+
+<span class="nc" id="L168">					continue;</span>
+<span class="nc" id="L169">				}</span>
+			}
+
+<span class="nc" id="L172">			org.drip.product.rates.FixFloatComponent[] aFixFloat =</span>
+<span class="nc" id="L173">				org.drip.service.template.OTCInstrumentBuilder.FixFloatStandard (dtSpot, strCurrency, &quot;ALL&quot;,</span>
+					s_astrFixFloatTenor, &quot;MAIN&quot;, 0.);
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			for (org.drip.product.rates.FixFloatComponent ffc : aFixFloat) {</span>
+				try {
+<span class="nc" id="L178">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,</span>
+						null, csqc, null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot;,&quot;;
+<span class="nc" id="L180">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L181">					e.printStackTrace();</span>
+
+<span class="nc" id="L183">					continue;</span>
+<span class="nc" id="L184">				}</span>
+			}
+
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFixFloatQuote; ++i)</span>
+<span class="nc" id="L188">				strDump += org.drip.quant.common.FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) +</span>
+					&quot;,&quot;;
+
+<span class="nc" id="L191">			System.out.println (strDump);</span>
+<span class="nc" id="L192">		}</span>
+
+<span class="nc" id="L194">		return true;</span>
+	}
+
+	/**
+	 * Re-constitute the Horizon Quote Marks Using a Shape Preserving Re-constructor
+	 * 
+	 * @param strCurrency Currency
+	 * @param strMarksLocation The Location of the CSV Marks File
+	 * 
+	 * @return The Transformed Horizon Quote Marks
+	 */
+
+	public static final boolean ShapePreservingRegularization (
+		final java.lang.String strCurrency,
+		final java.lang.String strMarksLocation)
+	{
+<span class="nc" id="L210">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+			false);
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
+<span class="nc" id="L214">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);</span>
+	}
+
+	/**
+	 * Re-constitute the Horizon Quote Marks Using a Smooth Re-constructor
+	 * 
+	 * @param strCurrency Currency
+	 * @param strMarksLocation The Location of the CSV Marks File
+	 * 
+	 * @return The Transformed Horizon Quote Marks
+	 */
+
+	public static final boolean SmoothRegularization (
+		final java.lang.String strCurrency,
+		final java.lang.String strMarksLocation)
+	{
+<span class="nc" id="L230">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+			false);
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
+<span class="nc" id="L234">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SMOOTH);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,1017 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JurisdictionOTCIndexSwaps.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.floatfloat</a> &gt; <span class="el_source">JurisdictionOTCIndexSwaps.java</span></div><h1>JurisdictionOTCIndexSwaps.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.floatfloat;
+
+import java.util.*;
+
+import org.drip.analytics.date.*;
+import org.drip.analytics.support.*;
+import org.drip.market.otc.*;
+import org.drip.param.creator.*;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.*;
+import org.drip.product.creator.SingleStreamComponentBuilder;
+import org.drip.product.definition.*;
+import org.drip.product.fx.ComponentPair;
+import org.drip.product.rates.*;
+import org.drip.quant.common.*;
+import org.drip.service.env.EnvManager;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.stretch.*;
+import org.drip.state.creator.*;
+import org.drip.state.discount.*;
+import org.drip.state.estimator.LatentStateStretchBuilder;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.inference.*;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * JurisdictionOTCIndexSwaps demonstrates the Construction and Usage of the Jurisdiction Standard OTC
+ *  Float-Float Swaps.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L82">public class JurisdictionOTCIndexSwaps {</span>
+
+	private static final FixFloatComponent OTCFixFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final double dblCoupon)
+	{
+<span class="fc" id="L90">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+			strCurrency,
+			&quot;ALL&quot;,
+			strMaturityTenor,
+			&quot;MAIN&quot;
+		);
+
+<span class="fc" id="L97">		return ffConv.createFixFloatComponent (</span>
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
+	private static final FloatFloatComponent OTCFloatFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strDerivedTenor,
+		final String strMaturityTenor,
+		final double dblBasis)
+	{
+<span class="fc" id="L113">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+
+<span class="fc" id="L115">		return ffConv.createFloatFloatComponent (</span>
+			dtSpot,
+			strDerivedTenor,
+			strMaturityTenor,
+			dblBasis,
+			1.
+		);
+	}
+
+	private static final ComponentPair OTCComponentPair (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strDerivedTenor,
+		final String strMaturityTenor,
+		final double dblReferenceFixedCoupon,
+		final double dblDerivedFixedCoupon,
+		final double dblDerivedStreamBasis)
+	{
+<span class="fc" id="L133">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+
+<span class="fc" id="L135">		return ffConv.createFixFloatComponentPair (</span>
+			dtSpot,
+			strDerivedTenor,
+			strMaturityTenor,
+			dblReferenceFixedCoupon,
+			dblDerivedFixedCoupon,
+			dblDerivedStreamBasis,
+			1.
+		);
+	}
+
+	/*
+	 * Construct the Array of Deposit from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final CalibratableComponent[] DepositFromMaturityDays (
+		final JulianDate dtEffective,
+		final int[] aiDay,
+		final int iNumFutures,
+		final String strCurrency)
+		throws Exception
+	{
+<span class="fc" id="L159">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
+
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="nc" id="L162">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+				dtEffective,
+<span class="nc" id="L164">				dtEffective.addBusDays (</span>
+					aiDay[i],
+					strCurrency
+				),
+<span class="nc" id="L168">				ForwardLabel.Create (</span>
+					strCurrency,
+					aiDay[i] + &quot;D&quot;
+				)
+			);
+
+<span class="fc" id="L174">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+			dtEffective,
+			iNumFutures,
+			strCurrency
+		);
+
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
+<span class="nc" id="L181">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+
+<span class="fc" id="L183">		return aCalibComp;</span>
+	}
+
+	/*
+	 * Construct the Array of Swap Instruments from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent[] SwapFromMaturityTenor (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblCoupon)
+		throws Exception
+	{
+<span class="fc" id="L199">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L202">			aIRS[i] = OTCFixFloat (</span>
+				dtSpot,
+				strCurrency,
+				astrMaturityTenor[i],
+				adblCoupon[i]
+			);
+
+<span class="fc" id="L209">		return aIRS;</span>
+	}
+
+	/*
+	 * Construct the discount curve using the following steps:
+	 * 	- Construct the array of cash instruments and their quotes.
+	 * 	- Construct the array of swap instruments and their quotes.
+	 * 	- Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final MergedDiscountForwardCurve MakeDC (
+		final JulianDate dtSpot,
+		final String strCurrency)
+		throws Exception
+	{
+		/*
+		 * Construct the array of Deposit instruments and their quotes.
+		 */
+
+<span class="fc" id="L230">		CalibratableComponent[] aDepositComp = DepositFromMaturityDays (</span>
+			dtSpot,
+			new int[] {
+			},
+			0,
+			strCurrency
+		);
+
+<span class="fc" id="L238">		double[] adblDepositQuote = new double[] {</span>
+		};
+
+		/*
+		 * Construct the array of Swap instruments and their quotes.
+		 */
+
+<span class="fc" id="L245">		double[] adblSwapQuote = new double[] {</span>
+			0.0009875,   //  9M
+			0.00122,     //  1Y
+			0.00223,     // 18M
+			0.00383,     //  2Y
+			0.00827,     //  3Y
+			0.01245,     //  4Y
+			0.01605,     //  5Y
+			0.02597      // 10Y
+		};
+
+<span class="fc" id="L256">		String[] astrSwapManifestMeasure = new String[] {</span>
+			&quot;SwapRate&quot;,		//  9M
+			&quot;SwapRate&quot;,     //  1Y
+			&quot;SwapRate&quot;,     // 18M
+			&quot;SwapRate&quot;,     //  2Y
+			&quot;SwapRate&quot;,     //  3Y
+			&quot;SwapRate&quot;,     //  4Y
+			&quot;SwapRate&quot;,     //  5Y
+			&quot;SwapRate&quot;      // 10Y
+		};
+
+<span class="fc" id="L267">		CalibratableComponent[] aSwapComp = SwapFromMaturityTenor (</span>
+			dtSpot,
+			strCurrency,
+			new java.lang.String[] {
+				&quot;9M&quot;,
+				&quot;1Y&quot;,
+				&quot;18M&quot;,
+				&quot;2Y&quot;,
+				&quot;3Y&quot;,
+				&quot;4Y&quot;,
+				&quot;5Y&quot;,
+				&quot;10Y&quot;
+			},
+			adblSwapQuote
+		);
+
+		/*
+		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
+		 */
+
+<span class="fc" id="L287">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
+			aDepositComp,
+			adblDepositQuote,
+			null,
+			aSwapComp,
+			adblSwapQuote,
+			astrSwapManifestMeasure,
+			false
+		);
+	}
+
+	/*
+	 * Construct an array of float-float swaps from the corresponding reference (6M) and the derived legs.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FloatFloatComponent[] OTCFloatFloat (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final int iTenorInMonths)
+		throws Exception
+	{
+<span class="fc" id="L317">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
+
+<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L320">			aFFC[i] = OTCFloatFloat (</span>
+				dtSpot,
+				strCurrency,
+				iTenorInMonths + &quot;M&quot;,
+				astrMaturityTenor[i],
+				0.
+			);
+
+<span class="fc" id="L328">		return aFFC;</span>
+	}
+
+	/*
+	 * Construct an array of fix-float component pairs from the corresponding reference (6M) and the derived legs.
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final ComponentPair[] OTCComponentPair (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final int iTenorInMonths,
+		final CurveSurfaceQuoteContainer csqs)
+		throws Exception
+	{
+<span class="pc bpc" id="L345" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
+
+<span class="fc" id="L347">		ComponentPair[] aFFCP = new ComponentPair[astrMaturityTenor.length];</span>
+
+<span class="fc" id="L349">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L356">			ComponentPair cp = OTCComponentPair (</span>
+				dtSpot,
+				strCurrency,
+				iTenorInMonths + &quot;M&quot;,
+				astrMaturityTenor[i],
+				0.,
+				0.,
+				0.
+			);
+
+<span class="fc" id="L366">			double dblReferenceFixedCoupon = cp.referenceComponent().measureValue (</span>
+				valParams,
+				null,
+				csqs,
+				null,
+				&quot;FairPremium&quot;
+			);
+
+<span class="fc" id="L374">			double dblDerivedFixedCoupon = cp.derivedComponent().measureValue (</span>
+				valParams,
+				null,
+				csqs,
+				null,
+				&quot;FairPremium&quot;
+			);
+
+<span class="fc" id="L382">			aFFCP[i] = OTCComponentPair (</span>
+				dtSpot,
+				strCurrency,
+				iTenorInMonths + &quot;M&quot;,
+				astrMaturityTenor[i],
+				dblReferenceFixedCoupon,
+				dblDerivedFixedCoupon,
+				0.
+			);
+		}
+
+<span class="fc" id="L393">		return aFFCP;</span>
+	}
+
+	private static final ForwardCurve MakeFloatFloatFC (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final MergedDiscountForwardCurve dc,
+		final int iTenorInMonths,
+		final String[] astrxM6MFwdTenor,
+		final double[] adblxM6MBasisSwapQuote,
+		final boolean bDisplay)
+		throws Exception
+	{
+<span class="fc bfc" id="L406" title="All 2 branches covered.">		if (bDisplay) {</span>
+<span class="fc" id="L407">			System.out.println (&quot;------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L409">			System.out.println (&quot; SPL =&gt;              n=4               |         |         |&quot;);</span>
+
+<span class="fc" id="L411">			System.out.println (&quot;---------------------------------------|  LOG DF |  LIBOR  |&quot;);</span>
+
+<span class="fc" id="L413">			System.out.println (&quot; MSR =&gt;  RECALC  |  REFEREN |  DERIVED |         |         |&quot;);</span>
+
+<span class="fc" id="L415">			System.out.println (&quot;------------------------------------------------------------&quot;);</span>
+		}
+
+		/*
+		 * Construct the 6M-xM float-float basis swap.
+		 */
+
+<span class="fc" id="L422">		FloatFloatComponent[] aFFC = OTCFloatFloat (</span>
+			dtSpot,
+			strCurrency,
+			astrxM6MFwdTenor,
+			iTenorInMonths
+		);
+
+<span class="fc" id="L429">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
+
+<span class="fc" id="L431">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+		/*
+		 * Calculate the starting forward rate off of the discount curve.
+		 */
+
+<span class="fc" id="L441">		double dblStartingFwd = dc.forward (</span>
+<span class="fc" id="L442">			dtSpot.julian(),</span>
+<span class="fc" id="L443">			dtSpot.addTenor (strBasisTenor).julian()</span>
+		);
+
+		/*
+		 * Set the discount curve based component market parameters.
+		 */
+
+<span class="fc" id="L450">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
+		 */
+
+<span class="fc" id="L464">		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+			&quot;QUARTIC_FWD&quot; + strBasisTenor,
+<span class="fc" id="L466">			ForwardLabel.Create (</span>
+				strCurrency,
+				strBasisTenor
+			),
+			valParams,
+			null,
+			mktParams,
+			null,
+			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+			new PolynomialFunctionSetParams (4),
+			aFFC,
+			&quot;DerivedParBasisSpread&quot;,
+			adblxM6MBasisSwapQuote,
+			dblStartingFwd
+		);
+
+<span class="fc bfc" id="L482" title="All 2 branches covered.">		if (bDisplay) {</span>
+
+			/*
+			 * Set the discount curve + quartic polynomial forward curve based component market parameters.
+			 */
+
+<span class="fc" id="L488">			CurveSurfaceQuoteContainer mktParamsQuarticFwd = MarketParamsBuilder.Create (</span>
+				dc,
+				fcxMQuartic,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			);
+
+<span class="fc" id="L499">			int iFreq = 12 / iTenorInMonths;</span>
+
+			/*
+			 * Compute the following forward curve metrics for each of cubic polynomial forward, quartic
+			 * 	polynomial forward, and KLK Hyperbolic tension forward curves:
+			 * 	- Reference Basis Par Spread
+			 * 	- Derived Basis Par Spread
+			 * 
+			 * Further compare these with a) the forward rate off of the discount curve, b) the LIBOR rate, and
+			 * 	c) Input Basis Swap Quote.
+			 */
+
+<span class="fc bfc" id="L511" title="All 2 branches covered.">			for (int i = 0; i &lt; astrxM6MFwdTenor.length; ++i) {</span>
+<span class="fc" id="L512">				FloatFloatComponent ffc = aFFC[i];</span>
+<span class="fc" id="L513">				String strMaturityTenor = astrxM6MFwdTenor[i];</span>
+
+<span class="fc" id="L515">				int iFwdEndDate = dtSpot.addTenor (strMaturityTenor).julian();</span>
+
+<span class="fc" id="L517">				int iFwdStartDate = dtSpot.addTenor (strMaturityTenor).subtractTenor (strBasisTenor).julian();</span>
+
+<span class="fc" id="L519">				CaseInsensitiveTreeMap&lt;Double&gt; mapQuarticValue = ffc.value (</span>
+					valParams,
+					null,
+					mktParamsQuarticFwd,
+					null
+				);
+
+<span class="fc" id="L526">				System.out.println (&quot; &quot; + strMaturityTenor + &quot; =&gt;  &quot; +</span>
+<span class="fc" id="L527">					FormatUtil.FormatDouble (fcxMQuartic.forward (strMaturityTenor), 2, 2, 100.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L528">					FormatUtil.FormatDouble (mapQuarticValue.get (&quot;ReferenceParBasisSpread&quot;), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L529">					FormatUtil.FormatDouble (mapQuarticValue.get (&quot;DerivedParBasisSpread&quot;), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L530">					FormatUtil.FormatDouble (iFreq * java.lang.Math.log (dc.df (iFwdStartDate) / dc.df (iFwdEndDate)), 1, 2, 100.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L531">					FormatUtil.FormatDouble (dc.libor (iFwdStartDate, iFwdEndDate), 1, 2, 100.) + &quot;  |  &quot;</span>
+				);
+			}
+		}
+
+<span class="fc" id="L536">		return fcxMQuartic;</span>
+	}
+
+	private static final ForwardCurve MakeComponentPairFC (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final MergedDiscountForwardCurve dc,
+		final int iTenorInMonths,
+		final String[] astrComponentPairTenor,
+		final double[] adblComponentPairQuote,
+		final boolean bDisplay)
+		throws Exception
+	{
+<span class="fc" id="L549">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+		/*
+		 * Set the discount curve based component market parameters.
+		 */
+
+<span class="fc" id="L559">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="fc" id="L570">		org.drip.product.fx.ComponentPair[] aComponentPair = OTCComponentPair (</span>
+			dtSpot,
+			strCurrency,
+			astrComponentPairTenor,
+			iTenorInMonths,
+			mktParams
+		);
+
+		/*
+		 * Construct the Float-Float Component Set Stretch Builder
+		 */
+
+<span class="fc" id="L582">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+
+<span class="fc" id="L584">		LatentStateStretchSpec fixFloatCPStretch = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
+			&quot;FIXFLOATCP&quot;,
+			aComponentPair,
+			valParams,
+			mktParams,
+			adblComponentPairQuote,
+<span class="fc" id="L590">			ffConv.basisOnDerivedComponent(),</span>
+<span class="fc" id="L591">			ffConv.basisOnDerivedStream()</span>
+		);
+
+<span class="fc" id="L594">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+			fixFloatCPStretch
+		};
+
+		/*
+		 * Set up the Linear Curve Calibrator using the following parameters:
+		 * 	- Cubic Exponential Mixture Basis Spline Set
+		 * 	- Ck = 2, Segment Curvature Penalty = 2
+		 * 	- Quadratic Rational Shape Controller
+		 * 	- Natural Boundary Setting
+		 */
+
+<span class="fc" id="L606">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+			new org.drip.spline.params.SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (5),
+<span class="fc" id="L610">				org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
+					2,
+					2
+				),
+				new org.drip.spline.params.ResponseScalingShapeControl (
+					true,
+					new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
+<span class="fc" id="L620">			BoundarySettings.NaturalStandard(),</span>
+			MultiSegmentSequence.CALIBRATE,
+			null,
+			null
+		);
+
+		/*
+		 * Construct the Shape Preserving Forward Curve by applying the linear curve calibrator to the array
+		 *  of Deposit and Swap Stretches.
+		 */
+
+<span class="fc" id="L631">		ForwardCurve fcDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+			lcc,
+			aStretchSpec,
+<span class="fc" id="L634">			aComponentPair[0].derivedComponent().forwardLabel().get (&quot;DERIVED&quot;),</span>
+			valParams,
+			null,
+			mktParams,
+			null,
+<span class="fc" id="L639">			dc.libor (</span>
+				dtSpot,
+				iTenorInMonths + &quot;M&quot;
+			)
+		);
+
+		/*
+		 * Set the discount curve + cubic polynomial forward curve based component market parameters.
+		 */
+
+<span class="fc" id="L649">		mktParams.setForwardState (fcDerived);</span>
+
+<span class="fc bfc" id="L651" title="All 2 branches covered.">		if (bDisplay) {</span>
+<span class="fc" id="L652">			System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L654">			System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+			/*
+			 * Cross-Comparison of the Fix-Float Component Pair &quot;DerivedParBasisSpread&quot; metric.
+			 */
+
+<span class="pc bpc" id="L660" title="2 of 4 branches missed.">			if (null != aComponentPair &amp;&amp; null != adblComponentPairQuote) {</span>
+<span class="fc" id="L661">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L663">				System.out.println (&quot;\t     FIX-FLOAT COMPONENT PAIR QUOTE RECOVERY&quot;);</span>
+
+<span class="fc" id="L665">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L667" title="All 2 branches covered.">				for (int i = 0; i &lt; aComponentPair.length; ++i)</span>
+<span class="fc" id="L668">					System.out.println (&quot;\t[&quot; + aComponentPair[i].effective() + &quot; - &quot; + aComponentPair[i].maturity() + &quot;] = &quot; +</span>
+<span class="fc" id="L669">						FormatUtil.FormatDouble (aComponentPair[i].derivedComponent().measureValue (valParams, null, mktParams, null, &quot;DerivedParBasisSpread&quot;), 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L670">							FormatUtil.FormatDouble (aComponentPair[i].derivedComponent().measureValue (valParams, null, mktParams, null, &quot;ReferenceParBasisSpread&quot;), 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L671">								FormatUtil.FormatDouble (adblComponentPairQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L672">									FormatUtil.FormatDouble (fcDerived.forward (aComponentPair[i].maturity()), 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L673">										FormatUtil.FormatDouble (dc.libor (aComponentPair[i].maturity().subtractTenor (&quot;3M&quot;), iTenorInMonths + &quot;M&quot;), 1, 4, 100.) + &quot;%&quot;);</span>
+			}
+
+<span class="fc" id="L676">			System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L678">			System.out.println (&quot;\n\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L680">			System.out.println (&quot;\t\tFIX-FLOAT COMPONENT PAIR RUNS&quot;);</span>
+
+<span class="fc" id="L682">			System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L684">			System.out.println (&quot;\tL -&gt; R:&quot;);</span>
+
+<span class="fc" id="L686">			System.out.println (&quot;\t\tCurrency&quot;);</span>
+
+<span class="fc" id="L688">			System.out.println (&quot;\t\tFloat-Float Effective&quot;);</span>
+
+<span class="fc" id="L690">			System.out.println (&quot;\t\tFloat-Float Maturity&quot;);</span>
+
+<span class="fc" id="L692">			System.out.println (&quot;\t\tDerived Component Derived Stream Par Basis Spread&quot;);</span>
+
+<span class="fc" id="L694">			System.out.println (&quot;\t\tDerived Component Reference Stream Par Basis Spread&quot;);</span>
+
+<span class="fc" id="L696">			System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+		}
+
+<span class="fc" id="L699">		return fcDerived;</span>
+	}
+
+	private static final ForwardCurve MakeFloatFloatFC (
+		final String strCurrency,
+		final MergedDiscountForwardCurve dc,
+		final boolean bDisplay)
+		throws Exception
+	{
+		/*
+		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
+		 */
+
+<span class="fc bfc" id="L712" title="All 2 branches covered.">		if (bDisplay) {</span>
+<span class="fc" id="L713">			System.out.println (&quot;\n------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L715">			System.out.println (&quot;-------------------    3M-6M Basis Swap    -----------------&quot;);</span>
+		}
+
+<span class="fc" id="L718">		ForwardCurve fc3M = MakeFloatFloatFC (</span>
+<span class="fc" id="L719">			dc.epoch(),</span>
+			strCurrency,
+			dc,
+			3,
+			new String[] {
+				&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;
+			},
+			new double[] {
+				0.00186,    //  1Y
+				0.00127,    //  2Y
+				0.00097,    //  3Y
+				0.00080,    //  4Y
+				0.00067,    //  5Y
+				0.00058,    //  6Y
+				0.00051,    //  7Y
+				0.00046,    //  8Y
+				0.00042,    //  9Y
+				0.00038,    // 10Y
+				0.00035,    // 11Y
+				0.00033,    // 12Y
+				0.00028,    // 15Y
+				0.00022,    // 20Y
+				0.00020,    // 25Y
+				0.00018     // 30Y
+			},
+			bDisplay
+		);
+
+<span class="fc bfc" id="L747" title="All 2 branches covered.">		if (bDisplay) System.out.println (&quot;------------------------------------------------------------\n\n&quot;);</span>
+
+<span class="fc" id="L749">		return fc3M;</span>
+	}
+
+	private static final ForwardCurve MakeComponentPairFC (
+		final String strCurrency,
+		final MergedDiscountForwardCurve dc,
+		final boolean bDisplay)
+		throws Exception
+	{
+		/*
+		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
+		 */
+
+<span class="fc" id="L762">		ForwardCurve fc3M = MakeComponentPairFC (</span>
+<span class="fc" id="L763">			dc.epoch(),</span>
+			strCurrency,
+			dc,
+			3,
+			new String[] {
+				&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;
+			},
+			new double[] {
+				0.00186,    //  1Y
+				0.00127,    //  2Y
+				0.00097,    //  3Y
+				0.00080,    //  4Y
+				0.00067,    //  5Y
+				0.00058,    //  6Y
+				0.00051,    //  7Y
+				0.00046,    //  8Y
+				0.00042,    //  9Y
+				0.00038,    // 10Y
+				0.00035,    // 11Y
+				0.00033,    // 12Y
+				0.00028,    // 15Y
+				0.00022,    // 20Y
+				0.00020,    // 25Y
+				0.00018     // 30Y
+			},
+			bDisplay
+		);
+
+<span class="fc" id="L791">		return fc3M;</span>
+	}
+
+	private static final void OTCFloatFloatRun (
+		final String strCurrency,
+		final JulianDate dtSpot,
+		final boolean bDisplay)
+		throws Exception
+	{
+		/*
+		 * Construct the Discount Curve using its instruments and quotes
+		 */
+
+<span class="fc" id="L804">		MergedDiscountForwardCurve dc = MakeDC (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L809">		ForwardCurve fc3M = MakeFloatFloatFC (</span>
+			strCurrency,
+			dc,
+			bDisplay
+		);
+
+<span class="fc" id="L815">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
+			dc,
+			fc3M,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="fc" id="L826">		FloatFloatComponent ffc = OTCFloatFloat (</span>
+			dtSpot,
+			strCurrency,
+			&quot;3M&quot;,
+			&quot;10Y&quot;,
+			0.
+		);
+
+<span class="fc" id="L834">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L840">		Map&lt;String, Double&gt; mapFFCMeasures = ffc.value (</span>
+			valParams,
+			null,
+			csqs,
+			null
+		);
+
+<span class="fc" id="L847">		System.out.println (</span>
+<span class="fc" id="L848">			&quot;\t| &quot; + strCurrency + &quot;  [&quot; + ffc.effectiveDate() + &quot; -&gt; &quot; + ffc.maturityDate() + &quot;]  =&gt;  &quot; +</span>
+<span class="fc" id="L849">			FormatUtil.FormatDouble (mapFFCMeasures.get (&quot;ReferenceParBasisSpread&quot;), 1, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L850">			FormatUtil.FormatDouble (mapFFCMeasures.get (&quot;DerivedParBasisSpread&quot;), 1, 2, 1.) + &quot;  |&quot;</span>
+		);
+<span class="fc" id="L852">	}</span>
+
+	private static final void OTCComponentPairRun (
+		final String strCurrency,
+		final JulianDate dtSpot,
+		final String strMaturityTenor,
+		final boolean bDisplay)
+		throws Exception
+	{
+		/*
+		 * Construct the Discount Curve using its instruments and quotes
+		 */
+
+<span class="fc" id="L865">		MergedDiscountForwardCurve dc = MakeDC (</span>
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L870">		ForwardCurve fc3M = MakeComponentPairFC (</span>
+			strCurrency,
+			dc,
+			bDisplay
+		);
+
+<span class="fc" id="L876">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
+			dc,
+			fc3M,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+<span class="fc" id="L887">		ComponentPair cp = OTCComponentPair (</span>
+			dtSpot,
+			strCurrency,
+			&quot;3M&quot;,
+			strMaturityTenor,
+			0.,
+			0.,
+			0.
+		);
+
+<span class="fc" id="L897">		ValuationParams valParams = new ValuationParams (</span>
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
+
+<span class="fc" id="L903">		Map&lt;String, Double&gt; mapComponentPairMeasures = cp.value (</span>
+			valParams,
+			null,
+			csqs,
+			null
+		);
+
+<span class="fc" id="L910">		System.out.println (</span>
+<span class="fc" id="L911">			&quot;\t| &quot; + strCurrency + &quot;  [&quot; + cp.effective() + &quot; -&gt; &quot; + cp.maturity() + &quot;]  =&gt;  &quot; +</span>
+<span class="fc" id="L912">			FormatUtil.FormatDouble (mapComponentPairMeasures.get (&quot;DerivedCompDerivedBasis&quot;), 1, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L913">			FormatUtil.FormatDouble (mapComponentPairMeasures.get (&quot;DerivedCompReferenceBasis&quot;), 1, 2, 1.) + &quot;  |&quot;</span>
+		);
+<span class="fc" id="L915">	}</span>
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L926">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L928">		JulianDate dtSpot = DateUtil.Today();</span>
+
+<span class="fc" id="L930">		OTCFloatFloatRun (&quot;AUD&quot;, dtSpot, true);</span>
+
+<span class="fc" id="L932">		System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L934">		System.out.println (&quot;\tL -&gt; R:&quot;);</span>
+
+<span class="fc" id="L936">		System.out.println (&quot;\t\tCurrency&quot;);</span>
+
+<span class="fc" id="L938">		System.out.println (&quot;\t\tFloat-Float Effective&quot;);</span>
+
+<span class="fc" id="L940">		System.out.println (&quot;\t\tFloat-Float Maturity&quot;);</span>
+
+<span class="fc" id="L942">		System.out.println (&quot;\t\tReference Stream Par Basis Spread&quot;);</span>
+
+<span class="fc" id="L944">		System.out.println (&quot;\t\tDerived Stream Par Basis Spread&quot;);</span>
+
+<span class="fc" id="L946">		System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L948">		System.out.println (&quot;\t\tFLOAT-FLOAT SINGLE COMPONENT RUNS&quot;);</span>
+
+<span class="fc" id="L950">		System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L952">		OTCFloatFloatRun (&quot;AUD&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L954">		OTCFloatFloatRun (&quot;CAD&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L956">		OTCFloatFloatRun (&quot;CHF&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L958">		OTCFloatFloatRun (&quot;CNY&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L960">		OTCFloatFloatRun (&quot;DKK&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L962">		OTCFloatFloatRun (&quot;GBP&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L964">		OTCFloatFloatRun (&quot;HKD&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L966">		OTCFloatFloatRun (&quot;INR&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L968">		OTCFloatFloatRun (&quot;JPY&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L970">		OTCFloatFloatRun (&quot;NOK&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L972">		OTCFloatFloatRun (&quot;NZD&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L974">		OTCFloatFloatRun (&quot;PLN&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L976">		OTCFloatFloatRun (&quot;SEK&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L978">		OTCFloatFloatRun (&quot;SGD&quot;, dtSpot, false); </span>
+
+<span class="fc" id="L980">		OTCFloatFloatRun (&quot;USD&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L982">		OTCFloatFloatRun (&quot;ZAR&quot;, dtSpot, false);</span>
+
+<span class="fc" id="L984">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;1Y&quot;, true);</span>
+
+<span class="fc" id="L986">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;2Y&quot;, false);</span>
+
+<span class="fc" id="L988">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;3Y&quot;, false);</span>
+
+<span class="fc" id="L990">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;4Y&quot;, false);</span>
+
+<span class="fc" id="L992">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;5Y&quot;, false);</span>
+
+<span class="fc" id="L994">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;6Y&quot;, false);</span>
+
+<span class="fc" id="L996">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;7Y&quot;, false);</span>
+
+<span class="fc" id="L998">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;8Y&quot;, false);</span>
+
+<span class="fc" id="L1000">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;9Y&quot;, false);</span>
+
+<span class="fc" id="L1002">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;11Y&quot;, false);</span>
+
+<span class="fc" id="L1004">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;12Y&quot;, false);</span>
+
+<span class="fc" id="L1006">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;15Y&quot;, false);</span>
+
+<span class="fc" id="L1008">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;20Y&quot;, false);</span>
+
+<span class="fc" id="L1010">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;25Y&quot;, false);</span>
+
+<span class="fc" id="L1012">		OTCComponentPairRun (&quot;EUR&quot;, dtSpot, &quot;30Y&quot;, false);</span>
+
+<span class="fc" id="L1014">		System.out.println (&quot;\t---------------------------------------------------------&quot;);</span>
+<span class="fc" id="L1015">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

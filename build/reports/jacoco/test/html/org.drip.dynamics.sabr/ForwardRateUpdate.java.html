@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForwardRateUpdate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.dynamics.sabr</a> &gt; <span class="el_source">ForwardRateUpdate.java</span></div><h1>ForwardRateUpdate.java</h1><pre class="source lang-java linenums">
+package org.drip.dynamics.sabr;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  DRIP is a free, full featured, fixed income rates, credit, and FX analytics library with a focus towards
+ *  	pricing/valuation, risk, and market making.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * ForwardRateUpdate contains the Increment and Snapshot of the Forward Rate Latent State evolved through
+ *  the SABR Dynamics.
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate {
+<span class="fc" id="L63">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+
+	/**
+	 * ForwardRateUpdate Creator
+	 * 
+	 * @param lslForward The Forward Rate Latent State Label
+	 * @param iInitialDate The Initial Date
+	 * @param iFinalDate The Final Date
+	 * @param iTargetPointDate The Target Point Date
+	 * @param dblForwardRate The Forward Rate
+	 * @param dblForwardRateIncrement The Forward Rate Increment
+	 * @param dblForwardRateVolatility The Forward Volatility 
+	 * @param dblForwardRateVolatilityIncrement The Forward Volatility Rate
+	 * 
+	 * @return Instance of ForwardRateUpdate
+	 */
+
+	public static final ForwardRateUpdate Create (
+		final org.drip.state.identifier.ForwardLabel lslForward,
+		final int iInitialDate,
+		final int iFinalDate,
+		final int iTargetPointDate,
+		final double dblForwardRate,
+		final double dblForwardRateIncrement,
+		final double dblForwardRateVolatility,
+		final double dblForwardRateVolatilityIncrement)
+	{
+<span class="fc" id="L90">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
+			org.drip.dynamics.evolution.LSQMPointRecord();
+
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE, dblForwardRate))
+<span class="nc" id="L95">			return null;</span>
+
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
+			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY,
+				dblForwardRateVolatility))
+<span class="nc" id="L100">			return null;</span>
+
+<span class="fc" id="L102">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
+			org.drip.dynamics.evolution.LSQMPointRecord();
+
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
+			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
+				dblForwardRateIncrement))
+<span class="nc" id="L108">			return null;</span>
+
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
+			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY,
+				dblForwardRateVolatilityIncrement))
+<span class="nc" id="L113">			return null;</span>
+
+		try {
+<span class="fc" id="L116">			return new ForwardRateUpdate (lslForward, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
+				lrIncrement);
+<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L119">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L122">		return null;</span>
+	}
+
+	private ForwardRateUpdate (
+		final org.drip.state.identifier.ForwardLabel lslForward,
+		final int iInitialDate,
+		final int iFinalDate,
+		final int iViewDate,
+		final org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot,
+		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L134">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
+
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;ForwardRateUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L138">	}</span>
+
+	/**
+	 * Retrieve the Forward Rate
+	 * 
+	 * @return The Forward Rate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Forward Rate is not available
+	 */
+
+	public double forwardRate()
+		throws java.lang.Exception
+	{
+<span class="fc" id="L151">		return snapshot().qm (_lslForward,</span>
+			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE);
+	}
+
+	/**
+	 * Retrieve the Forward Rate Increment
+	 * 
+	 * @return The Forward Rate Increment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Forward Rate Increment is not available
+	 */
+
+	public double forwardRateIncrement()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L166">		return increment().qm (_lslForward,</span>
+			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE);
+	}
+
+	/**
+	 * Retrieve the Forward Rate Volatility
+	 * 
+	 * @return The Forward Rate Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Forward Rate Volatility is not available
+	 */
+
+	public double forwardRateVolatility()
+		throws java.lang.Exception
+	{
+<span class="fc" id="L181">		return snapshot().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
+			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY);
+	}
+
+	/**
+	 * Retrieve the Forward Rate Volatility Increment
+	 * 
+	 * @return The Forward Rate Volatility Increment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Forward Rate Volatility Increment is not available
+	 */
+
+	public double forwardRateVolatilityIncrement()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L196">		return increment().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
+			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomBasisCurveBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.multicurve</a> &gt; <span class="el_source">CustomBasisCurveBuilder.java</span></div><h1>CustomBasisCurveBuilder.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.multicurve;
+
+import org.drip.analytics.date.*;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.state.basis.BasisCurve;
+import org.drip.state.creator.ScenarioBasisCurveBuilder;
+import org.drip.state.identifier.ForwardLabel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * CustomBasisCurveBuilder contains the sample demonstrating the full functionality behind creating highly
+ * 	customized spline based Basis curves.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L67">public class CustomBasisCurveBuilder {</span>
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		/*
+		 * Initialize the Credit Analytics Library
+		 */
+
+<span class="fc" id="L76">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L78">		JulianDate dtToday = DateUtil.Today();</span>
+
+<span class="fc" id="L80">		String[] astrTenor = new String[] {</span>
+			&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;
+		};
+
+<span class="fc" id="L84">		double[] adblBasis = new double[] {</span>
+			0.00186,    //  1Y
+			0.00127,    //  2Y
+			0.00097,    //  3Y
+			0.00080,    //  4Y
+			0.00067,    //  5Y
+			0.00058,    //  6Y
+			0.00051,    //  7Y
+			0.00046,    //  8Y
+			0.00042,    //  9Y
+			0.00038,    // 10Y
+			0.00035,    // 11Y
+			0.00033,    // 12Y
+			0.00028,    // 15Y
+			0.00022,    // 20Y
+			0.00020,    // 25Y
+			0.00018     // 30Y
+		};
+
+<span class="fc" id="L103">		BasisCurve bcCubicPolynomial = ScenarioBasisCurveBuilder.CubicPolynomialBasisCurve (</span>
+			&quot;USD3M6MBasis_CubicPolynomial&quot;,
+			dtToday,
+<span class="fc" id="L106">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+<span class="fc" id="L110">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			false,
+			astrTenor,
+			adblBasis
+		);
+
+<span class="fc" id="L119">		BasisCurve bcQuinticPolynomial = ScenarioBasisCurveBuilder.QuarticPolynomialBasisCurve (</span>
+			&quot;USD3M6MBasis_QuinticPolynomial&quot;,
+			dtToday,
+<span class="fc" id="L122">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+<span class="fc" id="L126">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			false,
+			astrTenor,
+			adblBasis
+		);
+
+<span class="fc" id="L135">		BasisCurve bcKaklisPandelis = ScenarioBasisCurveBuilder.KaklisPandelisBasisCurve (</span>
+			&quot;USD3M6MBasis_KaklisPandelis&quot;,
+			dtToday,
+<span class="fc" id="L138">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+<span class="fc" id="L142">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			false,
+			astrTenor,
+			adblBasis
+		);
+
+<span class="fc" id="L151">		BasisCurve bcKLKHyperbolic = ScenarioBasisCurveBuilder.KLKHyperbolicBasisCurve (</span>
+			&quot;USD3M6MBasis_KLKHyperbolic&quot;,
+			dtToday,
+<span class="fc" id="L154">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+<span class="fc" id="L158">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			false,
+			astrTenor,
+			adblBasis,
+			1.
+		);
+
+<span class="fc" id="L168">		BasisCurve bcKLKRationalLinear = ScenarioBasisCurveBuilder.KLKRationalLinearBasisCurve (</span>
+			&quot;USD3M6MBasis_KLKRationalLinear&quot;,
+			dtToday,
+<span class="fc" id="L171">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+<span class="fc" id="L175">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			false,
+			astrTenor,
+			adblBasis,
+			0.1
+		);
+
+<span class="fc" id="L185">		BasisCurve bcKLKRationalQuadratic = ScenarioBasisCurveBuilder.KLKRationalLinearBasisCurve (</span>
+			&quot;USD3M6MBasis_KLKRationalQuadratic&quot;,
+			dtToday,
+<span class="fc" id="L188">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;6M&quot;
+			),
+<span class="fc" id="L192">			ForwardLabel.Create (</span>
+				&quot;USD&quot;,
+				&quot;3M&quot;
+			),
+			false,
+			astrTenor,
+			adblBasis,
+			2.
+		);
+
+<span class="fc" id="L202">		System.out.println (&quot;\tPrinting the Basis Node Values in Order (Left -&gt; Right):&quot;);</span>
+
+<span class="fc" id="L204">		System.out.println (&quot;\t\tCalculated Cubic Polynomial Basis (%)&quot;);</span>
+
+<span class="fc" id="L206">		System.out.println (&quot;\t\tCalculated Quintic Polynomial Basis (%)&quot;);</span>
+
+<span class="fc" id="L208">		System.out.println (&quot;\t\tCalculated Kaklis Pandelis Basis (%)&quot;);</span>
+
+<span class="fc" id="L210">		System.out.println (&quot;\t\tCalculated KLK Hyperbolic Basis (%)&quot;);</span>
+
+<span class="fc" id="L212">		System.out.println (&quot;\t\tCalculated KLK Rational Linear Basis (%)&quot;);</span>
+
+<span class="fc" id="L214">		System.out.println (&quot;\t\tCalculated KLK Rational Quadratic Basis (%)&quot;);</span>
+
+<span class="fc" id="L216">		System.out.println (&quot;\t\tInput Quote (bp)&quot;);</span>
+
+<span class="fc" id="L218">		System.out.println (&quot;\t-------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L220">		System.out.println (&quot;\t-------------------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; adblBasis.length; ++i)</span>
+<span class="fc" id="L223">			System.out.println (&quot;\t&quot; + astrTenor[i] + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L224">				FormatUtil.FormatDouble (bcCubicPolynomial.basis (astrTenor[i]), 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L225">				FormatUtil.FormatDouble (bcQuinticPolynomial.basis (astrTenor[i]), 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L226">				FormatUtil.FormatDouble (bcKaklisPandelis.basis (astrTenor[i]), 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L227">				FormatUtil.FormatDouble (bcKLKHyperbolic.basis (astrTenor[i]), 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L228">				FormatUtil.FormatDouble (bcKLKRationalLinear.basis (astrTenor[i]), 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L229">				FormatUtil.FormatDouble (bcKLKRationalQuadratic.basis (astrTenor[i]), 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L230">				FormatUtil.FormatDouble (adblBasis[i], 1, 2, 10000.)</span>
+			);
+
+<span class="fc" id="L233">		System.out.println (&quot;\n\t|----------------------------------------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L235">		System.out.println (&quot;\t|  DATE    =&gt;  CUBIC | QUINTIC  | KAKPAND | KLKHYPER | KLKRATLNR | KLKRATQUA |&quot;);</span>
+
+<span class="fc" id="L237">		System.out.println (&quot;\t|----------------------------------------------------------------------------|\n&quot;);</span>
+
+<span class="fc bfc" id="L239" title="All 2 branches covered.">		for (int i = 3; i &lt; 30; ++i) {</span>
+<span class="fc" id="L240">			JulianDate dt = dtToday.addTenor (i + &quot;Y&quot;);</span>
+
+<span class="fc" id="L242">			System.out.println (&quot;\t&quot; + dt + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L243">				FormatUtil.FormatDouble (bcCubicPolynomial.basis (dt), 1, 2, 10000.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L244">				FormatUtil.FormatDouble (bcQuinticPolynomial.basis (dt), 1, 2, 10000.) + &quot;   |  &quot; +</span>
+<span class="fc" id="L245">				FormatUtil.FormatDouble (bcKaklisPandelis.basis (dt), 1, 2, 10000.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L246">				FormatUtil.FormatDouble (bcKLKHyperbolic.basis (dt), 1, 2, 10000.) + &quot;   |  &quot; +</span>
+<span class="fc" id="L247">				FormatUtil.FormatDouble (bcKLKRationalLinear.basis (dt), 1, 2, 10000.) + &quot;    |  &quot; +</span>
+<span class="fc" id="L248">				FormatUtil.FormatDouble (bcKLKRationalQuadratic.basis (dt), 1, 2, 10000.) + &quot;    |  &quot;</span>
+			);
+		}
+
+<span class="fc" id="L252">		System.out.println (&quot;\n\t|----------------------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L253">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OTCAccountingModusFCAFBA.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.xva.basel</a> &gt; <span class="el_source">OTCAccountingModusFCAFBA.java</span></div><h1>OTCAccountingModusFCAFBA.java</h1><pre class="source lang-java linenums">
+package org.drip.xva.basel;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * OTCAccountingModusFCAFBA implements the Basel Accounting Scheme using the FCA/FBA Specification of the
+ *  Streamlined Accounting Framework for OTC Derivatives, as described in Albanese and Andersen (2014). The
+ *  References are:
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
+ *  
+ *  - BCBS (2012): Consultative Document: Application of Own Credit Risk Adjustments to Derivatives, Basel
+ *  	Committee on Banking Supervision.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
+ *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ *  
+ *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingModus
+{
+
+	/**
+	 * OTCAccountingModusFCAFBA Constructor
+	 * 
+	 * @param exposureAdjustmentAggregator The Counter Party Group Aggregator Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public OTCAccountingModusFCAFBA (
+		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L87">		super (exposureAdjustmentAggregator);</span>
+<span class="nc" id="L88">	}</span>
+
+	@Override public double contraAssetAdjustment()
+	{
+<span class="nc" id="L92">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+
+<span class="nc" id="L94">		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fca().amount() -</span>
+<span class="nc" id="L95">			exposureAdjustmentAggregator.fba().amount() + exposureAdjustmentAggregator.udva().amount();</span>
+	}
+
+	@Override public double contraLiabilityAdjustment()
+	{
+<span class="nc" id="L100">		return aggregator().udva().amount();</span>
+	}
+
+	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
+		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
+	{
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (null == exposureAdjustmentAggregatorNext)</span>
+		{
+<span class="nc" id="L108">			return null;</span>
+		}
+
+<span class="nc" id="L111">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+
+<span class="nc" id="L113">		double contraLiabilityChange = exposureAdjustmentAggregatorNext.fba().amount() -</span>
+<span class="nc" id="L114">			exposureAdjustmentAggregator.fba().amount();</span>
+
+<span class="nc" id="L116">		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -</span>
+<span class="nc" id="L117">			exposureAdjustmentAggregator.colva().amount();</span>
+
+		try
+		{
+<span class="nc" id="L121">			return new org.drip.xva.basel.OTCAccountingPolicy (</span>
+<span class="nc" id="L122">				exposureAdjustmentAggregatorNext.ucva().amount() +</span>
+<span class="nc" id="L123">					exposureAdjustmentAggregatorNext.sfva().amount() -</span>
+<span class="nc" id="L124">					exposureAdjustmentAggregator.ucva().amount() -</span>
+<span class="nc" id="L125">					exposureAdjustmentAggregator.sfva().amount() + collateralVAChange,</span>
+				collateralVAChange - contraLiabilityChange,
+				contraLiabilityChange,
+				0.
+			);
+		}
+<span class="nc" id="L131">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L133">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L136">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

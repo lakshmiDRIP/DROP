@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PortfolioMPoR.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.generator</a> &gt; <span class="el_source">PortfolioMPoR.java</span></div><h1>PortfolioMPoR.java</h1><pre class="source lang-java linenums">
+package org.drip.exposure.generator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * PortfolioMPoR estimates the MPoR Variation Margin and the Trade Payments for the Component MPoR's of a
+ *  given Portfolio off of the Realized Market Path. The References are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
+ *  
+ *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
+ * 
+ *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
+ *  	21 (2) 97-102.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L71">public class PortfolioMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex</span>
+{
+<span class="nc" id="L73">	private java.util.List&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt; _componentMPoRList = new</span>
+		java.util.ArrayList&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt;();
+
+	/**
+	 * Retrieve the List of Component MPoR's
+	 * 
+	 * @return The List of Component MPoR's
+	 */
+
+	public java.util.List&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt; componentMPoRList()
+	{
+<span class="nc" id="L84">		return _componentMPoRList;</span>
+	}
+
+	@Override public double variationMarginEstimate (
+		final int forwardDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L92">		double variationMarginEstimate = 0.;</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
+		{
+<span class="nc" id="L96">			variationMarginEstimate += componentMPoR.variationMarginEstimate (</span>
+				forwardDate,
+				marketPath
+			);
+<span class="nc" id="L100">		}</span>
+
+<span class="nc" id="L102">		return variationMarginEstimate;</span>
+	}
+
+	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
+		final int forwardDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+<span class="nc" id="L109">		double clientPayment = 0.;</span>
+<span class="nc" id="L110">		double dealerPayment = 0.;</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
+		{
+<span class="nc" id="L114">			org.drip.exposure.mpor.TradePayment tradePayment = componentMPoR.tradePayment (</span>
+				forwardDate,
+				marketPath
+			);
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">			if (null == tradePayment)</span>
+			{
+<span class="nc" id="L121">				return null;</span>
+			}
+
+<span class="nc" id="L124">			dealerPayment += tradePayment.dealer();</span>
+
+<span class="nc" id="L126">			clientPayment += tradePayment.client();</span>
+<span class="nc" id="L127">		}</span>
+
+		try
+		{
+<span class="nc" id="L131">			return new org.drip.exposure.mpor.TradePayment (</span>
+				dealerPayment,
+				clientPayment
+			);
+		}
+<span class="nc" id="L136">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L138">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L141">		return null;</span>
+	}
+
+	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
+		final int startDate,
+		final int endDate,
+		final org.drip.exposure.universe.MarketPath marketPath)
+	{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
+		{
+<span class="nc" id="L151">			return null;</span>
+		}
+
+<span class="nc" id="L154">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L155">		double[] clientTradePaymentArray = new double[denseDateCount];</span>
+<span class="nc" id="L156">		double[] dealerTradePaymentArray = new double[denseDateCount];</span>
+<span class="nc" id="L157">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+			org.drip.exposure.mpor.TradePayment[denseDateCount];
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+		{
+<span class="nc" id="L162">			clientTradePaymentArray[denseDateIndex] = 0.;</span>
+<span class="nc" id="L163">			dealerTradePaymentArray[denseDateIndex] = 0.;</span>
+		}
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
+		{
+<span class="nc" id="L168">			org.drip.exposure.mpor.TradePayment[] componentDenseTradePaymentArray =</span>
+<span class="nc" id="L169">				componentMPoR.denseTradePaymentArray (</span>
+					startDate,
+					endDate,
+					marketPath
+				);
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (null == componentDenseTradePaymentArray)</span>
+			{
+<span class="nc" id="L177">				return null;</span>
+			}
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+			{
+<span class="nc" id="L182">				clientTradePaymentArray[denseDateIndex] +=</span>
+<span class="nc" id="L183">					componentDenseTradePaymentArray[denseDateIndex].client();</span>
+
+<span class="nc" id="L185">				dealerTradePaymentArray[denseDateIndex] +=</span>
+<span class="nc" id="L186">					componentDenseTradePaymentArray[denseDateIndex].dealer();</span>
+			}
+<span class="nc" id="L188">		}</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L194">				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (</span>
+					dealerTradePaymentArray[denseDateIndex],
+					clientTradePaymentArray[denseDateIndex]
+				);
+			}
+<span class="nc" id="L199">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L201">				e.printStackTrace();</span>
+
+<span class="nc" id="L203">				return null;</span>
+<span class="nc" id="L204">			}</span>
+		}
+
+<span class="nc" id="L207">		return denseTradePaymentArray;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
