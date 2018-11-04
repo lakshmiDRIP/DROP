@@ -16,7 +16,7 @@ DROP Analytics Date Package implements Date/Time Creation/Manipulation/Usage Fun
  </ul>
 
  * [***Date Util***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date/DateUtil.java)
- <i>DateUtil</li> contains Various Utilities for manipulating Date. The Julian Date - Gregorian Date Inter
+ <i>DateUtil</i> contains Various Utilities for manipulating Date. The Julian Date - Gregorian Date Inter
  Conversion follows the References below.
 
  * [***Julian Date***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date/JulianDate.java)

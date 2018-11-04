@@ -69,7 +69,7 @@ package org.drip.analytics.date;
  */
 
 /**
- * <i>DateUtil</li> contains Various Utilities for manipulating Date. The Julian Date - Gregorian Date Inter
+ * <i>DateUtil</i> contains Various Utilities for manipulating Date. The Julian Date - Gregorian Date Inter
  * 	Conversion follows the following References:
  * 
  * 	<ul>
@@ -82,8 +82,12 @@ package org.drip.analytics.date;
  * 		</li>
  * 	</ul>
  *
- *	<b>Module </b>  https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics
- *	<b>Package</b>  https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date
+ *	<br>
+ *  <ul>
+ *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */

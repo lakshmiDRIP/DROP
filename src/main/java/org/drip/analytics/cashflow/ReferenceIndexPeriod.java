@@ -69,8 +69,12 @@ package org.drip.analytics.cashflow;
  * <i>ReferenceIndexPeriod</i> contains the Cash Flow Period Details. Currently it holds the Start Date, the
  *  End Date, the Fixing Date, and the Reference Latent State Label.
  *
- *	<b>Module </b>  https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics
- *	<b>Package</b>  https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow
+ *	<br>
+ *  <ul>
+ *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow">Cash Flow</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
