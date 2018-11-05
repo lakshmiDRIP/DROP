@@ -71,6 +71,7 @@ package org.drip.execution.adaptive;
  *  using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
  *  from the Realization of the Market State Variable as described in the "Trading Time" Model. The
  *  References are:
+ *  
  * 	<br>
  *  <ul>
  * 		<li>
