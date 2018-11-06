@@ -6,34 +6,52 @@ package org.drip.dynamics.evolution;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,18 +68,23 @@ package org.drip.dynamics.evolution;
  */
 
 /**
- * LSQMPointUpdate contains the Snapshot and the Increment of the Evolving Point Latent State Quantification
- *  Metrics.
+ * &lt;i&gt;LSQMPointUpdate&lt;/i&gt; contains the Snapshot and the Increment of the Evolving Point Latent State
+ *  Quantification Metrics.
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LSQMPointUpdate {
-<span class="fc" id="L60">	private int _iViewDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L61">	private int _iEvolutionStartDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L62">	private int _iEvolutionFinishDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L63">	private org.drip.dynamics.evolution.LSQMPointRecord _lprSnapshot = null;</span>
-<span class="fc" id="L64">	private org.drip.dynamics.evolution.LSQMPointRecord _lprIncrement = null;</span>
+<span class="fc" id="L83">	private int _iViewDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L84">	private int _iEvolutionStartDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L85">	private int _iEvolutionFinishDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L86">	private org.drip.dynamics.evolution.LSQMPointRecord _lprSnapshot = null;</span>
+<span class="fc" id="L87">	private org.drip.dynamics.evolution.LSQMPointRecord _lprIncrement = null;</span>
 
 	/**
 	 * LSQMPointUpdate Constructor
@@ -82,13 +105,13 @@ public class LSQMPointUpdate {
 		final org.drip.dynamics.evolution.LSQMPointRecord lprSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lprIncrement)
 		throws java.lang.Exception
-<span class="fc" id="L85">	{</span>
-<span class="pc bpc" id="L86" title="3 of 6 branches missed.">		if (null == (_lprSnapshot = lprSnapshot) || (_iEvolutionFinishDate = iEvolutionFinishDate) &lt;</span>
+<span class="fc" id="L108">	{</span>
+<span class="pc bpc" id="L109" title="3 of 6 branches missed.">		if (null == (_lprSnapshot = lprSnapshot) || (_iEvolutionFinishDate = iEvolutionFinishDate) &lt;</span>
 			(_iEvolutionStartDate = iEvolutionStartDate) || (_iViewDate = iViewDate) &lt; _iEvolutionStartDate)
-<span class="nc" id="L88">			throw new java.lang.Exception (&quot;LSQMPointUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LSQMPointUpdate ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L90">		_lprIncrement = lprIncrement;</span>
-<span class="fc" id="L91">	}</span>
+<span class="fc" id="L113">		_lprIncrement = lprIncrement;</span>
+<span class="fc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Evolution Start Date
@@ -98,7 +121,7 @@ public class LSQMPointUpdate {
 
 	public int evolutionStartDate()
 	{
-<span class="fc" id="L101">		return _iEvolutionStartDate;</span>
+<span class="fc" id="L124">		return _iEvolutionStartDate;</span>
 	}
 
 	/**
@@ -109,7 +132,7 @@ public class LSQMPointUpdate {
 
 	public int evolutionFinishDate()
 	{
-<span class="fc" id="L112">		return _iEvolutionFinishDate;</span>
+<span class="fc" id="L135">		return _iEvolutionFinishDate;</span>
 	}
 
 	/**
@@ -120,7 +143,7 @@ public class LSQMPointUpdate {
 
 	public int viewDate()
 	{
-<span class="nc" id="L123">		return _iViewDate;</span>
+<span class="nc" id="L146">		return _iViewDate;</span>
 	}
 
 	/**
@@ -131,7 +154,7 @@ public class LSQMPointUpdate {
 
 	public org.drip.dynamics.evolution.LSQMPointRecord snapshot()
 	{
-<span class="fc" id="L134">		return _lprSnapshot;</span>
+<span class="fc" id="L157">		return _lprSnapshot;</span>
 	}
 
 	/**
@@ -142,7 +165,7 @@ public class LSQMPointUpdate {
 
 	public org.drip.dynamics.evolution.LSQMPointRecord increment()
 	{
-<span class="fc" id="L145">		return _lprIncrement;</span>
+<span class="fc" id="L168">		return _lprIncrement;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

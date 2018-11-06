@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarginEstimationSettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.simm.foundation</a> &gt; <span class="el_source">MarginEstimationSettings.java</span></div><h1>MarginEstimationSettings.java</h1><pre class="source lang-java linenums">
+package org.drip.simm.foundation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
+ *  	libraries targeting analysts and developers
+ *  	https://lakshmidrip.github.io/DRIP/
+ *  
+ *  DRIP is composed of four main libraries:
+ *  
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
+ *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
+ *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ * 
+ *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
+ *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
+ *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
+ *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
+ *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 
+ *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
+ *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 
+ *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 
+ *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
+ *  are:
+ *  
+ *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
+ *  
+ *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
+ *  
+ *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  	Framework for Forecasting Initial Margin Requirements,
+ *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
+ *  
+ *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
+ *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
+ *  
+ *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
+ *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MarginEstimationSettings
+{
+
+	/**
+	 * FRTB Based Position - Principal Component Estimator
+	 */
+
+	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = &quot;FRTB&quot;;
+
+	/**
+	 * ISDA Based Position - Principal Component Estimator
+	 */
+
+	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = &quot;ISDA&quot;;
+
+<span class="nc" id="L87">	private java.lang.String _positionPrincipalComponentScheme = &quot;&quot;;</span>
+<span class="nc" id="L88">	private org.drip.simm.foundation.CurvatureEstimator _curvatureEstimator = null;</span>
+
+	/**
+	 * Generate a Cornish-Fischer Instance of MarginEstimationSettings
+	 * 
+	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
+	 * 
+	 * @return Cornish-Fischer Instance of MarginEstimationSettings
+	 */
+
+	public static final MarginEstimationSettings CornishFischer (
+		final java.lang.String positionPrincipalComponentScheme)
+	{
+		try
+		{
+<span class="nc" id="L103">			return new MarginEstimationSettings (</span>
+				positionPrincipalComponentScheme,
+<span class="nc" id="L105">				org.drip.simm.foundation.CurvatureEstimatorResponseFunction.CornishFischer()</span>
+			);
+		}
+<span class="nc" id="L108">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L110">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L113">		return null;</span>
+	}
+
+	/**
+	 * Generate a ISDA Delta Instance of MarginEstimationSettings
+	 * 
+	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
+	 * 
+	 * @return ISDA Delta Instance of MarginEstimationSettings
+	 */
+
+	public static final MarginEstimationSettings ISDADelta (
+		final java.lang.String positionPrincipalComponentScheme)
+	{
+		try
+		{
+<span class="nc" id="L129">			return new MarginEstimationSettings (</span>
+				positionPrincipalComponentScheme,
+<span class="nc" id="L131">				org.drip.simm.foundation.CurvatureEstimatorISDADelta.Standard()</span>
+			);
+		}
+<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L136">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L139">		return null;</span>
+	}
+
+	/**
+	 * Generate an FRTB Instance of MarginEstimationSettings
+	 * 
+	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
+	 * 
+	 * @return FRTB Instance of MarginEstimationSettings
+	 */
+
+	public static final MarginEstimationSettings FRTB (
+		final java.lang.String positionPrincipalComponentScheme)
+	{
+		try
+		{
+<span class="nc" id="L155">			return new MarginEstimationSettings (</span>
+				positionPrincipalComponentScheme,
+<span class="nc" id="L157">				org.drip.simm.foundation.CurvatureEstimatorFRTB.Standard()</span>
+			);
+		}
+<span class="nc" id="L160">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L162">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L165">		return null;</span>
+	}
+
+	/**
+	 * MarginEstimationSettings Constructor
+	 * 
+	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
+	 * @param curvatureEstimator The Curvature Estimator Function
+	 * 
+	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
+	 */
+
+	public MarginEstimationSettings (
+		final java.lang.String positionPrincipalComponentScheme,
+		final org.drip.simm.foundation.CurvatureEstimator curvatureEstimator)
+		throws java.lang.Exception
+<span class="nc" id="L181">	{</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">			_positionPrincipalComponentScheme.isEmpty() ||</span>
+			null == (_curvatureEstimator = curvatureEstimator))
+		{
+<span class="nc" id="L186">			throw new java.lang.Exception (&quot;MarginEstimationSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L188">	}</span>
+
+	/**
+	 * Retrieve the Position Principal Component Scheme
+	 * 
+	 * @return The Position Principal Component Scheme
+	 */
+
+	public java.lang.String positionPrincipalComponentScheme()
+	{
+<span class="nc" id="L198">		return _positionPrincipalComponentScheme;</span>
+	}
+
+	/**
+	 * Retrieve the Curvature Estimator Function
+	 * 
+	 * @return The Curvature Estimator Function
+	 */
+
+	public org.drip.simm.foundation.CurvatureEstimator curvatureEstimator()
+	{
+<span class="nc" id="L209">		return _curvatureEstimator;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,34 +6,52 @@ package org.drip.dynamics.lmm;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,33 +68,45 @@ package org.drip.dynamics.lmm;
  */
 
 /**
- * BGMForwardTenorSnap contains the Absolute and the Incremental Latent State Quantifier Snapshot traced from
- *  the Evolution of the LIBOR Forward Rate as formulated in:
- * 
- *  1) Goldys, B., M. Musiela, and D. Sondermann (1994): Log-normality of Rates and Term Structure Models,
- *  	The University of New South Wales.
- * 
- *  2) Musiela, M. (1994): Nominal Annual Rates and Log-normal Volatility Structure, The University of New
- *   	South Wales.
- * 
- * 	3) Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
- * 		Finance 7 (2), 127-155.
+ * &lt;i&gt;BGMForwardTenorSnap&lt;/i&gt; contains the Absolute and the Incremental Latent State Quantifier Snapshot
+ *  traced from the Evolution of the LIBOR Forward Rate as formulated in:
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Goldys, B., M. Musiela, and D. Sondermann (1994): &lt;i&gt;Log-normality of Rates and Term Structure
+ *  			Models&lt;/i&gt; &lt;b&gt;The University of New South Wales&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Musiela, M. (1994): &lt;i&gt;Nominal Annual Rates and Log-normal Volatility Structure&lt;/i&gt; &lt;b&gt;The
+ *  			University of New South Wales&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics
+ * 				&lt;i&gt;Mathematical Finance&lt;/i&gt; &lt;b&gt;7 (2)&lt;/b&gt; 127-155
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BGMForwardTenorSnap {
-<span class="fc" id="L69">	private double _dblLIBOR = java.lang.Double.NaN;</span>
-<span class="fc" id="L70">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L71">	private double _dblDiscountFactor = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private double _dblLIBORIncrement = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private double _dblSpotRateIncrement = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _dblDiscountFactorIncrement = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblLognormalLIBORVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _dblInstantaneousNominalForwardRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _dblInstantaneousEffectiveForwardRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">	private double _dblContinuouslyCompoundedForwardIncrement = java.lang.Double.NaN;</span>
-<span class="fc" id="L79">	private double _dblContinuouslyCompoundedForwardVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblLIBOR = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L101">	private double _dblDiscountFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private double _dblLIBORIncrement = java.lang.Double.NaN;</span>
+<span class="fc" id="L103">	private double _dblSpotRateIncrement = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">	private double _dblDiscountFactorIncrement = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">	private double _dblLognormalLIBORVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private double _dblInstantaneousNominalForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblInstantaneousEffectiveForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblContinuouslyCompoundedForwardIncrement = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblContinuouslyCompoundedForwardVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * BGMForwardTenorSnap Constructor
@@ -109,29 +139,29 @@ public class BGMForwardTenorSnap {
 		final double dblLognormalLIBORVolatility,
 		final double dblContinuouslyCompoundedForwardVolatility)
 		throws java.lang.Exception
-<span class="fc" id="L112">	{</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLIBOR = dblLIBOR) ||</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLIBORIncrement = dblLIBORIncrement) ||</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblDiscountFactor = dblDiscountFactor) ||</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblDiscountFactorIncrement =</span>
+<span class="fc" id="L142">	{</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLIBOR = dblLIBOR) ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLIBORIncrement = dblLIBORIncrement) ||</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblDiscountFactor = dblDiscountFactor) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblDiscountFactorIncrement =</span>
 						dblDiscountFactorIncrement) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">							(_dblContinuouslyCompoundedForwardIncrement =</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">							(_dblContinuouslyCompoundedForwardIncrement =</span>
 								dblContinuouslyCompoundedForwardIncrement) ||
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (_dblSpotRateIncrement =</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (_dblSpotRateIncrement =</span>
 										dblSpotRateIncrement) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">											(_dblInstantaneousEffectiveForwardRate =</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">											(_dblInstantaneousEffectiveForwardRate =</span>
 												dblInstantaneousEffectiveForwardRate) ||
 													!org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">														(_dblInstantaneousNominalForwardRate =</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">														(_dblInstantaneousNominalForwardRate =</span>
 															dblInstantaneousNominalForwardRate) ||
 																!org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			(_dblLognormalLIBORVolatility = dblLognormalLIBORVolatility) ||</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblContinuouslyCompoundedForwardVolatility =</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">			(_dblLognormalLIBORVolatility = dblLognormalLIBORVolatility) ||</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblContinuouslyCompoundedForwardVolatility =</span>
 					dblContinuouslyCompoundedForwardVolatility))
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;BGMForwardTenorSnap ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L161">			throw new java.lang.Exception (&quot;BGMForwardTenorSnap ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L133">		_iDate = iDate;</span>
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L163">		_iDate = iDate;</span>
+<span class="fc" id="L164">	}</span>
 
 	/**
 	 * Retrieve the Tenor Date
@@ -141,7 +171,7 @@ public class BGMForwardTenorSnap {
 
 	public int date()
 	{
-<span class="fc" id="L144">		return _iDate;</span>
+<span class="fc" id="L174">		return _iDate;</span>
 	}
 
 	/**
@@ -152,7 +182,7 @@ public class BGMForwardTenorSnap {
 
 	public double libor()
 	{
-<span class="fc" id="L155">		return _dblLIBOR;</span>
+<span class="fc" id="L185">		return _dblLIBOR;</span>
 	}
 
 	/**
@@ -163,7 +193,7 @@ public class BGMForwardTenorSnap {
 
 	public double liborIncrement()
 	{
-<span class="fc" id="L166">		return _dblLIBORIncrement;</span>
+<span class="fc" id="L196">		return _dblLIBORIncrement;</span>
 	}
 
 	/**
@@ -174,7 +204,7 @@ public class BGMForwardTenorSnap {
 
 	public double discountFactor()
 	{
-<span class="fc" id="L177">		return _dblDiscountFactor;</span>
+<span class="fc" id="L207">		return _dblDiscountFactor;</span>
 	}
 
 	/**
@@ -185,7 +215,7 @@ public class BGMForwardTenorSnap {
 
 	public double discountFactorIncrement()
 	{
-<span class="fc" id="L188">		return _dblDiscountFactorIncrement;</span>
+<span class="fc" id="L218">		return _dblDiscountFactorIncrement;</span>
 	}
 
 	/**
@@ -196,7 +226,7 @@ public class BGMForwardTenorSnap {
 
 	public double continuouslyCompoundedForwardIncrement()
 	{
-<span class="fc" id="L199">		return _dblContinuouslyCompoundedForwardIncrement;</span>
+<span class="fc" id="L229">		return _dblContinuouslyCompoundedForwardIncrement;</span>
 	}
 
 	/**
@@ -207,7 +237,7 @@ public class BGMForwardTenorSnap {
 
 	public double spotRateIncrement()
 	{
-<span class="fc" id="L210">		return _dblSpotRateIncrement;</span>
+<span class="fc" id="L240">		return _dblSpotRateIncrement;</span>
 	}
 
 	/**
@@ -218,7 +248,7 @@ public class BGMForwardTenorSnap {
 
 	public double instantaneousEffectiveForwardRate()
 	{
-<span class="fc" id="L221">		return _dblInstantaneousEffectiveForwardRate;</span>
+<span class="fc" id="L251">		return _dblInstantaneousEffectiveForwardRate;</span>
 	}
 
 	/**
@@ -229,7 +259,7 @@ public class BGMForwardTenorSnap {
 
 	public double instantaneousNominalForwardRate()
 	{
-<span class="fc" id="L232">		return _dblInstantaneousNominalForwardRate;</span>
+<span class="fc" id="L262">		return _dblInstantaneousNominalForwardRate;</span>
 	}
 
 	/**
@@ -240,7 +270,7 @@ public class BGMForwardTenorSnap {
 
 	public double lognormalLIBORVolatility()
 	{
-<span class="nc" id="L243">		return _dblLognormalLIBORVolatility;</span>
+<span class="nc" id="L273">		return _dblLognormalLIBORVolatility;</span>
 	}
 
 	/**
@@ -251,22 +281,22 @@ public class BGMForwardTenorSnap {
 
 	public double continuouslyCompoundedForwardVolatility()
 	{
-<span class="nc" id="L254">		return _dblContinuouslyCompoundedForwardVolatility;</span>
+<span class="nc" id="L284">		return _dblContinuouslyCompoundedForwardVolatility;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L259">		return org.drip.quant.common.FormatUtil.FormatDouble (_dblLIBOR, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L260">			org.drip.quant.common.FormatUtil.FormatDouble (_dblLIBORIncrement, 2, 2, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L261">				org.drip.quant.common.FormatUtil.FormatDouble (_dblDiscountFactor, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L262">					org.drip.quant.common.FormatUtil.FormatDouble (_dblDiscountFactorIncrement, 2, 2, 10000.)</span>
+<span class="nc" id="L289">		return org.drip.quant.common.FormatUtil.FormatDouble (_dblLIBOR, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L290">			org.drip.quant.common.FormatUtil.FormatDouble (_dblLIBORIncrement, 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L291">				org.drip.quant.common.FormatUtil.FormatDouble (_dblDiscountFactor, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L292">					org.drip.quant.common.FormatUtil.FormatDouble (_dblDiscountFactorIncrement, 2, 2, 10000.)</span>
 						+ &quot; | &quot; + org.drip.quant.common.FormatUtil.FormatDouble
-<span class="nc" id="L264">							(_dblContinuouslyCompoundedForwardIncrement, 2, 2, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L265">								org.drip.quant.common.FormatUtil.FormatDouble (_dblSpotRateIncrement, 2, 2,</span>
+<span class="nc" id="L294">							(_dblContinuouslyCompoundedForwardIncrement, 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L295">								org.drip.quant.common.FormatUtil.FormatDouble (_dblSpotRateIncrement, 2, 2,</span>
 									10000.) + &quot; | &quot; + org.drip.quant.common.FormatUtil.FormatDouble
-<span class="nc" id="L267">										(_dblInstantaneousEffectiveForwardRate, 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L297">										(_dblInstantaneousEffectiveForwardRate, 2, 2, 10000.) + &quot; | &quot; +</span>
 											org.drip.quant.common.FormatUtil.FormatDouble
-<span class="nc" id="L269">												(_dblInstantaneousNominalForwardRate, 2, 2, 10000.) + &quot; ||&quot;;</span>
+<span class="nc" id="L299">												(_dblInstantaneousNominalForwardRate, 2, 2, 10000.) + &quot; ||&quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

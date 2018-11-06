@@ -6,6 +6,7 @@ package org.drip.analytics.output;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.analytics.output;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,34 +71,42 @@ package org.drip.analytics.output;
  */
 
 /**
- * BondWorkoutMeasures encapsulates the parsimonius yet complete set of measures generated out of a full bond
- * 	analytics run to a given work-out. It contains the following:
- * 	- Credit Risky/Credit Riskless Clean/Dirty Coupon Measures
- * 	- Credit Risky/Credit Riskless Par/Principal PV
- * 	- Loss Measures such as expected Recovery, Loss on instantaneous default, and default exposure
- * 		with/without recovery
- * 	- Unit Coupon measures such as Accrued 01, first coupon/index rate
+ * &lt;i&gt;BondWorkoutMeasures&lt;/i&gt; encapsulates the parsimonius yet complete set of measures generated out of a
+ *  full bond analytics run to a given work-out. It contains the following:
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;Credit Risky/Credit Riskless Clean/Dirty Coupon Measures&lt;/li&gt;
+ * 		&lt;li&gt;Credit Risky/Credit Riskless Par/Principal PV&lt;/li&gt;
+ * 		&lt;li&gt;Loss Measures such as expected Recovery, Loss on instantaneous default, and default exposure
+ * 		with/without recovery&lt;/li&gt;
+ * 		&lt;li&gt;Unit Coupon measures such as Accrued 01, first coupon/index rate&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BondWorkoutMeasures {
-<span class="fc" id="L68">	private double _dblAccrued01 = java.lang.Double.NaN;</span>
-<span class="fc" id="L69">	private double _dblRecoveryPV = java.lang.Double.NaN;</span>
-<span class="fc" id="L70">	private BondCouponMeasures _bcmCreditRiskyClean = null;</span>
-<span class="fc" id="L71">	private BondCouponMeasures _bcmCreditRiskyDirty = null;</span>
-<span class="fc" id="L72">	private double _dblFirstIndexRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private double _dblFirstCouponRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private BondCouponMeasures _bcmCreditRisklessClean = null;</span>
-<span class="fc" id="L75">	private BondCouponMeasures _bcmCreditRisklessDirty = null;</span>
-<span class="fc" id="L76">	private double _dblDefaultExposure = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _dblExpectedRecovery = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">	private double _dblCreditRiskyParPV = java.lang.Double.NaN;</span>
-<span class="fc" id="L79">	private double _dblCreditRisklessParPV = java.lang.Double.NaN;</span>
-<span class="fc" id="L80">	private double _dblDefaultExposureNoRec = java.lang.Double.NaN;</span>
-<span class="fc" id="L81">	private double _dblCreditRiskyPrincipalPV = java.lang.Double.NaN;</span>
-<span class="fc" id="L82">	private double _dblCreditRisklessPrincipalPV = java.lang.Double.NaN;</span>
-<span class="fc" id="L83">	private double _dblLossOnInstantaneousDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private double _dblAccrued01 = java.lang.Double.NaN;</span>
+<span class="fc" id="L95">	private double _dblRecoveryPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L96">	private BondCouponMeasures _bcmCreditRiskyClean = null;</span>
+<span class="fc" id="L97">	private BondCouponMeasures _bcmCreditRiskyDirty = null;</span>
+<span class="fc" id="L98">	private double _dblFirstIndexRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblFirstCouponRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private BondCouponMeasures _bcmCreditRisklessClean = null;</span>
+<span class="fc" id="L101">	private BondCouponMeasures _bcmCreditRisklessDirty = null;</span>
+<span class="fc" id="L102">	private double _dblDefaultExposure = java.lang.Double.NaN;</span>
+<span class="fc" id="L103">	private double _dblExpectedRecovery = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">	private double _dblCreditRiskyParPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">	private double _dblCreditRisklessParPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private double _dblDefaultExposureNoRec = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblCreditRiskyPrincipalPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblCreditRisklessPrincipalPV = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblLossOnInstantaneousDefault = java.lang.Double.NaN;</span>
 
 	/**
 	 * 
@@ -122,45 +148,45 @@ public class BondWorkoutMeasures {
 		final double dblFirstIndexRate,
 		final double dblCashPayDF)
 		throws java.lang.Exception
-<span class="fc" id="L125">	{</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == (_bcmCreditRisklessDirty = bcmCreditRisklessDirty) ||</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCreditRisklessParPV = dblCreditRisklessParPV) ||</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblCreditRisklessPrincipalPV =</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">					dblCreditRisklessPrincipalPV) || !org.drip.quant.common.NumberUtil.IsValid (_dblAccrued01</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">						= dblAccrued01) || !org.drip.quant.common.NumberUtil.IsValid (_dblFirstCouponRate =</span>
+<span class="fc" id="L151">	{</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (null == (_bcmCreditRisklessDirty = bcmCreditRisklessDirty) ||</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCreditRisklessParPV = dblCreditRisklessParPV) ||</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblCreditRisklessPrincipalPV =</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">					dblCreditRisklessPrincipalPV) || !org.drip.quant.common.NumberUtil.IsValid (_dblAccrued01</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">						= dblAccrued01) || !org.drip.quant.common.NumberUtil.IsValid (_dblFirstCouponRate =</span>
 							dblFirstCouponRate))
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;BondWorkoutMeasures ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;BondWorkoutMeasures ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L134">		_dblRecoveryPV = dblRecoveryPV;</span>
-<span class="fc" id="L135">		_dblFirstIndexRate = dblFirstIndexRate;</span>
-<span class="fc" id="L136">		_dblDefaultExposure = dblDefaultExposure;</span>
-<span class="fc" id="L137">		_dblExpectedRecovery = dblExpectedRecovery;</span>
-<span class="fc" id="L138">		_bcmCreditRiskyDirty = bcmCreditRiskyDirty;</span>
-<span class="fc" id="L139">		_dblCreditRiskyParPV = dblCreditRiskyParPV;</span>
-<span class="fc" id="L140">		_dblDefaultExposureNoRec = dblDefaultExposureNoRec;</span>
-<span class="fc" id="L141">		_dblCreditRiskyPrincipalPV = dblCreditRiskyPrincipalPV;</span>
-<span class="fc" id="L142">		_dblLossOnInstantaneousDefault = dblLossOnInstantaneousDefault;</span>
+<span class="fc" id="L160">		_dblRecoveryPV = dblRecoveryPV;</span>
+<span class="fc" id="L161">		_dblFirstIndexRate = dblFirstIndexRate;</span>
+<span class="fc" id="L162">		_dblDefaultExposure = dblDefaultExposure;</span>
+<span class="fc" id="L163">		_dblExpectedRecovery = dblExpectedRecovery;</span>
+<span class="fc" id="L164">		_bcmCreditRiskyDirty = bcmCreditRiskyDirty;</span>
+<span class="fc" id="L165">		_dblCreditRiskyParPV = dblCreditRiskyParPV;</span>
+<span class="fc" id="L166">		_dblDefaultExposureNoRec = dblDefaultExposureNoRec;</span>
+<span class="fc" id="L167">		_dblCreditRiskyPrincipalPV = dblCreditRiskyPrincipalPV;</span>
+<span class="fc" id="L168">		_dblLossOnInstantaneousDefault = dblLossOnInstantaneousDefault;</span>
 
-<span class="fc" id="L144">		if (!(_bcmCreditRisklessClean = new org.drip.analytics.output.BondCouponMeasures</span>
-<span class="fc" id="L145">			(_bcmCreditRisklessDirty.dv01(), _bcmCreditRisklessDirty.indexCouponPV(),</span>
-<span class="fc" id="L146">				_bcmCreditRisklessDirty.couponPV(), _bcmCreditRisklessDirty.pv())).adjustForSettlement</span>
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">					(dblCashPayDF))</span>
-<span class="nc" id="L148">			throw new java.lang.Exception</span>
+<span class="fc" id="L170">		if (!(_bcmCreditRisklessClean = new org.drip.analytics.output.BondCouponMeasures</span>
+<span class="fc" id="L171">			(_bcmCreditRisklessDirty.dv01(), _bcmCreditRisklessDirty.indexCouponPV(),</span>
+<span class="fc" id="L172">				_bcmCreditRisklessDirty.couponPV(), _bcmCreditRisklessDirty.pv())).adjustForSettlement</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">					(dblCashPayDF))</span>
+<span class="nc" id="L174">			throw new java.lang.Exception</span>
 				(&quot;BondWorkoutMeasures ctr: Cannot successfully set up BCM CreditRisklessClean&quot;);
 
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (!_bcmCreditRisklessClean.adjustForAccrual (_dblAccrued01, _dblFirstCouponRate, dblFirstIndexRate,</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!_bcmCreditRisklessClean.adjustForAccrual (_dblAccrued01, _dblFirstCouponRate, dblFirstIndexRate,</span>
 			false))
-<span class="nc" id="L153">			throw new java.lang.Exception</span>
+<span class="nc" id="L179">			throw new java.lang.Exception</span>
 				(&quot;BondWorkoutMeasures ctr: Cannot successfully set up BCM CreditRisklessClean&quot;);
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (null != _bcmCreditRiskyDirty &amp;&amp; ((!(_bcmCreditRiskyClean = new BondCouponMeasures</span>
-<span class="nc" id="L157">			(_bcmCreditRiskyDirty.dv01(), _bcmCreditRiskyDirty.indexCouponPV(),</span>
-<span class="nc" id="L158">				_bcmCreditRiskyDirty.couponPV(), _bcmCreditRiskyDirty.pv())).adjustForSettlement</span>
-<span class="nc bnc" id="L159" title="All 4 branches missed.">					(dblCashPayDF)) || !_bcmCreditRiskyClean.adjustForAccrual (_dblAccrued01,</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (null != _bcmCreditRiskyDirty &amp;&amp; ((!(_bcmCreditRiskyClean = new BondCouponMeasures</span>
+<span class="nc" id="L183">			(_bcmCreditRiskyDirty.dv01(), _bcmCreditRiskyDirty.indexCouponPV(),</span>
+<span class="nc" id="L184">				_bcmCreditRiskyDirty.couponPV(), _bcmCreditRiskyDirty.pv())).adjustForSettlement</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">					(dblCashPayDF)) || !_bcmCreditRiskyClean.adjustForAccrual (_dblAccrued01,</span>
 						_dblFirstCouponRate, _dblFirstCouponRate, false)))
-<span class="nc" id="L161">			throw new java.lang.Exception</span>
+<span class="nc" id="L187">			throw new java.lang.Exception</span>
 				(&quot;BondWorkoutMeasures ctr: Cannot successfully set up BCM CreditRiskyClean&quot;);
-<span class="fc" id="L163">	}</span>
+<span class="fc" id="L189">	}</span>
 
 	/**
 	 * Retrieve the Credit Risky Clean Bond Coupon Measures
@@ -170,7 +196,7 @@ public class BondWorkoutMeasures {
 
 	public org.drip.analytics.output.BondCouponMeasures creditRiskyCleanbcm()
 	{
-<span class="fc" id="L173">		return _bcmCreditRiskyClean;</span>
+<span class="fc" id="L199">		return _bcmCreditRiskyClean;</span>
 	}
 
 	/**
@@ -181,7 +207,7 @@ public class BondWorkoutMeasures {
 
 	public org.drip.analytics.output.BondCouponMeasures creditRisklessCleanbcm()
 	{
-<span class="fc" id="L184">		return _bcmCreditRisklessClean;</span>
+<span class="fc" id="L210">		return _bcmCreditRisklessClean;</span>
 	}
 
 	/**
@@ -192,7 +218,7 @@ public class BondWorkoutMeasures {
 
 	public org.drip.analytics.output.BondCouponMeasures creditRiskyDirtybcm()
 	{
-<span class="nc" id="L195">		return _bcmCreditRiskyDirty;</span>
+<span class="nc" id="L221">		return _bcmCreditRiskyDirty;</span>
 	}
 
 	/**
@@ -203,7 +229,7 @@ public class BondWorkoutMeasures {
 
 	public org.drip.analytics.output.BondCouponMeasures creditRisklessDirtybcm()
 	{
-<span class="nc" id="L206">		return _bcmCreditRisklessDirty;</span>
+<span class="nc" id="L232">		return _bcmCreditRisklessDirty;</span>
 	}
 
 	/**
@@ -214,7 +240,7 @@ public class BondWorkoutMeasures {
 
 	public double accrued01()
 	{
-<span class="nc" id="L217">		return _dblAccrued01;</span>
+<span class="nc" id="L243">		return _dblAccrued01;</span>
 	}
 
 	/**
@@ -225,7 +251,7 @@ public class BondWorkoutMeasures {
 
 	public double firstCouponRate()
 	{
-<span class="nc" id="L228">		return _dblFirstCouponRate;</span>
+<span class="nc" id="L254">		return _dblFirstCouponRate;</span>
 	}
 
 	/**
@@ -236,7 +262,7 @@ public class BondWorkoutMeasures {
 
 	public double firstIndexRate()
 	{
-<span class="nc" id="L239">		return _dblFirstIndexRate;</span>
+<span class="nc" id="L265">		return _dblFirstIndexRate;</span>
 	}
 
 	/**
@@ -247,7 +273,7 @@ public class BondWorkoutMeasures {
 
 	public double creditRiskyParPV()
 	{
-<span class="nc" id="L250">		return _dblCreditRiskyParPV;</span>
+<span class="nc" id="L276">		return _dblCreditRiskyParPV;</span>
 	}
 
 	/**
@@ -258,7 +284,7 @@ public class BondWorkoutMeasures {
 
 	public double creditRisklessParPV()
 	{
-<span class="nc" id="L261">		return _dblCreditRisklessParPV;</span>
+<span class="nc" id="L287">		return _dblCreditRisklessParPV;</span>
 	}
 
 	/**
@@ -269,7 +295,7 @@ public class BondWorkoutMeasures {
 
 	public double creditRiskyPrincipalPV()
 	{
-<span class="nc" id="L272">		return _dblCreditRiskyPrincipalPV;</span>
+<span class="nc" id="L298">		return _dblCreditRiskyPrincipalPV;</span>
 	}
 
 	/**
@@ -280,7 +306,7 @@ public class BondWorkoutMeasures {
 
 	public double creditRisklessPrincipalPV()
 	{
-<span class="nc" id="L283">		return _dblCreditRisklessPrincipalPV;</span>
+<span class="nc" id="L309">		return _dblCreditRisklessPrincipalPV;</span>
 	}
 
 	/**
@@ -291,7 +317,7 @@ public class BondWorkoutMeasures {
 
 	public double recoveryPV()
 	{
-<span class="nc" id="L294">		return _dblRecoveryPV;</span>
+<span class="nc" id="L320">		return _dblRecoveryPV;</span>
 	}
 
 	/**
@@ -302,7 +328,7 @@ public class BondWorkoutMeasures {
 
 	public double expectedRecovery()
 	{
-<span class="nc" id="L305">		return _dblExpectedRecovery;</span>
+<span class="nc" id="L331">		return _dblExpectedRecovery;</span>
 	}
 
 	/**
@@ -313,7 +339,7 @@ public class BondWorkoutMeasures {
 
 	public double defaultExposure()
 	{
-<span class="nc" id="L316">		return _dblDefaultExposure;</span>
+<span class="nc" id="L342">		return _dblDefaultExposure;</span>
 	}
 
 	/**
@@ -324,7 +350,7 @@ public class BondWorkoutMeasures {
 
 	public double defaultExposureNoRec()
 	{
-<span class="nc" id="L327">		return _dblDefaultExposureNoRec;</span>
+<span class="nc" id="L353">		return _dblDefaultExposureNoRec;</span>
 	}
 
 	/**
@@ -335,7 +361,7 @@ public class BondWorkoutMeasures {
 
 	public double lossOnInstantaneousDefault()
 	{
-<span class="nc" id="L338">		return _dblLossOnInstantaneousDefault;</span>
+<span class="nc" id="L364">		return _dblLossOnInstantaneousDefault;</span>
 	}
 
 	/**
@@ -349,106 +375,106 @@ public class BondWorkoutMeasures {
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; toMap (
 		final java.lang.String strPrefix)
 	{
-<span class="fc" id="L352">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = new</span>
+<span class="fc" id="L378">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L355">		mapMeasures.put (strPrefix + &quot;Accrued&quot;, _dblAccrued01 * _dblFirstCouponRate);</span>
+<span class="fc" id="L381">		mapMeasures.put (strPrefix + &quot;Accrued&quot;, _dblAccrued01 * _dblFirstCouponRate);</span>
 
-<span class="fc" id="L357">		mapMeasures.put (strPrefix + &quot;Accrued01&quot;, _dblAccrued01);</span>
+<span class="fc" id="L383">		mapMeasures.put (strPrefix + &quot;Accrued01&quot;, _dblAccrued01);</span>
 
-<span class="fc" id="L359">		mapMeasures.put (strPrefix + &quot;CleanCouponPV&quot;, _bcmCreditRisklessClean.couponPV());</span>
+<span class="fc" id="L385">		mapMeasures.put (strPrefix + &quot;CleanCouponPV&quot;, _bcmCreditRisklessClean.couponPV());</span>
 
-<span class="fc" id="L361">		mapMeasures.put (strPrefix + &quot;CleanDV01&quot;, _bcmCreditRisklessClean.dv01());</span>
+<span class="fc" id="L387">		mapMeasures.put (strPrefix + &quot;CleanDV01&quot;, _bcmCreditRisklessClean.dv01());</span>
 
-<span class="fc" id="L363">		mapMeasures.put (strPrefix + &quot;CleanIndexCouponPV&quot;, _bcmCreditRisklessClean.indexCouponPV());</span>
+<span class="fc" id="L389">		mapMeasures.put (strPrefix + &quot;CleanIndexCouponPV&quot;, _bcmCreditRisklessClean.indexCouponPV());</span>
 
-<span class="fc" id="L365">		mapMeasures.put (strPrefix + &quot;CleanPrice&quot;, _bcmCreditRisklessClean.pv());</span>
+<span class="fc" id="L391">		mapMeasures.put (strPrefix + &quot;CleanPrice&quot;, _bcmCreditRisklessClean.pv());</span>
 
-<span class="fc" id="L367">		mapMeasures.put (strPrefix + &quot;CleanPV&quot;, _bcmCreditRisklessClean.pv());</span>
+<span class="fc" id="L393">		mapMeasures.put (strPrefix + &quot;CleanPV&quot;, _bcmCreditRisklessClean.pv());</span>
 
-<span class="fc" id="L369">		mapMeasures.put (strPrefix + &quot;CreditRisklessParPV&quot;, _dblCreditRisklessParPV);</span>
+<span class="fc" id="L395">		mapMeasures.put (strPrefix + &quot;CreditRisklessParPV&quot;, _dblCreditRisklessParPV);</span>
 
-<span class="fc" id="L371">		mapMeasures.put (strPrefix + &quot;CreditRisklessPrincipalPV&quot;, _dblCreditRisklessPrincipalPV);</span>
+<span class="fc" id="L397">		mapMeasures.put (strPrefix + &quot;CreditRisklessPrincipalPV&quot;, _dblCreditRisklessPrincipalPV);</span>
 
-<span class="fc" id="L373">		mapMeasures.put (strPrefix + &quot;CreditRiskyParPV&quot;, _dblCreditRiskyParPV);</span>
+<span class="fc" id="L399">		mapMeasures.put (strPrefix + &quot;CreditRiskyParPV&quot;, _dblCreditRiskyParPV);</span>
 
-<span class="fc" id="L375">		mapMeasures.put (strPrefix + &quot;CreditRiskyPrincipalPV&quot;, _dblCreditRiskyPrincipalPV);</span>
+<span class="fc" id="L401">		mapMeasures.put (strPrefix + &quot;CreditRiskyPrincipalPV&quot;, _dblCreditRiskyPrincipalPV);</span>
 
-<span class="fc" id="L377">		mapMeasures.put (strPrefix + &quot;DefaultExposure&quot;, _dblDefaultExposure);</span>
+<span class="fc" id="L403">		mapMeasures.put (strPrefix + &quot;DefaultExposure&quot;, _dblDefaultExposure);</span>
 
-<span class="fc" id="L379">		mapMeasures.put (strPrefix + &quot;DefaultExposureNoRec&quot;, _dblDefaultExposureNoRec);</span>
+<span class="fc" id="L405">		mapMeasures.put (strPrefix + &quot;DefaultExposureNoRec&quot;, _dblDefaultExposureNoRec);</span>
 
-<span class="fc" id="L381">		mapMeasures.put (strPrefix + &quot;DirtyCouponPV&quot;, _bcmCreditRisklessDirty.couponPV());</span>
+<span class="fc" id="L407">		mapMeasures.put (strPrefix + &quot;DirtyCouponPV&quot;, _bcmCreditRisklessDirty.couponPV());</span>
 
-<span class="fc" id="L383">		mapMeasures.put (strPrefix + &quot;DirtyDV01&quot;, _bcmCreditRisklessDirty.dv01());</span>
+<span class="fc" id="L409">		mapMeasures.put (strPrefix + &quot;DirtyDV01&quot;, _bcmCreditRisklessDirty.dv01());</span>
 
-<span class="fc" id="L385">		mapMeasures.put (strPrefix + &quot;DirtyIndexCouponPV&quot;, _bcmCreditRisklessDirty.indexCouponPV());</span>
+<span class="fc" id="L411">		mapMeasures.put (strPrefix + &quot;DirtyIndexCouponPV&quot;, _bcmCreditRisklessDirty.indexCouponPV());</span>
 
-<span class="fc" id="L387">		mapMeasures.put (strPrefix + &quot;DirtyPrice&quot;, _bcmCreditRisklessDirty.pv());</span>
+<span class="fc" id="L413">		mapMeasures.put (strPrefix + &quot;DirtyPrice&quot;, _bcmCreditRisklessDirty.pv());</span>
 
-<span class="fc" id="L389">		mapMeasures.put (strPrefix + &quot;DirtyPV&quot;, _bcmCreditRisklessDirty.pv());</span>
+<span class="fc" id="L415">		mapMeasures.put (strPrefix + &quot;DirtyPV&quot;, _bcmCreditRisklessDirty.pv());</span>
 
-<span class="fc" id="L391">		mapMeasures.put (strPrefix + &quot;DV01&quot;, _bcmCreditRisklessClean.dv01());</span>
+<span class="fc" id="L417">		mapMeasures.put (strPrefix + &quot;DV01&quot;, _bcmCreditRisklessClean.dv01());</span>
 
-<span class="fc" id="L393">		mapMeasures.put (strPrefix + &quot;ExpectedRecovery&quot;, _dblExpectedRecovery);</span>
+<span class="fc" id="L419">		mapMeasures.put (strPrefix + &quot;ExpectedRecovery&quot;, _dblExpectedRecovery);</span>
 
-<span class="fc" id="L395">		mapMeasures.put (strPrefix + &quot;FirstCouponRate&quot;, _dblFirstCouponRate);</span>
+<span class="fc" id="L421">		mapMeasures.put (strPrefix + &quot;FirstCouponRate&quot;, _dblFirstCouponRate);</span>
 
-<span class="fc" id="L397">		mapMeasures.put (strPrefix + &quot;FirstIndexRate&quot;, _dblFirstIndexRate);</span>
+<span class="fc" id="L423">		mapMeasures.put (strPrefix + &quot;FirstIndexRate&quot;, _dblFirstIndexRate);</span>
 
-<span class="fc" id="L399">		mapMeasures.put (strPrefix + &quot;LossOnInstantaneousDefault&quot;, _dblLossOnInstantaneousDefault);</span>
+<span class="fc" id="L425">		mapMeasures.put (strPrefix + &quot;LossOnInstantaneousDefault&quot;, _dblLossOnInstantaneousDefault);</span>
 
-<span class="fc" id="L401">		mapMeasures.put (strPrefix + &quot;ParPV&quot;, _dblCreditRisklessParPV);</span>
+<span class="fc" id="L427">		mapMeasures.put (strPrefix + &quot;ParPV&quot;, _dblCreditRisklessParPV);</span>
 
-<span class="fc" id="L403">		mapMeasures.put (strPrefix + &quot;PrincipalPV&quot;, _dblCreditRisklessPrincipalPV);</span>
+<span class="fc" id="L429">		mapMeasures.put (strPrefix + &quot;PrincipalPV&quot;, _dblCreditRisklessPrincipalPV);</span>
 
-<span class="fc" id="L405">		mapMeasures.put (strPrefix + &quot;PV&quot;, _bcmCreditRisklessClean.pv());</span>
+<span class="fc" id="L431">		mapMeasures.put (strPrefix + &quot;PV&quot;, _bcmCreditRisklessClean.pv());</span>
 
-<span class="fc" id="L407">		mapMeasures.put (strPrefix + &quot;RecoveryPV&quot;, _dblRecoveryPV);</span>
+<span class="fc" id="L433">		mapMeasures.put (strPrefix + &quot;RecoveryPV&quot;, _dblRecoveryPV);</span>
 
-<span class="fc" id="L409">		org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessDirty.toMap</span>
-<span class="fc" id="L410">			(strPrefix + &quot;RisklessDirty&quot;));</span>
+<span class="fc" id="L435">		org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessDirty.toMap</span>
+<span class="fc" id="L436">			(strPrefix + &quot;RisklessDirty&quot;));</span>
 
-<span class="fc" id="L412">		org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessClean.toMap</span>
-<span class="fc" id="L413">			(strPrefix + &quot;RisklessClean&quot;));</span>
+<span class="fc" id="L438">		org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessClean.toMap</span>
+<span class="fc" id="L439">			(strPrefix + &quot;RisklessClean&quot;));</span>
 
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">		if (null != _bcmCreditRiskyDirty) {</span>
-<span class="nc" id="L416">			mapMeasures.put (strPrefix + &quot;CleanCouponPV&quot;, _bcmCreditRiskyClean.couponPV());</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">		if (null != _bcmCreditRiskyDirty) {</span>
+<span class="nc" id="L442">			mapMeasures.put (strPrefix + &quot;CleanCouponPV&quot;, _bcmCreditRiskyClean.couponPV());</span>
 
-<span class="nc" id="L418">			mapMeasures.put (strPrefix + &quot;CleanDV01&quot;, _bcmCreditRiskyClean.dv01());</span>
+<span class="nc" id="L444">			mapMeasures.put (strPrefix + &quot;CleanDV01&quot;, _bcmCreditRiskyClean.dv01());</span>
 
-<span class="nc" id="L420">			mapMeasures.put (strPrefix + &quot;CleanIndexCouponPV&quot;, _bcmCreditRiskyClean.indexCouponPV());</span>
+<span class="nc" id="L446">			mapMeasures.put (strPrefix + &quot;CleanIndexCouponPV&quot;, _bcmCreditRiskyClean.indexCouponPV());</span>
 
-<span class="nc" id="L422">			mapMeasures.put (strPrefix + &quot;CleanPrice&quot;, _bcmCreditRiskyClean.pv());</span>
+<span class="nc" id="L448">			mapMeasures.put (strPrefix + &quot;CleanPrice&quot;, _bcmCreditRiskyClean.pv());</span>
 
-<span class="nc" id="L424">			mapMeasures.put (strPrefix + &quot;CleanPV&quot;, _bcmCreditRiskyClean.pv());</span>
+<span class="nc" id="L450">			mapMeasures.put (strPrefix + &quot;CleanPV&quot;, _bcmCreditRiskyClean.pv());</span>
 
-<span class="nc" id="L426">			mapMeasures.put (strPrefix + &quot;DirtyCouponPV&quot;, _bcmCreditRiskyDirty.couponPV());</span>
+<span class="nc" id="L452">			mapMeasures.put (strPrefix + &quot;DirtyCouponPV&quot;, _bcmCreditRiskyDirty.couponPV());</span>
 
-<span class="nc" id="L428">			mapMeasures.put (strPrefix + &quot;DirtyDV01&quot;, _bcmCreditRiskyDirty.dv01());</span>
+<span class="nc" id="L454">			mapMeasures.put (strPrefix + &quot;DirtyDV01&quot;, _bcmCreditRiskyDirty.dv01());</span>
 
-<span class="nc" id="L430">			mapMeasures.put (strPrefix + &quot;DirtyIndexCouponPV&quot;, _bcmCreditRiskyDirty.indexCouponPV());</span>
+<span class="nc" id="L456">			mapMeasures.put (strPrefix + &quot;DirtyIndexCouponPV&quot;, _bcmCreditRiskyDirty.indexCouponPV());</span>
 
-<span class="nc" id="L432">			mapMeasures.put (strPrefix + &quot;DirtyPrice&quot;, _bcmCreditRiskyDirty.pv());</span>
+<span class="nc" id="L458">			mapMeasures.put (strPrefix + &quot;DirtyPrice&quot;, _bcmCreditRiskyDirty.pv());</span>
 
-<span class="nc" id="L434">			mapMeasures.put (strPrefix + &quot;DirtyPV&quot;, _bcmCreditRiskyDirty.pv());</span>
+<span class="nc" id="L460">			mapMeasures.put (strPrefix + &quot;DirtyPV&quot;, _bcmCreditRiskyDirty.pv());</span>
 
-<span class="nc" id="L436">			mapMeasures.put (strPrefix + &quot;DV01&quot;, _bcmCreditRiskyClean.dv01());</span>
+<span class="nc" id="L462">			mapMeasures.put (strPrefix + &quot;DV01&quot;, _bcmCreditRiskyClean.dv01());</span>
 
-<span class="nc" id="L438">			mapMeasures.put (strPrefix + &quot;ParPV&quot;, _dblCreditRiskyParPV);</span>
+<span class="nc" id="L464">			mapMeasures.put (strPrefix + &quot;ParPV&quot;, _dblCreditRiskyParPV);</span>
 
-<span class="nc" id="L440">			mapMeasures.put (strPrefix + &quot;PrincipalPV&quot;, _dblCreditRiskyPrincipalPV);</span>
+<span class="nc" id="L466">			mapMeasures.put (strPrefix + &quot;PrincipalPV&quot;, _dblCreditRiskyPrincipalPV);</span>
 
-<span class="nc" id="L442">			mapMeasures.put (strPrefix + &quot;PV&quot;, _bcmCreditRiskyClean.pv());</span>
+<span class="nc" id="L468">			mapMeasures.put (strPrefix + &quot;PV&quot;, _bcmCreditRiskyClean.pv());</span>
 
-<span class="nc" id="L444">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyDirty.toMap</span>
-<span class="nc" id="L445">				(strPrefix + &quot;RiskyDirty&quot;));</span>
+<span class="nc" id="L470">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyDirty.toMap</span>
+<span class="nc" id="L471">				(strPrefix + &quot;RiskyDirty&quot;));</span>
 
-<span class="nc" id="L447">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyClean.toMap</span>
-<span class="nc" id="L448">				(strPrefix + &quot;RiskyClean&quot;));</span>
+<span class="nc" id="L473">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyClean.toMap</span>
+<span class="nc" id="L474">				(strPrefix + &quot;RiskyClean&quot;));</span>
 		}
 
-<span class="fc" id="L451">		return mapMeasures;</span>
+<span class="fc" id="L477">		return mapMeasures;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

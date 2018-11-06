@@ -69,7 +69,7 @@ package org.drip.exposure.universe;
 
 public class LatentStateWeiner
 {
-<span class="nc" id="L72">	private java.util.Map&lt;java.lang.String, double[]&gt; _latentStateWeinerMap = new</span>
+<span class="fc" id="L72">	private java.util.Map&lt;java.lang.String, double[]&gt; _latentStateWeinerMap = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;double[]&gt;();
 
 	/**
@@ -85,31 +85,31 @@ public class LatentStateWeiner
 		final java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; latentStateLabelList,
 		final double[][] latentStateWeinerIncrementArray)
 	{
-<span class="nc bnc" id="L88" title="All 4 branches missed.">		if (null == latentStateLabelList || null == latentStateWeinerIncrementArray)</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">		if (null == latentStateLabelList || null == latentStateWeinerIncrementArray)</span>
 		{
 <span class="nc" id="L90">			return null;</span>
 		}
 
-<span class="nc" id="L93">		int latentStateCount = latentStateLabelList.size();</span>
+<span class="fc" id="L93">		int latentStateCount = latentStateLabelList.size();</span>
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">		if (0 == latentStateCount || latentStateCount != latentStateWeinerIncrementArray.length)</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">		if (0 == latentStateCount || latentStateCount != latentStateWeinerIncrementArray.length)</span>
 		{
 <span class="nc" id="L97">			return null;</span>
 		}
 
-<span class="nc" id="L100">		LatentStateWeiner latentStateWeiner = new LatentStateWeiner();</span>
+<span class="fc" id="L100">		LatentStateWeiner latentStateWeiner = new LatentStateWeiner();</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (int latentStateIndex = 0; latentStateIndex &lt; latentStateCount; ++latentStateIndex)</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int latentStateIndex = 0; latentStateIndex &lt; latentStateCount; ++latentStateIndex)</span>
 		{
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			if (!latentStateWeiner.add (</span>
-<span class="nc" id="L105">				latentStateLabelList.get (latentStateIndex),</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">			if (!latentStateWeiner.add (</span>
+<span class="fc" id="L105">				latentStateLabelList.get (latentStateIndex),</span>
 				latentStateWeinerIncrementArray[latentStateIndex]))
 			{
 <span class="nc" id="L108">				return null;</span>
 			}
 		}
 
-<span class="nc" id="L112">		return latentStateWeiner;</span>
+<span class="fc" id="L112">		return latentStateWeiner;</span>
 	}
 
 	/**
@@ -117,8 +117,8 @@ public class LatentStateWeiner
 	 */
 
 	public LatentStateWeiner()
-<span class="nc" id="L120">	{</span>
-<span class="nc" id="L121">	}</span>
+<span class="fc" id="L120">	{</span>
+<span class="fc" id="L121">	}</span>
 
 	/**
 	 * Retrieve the Count of the Latent States Available
@@ -128,7 +128,7 @@ public class LatentStateWeiner
 
 	public int stateCount()
 	{
-<span class="nc" id="L131">		return _latentStateWeinerMap.size();</span>
+<span class="fc" id="L131">		return _latentStateWeinerMap.size();</span>
 	}
 
 	/**
@@ -144,20 +144,20 @@ public class LatentStateWeiner
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel,
 		final double[] weinerIncrementArray)
 	{
-<span class="nc bnc" id="L147" title="All 6 branches missed.">		if (null == latentStateLabel ||</span>
+<span class="pc bpc" id="L147" title="3 of 6 branches missed.">		if (null == latentStateLabel ||</span>
 			null == weinerIncrementArray ||
 			0 == weinerIncrementArray.length ||
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (weinerIncrementArray))</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (weinerIncrementArray))</span>
 		{
 <span class="nc" id="L152">			return false;</span>
 		}
 
-<span class="nc" id="L155">		_latentStateWeinerMap.put (</span>
-<span class="nc" id="L156">			latentStateLabel.fullyQualifiedName(),</span>
+<span class="fc" id="L155">		_latentStateWeinerMap.put (</span>
+<span class="fc" id="L156">			latentStateLabel.fullyQualifiedName(),</span>
 			weinerIncrementArray
 		);
 
-<span class="nc" id="L160">		return true;</span>
+<span class="fc" id="L160">		return true;</span>
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class LatentStateWeiner
 	public boolean containsLatentState (
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
 	{
-<span class="nc bnc" id="L185" title="All 2 branches missed.">		return null != latentStateLabel &amp;&amp; _latentStateWeinerMap.containsKey</span>
-<span class="nc bnc" id="L186" title="All 2 branches missed.">			(latentStateLabel.fullyQualifiedName());</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		return null != latentStateLabel &amp;&amp; _latentStateWeinerMap.containsKey</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">			(latentStateLabel.fullyQualifiedName());</span>
 	}
 
 	/**
@@ -197,8 +197,8 @@ public class LatentStateWeiner
 	public double[] incrementArray (
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
 	{
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		return containsLatentState (latentStateLabel) ? _latentStateWeinerMap.get</span>
-<span class="nc" id="L201">			(latentStateLabel.fullyQualifiedName()) : null;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		return containsLatentState (latentStateLabel) ? _latentStateWeinerMap.get</span>
+<span class="pc" id="L201">			(latentStateLabel.fullyQualifiedName()) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

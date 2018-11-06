@@ -6,35 +6,53 @@ package org.drip.analytics.input;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,32 +69,40 @@ package org.drip.analytics.input;
  */
 
 /**
- * LatentStateShapePreservingCCIS contains the Parameters needed for the Curve Calibration/Estimation. It
- * 	contains the following:
- *  - Calibration Valuation Parameters
- *  - Calibration Quoting Parameters
- *  - Calibration Market Parameters
- *  - Calibration Pricing Parameters
- *  - Array of Calibration Span Representation
- *  - Map of Calibration Quotes
- *  - Map of Calibration Measures
- *  - Double Map of the Date/Index Fixings
- *  - The Shape Preserving Linear Latent State Calibrator
- *
+ * &lt;i&gt;LatentStateShapePreservingCCIS&lt;/i&gt; contains the Parameters needed for the Curve Calibration/Estimation.
+ * It contains the following:
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;Calibration Valuation Parameters&lt;/li&gt;
+ *  	&lt;li&gt;Calibration Quoting Parameters&lt;/li&gt;
+ *  	&lt;li&gt;Calibration Market Parameters&lt;/li&gt;
+ *  	&lt;li&gt;Calibration Pricing Parameters&lt;/li&gt;
+ *  	&lt;li&gt;Array of Calibration Span Representation&lt;/li&gt;
+ *  	&lt;li&gt;Map of Calibration Quotes&lt;/li&gt;
+ *  	&lt;li&gt;Map of Calibration Measures&lt;/li&gt;
+ *  	&lt;li&gt;Double Map of the Date/Index Fixings&lt;/li&gt;
+ *  	&lt;li&gt;The Shape Preserving Linear Latent State Calibrator&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  &lt;br&gt;
  * Additional functions provide for retrieval of the above and specific instrument quotes.
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input&quot;&gt;Input&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LatentStateShapePreservingCCIS implements
 	org.drip.analytics.input.CurveConstructionInputSet {
-<span class="fc" id="L73">	private org.drip.param.valuation.ValuationParams _valParam = null;</span>
-<span class="fc" id="L74">	private org.drip.param.pricer.CreditPricerParams _pricerParam = null;</span>
-<span class="fc" id="L75">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqs = null;</span>
-<span class="fc" id="L76">	private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
-<span class="fc" id="L77">	private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;</span>
-<span class="fc" id="L78">	private org.drip.state.inference.LatentStateStretchSpec[] _aStretchSpec = null;</span>
-<span class="fc" id="L79">	private org.drip.state.inference.LinearLatentStateCalibrator _llscShapePreserving = null;</span>
+<span class="fc" id="L99">	private org.drip.param.valuation.ValuationParams _valParam = null;</span>
+<span class="fc" id="L100">	private org.drip.param.pricer.CreditPricerParams _pricerParam = null;</span>
+<span class="fc" id="L101">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqs = null;</span>
+<span class="fc" id="L102">	private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
+<span class="fc" id="L103">	private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;</span>
+<span class="fc" id="L104">	private org.drip.state.inference.LatentStateStretchSpec[] _aStretchSpec = null;</span>
+<span class="fc" id="L105">	private org.drip.state.inference.LinearLatentStateCalibrator _llscShapePreserving = null;</span>
 
 	/**
 	 * LatentStateShapePreservingCCIS constructor
@@ -99,74 +125,74 @@ public class LatentStateShapePreservingCCIS implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 		throws java.lang.Exception
-<span class="fc" id="L102">	{</span>
-<span class="pc bpc" id="L103" title="3 of 6 branches missed.">		if (null == (_llscShapePreserving = llscShapePreserving) || null == (_aStretchSpec = aStretchSpec) ||</span>
+<span class="fc" id="L128">	{</span>
+<span class="pc bpc" id="L129" title="3 of 6 branches missed.">		if (null == (_llscShapePreserving = llscShapePreserving) || null == (_aStretchSpec = aStretchSpec) ||</span>
 			null == (_valParam = valParam))
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;LatentStateShapePreservingCCIS ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;LatentStateShapePreservingCCIS ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L107">		_vcp = vcp;</span>
-<span class="fc" id="L108">		_csqs = csqs;</span>
-<span class="fc" id="L109">		int iNumStretchNULL = 0;</span>
-<span class="fc" id="L110">		_pricerParam = pricerParam;</span>
-<span class="fc" id="L111">		int iNumStretch = _aStretchSpec.length;</span>
+<span class="fc" id="L133">		_vcp = vcp;</span>
+<span class="fc" id="L134">		_csqs = csqs;</span>
+<span class="fc" id="L135">		int iNumStretchNULL = 0;</span>
+<span class="fc" id="L136">		_pricerParam = pricerParam;</span>
+<span class="fc" id="L137">		int iNumStretch = _aStretchSpec.length;</span>
 
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (0 == iNumStretch)</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;LatentStateShapePreservingCCIS ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (0 == iNumStretch)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;LatentStateShapePreservingCCIS ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStretch; ++i) {</span>
-<span class="fc bfc" id="L117" title="All 2 branches covered.">			if (null == _aStretchSpec[i]) ++iNumStretchNULL;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStretch; ++i) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">			if (null == _aStretchSpec[i]) ++iNumStretchNULL;</span>
 		}
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (iNumStretchNULL == iNumStretch)</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;LatentStateShapePreservingCCIS ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L122">	}</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (iNumStretchNULL == iNumStretch)</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;LatentStateShapePreservingCCIS ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L148">	}</span>
 
 	@Override public org.drip.param.valuation.ValuationParams valuationParameter()
 	{
-<span class="nc" id="L126">		return _valParam;</span>
+<span class="nc" id="L152">		return _valParam;</span>
 	}
 
 	@Override public org.drip.param.valuation.ValuationCustomizationParams quotingParameter()
 	{
-<span class="nc" id="L131">		return _vcp;</span>
+<span class="nc" id="L157">		return _vcp;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] components()
 	{
-<span class="fc" id="L136">		java.util.List&lt;org.drip.product.definition.CalibratableComponent&gt; lsComp = new</span>
+<span class="fc" id="L162">		java.util.List&lt;org.drip.product.definition.CalibratableComponent&gt; lsComp = new</span>
 			java.util.ArrayList&lt;org.drip.product.definition.CalibratableComponent&gt;();
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : _aStretchSpec) {</span>
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (null == stretchSpec) continue;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : _aStretchSpec) {</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">			if (null == stretchSpec) continue;</span>
 
-<span class="fc" id="L142">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();</span>
+<span class="fc" id="L168">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			if (null == aSegmentSpec) continue;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			if (null == aSegmentSpec) continue;</span>
 
-<span class="fc" id="L146">			int iNumComp = aSegmentSpec.length;</span>
+<span class="fc" id="L172">			int iNumComp = aSegmentSpec.length;</span>
 
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			if (0 == iNumComp) continue;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			if (0 == iNumComp) continue;</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">				if (null == aSegmentSpec[i]) continue;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">				if (null == aSegmentSpec[i]) continue;</span>
 
-<span class="fc" id="L153">				org.drip.product.definition.CalibratableComponent comp = aSegmentSpec[i].component();</span>
+<span class="fc" id="L179">				org.drip.product.definition.CalibratableComponent comp = aSegmentSpec[i].component();</span>
 
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">				if (null != comp) lsComp.add (comp);</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">				if (null != comp) lsComp.add (comp);</span>
 			}
 		}
 
-<span class="fc" id="L159">		int iNumComp = lsComp.size();</span>
+<span class="fc" id="L185">		int iNumComp = lsComp.size();</span>
 
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (0 == iNumComp) return null;</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
-<span class="fc" id="L163">		org.drip.product.definition.CalibratableComponent[] aComp = new</span>
+<span class="fc" id="L189">		org.drip.product.definition.CalibratableComponent[] aComp = new</span>
 			org.drip.product.definition.CalibratableComponent[iNumComp];
 
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="fc" id="L167">			aComp[i] = lsComp.get (i);</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="fc" id="L193">			aComp[i] = lsComp.get (i);</span>
 
-<span class="fc" id="L169">		return aComp;</span>
+<span class="fc" id="L195">		return aComp;</span>
 	}
 
 	@Override public
@@ -174,43 +200,43 @@ public class LatentStateShapePreservingCCIS implements
 			quoteMap()
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="fc" id="L177">			mapInstrumentQuote = new</span>
+<span class="fc" id="L203">			mapInstrumentQuote = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
 
-<span class="fc bfc" id="L180" title="All 2 branches covered.">		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : _aStretchSpec) {</span>
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">			if (null == stretchSpec) continue;</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : _aStretchSpec) {</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			if (null == stretchSpec) continue;</span>
 
-<span class="fc" id="L183">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();</span>
+<span class="fc" id="L209">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();</span>
 
-<span class="fc bfc" id="L185" title="All 2 branches covered.">			for (org.drip.state.inference.LatentStateSegmentSpec segmentSpec : aSegmentSpec) {</span>
-<span class="fc" id="L186">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasureQuote = new</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">			for (org.drip.state.inference.LatentStateSegmentSpec segmentSpec : aSegmentSpec) {</span>
+<span class="fc" id="L212">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasureQuote = new</span>
 					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L189">				org.drip.product.calib.ProductQuoteSet pqs = segmentSpec.manifestMeasures();</span>
+<span class="fc" id="L215">				org.drip.product.calib.ProductQuoteSet pqs = segmentSpec.manifestMeasures();</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">				for (java.lang.String strManifestMeasure : pqs.fields()) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">				for (java.lang.String strManifestMeasure : pqs.fields()) {</span>
 					try {
-<span class="fc" id="L193">						mapMeasureQuote.put (strManifestMeasure, pqs.get (strManifestMeasure));</span>
-<span class="nc" id="L194">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">						e.printStackTrace();</span>
-<span class="fc" id="L196">					}</span>
-<span class="fc" id="L197">				}</span>
+<span class="fc" id="L219">						mapMeasureQuote.put (strManifestMeasure, pqs.get (strManifestMeasure));</span>
+<span class="nc" id="L220">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L221">						e.printStackTrace();</span>
+<span class="fc" id="L222">					}</span>
+<span class="fc" id="L223">				}</span>
 
-<span class="fc" id="L199">				mapInstrumentQuote.put (segmentSpec.component().primaryCode(), mapMeasureQuote);</span>
+<span class="fc" id="L225">				mapInstrumentQuote.put (segmentSpec.component().primaryCode(), mapMeasureQuote);</span>
 			}
 		}
 
-<span class="fc" id="L203">		return mapInstrumentQuote;</span>
+<span class="fc" id="L229">		return mapInstrumentQuote;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; measures()
 	{
-<span class="nc" id="L208">		return null;</span>
+<span class="nc" id="L234">		return null;</span>
 	}
 
 	@Override public org.drip.param.market.LatentStateFixingsContainer fixing()
 	{
-<span class="nc" id="L213">		return _lsfc;</span>
+<span class="nc" id="L239">		return _lsfc;</span>
 	}
 
 	/**
@@ -221,7 +247,7 @@ public class LatentStateShapePreservingCCIS implements
 
 	public org.drip.param.pricer.CreditPricerParams pricerParameter()
 	{
-<span class="nc" id="L224">		return _pricerParam;</span>
+<span class="nc" id="L250">		return _pricerParam;</span>
 	}
 
 	/**
@@ -232,7 +258,7 @@ public class LatentStateShapePreservingCCIS implements
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer marketParameters()
 	{
-<span class="nc" id="L235">		return _csqs;</span>
+<span class="nc" id="L261">		return _csqs;</span>
 	}
 
 	/**
@@ -243,7 +269,7 @@ public class LatentStateShapePreservingCCIS implements
 
 	public org.drip.state.inference.LatentStateStretchSpec[] stretchSpec()
 	{
-<span class="nc" id="L246">		return _aStretchSpec;</span>
+<span class="nc" id="L272">		return _aStretchSpec;</span>
 	}
 
 	/**
@@ -254,7 +280,7 @@ public class LatentStateShapePreservingCCIS implements
 
 	public org.drip.state.estimator.GlobalControlCurveParams shapePreservingLLSC()
 	{
-<span class="nc" id="L257">		return _llscShapePreserving;</span>
+<span class="nc" id="L283">		return _llscShapePreserving;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

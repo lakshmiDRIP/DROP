@@ -47,31 +47,48 @@ package org.drip.exposure.generator;
  */
 
 /**
- * NumeraireMPoR estimates the MPoR Variation Margin and the Trade Payments for the generic Numeraire off of
- *  the Realized Market Path. The References are:
+ * &lt;i&gt;NumeraireMPoR&lt;/i&gt; estimates the MPoR Variation Margin and the Trade Payments for the generic Numeraire
+ * off of the Realized Market Path. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin Agreements,
- *  	http://www.risk-europe.com/protected/michael-pykhtin.pdf.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin
+ *  				Agreements http://www.risk-europe.com/protected/michael-pykhtin.pdf
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex
 {
-<span class="nc" id="L73">	private double _notional = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;</span>
+<span class="nc" id="L90">	private double _notional = java.lang.Double.NaN;</span>
+<span class="nc" id="L91">	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;</span>
 
 	/**
 	 * NumeraireMPoR Constructor
@@ -86,13 +103,13 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel,
 		final double notional)
 		throws java.lang.Exception
-<span class="nc" id="L89">	{</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (null == (_latentStateLabel = latentStateLabel) ||</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))</span>
+<span class="nc" id="L106">	{</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == (_latentStateLabel = latentStateLabel) ||</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))</span>
 		{
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;NumeraireMPoR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;NumeraireMPoR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L95">	}</span>
+<span class="nc" id="L112">	}</span>
 
 	/**
 	 * Retrieve the Notional
@@ -102,7 +119,7 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 
 	public double notional()
 	{
-<span class="nc" id="L105">		return _notional;</span>
+<span class="nc" id="L122">		return _notional;</span>
 	}
 
 	/**
@@ -113,7 +130,7 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 
 	public org.drip.state.identifier.LatentStateLabel latentStateLabel()
 	{
-<span class="nc" id="L116">		return _latentStateLabel;</span>
+<span class="nc" id="L133">		return _latentStateLabel;</span>
 	}
 
 	@Override public double variationMarginEstimate (
@@ -121,19 +138,19 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;NumeraireVertex::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;NumeraireVertex::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L129">		return _notional * marketPath.marketVertex (forwardDate).latentStateValue (_latentStateLabel);</span>
+<span class="nc" id="L146">		return _notional * marketPath.marketVertex (forwardDate).latentStateValue (_latentStateLabel);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L136">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
+<span class="nc" id="L153">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -141,24 +158,24 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
 		{
-<span class="nc" id="L146">			return null;</span>
+<span class="nc" id="L163">			return null;</span>
 		}
 
-<span class="nc" id="L149">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L150">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L166">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L167">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc" id="L153">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
-<span class="nc" id="L154">			(0.);</span>
+<span class="nc" id="L170">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L171">			(0.);</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc" id="L158">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+<span class="nc" id="L175">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
 		}
 
-<span class="nc" id="L161">		return denseTradePaymentArray;</span>
+<span class="nc" id="L178">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

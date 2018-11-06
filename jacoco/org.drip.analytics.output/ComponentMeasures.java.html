@@ -6,6 +6,7 @@ package org.drip.analytics.output;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.analytics.output;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,53 +72,61 @@ package org.drip.analytics.output;
  */
 
 /**
- * ComponentMeasures is the place holder for analytical single component output measures, optionally across
- * 	scenarios. It contains measure maps for the following scenarios:
- * 	- Unadjusted Base IR/credit curves
- *	- Flat delta/gamma bump measure maps for IR/credit bump curves
- *	- Tenor bump double maps for IR/credit curves
- *	- Flat/recovery bumped measure maps for recovery bumped credit curves
- *	- Measure Maps generated for Custom Scenarios
- *	- Accessor Functions for the above fields
- *	- Serialize into and de-serialize out of byte arrays
+ * &lt;i&gt;ComponentMeasures&lt;/i&gt; is the place holder for analytical single component output measures, optionally
+ * across scenarios. It contains measure maps for the following scenarios:
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;Unadjusted Base IR/credit curves&lt;/li&gt;
+ *		&lt;li&gt;Flat delta/gamma bump measure maps for IR/credit bump curves&lt;/li&gt;
+ *		&lt;li&gt;Tenor bump double maps for IR/credit curves&lt;/li&gt;
+ *		&lt;li&gt;Flat/recovery bumped measure maps for recovery bumped credit curves&lt;/li&gt;
+ *		&lt;li&gt;Measure Maps generated for Custom Scenarios&lt;/li&gt;
+ *		&lt;li&gt;Accessor Functions for the above fields&lt;/li&gt;
+ *		&lt;li&gt;Serialize into and de-serialize out of byte arrays&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ComponentMeasures {
-<span class="nc" id="L71">	private double _dblCalcTime = java.lang.Double.NaN;</span>
-<span class="nc" id="L72">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapBaseMeasures = null;</span>
-<span class="nc" id="L73">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatIRDeltaMeasures =</span>
+<span class="nc" id="L97">	private double _dblCalcTime = java.lang.Double.NaN;</span>
+<span class="nc" id="L98">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapBaseMeasures = null;</span>
+<span class="nc" id="L99">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatIRDeltaMeasures =</span>
 		null;
-<span class="nc" id="L75">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatIRGammaMeasures =</span>
+<span class="nc" id="L101">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatIRGammaMeasures =</span>
 		null;
-<span class="nc" id="L77">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatRRDeltaMeasures =</span>
+<span class="nc" id="L103">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatRRDeltaMeasures =</span>
 		null;
-<span class="nc" id="L79">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatRRGammaMeasures =</span>
+<span class="nc" id="L105">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatRRGammaMeasures =</span>
 		null;
-<span class="nc" id="L81">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatCreditDeltaMeasures =</span>
+<span class="nc" id="L107">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatCreditDeltaMeasures =</span>
 		null;
-<span class="nc" id="L83">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatCreditGammaMeasures =</span>
+<span class="nc" id="L109">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapFlatCreditGammaMeasures =</span>
 		null;
-<span class="nc" id="L85">	private</span>
+<span class="nc" id="L111">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmTenorIRDeltaMeasures = null;
-<span class="nc" id="L88">	private</span>
+<span class="nc" id="L114">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmTenorIRGammaMeasures = null;
-<span class="nc" id="L91">	private</span>
+<span class="nc" id="L117">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmTenorCreditDeltaMeasures = null;
-<span class="nc" id="L94">	private</span>
+<span class="nc" id="L120">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmTenorCreditGammaMeasures = null;
-<span class="nc" id="L97">	private</span>
+<span class="nc" id="L123">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmTenorRRDeltaMeasures = null;
-<span class="nc" id="L100">	private</span>
+<span class="nc" id="L126">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmTenorRRGammaMeasures = null;
-<span class="nc" id="L103">	private</span>
+<span class="nc" id="L129">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mmCustomMeasures = null;
 
@@ -109,8 +135,8 @@ public class ComponentMeasures {
 	 */
 
 	public ComponentMeasures()
-<span class="nc" id="L112">	{</span>
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L138">	{</span>
+<span class="nc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Calculation Time
@@ -120,7 +146,7 @@ public class ComponentMeasures {
 
 	public double calcTime()
 	{
-<span class="nc" id="L123">		return _dblCalcTime;</span>
+<span class="nc" id="L149">		return _dblCalcTime;</span>
 	}
 
 	/**
@@ -134,10 +160,10 @@ public class ComponentMeasures {
 	public boolean setCalcTime (
 		final double dblCalcTime)
 	{
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCalcTime)) return false;</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCalcTime)) return false;</span>
 
-<span class="nc" id="L139">		_dblCalcTime = dblCalcTime;</span>
-<span class="nc" id="L140">		return true;</span>
+<span class="nc" id="L165">		_dblCalcTime = dblCalcTime;</span>
+<span class="nc" id="L166">		return true;</span>
 	}
 
 	/**
@@ -148,7 +174,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; baseMeasures()
 	{
-<span class="nc" id="L151">		return _mapBaseMeasures;</span>
+<span class="nc" id="L177">		return _mapBaseMeasures;</span>
 	}
 
 	/**
@@ -162,10 +188,10 @@ public class ComponentMeasures {
 	public boolean setBaseMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapBaseMeasures)
 	{
-<span class="nc bnc" id="L165" title="All 4 branches missed.">		if (null == mapBaseMeasures || 0 == mapBaseMeasures.size()) return false;</span>
+<span class="nc bnc" id="L191" title="All 4 branches missed.">		if (null == mapBaseMeasures || 0 == mapBaseMeasures.size()) return false;</span>
 
-<span class="nc" id="L167">		_mapBaseMeasures = mapBaseMeasures;</span>
-<span class="nc" id="L168">		return true;</span>
+<span class="nc" id="L193">		_mapBaseMeasures = mapBaseMeasures;</span>
+<span class="nc" id="L194">		return true;</span>
 	}
 
 	/**
@@ -176,7 +202,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; flatIRDeltaMeasures()
 	{
-<span class="nc" id="L179">		return _mapFlatIRDeltaMeasures;</span>
+<span class="nc" id="L205">		return _mapFlatIRDeltaMeasures;</span>
 	}
 
 	/**
@@ -190,10 +216,10 @@ public class ComponentMeasures {
 	public boolean setFlatIRDeltaMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatIRDeltaMeasures)
 	{
-<span class="nc bnc" id="L193" title="All 4 branches missed.">		if (null == mapFlatIRDeltaMeasures || 0 == mapFlatIRDeltaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">		if (null == mapFlatIRDeltaMeasures || 0 == mapFlatIRDeltaMeasures.size()) return false;</span>
 
-<span class="nc" id="L195">		_mapFlatIRDeltaMeasures = mapFlatIRDeltaMeasures;</span>
-<span class="nc" id="L196">		return true;</span>
+<span class="nc" id="L221">		_mapFlatIRDeltaMeasures = mapFlatIRDeltaMeasures;</span>
+<span class="nc" id="L222">		return true;</span>
 	}
 
 	/**
@@ -204,7 +230,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; flatIRGammaMeasures()
 	{
-<span class="nc" id="L207">		return _mapFlatIRGammaMeasures;</span>
+<span class="nc" id="L233">		return _mapFlatIRGammaMeasures;</span>
 	}
 
 	/**
@@ -218,10 +244,10 @@ public class ComponentMeasures {
 	public boolean setFlatIRGammaMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatIRGammaMeasures)
 	{
-<span class="nc bnc" id="L221" title="All 4 branches missed.">		if (null == mapFlatIRGammaMeasures || 0 == mapFlatIRGammaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L247" title="All 4 branches missed.">		if (null == mapFlatIRGammaMeasures || 0 == mapFlatIRGammaMeasures.size()) return false;</span>
 
-<span class="nc" id="L223">		_mapFlatIRGammaMeasures = mapFlatIRGammaMeasures;</span>
-<span class="nc" id="L224">		return true;</span>
+<span class="nc" id="L249">		_mapFlatIRGammaMeasures = mapFlatIRGammaMeasures;</span>
+<span class="nc" id="L250">		return true;</span>
 	}
 
 	/**
@@ -232,7 +258,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; flatRRDeltaMeasures()
 	{
-<span class="nc" id="L235">		return _mapFlatRRDeltaMeasures;</span>
+<span class="nc" id="L261">		return _mapFlatRRDeltaMeasures;</span>
 	}
 
 	/**
@@ -246,10 +272,10 @@ public class ComponentMeasures {
 	public boolean setFlatRRDeltaMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatRRDeltaMeasures)
 	{
-<span class="nc bnc" id="L249" title="All 4 branches missed.">		if (null == mapFlatRRDeltaMeasures || 0 == mapFlatRRDeltaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L275" title="All 4 branches missed.">		if (null == mapFlatRRDeltaMeasures || 0 == mapFlatRRDeltaMeasures.size()) return false;</span>
 
-<span class="nc" id="L251">		_mapFlatRRDeltaMeasures = mapFlatRRDeltaMeasures;</span>
-<span class="nc" id="L252">		return true;</span>
+<span class="nc" id="L277">		_mapFlatRRDeltaMeasures = mapFlatRRDeltaMeasures;</span>
+<span class="nc" id="L278">		return true;</span>
 	}
 
 	/**
@@ -260,7 +286,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; flatRRGammaMeasures()
 	{
-<span class="nc" id="L263">		return _mapFlatRRGammaMeasures;</span>
+<span class="nc" id="L289">		return _mapFlatRRGammaMeasures;</span>
 	}
 
 	/**
@@ -274,10 +300,10 @@ public class ComponentMeasures {
 	public boolean setFlatRRGammaMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatRRGammaMeasures)
 	{
-<span class="nc bnc" id="L277" title="All 4 branches missed.">		if (null == mapFlatRRGammaMeasures || 0 == mapFlatRRGammaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L303" title="All 4 branches missed.">		if (null == mapFlatRRGammaMeasures || 0 == mapFlatRRGammaMeasures.size()) return false;</span>
 
-<span class="nc" id="L279">		_mapFlatRRGammaMeasures = mapFlatRRGammaMeasures;</span>
-<span class="nc" id="L280">		return true;</span>
+<span class="nc" id="L305">		_mapFlatRRGammaMeasures = mapFlatRRGammaMeasures;</span>
+<span class="nc" id="L306">		return true;</span>
 	}
 
 	/**
@@ -288,7 +314,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; flatCreditDeltaMeasures()
 	{
-<span class="nc" id="L291">		return _mapFlatCreditDeltaMeasures;</span>
+<span class="nc" id="L317">		return _mapFlatCreditDeltaMeasures;</span>
 	}
 
 	/**
@@ -302,10 +328,10 @@ public class ComponentMeasures {
 	public boolean setFlatCreditDeltaMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatCreditDeltaMeasures)
 	{
-<span class="nc bnc" id="L305" title="All 4 branches missed.">		if (null == mapFlatCreditDeltaMeasures || 0 == mapFlatCreditDeltaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L331" title="All 4 branches missed.">		if (null == mapFlatCreditDeltaMeasures || 0 == mapFlatCreditDeltaMeasures.size()) return false;</span>
 
-<span class="nc" id="L307">		_mapFlatCreditDeltaMeasures = mapFlatCreditDeltaMeasures;</span>
-<span class="nc" id="L308">		return true;</span>
+<span class="nc" id="L333">		_mapFlatCreditDeltaMeasures = mapFlatCreditDeltaMeasures;</span>
+<span class="nc" id="L334">		return true;</span>
 	}
 
 	/**
@@ -316,7 +342,7 @@ public class ComponentMeasures {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; flatCreditGammaMeasures()
 	{
-<span class="nc" id="L319">		return _mapFlatCreditGammaMeasures;</span>
+<span class="nc" id="L345">		return _mapFlatCreditGammaMeasures;</span>
 	}
 
 	/**
@@ -330,10 +356,10 @@ public class ComponentMeasures {
 	public boolean setFlatCreditGammaMeasures (
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFlatCreditGammaMeasures)
 	{
-<span class="nc bnc" id="L333" title="All 4 branches missed.">		if (null == mapFlatCreditGammaMeasures || 0 == mapFlatCreditGammaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L359" title="All 4 branches missed.">		if (null == mapFlatCreditGammaMeasures || 0 == mapFlatCreditGammaMeasures.size()) return false;</span>
 
-<span class="nc" id="L335">		_mapFlatCreditGammaMeasures = mapFlatCreditGammaMeasures;</span>
-<span class="nc" id="L336">		return true;</span>
+<span class="nc" id="L361">		_mapFlatCreditGammaMeasures = mapFlatCreditGammaMeasures;</span>
+<span class="nc" id="L362">		return true;</span>
 	}
 
 	/**
@@ -346,7 +372,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			tenorIRDeltaMeasures()
 	{
-<span class="nc" id="L349">		return _mmTenorIRDeltaMeasures;</span>
+<span class="nc" id="L375">		return _mmTenorIRDeltaMeasures;</span>
 	}
 
 	/**
@@ -362,10 +388,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmTenorIRDeltaMeasures)
 	{
-<span class="nc bnc" id="L365" title="All 4 branches missed.">		if (null == mmTenorIRDeltaMeasures || 0 == mmTenorIRDeltaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L391" title="All 4 branches missed.">		if (null == mmTenorIRDeltaMeasures || 0 == mmTenorIRDeltaMeasures.size()) return false;</span>
 
-<span class="nc" id="L367">		_mmTenorIRDeltaMeasures = mmTenorIRDeltaMeasures;</span>
-<span class="nc" id="L368">		return true;</span>
+<span class="nc" id="L393">		_mmTenorIRDeltaMeasures = mmTenorIRDeltaMeasures;</span>
+<span class="nc" id="L394">		return true;</span>
 	}
 
 	/**
@@ -378,7 +404,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			tenorIRGammaMeasures()
 	{
-<span class="nc" id="L381">		return _mmTenorIRGammaMeasures;</span>
+<span class="nc" id="L407">		return _mmTenorIRGammaMeasures;</span>
 	}
 
 	/**
@@ -394,10 +420,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmTenorIRGammaMeasures)
 	{
-<span class="nc bnc" id="L397" title="All 4 branches missed.">		if (null == mmTenorIRGammaMeasures || 0 == mmTenorIRGammaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L423" title="All 4 branches missed.">		if (null == mmTenorIRGammaMeasures || 0 == mmTenorIRGammaMeasures.size()) return false;</span>
 
-<span class="nc" id="L399">		_mmTenorIRGammaMeasures = mmTenorIRGammaMeasures;</span>
-<span class="nc" id="L400">		return true;</span>
+<span class="nc" id="L425">		_mmTenorIRGammaMeasures = mmTenorIRGammaMeasures;</span>
+<span class="nc" id="L426">		return true;</span>
 	}
 
 	/**
@@ -410,7 +436,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			tenorCreditDeltaMeasures()
 	{
-<span class="nc" id="L413">		return _mmTenorCreditDeltaMeasures;</span>
+<span class="nc" id="L439">		return _mmTenorCreditDeltaMeasures;</span>
 	}
 
 	/**
@@ -426,10 +452,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmTenorCreditDeltaMeasures)
 	{
-<span class="nc bnc" id="L429" title="All 4 branches missed.">		if (null == mmTenorCreditDeltaMeasures || 0 == mmTenorCreditDeltaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L455" title="All 4 branches missed.">		if (null == mmTenorCreditDeltaMeasures || 0 == mmTenorCreditDeltaMeasures.size()) return false;</span>
 
-<span class="nc" id="L431">		_mmTenorCreditDeltaMeasures = mmTenorCreditDeltaMeasures;</span>
-<span class="nc" id="L432">		return true;</span>
+<span class="nc" id="L457">		_mmTenorCreditDeltaMeasures = mmTenorCreditDeltaMeasures;</span>
+<span class="nc" id="L458">		return true;</span>
 	}
 
 	/**
@@ -442,7 +468,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			tenorCreditGammaMeasures()
 	{
-<span class="nc" id="L445">		return _mmTenorCreditGammaMeasures;</span>
+<span class="nc" id="L471">		return _mmTenorCreditGammaMeasures;</span>
 	}
 
 	/**
@@ -458,10 +484,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmTenorCreditGammaMeasures)
 	{
-<span class="nc bnc" id="L461" title="All 4 branches missed.">		if (null == mmTenorCreditGammaMeasures || 0 == mmTenorCreditGammaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L487" title="All 4 branches missed.">		if (null == mmTenorCreditGammaMeasures || 0 == mmTenorCreditGammaMeasures.size()) return false;</span>
 
-<span class="nc" id="L463">		_mmTenorCreditGammaMeasures = mmTenorCreditGammaMeasures;</span>
-<span class="nc" id="L464">		return true;</span>
+<span class="nc" id="L489">		_mmTenorCreditGammaMeasures = mmTenorCreditGammaMeasures;</span>
+<span class="nc" id="L490">		return true;</span>
 	}
 
 	/**
@@ -474,7 +500,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			tenorRRDeltaMeasures()
 	{
-<span class="nc" id="L477">		return _mmTenorRRDeltaMeasures;</span>
+<span class="nc" id="L503">		return _mmTenorRRDeltaMeasures;</span>
 	}
 
 	/**
@@ -490,10 +516,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmTenorRRDeltaMeasures)
 	{
-<span class="nc bnc" id="L493" title="All 4 branches missed.">		if (null == mmTenorRRDeltaMeasures || 0 == mmTenorRRDeltaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L519" title="All 4 branches missed.">		if (null == mmTenorRRDeltaMeasures || 0 == mmTenorRRDeltaMeasures.size()) return false;</span>
 
-<span class="nc" id="L495">		_mmTenorRRDeltaMeasures = mmTenorRRDeltaMeasures;</span>
-<span class="nc" id="L496">		return true;</span>
+<span class="nc" id="L521">		_mmTenorRRDeltaMeasures = mmTenorRRDeltaMeasures;</span>
+<span class="nc" id="L522">		return true;</span>
 	}
 
 	/**
@@ -506,7 +532,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			tenorRRGammaMeasures()
 	{
-<span class="nc" id="L509">		return _mmTenorRRGammaMeasures;</span>
+<span class="nc" id="L535">		return _mmTenorRRGammaMeasures;</span>
 	}
 
 	/**
@@ -522,10 +548,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmTenorRRGammaMeasures)
 	{
-<span class="nc bnc" id="L525" title="All 4 branches missed.">		if (null == mmTenorRRGammaMeasures || 0 == mmTenorRRGammaMeasures.size()) return false;</span>
+<span class="nc bnc" id="L551" title="All 4 branches missed.">		if (null == mmTenorRRGammaMeasures || 0 == mmTenorRRGammaMeasures.size()) return false;</span>
 
-<span class="nc" id="L527">		_mmTenorRRGammaMeasures = mmTenorRRGammaMeasures;</span>
-<span class="nc" id="L528">		return true;</span>
+<span class="nc" id="L553">		_mmTenorRRGammaMeasures = mmTenorRRGammaMeasures;</span>
+<span class="nc" id="L554">		return true;</span>
 	}
 
 	/**
@@ -538,7 +564,7 @@ public class ComponentMeasures {
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			customMeasures()
 	{
-<span class="nc" id="L541">		return _mmCustomMeasures;</span>
+<span class="nc" id="L567">		return _mmCustomMeasures;</span>
 	}
 
 	/**
@@ -554,10 +580,10 @@ public class ComponentMeasures {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 				mmCustomMeasures)
 	{
-<span class="nc bnc" id="L557" title="All 4 branches missed.">		if (null == mmCustomMeasures || 0 == mmCustomMeasures.size()) return false;</span>
+<span class="nc bnc" id="L583" title="All 4 branches missed.">		if (null == mmCustomMeasures || 0 == mmCustomMeasures.size()) return false;</span>
 
-<span class="nc" id="L559">		_mmCustomMeasures = mmCustomMeasures;</span>
-<span class="nc" id="L560">		return true;</span>
+<span class="nc" id="L585">		_mmCustomMeasures = mmCustomMeasures;</span>
+<span class="nc" id="L586">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

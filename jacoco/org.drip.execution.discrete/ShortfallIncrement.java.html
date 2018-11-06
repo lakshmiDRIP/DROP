@@ -6,33 +6,51 @@ package org.drip.execution.discrete;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,32 +67,45 @@ package org.drip.execution.discrete;
  */
 
 /**
- * ShortfallIncrement generates the Realized Incremental Stochastic Trading/Execution Short-fall and the
- *  corresponding Implementation Short-fall corresponding to the Trajectory of a Holdings Block that is to be
- *  executed over Time. The References are:
+ * &lt;i&gt;ShortfallIncrement&lt;/i&gt; generates the Realized Incremental Stochastic Trading/Execution Short-fall and
+ *  the corresponding Implementation Short-fall corresponding to the Trajectory of a Holdings Block that is
+ *  to be executed over Time. The References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
- *
- * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
- * 		Journal of Finance, 50, 1147-1174.
- *
- * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
- * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
- *
- * 	- Perold, A. F. (1988): The Implementation Short-fall: Paper versus Reality, Journal of Portfolio
- * 		Management, 14, 4-9.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional
+ * 				Trades &lt;i&gt;Journal of Finance&lt;/i&gt; &lt;b&gt;50&lt;/b&gt; 1147-1174
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 				Analysis of Institutional Equity Trades &lt;i&gt;Journal of Financial Economics&lt;/i&gt; &lt;b&gt;46&lt;/b&gt;
+ * 				265-292
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionIncrement {
-<span class="nc" id="L77">	private org.drip.execution.discrete.PriceIncrement _pi = null;</span>
+<span class="nc" id="L108">	private org.drip.execution.discrete.PriceIncrement _pi = null;</span>
 
 	/**
 	 * Generate a Standard ShortfallIncrement Instance
@@ -91,37 +122,37 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 		final double dblPreviousHoldings,
 		final double dblHoldingsIncrement)
 	{
-<span class="nc bnc" id="L94" title="All 4 branches missed.">		if (null == pi || !org.drip.quant.common.NumberUtil.IsValid (dblPreviousHoldings) ||</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblHoldingsIncrement))</span>
-<span class="nc" id="L96">			return null;</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null == pi || !org.drip.quant.common.NumberUtil.IsValid (dblPreviousHoldings) ||</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblHoldingsIncrement))</span>
+<span class="nc" id="L127">			return null;</span>
 
-<span class="nc" id="L98">		double dblCurrentHoldings = dblPreviousHoldings + dblHoldingsIncrement;</span>
+<span class="nc" id="L129">		double dblCurrentHoldings = dblPreviousHoldings + dblHoldingsIncrement;</span>
 
 		try {
-<span class="nc" id="L101">			org.drip.execution.evolution.MarketImpactComponent micStochastic = pi.stochastic();</span>
+<span class="nc" id="L132">			org.drip.execution.evolution.MarketImpactComponent micStochastic = pi.stochastic();</span>
 
-<span class="nc" id="L103">			org.drip.execution.evolution.MarketImpactComponent micDeterministic = pi.deterministic();</span>
+<span class="nc" id="L134">			org.drip.execution.evolution.MarketImpactComponent micDeterministic = pi.deterministic();</span>
 
-<span class="nc" id="L105">			return new ShortfallIncrement (</span>
+<span class="nc" id="L136">			return new ShortfallIncrement (</span>
 				new org.drip.execution.evolution.MarketImpactComponent (
-<span class="nc" id="L107">					micDeterministic.currentStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L108">					micDeterministic.previousStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L109">					pi.permanentImpactDrift() * dblCurrentHoldings,</span>
-<span class="nc" id="L110">					pi.temporaryImpactDrift() * dblHoldingsIncrement</span>
+<span class="nc" id="L138">					micDeterministic.currentStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L139">					micDeterministic.previousStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L140">					pi.permanentImpactDrift() * dblCurrentHoldings,</span>
+<span class="nc" id="L141">					pi.temporaryImpactDrift() * dblHoldingsIncrement</span>
 				),
 				new org.drip.execution.evolution.MarketImpactComponent (
-<span class="nc" id="L113">					micStochastic.currentStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L114">					micStochastic.previousStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L115">					pi.permanentImpactWander() * dblCurrentHoldings,</span>
-<span class="nc" id="L116">					pi.temporaryImpactWander() * dblHoldingsIncrement</span>
+<span class="nc" id="L144">					micStochastic.currentStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L145">					micStochastic.previousStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L146">					pi.permanentImpactWander() * dblCurrentHoldings,</span>
+<span class="nc" id="L147">					pi.temporaryImpactWander() * dblHoldingsIncrement</span>
 				),
 				pi
 			);
-<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L121">			e.printStackTrace();</span>
+<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L124">		return null;</span>
+<span class="nc" id="L155">		return null;</span>
 	}
 
 	private ShortfallIncrement (
@@ -130,10 +161,10 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 		final org.drip.execution.discrete.PriceIncrement pi)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L133">		super (micDeterministic, micStochastic);</span>
+<span class="nc" id="L164">		super (micDeterministic, micStochastic);</span>
 
-<span class="nc" id="L135">		_pi = pi;</span>
-<span class="nc" id="L136">	}</span>
+<span class="nc" id="L166">		_pi = pi;</span>
+<span class="nc" id="L167">	}</span>
 
 	/**
 	 * Compute the Implementation Short-fall
@@ -143,7 +174,7 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 
 	public double implementationShortfall()
 	{
-<span class="nc" id="L146">		return total();</span>
+<span class="nc" id="L177">		return total();</span>
 	}
 
 	/**
@@ -154,7 +185,7 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 
 	public org.drip.execution.discrete.PriceIncrement compositePriceIncrement()
 	{
-<span class="nc" id="L157">		return _pi;</span>
+<span class="nc" id="L188">		return _pi;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

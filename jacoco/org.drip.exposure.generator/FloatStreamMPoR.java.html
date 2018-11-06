@@ -6,31 +6,49 @@ package org.drip.exposure.generator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,23 +65,40 @@ package org.drip.exposure.generator;
  */
 
 /**
- * FloatStreamMPoR estimates the MPoR Variation Margin and the Trade Payments for the given Float Stream off
- *  of the Realized Market Path. The References are:
+ * &lt;i&gt;FloatStreamMPoR&lt;/i&gt; estimates the MPoR Variation Margin and the Trade Payments for the given Float
+ * Stream off of the Realized Market Path. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -85,96 +120,96 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 		final double notional)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L88">		super (</span>
+<span class="nc" id="L123">		super (</span>
 			stream,
 			notional
 		);
-<span class="nc" id="L92">	}</span>
+<span class="nc" id="L127">	}</span>
 
 	@Override public double variationMarginEstimate (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;FloatStreamMPoR::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;FloatStreamMPoR::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L104">		double variationMarginEstimate = 0.;</span>
+<span class="nc" id="L139">		double variationMarginEstimate = 0.;</span>
 
-<span class="nc" id="L106">		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();</span>
+<span class="nc" id="L141">		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();</span>
 
-<span class="nc" id="L108">		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();</span>
+<span class="nc" id="L143">		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
 		{
-<span class="nc" id="L112">			int periodEndDate = period.endDate();</span>
+<span class="nc" id="L147">			int periodEndDate = period.endDate();</span>
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			if (periodEndDate &lt; forwardDate)</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			if (periodEndDate &lt; forwardDate)</span>
 			{
-<span class="nc" id="L116">				continue;</span>
+<span class="nc" id="L151">				continue;</span>
 			}
 
 			/* org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
 				(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0); */
 
-<span class="nc" id="L122">			variationMarginEstimate += period.couponDCF() *</span>
-<span class="nc" id="L123">				period.notional (periodEndDate) *</span>
-<span class="nc" id="L124">				marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *</span>
+<span class="nc" id="L157">			variationMarginEstimate += period.couponDCF() *</span>
+<span class="nc" id="L158">				period.notional (periodEndDate) *</span>
+<span class="nc" id="L159">				marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *</span>
 				/* marketPath.marketVertex
 					(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
-<span class="nc" id="L127">				period.couponFactor (periodEndDate) *</span>
+<span class="nc" id="L162">				period.couponFactor (periodEndDate) *</span>
 				overnightReplicatorForward /
-<span class="nc" id="L129">				marketPath.marketVertex (period.payDate()).overnightReplicator();</span>
-<span class="nc" id="L130">		}</span>
+<span class="nc" id="L164">				marketPath.marketVertex (period.payDate()).overnightReplicator();</span>
+<span class="nc" id="L165">		}</span>
 
-<span class="nc" id="L132">		return variationMarginEstimate * notional();</span>
+<span class="nc" id="L167">		return variationMarginEstimate * notional();</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L141">			return null;</span>
+<span class="nc" id="L176">			return null;</span>
 		}
 
-<span class="nc" id="L144">		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();</span>
+<span class="nc" id="L179">		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
 		{
-<span class="nc" id="L148">			int periodPayDate = period.payDate();</span>
+<span class="nc" id="L183">			int periodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (periodPayDate == forwardDate)</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if (periodPayDate == forwardDate)</span>
 			{
-<span class="nc" id="L152">				int periodEndDate = period.endDate();</span>
+<span class="nc" id="L187">				int periodEndDate = period.endDate();</span>
 
 				/* org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
 					(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0); */
 
 				try
 				{
-<span class="nc" id="L159">					return org.drip.exposure.mpor.TradePayment.Standard (</span>
-<span class="nc" id="L160">						notional() * period.couponDCF() *</span>
-<span class="nc" id="L161">						period.notional (periodEndDate) *</span>
-<span class="nc" id="L162">						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *</span>
+<span class="nc" id="L194">					return org.drip.exposure.mpor.TradePayment.Standard (</span>
+<span class="nc" id="L195">						notional() * period.couponDCF() *</span>
+<span class="nc" id="L196">						period.notional (periodEndDate) *</span>
+<span class="nc" id="L197">						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *</span>
 						/* marketPath.marketVertex
 							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
-<span class="nc" id="L165">						period.couponFactor (periodEndDate)</span>
+<span class="nc" id="L200">						period.couponFactor (periodEndDate)</span>
 					);
 				}
-<span class="nc" id="L168">				catch (java.lang.Exception e)</span>
+<span class="nc" id="L203">				catch (java.lang.Exception e)</span>
 				{
-<span class="nc" id="L170">					e.printStackTrace();</span>
+<span class="nc" id="L205">					e.printStackTrace();</span>
 
-<span class="nc" id="L172">					return null;</span>
+<span class="nc" id="L207">					return null;</span>
 				}
 			}
-<span class="nc" id="L175">		}</span>
+<span class="nc" id="L210">		}</span>
 
-<span class="nc" id="L177">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
+<span class="nc" id="L212">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -182,69 +217,69 @@ public class FloatStreamMPoR  extends org.drip.exposure.generator.StreamMPoR
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (endDate &lt; startDate ||</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">		if (endDate &lt; startDate ||</span>
 			null == marketPath)
 		{
-<span class="nc" id="L188">			return null;</span>
+<span class="nc" id="L223">			return null;</span>
 		}
 
-<span class="nc" id="L191">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L192">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L226">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L227">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc" id="L195">		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();</span>
+<span class="nc" id="L230">		org.drip.state.identifier.ForwardLabel forwardLabel = stream().forwardLabel();</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
 		{
-<span class="nc" id="L199">			int periodPayDate = period.payDate();</span>
+<span class="nc" id="L234">			int periodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (periodPayDate &lt; startDate)</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			if (periodPayDate &lt; startDate)</span>
 			{
-<span class="nc" id="L203">				continue;</span>
+<span class="nc" id="L238">				continue;</span>
 			}
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (periodPayDate &gt; endDate)</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			if (periodPayDate &gt; endDate)</span>
 			{
-<span class="nc" id="L208">				break;</span>
+<span class="nc" id="L243">				break;</span>
 			}
 
-<span class="nc" id="L211">			int periodEndDate = period.endDate();</span>
+<span class="nc" id="L246">			int periodEndDate = period.endDate();</span>
 
 			/* org.drip.analytics.cashflow.ComposableUnitFloatingPeriod composableUnitFloatingPeriod =
 				(org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) period.periods().get (0); */
 
 			try
 			{
-<span class="nc" id="L218">				denseTradePaymentArray[periodPayDate - startDate] =</span>
-<span class="nc" id="L219">					org.drip.exposure.mpor.TradePayment.Standard (</span>
-<span class="nc" id="L220">						notional() * period.couponDCF() *</span>
-<span class="nc" id="L221">						period.notional (periodEndDate) *</span>
-<span class="nc" id="L222">						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *</span>
+<span class="nc" id="L253">				denseTradePaymentArray[periodPayDate - startDate] =</span>
+<span class="nc" id="L254">					org.drip.exposure.mpor.TradePayment.Standard (</span>
+<span class="nc" id="L255">						notional() * period.couponDCF() *</span>
+<span class="nc" id="L256">						period.notional (periodEndDate) *</span>
+<span class="nc" id="L257">						marketPath.marketVertex (period.startDate()).latentStateValue (forwardLabel) *</span>
 						/* marketPath.marketVertex
 							(composableUnitFloatingPeriod.referenceIndexPeriod().fixingDate()).positionManifestValue() * */
-<span class="nc" id="L225">						period.couponFactor (periodEndDate)</span>
+<span class="nc" id="L260">						period.couponFactor (periodEndDate)</span>
 					);
 			}
-<span class="nc" id="L228">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L263">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L230">				e.printStackTrace();</span>
+<span class="nc" id="L265">				e.printStackTrace();</span>
 
-<span class="nc" id="L232">				return null;</span>
-<span class="nc" id="L233">			}</span>
-<span class="nc" id="L234">		}</span>
+<span class="nc" id="L267">				return null;</span>
+<span class="nc" id="L268">			}</span>
+<span class="nc" id="L269">		}</span>
 
-<span class="nc" id="L236">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
-<span class="nc" id="L237">			(0.);</span>
+<span class="nc" id="L271">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L272">			(0.);</span>
 
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc bnc" id="L241" title="All 2 branches missed.">			if (null == denseTradePaymentArray[denseDateIndex])</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">			if (null == denseTradePaymentArray[denseDateIndex])</span>
 			{
-<span class="nc" id="L243">				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+<span class="nc" id="L278">				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
 			}
 		}
 
-<span class="nc" id="L247">		return denseTradePaymentArray;</span>
+<span class="nc" id="L282">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

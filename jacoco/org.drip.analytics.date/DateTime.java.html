@@ -6,6 +6,7 @@ package org.drip.analytics.date;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.analytics.date;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,18 +72,27 @@ package org.drip.analytics.date;
  */
 
 /**
- * This class provides the representation of the instantiation-time date and time objects. It provides the
- *  following functionality:
- *  - Instantiation-time and Explicit Date/Time Construction
- *  - Retrieval of Date/Time Fields
- *  - Serialization/De-serialization to and from Byte Arrays
+ * &lt;i&gt;DateTime&lt;/i&gt; provides the representation of the instantiation-time date and time objects. It provides
+ *  the following functionality:
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;Instantiation-time and Explicit Date/Time Construction&lt;/li&gt;
+ *  	&lt;li&gt;Retrieval of Date/Time Fields&lt;/li&gt;
+ *  	&lt;li&gt;Serialization/De-serialization to and from Byte Arrays&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date&quot;&gt;Date&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class DateTime {
-<span class="pc" id="L67">	private long _lTime = 0L;</span>
-<span class="pc" id="L68">	private double _dblDate = java.lang.Double.NaN;</span>
+<span class="pc" id="L94">	private long _lTime = 0L;</span>
+<span class="pc" id="L95">	private double _dblDate = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default constructor initializes the time and date to the current time and current date.
@@ -75,14 +102,14 @@ public class DateTime {
 
 	public DateTime()
 		throws java.lang.Exception
-<span class="fc" id="L78">	{</span>
-<span class="fc" id="L79">		_lTime = System.nanoTime();</span>
+<span class="fc" id="L105">	{</span>
+<span class="fc" id="L106">		_lTime = System.nanoTime();</span>
 
-<span class="fc" id="L81">		java.util.Date dtNow = new java.util.Date();</span>
+<span class="fc" id="L108">		java.util.Date dtNow = new java.util.Date();</span>
 
-<span class="fc" id="L83">		_dblDate = org.drip.analytics.date.DateUtil.ToJulian (org.drip.analytics.date.DateUtil.Year (dtNow),</span>
-<span class="fc" id="L84">			org.drip.analytics.date.DateUtil.Month (dtNow), org.drip.analytics.date.DateUtil.Day (dtNow));</span>
-<span class="fc" id="L85">	}</span>
+<span class="fc" id="L110">		_dblDate = org.drip.analytics.date.DateUtil.ToJulian (org.drip.analytics.date.DateUtil.Year (dtNow),</span>
+<span class="fc" id="L111">			org.drip.analytics.date.DateUtil.Month (dtNow), org.drip.analytics.date.DateUtil.Day (dtNow));</span>
+<span class="fc" id="L112">	}</span>
 
 	/**
 	 * Constructs DateTime from separate date and time inputs 
@@ -97,13 +124,13 @@ public class DateTime {
 		final double dblDate,
 		final long lTime)
 		throws java.lang.Exception
-<span class="nc" id="L100">	{</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))</span>
-<span class="nc" id="L102">			throw new java.lang.Exception (&quot;DateTime ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;DateTime ctr: Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L104">		_lTime = lTime;</span>
-<span class="nc" id="L105">		_dblDate = dblDate;</span>
-<span class="nc" id="L106">	}</span>
+<span class="nc" id="L131">		_lTime = lTime;</span>
+<span class="nc" id="L132">		_dblDate = dblDate;</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Date
@@ -113,7 +140,7 @@ public class DateTime {
 
 	public double date()
 	{
-<span class="nc" id="L116">		return _dblDate;</span>
+<span class="nc" id="L143">		return _dblDate;</span>
 	}
 
 	/**
@@ -124,7 +151,7 @@ public class DateTime {
 
 	public long time()
 	{
-<span class="nc" id="L127">		return _lTime;</span>
+<span class="nc" id="L154">		return _lTime;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

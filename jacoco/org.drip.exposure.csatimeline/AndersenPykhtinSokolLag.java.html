@@ -6,31 +6,49 @@ package org.drip.exposure.csatimeline;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,34 +65,49 @@ package org.drip.exposure.csatimeline;
  */
 
 /**
- * AndersenPykhtinSokolLag holds the Client/Dealer Margin Flow and Trade Flow Lags using the Parameterization
- * 	laid out in Andersen, Pykhtin, and Sokol (2017). The References are:
+ * &lt;i&gt;AndersenPykhtinSokolLag&lt;/i&gt; holds the Client/Dealer Margin Flow and Trade Flow Lags using the
+ * Parameterization laid out in Andersen, Pykhtin, and Sokol (2017). The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K Loukopoulus (2017): A Sound Modeling and Back-testing Framework
- *  	for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - BCBS (2015): Margin Requirements for Non-centrally Cleared Derivatives,
- *  	https://www.bis.org/bcbs/publ/d317.pdf.
- *  
- *  - Pykhtin, M. (2009): Modeling Credit Exposure for Collateralized Counter-parties, Journal of Credit
- *  	Risk, 5 (4) 3-27.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Anfuso, F., D. Aziz, P. Giltinan, and K Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  				Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			BCBS (2015): Margin Requirements for Non-centrally Cleared Derivatives
+ *  				https://www.bis.org/bcbs/publ/d317.pdf
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Pykhtin, M. (2009): Modeling Credit Exposure for Collateralized Counter-parties &lt;i&gt;Journal of
+ *  				Credit Risk&lt;/i&gt; &lt;b&gt;5 (4)&lt;/b&gt; 3-27
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline&quot;&gt;CSA Timeline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AndersenPykhtinSokolLag
 {
-<span class="nc" id="L74">	private int _clientTradePaymentDelay = -1;</span>
-<span class="nc" id="L75">	private int _dealerTradePaymentDelay = -1;</span>
-<span class="nc" id="L76">	private int _clientVariationMarginPostingDelay = -1;</span>
-<span class="nc" id="L77">	private int _dealerVariationMarginPostingDelay = -1;</span>
+<span class="nc" id="L107">	private int _clientTradePaymentDelay = -1;</span>
+<span class="nc" id="L108">	private int _dealerTradePaymentDelay = -1;</span>
+<span class="nc" id="L109">	private int _clientVariationMarginPostingDelay = -1;</span>
+<span class="nc" id="L110">	private int _dealerVariationMarginPostingDelay = -1;</span>
 
 	/**
 	 * Generate the &quot;Conservative&quot; Parameterization of AndersenPykhtinSokolLag
@@ -86,19 +119,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L89">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L122">			return new AndersenPykhtinSokolLag (</span>
 				15,
 				9,
 				8,
 				3
 			);
 		}
-<span class="nc" id="L96">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L129">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L98">			e.printStackTrace();</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L101">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	/**
@@ -111,19 +144,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L114">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L147">			return new AndersenPykhtinSokolLag (</span>
 				7,
 				6,
 				4,
 				4
 			);
 		}
-<span class="nc" id="L121">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L154">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L123">			e.printStackTrace();</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L126">		return null;</span>
+<span class="nc" id="L159">		return null;</span>
 	}
 
 	/**
@@ -136,19 +169,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L139">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L172">			return new AndersenPykhtinSokolLag (</span>
 				10,
 				10,
 				0,
 				0
 			);
 		}
-<span class="nc" id="L146">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L179">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="nc" id="L181">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L151">		return null;</span>
+<span class="nc" id="L184">		return null;</span>
 	}
 
 	/**
@@ -161,19 +194,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L164">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L197">			return new AndersenPykhtinSokolLag (</span>
 				10,
 				10,
 				10,
 				10
 			);
 		}
-<span class="nc" id="L171">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L173">			e.printStackTrace();</span>
+<span class="nc" id="L206">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L176">		return null;</span>
+<span class="nc" id="L209">		return null;</span>
 	}
 
 	/**
@@ -193,8 +226,8 @@ public class AndersenPykhtinSokolLag
 		final int clientTradePaymentDelay,
 		final int dealerTradePaymentDelay)
 		throws java.lang.Exception
-<span class="nc" id="L196">	{</span>
-<span class="nc bnc" id="L197" title="All 14 branches missed.">		if (0 &gt; (_clientVariationMarginPostingDelay = clientVariationMarginPostingDelay) ||</span>
+<span class="nc" id="L229">	{</span>
+<span class="nc bnc" id="L230" title="All 14 branches missed.">		if (0 &gt; (_clientVariationMarginPostingDelay = clientVariationMarginPostingDelay) ||</span>
 			0 &gt; (_dealerVariationMarginPostingDelay = dealerVariationMarginPostingDelay) ||
 			0 &gt; (_clientTradePaymentDelay = clientTradePaymentDelay) ||
 			0 &gt; (_dealerTradePaymentDelay = dealerTradePaymentDelay) ||
@@ -202,9 +235,9 @@ public class AndersenPykhtinSokolLag
 			_dealerVariationMarginPostingDelay &lt; _clientTradePaymentDelay ||
 			_clientTradePaymentDelay &lt; _dealerTradePaymentDelay)
 		{
-<span class="nc" id="L205">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolLag Constuctor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L238">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolLag Constuctor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L207">	}</span>
+<span class="nc" id="L240">	}</span>
 
 	/**
 	 * Retrieve the Client Variation Margin Posting Delay
@@ -214,7 +247,7 @@ public class AndersenPykhtinSokolLag
 
 	public int clientVariationMarginPostingDelay()
 	{
-<span class="nc" id="L217">		return _clientVariationMarginPostingDelay;</span>
+<span class="nc" id="L250">		return _clientVariationMarginPostingDelay;</span>
 	}
 
 	/**
@@ -225,7 +258,7 @@ public class AndersenPykhtinSokolLag
 
 	public int dealerVariationMarginPostingDelay()
 	{
-<span class="nc" id="L228">		return _dealerVariationMarginPostingDelay;</span>
+<span class="nc" id="L261">		return _dealerVariationMarginPostingDelay;</span>
 	}
 
 	/**
@@ -236,7 +269,7 @@ public class AndersenPykhtinSokolLag
 
 	public int clientTradePaymentDelay()
 	{
-<span class="nc" id="L239">		return _clientTradePaymentDelay;</span>
+<span class="nc" id="L272">		return _clientTradePaymentDelay;</span>
 	}
 
 	/**
@@ -247,7 +280,7 @@ public class AndersenPykhtinSokolLag
 
 	public int dealerTradePaymentDelay()
 	{
-<span class="nc" id="L250">		return _dealerTradePaymentDelay;</span>
+<span class="nc" id="L283">		return _dealerTradePaymentDelay;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,34 +6,52 @@ package org.drip.dynamics.hullwhite;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,30 +68,35 @@ package org.drip.dynamics.hullwhite;
  */
 
 /**
- * TrinomialTreeSequenceMetrics records the Evolution Metrics of the Hull-White Model Trinomial Tree
+ * &lt;i&gt;TrinomialTreeSequenceMetrics&lt;/i&gt; records the Evolution Metrics of the Hull-White Model Trinomial Tree
  *  Sequence.
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class TrinomialTreeSequenceMetrics {
-<span class="fc" id="L60">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapSourceTargetTransitionProbability = new</span>
+<span class="fc" id="L83">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapSourceTargetTransitionProbability = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L63">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapTargetSourceTransitionProbability = new</span>
+<span class="fc" id="L86">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapTargetSourceTransitionProbability = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L66">	private java.util.Map&lt;java.lang.String, org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics&gt; _mapTTNM =</span>
+<span class="fc" id="L89">	private java.util.Map&lt;java.lang.String, org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics&gt; _mapTTNM =</span>
 		new java.util.HashMap&lt;java.lang.String, org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics&gt;();
 
-<span class="fc" id="L69">	private java.util.Map&lt;java.lang.Long, org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics&gt;</span>
+<span class="fc" id="L92">	private java.util.Map&lt;java.lang.Long, org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics&gt;</span>
 		_mapTTTM = new java.util.HashMap&lt;java.lang.Long,
 			org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics&gt;();
 
 	private static final java.lang.String NodeMetricsKey (
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnm)
 	{
-<span class="fc" id="L76">		return hwnm.timeIndex() + &quot;,&quot; + hwnm.xStochasticIndex();</span>
+<span class="fc" id="L99">		return hwnm.timeIndex() + &quot;,&quot; + hwnm.xStochasticIndex();</span>
 	}
 
 	/**
@@ -81,8 +104,8 @@ public class TrinomialTreeSequenceMetrics {
 	 */
 
 	public TrinomialTreeSequenceMetrics()
-<span class="fc" id="L84">	{</span>
-<span class="fc" id="L85">	}</span>
+<span class="fc" id="L107">	{</span>
+<span class="fc" id="L108">	}</span>
 
 	/**
 	 * Add a Path Transition Metrics Instance
@@ -95,11 +118,11 @@ public class TrinomialTreeSequenceMetrics {
 	public boolean addTransitionMetrics (
 		final org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics hwtm)
 	{
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		if (null == hwtm) return false;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == hwtm) return false;</span>
 
-<span class="fc" id="L100">		_mapTTTM.put (hwtm.treeTimeIndex(), hwtm);</span>
+<span class="fc" id="L123">		_mapTTTM.put (hwtm.treeTimeIndex(), hwtm);</span>
 
-<span class="fc" id="L102">		return true;</span>
+<span class="fc" id="L125">		return true;</span>
 	}
 
 	/**
@@ -113,7 +136,7 @@ public class TrinomialTreeSequenceMetrics {
 	public org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics transitionMetrics (
 		final long lTreeTimeIndex)
 	{
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		return _mapTTTM.containsKey (lTreeTimeIndex) ? _mapTTTM.get (lTreeTimeIndex) : null;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		return _mapTTTM.containsKey (lTreeTimeIndex) ? _mapTTTM.get (lTreeTimeIndex) : null;</span>
 	}
 
 	/**
@@ -125,7 +148,7 @@ public class TrinomialTreeSequenceMetrics {
 	public java.util.Map&lt;java.lang.Long, org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics&gt;
 		transitionMetrics()
 	{
-<span class="nc" id="L128">		return _mapTTTM;</span>
+<span class="nc" id="L151">		return _mapTTTM;</span>
 	}
 
 	/**
@@ -139,11 +162,11 @@ public class TrinomialTreeSequenceMetrics {
 	public boolean addNodeMetrics (
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnm)
 	{
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (null == hwnm) return false;</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (null == hwnm) return false;</span>
 
-<span class="fc" id="L144">		_mapTTNM.put (NodeMetricsKey (hwnm), hwnm);</span>
+<span class="fc" id="L167">		_mapTTNM.put (NodeMetricsKey (hwnm), hwnm);</span>
 
-<span class="fc" id="L146">		return true;</span>
+<span class="fc" id="L169">		return true;</span>
 	}
 
 	/**
@@ -159,9 +182,9 @@ public class TrinomialTreeSequenceMetrics {
 		final long lTreeTimeIndex,
 		final long lTreeStochasticIndex)
 	{
-<span class="nc" id="L162">		java.lang.String strKey = lTreeTimeIndex + &quot;,&quot; + lTreeStochasticIndex;</span>
+<span class="nc" id="L185">		java.lang.String strKey = lTreeTimeIndex + &quot;,&quot; + lTreeStochasticIndex;</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		return _mapTTNM.containsKey (strKey) ? _mapTTNM.get (strKey) : null;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		return _mapTTNM.containsKey (strKey) ? _mapTTNM.get (strKey) : null;</span>
 	}
 
 	/**
@@ -173,7 +196,7 @@ public class TrinomialTreeSequenceMetrics {
 	public java.util.Map&lt;java.lang.String, org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics&gt;
 		nodeMetrics()
 	{
-<span class="nc" id="L176">		return _mapTTNM;</span>
+<span class="nc" id="L199">		return _mapTTNM;</span>
 	}
 
 	/**
@@ -191,21 +214,21 @@ public class TrinomialTreeSequenceMetrics {
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmTarget,
 		final double dblTransitionProbability)
 	{
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">		if (null == hwnmSource || null == hwnmTarget || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L195" title="3 of 6 branches missed.">			(dblTransitionProbability) || 0. &gt;= dblTransitionProbability || 1. &lt; dblTransitionProbability)</span>
-<span class="nc" id="L196">			return false;</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == hwnmSource || null == hwnmTarget || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L218" title="3 of 6 branches missed.">			(dblTransitionProbability) || 0. &gt;= dblTransitionProbability || 1. &lt; dblTransitionProbability)</span>
+<span class="nc" id="L219">			return false;</span>
 
-<span class="fc" id="L198">		java.lang.String strSourceNodeKey = NodeMetricsKey (hwnmSource);</span>
+<span class="fc" id="L221">		java.lang.String strSourceNodeKey = NodeMetricsKey (hwnmSource);</span>
 
-<span class="fc" id="L200">		java.lang.String strTargetNodeKey = NodeMetricsKey (hwnmTarget);</span>
+<span class="fc" id="L223">		java.lang.String strTargetNodeKey = NodeMetricsKey (hwnmTarget);</span>
 
-<span class="fc" id="L202">		_mapSourceTargetTransitionProbability.put (strSourceNodeKey + &quot;#&quot; + strTargetNodeKey,</span>
-<span class="fc" id="L203">			dblTransitionProbability);</span>
+<span class="fc" id="L225">		_mapSourceTargetTransitionProbability.put (strSourceNodeKey + &quot;#&quot; + strTargetNodeKey,</span>
+<span class="fc" id="L226">			dblTransitionProbability);</span>
 
-<span class="fc" id="L205">		_mapTargetSourceTransitionProbability.put (strTargetNodeKey + &quot;#&quot; + strSourceNodeKey,</span>
-<span class="fc" id="L206">			dblTransitionProbability);</span>
+<span class="fc" id="L228">		_mapTargetSourceTransitionProbability.put (strTargetNodeKey + &quot;#&quot; + strSourceNodeKey,</span>
+<span class="fc" id="L229">			dblTransitionProbability);</span>
 
-<span class="fc" id="L208">		return true;</span>
+<span class="fc" id="L231">		return true;</span>
 	}
 
 	/**
@@ -224,17 +247,17 @@ public class TrinomialTreeSequenceMetrics {
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmTarget)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L227" title="All 4 branches missed.">		if (null == hwnmSource || null == hwnmTarget)</span>
-<span class="nc" id="L228">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L250" title="All 4 branches missed.">		if (null == hwnmSource || null == hwnmTarget)</span>
+<span class="nc" id="L251">			throw new java.lang.Exception</span>
 				(&quot;TrinomialTreeSequenceMetrics::sourceTargetTransitionProbability =&gt; Invalid Inputs!&quot;);
 
-<span class="nc" id="L231">		java.lang.String strKey = NodeMetricsKey (hwnmSource) + &quot;#&quot; + NodeMetricsKey (hwnmTarget);</span>
+<span class="nc" id="L254">		java.lang.String strKey = NodeMetricsKey (hwnmSource) + &quot;#&quot; + NodeMetricsKey (hwnmTarget);</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (!_mapSourceTargetTransitionProbability.containsKey (strKey))</span>
-<span class="nc" id="L234">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (!_mapSourceTargetTransitionProbability.containsKey (strKey))</span>
+<span class="nc" id="L257">			throw new java.lang.Exception</span>
 				(&quot;TrinomialTreeSequenceMetrics::sourceTargetTransitionProbability =&gt; No Transition Entry!&quot;);
 
-<span class="nc" id="L237">		return _mapSourceTargetTransitionProbability.get (strKey);</span>
+<span class="nc" id="L260">		return _mapSourceTargetTransitionProbability.get (strKey);</span>
 	}
 
 	/**
@@ -245,7 +268,7 @@ public class TrinomialTreeSequenceMetrics {
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; sourceTargetTransitionProbability()
 	{
-<span class="fc" id="L248">		return _mapSourceTargetTransitionProbability;</span>
+<span class="fc" id="L271">		return _mapSourceTargetTransitionProbability;</span>
 	}
 
 	/**
@@ -264,17 +287,17 @@ public class TrinomialTreeSequenceMetrics {
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmSource)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L267" title="All 4 branches missed.">		if (null == hwnmSource || null == hwnmTarget)</span>
-<span class="nc" id="L268">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L290" title="All 4 branches missed.">		if (null == hwnmSource || null == hwnmTarget)</span>
+<span class="nc" id="L291">			throw new java.lang.Exception</span>
 				(&quot;TrinomialTreeSequenceMetrics::targetSourceTransitionProbability =&gt; Invalid Inputs!&quot;);
 
-<span class="nc" id="L271">		java.lang.String strKey = NodeMetricsKey (hwnmTarget) + &quot;#&quot; + NodeMetricsKey (hwnmSource);</span>
+<span class="nc" id="L294">		java.lang.String strKey = NodeMetricsKey (hwnmTarget) + &quot;#&quot; + NodeMetricsKey (hwnmSource);</span>
 
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (!_mapTargetSourceTransitionProbability.containsKey (strKey))</span>
-<span class="nc" id="L274">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">		if (!_mapTargetSourceTransitionProbability.containsKey (strKey))</span>
+<span class="nc" id="L297">			throw new java.lang.Exception</span>
 				(&quot;TrinomialTreeSequenceMetrics::targetSourceTransitionProbability =&gt; No Transition Entry!&quot;);
 
-<span class="nc" id="L277">		return _mapTargetSourceTransitionProbability.get (strKey);</span>
+<span class="nc" id="L300">		return _mapTargetSourceTransitionProbability.get (strKey);</span>
 	}
 
 	/**
@@ -285,7 +308,7 @@ public class TrinomialTreeSequenceMetrics {
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; targetSourceTransitionProbability()
 	{
-<span class="fc" id="L288">		return _mapTargetSourceTransitionProbability;</span>
+<span class="fc" id="L311">		return _mapTargetSourceTransitionProbability;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,34 +6,52 @@ package org.drip.analytics.support;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,12 +68,18 @@ package org.drip.analytics.support;
  */
 
 /**
- * FuturesHelper contains the Collection of the Futures Valuation related Utility Functions.
+ * &lt;i&gt;FuturesHelper&lt;/i&gt; contains the Collection of the Futures Valuation related Utility Functions.
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L58">public class FuturesHelper {</span>
+<span class="nc" id="L82">public class FuturesHelper {</span>
 
 	/**
 	 * Compute the Forward Bond Price Using the Implied Bond Yield
@@ -81,10 +105,10 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (null == bond)</span>
-<span class="nc" id="L85">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondYieldPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == bond)</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondYieldPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L87">		return bond.priceFromYield (valParamsForward, csqc, vcp, bond.yieldFromPrice (valParamsSpot, csqc,</span>
+<span class="fc" id="L111">		return bond.priceFromYield (valParamsForward, csqc, vcp, bond.yieldFromPrice (valParamsSpot, csqc,</span>
 			vcp, dblCleanPrice));
 	}
 
@@ -112,10 +136,10 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (null == bond)</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondZSpreadPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (null == bond)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondZSpreadPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L118">		return bond.priceFromZSpread (valParamsForward, csqc, vcp, bond.zSpreadFromPrice (valParamsSpot,</span>
+<span class="nc" id="L142">		return bond.priceFromZSpread (valParamsForward, csqc, vcp, bond.zSpreadFromPrice (valParamsSpot,</span>
 			csqc, vcp, dblCleanPrice));
 	}
 
@@ -143,10 +167,10 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == bond)</span>
-<span class="nc" id="L147">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondOASPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (null == bond)</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondOASPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L149">		return bond.priceFromOAS (valParamsForward, csqc, vcp, bond.oasFromPrice (valParamsSpot, csqc, vcp,</span>
+<span class="nc" id="L173">		return bond.priceFromOAS (valParamsForward, csqc, vcp, bond.oasFromPrice (valParamsSpot, csqc, vcp,</span>
 			dblCleanPrice));
 	}
 
@@ -174,11 +198,11 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (null == bond)</span>
-<span class="nc" id="L178">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondCreditPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (null == bond)</span>
+<span class="nc" id="L202">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondCreditPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L180">		return bond.priceFromCreditBasis (valParamsForward, csqc, vcp, bond.creditBasisFromPrice</span>
-<span class="nc" id="L181">			(valParamsSpot, csqc, vcp, dblCleanPrice));</span>
+<span class="nc" id="L204">		return bond.priceFromCreditBasis (valParamsForward, csqc, vcp, bond.creditBasisFromPrice</span>
+<span class="nc" id="L205">			(valParamsSpot, csqc, vcp, dblCleanPrice));</span>
 	}
 
 	/**
@@ -203,11 +227,11 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L206" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
-<span class="nc" id="L207">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondYieldPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L230" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
+<span class="nc" id="L231">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondYieldPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L209">		return bond.priceFromYield (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()), csqc,</span>
-<span class="nc" id="L210">			null, bond.yieldFromPrice (org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), csqc,</span>
+<span class="nc" id="L233">		return bond.priceFromYield (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()), csqc,</span>
+<span class="nc" id="L234">			null, bond.yieldFromPrice (org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), csqc,</span>
 				null, dblCleanPrice));
 	}
 
@@ -233,12 +257,12 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L236" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
-<span class="nc" id="L237">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondZSpreadPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L260" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
+<span class="nc" id="L261">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondZSpreadPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L239">		return bond.priceFromZSpread (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()),</span>
-<span class="nc" id="L240">			csqc, null, bond.zSpreadFromPrice (org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L241">				(dtSpot.julian()), csqc, null, dblCleanPrice));</span>
+<span class="nc" id="L263">		return bond.priceFromZSpread (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()),</span>
+<span class="nc" id="L264">			csqc, null, bond.zSpreadFromPrice (org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="nc" id="L265">				(dtSpot.julian()), csqc, null, dblCleanPrice));</span>
 	}
 
 	/**
@@ -263,11 +287,11 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L266" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
-<span class="nc" id="L267">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondOASPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L290" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
+<span class="nc" id="L291">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondOASPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L269">		return bond.priceFromOAS (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()), csqc,</span>
-<span class="nc" id="L270">			null, bond.oasFromPrice (org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), csqc,</span>
+<span class="nc" id="L293">		return bond.priceFromOAS (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()), csqc,</span>
+<span class="nc" id="L294">			null, bond.oasFromPrice (org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), csqc,</span>
 				null, dblCleanPrice));
 	}
 
@@ -293,12 +317,12 @@ package org.drip.analytics.support;
 		final double dblCleanPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L296" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
-<span class="nc" id="L297">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondCreditPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L320" title="All 6 branches missed.">		if (null == bond || null == dtSpot || null == dtForward)</span>
+<span class="nc" id="L321">			throw new java.lang.Exception (&quot;FuturesHelper::ForwardBondCreditPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L299">		return bond.priceFromCreditBasis (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()),</span>
-<span class="nc" id="L300">			csqc, null, bond.creditBasisFromPrice (org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L301">				(dtSpot.julian()), csqc, null, dblCleanPrice));</span>
+<span class="nc" id="L323">		return bond.priceFromCreditBasis (org.drip.param.valuation.ValuationParams.Spot (dtForward.julian()),</span>
+<span class="nc" id="L324">			csqc, null, bond.creditBasisFromPrice (org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="nc" id="L325">				(dtSpot.julian()), csqc, null, dblCleanPrice));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
