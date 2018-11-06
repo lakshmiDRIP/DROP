@@ -22,7 +22,7 @@ DROP Analytics Event Day Package holds the Fixed/Variable Custom Holiday Creatio
  <i>Static</i> implements a complete date as a specific holiday.
 
  * [***Variable***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/Variable.java)
- <i>Variable</i> class contains the rule characterizing the variable holiday’s month, day in week, week in
+ <i>Variable</i> class contains the rule characterizing the variable holiday month, day in week, week in
  month, and the weekend days. Specific holidays in the given year are generated using these rules.
 
  * [***Weekend***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/Weekend.java)
