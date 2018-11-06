@@ -12,7 +12,7 @@ DROP Analytics Event Day Package contains Event Day Creators - i.e., Fixed/Varia
 
  * [***DateInMonth***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/DateInMonth.java)
  <i>DateInMonth</i> exports Functionality that generates the specific Event Date inside of the specified
- Month/Year.
+ Month or Year.
 
  * [***Fixed***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/Fixed.java)
  <i>Fixed</i> contains the fixed holiday’s date and month. Holidays are generated on a per-year basis by
