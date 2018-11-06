@@ -18,6 +18,13 @@ DROP Analytics Event Day Package holds the Fixed/Variable Custom Holiday Creatio
  <i>Locale</i> contains the set of regular holidays and the weekend holidays for a location. It also provides
  the functionality to add custom holidays and weekends.
 
+ * [***Static***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/Static.java)
+ <i>Static</i> implements a complete date as a specific holiday.
+
+ * [***Weekend***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/Weekend.java)
+ <i>Weekend</i> holds the left and the right weekend days. It provides functionality to retrieve them, check
+ if the given day is a weekend, and serialize/de-serialize weekend days.
+
 
 ## DROP Specifications
  * Main                     => https://lakshmidrip.github.io/DROP/
