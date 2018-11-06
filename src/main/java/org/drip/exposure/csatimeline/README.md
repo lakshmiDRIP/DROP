@@ -6,21 +6,21 @@ DROP Exposure CSA Time-line Package implements the Time-line of IMA/CSA Event Da
 
 ## Class Components
 
- * [***AndersenPykhtinSokolLag***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/AndersenPykhtinSokolLag.java)
+ * [***Andersen Pykhtin Sokol Lag***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/AndersenPykhtinSokolLag.java)
  <i>AndersenPykhtinSokolLag</i> holds the Client/Dealer Margin Flow and Trade Flow Lags using the
  Parameterization laid out in Andersen, Pykhtin, and Sokol (2017).
 
- * [***EventDate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/EventDate.java)
+ * [***Event Date***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/EventDate.java)
  <i>EventDate</i> holds a specific Date composing BCBS/IOSCO prescribed Events Time-line occurring Margin
  Period.
 
- * [***EventDateBuilder***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/EventDateBuilder.java)
+ * [***Event Date Builder***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/EventDateBuilder.java)
  <i>EventDateBuilder</i> builds the CSA BCBS/IOSCO Dates prescribed Events Time-line occurring Margin Period.
 
- * [***EventSequence***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/EventSequence.java)
+ * [***Event Sequence***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/EventSequence.java)
  <i>EventSequence</i> holds the BCBS/IOSCO prescribed Events Time-line occurring Margin Period.
 
- * [***LastFlowDates***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/LastFlowDates.java)
+ * [***Last Flow Dates***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/LastFlowDates.java)
  <i>LastFlowDates</i> holds the Last Client/Dealer Margin Flow and Trade Flow Dates using the
  Parameterization laid out in Andersen, Pykhtin, and Sokol (2017).
 
