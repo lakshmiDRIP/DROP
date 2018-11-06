@@ -14,6 +14,10 @@ DROP Analytics Event Day Package holds the Fixed/Variable Custom Holiday Creatio
  <i>DateInMonth</i> exports Functionality that generates the specific Event Date inside of the specified
  Month/Year.
 
+ * [***Locale***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/Locale.java)
+ <i>Locale</i> contains the set of regular holidays and the weekend holidays for a location. It also provides
+ the functionality to add custom holidays and weekends.
+
 
 ## DROP Specifications
  * Main                     => https://lakshmidrip.github.io/DROP/
