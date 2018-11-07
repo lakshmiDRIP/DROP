@@ -68,10 +68,10 @@ package org.drip.exposure.universe;
 
 public class MarketPath
 {
-<span class="nc" id="L71">	private org.drip.analytics.date.JulianDate[] _vertexDateArray = null;</span>
-<span class="nc" id="L72">	private org.drip.exposure.universe.MarketVertex _epochalMarketVertex = null;</span>
-<span class="nc" id="L73">	private org.drip.exposure.universe.MarketVertex _terminalMarketVertex = null;</span>
-<span class="nc" id="L74">	private java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; _marketVertexTrajectory</span>
+<span class="fc" id="L71">	private org.drip.analytics.date.JulianDate[] _vertexDateArray = null;</span>
+<span class="fc" id="L72">	private org.drip.exposure.universe.MarketVertex _epochalMarketVertex = null;</span>
+<span class="fc" id="L73">	private org.drip.exposure.universe.MarketVertex _terminalMarketVertex = null;</span>
+<span class="fc" id="L74">	private java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; _marketVertexTrajectory</span>
 		= null;
 
 	/**
@@ -85,39 +85,39 @@ public class MarketPath
 	public static final MarketPath FromMarketVertexArray (
 		final org.drip.exposure.universe.MarketVertex[] marketVertexArray)
 	{
-<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (null == marketVertexArray)</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == marketVertexArray)</span>
 		{
 <span class="nc" id="L90">			return null;</span>
 		}
 
-<span class="nc" id="L93">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L93">		int vertexCount = marketVertexArray.length;</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (0 == vertexCount)</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (0 == vertexCount)</span>
 		{
 <span class="nc" id="L97">			return null;</span>
 		}
 
-<span class="nc" id="L100">		java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexTrajectory =</span>
+<span class="fc" id="L100">		java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexTrajectory =</span>
 			new java.util.TreeMap&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;();
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L105">			int marketVertexDate = marketVertexArray[vertexIndex].anchorDate().julian();</span>
+<span class="fc" id="L105">			int marketVertexDate = marketVertexArray[vertexIndex].anchorDate().julian();</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">			if (marketVertexTrajectory.containsKey (marketVertexDate))</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			if (marketVertexTrajectory.containsKey (marketVertexDate))</span>
 			{
 <span class="nc" id="L109">				return null;</span>
 			}
 
-<span class="nc" id="L112">			marketVertexTrajectory.put (</span>
-<span class="nc" id="L113">				marketVertexDate,</span>
+<span class="fc" id="L112">			marketVertexTrajectory.put (</span>
+<span class="fc" id="L113">				marketVertexDate,</span>
 				marketVertexArray[vertexIndex]
 			);
 		}
 
 		try
 		{
-<span class="nc" id="L120">			return new MarketPath (marketVertexTrajectory);</span>
+<span class="fc" id="L120">			return new MarketPath (marketVertexTrajectory);</span>
 		}
 <span class="nc" id="L122">		catch (java.lang.Exception e)</span>
 		{
@@ -138,40 +138,40 @@ public class MarketPath
 	public MarketPath (
 		final java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexTrajectory)
 		throws java.lang.Exception
-<span class="nc" id="L141">	{</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == (_marketVertexTrajectory = marketVertexTrajectory))</span>
+<span class="fc" id="L141">	{</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (null == (_marketVertexTrajectory = marketVertexTrajectory))</span>
 		{
 <span class="nc" id="L144">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L147">		int vertexCount = _marketVertexTrajectory.size();</span>
+<span class="fc" id="L147">		int vertexCount = _marketVertexTrajectory.size();</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (0 == _marketVertexTrajectory.size())</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (0 == _marketVertexTrajectory.size())</span>
 		{
 <span class="nc" id="L151">			throw new java.lang.Exception (&quot;MarketPath Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L154">		int vertexIndex = 0;</span>
-<span class="nc" id="L155">		_vertexDateArray = new org.drip.analytics.date.JulianDate[vertexCount];</span>
+<span class="fc" id="L154">		int vertexIndex = 0;</span>
+<span class="fc" id="L155">		_vertexDateArray = new org.drip.analytics.date.JulianDate[vertexCount];</span>
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			marketVertexMapEntry : _marketVertexTrajectory.entrySet())</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			marketVertexMapEntry : _marketVertexTrajectory.entrySet())</span>
 		{
-<span class="nc" id="L160">			org.drip.exposure.universe.MarketVertex marketVertex = marketVertexMapEntry.getValue();</span>
+<span class="fc" id="L160">			org.drip.exposure.universe.MarketVertex marketVertex = marketVertexMapEntry.getValue();</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (0 == vertexIndex)</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">			if (0 == vertexIndex)</span>
 			{
-<span class="nc" id="L164">				_epochalMarketVertex = marketVertex;</span>
+<span class="fc" id="L164">				_epochalMarketVertex = marketVertex;</span>
 			}
 
-<span class="nc" id="L167">			_vertexDateArray[vertexIndex++] = marketVertex.anchorDate();</span>
+<span class="fc" id="L167">			_vertexDateArray[vertexIndex++] = marketVertex.anchorDate();</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">			if (vertexCount == vertexIndex)</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">			if (vertexCount == vertexIndex)</span>
 			{
-<span class="nc" id="L171">				_terminalMarketVertex = marketVertex;</span>
+<span class="fc" id="L171">				_terminalMarketVertex = marketVertex;</span>
 			}
-<span class="nc" id="L173">		}</span>
-<span class="nc" id="L174">	}</span>
+<span class="fc" id="L173">		}</span>
+<span class="fc" id="L174">	}</span>
 
 	/**
 	 * Retrieve the Array of the Vertex Anchor Dates
@@ -181,7 +181,7 @@ public class MarketPath
 
 	public org.drip.analytics.date.JulianDate[] anchorDates()
 	{
-<span class="nc" id="L184">		return _vertexDateArray;</span>
+<span class="fc" id="L184">		return _vertexDateArray;</span>
 	}
 
 	/**
@@ -203,19 +203,19 @@ public class MarketPath
 
 	public org.drip.exposure.universe.MarketVertex[] marketVertexArray()
 	{
-<span class="nc" id="L206">		int vertexCount = _marketVertexTrajectory.size();</span>
+<span class="fc" id="L206">		int vertexCount = _marketVertexTrajectory.size();</span>
 
-<span class="nc" id="L208">		int vertexIndex = 0;</span>
-<span class="nc" id="L209">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = new</span>
+<span class="fc" id="L208">		int vertexIndex = 0;</span>
+<span class="fc" id="L209">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = new</span>
 			org.drip.exposure.universe.MarketVertex[vertexCount];
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;
-<span class="nc bnc" id="L213" title="All 2 branches missed.">			marketVertexMapEntry : _marketVertexTrajectory.entrySet())</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">			marketVertexMapEntry : _marketVertexTrajectory.entrySet())</span>
 		{
-<span class="nc" id="L215">			marketVertexArray[vertexIndex++] = marketVertexMapEntry.getValue();</span>
-<span class="nc" id="L216">		}</span>
+<span class="fc" id="L215">			marketVertexArray[vertexIndex++] = marketVertexMapEntry.getValue();</span>
+<span class="fc" id="L216">		}</span>
 
-<span class="nc" id="L218">		return marketVertexArray;</span>
+<span class="fc" id="L218">		return marketVertexArray;</span>
 	}
 
 	/**
@@ -226,7 +226,7 @@ public class MarketPath
 
 	public org.drip.exposure.universe.MarketVertex epochalMarketVertex()
 	{
-<span class="nc" id="L229">		return _epochalMarketVertex;</span>
+<span class="fc" id="L229">		return _epochalMarketVertex;</span>
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class MarketPath
 	public boolean containsDate (
 		final int vertexDate)
 	{
-<span class="nc" id="L254">		return _marketVertexTrajectory.containsKey (vertexDate);</span>
+<span class="fc" id="L254">		return _marketVertexTrajectory.containsKey (vertexDate);</span>
 	}
 
 	/**
@@ -265,7 +265,7 @@ public class MarketPath
 	public org.drip.exposure.universe.MarketVertex marketVertex (
 		final int vertexDate)
 	{
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		return containsDate (vertexDate) ? _marketVertexTrajectory.get (vertexDate) : null;</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">		return containsDate (vertexDate) ? _marketVertexTrajectory.get (vertexDate) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

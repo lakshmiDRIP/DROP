@@ -6,32 +6,50 @@ package org.drip.exposure.csadynamics;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,30 +66,48 @@ package org.drip.exposure.csadynamics;
  */
 
 /**
- * FundingBasisEvolver implements a Two Factor Stochastic Funding Model Evolver with a Log Normal Forward
- * 	Process and a Mean Reverting Diffusion Process for the Funding Spread. The References are:
+ * &lt;i&gt;FundingBasisEvolver&lt;/i&gt; implements a Two Factor Stochastic Funding Model Evolver with a Log Normal
+ *  Forward Process and a Mean Reverting Diffusion Process for the Funding Spread. The References are:
  *  
- *  - Antonov, A., and M. Arneguy (2009): Analytical Formulas for Pricing CMS Products in the LIBOR Market
- *  	Model with Stochastic Volatility, https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=1352606, eSSRN.
- *  
- *  - Burgard, C., and M. Kjaer (2009): Modeling and successful Management of Credit Counter-party Risk of
- *  	Derivative Portfolios, ICBI Conference, Rome.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Johannes, M., and S. Sundaresan (2007): Pricing Collateralized Swaps, Journal of Finance 62 383-410.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Antonov, A., and M. Arneguy (2009): Analytical Formulas for Pricing CMS Products in the LIBOR
+ *  				Market Model with Stochastic Volatility 
+ *  				https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=1352606 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2009): Modeling and successful Management of Credit Counter-party
+ *  				Risk of Derivative Portfolios &lt;i&gt;ICBI Conference&lt;/i&gt; &lt;b&gt;Rome&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  				86-90
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Johannes, M., and S. Sundaresan (2007): Pricing Collateralized Swaps &lt;i&gt;Journal of
+ *  				Finance&lt;/i&gt; &lt;b&gt;62&lt;/b&gt; 383-410
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csadynamics&quot;&gt;CSA Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class FundingBasisEvolver
 {
-<span class="nc" id="L72">	private double _correlation = java.lang.Double.NaN;</span>
-<span class="nc" id="L73">	private org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic _underlyingEvolver = null;</span>
-<span class="nc" id="L74">	private org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion _fundingSpreadEvolver = null;</span>
+<span class="fc" id="L108">	private double _correlation = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic _underlyingEvolver = null;</span>
+<span class="fc" id="L110">	private org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion _fundingSpreadEvolver = null;</span>
 
 	/**
 	 * FundingBasisEvolver Constructor
@@ -88,15 +124,15 @@ public class FundingBasisEvolver
 		final org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion fundingSpreadEvolver,
 		final double correlation)
 		throws java.lang.Exception
-<span class="nc" id="L91">	{</span>
-<span class="nc bnc" id="L92" title="All 4 branches missed.">		if (null == (_underlyingEvolver = underlyingEvolver) ||</span>
+<span class="fc" id="L127">	{</span>
+<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (null == (_underlyingEvolver = underlyingEvolver) ||</span>
 			null == (_fundingSpreadEvolver = fundingSpreadEvolver) ||
-<span class="nc bnc" id="L94" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_correlation = correlation) ||</span>
+<span class="pc bpc" id="L130" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_correlation = correlation) ||</span>
 			1. &lt; _correlation || -1. &gt; _correlation)
 		{
-<span class="nc" id="L97">			throw new java.lang.Exception (&quot;FundingBasisEvolver Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;FundingBasisEvolver Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L99">	}</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Underlying Diffusion Evolver
@@ -106,7 +142,7 @@ public class FundingBasisEvolver
 
 	public org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic underlyingEvolver()
 	{
-<span class="nc" id="L109">		return _underlyingEvolver;</span>
+<span class="nc" id="L145">		return _underlyingEvolver;</span>
 	}
 
 	/**
@@ -117,7 +153,7 @@ public class FundingBasisEvolver
 
 	public org.drip.measure.dynamics.DiffusionEvaluatorMeanReversion fundingSpreadEvolver()
 	{
-<span class="nc" id="L120">		return _fundingSpreadEvolver;</span>
+<span class="nc" id="L156">		return _fundingSpreadEvolver;</span>
 	}
 
 	/**
@@ -128,7 +164,7 @@ public class FundingBasisEvolver
 
 	public double underlyingFundingSpreadCorrelation()
 	{
-<span class="nc" id="L131">		return _correlation;</span>
+<span class="nc" id="L167">		return _correlation;</span>
 	}
 
 	/**
@@ -141,45 +177,45 @@ public class FundingBasisEvolver
 	{
 		try
 		{
-<span class="nc" id="L144">			org.drip.measure.dynamics.LocalEvaluator driftEvolver = new</span>
+<span class="nc" id="L180">			org.drip.measure.dynamics.LocalEvaluator driftEvolver = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L146">			{</span>
+<span class="nc" id="L182">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex vertex)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L151">					return 0.;</span>
+<span class="nc" id="L187">					return 0.;</span>
 				}
 			};
 
-<span class="nc" id="L155">			org.drip.measure.dynamics.LocalEvaluator volatilityEvolver = new</span>
+<span class="nc" id="L191">			org.drip.measure.dynamics.LocalEvaluator volatilityEvolver = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L157">			{</span>
+<span class="nc" id="L193">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex vertex)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L162" title="All 2 branches missed.">					if (null == vertex)</span>
-<span class="nc" id="L163">						throw new java.lang.Exception</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">					if (null == vertex)</span>
+<span class="nc" id="L199">						throw new java.lang.Exception</span>
 							(&quot;FundingBasisEvolver::CSAForwardVolatility::Evaluator::value =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L166">					return vertex.value() * _underlyingEvolver.volatilityValue();</span>
+<span class="nc" id="L202">					return vertex.value() * _underlyingEvolver.volatilityValue();</span>
 				}
 			};
 
-<span class="nc" id="L170">			return new org.drip.measure.process.DiffusionEvolver (</span>
+<span class="nc" id="L206">			return new org.drip.measure.process.DiffusionEvolver (</span>
 				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvolver,
 					volatilityEvolver
 				)
 			);
 		}
-<span class="nc" id="L177">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L213">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L179">			e.printStackTrace();</span>
+<span class="nc" id="L215">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L182">		return null;</span>
+<span class="nc" id="L218">		return null;</span>
 	}
 
 	/**
@@ -194,59 +230,59 @@ public class FundingBasisEvolver
 		final java.lang.String tenor)
 	{
 		try {
-<span class="nc" id="L197">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
+<span class="nc" id="L233">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
 
-<span class="nc" id="L199">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
+<span class="nc" id="L235">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
 			{
-<span class="nc" id="L203">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) / meanReversionSpeed;</span>
+<span class="nc" id="L239">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) / meanReversionSpeed;</span>
 			}
 
-<span class="nc" id="L206">			final double piterbarg2010BFactor = b;</span>
+<span class="nc" id="L242">			final double piterbarg2010BFactor = b;</span>
 
-<span class="nc" id="L208">			org.drip.measure.dynamics.LocalEvaluator driftEvaluator = new</span>
+<span class="nc" id="L244">			org.drip.measure.dynamics.LocalEvaluator driftEvaluator = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L210">			{</span>
+<span class="nc" id="L246">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L215">					return 0.;</span>
+<span class="nc" id="L251">					return 0.;</span>
 				}
 			};
 
-<span class="nc" id="L219">			org.drip.measure.dynamics.LocalEvaluator volatilityEvaluator = new</span>
+<span class="nc" id="L255">			org.drip.measure.dynamics.LocalEvaluator volatilityEvaluator = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L221">			{</span>
+<span class="nc" id="L257">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L226" title="All 2 branches missed.">					if (null == jumpDiffusionVertex)</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">					if (null == jumpDiffusionVertex)</span>
 					{
-<span class="nc" id="L228">						throw new java.lang.Exception</span>
+<span class="nc" id="L264">						throw new java.lang.Exception</span>
 							(&quot;FundingBasisEvolver::CSAFundingNumeraireVolatility::Evaluator::value =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L232">					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *</span>
-<span class="nc" id="L233">						_fundingSpreadEvolver.volatilityValue();</span>
+<span class="nc" id="L268">					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *</span>
+<span class="nc" id="L269">						_fundingSpreadEvolver.volatilityValue();</span>
 				}
 			};
 
-<span class="nc" id="L237">			return new org.drip.measure.process.DiffusionEvolver (</span>
+<span class="nc" id="L273">			return new org.drip.measure.process.DiffusionEvolver (</span>
 				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvaluator,
 					volatilityEvaluator
 				)
 			);
 		}
-<span class="nc" id="L244">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L280">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L246">			e.printStackTrace();</span>
+<span class="nc" id="L282">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L249">		return null;</span>
+<span class="nc" id="L285">		return null;</span>
 	}
 
 	/**
@@ -262,59 +298,59 @@ public class FundingBasisEvolver
 	{
 		try
 		{
-<span class="nc" id="L265">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
+<span class="nc" id="L301">			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
 
-<span class="nc" id="L267">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
+<span class="nc" id="L303">			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">			if (0. != meanReversionSpeed)</span>
 			{
-<span class="nc" id="L271">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) / meanReversionSpeed;</span>
+<span class="nc" id="L307">				b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * b)) / meanReversionSpeed;</span>
 			}
 
-<span class="nc" id="L274">			final double piterbarg2010BFactor = b;</span>
+<span class="nc" id="L310">			final double piterbarg2010BFactor = b;</span>
 
-<span class="nc" id="L276">			org.drip.measure.dynamics.LocalEvaluator driftEvaluator = new</span>
+<span class="nc" id="L312">			org.drip.measure.dynamics.LocalEvaluator driftEvaluator = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L278">			{</span>
+<span class="nc" id="L314">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L283">					return 0.;</span>
+<span class="nc" id="L319">					return 0.;</span>
 				}
 			};
 
-<span class="nc" id="L287">			org.drip.measure.dynamics.LocalEvaluator volatilityEvaluator = new</span>
+<span class="nc" id="L323">			org.drip.measure.dynamics.LocalEvaluator volatilityEvaluator = new</span>
 				org.drip.measure.dynamics.LocalEvaluator()
-<span class="nc" id="L289">			{</span>
+<span class="nc" id="L325">			{</span>
 				@Override public double value (
 					final org.drip.measure.realization.JumpDiffusionVertex jumpDiffusionVertex)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L294" title="All 2 branches missed.">					if (null == jumpDiffusionVertex)</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">					if (null == jumpDiffusionVertex)</span>
 					{
-<span class="nc" id="L296">						throw new java.lang.Exception</span>
+<span class="nc" id="L332">						throw new java.lang.Exception</span>
 							(&quot;FundingBasisEvolver::CSAFundingSpreadNumeraireVolatility::Evaluator::value =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L300">					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *</span>
-<span class="nc" id="L301">						_fundingSpreadEvolver.volatilityValue();</span>
+<span class="nc" id="L336">					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *</span>
+<span class="nc" id="L337">						_fundingSpreadEvolver.volatilityValue();</span>
 				}
 			};
 
-<span class="nc" id="L305">			return new org.drip.measure.process.DiffusionEvolver (</span>
+<span class="nc" id="L341">			return new org.drip.measure.process.DiffusionEvolver (</span>
 				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvaluator,
 					volatilityEvaluator
 				)
 			);
 		}
-<span class="nc" id="L312">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L348">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L314">			e.printStackTrace();</span>
+<span class="nc" id="L350">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L317">		return null;</span>
+<span class="nc" id="L353">		return null;</span>
 	}
 
 	/**
@@ -331,24 +367,24 @@ public class FundingBasisEvolver
 		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L334">		double underlyingVolatility = _underlyingEvolver.volatilityValue();</span>
+<span class="fc" id="L370">		double underlyingVolatility = _underlyingEvolver.volatilityValue();</span>
 
-<span class="nc" id="L336">		double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
+<span class="fc" id="L372">		double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();</span>
 
-<span class="nc" id="L338">		double fundingSpreadVolatility = _fundingSpreadEvolver.volatilityValue();</span>
+<span class="fc" id="L374">		double fundingSpreadVolatility = _fundingSpreadEvolver.volatilityValue();</span>
 
-<span class="nc" id="L340">		double maturity = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
+<span class="fc" id="L376">		double maturity = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">		if (0. == meanReversionSpeed)</span>
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">		if (0. == meanReversionSpeed)</span>
 		{
-<span class="nc" id="L344">			return java.lang.Math.exp (-0.5 * _correlation * underlyingVolatility *</span>
+<span class="nc" id="L380">			return java.lang.Math.exp (-0.5 * _correlation * underlyingVolatility *</span>
 				fundingSpreadVolatility * maturity * maturity);
 		}
 
-<span class="nc" id="L348">		double b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * maturity)) /</span>
+<span class="fc" id="L384">		double b = (1. - java.lang.Math.exp (-1. * meanReversionSpeed * maturity)) /</span>
 			meanReversionSpeed;
 
-<span class="nc" id="L351">		return java.lang.Math.exp (-1. * _correlation * underlyingVolatility *</span>
+<span class="fc" id="L387">		return java.lang.Math.exp (-1. * _correlation * underlyingVolatility *</span>
 			fundingSpreadVolatility * (maturity - b) / meanReversionSpeed);
 	}
 }

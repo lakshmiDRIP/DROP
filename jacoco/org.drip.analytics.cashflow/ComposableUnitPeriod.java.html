@@ -6,35 +6,53 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for models for MPT framework, Black Litterman Strategy Incorporator,
- *  	Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,9 +69,16 @@ package org.drip.analytics.cashflow;
  */
 
 /**
- * ComposableUnitPeriod represents the Cash Flow Periods' Composable Unit Period Details. Currently it holds
- *  the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the Coupon and the
- *  Accrual Day Counts, as well as the EOM Adjustment Flags.
+ * &lt;i&gt;ComposableUnitPeriod&lt;/i&gt; represents the Cash Flow Periods' Composable Unit Period Details. Currently it
+ *  holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the Coupon and
+ *  the Accrual Day Counts, as well as the EOM Adjustment Flags.
+ *
+ *	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -78,12 +103,12 @@ public abstract class ComposableUnitPeriod {
 
 	public static final int NODE_RIGHT_OF_SEGMENT = 4;
 
-<span class="fc" id="L81">	private int _iFreq = -1;</span>
-<span class="fc" id="L82">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="fc" id="L83">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L84">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L85">	private double _dblFullCouponDCF = java.lang.Double.NaN;</span>
-<span class="fc" id="L86">	private org.drip.param.period.UnitCouponAccrualSetting _ucas = null;</span>
+<span class="fc" id="L106">	private int _iFreq = -1;</span>
+<span class="fc" id="L107">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="fc" id="L108">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L109">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L110">	private double _dblFullCouponDCF = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private org.drip.param.period.UnitCouponAccrualSetting _ucas = null;</span>
 
 	protected ComposableUnitPeriod (
 		final int iStartDate,
@@ -91,26 +116,26 @@ public abstract class ComposableUnitPeriod {
 		final java.lang.String strTenor,
 		final org.drip.param.period.UnitCouponAccrualSetting ucas)
 		throws java.lang.Exception
-<span class="fc" id="L94">	{</span>
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">		if (</span>
+<span class="fc" id="L119">	{</span>
+<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (</span>
 			(_iStartDate = iStartDate) &gt;= (_iEndDate = iEndDate) ||
-<span class="pc bpc" id="L97" title="2 of 4 branches missed.">			null == (_strTenor = strTenor) || strTenor.isEmpty() ||</span>
+<span class="pc bpc" id="L122" title="2 of 4 branches missed.">			null == (_strTenor = strTenor) || strTenor.isEmpty() ||</span>
 			null == (_ucas = ucas)
 		)
-<span class="nc" id="L100">			throw new java.lang.Exception (&quot;ComposableUnitPeriod ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ComposableUnitPeriod ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L102">		_iFreq = org.drip.analytics.support.Helper.TenorToFreq (_strTenor);</span>
+<span class="fc" id="L127">		_iFreq = org.drip.analytics.support.Helper.TenorToFreq (_strTenor);</span>
 
-<span class="fc bfc" id="L104" title="All 2 branches covered.">		_dblFullCouponDCF = _ucas.couponDCFOffOfFreq() ? 1. / _iFreq :</span>
-<span class="fc" id="L105">			org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		_dblFullCouponDCF = _ucas.couponDCFOffOfFreq() ? 1. / _iFreq :</span>
+<span class="fc" id="L130">			org.drip.analytics.daycount.Convention.YearFraction (</span>
 				_iStartDate,
 				_iEndDate,
-<span class="fc" id="L108">				_ucas.couponDC(),</span>
-<span class="fc" id="L109">				_ucas.couponEOMAdjustment(),</span>
-<span class="fc" id="L110">				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq),</span>
-<span class="fc" id="L111">				_ucas.calendar()</span>
+<span class="fc" id="L133">				_ucas.couponDC(),</span>
+<span class="fc" id="L134">				_ucas.couponEOMAdjustment(),</span>
+<span class="fc" id="L135">				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq),</span>
+<span class="fc" id="L136">				_ucas.calendar()</span>
 			);
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Accrual Start Date
@@ -120,7 +145,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int startDate()
 	{
-<span class="fc" id="L123">		return _iStartDate;</span>
+<span class="fc" id="L148">		return _iStartDate;</span>
 	}
 
 	/**
@@ -131,7 +156,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int endDate()
 	{
-<span class="fc" id="L134">		return _iEndDate;</span>
+<span class="fc" id="L159">		return _iEndDate;</span>
 	}
 
 	/**
@@ -142,7 +167,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int freq()
 	{
-<span class="nc" id="L145">		return _iFreq;</span>
+<span class="nc" id="L170">		return _iFreq;</span>
 	}
 
 	/**
@@ -153,7 +178,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String couponDC()
 	{
-<span class="fc" id="L156">		return _ucas.couponDC();</span>
+<span class="fc" id="L181">		return _ucas.couponDC();</span>
 	}
 
 	/**
@@ -164,7 +189,7 @@ public abstract class ComposableUnitPeriod {
 
 	public boolean couponEOMAdjustment()
 	{
-<span class="fc" id="L167">		return _ucas.couponEOMAdjustment();</span>
+<span class="fc" id="L192">		return _ucas.couponEOMAdjustment();</span>
 	}
 
 	/**
@@ -175,7 +200,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String accrualDC()
 	{
-<span class="fc" id="L178">		return _ucas.accrualDC();</span>
+<span class="fc" id="L203">		return _ucas.accrualDC();</span>
 	}
 
 	/**
@@ -186,7 +211,7 @@ public abstract class ComposableUnitPeriod {
 
 	public boolean accrualEOMAdjustment()
 	{
-<span class="fc" id="L189">		return _ucas.accrualEOMAdjustment();</span>
+<span class="fc" id="L214">		return _ucas.accrualEOMAdjustment();</span>
 	}
 
 	/**
@@ -197,7 +222,7 @@ public abstract class ComposableUnitPeriod {
 
 	public boolean couponDCFOffOfFreq()
 	{
-<span class="nc" id="L200">		return _ucas.couponDCFOffOfFreq();</span>
+<span class="nc" id="L225">		return _ucas.couponDCFOffOfFreq();</span>
 	}
 
 	/**
@@ -208,7 +233,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String calendar()
 	{
-<span class="fc" id="L211">		return _ucas.calendar();</span>
+<span class="fc" id="L236">		return _ucas.calendar();</span>
 	}
 
 	/**
@@ -219,7 +244,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int accrualCompoundingRule()
 	{
-<span class="fc" id="L222">		return _ucas.accrualCompoundingRule();</span>
+<span class="fc" id="L247">		return _ucas.accrualCompoundingRule();</span>
 	}
 
 	/**
@@ -230,7 +255,7 @@ public abstract class ComposableUnitPeriod {
 
 	public double fullCouponDCF()
 	{
-<span class="fc" id="L233">		return _dblFullCouponDCF;</span>
+<span class="fc" id="L258">		return _dblFullCouponDCF;</span>
 	}
 
 	/**
@@ -241,7 +266,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String tenor()
 	{
-<span class="nc" id="L244">		return _strTenor;</span>
+<span class="nc" id="L269">		return _strTenor;</span>
 	}
 
 	/**
@@ -255,11 +280,11 @@ public abstract class ComposableUnitPeriod {
 	public int dateLocation (
 		final int iDateNode)
 	{
-<span class="fc bfc" id="L258" title="All 2 branches covered.">		if (iDateNode &lt; _iStartDate) return NODE_LEFT_OF_SEGMENT;</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">		if (iDateNode &lt; _iStartDate) return NODE_LEFT_OF_SEGMENT;</span>
 
-<span class="fc bfc" id="L260" title="All 2 branches covered.">		if (iDateNode &gt; _iEndDate) return NODE_RIGHT_OF_SEGMENT;</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">		if (iDateNode &gt; _iEndDate) return NODE_RIGHT_OF_SEGMENT;</span>
 
-<span class="fc" id="L262">		return NODE_INSIDE_SEGMENT;</span>
+<span class="fc" id="L287">		return NODE_INSIDE_SEGMENT;</span>
 	}
 
 	/**
@@ -277,29 +302,29 @@ public abstract class ComposableUnitPeriod {
 		final int iAccrualEnd)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L280" title="1 of 2 branches missed.">		if (NODE_INSIDE_SEGMENT != dateLocation (iAccrualEnd))</span>
-<span class="nc" id="L281">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		if (NODE_INSIDE_SEGMENT != dateLocation (iAccrualEnd))</span>
+<span class="nc" id="L306">			throw new java.lang.Exception</span>
 				(&quot;ComposableUnitPeriod::accrualDCF =&gt; Invalid in-period accrual date!&quot;);
 
-<span class="fc" id="L284">		org.drip.analytics.daycount.ActActDCParams aap = new org.drip.analytics.daycount.ActActDCParams (</span>
+<span class="fc" id="L309">		org.drip.analytics.daycount.ActActDCParams aap = new org.drip.analytics.daycount.ActActDCParams (</span>
 			_iFreq,
 			_iEndDate - _iStartDate
 		);
 
-<span class="fc" id="L289">		java.lang.String strAccrualDC = accrualDC();</span>
+<span class="fc" id="L314">		java.lang.String strAccrualDC = accrualDC();</span>
 
-<span class="fc" id="L291">		java.lang.String strCalendar = calendar();</span>
+<span class="fc" id="L316">		java.lang.String strCalendar = calendar();</span>
 
-<span class="fc" id="L293">		boolean bAccrualEOMAdjustment = accrualEOMAdjustment();</span>
+<span class="fc" id="L318">		boolean bAccrualEOMAdjustment = accrualEOMAdjustment();</span>
 
-<span class="fc" id="L295">		return org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc" id="L320">		return org.drip.analytics.daycount.Convention.YearFraction (</span>
 			_iStartDate,
 			iAccrualEnd,
 			strAccrualDC,
 			bAccrualEOMAdjustment,
 			aap,
 			strCalendar
-<span class="fc" id="L302">		) / org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc" id="L327">		) / org.drip.analytics.daycount.Convention.YearFraction (</span>
 			_iStartDate,
 			_iEndDate,
 			strAccrualDC,
@@ -323,7 +348,7 @@ public abstract class ComposableUnitPeriod {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L326">		return baseRate (csqc) + basis();</span>
+<span class="fc" id="L351">		return baseRate (csqc) + basis();</span>
 	}
 
 	/**

@@ -6,32 +6,50 @@ package org.drip.exposure.evolver;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,34 +66,52 @@ package org.drip.exposure.evolver;
  */
 
 /**
- * PrimarySecurityDynamicsContainer holds the Economy with the following Traded Assets - the Overnight Index
- *  Numeraire, the Collateral Scheme Numeraire, the Default-able Dealer Bond Numeraire, the Array of
+ * &lt;i&gt;PrimarySecurityDynamicsContainer&lt;/i&gt; holds the Economy with the following Traded Assets - the Overnight
+ *  Index Numeraire, the Collateral Scheme Numeraire, the Default-able Dealer Bond Numeraire, the Array of
  *  Default-able Client Numeraires, and an Asset that follows Brownian Motion. The References are:
  *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2013): Funding Costs, Funding Strategies, Risk, 23 (12) 82-87.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2013): Funding Costs, Funding Strategies &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;23
+ *  				(12)&lt;/b&gt; 82-87
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.DynamicsContainer
 {
-<span class="nc" id="L73">	private java.lang.String _csaID = null;</span>
-<span class="nc" id="L74">	private java.lang.String _overnightID = null;</span>
-<span class="nc" id="L75">	private java.lang.String _clientFundingID = null;</span>
-<span class="nc" id="L76">	private java.lang.String _dealerSeniorFundingID = null;</span>
-<span class="nc" id="L77">	private java.lang.String _dealerSubordinateFundingID = null;</span>
-<span class="nc" id="L78">	private java.util.List&lt;java.lang.String&gt; _assetIDList = null;</span>
+<span class="fc" id="L109">	private java.lang.String _csaID = null;</span>
+<span class="fc" id="L110">	private java.lang.String _overnightID = null;</span>
+<span class="fc" id="L111">	private java.lang.String _clientFundingID = null;</span>
+<span class="fc" id="L112">	private java.lang.String _dealerSeniorFundingID = null;</span>
+<span class="fc" id="L113">	private java.lang.String _dealerSubordinateFundingID = null;</span>
+<span class="fc" id="L114">	private java.util.List&lt;java.lang.String&gt; _assetIDList = null;</span>
 
 	/**
 	 * PrimarySecurityDynamicsContainer Constructor
@@ -98,63 +134,63 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 		final org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFunding,
 		final org.drip.exposure.evolver.PrimarySecurity clientFunding)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (!addPrimarySecurity (overnight) ||</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			!addPrimarySecurity (csa) ||</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			!addPrimarySecurity (dealerSeniorFunding) ||</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">			!addPrimarySecurity (clientFunding) ||</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">			!addPrimarySecurity (dealerSubordinateFunding))</span>
+<span class="fc" id="L137">	{</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!addPrimarySecurity (overnight) ||</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			!addPrimarySecurity (csa) ||</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			!addPrimarySecurity (dealerSeniorFunding) ||</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			!addPrimarySecurity (clientFunding) ||</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			!addPrimarySecurity (dealerSubordinateFunding))</span>
 		{
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null != assetList &amp;&amp; 0 != assetList.size())</span>
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">		if (null != assetList &amp;&amp; 0 != assetList.size())</span>
 		{
-<span class="nc" id="L113">			_assetIDList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L149">			_assetIDList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">			for (org.drip.exposure.evolver.PrimarySecurity asset : assetList)</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (org.drip.exposure.evolver.PrimarySecurity asset : assetList)</span>
 			{
-<span class="nc" id="L117">				addPrimarySecurity (asset);</span>
+<span class="fc" id="L153">				addPrimarySecurity (asset);</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">				if (null != asset)</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">				if (null != asset)</span>
 				{
-<span class="nc" id="L121">					_assetIDList.add (asset.id());</span>
+<span class="fc" id="L157">					_assetIDList.add (asset.id());</span>
 				}
-<span class="nc" id="L123">			}</span>
+<span class="fc" id="L159">			}</span>
 		}
 
-<span class="nc" id="L126">		org.drip.state.identifier.LatentStateLabel csaLabel = csa.label();</span>
+<span class="fc" id="L162">		org.drip.state.identifier.LatentStateLabel csaLabel = csa.label();</span>
 
-<span class="nc" id="L128">		org.drip.state.identifier.LatentStateLabel overnightLabel = overnight.label();</span>
+<span class="fc" id="L164">		org.drip.state.identifier.LatentStateLabel overnightLabel = overnight.label();</span>
 
-<span class="nc" id="L130">		org.drip.state.identifier.LatentStateLabel clientFundingLabel = clientFunding.label();</span>
+<span class="fc" id="L166">		org.drip.state.identifier.LatentStateLabel clientFundingLabel = clientFunding.label();</span>
 
-<span class="nc" id="L132">		org.drip.state.identifier.LatentStateLabel dealerSeniorFundingLabel = dealerSeniorFunding.label();</span>
+<span class="fc" id="L168">		org.drip.state.identifier.LatentStateLabel dealerSeniorFundingLabel = dealerSeniorFunding.label();</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		org.drip.state.identifier.LatentStateLabel dealerSubordinateFundingLabel = null ==</span>
-<span class="nc" id="L135">			dealerSubordinateFunding ? null : dealerSubordinateFunding.label();</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		org.drip.state.identifier.LatentStateLabel dealerSubordinateFundingLabel = null ==</span>
+<span class="fc" id="L171">			dealerSubordinateFunding ? null : dealerSubordinateFunding.label();</span>
 
-<span class="nc bnc" id="L137" title="All 12 branches missed.">		if (!(csaLabel instanceof org.drip.state.identifier.CSALabel) ||</span>
+<span class="pc bpc" id="L173" title="6 of 12 branches missed.">		if (!(csaLabel instanceof org.drip.state.identifier.CSALabel) ||</span>
 			!(overnightLabel instanceof org.drip.state.identifier.OvernightLabel) ||
 			!(dealerSeniorFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
 			!(clientFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
 			(null != dealerSubordinateFundingLabel &amp;&amp; !(dealerSubordinateFundingLabel instanceof
 				org.drip.state.identifier.EntityFundingLabel)))
 		{
-<span class="nc" id="L144">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L180">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L147">		_csaID = csa.id();</span>
+<span class="fc" id="L183">		_csaID = csa.id();</span>
 
-<span class="nc" id="L149">		_overnightID = overnight.id();</span>
+<span class="fc" id="L185">		_overnightID = overnight.id();</span>
 
-<span class="nc" id="L151">		_clientFundingID = clientFunding.id();</span>
+<span class="fc" id="L187">		_clientFundingID = clientFunding.id();</span>
 
-<span class="nc" id="L153">		_dealerSeniorFundingID = dealerSeniorFunding.id();</span>
+<span class="fc" id="L189">		_dealerSeniorFundingID = dealerSeniorFunding.id();</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		_dealerSubordinateFundingID = null == dealerSubordinateFundingLabel ? null :</span>
-<span class="nc" id="L156">			dealerSubordinateFunding.id();</span>
-<span class="nc" id="L157">	}</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		_dealerSubordinateFundingID = null == dealerSubordinateFundingLabel ? null :</span>
+<span class="fc" id="L192">			dealerSubordinateFunding.id();</span>
+<span class="fc" id="L193">	}</span>
 
 	/**
 	 * Retrieve the Asset Primary Security List
@@ -164,20 +200,20 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public java.util.List&lt;org.drip.exposure.evolver.PrimarySecurity&gt; assetList()
 	{
-<span class="nc bnc" id="L167" title="All 4 branches missed.">		if (null == _assetIDList || 0 == _assetIDList.size())</span>
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">		if (null == _assetIDList || 0 == _assetIDList.size())</span>
 		{
-<span class="nc" id="L169">			return null;</span>
+<span class="nc" id="L205">			return null;</span>
 		}
 
-<span class="nc" id="L172">		java.util.List&lt;org.drip.exposure.evolver.PrimarySecurity&gt; assetList = new</span>
+<span class="fc" id="L208">		java.util.List&lt;org.drip.exposure.evolver.PrimarySecurity&gt; assetList = new</span>
 			java.util.ArrayList&lt;org.drip.exposure.evolver.PrimarySecurity&gt;();
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (java.lang.String assetID : _assetIDList)</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">		for (java.lang.String assetID : _assetIDList)</span>
 		{
-<span class="nc" id="L177">			assetList.add (primarySecurity (assetID));</span>
-<span class="nc" id="L178">		}</span>
+<span class="fc" id="L213">			assetList.add (primarySecurity (assetID));</span>
+<span class="fc" id="L214">		}</span>
 
-<span class="nc" id="L180">		return assetList;</span>
+<span class="fc" id="L216">		return assetList;</span>
 	}
 
 	/**
@@ -188,7 +224,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity overnight()
 	{
-<span class="nc" id="L191">		return primarySecurity (_overnightID);</span>
+<span class="fc" id="L227">		return primarySecurity (_overnightID);</span>
 	}
 
 	/**
@@ -199,7 +235,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity csa()
 	{
-<span class="nc" id="L202">		return primarySecurity (_csaID);</span>
+<span class="fc" id="L238">		return primarySecurity (_csaID);</span>
 	}
 
 	/**
@@ -210,7 +246,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity dealerSeniorFunding()
 	{
-<span class="nc" id="L213">		return primarySecurity (_dealerSeniorFundingID);</span>
+<span class="fc" id="L249">		return primarySecurity (_dealerSeniorFundingID);</span>
 	}
 
 	/**
@@ -221,7 +257,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFunding()
 	{
-<span class="nc" id="L224">		return primarySecurity (_dealerSubordinateFundingID);</span>
+<span class="fc" id="L260">		return primarySecurity (_dealerSubordinateFundingID);</span>
 	}
 
 	/**
@@ -232,7 +268,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity clientFunding()
 	{
-<span class="nc" id="L235">		return primarySecurity (_clientFundingID);</span>
+<span class="fc" id="L271">		return primarySecurity (_clientFundingID);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

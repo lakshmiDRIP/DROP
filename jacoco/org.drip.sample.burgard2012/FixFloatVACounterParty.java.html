@@ -94,63 +94,63 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 		final int iNumSimulation)
 		throws Exception
 	{
-<span class="nc" id="L97">		double[][] aablATMSwapRateOffset = new double[iNumSimulation][iNumStep + 1];</span>
-<span class="nc" id="L98">		double[] adblTimeWidth = new double[iNumStep];</span>
+<span class="fc" id="L97">		double[][] aablATMSwapRateOffset = new double[iNumSimulation][iNumStep + 1];</span>
+<span class="fc" id="L98">		double[] adblTimeWidth = new double[iNumStep];</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="nc" id="L101">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="fc" id="L101">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSimulation; ++i) {</span>
-<span class="nc" id="L104">			JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSimulation; ++i) {</span>
+<span class="fc" id="L104">			JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
 				new JumpDiffusionVertex (
 					dblTime,
 					dblATMSwapRateOffsetInitial,
 					0.,
 					false
 				),
-<span class="nc" id="L111">				JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L111">				JumpDiffusionEdgeUnit.Diffusion (</span>
 					adblTimeWidth,
-<span class="nc" id="L113">					SequenceGenerator.Gaussian (iNumStep)</span>
+<span class="fc" id="L113">					SequenceGenerator.Gaussian (iNumStep)</span>
 				),
 				dblTimeWidth
 			);
 
-<span class="nc" id="L118">			aablATMSwapRateOffset[i][0] = dblATMSwapRateOffsetInitial;</span>
+<span class="fc" id="L118">			aablATMSwapRateOffset[i][0] = dblATMSwapRateOffsetInitial;</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">			for (int j = 1; j &lt;= iNumStep; ++j)</span>
-<span class="nc" id="L121">				aablATMSwapRateOffset[i][j] = aJDE[j - 1].finish();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">			for (int j = 1; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L121">				aablATMSwapRateOffset[i][j] = aJDE[j - 1].finish();</span>
 		}
 
-<span class="nc" id="L124">		return aablATMSwapRateOffset;</span>
+<span class="fc" id="L124">		return aablATMSwapRateOffset;</span>
 	}
 
 	public static final void VA (
 		final double dblCounterPartyHazardRate)
 		throws Exception
 	{
-<span class="nc" id="L131">		int iNumStep = 10;</span>
-<span class="nc" id="L132">		double dblTime = 5.;</span>
-<span class="nc" id="L133">		int iNumPath = 10000;</span>
-<span class="nc" id="L134">		double dblATMSwapRateOffsetDrift = 0.0;</span>
-<span class="nc" id="L135">		double dblATMSwapRateOffsetVolatility = 0.15;</span>
-<span class="nc" id="L136">		double dblATMSwapRateOffsetInitial = 0.;</span>
-<span class="nc" id="L137">		double dblCSADrift = 0.01;</span>
-<span class="nc" id="L138">		double dblBankHazardRate = 0.015;</span>
-<span class="nc" id="L139">		double dblBankRecoveryRate = 0.40;</span>
-<span class="nc" id="L140">		double dblCounterPartyRecoveryRate = 0.30;</span>
+<span class="fc" id="L131">		int iNumStep = 10;</span>
+<span class="fc" id="L132">		double dblTime = 5.;</span>
+<span class="fc" id="L133">		int iNumPath = 10000;</span>
+<span class="fc" id="L134">		double dblATMSwapRateOffsetDrift = 0.0;</span>
+<span class="fc" id="L135">		double dblATMSwapRateOffsetVolatility = 0.15;</span>
+<span class="fc" id="L136">		double dblATMSwapRateOffsetInitial = 0.;</span>
+<span class="fc" id="L137">		double dblCSADrift = 0.01;</span>
+<span class="fc" id="L138">		double dblBankHazardRate = 0.015;</span>
+<span class="fc" id="L139">		double dblBankRecoveryRate = 0.40;</span>
+<span class="fc" id="L140">		double dblCounterPartyRecoveryRate = 0.30;</span>
 
-<span class="nc" id="L142">		double dblTimeWidth = dblTime / iNumStep;</span>
-<span class="nc" id="L143">		MarketVertex[] aMV = new MarketVertex[iNumStep + 1];</span>
-<span class="nc" id="L144">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
-<span class="nc" id="L145">		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];</span>
-<span class="nc" id="L146">		double dblBankFundingSpread = dblBankHazardRate / (1. - dblBankRecoveryRate);</span>
-<span class="nc" id="L147">		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);</span>
+<span class="fc" id="L142">		double dblTimeWidth = dblTime / iNumStep;</span>
+<span class="fc" id="L143">		MarketVertex[] aMV = new MarketVertex[iNumStep + 1];</span>
+<span class="fc" id="L144">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
+<span class="fc" id="L145">		MonoPathExposureAdjustment[] aMPEA = new MonoPathExposureAdjustment[iNumPath];</span>
+<span class="fc" id="L146">		double dblBankFundingSpread = dblBankHazardRate / (1. - dblBankRecoveryRate);</span>
+<span class="fc" id="L147">		double dblCounterPartyFundingSpread = dblCounterPartyHazardRate / (1. - dblCounterPartyRecoveryRate);</span>
 
-<span class="nc" id="L149">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L149">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="nc" id="L151">		double[][] aablATMSwapRateOffset = ATMSwapRateOffsetRealization (</span>
+<span class="fc" id="L151">		double[][] aablATMSwapRateOffset = ATMSwapRateOffsetRealization (</span>
 			new DiffusionEvolver (
-<span class="nc" id="L153">				DiffusionEvaluatorLinear.Standard (</span>
+<span class="fc" id="L153">				DiffusionEvaluatorLinear.Standard (</span>
 					dblATMSwapRateOffsetDrift,
 					dblATMSwapRateOffsetVolatility
 				)
@@ -162,37 +162,37 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 			iNumPath
 		);
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumStep; ++i)</span>
 		{
-<span class="nc" id="L167">			LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
+<span class="fc" id="L167">			LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
 
-<span class="nc" id="L169">			latentStateVertexContainer.add (</span>
-<span class="nc" id="L170">				OTCFixFloatLabel.Standard (&quot;USD-3M-10Y&quot;),</span>
+<span class="fc" id="L169">			latentStateVertexContainer.add (</span>
+<span class="fc" id="L170">				OTCFixFloatLabel.Standard (&quot;USD-3M-10Y&quot;),</span>
 				Double.NaN
 			);
 
-<span class="nc" id="L174">			aMV[i] = MarketVertex.Nodal (</span>
-<span class="nc" id="L175">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
+<span class="fc" id="L174">			aMV[i] = MarketVertex.Nodal (</span>
+<span class="fc" id="L175">				adtVertex[i] = dtSpot.addMonths (6 * i),</span>
 				0.,
 				1.,
 				dblCSADrift,
-<span class="nc" id="L179">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
+<span class="fc" id="L179">				Math.exp (-0.5 * dblCSADrift * iNumStep),</span>
 				new MarketVertexEntity (
-<span class="nc" id="L181">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
+<span class="fc" id="L181">					Math.exp (-0.5 * dblBankHazardRate * i),</span>
 					dblBankHazardRate,
 					dblBankRecoveryRate,
 					dblBankFundingSpread,
-<span class="nc" id="L185">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
+<span class="fc" id="L185">					Math.exp (-0.5 * dblBankHazardRate * (1. - dblBankRecoveryRate) * iNumStep),</span>
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
 				),
 				new MarketVertexEntity (
-<span class="nc" id="L191">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
+<span class="fc" id="L191">					Math.exp (-0.5 * dblCounterPartyHazardRate * i),</span>
 					dblCounterPartyHazardRate,
 					dblCounterPartyRecoveryRate,
 					dblCounterPartyFundingSpread,
-<span class="nc" id="L195">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
+<span class="fc" id="L195">					Math.exp (-0.5 * dblCounterPartyHazardRate * (1. - dblCounterPartyRecoveryRate) * iNumStep),</span>
 					Double.NaN,
 					Double.NaN,
 					Double.NaN
@@ -201,29 +201,29 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 			);
 		}
 
-<span class="nc" id="L204">		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);</span>
+<span class="fc" id="L204">		MarketPath mp = MarketPath.FromMarketVertexArray (aMV);</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
-<span class="nc" id="L207">			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="fc" id="L207">			AlbaneseAndersen[] aHGVR = new AlbaneseAndersen[iNumStep + 1];</span>
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
-<span class="nc" id="L210">				aHGVR[j] = new AlbaneseAndersen (</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="fc" id="L210">				aHGVR[j] = new AlbaneseAndersen (</span>
 					adtVertex[j],
 					dblTimeWidth * (iNumStep - j) * aablATMSwapRateOffset[i][j],
 					0.,
 					0.
 				);
 
-<span class="nc" id="L217">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {</span>
+<span class="fc" id="L217">			CollateralGroupPath[] aHGP = new CollateralGroupPath[] {</span>
 				new CollateralGroupPath (
 					aHGVR,
 					mp
 				)
 			};
 
-<span class="nc" id="L224">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
+<span class="fc" id="L224">			aMPEA[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenFundingGroupPath[] {
-<span class="nc" id="L226">					 AlbaneseAndersenFundingGroupPath.Mono (</span>
+<span class="fc" id="L226">					 AlbaneseAndersenFundingGroupPath.Mono (</span>
 						new AlbaneseAndersenNettingGroupPath (
 							aHGP,
 							mp
@@ -234,31 +234,31 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 			);
 		}
 
-<span class="nc" id="L237">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
+<span class="fc" id="L237">		ExposureAdjustmentAggregator eaa = new ExposureAdjustmentAggregator (aMPEA);</span>
 
-<span class="nc" id="L239">		System.out.println (&quot;\t|| &quot; +</span>
-<span class="nc" id="L240">			FormatUtil.FormatDouble (dblCounterPartyHazardRate, 3, 0, 10000.) + &quot; bp =&gt; &quot; +</span>
-<span class="nc" id="L241">			FormatUtil.FormatDouble (eaa.ucva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L242">			FormatUtil.FormatDouble (eaa.ftdcva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L243">			FormatUtil.FormatDouble (eaa.cva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L244">			FormatUtil.FormatDouble (eaa.cvacl().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L245">			FormatUtil.FormatDouble (eaa.dva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L246">			FormatUtil.FormatDouble (eaa.fva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L247">			FormatUtil.FormatDouble (eaa.fda().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L248">			FormatUtil.FormatDouble (eaa.fca().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L249">			FormatUtil.FormatDouble (eaa.fba().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L250">			FormatUtil.FormatDouble (eaa.sfva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L251">			FormatUtil.FormatDouble (eaa.total(), 1, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L239">		System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L240">			FormatUtil.FormatDouble (dblCounterPartyHazardRate, 3, 0, 10000.) + &quot; bp =&gt; &quot; +</span>
+<span class="fc" id="L241">			FormatUtil.FormatDouble (eaa.ucva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L242">			FormatUtil.FormatDouble (eaa.ftdcva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L243">			FormatUtil.FormatDouble (eaa.cva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L244">			FormatUtil.FormatDouble (eaa.cvacl().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L245">			FormatUtil.FormatDouble (eaa.dva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L246">			FormatUtil.FormatDouble (eaa.fva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L247">			FormatUtil.FormatDouble (eaa.fda().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L248">			FormatUtil.FormatDouble (eaa.fca().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L249">			FormatUtil.FormatDouble (eaa.fba().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L250">			FormatUtil.FormatDouble (eaa.sfva().amount(), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L251">			FormatUtil.FormatDouble (eaa.total(), 1, 2, 100.) + &quot;% ||&quot;</span>
 		);
-<span class="nc" id="L253">	}</span>
+<span class="fc" id="L253">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L259">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L259">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L261">		double[] adblCounterPartyHazardRate = new double[] {</span>
+<span class="fc" id="L261">		double[] adblCounterPartyHazardRate = new double[] {</span>
 			0.0025,
 			0.0050,
 			0.0075,
@@ -273,26 +273,26 @@ import org.drip.xva.vertex.AlbaneseAndersen;
 			0.0300
 		};
 
-<span class="nc" id="L276">		System.out.println();</span>
+<span class="fc" id="L276">		System.out.println();</span>
 
-<span class="nc" id="L278">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L278">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L280">		System.out.println (&quot;\t||                                 VA DEPENDENCE ON COUNTER PARTY HAZARD RATE                                  ||&quot;);</span>
+<span class="fc" id="L280">		System.out.println (&quot;\t||                                 VA DEPENDENCE ON COUNTER PARTY HAZARD RATE                                  ||&quot;);</span>
 
-<span class="nc" id="L282">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L282">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L284">		System.out.println (&quot;\t||  Hazard =&gt;  UCVA  | FTDCVA |   CVA  |  CVACL |   DVA  |   FVA  |   FDA  |   FCA  |   FBA  |  SFVA  |  Total ||&quot;);</span>
+<span class="fc" id="L284">		System.out.println (&quot;\t||  Hazard =&gt;  UCVA  | FTDCVA |   CVA  |  CVACL |   DVA  |   FVA  |   FDA  |   FCA  |   FBA  |  SFVA  |  Total ||&quot;);</span>
 
-<span class="nc" id="L286">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L286">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		for (double dblCounterPartyHazardRate : adblCounterPartyHazardRate)</span>
-<span class="nc" id="L289">			VA (dblCounterPartyHazardRate);</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">		for (double dblCounterPartyHazardRate : adblCounterPartyHazardRate)</span>
+<span class="fc" id="L289">			VA (dblCounterPartyHazardRate);</span>
 
-<span class="nc" id="L291">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L291">		System.out.println (&quot;\t||-------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L293">		System.out.println();</span>
+<span class="fc" id="L293">		System.out.println();</span>
 
-<span class="nc" id="L295">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L296">	}</span>
+<span class="fc" id="L295">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L296">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

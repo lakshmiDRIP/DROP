@@ -6,6 +6,7 @@ package org.drip.analytics.eventday;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.analytics.eventday;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,13 +72,19 @@ package org.drip.analytics.eventday;
  */
 
 /**
- * Static implements a complete date as a specific holiday.
+ * &lt;i&gt;Static&lt;/i&gt; implements a complete date as a specific holiday.
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class Static extends Base {
-<span class="fc" id="L63">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L87">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
 
 	/**
 	 * Create a static holiday from the date string and the description
@@ -75,18 +99,18 @@ public class Static extends Base {
 		final java.lang.String strDate,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L78">		org.drip.analytics.date.JulianDate dtHol = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
-<span class="nc" id="L79">			(strDate);</span>
+<span class="nc" id="L102">		org.drip.analytics.date.JulianDate dtHol = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
+<span class="nc" id="L103">			(strDate);</span>
 
-<span class="nc bnc" id="L81" title="All 2 branches missed.">		if (null == dtHol) return null;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (null == dtHol) return null;</span>
 
 		try {
-<span class="nc" id="L84">			return new Static (dtHol, strDescription);</span>
-<span class="nc" id="L85">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L86">			e.printStackTrace();</span>
+<span class="nc" id="L108">			return new Static (dtHol, strDescription);</span>
+<span class="nc" id="L109">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L110">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L89">		return null;</span>
+<span class="nc" id="L113">		return null;</span>
 	}
 
 	/**
@@ -103,18 +127,18 @@ public class Static extends Base {
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L106">		super (strDescription);</span>
+<span class="fc" id="L130">		super (strDescription);</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;Static ctr: Null date into Static Holiday&quot;);</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;Static ctr: Null date into Static Holiday&quot;);</span>
 
-<span class="fc" id="L110">		_iDate = dt.julian();</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L134">		_iDate = dt.julian();</span>
+<span class="fc" id="L135">	}</span>
 
 	@Override public int dateInYear (
 		final int iYear,
 		final boolean bAdjusted)
 	{
-<span class="fc" id="L117">		return _iDate;</span>
+<span class="fc" id="L141">		return _iDate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

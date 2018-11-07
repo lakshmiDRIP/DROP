@@ -6,33 +6,51 @@ package org.drip.execution.nonadaptive;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,23 +67,39 @@ package org.drip.execution.nonadaptive;
  */
 
 /**
- * DiscreteAlmgrenChriss generates the Trade/Holdings List of Optimal Execution Schedule for the Equally
- *  Spaced Trading Intervals based on the No-Drift Linear Impact Evolution Walk Parameters specified. The
- *  References are:
+ * &lt;i&gt;DiscreteAlmgrenChriss&lt;/i&gt; generates the Trade/Holdings List of Optimal Execution Schedule for the
+ *  Equally Spaced Trading Intervals based on the No-Drift Linear Impact Evolution Walk Parameters specified.
+ *  The References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
- *
- * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
- * 		Journal of Finance, 50, 1147-1174.
- *
- * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
- * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional
+ * 				Trades &lt;i&gt;Journal of Finance&lt;/i&gt; &lt;b&gt;50&lt;/b&gt; 1147-1174
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 				Analysis of Institutional Equity Trades &lt;i&gt;Journal of Financial Economics&lt;/i&gt; &lt;b&gt;46&lt;/b&gt;
+ * 				265-292
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/nonadaptive&quot;&gt;Non Adaptive&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -76,10 +110,10 @@ public class DiscreteAlmgrenChriss extends org.drip.execution.nonadaptive.Static
 		final double dblKappaTildaSquared,
 		final double dblTau)
 	{
-<span class="fc" id="L79">		double dblKappaTildaSquaredTauSquared = dblKappaTildaSquared * dblTau * dblTau;</span>
+<span class="fc" id="L113">		double dblKappaTildaSquaredTauSquared = dblKappaTildaSquared * dblTau * dblTau;</span>
 
-<span class="fc" id="L81">		return java.lang.Math.log (0.5 * (2. + dblKappaTildaSquaredTauSquared + dblTau * java.lang.Math.sqrt</span>
-<span class="fc" id="L82">			(dblKappaTildaSquared * (dblKappaTildaSquaredTauSquared + 4.))));</span>
+<span class="fc" id="L115">		return java.lang.Math.log (0.5 * (2. + dblKappaTildaSquaredTauSquared + dblTau * java.lang.Math.sqrt</span>
+<span class="fc" id="L116">			(dblKappaTildaSquared * (dblKappaTildaSquaredTauSquared + 4.))));</span>
 	}
 
 	/**
@@ -102,16 +136,16 @@ public class DiscreteAlmgrenChriss extends org.drip.execution.nonadaptive.Static
 		final double dblRiskAversion)
 	{
 		try {
-<span class="fc" id="L105">			return new DiscreteAlmgrenChriss</span>
-<span class="fc" id="L106">				(org.drip.execution.strategy.DiscreteTradingTrajectoryControl.FixedInterval (new</span>
+<span class="fc" id="L139">			return new DiscreteAlmgrenChriss</span>
+<span class="fc" id="L140">				(org.drip.execution.strategy.DiscreteTradingTrajectoryControl.FixedInterval (new</span>
 					org.drip.execution.strategy.OrderSpecification (dblStartHoldings, dblFinishTime),
 						iNumInterval), lpep, new org.drip.execution.risk.MeanVarianceObjectiveUtility
 							(dblRiskAversion));
-<span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L111">			e.printStackTrace();</span>
+<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L114">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	private DiscreteAlmgrenChriss (
@@ -120,96 +154,96 @@ public class DiscreteAlmgrenChriss extends org.drip.execution.nonadaptive.Static
 		final org.drip.execution.risk.MeanVarianceObjectiveUtility mvou)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L123">		super (dttc, lpep, mvou);</span>
-<span class="fc" id="L124">	}</span>
+<span class="fc" id="L157">		super (dttc, lpep, mvou);</span>
+<span class="fc" id="L158">	}</span>
 
 	@Override public org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete generate()
 	{
-<span class="fc" id="L128">		org.drip.execution.strategy.DiscreteTradingTrajectoryControl dttc = control();</span>
+<span class="fc" id="L162">		org.drip.execution.strategy.DiscreteTradingTrajectoryControl dttc = control();</span>
 
-<span class="fc" id="L130">		double[] adblTNode = dttc.executionTimeNodes();</span>
+<span class="fc" id="L164">		double[] adblTNode = dttc.executionTimeNodes();</span>
 
-<span class="fc" id="L132">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
-<span class="fc" id="L133">			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) priceEvolutionParameters();</span>
+<span class="fc" id="L166">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
+<span class="fc" id="L167">			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) priceEvolutionParameters();</span>
 
-<span class="fc" id="L135">		org.drip.execution.impact.TransactionFunction tfTemporaryExpectation =</span>
-<span class="fc" id="L136">			lpep.temporaryExpectation().epochImpactFunction();</span>
+<span class="fc" id="L169">		org.drip.execution.impact.TransactionFunction tfTemporaryExpectation =</span>
+<span class="fc" id="L170">			lpep.temporaryExpectation().epochImpactFunction();</span>
 
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!(tfTemporaryExpectation instanceof org.drip.execution.impact.TransactionFunctionLinear))</span>
-<span class="nc" id="L139">			return null;</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!(tfTemporaryExpectation instanceof org.drip.execution.impact.TransactionFunctionLinear))</span>
+<span class="nc" id="L173">			return null;</span>
 
-<span class="fc" id="L141">		double dblEpochVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L142">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
+<span class="fc" id="L175">		double dblEpochVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L176">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
 			(org.drip.execution.impact.TransactionFunctionLinear) tfTemporaryExpectation;
 
 		try {
-<span class="fc" id="L146">			dblEpochVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
-<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="fc" id="L180">			dblEpochVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L182">			e.printStackTrace();</span>
 
-<span class="nc" id="L150">			return null;</span>
-<span class="fc" id="L151">		}</span>
+<span class="nc" id="L184">			return null;</span>
+<span class="fc" id="L185">		}</span>
 
-<span class="fc" id="L153">		double dblGamma = lpep.linearPermanentExpectation().epochLiquidityFunction().slope();</span>
+<span class="fc" id="L187">		double dblGamma = lpep.linearPermanentExpectation().epochLiquidityFunction().slope();</span>
 
-<span class="fc" id="L155">		double dblEta = tflTemporaryExpectation.slope();</span>
+<span class="fc" id="L189">		double dblEta = tflTemporaryExpectation.slope();</span>
 
-<span class="fc" id="L157">		double dblX = dttc.startHoldings();</span>
+<span class="fc" id="L191">		double dblX = dttc.startHoldings();</span>
 
-<span class="fc" id="L159">		int iNumNode = adblTNode.length;</span>
-<span class="fc" id="L160">		double dblXSquared = dblX * dblX;</span>
-<span class="fc" id="L161">		final double dblSigma = dblEpochVolatility;</span>
-<span class="fc" id="L162">		double dblTau = adblTNode[1] - adblTNode[0];</span>
-<span class="fc" id="L163">		double dblSigmaSquared = dblSigma * dblSigma;</span>
-<span class="fc" id="L164">		double[] adblHoldings = new double[iNumNode];</span>
-<span class="fc" id="L165">		double[] adblTradeList = new double[iNumNode - 1];</span>
-<span class="fc" id="L166">		double dblT = adblTNode[iNumNode - 1] - adblTNode[0];</span>
-<span class="fc" id="L167">		double dblEtaTilda = dblEta - 0.5 * dblGamma * dblTau;</span>
+<span class="fc" id="L193">		int iNumNode = adblTNode.length;</span>
+<span class="fc" id="L194">		double dblXSquared = dblX * dblX;</span>
+<span class="fc" id="L195">		final double dblSigma = dblEpochVolatility;</span>
+<span class="fc" id="L196">		double dblTau = adblTNode[1] - adblTNode[0];</span>
+<span class="fc" id="L197">		double dblSigmaSquared = dblSigma * dblSigma;</span>
+<span class="fc" id="L198">		double[] adblHoldings = new double[iNumNode];</span>
+<span class="fc" id="L199">		double[] adblTradeList = new double[iNumNode - 1];</span>
+<span class="fc" id="L200">		double dblT = adblTNode[iNumNode - 1] - adblTNode[0];</span>
+<span class="fc" id="L201">		double dblEtaTilda = dblEta - 0.5 * dblGamma * dblTau;</span>
 
-<span class="fc" id="L169">		double dblKappaTildaSquared = ((org.drip.execution.risk.MeanVarianceObjectiveUtility)</span>
-<span class="fc" id="L170">			objectiveUtility()).riskAversion() * dblSigmaSquared / dblEtaTilda;</span>
+<span class="fc" id="L203">		double dblKappaTildaSquared = ((org.drip.execution.risk.MeanVarianceObjectiveUtility)</span>
+<span class="fc" id="L204">			objectiveUtility()).riskAversion() * dblSigmaSquared / dblEtaTilda;</span>
 
-<span class="fc" id="L172">		double dblKappaTau = KappaTau (dblKappaTildaSquared, dblTau);</span>
+<span class="fc" id="L206">		double dblKappaTau = KappaTau (dblKappaTildaSquared, dblTau);</span>
 
-<span class="fc" id="L174">		double dblHalfKappaTau = 0.5 * dblKappaTau;</span>
-<span class="fc" id="L175">		double dblKappa = dblKappaTau / dblTau;</span>
-<span class="fc" id="L176">		double dblKappaT = dblKappa * dblT;</span>
+<span class="fc" id="L208">		double dblHalfKappaTau = 0.5 * dblKappaTau;</span>
+<span class="fc" id="L209">		double dblKappa = dblKappaTau / dblTau;</span>
+<span class="fc" id="L210">		double dblKappaT = dblKappa * dblT;</span>
 
-<span class="fc" id="L178">		double dblSinhKappaT = java.lang.Math.sinh (dblKappaT);</span>
+<span class="fc" id="L212">		double dblSinhKappaT = java.lang.Math.sinh (dblKappaT);</span>
 
-<span class="fc" id="L180">		double dblSinhKappaTau = java.lang.Math.sinh (dblKappaTau);</span>
+<span class="fc" id="L214">		double dblSinhKappaTau = java.lang.Math.sinh (dblKappaTau);</span>
 
-<span class="fc" id="L182">		double dblSinhHalfKappaTau = java.lang.Math.sinh (dblHalfKappaTau);</span>
+<span class="fc" id="L216">		double dblSinhHalfKappaTau = java.lang.Math.sinh (dblHalfKappaTau);</span>
 
-<span class="fc" id="L184">		double dblTSinhKappaTau = dblT * dblSinhKappaTau;</span>
-<span class="fc" id="L185">		double dblInverseSinhKappaT = 1. / dblSinhKappaT;</span>
-<span class="fc" id="L186">		double dblTrajectoryScaler = dblInverseSinhKappaT * dblX;</span>
-<span class="fc" id="L187">		double dblTradeListScaler = 2. * dblSinhHalfKappaTau * dblTrajectoryScaler;</span>
-<span class="fc" id="L188">		double dblReciprocalSinhKappaTSquared = dblInverseSinhKappaT * dblInverseSinhKappaT;</span>
+<span class="fc" id="L218">		double dblTSinhKappaTau = dblT * dblSinhKappaTau;</span>
+<span class="fc" id="L219">		double dblInverseSinhKappaT = 1. / dblSinhKappaT;</span>
+<span class="fc" id="L220">		double dblTrajectoryScaler = dblInverseSinhKappaT * dblX;</span>
+<span class="fc" id="L221">		double dblTradeListScaler = 2. * dblSinhHalfKappaTau * dblTrajectoryScaler;</span>
+<span class="fc" id="L222">		double dblReciprocalSinhKappaTSquared = dblInverseSinhKappaT * dblInverseSinhKappaT;</span>
 
-<span class="fc bfc" id="L190" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="fc" id="L191">			adblHoldings[i] = dblTrajectoryScaler * java.lang.Math.sinh (dblKappa * (dblT - adblTNode[i]));</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="fc" id="L225">			adblHoldings[i] = dblTrajectoryScaler * java.lang.Math.sinh (dblKappa * (dblT - adblTNode[i]));</span>
 
-<span class="fc bfc" id="L193" title="All 2 branches covered.">			if (i &lt; iNumNode - 1)</span>
-<span class="fc" id="L194">				adblTradeList[i] = -1. * dblTradeListScaler * java.lang.Math.cosh (dblKappa * (dblT - dblTau</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			if (i &lt; iNumNode - 1)</span>
+<span class="fc" id="L228">				adblTradeList[i] = -1. * dblTradeListScaler * java.lang.Math.cosh (dblKappa * (dblT - dblTau</span>
 					* (0.5 + i)));
 		}
 
 		try {
-<span class="fc" id="L199">			return new org.drip.execution.optimum.AlmgrenChrissDiscrete (adblTNode, adblHoldings,</span>
-<span class="fc" id="L200">				adblTradeList, java.lang.Math.sqrt (dblKappaTildaSquared), dblKappa, 0.5 * dblGamma *</span>
-<span class="fc" id="L201">					dblXSquared + tflTemporaryExpectation.offset() * dblX + dblEtaTilda * dblXSquared *</span>
-<span class="fc" id="L202">						dblReciprocalSinhKappaTSquared * java.lang.Math.tanh (dblHalfKappaTau) * (dblTau *</span>
-<span class="fc" id="L203">							java.lang.Math.sinh (2. * dblKappaT) + 2. * dblTSinhKappaTau) / (2. * dblTau *</span>
+<span class="fc" id="L233">			return new org.drip.execution.optimum.AlmgrenChrissDiscrete (adblTNode, adblHoldings,</span>
+<span class="fc" id="L234">				adblTradeList, java.lang.Math.sqrt (dblKappaTildaSquared), dblKappa, 0.5 * dblGamma *</span>
+<span class="fc" id="L235">					dblXSquared + tflTemporaryExpectation.offset() * dblX + dblEtaTilda * dblXSquared *</span>
+<span class="fc" id="L236">						dblReciprocalSinhKappaTSquared * java.lang.Math.tanh (dblHalfKappaTau) * (dblTau *</span>
+<span class="fc" id="L237">							java.lang.Math.sinh (2. * dblKappaT) + 2. * dblTSinhKappaTau) / (2. * dblTau *</span>
 								dblTau), 0.5 * dblSigmaSquared * dblXSquared * dblReciprocalSinhKappaTSquared
-<span class="fc" id="L205">									* (dblTau * dblSinhKappaT * java.lang.Math.cosh (dblKappa * (dblT -</span>
+<span class="fc" id="L239">									* (dblTau * dblSinhKappaT * java.lang.Math.cosh (dblKappa * (dblT -</span>
 										dblTau)) - dblTSinhKappaTau) / dblSinhKappaTau, dblEpochVolatility *
-<span class="fc" id="L207">											dblX / (dblT * dblEpochVolatility * java.lang.Math.sqrt (dblT)));</span>
-<span class="nc" id="L208">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L209">			e.printStackTrace();</span>
+<span class="fc" id="L241">											dblX / (dblT * dblEpochVolatility * java.lang.Math.sqrt (dblT)));</span>
+<span class="nc" id="L242">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L243">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L212">		return null;</span>
+<span class="nc" id="L246">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

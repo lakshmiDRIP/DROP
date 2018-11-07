@@ -6,33 +6,51 @@ package org.drip.execution.principal;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,27 +67,43 @@ package org.drip.execution.principal;
  */
 
 /**
- * GrossProfitExpectation implements the R^1 To R^1 Univariate that computes the Explicit Profit of a
- *  Principal Execution given the Optimal Trajectory. The References are:
+ * &lt;i&gt;GrossProfitExpectation&lt;/i&gt; implements the R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Univariate that computes the
+ *  Explicit Profit of a Principal Execution given the Optimal Trajectory. The References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk,
- * 		Applied Mathematical Finance 10 (1) 1-18.
- *
- * 	- Almgren, R., and N. Chriss (2003): Bidding Principles, Risk 97-102.
- * 
- * 	- Almgren, R., C. Thum, E. Hauptmann, and H. Li (2005): Equity Market Impact, Risk 18 (7) 57-62.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 	&lt;li&gt;
+ * 		Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ * 		Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of Risk&lt;/i&gt;
+ * 			&lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ * 		Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk
+ * 			&lt;i&gt;Applied Mathematical Finance&lt;/i&gt; &lt;b&gt;10 (1)&lt;/b&gt; 1-18
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ * 		Almgren, R., and N. Chriss (2003): Bidding Principles &lt;i&gt;Risk&lt;/i&gt; 97-102
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ * 		Almgren, R., C. Thum, E. Hauptmann, and H. Li (2005): Equity Market Impact &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;18 (7)&lt;/b&gt;
+ * 			57-62
+ * 	&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 {
-<span class="nc" id="L71">	private double _dblNumExecutedUnit = java.lang.Double.NaN;</span>
-<span class="nc" id="L72">	private double _dblTransactionCost = java.lang.Double.NaN;</span>
+<span class="nc" id="L105">	private double _dblNumExecutedUnit = java.lang.Double.NaN;</span>
+<span class="nc" id="L106">	private double _dblTransactionCost = java.lang.Double.NaN;</span>
 
 	/**
 	 * GrossProfitExpectation Constructor
@@ -85,12 +119,12 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 		final double dblTransactionCost)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L88">		super (null);</span>
+<span class="nc" id="L122">		super (null);</span>
 
-<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNumExecutedUnit = dblNumExecutedUnit) ||</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCost = dblTransactionCost))</span>
-<span class="nc" id="L92">			throw new java.lang.Exception (&quot;GrossProfitExpectation Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L93">	}</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNumExecutedUnit = dblNumExecutedUnit) ||</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCost = dblTransactionCost))</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;GrossProfitExpectation Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L127">	}</span>
 
 	/**
 	 * Retrieve the Execution Transaction Cost
@@ -100,7 +134,7 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 
 	public double transactionCost()
 	{
-<span class="nc" id="L103">		return _dblTransactionCost;</span>
+<span class="nc" id="L137">		return _dblTransactionCost;</span>
 	}
 
 	/**
@@ -111,17 +145,17 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 
 	public double numExecutedUnit()
 	{
-<span class="nc" id="L114">		return _dblNumExecutedUnit;</span>
+<span class="nc" id="L148">		return _dblNumExecutedUnit;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblUnitDiscount)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUnitDiscount))</span>
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;GrossProfitExpectation::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUnitDiscount))</span>
+<span class="nc" id="L156">			throw new java.lang.Exception (&quot;GrossProfitExpectation::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L124">		return dblUnitDiscount * _dblNumExecutedUnit - _dblTransactionCost;</span>
+<span class="nc" id="L158">		return dblUnitDiscount * _dblNumExecutedUnit - _dblTransactionCost;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

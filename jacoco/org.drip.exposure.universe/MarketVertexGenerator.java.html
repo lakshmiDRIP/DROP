@@ -70,26 +70,26 @@ package org.drip.exposure.universe;
 
 public class MarketVertexGenerator
 {
-<span class="nc" id="L73">	private int _spotDate = -1;</span>
-<span class="nc" id="L74">	private double[] _ycfWidth = null;</span>
-<span class="nc" id="L75">	private int[] _eventDateArray = null;</span>
-<span class="nc" id="L76">	private org.drip.exposure.evolver.EntityDynamicsContainer _entityDynamicsContainer = null;</span>
-<span class="nc" id="L77">	private org.drip.exposure.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;</span>
-<span class="nc" id="L78">	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _primarySecurityDynamicsContainer =</span>
+<span class="fc" id="L73">	private int _spotDate = -1;</span>
+<span class="fc" id="L74">	private double[] _ycfWidth = null;</span>
+<span class="fc" id="L75">	private int[] _eventDateArray = null;</span>
+<span class="fc" id="L76">	private org.drip.exposure.evolver.EntityDynamicsContainer _entityDynamicsContainer = null;</span>
+<span class="fc" id="L77">	private org.drip.exposure.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;</span>
+<span class="fc" id="L78">	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _primarySecurityDynamicsContainer =</span>
 		null;
 
 	private org.drip.measure.process.DiffusionEvolver evolver (
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
 	{
-<span class="nc" id="L84">		org.drip.exposure.evolver.TerminalLatentState terminalLatentState =</span>
-<span class="nc" id="L85">			_latentStateDynamicsContainer.terminal (latentStateLabel);</span>
+<span class="fc" id="L84">		org.drip.exposure.evolver.TerminalLatentState terminalLatentState =</span>
+<span class="fc" id="L85">			_latentStateDynamicsContainer.terminal (latentStateLabel);</span>
 
-<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (null == terminalLatentState)</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (null == terminalLatentState)</span>
 		{
 <span class="nc" id="L89">			terminalLatentState = _latentStateDynamicsContainer.terminal (latentStateLabel);</span>
 		}
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		return null == terminalLatentState ? null : terminalLatentState.evolver();</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		return null == terminalLatentState ? null : terminalLatentState.evolver();</span>
 	}
 
 	private java.util.List&lt;org.drip.measure.realization.JumpDiffusionVertex[]&gt; latentStateVertexArrayList (
@@ -98,37 +98,37 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (null == latentStateLabelList)</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (null == latentStateLabelList)</span>
 		{
 <span class="nc" id="L103">			return null;</span>
 		}
 
-<span class="nc" id="L106">		java.util.List&lt;org.drip.measure.realization.JumpDiffusionVertex[]&gt; latentStateVertexArrayList = new</span>
+<span class="fc" id="L106">		java.util.List&lt;org.drip.measure.realization.JumpDiffusionVertex[]&gt; latentStateVertexArrayList = new</span>
 			java.util.ArrayList&lt;org.drip.measure.realization.JumpDiffusionVertex[]&gt;();
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (org.drip.state.identifier.LatentStateLabel latentStateLabel : latentStateLabelList)</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (org.drip.state.identifier.LatentStateLabel latentStateLabel : latentStateLabelList)</span>
 		{
-<span class="nc" id="L111">			org.drip.measure.process.DiffusionEvolver latentStateDiffusionEvolver = evolver</span>
-<span class="nc" id="L112">				(latentStateLabel);</span>
+<span class="fc" id="L111">			org.drip.measure.process.DiffusionEvolver latentStateDiffusionEvolver = evolver</span>
+<span class="fc" id="L112">				(latentStateLabel);</span>
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			if (null == latentStateDiffusionEvolver)</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			if (null == latentStateDiffusionEvolver)</span>
 			{
 <span class="nc" id="L116">				continue;</span>
 			}
 
 			try
 			{
-<span class="nc" id="L121">				latentStateVertexArrayList.add (</span>
-<span class="nc" id="L122">					latentStateDiffusionEvolver.vertexSequence (</span>
+<span class="fc" id="L121">				latentStateVertexArrayList.add (</span>
+<span class="fc" id="L122">					latentStateDiffusionEvolver.vertexSequence (</span>
 						new org.drip.measure.realization.JumpDiffusionVertex (
 							terminalDate,
-<span class="nc" id="L125">							initialMarketVertex.latentStateValue (latentStateLabel),</span>
+<span class="fc" id="L125">							initialMarketVertex.latentStateValue (latentStateLabel),</span>
 							0.,
 							false
 						),
-<span class="nc" id="L129">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L129">						org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 							_ycfWidth,
-<span class="nc" id="L131">							latentStateWeiner.incrementArray (latentStateLabel)</span>
+<span class="fc" id="L131">							latentStateWeiner.incrementArray (latentStateLabel)</span>
 						),
 						_ycfWidth
 					)
@@ -137,10 +137,10 @@ public class MarketVertexGenerator
 <span class="nc" id="L137">			catch (java.lang.Exception e)</span>
 			{
 <span class="nc" id="L139">				e.printStackTrace();</span>
-<span class="nc" id="L140">			}</span>
-<span class="nc" id="L141">		}</span>
+<span class="fc" id="L140">			}</span>
+<span class="fc" id="L141">		}</span>
 
-<span class="nc" id="L143">		return latentStateVertexArrayList;</span>
+<span class="fc" id="L143">		return latentStateVertexArrayList;</span>
 	}
 
 	private org.drip.measure.realization.JumpDiffusionVertex[] overnightReplicatorVertexArray (
@@ -148,21 +148,21 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-<span class="nc" id="L151">		org.drip.exposure.evolver.PrimarySecurity overnightReplicator =</span>
-<span class="nc" id="L152">			_primarySecurityDynamicsContainer.overnight();</span>
+<span class="fc" id="L151">		org.drip.exposure.evolver.PrimarySecurity overnightReplicator =</span>
+<span class="fc" id="L152">			_primarySecurityDynamicsContainer.overnight();</span>
 
 		try
 		{
-<span class="nc" id="L156">			return overnightReplicator.evolver().vertexSequenceReverse (</span>
+<span class="fc" id="L156">			return overnightReplicator.evolver().vertexSequenceReverse (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L159">					initialMarketVertex.overnightReplicator(),</span>
+<span class="fc" id="L159">					initialMarketVertex.overnightReplicator(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L163">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L163">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L165">					latentStateWeiner.incrementArray (overnightReplicator.label())</span>
+<span class="fc" id="L165">					latentStateWeiner.incrementArray (overnightReplicator.label())</span>
 				),
 				_ycfWidth
 			);
@@ -180,20 +180,20 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-<span class="nc" id="L183">		org.drip.exposure.evolver.PrimarySecurity csaReplicator = _primarySecurityDynamicsContainer.csa();</span>
+<span class="fc" id="L183">		org.drip.exposure.evolver.PrimarySecurity csaReplicator = _primarySecurityDynamicsContainer.csa();</span>
 
 		try
 		{
-<span class="nc" id="L187">			return csaReplicator.evolver().vertexSequenceReverse (</span>
+<span class="fc" id="L187">			return csaReplicator.evolver().vertexSequenceReverse (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L190">					initialMarketVertex.csaReplicator(),</span>
+<span class="fc" id="L190">					initialMarketVertex.csaReplicator(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L194">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L194">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L196">					latentStateWeiner.incrementArray (csaReplicator.label())</span>
+<span class="fc" id="L196">					latentStateWeiner.incrementArray (csaReplicator.label())</span>
 				),
 				_ycfWidth
 			);
@@ -211,21 +211,21 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-<span class="nc" id="L214">		org.drip.exposure.evolver.PrimarySecurity dealerSeniorFundingReplicator =</span>
-<span class="nc" id="L215">			_primarySecurityDynamicsContainer.dealerSeniorFunding();</span>
+<span class="fc" id="L214">		org.drip.exposure.evolver.PrimarySecurity dealerSeniorFundingReplicator =</span>
+<span class="fc" id="L215">			_primarySecurityDynamicsContainer.dealerSeniorFunding();</span>
 
 		try
 		{
-<span class="nc" id="L219">			return dealerSeniorFundingReplicator.evolver().vertexSequenceReverse (</span>
+<span class="fc" id="L219">			return dealerSeniorFundingReplicator.evolver().vertexSequenceReverse (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L222">					initialMarketVertex.dealer().seniorFundingReplicator(),</span>
+<span class="fc" id="L222">					initialMarketVertex.dealer().seniorFundingReplicator(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L226">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L226">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L228">					latentStateWeiner.incrementArray (dealerSeniorFundingReplicator.label())</span>
+<span class="fc" id="L228">					latentStateWeiner.incrementArray (dealerSeniorFundingReplicator.label())</span>
 				),
 				_ycfWidth
 			);
@@ -244,16 +244,16 @@ public class MarketVertexGenerator
 			final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 			final int terminalDate)
 	{
-<span class="nc" id="L247">		org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFundingReplicator =</span>
-<span class="nc" id="L248">			_primarySecurityDynamicsContainer.dealerSubordinateFunding();</span>
+<span class="fc" id="L247">		org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFundingReplicator =</span>
+<span class="fc" id="L248">			_primarySecurityDynamicsContainer.dealerSubordinateFunding();</span>
 
-<span class="nc" id="L250">		double initialDealerSubordinateFundingReplicator =</span>
-<span class="nc" id="L251">			initialMarketVertex.dealer().subordinateFundingReplicator();</span>
+<span class="fc" id="L250">		double initialDealerSubordinateFundingReplicator =</span>
+<span class="fc" id="L251">			initialMarketVertex.dealer().subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (null == dealerSubordinateFundingReplicator ||</span>
-<span class="nc bnc" id="L254" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingReplicator))</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		if (null == dealerSubordinateFundingReplicator ||</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingReplicator))</span>
 		{
-<span class="nc" id="L256">			return null;</span>
+<span class="fc" id="L256">			return null;</span>
 		}
 
 		try
@@ -285,21 +285,21 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-<span class="nc" id="L288">		org.drip.exposure.evolver.PrimarySecurity clientFundingReplicator =</span>
-<span class="nc" id="L289">			_primarySecurityDynamicsContainer.clientFunding();</span>
+<span class="fc" id="L288">		org.drip.exposure.evolver.PrimarySecurity clientFundingReplicator =</span>
+<span class="fc" id="L289">			_primarySecurityDynamicsContainer.clientFunding();</span>
 
 		try
 		{
-<span class="nc" id="L293">			return clientFundingReplicator.evolver().vertexSequenceReverse (</span>
+<span class="fc" id="L293">			return clientFundingReplicator.evolver().vertexSequenceReverse (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L296">					initialMarketVertex.client().seniorFundingReplicator(),</span>
+<span class="fc" id="L296">					initialMarketVertex.client().seniorFundingReplicator(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L300">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L300">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L302">					latentStateWeiner.incrementArray (clientFundingReplicator.label())</span>
+<span class="fc" id="L302">					latentStateWeiner.incrementArray (clientFundingReplicator.label())</span>
 				),
 				_ycfWidth
 			);
@@ -319,16 +319,16 @@ public class MarketVertexGenerator
 	{
 		try
 		{
-<span class="nc" id="L322">			return _entityDynamicsContainer.dealerHazardRateEvolver().vertexSequence (</span>
+<span class="fc" id="L322">			return _entityDynamicsContainer.dealerHazardRateEvolver().vertexSequence (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L325">					initialMarketVertex.dealer().hazardRate(),</span>
+<span class="fc" id="L325">					initialMarketVertex.dealer().hazardRate(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L329">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L329">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L331">					latentStateWeiner.incrementArray (_entityDynamicsContainer.dealerHazardLabel())</span>
+<span class="fc" id="L331">					latentStateWeiner.incrementArray (_entityDynamicsContainer.dealerHazardLabel())</span>
 				),
 				_ycfWidth
 			);
@@ -348,16 +348,16 @@ public class MarketVertexGenerator
 	{
 		try
 		{
-<span class="nc" id="L351">			return _entityDynamicsContainer.clientHazardRateEvolver().vertexSequence (</span>
+<span class="fc" id="L351">			return _entityDynamicsContainer.clientHazardRateEvolver().vertexSequence (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L354">					initialMarketVertex.client().hazardRate(),</span>
+<span class="fc" id="L354">					initialMarketVertex.client().hazardRate(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L358">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L358">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L360">					latentStateWeiner.incrementArray (_entityDynamicsContainer.clientHazardLabel())</span>
+<span class="fc" id="L360">					latentStateWeiner.incrementArray (_entityDynamicsContainer.clientHazardLabel())</span>
 				),
 				_ycfWidth
 			);
@@ -377,16 +377,16 @@ public class MarketVertexGenerator
 	{
 		try
 		{
-<span class="nc" id="L380">			return _entityDynamicsContainer.dealerSeniorRecoveryRateEvolver().vertexSequence (</span>
+<span class="fc" id="L380">			return _entityDynamicsContainer.dealerSeniorRecoveryRateEvolver().vertexSequence (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L383">					initialMarketVertex.dealer().seniorRecoveryRate(),</span>
+<span class="fc" id="L383">					initialMarketVertex.dealer().seniorRecoveryRate(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L387">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L387">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L389">					latentStateWeiner.incrementArray (_entityDynamicsContainer.dealerSeniorRecoveryLabel())</span>
+<span class="fc" id="L389">					latentStateWeiner.incrementArray (_entityDynamicsContainer.dealerSeniorRecoveryLabel())</span>
 				),
 				_ycfWidth
 			);
@@ -404,12 +404,12 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-<span class="nc" id="L407">		org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver =</span>
-<span class="nc" id="L408">			_entityDynamicsContainer.dealerSubordinateRecoveryRateEvolver();</span>
+<span class="fc" id="L407">		org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver =</span>
+<span class="fc" id="L408">			_entityDynamicsContainer.dealerSubordinateRecoveryRateEvolver();</span>
 
-<span class="nc bnc" id="L410" title="All 2 branches missed.">		if (null == dealerSubordinateRecoveryRateEvolver)</span>
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">		if (null == dealerSubordinateRecoveryRateEvolver)</span>
 		{
-<span class="nc" id="L412">			return null;</span>
+<span class="fc" id="L412">			return null;</span>
 		}
 
 		try
@@ -444,16 +444,16 @@ public class MarketVertexGenerator
 	{
 		try
 		{
-<span class="nc" id="L447">			return _entityDynamicsContainer.clientRecoveryRateEvolver().vertexSequence (</span>
+<span class="fc" id="L447">			return _entityDynamicsContainer.clientRecoveryRateEvolver().vertexSequence (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
 					terminalDate,
-<span class="nc" id="L450">					initialMarketVertex.client().seniorRecoveryRate(),</span>
+<span class="fc" id="L450">					initialMarketVertex.client().seniorRecoveryRate(),</span>
 					0.,
 					false
 				),
-<span class="nc" id="L454">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="fc" id="L454">				org.drip.measure.realization.JumpDiffusionEdgeUnit.Diffusion (</span>
 					_ycfWidth,
-<span class="nc" id="L456">					latentStateWeiner.incrementArray (_entityDynamicsContainer.clientRecoveryLabel())</span>
+<span class="fc" id="L456">					latentStateWeiner.incrementArray (_entityDynamicsContainer.clientRecoveryLabel())</span>
 				),
 				_ycfWidth
 			);
@@ -485,34 +485,34 @@ public class MarketVertexGenerator
 		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer primarySecurityDynamicsContainer,
 		final org.drip.exposure.evolver.LatentStateDynamicsContainer latentStateDynamicsContainer)
 		throws java.lang.Exception
-<span class="nc" id="L488">	{</span>
-<span class="nc bnc" id="L489" title="All 6 branches missed.">		if (0 &gt;= (_spotDate = spotDate) ||</span>
+<span class="fc" id="L488">	{</span>
+<span class="pc bpc" id="L489" title="3 of 6 branches missed.">		if (0 &gt;= (_spotDate = spotDate) ||</span>
 			null == (_eventDateArray = eventDateArray) ||
 			null == (_entityDynamicsContainer = entityDynamicsContainer))
 		{
 <span class="nc" id="L493">			throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L496">		int eventVertexCount = _eventDateArray.length;</span>
-<span class="nc" id="L497">		_latentStateDynamicsContainer = latentStateDynamicsContainer;</span>
-<span class="nc" id="L498">		_primarySecurityDynamicsContainer = primarySecurityDynamicsContainer;</span>
-<span class="nc bnc" id="L499" title="All 2 branches missed.">		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];</span>
+<span class="fc" id="L496">		int eventVertexCount = _eventDateArray.length;</span>
+<span class="fc" id="L497">		_latentStateDynamicsContainer = latentStateDynamicsContainer;</span>
+<span class="fc" id="L498">		_primarySecurityDynamicsContainer = primarySecurityDynamicsContainer;</span>
+<span class="pc bpc" id="L499" title="1 of 2 branches missed.">		_ycfWidth = 0 == eventVertexCount ? null : new double[eventVertexCount];</span>
 
-<span class="nc bnc" id="L501" title="All 4 branches missed.">		if (0 == eventVertexCount ||</span>
+<span class="pc bpc" id="L501" title="2 of 4 branches missed.">		if (0 == eventVertexCount ||</span>
 			0. &gt;= (_ycfWidth[0] = ((double) (_eventDateArray[0] - _spotDate)) / 365.25))
 		{
 <span class="nc" id="L504">			throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L507" title="All 2 branches missed.">		for (int eventVertexIndex = 1; eventVertexIndex &lt; eventVertexCount; ++eventVertexIndex)</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">		for (int eventVertexIndex = 1; eventVertexIndex &lt; eventVertexCount; ++eventVertexIndex)</span>
 		{
-<span class="nc bnc" id="L509" title="All 2 branches missed.">			if (0. &gt;= (_ycfWidth[eventVertexIndex] = ((double) (_eventDateArray[eventVertexIndex] -</span>
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">			if (0. &gt;= (_ycfWidth[eventVertexIndex] = ((double) (_eventDateArray[eventVertexIndex] -</span>
 				_eventDateArray[eventVertexIndex - 1])) / 365.25))
 			{
 <span class="nc" id="L512">				throw new java.lang.Exception (&quot;MarketVertexGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="nc" id="L515">	}</span>
+<span class="fc" id="L515">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -555,7 +555,7 @@ public class MarketVertexGenerator
 
 	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer primarySecurityDynamicsContainer()
 	{
-<span class="nc" id="L558">		return _primarySecurityDynamicsContainer;</span>
+<span class="fc" id="L558">		return _primarySecurityDynamicsContainer;</span>
 	}
 
 	/**
@@ -600,111 +600,111 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner)
 	{
-<span class="nc bnc" id="L603" title="All 4 branches missed.">		if (null == initialMarketVertex ||</span>
+<span class="pc bpc" id="L603" title="2 of 4 branches missed.">		if (null == initialMarketVertex ||</span>
 			null == latentStateWeiner)
 		{
 <span class="nc" id="L606">			return null;</span>
 		}
 
-<span class="nc" id="L609">		int latentStateCount = latentStateWeiner.stateCount();</span>
+<span class="fc" id="L609">		int latentStateCount = latentStateWeiner.stateCount();</span>
 
-<span class="nc bnc" id="L611" title="All 2 branches missed.">		if (7 &gt; latentStateCount)</span>
+<span class="pc bpc" id="L611" title="1 of 2 branches missed.">		if (7 &gt; latentStateCount)</span>
 		{
 <span class="nc" id="L613">			return null;</span>
 		}
 
-<span class="nc" id="L616">		org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainerInitial =</span>
-<span class="nc" id="L617">			initialMarketVertex.latentStateVertexContainer();</span>
+<span class="fc" id="L616">		org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainerInitial =</span>
+<span class="fc" id="L617">			initialMarketVertex.latentStateVertexContainer();</span>
 
-<span class="nc bnc" id="L619" title="All 2 branches missed.">		java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; latentStateLabelList = null ==</span>
-<span class="nc" id="L620">			latentStateVertexContainerInitial ? null : latentStateVertexContainerInitial.labelList();</span>
+<span class="pc bpc" id="L619" title="1 of 2 branches missed.">		java.util.List&lt;org.drip.state.identifier.LatentStateLabel&gt; latentStateLabelList = null ==</span>
+<span class="fc" id="L620">			latentStateVertexContainerInitial ? null : latentStateVertexContainerInitial.labelList();</span>
 
-<span class="nc" id="L622">		double clientSurvivalProbabilityExponent = 0.;</span>
-<span class="nc" id="L623">		double dealerSurvivalProbabilityExponent = 0.;</span>
-<span class="nc" id="L624">		int eventVertexCount = _eventDateArray.length;</span>
-<span class="nc" id="L625">		int terminalDate = _eventDateArray[eventVertexCount - 1];</span>
+<span class="fc" id="L622">		double clientSurvivalProbabilityExponent = 0.;</span>
+<span class="fc" id="L623">		double dealerSurvivalProbabilityExponent = 0.;</span>
+<span class="fc" id="L624">		int eventVertexCount = _eventDateArray.length;</span>
+<span class="fc" id="L625">		int terminalDate = _eventDateArray[eventVertexCount - 1];</span>
 
-<span class="nc bnc" id="L627" title="All 2 branches missed.">		int latentStateLabelCount = null == latentStateLabelList ? 0 : latentStateLabelList.size();</span>
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">		int latentStateLabelCount = null == latentStateLabelList ? 0 : latentStateLabelList.size();</span>
 
-<span class="nc" id="L629">		org.drip.measure.realization.JumpDiffusionVertex[] overnightReplicatorVertexArray =</span>
-<span class="nc" id="L630">			overnightReplicatorVertexArray (</span>
+<span class="fc" id="L629">		org.drip.measure.realization.JumpDiffusionVertex[] overnightReplicatorVertexArray =</span>
+<span class="fc" id="L630">			overnightReplicatorVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L636">		org.drip.measure.realization.JumpDiffusionVertex[] csaReplicatorVertexArray =</span>
-<span class="nc" id="L637">			csaReplicatorVertexArray (</span>
+<span class="fc" id="L636">		org.drip.measure.realization.JumpDiffusionVertex[] csaReplicatorVertexArray =</span>
+<span class="fc" id="L637">			csaReplicatorVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L643">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorFundingReplicatorVertexArray =</span>
-<span class="nc" id="L644">			dealerSeniorFundingReplicatorVertexArray (</span>
+<span class="fc" id="L643">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorFundingReplicatorVertexArray =</span>
+<span class="fc" id="L644">			dealerSeniorFundingReplicatorVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L650">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateFundingReplicatorVertexArray =</span>
-<span class="nc" id="L651">			dealerSubordinateFundingReplicatorVertexArray (</span>
+<span class="fc" id="L650">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateFundingReplicatorVertexArray =</span>
+<span class="fc" id="L651">			dealerSubordinateFundingReplicatorVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L657">		org.drip.measure.realization.JumpDiffusionVertex[] clientFundingReplicatorVertexArray =</span>
-<span class="nc" id="L658">			clientFundingReplicatorVertexArray (</span>
+<span class="fc" id="L657">		org.drip.measure.realization.JumpDiffusionVertex[] clientFundingReplicatorVertexArray =</span>
+<span class="fc" id="L658">			clientFundingReplicatorVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L664">		org.drip.measure.realization.JumpDiffusionVertex[] dealerHazardVertexArray =</span>
-<span class="nc" id="L665">			dealerHazardVertexArray (</span>
+<span class="fc" id="L664">		org.drip.measure.realization.JumpDiffusionVertex[] dealerHazardVertexArray =</span>
+<span class="fc" id="L665">			dealerHazardVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L671">		org.drip.measure.realization.JumpDiffusionVertex[] clientHazardVertexArray =</span>
-<span class="nc" id="L672">			clientHazardVertexArray (</span>
+<span class="fc" id="L671">		org.drip.measure.realization.JumpDiffusionVertex[] clientHazardVertexArray =</span>
+<span class="fc" id="L672">			clientHazardVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L678">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorRecoveryVertexArray =</span>
-<span class="nc" id="L679">			dealerSeniorRecoveryVertexArray (</span>
+<span class="fc" id="L678">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSeniorRecoveryVertexArray =</span>
+<span class="fc" id="L679">			dealerSeniorRecoveryVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L685">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateRecoveryVertexArray =</span>
-<span class="nc" id="L686">			dealerSubordinateRecoveryVertexArray (</span>
+<span class="fc" id="L685">		org.drip.measure.realization.JumpDiffusionVertex[] dealerSubordinateRecoveryVertexArray =</span>
+<span class="fc" id="L686">			dealerSubordinateRecoveryVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L692">		org.drip.measure.realization.JumpDiffusionVertex[] clientRecoveryVertexArray =</span>
-<span class="nc" id="L693">			clientRecoveryVertexArray (</span>
+<span class="fc" id="L692">		org.drip.measure.realization.JumpDiffusionVertex[] clientRecoveryVertexArray =</span>
+<span class="fc" id="L693">			clientRecoveryVertexArray (</span>
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc" id="L699">		java.util.List&lt;org.drip.measure.realization.JumpDiffusionVertex[]&gt; latentStateVertexArrayList =</span>
-<span class="nc" id="L700">			latentStateVertexArrayList (</span>
+<span class="fc" id="L699">		java.util.List&lt;org.drip.measure.realization.JumpDiffusionVertex[]&gt; latentStateVertexArrayList =</span>
+<span class="fc" id="L700">			latentStateVertexArrayList (</span>
 				latentStateLabelList,
 				initialMarketVertex,
 				latentStateWeiner,
 				terminalDate
 			);
 
-<span class="nc bnc" id="L707" title="All 16 branches missed.">		if (null == overnightReplicatorVertexArray ||</span>
+<span class="pc bpc" id="L707" title="8 of 16 branches missed.">		if (null == overnightReplicatorVertexArray ||</span>
 			null == csaReplicatorVertexArray ||
 			null == dealerSeniorFundingReplicatorVertexArray ||
 			null == clientFundingReplicatorVertexArray ||
@@ -716,78 +716,78 @@ public class MarketVertexGenerator
 <span class="nc" id="L716">			return null;</span>
 		}
 
-<span class="nc" id="L719">		double initialCSAReplicator = csaReplicatorVertexArray[0].value();</span>
+<span class="fc" id="L719">		double initialCSAReplicator = csaReplicatorVertexArray[0].value();</span>
 
-<span class="nc" id="L721">		double initialOvernightReplicator = overnightReplicatorVertexArray[0].value();</span>
+<span class="fc" id="L721">		double initialOvernightReplicator = overnightReplicatorVertexArray[0].value();</span>
 
-<span class="nc" id="L723">		double initialDealerSeniorFundingReplicator = dealerSeniorFundingReplicatorVertexArray[0].value();</span>
+<span class="fc" id="L723">		double initialDealerSeniorFundingReplicator = dealerSeniorFundingReplicatorVertexArray[0].value();</span>
 
-<span class="nc bnc" id="L725" title="All 4 branches missed.">		double initialDealerSubordinateFundingReplicator =</span>
+<span class="pc bpc" id="L725" title="3 of 4 branches missed.">		double initialDealerSubordinateFundingReplicator =</span>
 			null == dealerSubordinateFundingReplicatorVertexArray ||
 			null == dealerSubordinateFundingReplicatorVertexArray[0] ?
-<span class="nc" id="L728">			java.lang.Double.NaN : dealerSubordinateFundingReplicatorVertexArray[0].value();</span>
+<span class="pc" id="L728">			java.lang.Double.NaN : dealerSubordinateFundingReplicatorVertexArray[0].value();</span>
 
-<span class="nc" id="L730">		double initialClientFundingReplicator = clientFundingReplicatorVertexArray[0].value();</span>
+<span class="fc" id="L730">		double initialClientFundingReplicator = clientFundingReplicatorVertexArray[0].value();</span>
 
-<span class="nc" id="L732">		java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexTrajectory =</span>
+<span class="fc" id="L732">		java.util.Map&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt; marketVertexTrajectory =</span>
 			new java.util.TreeMap&lt;java.lang.Integer, org.drip.exposure.universe.MarketVertex&gt;();
 
-<span class="nc bnc" id="L735" title="All 2 branches missed.">		for (int eventVertexIndex = 1; eventVertexIndex &lt;= eventVertexCount; ++eventVertexIndex)</span>
+<span class="fc bfc" id="L735" title="All 2 branches covered.">		for (int eventVertexIndex = 1; eventVertexIndex &lt;= eventVertexCount; ++eventVertexIndex)</span>
 		{
-<span class="nc" id="L737">			double clientHazardRate = clientHazardVertexArray[eventVertexIndex].value();</span>
+<span class="fc" id="L737">			double clientHazardRate = clientHazardVertexArray[eventVertexIndex].value();</span>
 
-<span class="nc" id="L739">			double dealerHazardRate = dealerHazardVertexArray[eventVertexIndex].value();</span>
+<span class="fc" id="L739">			double dealerHazardRate = dealerHazardVertexArray[eventVertexIndex].value();</span>
 
-<span class="nc" id="L741">			double csaReplicatorFinish =  csaReplicatorVertexArray[eventVertexIndex].value();</span>
+<span class="fc" id="L741">			double csaReplicatorFinish =  csaReplicatorVertexArray[eventVertexIndex].value();</span>
 
-<span class="nc" id="L743">			double overnightReplicatorFinish = overnightReplicatorVertexArray[eventVertexIndex].value();</span>
+<span class="fc" id="L743">			double overnightReplicatorFinish = overnightReplicatorVertexArray[eventVertexIndex].value();</span>
 
-<span class="nc" id="L745">			double clientFundingReplicatorFinish =</span>
-<span class="nc" id="L746">				clientFundingReplicatorVertexArray[eventVertexIndex].value();</span>
+<span class="fc" id="L745">			double clientFundingReplicatorFinish =</span>
+<span class="fc" id="L746">				clientFundingReplicatorVertexArray[eventVertexIndex].value();</span>
 
-<span class="nc" id="L748">			double dealerSeniorFundingReplicatorFinish =</span>
-<span class="nc" id="L749">				dealerSeniorFundingReplicatorVertexArray[eventVertexIndex].value();</span>
+<span class="fc" id="L748">			double dealerSeniorFundingReplicatorFinish =</span>
+<span class="fc" id="L749">				dealerSeniorFundingReplicatorVertexArray[eventVertexIndex].value();</span>
 
-<span class="nc" id="L751">			double timeWidth = _ycfWidth[eventVertexIndex - 1];</span>
-<span class="nc" id="L752">			double timeWidthReciprocal = 1. / timeWidth;</span>
-<span class="nc" id="L753">			clientSurvivalProbabilityExponent += clientHazardRate * timeWidth;</span>
-<span class="nc" id="L754">			dealerSurvivalProbabilityExponent += dealerHazardRate * timeWidth;</span>
+<span class="fc" id="L751">			double timeWidth = _ycfWidth[eventVertexIndex - 1];</span>
+<span class="fc" id="L752">			double timeWidthReciprocal = 1. / timeWidth;</span>
+<span class="fc" id="L753">			clientSurvivalProbabilityExponent += clientHazardRate * timeWidth;</span>
+<span class="fc" id="L754">			dealerSurvivalProbabilityExponent += dealerHazardRate * timeWidth;</span>
 
-<span class="nc" id="L756">			double overnightRate = timeWidthReciprocal * java.lang.Math.log (overnightReplicatorFinish /</span>
+<span class="fc" id="L756">			double overnightRate = timeWidthReciprocal * java.lang.Math.log (overnightReplicatorFinish /</span>
 				initialOvernightReplicator);
 
-<span class="nc bnc" id="L759" title="All 4 branches missed.">			double dealerSubordinateFundingReplicatorFinish =</span>
+<span class="pc bpc" id="L759" title="3 of 4 branches missed.">			double dealerSubordinateFundingReplicatorFinish =</span>
 				null == dealerSubordinateFundingReplicatorVertexArray ||
 				null == dealerSubordinateFundingReplicatorVertexArray[eventVertexIndex] ?
 				java.lang.Double.NaN :
-<span class="nc" id="L763">				dealerSubordinateFundingReplicatorVertexArray[eventVertexIndex].value();</span>
+<span class="pc" id="L763">				dealerSubordinateFundingReplicatorVertexArray[eventVertexIndex].value();</span>
 
 			try
 			{
-<span class="nc" id="L767">				org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex =</span>
+<span class="fc" id="L767">				org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex =</span>
 					new org.drip.exposure.universe.MarketVertexEntity (
-<span class="nc" id="L769">						java.lang.Math.exp (-1. * dealerSurvivalProbabilityExponent),</span>
+<span class="fc" id="L769">						java.lang.Math.exp (-1. * dealerSurvivalProbabilityExponent),</span>
 						dealerHazardRate,
-<span class="nc" id="L771">						dealerSeniorRecoveryVertexArray[eventVertexIndex].value(),</span>
-<span class="nc bnc" id="L772" title="All 4 branches missed.">						timeWidthReciprocal * java.lang.Math.log (dealerSeniorFundingReplicatorFinish /</span>
+<span class="fc" id="L771">						dealerSeniorRecoveryVertexArray[eventVertexIndex].value(),</span>
+<span class="pc bpc" id="L772" title="3 of 4 branches missed.">						timeWidthReciprocal * java.lang.Math.log (dealerSeniorFundingReplicatorFinish /</span>
 							initialDealerSeniorFundingReplicator) - overnightRate,
 						dealerSeniorFundingReplicatorFinish,
 						null == dealerSubordinateFundingReplicatorVertexArray ||
 						null == dealerSubordinateRecoveryVertexArray[eventVertexIndex] ? java.lang.Double.NaN
-<span class="nc bnc" id="L777" title="All 2 branches missed.">							: dealerSubordinateRecoveryVertexArray[eventVertexIndex].value(),</span>
+<span class="pc bpc" id="L777" title="1 of 2 branches missed.">							: dealerSubordinateRecoveryVertexArray[eventVertexIndex].value(),</span>
 						null == dealerSubordinateFundingReplicatorVertexArray ? java.lang.Double.NaN :
 							timeWidthReciprocal *
-<span class="nc" id="L780">							java.lang.Math.log (dealerSubordinateFundingReplicatorFinish /</span>
+<span class="pc" id="L780">							java.lang.Math.log (dealerSubordinateFundingReplicatorFinish /</span>
 								initialDealerSubordinateFundingReplicator) - overnightRate,
 						dealerSubordinateFundingReplicatorFinish
 					);
 
-<span class="nc" id="L785">				org.drip.exposure.universe.MarketVertexEntity clientMarketVertex =</span>
+<span class="fc" id="L785">				org.drip.exposure.universe.MarketVertexEntity clientMarketVertex =</span>
 					new org.drip.exposure.universe.MarketVertexEntity (
-<span class="nc" id="L787">						java.lang.Math.exp (-1. * clientSurvivalProbabilityExponent),</span>
+<span class="fc" id="L787">						java.lang.Math.exp (-1. * clientSurvivalProbabilityExponent),</span>
 						clientHazardRate,
-<span class="nc" id="L789">						clientRecoveryVertexArray[eventVertexIndex].value(),</span>
-<span class="nc" id="L790">						timeWidthReciprocal * java.lang.Math.log (clientFundingReplicatorFinish /</span>
+<span class="fc" id="L789">						clientRecoveryVertexArray[eventVertexIndex].value(),</span>
+<span class="fc" id="L790">						timeWidthReciprocal * java.lang.Math.log (clientFundingReplicatorFinish /</span>
 							initialClientFundingReplicator) - overnightRate,
 						clientFundingReplicatorFinish,
 						java.lang.Double.NaN,
@@ -795,34 +795,34 @@ public class MarketVertexGenerator
 						java.lang.Double.NaN
 					);
 
-<span class="nc" id="L798">				org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainer = new</span>
+<span class="fc" id="L798">				org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainer = new</span>
 					org.drip.exposure.evolver.LatentStateVertexContainer();
 
-<span class="nc bnc" id="L801" title="All 4 branches missed.">				if (null != latentStateVertexArrayList &amp;&amp; null != latentStateLabelList)</span>
+<span class="pc bpc" id="L801" title="2 of 4 branches missed.">				if (null != latentStateVertexArrayList &amp;&amp; null != latentStateLabelList)</span>
 				{
-<span class="nc bnc" id="L803" title="All 2 branches missed.">					for (int latentStateLabelIndex = 0; latentStateLabelIndex &lt; latentStateLabelCount;</span>
-<span class="nc" id="L804">						++latentStateLabelIndex)</span>
+<span class="fc bfc" id="L803" title="All 2 branches covered.">					for (int latentStateLabelIndex = 0; latentStateLabelIndex &lt; latentStateLabelCount;</span>
+<span class="fc" id="L804">						++latentStateLabelIndex)</span>
 					{
-<span class="nc" id="L806">						org.drip.state.identifier.LatentStateLabel latentStateLabel =</span>
-<span class="nc" id="L807">							latentStateLabelList.get (latentStateLabelIndex);</span>
+<span class="fc" id="L806">						org.drip.state.identifier.LatentStateLabel latentStateLabel =</span>
+<span class="fc" id="L807">							latentStateLabelList.get (latentStateLabelIndex);</span>
 
-<span class="nc bnc" id="L809" title="All 2 branches missed.">						if (null != latentStateLabel)</span>
+<span class="pc bpc" id="L809" title="1 of 2 branches missed.">						if (null != latentStateLabel)</span>
 						{
-<span class="nc" id="L811">							latentStateVertexContainer.addLatentStateValue (</span>
+<span class="fc" id="L811">							latentStateVertexContainer.addLatentStateValue (</span>
 								latentStateLabel,
 								latentStateVertexArrayList.get
-<span class="nc" id="L814">									(latentStateLabelIndex)[eventVertexIndex].value()</span>
+<span class="fc" id="L814">									(latentStateLabelIndex)[eventVertexIndex].value()</span>
 							);
 						}
 					}
 				}
 
-<span class="nc" id="L820">				org.drip.exposure.universe.MarketVertex marketVertex =</span>
+<span class="fc" id="L820">				org.drip.exposure.universe.MarketVertex marketVertex =</span>
 					new org.drip.exposure.universe.MarketVertex (
 						new org.drip.analytics.date.JulianDate (_eventDateArray[eventVertexIndex - 1]),
 						overnightRate,
 						overnightReplicatorFinish,
-<span class="nc" id="L825">						timeWidthReciprocal * java.lang.Math.log (csaReplicatorFinish / initialCSAReplicator)</span>
+<span class="fc" id="L825">						timeWidthReciprocal * java.lang.Math.log (csaReplicatorFinish / initialCSAReplicator)</span>
 							- overnightRate,
 						csaReplicatorFinish,
 						dealerMarketVertex,
@@ -830,8 +830,8 @@ public class MarketVertexGenerator
 						latentStateVertexContainer
 					);
 
-<span class="nc" id="L833">				marketVertexTrajectory.put (</span>
-<span class="nc" id="L834">					_eventDateArray[eventVertexIndex - 1],</span>
+<span class="fc" id="L833">				marketVertexTrajectory.put (</span>
+<span class="fc" id="L834">					_eventDateArray[eventVertexIndex - 1],</span>
 					marketVertex
 				);
 			}
@@ -840,56 +840,56 @@ public class MarketVertexGenerator
 <span class="nc" id="L840">				e.printStackTrace();</span>
 
 <span class="nc" id="L842">				return null;</span>
-<span class="nc" id="L843">			}</span>
+<span class="fc" id="L843">			}</span>
 
-<span class="nc" id="L845">			initialCSAReplicator = csaReplicatorFinish;</span>
-<span class="nc" id="L846">			initialOvernightReplicator = overnightReplicatorFinish;</span>
-<span class="nc" id="L847">			initialClientFundingReplicator = clientFundingReplicatorFinish;</span>
-<span class="nc" id="L848">			initialDealerSeniorFundingReplicator = dealerSeniorFundingReplicatorFinish;</span>
-<span class="nc" id="L849">			initialDealerSubordinateFundingReplicator = dealerSubordinateFundingReplicatorFinish;</span>
+<span class="fc" id="L845">			initialCSAReplicator = csaReplicatorFinish;</span>
+<span class="fc" id="L846">			initialOvernightReplicator = overnightReplicatorFinish;</span>
+<span class="fc" id="L847">			initialClientFundingReplicator = clientFundingReplicatorFinish;</span>
+<span class="fc" id="L848">			initialDealerSeniorFundingReplicator = dealerSeniorFundingReplicatorFinish;</span>
+<span class="fc" id="L849">			initialDealerSubordinateFundingReplicator = dealerSubordinateFundingReplicatorFinish;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L854">			double clientHazardVertexEpochal = clientHazardVertexArray[0].value();</span>
+<span class="fc" id="L854">			double clientHazardVertexEpochal = clientHazardVertexArray[0].value();</span>
 
-<span class="nc" id="L856">			double dealerHazardVertexEpochal = dealerHazardVertexArray[0].value();</span>
+<span class="fc" id="L856">			double dealerHazardVertexEpochal = dealerHazardVertexArray[0].value();</span>
 
-<span class="nc" id="L858">			marketVertexTrajectory.put (</span>
-<span class="nc" id="L859">				initialMarketVertex.anchorDate().julian(),</span>
+<span class="fc" id="L858">			marketVertexTrajectory.put (</span>
+<span class="fc" id="L859">				initialMarketVertex.anchorDate().julian(),</span>
 				new org.drip.exposure.universe.MarketVertex (
 					new org.drip.analytics.date.JulianDate (_spotDate),
 					0.,
-<span class="nc" id="L863">					overnightReplicatorVertexArray[0].value(),</span>
+<span class="fc" id="L863">					overnightReplicatorVertexArray[0].value(),</span>
 					0.,
-<span class="nc" id="L865">					csaReplicatorVertexArray[0].value(),</span>
+<span class="fc" id="L865">					csaReplicatorVertexArray[0].value(),</span>
 					new org.drip.exposure.universe.MarketVertexEntity (
-<span class="nc" id="L867">						java.lang.Math.exp (-1. * _ycfWidth[0] * dealerHazardVertexEpochal),</span>
+<span class="fc" id="L867">						java.lang.Math.exp (-1. * _ycfWidth[0] * dealerHazardVertexEpochal),</span>
 						dealerHazardVertexEpochal,
-<span class="nc" id="L869">						dealerSeniorRecoveryVertexArray[0].value(),</span>
-<span class="nc" id="L870">						initialMarketVertex.dealer().seniorFundingSpread(),</span>
-<span class="nc bnc" id="L871" title="All 4 branches missed.">						dealerSeniorFundingReplicatorVertexArray[0].value(),</span>
+<span class="fc" id="L869">						dealerSeniorRecoveryVertexArray[0].value(),</span>
+<span class="fc" id="L870">						initialMarketVertex.dealer().seniorFundingSpread(),</span>
+<span class="pc bpc" id="L871" title="3 of 4 branches missed.">						dealerSeniorFundingReplicatorVertexArray[0].value(),</span>
 						null == dealerSubordinateFundingReplicatorVertexArray ||
 						null == dealerSubordinateRecoveryVertexArray[0] ? java.lang.Double.NaN :
-<span class="nc bnc" id="L874" title="All 2 branches missed.">							dealerSubordinateRecoveryVertexArray[0].value(),</span>
+<span class="pc bpc" id="L874" title="1 of 2 branches missed.">							dealerSubordinateRecoveryVertexArray[0].value(),</span>
 						null == dealerSubordinateFundingReplicatorVertexArray ? java.lang.Double.NaN :
-<span class="nc bnc" id="L876" title="All 4 branches missed.">							initialMarketVertex.dealer().subordinateFundingSpread(),</span>
+<span class="pc bpc" id="L876" title="3 of 4 branches missed.">							initialMarketVertex.dealer().subordinateFundingSpread(),</span>
 						null == dealerSubordinateFundingReplicatorVertexArray ||
 							null == dealerSubordinateFundingReplicatorVertexArray[0] ?
 							java.lang.Double.NaN :
-<span class="nc" id="L880">							dealerSubordinateFundingReplicatorVertexArray[0].value()</span>
+<span class="pc" id="L880">							dealerSubordinateFundingReplicatorVertexArray[0].value()</span>
 					),
 					new org.drip.exposure.universe.MarketVertexEntity (
-<span class="nc" id="L883">						java.lang.Math.exp (-1. * _ycfWidth[0] * clientHazardVertexEpochal),</span>
+<span class="fc" id="L883">						java.lang.Math.exp (-1. * _ycfWidth[0] * clientHazardVertexEpochal),</span>
 						clientHazardVertexEpochal,
-<span class="nc" id="L885">						clientRecoveryVertexArray[0].value(),</span>
-<span class="nc" id="L886">						initialMarketVertex.client().seniorFundingSpread(),</span>
-<span class="nc" id="L887">						clientFundingReplicatorVertexArray[0].value(),</span>
+<span class="fc" id="L885">						clientRecoveryVertexArray[0].value(),</span>
+<span class="fc" id="L886">						initialMarketVertex.client().seniorFundingSpread(),</span>
+<span class="fc" id="L887">						clientFundingReplicatorVertexArray[0].value(),</span>
 						java.lang.Double.NaN,
 						java.lang.Double.NaN,
 						java.lang.Double.NaN
 					),
-<span class="nc" id="L892">					initialMarketVertex.latentStateVertexContainer()</span>
+<span class="fc" id="L892">					initialMarketVertex.latentStateVertexContainer()</span>
 				)
 			);
 		}
@@ -898,9 +898,9 @@ public class MarketVertexGenerator
 <span class="nc" id="L898">			e.printStackTrace();</span>
 
 <span class="nc" id="L900">			return null;</span>
-<span class="nc" id="L901">		}</span>
+<span class="fc" id="L901">		}</span>
 
-<span class="nc" id="L903">		return marketVertexTrajectory;</span>
+<span class="fc" id="L903">		return marketVertexTrajectory;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

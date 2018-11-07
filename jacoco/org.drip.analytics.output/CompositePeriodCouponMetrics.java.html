@@ -6,35 +6,53 @@ package org.drip.analytics.output;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,26 +69,32 @@ package org.drip.analytics.output;
  */
 
 /**
- * CompositePeriodCouponMetrics holds the results of the compounded Composed period Full Coupon Metrics
- *  Estimate Output.
+ * &lt;i&gt;CompositePeriodCouponMetrics&lt;/i&gt; holds the results of the compounded Composed period Full Coupon
+ * Metrics Estimate Output.
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CompositePeriodCouponMetrics {
-<span class="fc" id="L61">	private double _dblDCF = 0.;</span>
-<span class="fc" id="L62">	private double _dblRate = 0.;</span>
-<span class="fc" id="L63">	private double _dblCreditFX = 0.;</span>
-<span class="fc" id="L64">	private double _dblForwardFX = 0.;</span>
-<span class="fc" id="L65">	private double _dblFundingFX = 0.;</span>
-<span class="fc" id="L66">	private double _dblCollateralFX = 0.;</span>
-<span class="fc" id="L67">	private double _dblCreditForward = 0.;</span>
-<span class="fc" id="L68">	private double _dblCreditFunding = 0.;</span>
-<span class="fc" id="L69">	private double _dblForwardFunding = 0.;</span>
-<span class="fc" id="L70">	private double _dblCollateralCredit = 0.;</span>
-<span class="fc" id="L71">	private double _dblCollateralForward = 0.;</span>
-<span class="fc" id="L72">	private double _dblCollateralFunding = 0.;</span>
-<span class="fc" id="L73">	private java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; _lsUPM = null;</span>
+<span class="fc" id="L85">	private double _dblDCF = 0.;</span>
+<span class="fc" id="L86">	private double _dblRate = 0.;</span>
+<span class="fc" id="L87">	private double _dblCreditFX = 0.;</span>
+<span class="fc" id="L88">	private double _dblForwardFX = 0.;</span>
+<span class="fc" id="L89">	private double _dblFundingFX = 0.;</span>
+<span class="fc" id="L90">	private double _dblCollateralFX = 0.;</span>
+<span class="fc" id="L91">	private double _dblCreditForward = 0.;</span>
+<span class="fc" id="L92">	private double _dblCreditFunding = 0.;</span>
+<span class="fc" id="L93">	private double _dblForwardFunding = 0.;</span>
+<span class="fc" id="L94">	private double _dblCollateralCredit = 0.;</span>
+<span class="fc" id="L95">	private double _dblCollateralForward = 0.;</span>
+<span class="fc" id="L96">	private double _dblCollateralFunding = 0.;</span>
+<span class="fc" id="L97">	private java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; _lsUPM = null;</span>
 
 	/**
 	 * CompositePeriodCouponMetrics Instance from the list of the composite period metrics
@@ -84,72 +108,72 @@ public class CompositePeriodCouponMetrics {
 		final java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; lsUPM)
 	{
 		try {
-<span class="fc" id="L87">			CompositePeriodCouponMetrics cpm = new CompositePeriodCouponMetrics (lsUPM);</span>
+<span class="fc" id="L111">			CompositePeriodCouponMetrics cpm = new CompositePeriodCouponMetrics (lsUPM);</span>
 
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			return cpm.initialize() ? cpm : null;</span>
-<span class="nc" id="L90">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L91">			e.printStackTrace();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			return cpm.initialize() ? cpm : null;</span>
+<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L115">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L94">		return null;</span>
+<span class="nc" id="L118">		return null;</span>
 	}
 
 	protected CompositePeriodCouponMetrics (
 		final java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; lsUPM)
 		throws java.lang.Exception
-<span class="fc" id="L100">	{</span>
-<span class="pc bpc" id="L101" title="2 of 4 branches missed.">		if (null == (_lsUPM = lsUPM) || 0 == _lsUPM.size())</span>
-<span class="nc" id="L102">			throw new java.lang.Exception (&quot;CompositePeriodCouponMetrics ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L103">	}</span>
+<span class="fc" id="L124">	{</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		if (null == (_lsUPM = lsUPM) || 0 == _lsUPM.size())</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;CompositePeriodCouponMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L127">	}</span>
 
 	protected boolean initialize()
 	{
-<span class="fc" id="L107">		double dblAmount = 0.;</span>
+<span class="fc" id="L131">		double dblAmount = 0.;</span>
 
-<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (org.drip.analytics.output.UnitPeriodMetrics upm : _lsUPM) {</span>
-<span class="fc" id="L110">			org.drip.analytics.output.ConvexityAdjustment convAdj = upm.convAdj();</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (org.drip.analytics.output.UnitPeriodMetrics upm : _lsUPM) {</span>
+<span class="fc" id="L134">			org.drip.analytics.output.ConvexityAdjustment convAdj = upm.convAdj();</span>
 
-<span class="fc" id="L112">			double dblUnitRate = upm.rate();</span>
+<span class="fc" id="L136">			double dblUnitRate = upm.rate();</span>
 
-<span class="fc" id="L114">			double dblUnitDCF = upm.dcf();</span>
+<span class="fc" id="L138">			double dblUnitDCF = upm.dcf();</span>
 
-<span class="fc" id="L116">			double dblUnitAmount = dblUnitDCF * dblUnitRate;</span>
-<span class="fc" id="L117">			dblAmount += dblUnitAmount;</span>
-<span class="fc" id="L118">			_dblDCF += dblUnitDCF;</span>
+<span class="fc" id="L140">			double dblUnitAmount = dblUnitDCF * dblUnitRate;</span>
+<span class="fc" id="L141">			dblAmount += dblUnitAmount;</span>
+<span class="fc" id="L142">			_dblDCF += dblUnitDCF;</span>
 
-<span class="fc" id="L120">			_dblCollateralCredit += convAdj.collateralCredit() * dblUnitDCF;</span>
+<span class="fc" id="L144">			_dblCollateralCredit += convAdj.collateralCredit() * dblUnitDCF;</span>
 
-<span class="fc" id="L122">			_dblCollateralForward += convAdj.collateralForward() * dblUnitDCF;</span>
+<span class="fc" id="L146">			_dblCollateralForward += convAdj.collateralForward() * dblUnitDCF;</span>
 
-<span class="fc" id="L124">			_dblCollateralFunding += convAdj.collateralFunding() * dblUnitDCF;</span>
+<span class="fc" id="L148">			_dblCollateralFunding += convAdj.collateralFunding() * dblUnitDCF;</span>
 
-<span class="fc" id="L126">			_dblCollateralFX += convAdj.collateralFX() * dblUnitDCF;</span>
+<span class="fc" id="L150">			_dblCollateralFX += convAdj.collateralFX() * dblUnitDCF;</span>
 
-<span class="fc" id="L128">			_dblCreditForward += convAdj.creditForward() * dblUnitDCF;</span>
+<span class="fc" id="L152">			_dblCreditForward += convAdj.creditForward() * dblUnitDCF;</span>
 
-<span class="fc" id="L130">			_dblCreditFunding += convAdj.creditFunding() * dblUnitDCF;</span>
+<span class="fc" id="L154">			_dblCreditFunding += convAdj.creditFunding() * dblUnitDCF;</span>
 
-<span class="fc" id="L132">			_dblCreditFX += convAdj.creditFX() * dblUnitDCF;</span>
+<span class="fc" id="L156">			_dblCreditFX += convAdj.creditFX() * dblUnitDCF;</span>
 
-<span class="fc" id="L134">			_dblForwardFunding += convAdj.forwardFunding() * dblUnitDCF;</span>
+<span class="fc" id="L158">			_dblForwardFunding += convAdj.forwardFunding() * dblUnitDCF;</span>
 
-<span class="fc" id="L136">			_dblForwardFX += convAdj.forwardFX() * dblUnitDCF;</span>
+<span class="fc" id="L160">			_dblForwardFX += convAdj.forwardFX() * dblUnitDCF;</span>
 
-<span class="fc" id="L138">			_dblFundingFX += convAdj.fundingFX() * dblUnitDCF;</span>
-<span class="fc" id="L139">		}</span>
+<span class="fc" id="L162">			_dblFundingFX += convAdj.fundingFX() * dblUnitDCF;</span>
+<span class="fc" id="L163">		}</span>
 
-<span class="fc" id="L141">		_dblCollateralCredit /= _dblDCF;</span>
-<span class="fc" id="L142">		_dblCollateralForward /= _dblDCF;</span>
-<span class="fc" id="L143">		_dblCollateralFunding /= _dblDCF;</span>
-<span class="fc" id="L144">		_dblCollateralFX /= _dblDCF;</span>
-<span class="fc" id="L145">		_dblCreditForward /= _dblDCF;</span>
-<span class="fc" id="L146">		_dblCreditFunding /= _dblDCF;</span>
-<span class="fc" id="L147">		_dblCreditFX /= _dblDCF;</span>
-<span class="fc" id="L148">		_dblForwardFunding /= _dblDCF;</span>
-<span class="fc" id="L149">		_dblForwardFX /= _dblDCF;</span>
-<span class="fc" id="L150">		_dblFundingFX /= _dblDCF;</span>
-<span class="fc" id="L151">		_dblRate = dblAmount / _dblDCF;</span>
-<span class="fc" id="L152">		return true;</span>
+<span class="fc" id="L165">		_dblCollateralCredit /= _dblDCF;</span>
+<span class="fc" id="L166">		_dblCollateralForward /= _dblDCF;</span>
+<span class="fc" id="L167">		_dblCollateralFunding /= _dblDCF;</span>
+<span class="fc" id="L168">		_dblCollateralFX /= _dblDCF;</span>
+<span class="fc" id="L169">		_dblCreditForward /= _dblDCF;</span>
+<span class="fc" id="L170">		_dblCreditFunding /= _dblDCF;</span>
+<span class="fc" id="L171">		_dblCreditFX /= _dblDCF;</span>
+<span class="fc" id="L172">		_dblForwardFunding /= _dblDCF;</span>
+<span class="fc" id="L173">		_dblForwardFX /= _dblDCF;</span>
+<span class="fc" id="L174">		_dblFundingFX /= _dblDCF;</span>
+<span class="fc" id="L175">		_dblRate = dblAmount / _dblDCF;</span>
+<span class="fc" id="L176">		return true;</span>
 	}
 
 	/**
@@ -160,7 +184,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double dcf()
 	{
-<span class="fc" id="L163">		return _dblDCF;</span>
+<span class="fc" id="L187">		return _dblDCF;</span>
 	}
 
 	/**
@@ -171,7 +195,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double rate()
 	{
-<span class="fc" id="L174">		return _dblRate;</span>
+<span class="fc" id="L198">		return _dblRate;</span>
 	}
 
 	/**
@@ -182,7 +206,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double collateralCredit()
 	{
-<span class="nc" id="L185">		return _dblCollateralCredit;</span>
+<span class="nc" id="L209">		return _dblCollateralCredit;</span>
 	}
 
 	/**
@@ -193,7 +217,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double collateralForward()
 	{
-<span class="nc" id="L196">		return _dblCollateralForward;</span>
+<span class="nc" id="L220">		return _dblCollateralForward;</span>
 	}
 
 	/**
@@ -204,7 +228,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double collateralFunding()
 	{
-<span class="nc" id="L207">		return _dblCollateralFunding;</span>
+<span class="nc" id="L231">		return _dblCollateralFunding;</span>
 	}
 
 	/**
@@ -215,7 +239,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double collateralFX()
 	{
-<span class="nc" id="L218">		return _dblCollateralFX;</span>
+<span class="nc" id="L242">		return _dblCollateralFX;</span>
 	}
 
 	/**
@@ -226,7 +250,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double creditForward()
 	{
-<span class="fc" id="L229">		return _dblCreditForward;</span>
+<span class="fc" id="L253">		return _dblCreditForward;</span>
 	}
 
 	/**
@@ -237,7 +261,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double creditFunding()
 	{
-<span class="fc" id="L240">		return _dblCreditFunding;</span>
+<span class="fc" id="L264">		return _dblCreditFunding;</span>
 	}
 
 	/**
@@ -248,7 +272,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double creditFX()
 	{
-<span class="fc" id="L251">		return _dblCreditFX;</span>
+<span class="fc" id="L275">		return _dblCreditFX;</span>
 	}
 
 	/**
@@ -259,7 +283,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double forwardFunding()
 	{
-<span class="fc" id="L262">		return _dblForwardFunding;</span>
+<span class="fc" id="L286">		return _dblForwardFunding;</span>
 	}
 
 	/**
@@ -270,7 +294,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double forwardFX()
 	{
-<span class="fc" id="L273">		return _dblForwardFX;</span>
+<span class="fc" id="L297">		return _dblForwardFX;</span>
 	}
 
 	/**
@@ -281,7 +305,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double fundingFX()
 	{
-<span class="fc" id="L284">		return _dblFundingFX;</span>
+<span class="fc" id="L308">		return _dblFundingFX;</span>
 	}
 
 	/**
@@ -292,7 +316,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double compounding()
 	{
-<span class="fc" id="L295">		return _dblCollateralForward * _dblCreditForward * _dblForwardFunding * _dblForwardFX;</span>
+<span class="fc" id="L319">		return _dblCollateralForward * _dblCreditForward * _dblForwardFunding * _dblForwardFX;</span>
 	}
 
 	/**
@@ -303,7 +327,7 @@ public class CompositePeriodCouponMetrics {
 
 	public double cumulative()
 	{
-<span class="fc" id="L306">		return _dblCollateralCredit * _dblCollateralForward * _dblCollateralFunding * _dblCollateralFX *</span>
+<span class="fc" id="L330">		return _dblCollateralCredit * _dblCollateralForward * _dblCollateralFunding * _dblCollateralFX *</span>
 			_dblCreditForward * _dblCreditFunding * _dblCreditFX * _dblForwardFunding * _dblForwardFX *
 				_dblFundingFX;
 	}
@@ -316,7 +340,7 @@ public class CompositePeriodCouponMetrics {
 
 	public java.util.List&lt;org.drip.analytics.output.UnitPeriodMetrics&gt; unitMetrics()
 	{
-<span class="fc" id="L319">		return _lsUPM;</span>
+<span class="fc" id="L343">		return _lsUPM;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

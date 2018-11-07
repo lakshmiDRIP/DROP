@@ -58,12 +58,12 @@ package org.drip.state.curve;
  */
 
 public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.ExplicitBootDiscountCurve {
-<span class="nc" id="L61">	private java.lang.String _strCurrency = null;</span>
-<span class="nc" id="L62">	private org.drip.state.fx.FXCurve _fxForward = null;</span>
-<span class="nc" id="L63">	private org.drip.state.volatility.VolatilityCurve _vcFX = null;</span>
-<span class="nc" id="L64">	private org.drip.state.discount.MergedDiscountForwardCurve _dcCollateralForeign = null;</span>
-<span class="nc" id="L65">	private org.drip.state.volatility.VolatilityCurve _vcCollateralForeign = null;</span>
-<span class="nc" id="L66">	private org.drip.function.definition.R1ToR1 _r1r1CollateralForeignFXCorrelation = null;</span>
+<span class="fc" id="L61">	private java.lang.String _strCurrency = null;</span>
+<span class="fc" id="L62">	private org.drip.state.fx.FXCurve _fxForward = null;</span>
+<span class="fc" id="L63">	private org.drip.state.volatility.VolatilityCurve _vcFX = null;</span>
+<span class="fc" id="L64">	private org.drip.state.discount.MergedDiscountForwardCurve _dcCollateralForeign = null;</span>
+<span class="fc" id="L65">	private org.drip.state.volatility.VolatilityCurve _vcCollateralForeign = null;</span>
+<span class="fc" id="L66">	private org.drip.function.definition.R1ToR1 _r1r1CollateralForeignFXCorrelation = null;</span>
 
 	/**
 	 * ForeignCollateralizedDiscountCurve constructor
@@ -87,22 +87,22 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final org.drip.function.definition.R1ToR1 r1r1CollateralForeignFXCorrelation)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L90">		super (dcCollateralForeign.epoch().julian(), strCurrency);</span>
+<span class="fc" id="L90">		super (dcCollateralForeign.epoch().julian(), strCurrency);</span>
 
-<span class="nc bnc" id="L92" title="All 14 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_vcCollateralForeign =</span>
+<span class="pc bpc" id="L92" title="7 of 14 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_vcCollateralForeign =</span>
 			vcCollateralForeign) || null == (_vcFX = vcFX) || null == (_r1r1CollateralForeignFXCorrelation =
 				r1r1CollateralForeignFXCorrelation) || null == (_dcCollateralForeign = dcCollateralForeign)
 					|| null == (_fxForward = fxForward))
 <span class="nc" id="L96">			throw new java.lang.Exception (&quot;ForeignCollateralizedDiscountCurve ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L97">	}</span>
+<span class="fc" id="L97">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		return iDate &lt;= _iEpochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *</span>
-<span class="nc" id="L104">			java.lang.Math.exp (-1. * org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto</span>
-<span class="nc" id="L105">				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _iEpochDate, iDate));</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">		return iDate &lt;= _iEpochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *</span>
+<span class="fc" id="L104">			java.lang.Math.exp (-1. * org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto</span>
+<span class="fc" id="L105">				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _iEpochDate, iDate));</span>
 	}
 
 	@Override public double forward (

@@ -6,33 +6,51 @@ package org.drip.execution.capture;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,28 +67,44 @@ package org.drip.execution.capture;
  */
 
 /**
- * TrajectoryShortfallRealization holds Execution Cost Realization across each Interval in the Trade during a
- * 	Single Simulation Run. The  References are:
+ * &lt;i&gt;TrajectoryShortfallRealization&lt;/i&gt; holds Execution Cost Realization across each Interval in the Trade
+ *  during a Single Simulation Run. The References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
- *
- * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
- * 		Journal of Finance, 50, 1147-1174.
- *
- * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
- * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional
+ * 				Trades &lt;i&gt;Journal of Finance&lt;/i&gt; &lt;b&gt;50&lt;/b&gt; 1147-1174
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 				Analysis of Institutional Equity Trades &lt;i&gt;Journal of Financial Economics&lt;/i&gt; &lt;b&gt;46&lt;/b&gt;
+ * 				265-292
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TrajectoryShortfallRealization {
-<span class="nc" id="L73">	private java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; _lsSI = null;</span>
+<span class="nc" id="L107">	private java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; _lsSI = null;</span>
 
 	/**
 	 * TrajectoryShortfallRealization Constructor
@@ -83,21 +117,21 @@ public class TrajectoryShortfallRealization {
 	public TrajectoryShortfallRealization (
 		final java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; lsSI)
 		throws java.lang.Exception
-<span class="nc" id="L86">	{</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (null == (_lsSI = lsSI))</span>
-<span class="nc" id="L88">			throw new java.lang.Exception (&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L120">	{</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == (_lsSI = lsSI))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L90">		int iNumSlice = _lsSI.size();</span>
+<span class="nc" id="L124">		int iNumSlice = _lsSI.size();</span>
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (0 == iNumSlice)</span>
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 == iNumSlice)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (org.drip.execution.discrete.ShortfallIncrement si : _lsSI) {</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (null == si)</span>
-<span class="nc" id="L97">				throw new java.lang.Exception</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (org.drip.execution.discrete.ShortfallIncrement si : _lsSI) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			if (null == si)</span>
+<span class="nc" id="L131">				throw new java.lang.Exception</span>
 					(&quot;TrajectoryShortfallRealization Constructor =&gt; Invalid Inputs&quot;);
-<span class="nc" id="L99">		}</span>
-<span class="nc" id="L100">	}</span>
+<span class="nc" id="L133">		}</span>
+<span class="nc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the List of the Realized Composite Cost Increments
@@ -107,7 +141,7 @@ public class TrajectoryShortfallRealization {
 
 	public java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; list()
 	{
-<span class="nc" id="L110">		return _lsSI;</span>
+<span class="nc" id="L144">		return _lsSI;</span>
 	}
 
 	/**
@@ -118,14 +152,14 @@ public class TrajectoryShortfallRealization {
 
 	public double[] incrementalMarketDynamicDrift()
 	{
-<span class="nc" id="L121">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L155">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L123">		double[] adblIncrementalMarketDynamicDrift = new double[iNumInterval];</span>
+<span class="nc" id="L157">		double[] adblIncrementalMarketDynamicDrift = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L126">			adblIncrementalMarketDynamicDrift[i] = _lsSI.get (i).marketDynamicDrift();</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L160">			adblIncrementalMarketDynamicDrift[i] = _lsSI.get (i).marketDynamicDrift();</span>
 
-<span class="nc" id="L128">		return adblIncrementalMarketDynamicDrift;</span>
+<span class="nc" id="L162">		return adblIncrementalMarketDynamicDrift;</span>
 	}
 
 	/**
@@ -136,15 +170,15 @@ public class TrajectoryShortfallRealization {
 
 	public double[] cumulativeMarketDynamicDrift()
 	{
-<span class="nc" id="L139">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L173">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L141">		double[] adblCumulativeMarketDynamicDrift = new double[iNumInterval];</span>
+<span class="nc" id="L175">		double[] adblCumulativeMarketDynamicDrift = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			adblCumulativeMarketDynamicDrift[i] = 0 == i ? _lsSI.get (i).marketDynamicDrift() : _lsSI.get</span>
-<span class="nc" id="L145">				(i).marketDynamicDrift() + adblCumulativeMarketDynamicDrift[i - 1];</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			adblCumulativeMarketDynamicDrift[i] = 0 == i ? _lsSI.get (i).marketDynamicDrift() : _lsSI.get</span>
+<span class="nc" id="L179">				(i).marketDynamicDrift() + adblCumulativeMarketDynamicDrift[i - 1];</span>
 
-<span class="nc" id="L147">		return adblCumulativeMarketDynamicDrift;</span>
+<span class="nc" id="L181">		return adblCumulativeMarketDynamicDrift;</span>
 	}
 
 	/**
@@ -155,14 +189,14 @@ public class TrajectoryShortfallRealization {
 
 	public double totalMarketDynamicDrift()
 	{
-<span class="nc" id="L158">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L192">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L160">		double dblTotalMarketDynamicDrift = 0.;</span>
+<span class="nc" id="L194">		double dblTotalMarketDynamicDrift = 0.;</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L163">			dblTotalMarketDynamicDrift = dblTotalMarketDynamicDrift + _lsSI.get (i).marketDynamicDrift();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L197">			dblTotalMarketDynamicDrift = dblTotalMarketDynamicDrift + _lsSI.get (i).marketDynamicDrift();</span>
 
-<span class="nc" id="L165">		return dblTotalMarketDynamicDrift;</span>
+<span class="nc" id="L199">		return dblTotalMarketDynamicDrift;</span>
 	}
 
 	/**
@@ -173,14 +207,14 @@ public class TrajectoryShortfallRealization {
 
 	public double[] incrementalMarketDynamicWander()
 	{
-<span class="nc" id="L176">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L210">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L178">		double[] adblIncrementalMarketDynamicWander = new double[iNumInterval];</span>
+<span class="nc" id="L212">		double[] adblIncrementalMarketDynamicWander = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L181">			adblIncrementalMarketDynamicWander[i] = _lsSI.get (i).marketDynamicWander();</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L215">			adblIncrementalMarketDynamicWander[i] = _lsSI.get (i).marketDynamicWander();</span>
 
-<span class="nc" id="L183">		return adblIncrementalMarketDynamicWander;</span>
+<span class="nc" id="L217">		return adblIncrementalMarketDynamicWander;</span>
 	}
 
 	/**
@@ -191,15 +225,15 @@ public class TrajectoryShortfallRealization {
 
 	public double[] cumulativeMarketDynamicWander()
 	{
-<span class="nc" id="L194">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L228">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L196">		double[] adblCumulativeMarketDynamicWander = new double[iNumInterval];</span>
+<span class="nc" id="L230">		double[] adblCumulativeMarketDynamicWander = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			adblCumulativeMarketDynamicWander[i] = 0 == i ? _lsSI.get (i).marketDynamicWander() : _lsSI.get</span>
-<span class="nc" id="L200">				(i).marketDynamicWander() + adblCumulativeMarketDynamicWander[i - 1];</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">			adblCumulativeMarketDynamicWander[i] = 0 == i ? _lsSI.get (i).marketDynamicWander() : _lsSI.get</span>
+<span class="nc" id="L234">				(i).marketDynamicWander() + adblCumulativeMarketDynamicWander[i - 1];</span>
 
-<span class="nc" id="L202">		return adblCumulativeMarketDynamicWander;</span>
+<span class="nc" id="L236">		return adblCumulativeMarketDynamicWander;</span>
 	}
 
 	/**
@@ -210,14 +244,14 @@ public class TrajectoryShortfallRealization {
 
 	public double totalMarketDynamicWander()
 	{
-<span class="nc" id="L213">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L247">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L215">		double dblTotalMarketDynamicWander = 0.;</span>
+<span class="nc" id="L249">		double dblTotalMarketDynamicWander = 0.;</span>
 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L218">			dblTotalMarketDynamicWander = dblTotalMarketDynamicWander + _lsSI.get (i).marketDynamicWander();</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L252">			dblTotalMarketDynamicWander = dblTotalMarketDynamicWander + _lsSI.get (i).marketDynamicWander();</span>
 
-<span class="nc" id="L220">		return dblTotalMarketDynamicWander;</span>
+<span class="nc" id="L254">		return dblTotalMarketDynamicWander;</span>
 	}
 
 	/**
@@ -228,14 +262,14 @@ public class TrajectoryShortfallRealization {
 
 	public double[] incrementalPermanentDrift()
 	{
-<span class="nc" id="L231">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L265">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L233">		double[] adblIncrementalPermanentDrift = new double[iNumInterval];</span>
+<span class="nc" id="L267">		double[] adblIncrementalPermanentDrift = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L236">			adblIncrementalPermanentDrift[i] = _lsSI.get (i).permanentImpactDrift();</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L270">			adblIncrementalPermanentDrift[i] = _lsSI.get (i).permanentImpactDrift();</span>
 
-<span class="nc" id="L238">		return adblIncrementalPermanentDrift;</span>
+<span class="nc" id="L272">		return adblIncrementalPermanentDrift;</span>
 	}
 
 	/**
@@ -246,15 +280,15 @@ public class TrajectoryShortfallRealization {
 
 	public double[] cumulativePermanentDrift()
 	{
-<span class="nc" id="L249">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L283">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L251">		double[] adblCumulativePermanentDrift = new double[iNumInterval];</span>
+<span class="nc" id="L285">		double[] adblCumulativePermanentDrift = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L254" title="All 2 branches missed.">			adblCumulativePermanentDrift[i] = 0 == i ? _lsSI.get (i).permanentImpactDrift() : _lsSI.get</span>
-<span class="nc" id="L255">				(i).permanentImpactDrift() + adblCumulativePermanentDrift[i - 1];</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">			adblCumulativePermanentDrift[i] = 0 == i ? _lsSI.get (i).permanentImpactDrift() : _lsSI.get</span>
+<span class="nc" id="L289">				(i).permanentImpactDrift() + adblCumulativePermanentDrift[i - 1];</span>
 
-<span class="nc" id="L257">		return adblCumulativePermanentDrift;</span>
+<span class="nc" id="L291">		return adblCumulativePermanentDrift;</span>
 	}
 
 	/**
@@ -265,14 +299,14 @@ public class TrajectoryShortfallRealization {
 
 	public double totalPermanentDrift()
 	{
-<span class="nc" id="L268">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L302">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L270">		double dblTotalPermanentDrift = 0.;</span>
+<span class="nc" id="L304">		double dblTotalPermanentDrift = 0.;</span>
 
-<span class="nc bnc" id="L272" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L273">			dblTotalPermanentDrift = dblTotalPermanentDrift + _lsSI.get (i).permanentImpactDrift();</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L307">			dblTotalPermanentDrift = dblTotalPermanentDrift + _lsSI.get (i).permanentImpactDrift();</span>
 
-<span class="nc" id="L275">		return dblTotalPermanentDrift;</span>
+<span class="nc" id="L309">		return dblTotalPermanentDrift;</span>
 	}
 
 	/**
@@ -283,14 +317,14 @@ public class TrajectoryShortfallRealization {
 
 	public double[] incrementalPermanentWander()
 	{
-<span class="nc" id="L286">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L320">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L288">		double[] adblIncrementalPermanentWander = new double[iNumInterval];</span>
+<span class="nc" id="L322">		double[] adblIncrementalPermanentWander = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L290" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L291">			adblIncrementalPermanentWander[i] = _lsSI.get (i).permanentImpactWander();</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L325">			adblIncrementalPermanentWander[i] = _lsSI.get (i).permanentImpactWander();</span>
 
-<span class="nc" id="L293">		return adblIncrementalPermanentWander;</span>
+<span class="nc" id="L327">		return adblIncrementalPermanentWander;</span>
 	}
 
 	/**
@@ -301,15 +335,15 @@ public class TrajectoryShortfallRealization {
 
 	public double[] cumulativePermanentWander()
 	{
-<span class="nc" id="L304">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L338">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L306">		double[] adblCumulativePermanentWander = new double[iNumInterval];</span>
+<span class="nc" id="L340">		double[] adblCumulativePermanentWander = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L308" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L309" title="All 2 branches missed.">			adblCumulativePermanentWander[i] = 0 == i ? _lsSI.get (i).permanentImpactWander() : _lsSI.get</span>
-<span class="nc" id="L310">				(i).permanentImpactWander() + adblCumulativePermanentWander[i - 1];</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">			adblCumulativePermanentWander[i] = 0 == i ? _lsSI.get (i).permanentImpactWander() : _lsSI.get</span>
+<span class="nc" id="L344">				(i).permanentImpactWander() + adblCumulativePermanentWander[i - 1];</span>
 
-<span class="nc" id="L312">		return adblCumulativePermanentWander;</span>
+<span class="nc" id="L346">		return adblCumulativePermanentWander;</span>
 	}
 
 	/**
@@ -320,14 +354,14 @@ public class TrajectoryShortfallRealization {
 
 	public double totalPermanentWander()
 	{
-<span class="nc" id="L323">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L357">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L325">		double dblTotalPermanentWander = 0.;</span>
+<span class="nc" id="L359">		double dblTotalPermanentWander = 0.;</span>
 
-<span class="nc bnc" id="L327" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L328">			dblTotalPermanentWander = dblTotalPermanentWander + _lsSI.get (i).permanentImpactWander();</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L362">			dblTotalPermanentWander = dblTotalPermanentWander + _lsSI.get (i).permanentImpactWander();</span>
 
-<span class="nc" id="L330">		return dblTotalPermanentWander;</span>
+<span class="nc" id="L364">		return dblTotalPermanentWander;</span>
 	}
 
 	/**
@@ -338,14 +372,14 @@ public class TrajectoryShortfallRealization {
 
 	public double[] incrementalTemporaryDrift()
 	{
-<span class="nc" id="L341">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L375">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L343">		double[] adblIncrementalTemporaryDrift = new double[iNumInterval];</span>
+<span class="nc" id="L377">		double[] adblIncrementalTemporaryDrift = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L345" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L346">			adblIncrementalTemporaryDrift[i] = _lsSI.get (i).temporaryImpactDrift();</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L380">			adblIncrementalTemporaryDrift[i] = _lsSI.get (i).temporaryImpactDrift();</span>
 
-<span class="nc" id="L348">		return adblIncrementalTemporaryDrift;</span>
+<span class="nc" id="L382">		return adblIncrementalTemporaryDrift;</span>
 	}
 
 	/**
@@ -356,15 +390,15 @@ public class TrajectoryShortfallRealization {
 
 	public double[] cumulativeTemporaryDrift()
 	{
-<span class="nc" id="L359">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L393">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L361">		double[] adblCumulativeTemporaryDrift = new double[iNumInterval];</span>
+<span class="nc" id="L395">		double[] adblCumulativeTemporaryDrift = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L363" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L364" title="All 2 branches missed.">			adblCumulativeTemporaryDrift[i] = 0 == i ? _lsSI.get (i).temporaryImpactDrift() : _lsSI.get</span>
-<span class="nc" id="L365">				(i).temporaryImpactDrift() + adblCumulativeTemporaryDrift[i - 1];</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">			adblCumulativeTemporaryDrift[i] = 0 == i ? _lsSI.get (i).temporaryImpactDrift() : _lsSI.get</span>
+<span class="nc" id="L399">				(i).temporaryImpactDrift() + adblCumulativeTemporaryDrift[i - 1];</span>
 
-<span class="nc" id="L367">		return adblCumulativeTemporaryDrift;</span>
+<span class="nc" id="L401">		return adblCumulativeTemporaryDrift;</span>
 	}
 
 	/**
@@ -375,14 +409,14 @@ public class TrajectoryShortfallRealization {
 
 	public double totalTemporaryDrift()
 	{
-<span class="nc" id="L378">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L412">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L380">		double dblTotalTemporaryDrift = 0.;</span>
+<span class="nc" id="L414">		double dblTotalTemporaryDrift = 0.;</span>
 
-<span class="nc bnc" id="L382" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L383">			dblTotalTemporaryDrift = dblTotalTemporaryDrift + _lsSI.get (i).temporaryImpactDrift();</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L417">			dblTotalTemporaryDrift = dblTotalTemporaryDrift + _lsSI.get (i).temporaryImpactDrift();</span>
 
-<span class="nc" id="L385">		return dblTotalTemporaryDrift;</span>
+<span class="nc" id="L419">		return dblTotalTemporaryDrift;</span>
 	}
 
 	/**
@@ -393,14 +427,14 @@ public class TrajectoryShortfallRealization {
 
 	public double[] incrementalTemporaryWander()
 	{
-<span class="nc" id="L396">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L430">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L398">		double[] adblIncrementalTemporaryWander = new double[iNumInterval];</span>
+<span class="nc" id="L432">		double[] adblIncrementalTemporaryWander = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L401">			adblIncrementalTemporaryWander[i] = _lsSI.get (i).temporaryImpactWander();</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L435">			adblIncrementalTemporaryWander[i] = _lsSI.get (i).temporaryImpactWander();</span>
 
-<span class="nc" id="L403">		return adblIncrementalTemporaryWander;</span>
+<span class="nc" id="L437">		return adblIncrementalTemporaryWander;</span>
 	}
 
 	/**
@@ -411,15 +445,15 @@ public class TrajectoryShortfallRealization {
 
 	public double[] cumulativeTemporaryWander()
 	{
-<span class="nc" id="L414">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L448">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L416">		double[] adblCumulativeTemporaryWander = new double[iNumInterval];</span>
+<span class="nc" id="L450">		double[] adblCumulativeTemporaryWander = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L418" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L419" title="All 2 branches missed.">			adblCumulativeTemporaryWander[i] = 0 == i ? _lsSI.get (i).temporaryImpactWander() : _lsSI.get</span>
-<span class="nc" id="L420">				(i).temporaryImpactWander() + adblCumulativeTemporaryWander[i - 1];</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L453" title="All 2 branches missed.">			adblCumulativeTemporaryWander[i] = 0 == i ? _lsSI.get (i).temporaryImpactWander() : _lsSI.get</span>
+<span class="nc" id="L454">				(i).temporaryImpactWander() + adblCumulativeTemporaryWander[i - 1];</span>
 
-<span class="nc" id="L422">		return adblCumulativeTemporaryWander;</span>
+<span class="nc" id="L456">		return adblCumulativeTemporaryWander;</span>
 	}
 
 	/**
@@ -430,14 +464,14 @@ public class TrajectoryShortfallRealization {
 
 	public double totalTemporaryWander()
 	{
-<span class="nc" id="L433">		int iNumInterval = _lsSI.size();</span>
+<span class="nc" id="L467">		int iNumInterval = _lsSI.size();</span>
 
-<span class="nc" id="L435">		double dblTotalTemporaryWander = 0.;</span>
+<span class="nc" id="L469">		double dblTotalTemporaryWander = 0.;</span>
 
-<span class="nc bnc" id="L437" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L438">			dblTotalTemporaryWander = dblTotalTemporaryWander + _lsSI.get (i).temporaryImpactWander();</span>
+<span class="nc bnc" id="L471" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L472">			dblTotalTemporaryWander = dblTotalTemporaryWander + _lsSI.get (i).temporaryImpactWander();</span>
 
-<span class="nc" id="L440">		return dblTotalTemporaryWander;</span>
+<span class="nc" id="L474">		return dblTotalTemporaryWander;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

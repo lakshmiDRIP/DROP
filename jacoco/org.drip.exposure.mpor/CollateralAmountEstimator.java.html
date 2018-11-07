@@ -70,9 +70,9 @@ package org.drip.exposure.mpor;
 
 public class CollateralAmountEstimator
 {
-<span class="nc" id="L73">	private double _currentBalance = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private org.drip.measure.bridge.BrokenDateInterpolator _brokenDateInterpolator = null;</span>
-<span class="nc" id="L75">	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;</span>
+<span class="fc" id="L73">	private double _currentBalance = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private org.drip.measure.bridge.BrokenDateInterpolator _brokenDateInterpolator = null;</span>
+<span class="fc" id="L75">	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;</span>
 
 	/**
 	 * CollateralAmountEstimator Constructor
@@ -89,15 +89,15 @@ public class CollateralAmountEstimator
 		final org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator,
 		final double currentBalance)
 		throws java.lang.Exception
-<span class="nc" id="L92">	{</span>
-<span class="nc bnc" id="L93" title="All 4 branches missed.">		if (null == (_positionGroupSpecification = positionGroupSpecification) ||</span>
+<span class="fc" id="L92">	{</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">		if (null == (_positionGroupSpecification = positionGroupSpecification) ||</span>
 			null == (_brokenDateInterpolator = brokenDateInterpolator))
 		{
 <span class="nc" id="L96">			throw new java.lang.Exception (&quot;CollateralAmountEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L99">		_currentBalance = currentBalance;</span>
-<span class="nc" id="L100">	}</span>
+<span class="fc" id="L99">		_currentBalance = currentBalance;</span>
+<span class="fc" id="L100">	}</span>
 
 	/**
 	 * Retrieve the Position Group Specification
@@ -146,22 +146,22 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (null == valuationDateJulian)</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (null == valuationDateJulian)</span>
 		{
 <span class="nc" id="L151">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::dealerWindowMarginValue =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L155">		org.drip.analytics.date.JulianDate marginDate = valuationDateJulian.subtractDays</span>
-<span class="nc" id="L156">			(_positionGroupSpecification.dealerDefaultWindow());</span>
+<span class="fc" id="L155">		org.drip.analytics.date.JulianDate marginDate = valuationDateJulian.subtractDays</span>
+<span class="fc" id="L156">			(_positionGroupSpecification.dealerDefaultWindow());</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (null == marginDate)</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (null == marginDate)</span>
 		{
 <span class="nc" id="L160">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::dealerWindowMarginValue =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L164">		return _brokenDateInterpolator.interpolate (marginDate.julian());</span>
+<span class="fc" id="L164">		return _brokenDateInterpolator.interpolate (marginDate.julian());</span>
 	}
 
 	/**
@@ -178,11 +178,11 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L181">		org.drip.function.definition.R1ToR1 dealerThresholdFunction =</span>
-<span class="nc" id="L182">			_positionGroupSpecification.dealerThresholdFunction();</span>
+<span class="fc" id="L181">		org.drip.function.definition.R1ToR1 dealerThresholdFunction =</span>
+<span class="fc" id="L182">			_positionGroupSpecification.dealerThresholdFunction();</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		return null == dealerThresholdFunction ? 0. : dealerThresholdFunction.evaluate</span>
-<span class="nc" id="L185">			(valuationDateJulian.julian());</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		return null == dealerThresholdFunction ? 0. : dealerThresholdFunction.evaluate</span>
+<span class="fc" id="L185">			(valuationDateJulian.julian());</span>
 	}
 
 	/**
@@ -199,10 +199,10 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L202">		double dealerPostingRequirement = dealerWindowMarginValue (valuationDateJulian) - dealerThreshold</span>
-<span class="nc" id="L203">			(valuationDateJulian);</span>
+<span class="fc" id="L202">		double dealerPostingRequirement = dealerWindowMarginValue (valuationDateJulian) - dealerThreshold</span>
+<span class="fc" id="L203">			(valuationDateJulian);</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		return 0. &lt; dealerPostingRequirement ? 0. : dealerPostingRequirement;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		return 0. &lt; dealerPostingRequirement ? 0. : dealerPostingRequirement;</span>
 	}
 
 	/**
@@ -219,22 +219,22 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (null == valuationDateJulian)</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (null == valuationDateJulian)</span>
 		{
 <span class="nc" id="L224">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::clientWindowMarginValue =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L228">		org.drip.analytics.date.JulianDate marginDate = valuationDateJulian.subtractDays</span>
-<span class="nc" id="L229">			(_positionGroupSpecification.clientDefaultWindow());</span>
+<span class="fc" id="L228">		org.drip.analytics.date.JulianDate marginDate = valuationDateJulian.subtractDays</span>
+<span class="fc" id="L229">			(_positionGroupSpecification.clientDefaultWindow());</span>
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (null == marginDate)</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (null == marginDate)</span>
 		{
 <span class="nc" id="L233">			throw new java.lang.Exception</span>
 				(&quot;CollateralAmountEstimator::clientWindowMarginValue =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L237">		return _brokenDateInterpolator.interpolate (marginDate.julian());</span>
+<span class="fc" id="L237">		return _brokenDateInterpolator.interpolate (marginDate.julian());</span>
 	}
 
 	/**
@@ -251,11 +251,11 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L254">		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =</span>
-<span class="nc" id="L255">			_positionGroupSpecification.clientThresholdFunctionArray();</span>
+<span class="fc" id="L254">		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =</span>
+<span class="fc" id="L255">			_positionGroupSpecification.clientThresholdFunctionArray();</span>
 
-<span class="nc bnc" id="L257" title="All 4 branches missed.">		return null == clientThresholdFunctionArray || null == clientThresholdFunctionArray[0] ? 0. :</span>
-<span class="nc" id="L258">			clientThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());</span>
+<span class="pc bpc" id="L257" title="2 of 4 branches missed.">		return null == clientThresholdFunctionArray || null == clientThresholdFunctionArray[0] ? 0. :</span>
+<span class="fc" id="L258">			clientThresholdFunctionArray[0].evaluate (valuationDateJulian.julian());</span>
 	}
 
 	/**
@@ -272,10 +272,10 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L275">		double clientPostingRequirement = clientWindowMarginValue (valuationDateJulian) - clientThreshold</span>
-<span class="nc" id="L276">			(valuationDateJulian);</span>
+<span class="fc" id="L275">		double clientPostingRequirement = clientWindowMarginValue (valuationDateJulian) - clientThreshold</span>
+<span class="fc" id="L276">			(valuationDateJulian);</span>
 
-<span class="nc bnc" id="L278" title="All 2 branches missed.">		return 0. &gt; clientPostingRequirement ? 0. : clientPostingRequirement;</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		return 0. &gt; clientPostingRequirement ? 0. : clientPostingRequirement;</span>
 	}
 
 	/**
@@ -292,8 +292,8 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :</span>
-<span class="nc" id="L296">			dealerPostingRequirement (valuationDateJulian) + clientPostingRequirement (valuationDateJulian);</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :</span>
+<span class="fc" id="L296">			dealerPostingRequirement (valuationDateJulian) + clientPostingRequirement (valuationDateJulian);</span>
 	}
 
 	/**
@@ -307,50 +307,50 @@ public class CollateralAmountEstimator
 	public org.drip.exposure.mpor.CollateralAmountEstimatorOutput output (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 	{
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (null == valuationDateJulian)</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">		if (null == valuationDateJulian)</span>
 		{
 <span class="nc" id="L312">			return null;</span>
 		}
 
-<span class="nc" id="L315">		org.drip.analytics.date.JulianDate dealerMarginDate = valuationDateJulian.subtractDays</span>
-<span class="nc" id="L316">			(_positionGroupSpecification.dealerDefaultWindow());</span>
+<span class="fc" id="L315">		org.drip.analytics.date.JulianDate dealerMarginDate = valuationDateJulian.subtractDays</span>
+<span class="fc" id="L316">			(_positionGroupSpecification.dealerDefaultWindow());</span>
 
-<span class="nc" id="L318">		org.drip.analytics.date.JulianDate clientMarginDate = valuationDateJulian.subtractDays</span>
-<span class="nc" id="L319">			(_positionGroupSpecification.clientDefaultWindow());</span>
+<span class="fc" id="L318">		org.drip.analytics.date.JulianDate clientMarginDate = valuationDateJulian.subtractDays</span>
+<span class="fc" id="L319">			(_positionGroupSpecification.clientDefaultWindow());</span>
 
-<span class="nc bnc" id="L321" title="All 4 branches missed.">		if (null == dealerMarginDate ||</span>
+<span class="pc bpc" id="L321" title="2 of 4 branches missed.">		if (null == dealerMarginDate ||</span>
 			null == clientMarginDate)
 		{
 <span class="nc" id="L324">			return null;</span>
 		}
 
-<span class="nc" id="L327">		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =</span>
-<span class="nc" id="L328">			_positionGroupSpecification.clientThresholdFunctionArray();</span>
+<span class="fc" id="L327">		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =</span>
+<span class="fc" id="L328">			_positionGroupSpecification.clientThresholdFunctionArray();</span>
 
-<span class="nc" id="L330">		org.drip.function.definition.R1ToR1 dealerThresholdFunction =</span>
-<span class="nc" id="L331">			_positionGroupSpecification.dealerThresholdFunction();</span>
+<span class="fc" id="L330">		org.drip.function.definition.R1ToR1 dealerThresholdFunction =</span>
+<span class="fc" id="L331">			_positionGroupSpecification.dealerThresholdFunction();</span>
 
-<span class="nc" id="L333">		double valuationDate = valuationDateJulian.julian();</span>
+<span class="fc" id="L333">		double valuationDate = valuationDateJulian.julian();</span>
 
 		try
 		{
-<span class="nc" id="L337">			double dealerWindowMarginValue = _brokenDateInterpolator.interpolate (dealerMarginDate.julian());</span>
+<span class="fc" id="L337">			double dealerWindowMarginValue = _brokenDateInterpolator.interpolate (dealerMarginDate.julian());</span>
 
-<span class="nc" id="L339">			double clientWindowMarginValue = _brokenDateInterpolator.interpolate (clientMarginDate.julian());</span>
+<span class="fc" id="L339">			double clientWindowMarginValue = _brokenDateInterpolator.interpolate (clientMarginDate.julian());</span>
 
-<span class="nc bnc" id="L341" title="All 2 branches missed.">			double dealerThresholdValue = null == dealerThresholdFunction ? 0. :</span>
-<span class="nc" id="L342">				dealerThresholdFunction.evaluate (valuationDate);</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">			double dealerThresholdValue = null == dealerThresholdFunction ? 0. :</span>
+<span class="fc" id="L342">				dealerThresholdFunction.evaluate (valuationDate);</span>
 
-<span class="nc bnc" id="L344" title="All 4 branches missed.">			double clientThresholdValue = null == clientThresholdFunctionArray || null ==</span>
+<span class="pc bpc" id="L344" title="2 of 4 branches missed.">			double clientThresholdValue = null == clientThresholdFunctionArray || null ==</span>
 				clientThresholdFunctionArray[0] ? 0. : clientThresholdFunctionArray[0].evaluate
-<span class="nc" id="L346">					(valuationDate);</span>
+<span class="fc" id="L346">					(valuationDate);</span>
 
-<span class="nc" id="L348">			double dealerPostingRequirement = dealerWindowMarginValue - dealerThresholdValue;</span>
-<span class="nc bnc" id="L349" title="All 2 branches missed.">			dealerPostingRequirement = 0. &lt; dealerPostingRequirement ? 0. : dealerPostingRequirement;</span>
-<span class="nc" id="L350">			double clientPostingRequirement = clientWindowMarginValue - clientThresholdValue;</span>
-<span class="nc bnc" id="L351" title="All 2 branches missed.">			clientPostingRequirement = 0. &gt; clientPostingRequirement ? 0. : clientPostingRequirement;</span>
+<span class="fc" id="L348">			double dealerPostingRequirement = dealerWindowMarginValue - dealerThresholdValue;</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">			dealerPostingRequirement = 0. &lt; dealerPostingRequirement ? 0. : dealerPostingRequirement;</span>
+<span class="fc" id="L350">			double clientPostingRequirement = clientWindowMarginValue - clientThresholdValue;</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">			clientPostingRequirement = 0. &gt; clientPostingRequirement ? 0. : clientPostingRequirement;</span>
 
-<span class="nc" id="L353">			return new org.drip.exposure.mpor.CollateralAmountEstimatorOutput (</span>
+<span class="fc" id="L353">			return new org.drip.exposure.mpor.CollateralAmountEstimatorOutput (</span>
 				dealerMarginDate,
 				clientMarginDate,
 				dealerWindowMarginValue,
@@ -359,7 +359,7 @@ public class CollateralAmountEstimator
 				clientWindowMarginValue,
 				clientThresholdValue,
 				clientPostingRequirement,
-<span class="nc bnc" id="L362" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :</span>
 					dealerPostingRequirement + clientPostingRequirement);
 		}
 <span class="nc" id="L365">		catch (java.lang.Exception e)</span>

@@ -6,6 +6,7 @@ package org.drip.analytics.daycount;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.analytics.daycount;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,20 +72,32 @@ package org.drip.analytics.daycount;
  */
 
 /**
- * This class contains flags that indicate where the holidays are loaded from, as well as the holiday types
- * 	and load rules. It exports the following date related functionality:
- *  - Add business days according to the specified calendar
- *  - The Year Fraction between any 2 days given the day count type and the holiday calendar
- *  - Adjust/roll to the next working day according to the adjustment rule
- *  - Holiday Functions - is the given day a holiday/business day, the number and the set of
- *  	holidays/business days between 2 days.
- *  - Calendars and Day counts - Available set of day count conventions and calendars, and the weekend days
- *  	corresponding to a given calendar.
+ * &lt;i&gt;Convention&lt;/i&gt; contains flags that indicate where the holidays are loaded from, as well as the holiday
+ *  types and load rules. It exports the following date related functionality:
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;Add business days according to the specified calendar&lt;/li&gt;
+ *  	&lt;li&gt;The Year Fraction between any 2 days given the day count type and the holiday calendar&lt;/li&gt;
+ *  	&lt;li&gt;Adjust/roll to the next working day according to the adjustment rule&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Holiday Functions - is the given day a holiday/business day, the number and the set of
+ *  			holidays/business days between 2 days.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Calendars and Day counts - Available set of day count conventions and calendars, and the weekend
+ *  			days corresponding to a given calendar.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L70">public class Convention {</span>
+<span class="nc" id="L100">public class Convention {</span>
 
 	/**
 	 * Date Roll Actual
@@ -121,331 +151,331 @@ package org.drip.analytics.daycount;
 	private static final int INIT_FROM_HOLS_XML = 2;
 	private static final int INIT_FROM_HOLS_SOURCE = 4;
 
-<span class="fc" id="L124">	private static int s_iInitHols = INIT_FROM_HOLS_SOURCE;</span>
+<span class="fc" id="L154">	private static int s_iInitHols = INIT_FROM_HOLS_SOURCE;</span>
 	private static org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt;
-<span class="fc" id="L126">		s_mapLocHols = null;</span>
+<span class="fc" id="L156">		s_mapLocHols = null;</span>
 
 	private static
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.daycount.DCFCalculator&gt;
-<span class="fc" id="L130">			s_mapDCCalc = new</span>
+<span class="fc" id="L160">			s_mapDCCalc = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.daycount.DCFCalculator&gt;();
 
 	private static final boolean UpdateDCCalcMap (
 		final org.drip.analytics.daycount.DCFCalculator dcfCalc)
 	{
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (java.lang.String strDC : dcfCalc.alternateNames())</span>
-<span class="fc" id="L137">			s_mapDCCalc.put (strDC, dcfCalc);</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (java.lang.String strDC : dcfCalc.alternateNames())</span>
+<span class="fc" id="L167">			s_mapDCCalc.put (strDC, dcfCalc);</span>
 
-<span class="fc" id="L139">		return true;</span>
+<span class="fc" id="L169">		return true;</span>
 	}
 
 	private static final boolean SetDCCalc()
 	{
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC1_1())) return false;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC1_1())) return false;</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC28_360())) return false;</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC28_360())) return false;</span>
 
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30_360())) return false;</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30_360())) return false;</span>
 
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30_365())) return false;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30_365())) return false;</span>
 
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30_Act())) return false;</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30_Act())) return false;</span>
 
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30E_360())) return false;</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30E_360())) return false;</span>
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30E_360_ISDA())) return false;</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30E_360_ISDA())) return false;</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30EPLUS_360_ISDA())) return false;</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DC30EPLUS_360_ISDA())) return false;</span>
 
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_360())) return false;</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_360())) return false;</span>
 
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_364())) return false;</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_364())) return false;</span>
 
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_365())) return false;</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_365())) return false;</span>
 
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_365L())) return false;</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_365L())) return false;</span>
 
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_Act())) return false;</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_Act())) return false;</span>
 
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_Act_ISDA())) return false;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_Act_ISDA())) return false;</span>
 
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_Act_UST())) return false;</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCAct_Act_UST())) return false;</span>
 
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCNL_360())) return false;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCNL_360())) return false;</span>
 
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCNL_365())) return false;</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		if (!UpdateDCCalcMap (new org.drip.analytics.daycount.DCNL_365())) return false;</span>
 
-<span class="fc" id="L178">		return UpdateDCCalcMap (new org.drip.analytics.daycount.DCNL_Act());</span>
+<span class="fc" id="L208">		return UpdateDCCalcMap (new org.drip.analytics.daycount.DCNL_Act());</span>
 	}
 
 	private static final boolean AddLH (
 		final org.drip.analytics.holset.LocationHoliday lh,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols)
 	{
-<span class="pc bpc" id="L185" title="2 of 4 branches missed.">		if (null == lh || null == mapHols) return false;</span>
+<span class="pc bpc" id="L215" title="2 of 4 branches missed.">		if (null == lh || null == mapHols) return false;</span>
 
-<span class="fc" id="L187">		java.lang.String strLocation = lh.getHolidayLoc();</span>
+<span class="fc" id="L217">		java.lang.String strLocation = lh.getHolidayLoc();</span>
 
-<span class="fc" id="L189">		org.drip.analytics.eventday.Locale locHols = lh.getHolidaySet();</span>
+<span class="fc" id="L219">		org.drip.analytics.eventday.Locale locHols = lh.getHolidaySet();</span>
 
-<span class="pc bpc" id="L191" title="3 of 6 branches missed.">		if (null == locHols || null == strLocation || strLocation.isEmpty()) return false;</span>
+<span class="pc bpc" id="L221" title="3 of 6 branches missed.">		if (null == locHols || null == strLocation || strLocation.isEmpty()) return false;</span>
 
-<span class="fc" id="L193">		mapHols.put (strLocation, locHols);</span>
+<span class="fc" id="L223">		mapHols.put (strLocation, locHols);</span>
 
-<span class="fc" id="L195">		return true;</span>
+<span class="fc" id="L225">		return true;</span>
 	}
 
 	private static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt;
 		SetHolsFromSource()
 	{
-<span class="fc" id="L201">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols = new</span>
+<span class="fc" id="L231">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt;();
 
-<span class="fc" id="L204">		AddLH (new org.drip.analytics.holset.AEDHoliday(), mapHols);</span>
+<span class="fc" id="L234">		AddLH (new org.drip.analytics.holset.AEDHoliday(), mapHols);</span>
 
-<span class="fc" id="L206">		AddLH (new org.drip.analytics.holset.ANGHoliday(), mapHols);</span>
+<span class="fc" id="L236">		AddLH (new org.drip.analytics.holset.ANGHoliday(), mapHols);</span>
 
-<span class="fc" id="L208">		AddLH (new org.drip.analytics.holset.ARAHoliday(), mapHols);</span>
+<span class="fc" id="L238">		AddLH (new org.drip.analytics.holset.ARAHoliday(), mapHols);</span>
 
-<span class="fc" id="L210">		AddLH (new org.drip.analytics.holset.ARFHoliday(), mapHols);</span>
+<span class="fc" id="L240">		AddLH (new org.drip.analytics.holset.ARFHoliday(), mapHols);</span>
 
-<span class="fc" id="L212">		AddLH (new org.drip.analytics.holset.ARNHoliday(), mapHols);</span>
+<span class="fc" id="L242">		AddLH (new org.drip.analytics.holset.ARNHoliday(), mapHols);</span>
 
-<span class="fc" id="L214">		AddLH (new org.drip.analytics.holset.ARPHoliday(), mapHols);</span>
+<span class="fc" id="L244">		AddLH (new org.drip.analytics.holset.ARPHoliday(), mapHols);</span>
 
-<span class="fc" id="L216">		AddLH (new org.drip.analytics.holset.ARSHoliday(), mapHols);</span>
+<span class="fc" id="L246">		AddLH (new org.drip.analytics.holset.ARSHoliday(), mapHols);</span>
 
-<span class="fc" id="L218">		AddLH (new org.drip.analytics.holset.ATSHoliday(), mapHols);</span>
+<span class="fc" id="L248">		AddLH (new org.drip.analytics.holset.ATSHoliday(), mapHols);</span>
 
-<span class="fc" id="L220">		AddLH (new org.drip.analytics.holset.AUDHoliday(), mapHols);</span>
+<span class="fc" id="L250">		AddLH (new org.drip.analytics.holset.AUDHoliday(), mapHols);</span>
 
-<span class="fc" id="L222">		AddLH (new org.drip.analytics.holset.AZMHoliday(), mapHols);</span>
+<span class="fc" id="L252">		AddLH (new org.drip.analytics.holset.AZMHoliday(), mapHols);</span>
 
-<span class="fc" id="L224">		AddLH (new org.drip.analytics.holset.BAKHoliday(), mapHols);</span>
+<span class="fc" id="L254">		AddLH (new org.drip.analytics.holset.BAKHoliday(), mapHols);</span>
 
-<span class="fc" id="L226">		AddLH (new org.drip.analytics.holset.BBDHoliday(), mapHols);</span>
+<span class="fc" id="L256">		AddLH (new org.drip.analytics.holset.BBDHoliday(), mapHols);</span>
 
-<span class="fc" id="L228">		AddLH (new org.drip.analytics.holset.BEFHoliday(), mapHols);</span>
+<span class="fc" id="L258">		AddLH (new org.drip.analytics.holset.BEFHoliday(), mapHols);</span>
 
-<span class="fc" id="L230">		AddLH (new org.drip.analytics.holset.BGLHoliday(), mapHols);</span>
+<span class="fc" id="L260">		AddLH (new org.drip.analytics.holset.BGLHoliday(), mapHols);</span>
 
-<span class="fc" id="L232">		AddLH (new org.drip.analytics.holset.BHDHoliday(), mapHols);</span>
+<span class="fc" id="L262">		AddLH (new org.drip.analytics.holset.BHDHoliday(), mapHols);</span>
 
-<span class="fc" id="L234">		AddLH (new org.drip.analytics.holset.BMDHoliday(), mapHols);</span>
+<span class="fc" id="L264">		AddLH (new org.drip.analytics.holset.BMDHoliday(), mapHols);</span>
 
-<span class="fc" id="L236">		AddLH (new org.drip.analytics.holset.BRCHoliday(), mapHols);</span>
+<span class="fc" id="L266">		AddLH (new org.drip.analytics.holset.BRCHoliday(), mapHols);</span>
 
-<span class="fc" id="L238">		AddLH (new org.drip.analytics.holset.BRLHoliday(), mapHols);</span>
+<span class="fc" id="L268">		AddLH (new org.drip.analytics.holset.BRLHoliday(), mapHols);</span>
 
-<span class="fc" id="L240">		AddLH (new org.drip.analytics.holset.BSDHoliday(), mapHols);</span>
+<span class="fc" id="L270">		AddLH (new org.drip.analytics.holset.BSDHoliday(), mapHols);</span>
 
-<span class="fc" id="L242">		AddLH (new org.drip.analytics.holset.CADHoliday(), mapHols);</span>
+<span class="fc" id="L272">		AddLH (new org.drip.analytics.holset.CADHoliday(), mapHols);</span>
 
-<span class="fc" id="L244">		AddLH (new org.drip.analytics.holset.CAEHoliday(), mapHols);</span>
+<span class="fc" id="L274">		AddLH (new org.drip.analytics.holset.CAEHoliday(), mapHols);</span>
 
-<span class="fc" id="L246">		AddLH (new org.drip.analytics.holset.CERHoliday(), mapHols);</span>
+<span class="fc" id="L276">		AddLH (new org.drip.analytics.holset.CERHoliday(), mapHols);</span>
 
-<span class="fc" id="L248">		AddLH (new org.drip.analytics.holset.CFFHoliday(), mapHols);</span>
+<span class="fc" id="L278">		AddLH (new org.drip.analytics.holset.CFFHoliday(), mapHols);</span>
 
-<span class="fc" id="L250">		AddLH (new org.drip.analytics.holset.CHFHoliday(), mapHols);</span>
+<span class="fc" id="L280">		AddLH (new org.drip.analytics.holset.CHFHoliday(), mapHols);</span>
 
-<span class="fc" id="L252">		AddLH (new org.drip.analytics.holset.CLFHoliday(), mapHols);</span>
+<span class="fc" id="L282">		AddLH (new org.drip.analytics.holset.CLFHoliday(), mapHols);</span>
 
-<span class="fc" id="L254">		AddLH (new org.drip.analytics.holset.CLUHoliday(), mapHols);</span>
+<span class="fc" id="L284">		AddLH (new org.drip.analytics.holset.CLUHoliday(), mapHols);</span>
 
-<span class="fc" id="L256">		AddLH (new org.drip.analytics.holset.CNYHoliday(), mapHols);</span>
+<span class="fc" id="L286">		AddLH (new org.drip.analytics.holset.CNYHoliday(), mapHols);</span>
 
-<span class="fc" id="L258">		AddLH (new org.drip.analytics.holset.COFHoliday(), mapHols);</span>
+<span class="fc" id="L288">		AddLH (new org.drip.analytics.holset.COFHoliday(), mapHols);</span>
 
-<span class="fc" id="L260">		AddLH (new org.drip.analytics.holset.CONHoliday(), mapHols);</span>
+<span class="fc" id="L290">		AddLH (new org.drip.analytics.holset.CONHoliday(), mapHols);</span>
 
-<span class="fc" id="L262">		AddLH (new org.drip.analytics.holset.COPHoliday(), mapHols);</span>
+<span class="fc" id="L292">		AddLH (new org.drip.analytics.holset.COPHoliday(), mapHols);</span>
 
-<span class="fc" id="L264">		AddLH (new org.drip.analytics.holset.CRCHoliday(), mapHols);</span>
+<span class="fc" id="L294">		AddLH (new org.drip.analytics.holset.CRCHoliday(), mapHols);</span>
 
-<span class="fc" id="L266">		AddLH (new org.drip.analytics.holset.CYPHoliday(), mapHols);</span>
+<span class="fc" id="L296">		AddLH (new org.drip.analytics.holset.CYPHoliday(), mapHols);</span>
 
-<span class="fc" id="L268">		AddLH (new org.drip.analytics.holset.CZKHoliday(), mapHols);</span>
+<span class="fc" id="L298">		AddLH (new org.drip.analytics.holset.CZKHoliday(), mapHols);</span>
 
-<span class="fc" id="L270">		AddLH (new org.drip.analytics.holset.DEMHoliday(), mapHols);</span>
+<span class="fc" id="L300">		AddLH (new org.drip.analytics.holset.DEMHoliday(), mapHols);</span>
 
-<span class="fc" id="L272">		AddLH (new org.drip.analytics.holset.DKKHoliday(), mapHols);</span>
+<span class="fc" id="L302">		AddLH (new org.drip.analytics.holset.DKKHoliday(), mapHols);</span>
 
-<span class="fc" id="L274">		AddLH (new org.drip.analytics.holset.DOPHoliday(), mapHols);</span>
+<span class="fc" id="L304">		AddLH (new org.drip.analytics.holset.DOPHoliday(), mapHols);</span>
 
-<span class="fc" id="L276">		AddLH (new org.drip.analytics.holset.DTFHoliday(), mapHols);</span>
+<span class="fc" id="L306">		AddLH (new org.drip.analytics.holset.DTFHoliday(), mapHols);</span>
 
-<span class="fc" id="L278">		AddLH (new org.drip.analytics.holset.ECSHoliday(), mapHols);</span>
+<span class="fc" id="L308">		AddLH (new org.drip.analytics.holset.ECSHoliday(), mapHols);</span>
 
-<span class="fc" id="L280">		AddLH (new org.drip.analytics.holset.EEKHoliday(), mapHols);</span>
+<span class="fc" id="L310">		AddLH (new org.drip.analytics.holset.EEKHoliday(), mapHols);</span>
 
-<span class="fc" id="L282">		AddLH (new org.drip.analytics.holset.EGPHoliday(), mapHols);</span>
+<span class="fc" id="L312">		AddLH (new org.drip.analytics.holset.EGPHoliday(), mapHols);</span>
 
-<span class="fc" id="L284">		AddLH (new org.drip.analytics.holset.ESBHoliday(), mapHols);</span>
+<span class="fc" id="L314">		AddLH (new org.drip.analytics.holset.ESBHoliday(), mapHols);</span>
 
-<span class="fc" id="L286">		AddLH (new org.drip.analytics.holset.ESPHoliday(), mapHols);</span>
+<span class="fc" id="L316">		AddLH (new org.drip.analytics.holset.ESPHoliday(), mapHols);</span>
 
-<span class="fc" id="L288">		AddLH (new org.drip.analytics.holset.ESTHoliday(), mapHols);</span>
+<span class="fc" id="L318">		AddLH (new org.drip.analytics.holset.ESTHoliday(), mapHols);</span>
 
-<span class="fc" id="L290">		AddLH (new org.drip.analytics.holset.EUBHoliday(), mapHols);</span>
+<span class="fc" id="L320">		AddLH (new org.drip.analytics.holset.EUBHoliday(), mapHols);</span>
 
-<span class="fc" id="L292">		AddLH (new org.drip.analytics.holset.EURHoliday(), mapHols);</span>
+<span class="fc" id="L322">		AddLH (new org.drip.analytics.holset.EURHoliday(), mapHols);</span>
 
-<span class="fc" id="L294">		AddLH (new org.drip.analytics.holset.GBPHoliday(), mapHols);</span>
+<span class="fc" id="L324">		AddLH (new org.drip.analytics.holset.GBPHoliday(), mapHols);</span>
 
-<span class="fc" id="L296">		AddLH (new org.drip.analytics.holset.GELHoliday(), mapHols);</span>
+<span class="fc" id="L326">		AddLH (new org.drip.analytics.holset.GELHoliday(), mapHols);</span>
 
-<span class="fc" id="L298">		AddLH (new org.drip.analytics.holset.GFRHoliday(), mapHols);</span>
+<span class="fc" id="L328">		AddLH (new org.drip.analytics.holset.GFRHoliday(), mapHols);</span>
 
-<span class="fc" id="L300">		AddLH (new org.drip.analytics.holset.GRDHoliday(), mapHols);</span>
+<span class="fc" id="L330">		AddLH (new org.drip.analytics.holset.GRDHoliday(), mapHols);</span>
 
-<span class="fc" id="L302">		AddLH (new org.drip.analytics.holset.HKDHoliday(), mapHols);</span>
+<span class="fc" id="L332">		AddLH (new org.drip.analytics.holset.HKDHoliday(), mapHols);</span>
 
-<span class="fc" id="L304">		AddLH (new org.drip.analytics.holset.HRKHoliday(), mapHols);</span>
+<span class="fc" id="L334">		AddLH (new org.drip.analytics.holset.HRKHoliday(), mapHols);</span>
 
-<span class="fc" id="L306">		AddLH (new org.drip.analytics.holset.HUFHoliday(), mapHols);</span>
+<span class="fc" id="L336">		AddLH (new org.drip.analytics.holset.HUFHoliday(), mapHols);</span>
 
-<span class="fc" id="L308">		AddLH (new org.drip.analytics.holset.IBRHoliday(), mapHols);</span>
+<span class="fc" id="L338">		AddLH (new org.drip.analytics.holset.IBRHoliday(), mapHols);</span>
 
-<span class="fc" id="L310">		AddLH (new org.drip.analytics.holset.IDRHoliday(), mapHols);</span>
+<span class="fc" id="L340">		AddLH (new org.drip.analytics.holset.IDRHoliday(), mapHols);</span>
 
-<span class="fc" id="L312">		AddLH (new org.drip.analytics.holset.IEPHoliday(), mapHols);</span>
+<span class="fc" id="L342">		AddLH (new org.drip.analytics.holset.IEPHoliday(), mapHols);</span>
 
-<span class="fc" id="L314">		AddLH (new org.drip.analytics.holset.IGPHoliday(), mapHols);</span>
+<span class="fc" id="L344">		AddLH (new org.drip.analytics.holset.IGPHoliday(), mapHols);</span>
 
-<span class="fc" id="L316">		AddLH (new org.drip.analytics.holset.ILSHoliday(), mapHols);</span>
+<span class="fc" id="L346">		AddLH (new org.drip.analytics.holset.ILSHoliday(), mapHols);</span>
 
-<span class="fc" id="L318">		AddLH (new org.drip.analytics.holset.INRHoliday(), mapHols);</span>
+<span class="fc" id="L348">		AddLH (new org.drip.analytics.holset.INRHoliday(), mapHols);</span>
 
-<span class="fc" id="L320">		AddLH (new org.drip.analytics.holset.IPCHoliday(), mapHols);</span>
+<span class="fc" id="L350">		AddLH (new org.drip.analytics.holset.IPCHoliday(), mapHols);</span>
 
-<span class="fc" id="L322">		AddLH (new org.drip.analytics.holset.ITLHoliday(), mapHols);</span>
+<span class="fc" id="L352">		AddLH (new org.drip.analytics.holset.ITLHoliday(), mapHols);</span>
 
-<span class="fc" id="L324">		AddLH (new org.drip.analytics.holset.JMDHoliday(), mapHols);</span>
+<span class="fc" id="L354">		AddLH (new org.drip.analytics.holset.JMDHoliday(), mapHols);</span>
 
-<span class="fc" id="L326">		AddLH (new org.drip.analytics.holset.JPYHoliday(), mapHols);</span>
+<span class="fc" id="L356">		AddLH (new org.drip.analytics.holset.JPYHoliday(), mapHols);</span>
 
-<span class="fc" id="L328">		AddLH (new org.drip.analytics.holset.KPWHoliday(), mapHols);</span>
+<span class="fc" id="L358">		AddLH (new org.drip.analytics.holset.KPWHoliday(), mapHols);</span>
 
-<span class="fc" id="L330">		AddLH (new org.drip.analytics.holset.KRWHoliday(), mapHols);</span>
+<span class="fc" id="L360">		AddLH (new org.drip.analytics.holset.KRWHoliday(), mapHols);</span>
 
-<span class="fc" id="L332">		AddLH (new org.drip.analytics.holset.KWDHoliday(), mapHols);</span>
+<span class="fc" id="L362">		AddLH (new org.drip.analytics.holset.KWDHoliday(), mapHols);</span>
 
-<span class="fc" id="L334">		AddLH (new org.drip.analytics.holset.KYDHoliday(), mapHols);</span>
+<span class="fc" id="L364">		AddLH (new org.drip.analytics.holset.KYDHoliday(), mapHols);</span>
 
-<span class="fc" id="L336">		AddLH (new org.drip.analytics.holset.KZTHoliday(), mapHols);</span>
+<span class="fc" id="L366">		AddLH (new org.drip.analytics.holset.KZTHoliday(), mapHols);</span>
 
-<span class="fc" id="L338">		AddLH (new org.drip.analytics.holset.LKRHoliday(), mapHols);</span>
+<span class="fc" id="L368">		AddLH (new org.drip.analytics.holset.LKRHoliday(), mapHols);</span>
 
-<span class="fc" id="L340">		AddLH (new org.drip.analytics.holset.LTLHoliday(), mapHols);</span>
+<span class="fc" id="L370">		AddLH (new org.drip.analytics.holset.LTLHoliday(), mapHols);</span>
 
-<span class="fc" id="L342">		AddLH (new org.drip.analytics.holset.LUFHoliday(), mapHols);</span>
+<span class="fc" id="L372">		AddLH (new org.drip.analytics.holset.LUFHoliday(), mapHols);</span>
 
-<span class="fc" id="L344">		AddLH (new org.drip.analytics.holset.LUXHoliday(), mapHols);</span>
+<span class="fc" id="L374">		AddLH (new org.drip.analytics.holset.LUXHoliday(), mapHols);</span>
 
-<span class="fc" id="L346">		AddLH (new org.drip.analytics.holset.LVLHoliday(), mapHols);</span>
+<span class="fc" id="L376">		AddLH (new org.drip.analytics.holset.LVLHoliday(), mapHols);</span>
 
-<span class="fc" id="L348">		AddLH (new org.drip.analytics.holset.MDLHoliday(), mapHols);</span>
+<span class="fc" id="L378">		AddLH (new org.drip.analytics.holset.MDLHoliday(), mapHols);</span>
 
-<span class="fc" id="L350">		AddLH (new org.drip.analytics.holset.MIXHoliday(), mapHols);</span>
+<span class="fc" id="L380">		AddLH (new org.drip.analytics.holset.MIXHoliday(), mapHols);</span>
 
-<span class="fc" id="L352">		AddLH (new org.drip.analytics.holset.MKDHoliday(), mapHols);</span>
+<span class="fc" id="L382">		AddLH (new org.drip.analytics.holset.MKDHoliday(), mapHols);</span>
 
-<span class="fc" id="L354">		AddLH (new org.drip.analytics.holset.MXCHoliday(), mapHols);</span>
+<span class="fc" id="L384">		AddLH (new org.drip.analytics.holset.MXCHoliday(), mapHols);</span>
 
-<span class="fc" id="L356">		AddLH (new org.drip.analytics.holset.MXNHoliday(), mapHols);</span>
+<span class="fc" id="L386">		AddLH (new org.drip.analytics.holset.MXNHoliday(), mapHols);</span>
 
-<span class="fc" id="L358">		AddLH (new org.drip.analytics.holset.MXPHoliday(), mapHols);</span>
+<span class="fc" id="L388">		AddLH (new org.drip.analytics.holset.MXPHoliday(), mapHols);</span>
 
-<span class="fc" id="L360">		AddLH (new org.drip.analytics.holset.MXVHoliday(), mapHols);</span>
+<span class="fc" id="L390">		AddLH (new org.drip.analytics.holset.MXVHoliday(), mapHols);</span>
 
-<span class="fc" id="L362">		AddLH (new org.drip.analytics.holset.MYRHoliday(), mapHols);</span>
+<span class="fc" id="L392">		AddLH (new org.drip.analytics.holset.MYRHoliday(), mapHols);</span>
 
-<span class="fc" id="L364">		AddLH (new org.drip.analytics.holset.NLGHoliday(), mapHols);</span>
+<span class="fc" id="L394">		AddLH (new org.drip.analytics.holset.NLGHoliday(), mapHols);</span>
 
-<span class="fc" id="L366">		AddLH (new org.drip.analytics.holset.NOKHoliday(), mapHols);</span>
+<span class="fc" id="L396">		AddLH (new org.drip.analytics.holset.NOKHoliday(), mapHols);</span>
 
-<span class="fc" id="L368">		AddLH (new org.drip.analytics.holset.NZDHoliday(), mapHols);</span>
+<span class="fc" id="L398">		AddLH (new org.drip.analytics.holset.NZDHoliday(), mapHols);</span>
 
-<span class="fc" id="L370">		AddLH (new org.drip.analytics.holset.PABHoliday(), mapHols);</span>
+<span class="fc" id="L400">		AddLH (new org.drip.analytics.holset.PABHoliday(), mapHols);</span>
 
-<span class="fc" id="L372">		AddLH (new org.drip.analytics.holset.PEFHoliday(), mapHols);</span>
+<span class="fc" id="L402">		AddLH (new org.drip.analytics.holset.PEFHoliday(), mapHols);</span>
 
-<span class="fc" id="L374">		AddLH (new org.drip.analytics.holset.PENHoliday(), mapHols);</span>
+<span class="fc" id="L404">		AddLH (new org.drip.analytics.holset.PENHoliday(), mapHols);</span>
 
-<span class="fc" id="L376">		AddLH (new org.drip.analytics.holset.PESHoliday(), mapHols);</span>
+<span class="fc" id="L406">		AddLH (new org.drip.analytics.holset.PESHoliday(), mapHols);</span>
 
-<span class="fc" id="L378">		AddLH (new org.drip.analytics.holset.PHPHoliday(), mapHols);</span>
+<span class="fc" id="L408">		AddLH (new org.drip.analytics.holset.PHPHoliday(), mapHols);</span>
 
-<span class="fc" id="L380">		AddLH (new org.drip.analytics.holset.PLNHoliday(), mapHols);</span>
+<span class="fc" id="L410">		AddLH (new org.drip.analytics.holset.PLNHoliday(), mapHols);</span>
 
-<span class="fc" id="L382">		AddLH (new org.drip.analytics.holset.PLZHoliday(), mapHols);</span>
+<span class="fc" id="L412">		AddLH (new org.drip.analytics.holset.PLZHoliday(), mapHols);</span>
 
-<span class="fc" id="L384">		AddLH (new org.drip.analytics.holset.PTEHoliday(), mapHols);</span>
+<span class="fc" id="L414">		AddLH (new org.drip.analytics.holset.PTEHoliday(), mapHols);</span>
 
-<span class="fc" id="L386">		AddLH (new org.drip.analytics.holset.QEFHoliday(), mapHols);</span>
+<span class="fc" id="L416">		AddLH (new org.drip.analytics.holset.QEFHoliday(), mapHols);</span>
 
-<span class="fc" id="L388">		AddLH (new org.drip.analytics.holset.RUBHoliday(), mapHols);</span>
+<span class="fc" id="L418">		AddLH (new org.drip.analytics.holset.RUBHoliday(), mapHols);</span>
 
-<span class="fc" id="L390">		AddLH (new org.drip.analytics.holset.RURHoliday(), mapHols);</span>
+<span class="fc" id="L420">		AddLH (new org.drip.analytics.holset.RURHoliday(), mapHols);</span>
 
-<span class="fc" id="L392">		AddLH (new org.drip.analytics.holset.SARHoliday(), mapHols);</span>
+<span class="fc" id="L422">		AddLH (new org.drip.analytics.holset.SARHoliday(), mapHols);</span>
 
-<span class="fc" id="L394">		AddLH (new org.drip.analytics.holset.SEKHoliday(), mapHols);</span>
+<span class="fc" id="L424">		AddLH (new org.drip.analytics.holset.SEKHoliday(), mapHols);</span>
 
-<span class="fc" id="L396">		AddLH (new org.drip.analytics.holset.SGDHoliday(), mapHols);</span>
+<span class="fc" id="L426">		AddLH (new org.drip.analytics.holset.SGDHoliday(), mapHols);</span>
 
-<span class="fc" id="L398">		AddLH (new org.drip.analytics.holset.SITHoliday(), mapHols);</span>
+<span class="fc" id="L428">		AddLH (new org.drip.analytics.holset.SITHoliday(), mapHols);</span>
 
-<span class="fc" id="L400">		AddLH (new org.drip.analytics.holset.SKKHoliday(), mapHols);</span>
+<span class="fc" id="L430">		AddLH (new org.drip.analytics.holset.SKKHoliday(), mapHols);</span>
 
-<span class="fc" id="L402">		AddLH (new org.drip.analytics.holset.SVCHoliday(), mapHols);</span>
+<span class="fc" id="L432">		AddLH (new org.drip.analytics.holset.SVCHoliday(), mapHols);</span>
 
-<span class="fc" id="L404">		AddLH (new org.drip.analytics.holset.TABHoliday(), mapHols);</span>
+<span class="fc" id="L434">		AddLH (new org.drip.analytics.holset.TABHoliday(), mapHols);</span>
 
-<span class="fc" id="L406">		AddLH (new org.drip.analytics.holset.TGTHoliday(), mapHols);</span>
+<span class="fc" id="L436">		AddLH (new org.drip.analytics.holset.TGTHoliday(), mapHols);</span>
 
-<span class="fc" id="L408">		AddLH (new org.drip.analytics.holset.THBHoliday(), mapHols);</span>
+<span class="fc" id="L438">		AddLH (new org.drip.analytics.holset.THBHoliday(), mapHols);</span>
 
-<span class="fc" id="L410">		AddLH (new org.drip.analytics.holset.TRLHoliday(), mapHols);</span>
+<span class="fc" id="L440">		AddLH (new org.drip.analytics.holset.TRLHoliday(), mapHols);</span>
 
-<span class="fc" id="L412">		AddLH (new org.drip.analytics.holset.TRYHoliday(), mapHols);</span>
+<span class="fc" id="L442">		AddLH (new org.drip.analytics.holset.TRYHoliday(), mapHols);</span>
 
-<span class="fc" id="L414">		AddLH (new org.drip.analytics.holset.TWDHoliday(), mapHols);</span>
+<span class="fc" id="L444">		AddLH (new org.drip.analytics.holset.TWDHoliday(), mapHols);</span>
 
-<span class="fc" id="L416">		AddLH (new org.drip.analytics.holset.UAHHoliday(), mapHols);</span>
+<span class="fc" id="L446">		AddLH (new org.drip.analytics.holset.UAHHoliday(), mapHols);</span>
 
-<span class="fc" id="L418">		AddLH (new org.drip.analytics.holset.USDHoliday(), mapHols);</span>
+<span class="fc" id="L448">		AddLH (new org.drip.analytics.holset.USDHoliday(), mapHols);</span>
 
-<span class="fc" id="L420">		AddLH (new org.drip.analytics.holset.USVHoliday(), mapHols);</span>
+<span class="fc" id="L450">		AddLH (new org.drip.analytics.holset.USVHoliday(), mapHols);</span>
 
-<span class="fc" id="L422">		AddLH (new org.drip.analytics.holset.UVRHoliday(), mapHols);</span>
+<span class="fc" id="L452">		AddLH (new org.drip.analytics.holset.UVRHoliday(), mapHols);</span>
 
-<span class="fc" id="L424">		AddLH (new org.drip.analytics.holset.UYUHoliday(), mapHols);</span>
+<span class="fc" id="L454">		AddLH (new org.drip.analytics.holset.UYUHoliday(), mapHols);</span>
 
-<span class="fc" id="L426">		AddLH (new org.drip.analytics.holset.UYUHoliday(), mapHols);</span>
+<span class="fc" id="L456">		AddLH (new org.drip.analytics.holset.UYUHoliday(), mapHols);</span>
 
-<span class="fc" id="L428">		AddLH (new org.drip.analytics.holset.VACHoliday(), mapHols);</span>
+<span class="fc" id="L458">		AddLH (new org.drip.analytics.holset.VACHoliday(), mapHols);</span>
 
-<span class="fc" id="L430">		AddLH (new org.drip.analytics.holset.VEBHoliday(), mapHols);</span>
+<span class="fc" id="L460">		AddLH (new org.drip.analytics.holset.VEBHoliday(), mapHols);</span>
 
-<span class="fc" id="L432">		AddLH (new org.drip.analytics.holset.VEFHoliday(), mapHols);</span>
+<span class="fc" id="L462">		AddLH (new org.drip.analytics.holset.VEFHoliday(), mapHols);</span>
 
-<span class="fc" id="L434">		AddLH (new org.drip.analytics.holset.VNDHoliday(), mapHols);</span>
+<span class="fc" id="L464">		AddLH (new org.drip.analytics.holset.VNDHoliday(), mapHols);</span>
 
-<span class="fc" id="L436">		AddLH (new org.drip.analytics.holset.XDRHoliday(), mapHols);</span>
+<span class="fc" id="L466">		AddLH (new org.drip.analytics.holset.XDRHoliday(), mapHols);</span>
 
-<span class="fc" id="L438">		AddLH (new org.drip.analytics.holset.XEUHoliday(), mapHols);</span>
+<span class="fc" id="L468">		AddLH (new org.drip.analytics.holset.XEUHoliday(), mapHols);</span>
 
-<span class="fc" id="L440">		AddLH (new org.drip.analytics.holset.ZALHoliday(), mapHols);</span>
+<span class="fc" id="L470">		AddLH (new org.drip.analytics.holset.ZALHoliday(), mapHols);</span>
 
-<span class="fc" id="L442">		AddLH (new org.drip.analytics.holset.ZARHoliday(), mapHols);</span>
+<span class="fc" id="L472">		AddLH (new org.drip.analytics.holset.ZARHoliday(), mapHols);</span>
 
-<span class="fc" id="L444">		AddLH (new org.drip.analytics.holset.ZUSHoliday(), mapHols);</span>
+<span class="fc" id="L474">		AddLH (new org.drip.analytics.holset.ZUSHoliday(), mapHols);</span>
 
-<span class="fc" id="L446">		AddLH (new org.drip.analytics.holset.ZWDHoliday(), mapHols);</span>
+<span class="fc" id="L476">		AddLH (new org.drip.analytics.holset.ZWDHoliday(), mapHols);</span>
 
-<span class="fc" id="L448">		return mapHols;</span>
+<span class="fc" id="L478">		return mapHols;</span>
 	}
 
 	private static final boolean LocationHoliday (
@@ -453,35 +483,35 @@ package org.drip.analytics.daycount;
 		final int iDate,
 		final int iHolType)
 	{
-<span class="pc bpc" id="L456" title="3 of 6 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty() || 0 &gt;= iDate) return false;</span>
+<span class="pc bpc" id="L486" title="3 of 6 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty() || 0 &gt;= iDate) return false;</span>
 
-<span class="fc" id="L458">		java.lang.String[] astrCalendars = strCalendarSet.split (&quot;,&quot;);</span>
+<span class="fc" id="L488">		java.lang.String[] astrCalendars = strCalendarSet.split (&quot;,&quot;);</span>
 
-<span class="fc bfc" id="L460" title="All 2 branches covered.">		for (java.lang.String strCalendar : astrCalendars) {</span>
-<span class="pc bpc" id="L461" title="1 of 4 branches missed.">			if (null != strCalendar &amp;&amp; null != s_mapLocHols.get (strCalendar)) {</span>
-<span class="fc" id="L462">				org.drip.analytics.eventday.Locale lh = s_mapLocHols.get (strCalendar);</span>
+<span class="fc bfc" id="L490" title="All 2 branches covered.">		for (java.lang.String strCalendar : astrCalendars) {</span>
+<span class="pc bpc" id="L491" title="1 of 4 branches missed.">			if (null != strCalendar &amp;&amp; null != s_mapLocHols.get (strCalendar)) {</span>
+<span class="fc" id="L492">				org.drip.analytics.eventday.Locale lh = s_mapLocHols.get (strCalendar);</span>
 
-<span class="pc bpc" id="L464" title="1 of 2 branches missed.">				if (null == lh) continue;</span>
+<span class="pc bpc" id="L494" title="1 of 2 branches missed.">				if (null == lh) continue;</span>
 
-<span class="pc bpc" id="L466" title="2 of 4 branches missed.">				if (0 != (WEEKEND_HOLS &amp; iHolType) &amp;&amp; null != lh.weekendDays() &amp;&amp; lh.weekendDays().isWeekend</span>
-<span class="fc bfc" id="L467" title="All 2 branches covered.">					(iDate))</span>
-<span class="fc" id="L468">					return true;</span>
+<span class="pc bpc" id="L496" title="2 of 4 branches missed.">				if (0 != (WEEKEND_HOLS &amp; iHolType) &amp;&amp; null != lh.weekendDays() &amp;&amp; lh.weekendDays().isWeekend</span>
+<span class="fc bfc" id="L497" title="All 2 branches covered.">					(iDate))</span>
+<span class="fc" id="L498">					return true;</span>
 
-<span class="pc bpc" id="L470" title="2 of 4 branches missed.">				if (null == lh.holidays() || 0 == (WEEKDAY_HOLS &amp; iHolType)) continue;</span>
+<span class="pc bpc" id="L500" title="2 of 4 branches missed.">				if (null == lh.holidays() || 0 == (WEEKDAY_HOLS &amp; iHolType)) continue;</span>
 
-<span class="fc bfc" id="L472" title="All 2 branches covered.">				for (org.drip.analytics.eventday.Base hol : lh.holidays()) {</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">				for (org.drip.analytics.eventday.Base hol : lh.holidays()) {</span>
 					try {
-<span class="pc bpc" id="L474" title="1 of 4 branches missed.">						if (null != hol &amp;&amp; iDate == hol.dateInYear (org.drip.analytics.date.DateUtil.Year</span>
-<span class="fc" id="L475">							(iDate), true))</span>
-<span class="fc" id="L476">							return true;</span>
-<span class="nc" id="L477">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L478">						e.printStackTrace();</span>
-<span class="fc" id="L479">					}</span>
-<span class="fc" id="L480">				}</span>
+<span class="pc bpc" id="L504" title="1 of 4 branches missed.">						if (null != hol &amp;&amp; iDate == hol.dateInYear (org.drip.analytics.date.DateUtil.Year</span>
+<span class="fc" id="L505">							(iDate), true))</span>
+<span class="fc" id="L506">							return true;</span>
+<span class="nc" id="L507">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L508">						e.printStackTrace();</span>
+<span class="fc" id="L509">					}</span>
+<span class="fc" id="L510">				}</span>
 			}
 		}
 
-<span class="fc" id="L484">		return false;</span>
+<span class="fc" id="L514">		return false;</span>
 	}
 
 	/**
@@ -495,31 +525,31 @@ package org.drip.analytics.daycount;
 	public static final boolean Init (
 		final java.lang.String strCalendarSetLoc)
 	{
-<span class="fc bfc" id="L498" title="All 2 branches covered.">		if (null != s_mapLocHols) return true;</span>
+<span class="fc bfc" id="L528" title="All 2 branches covered.">		if (null != s_mapLocHols) return true;</span>
 
-<span class="pc bpc" id="L500" title="1 of 2 branches missed.">		if (!SetDCCalc()) return false;</span>
+<span class="pc bpc" id="L530" title="1 of 2 branches missed.">		if (!SetDCCalc()) return false;</span>
 
-<span class="pc bpc" id="L502" title="1 of 2 branches missed.">		if (INIT_FROM_HOLS_SOURCE == s_iInitHols) {</span>
-<span class="pc bpc" id="L503" title="1 of 2 branches missed.">			if (null == (s_mapLocHols = SetHolsFromSource())) return false;</span>
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		if (INIT_FROM_HOLS_SOURCE == s_iInitHols) {</span>
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">			if (null == (s_mapLocHols = SetHolsFromSource())) return false;</span>
 
-<span class="fc" id="L505">			return true;</span>
+<span class="fc" id="L535">			return true;</span>
 		}
 
 		try {
-<span class="nc bnc" id="L509" title="All 2 branches missed.">			if (INIT_FROM_HOLS_XML == s_iInitHols)</span>
-<span class="nc" id="L510">				s_mapLocHols = org.drip.param.config.ConfigLoader.LoadHolidayCalendars (strCalendarSetLoc);</span>
-<span class="nc bnc" id="L511" title="All 2 branches missed.">			else if (INIT_FROM_HOLS_DB == s_iInitHols)</span>
-<span class="nc" id="L512">				s_mapLocHols = org.drip.param.config.ConfigLoader.LoadHolidayCalendarsFromDB</span>
-<span class="nc" id="L513">					(strCalendarSetLoc);</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">			if (INIT_FROM_HOLS_XML == s_iInitHols)</span>
+<span class="nc" id="L540">				s_mapLocHols = org.drip.param.config.ConfigLoader.LoadHolidayCalendars (strCalendarSetLoc);</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">			else if (INIT_FROM_HOLS_DB == s_iInitHols)</span>
+<span class="nc" id="L542">				s_mapLocHols = org.drip.param.config.ConfigLoader.LoadHolidayCalendarsFromDB</span>
+<span class="nc" id="L543">					(strCalendarSetLoc);</span>
 
-<span class="nc" id="L515">			return true;</span>
-<span class="nc" id="L516">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L517">			e.printStackTrace();</span>
+<span class="nc" id="L545">			return true;</span>
+<span class="nc" id="L546">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L547">			e.printStackTrace();</span>
 		}
 
-<span class="nc bnc" id="L520" title="All 4 branches missed.">		if (null == s_mapLocHols &amp;&amp; null == (s_mapLocHols = SetHolsFromSource()))  return false;</span>
+<span class="nc bnc" id="L550" title="All 4 branches missed.">		if (null == s_mapLocHols &amp;&amp; null == (s_mapLocHols = SetHolsFromSource()))  return false;</span>
 
-<span class="nc" id="L522">		return false;</span>
+<span class="nc" id="L552">		return false;</span>
 	}
 
 	/**
@@ -530,7 +560,7 @@ package org.drip.analytics.daycount;
 
 	public static final java.util.Set&lt;java.lang.String&gt; HolidayLocations()
 	{
-<span class="nc" id="L533">		return s_mapLocHols.keySet();</span>
+<span class="nc" id="L563">		return s_mapLocHols.keySet();</span>
 	}
 
 	/**
@@ -544,31 +574,31 @@ package org.drip.analytics.daycount;
 	public static final int[] WeekendDays (
 		final java.lang.String strCalendarSet)
 	{
-<span class="nc bnc" id="L547" title="All 4 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty()) return null;</span>
+<span class="nc bnc" id="L577" title="All 4 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty()) return null;</span>
 
-<span class="nc" id="L549">		java.lang.String[] astrCalendars = strCalendarSet.split (&quot;,&quot;);</span>
+<span class="nc" id="L579">		java.lang.String[] astrCalendars = strCalendarSet.split (&quot;,&quot;);</span>
 
-<span class="nc" id="L551">		java.util.Set&lt;java.lang.Integer&gt; si = new java.util.HashSet&lt;java.lang.Integer&gt;();</span>
+<span class="nc" id="L581">		java.util.Set&lt;java.lang.Integer&gt; si = new java.util.HashSet&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc bnc" id="L553" title="All 2 branches missed.">		for (java.lang.String strCalendar : astrCalendars) {</span>
-<span class="nc bnc" id="L554" title="All 4 branches missed.">			if (null != strCalendar &amp;&amp; null != s_mapLocHols.get (strCalendar)) {</span>
-<span class="nc" id="L555">				org.drip.analytics.eventday.Locale lh = s_mapLocHols.get (strCalendar);</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">		for (java.lang.String strCalendar : astrCalendars) {</span>
+<span class="nc bnc" id="L584" title="All 4 branches missed.">			if (null != strCalendar &amp;&amp; null != s_mapLocHols.get (strCalendar)) {</span>
+<span class="nc" id="L585">				org.drip.analytics.eventday.Locale lh = s_mapLocHols.get (strCalendar);</span>
 
-<span class="nc bnc" id="L557" title="All 6 branches missed.">				if (null == lh || null == lh.weekendDays() || null == lh.weekendDays().days()) continue;</span>
+<span class="nc bnc" id="L587" title="All 6 branches missed.">				if (null == lh || null == lh.weekendDays() || null == lh.weekendDays().days()) continue;</span>
 
-<span class="nc bnc" id="L559" title="All 2 branches missed.">				for (int i : lh.weekendDays().days())</span>
-<span class="nc" id="L560">					si.add (i);</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">				for (int i : lh.weekendDays().days())</span>
+<span class="nc" id="L590">					si.add (i);</span>
 			}
 		}
 
-<span class="nc" id="L564">		int j = 0;</span>
+<span class="nc" id="L594">		int j = 0;</span>
 
-<span class="nc" id="L566">		int[] aiWkend = new int[si.size()];</span>
+<span class="nc" id="L596">		int[] aiWkend = new int[si.size()];</span>
 
-<span class="nc bnc" id="L568" title="All 2 branches missed.">		for (int iHol : si)</span>
-<span class="nc" id="L569">			aiWkend[j++] = iHol;</span>
+<span class="nc bnc" id="L598" title="All 2 branches missed.">		for (int iHol : si)</span>
+<span class="nc" id="L599">			aiWkend[j++] = iHol;</span>
 
-<span class="nc" id="L571">		return aiWkend;</span>
+<span class="nc" id="L601">		return aiWkend;</span>
 	}
 
 	/**
@@ -579,12 +609,12 @@ package org.drip.analytics.daycount;
 
 	public static final java.lang.String AvailableDC()
 	{
-<span class="fc" id="L582">		java.lang.StringBuffer sbDCSet = new java.lang.StringBuffer();</span>
+<span class="fc" id="L612">		java.lang.StringBuffer sbDCSet = new java.lang.StringBuffer();</span>
 
-<span class="fc bfc" id="L584" title="All 2 branches covered.">		for (java.lang.String strDC : s_mapDCCalc.keySet())</span>
-<span class="fc" id="L585">			sbDCSet.append (strDC + &quot; | &quot;);</span>
+<span class="fc bfc" id="L614" title="All 2 branches covered.">		for (java.lang.String strDC : s_mapDCCalc.keySet())</span>
+<span class="fc" id="L615">			sbDCSet.append (strDC + &quot; | &quot;);</span>
 
-<span class="fc" id="L587">		return sbDCSet.toString();</span>
+<span class="fc" id="L617">		return sbDCSet.toString();</span>
 	}
 
 	/**
@@ -612,19 +642,19 @@ package org.drip.analytics.daycount;
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L615" title="2 of 4 branches missed.">		if (&quot;BUS252&quot;.equalsIgnoreCase (strDayCount) || &quot;BUS DAYS252&quot;.equalsIgnoreCase (strDayCount) ||</span>
-<span class="fc bfc" id="L616" title="All 2 branches covered.">			&quot;BUS/252&quot;.equalsIgnoreCase (strDayCount))</span>
-<span class="fc" id="L617">			return BusinessDays (iStartDate, iEndDate, strCalendar) / 252.;</span>
+<span class="pc bpc" id="L645" title="2 of 4 branches missed.">		if (&quot;BUS252&quot;.equalsIgnoreCase (strDayCount) || &quot;BUS DAYS252&quot;.equalsIgnoreCase (strDayCount) ||</span>
+<span class="fc bfc" id="L646" title="All 2 branches covered.">			&quot;BUS/252&quot;.equalsIgnoreCase (strDayCount))</span>
+<span class="fc" id="L647">			return BusinessDays (iStartDate, iEndDate, strCalendar) / 252.;</span>
 
-<span class="fc" id="L619">		org.drip.analytics.daycount.DCFCalculator dcfCalc = s_mapDCCalc.get (strDayCount);</span>
+<span class="fc" id="L649">		org.drip.analytics.daycount.DCFCalculator dcfCalc = s_mapDCCalc.get (strDayCount);</span>
 
-<span class="pc bpc" id="L621" title="1 of 2 branches missed.">		if (null != dcfCalc)</span>
-<span class="fc" id="L622">			return dcfCalc.yearFraction (iStartDate, iEndDate, bApplyEOMAdj, actactParams, strCalendar);</span>
+<span class="pc bpc" id="L651" title="1 of 2 branches missed.">		if (null != dcfCalc)</span>
+<span class="fc" id="L652">			return dcfCalc.yearFraction (iStartDate, iEndDate, bApplyEOMAdj, actactParams, strCalendar);</span>
 
-<span class="nc" id="L624">		System.out.println (&quot;Convention::YearFraction =&gt; Unknown DC: &quot; + strDayCount +</span>
+<span class="nc" id="L654">		System.out.println (&quot;Convention::YearFraction =&gt; Unknown DC: &quot; + strDayCount +</span>
 			&quot;; defaulting to Actual/365.25&quot;);
 
-<span class="nc" id="L627">		return 1. * (iEndDate - iStartDate) / 365.25;</span>
+<span class="nc" id="L657">		return 1. * (iEndDate - iStartDate) / 365.25;</span>
 	}
 
 	/**
@@ -652,16 +682,16 @@ package org.drip.analytics.daycount;
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L655" title="2 of 4 branches missed.">		if (&quot;BUS252&quot;.equalsIgnoreCase (strDayCount) || &quot;BUS DAYS252&quot;.equalsIgnoreCase (strDayCount) ||</span>
-<span class="pc bpc" id="L656" title="1 of 2 branches missed.">			&quot;BUS/252&quot;.equalsIgnoreCase (strDayCount))</span>
-<span class="nc" id="L657">			return BusinessDays (iStartDate, iEndDate, strCalendar);</span>
+<span class="pc bpc" id="L685" title="2 of 4 branches missed.">		if (&quot;BUS252&quot;.equalsIgnoreCase (strDayCount) || &quot;BUS DAYS252&quot;.equalsIgnoreCase (strDayCount) ||</span>
+<span class="pc bpc" id="L686" title="1 of 2 branches missed.">			&quot;BUS/252&quot;.equalsIgnoreCase (strDayCount))</span>
+<span class="nc" id="L687">			return BusinessDays (iStartDate, iEndDate, strCalendar);</span>
 
-<span class="fc" id="L659">		org.drip.analytics.daycount.DCFCalculator dcfCalc = s_mapDCCalc.get (strDayCount);</span>
+<span class="fc" id="L689">		org.drip.analytics.daycount.DCFCalculator dcfCalc = s_mapDCCalc.get (strDayCount);</span>
 
-<span class="pc bpc" id="L661" title="1 of 2 branches missed.">		if (null != dcfCalc)</span>
-<span class="fc" id="L662">			return dcfCalc.daysAccrued (iStartDate, iEndDate, bApplyEOMAdj, actactParams, strCalendar);</span>
+<span class="pc bpc" id="L691" title="1 of 2 branches missed.">		if (null != dcfCalc)</span>
+<span class="fc" id="L692">			return dcfCalc.daysAccrued (iStartDate, iEndDate, bApplyEOMAdj, actactParams, strCalendar);</span>
 
-<span class="nc" id="L664">		return iEndDate - iStartDate;</span>
+<span class="nc" id="L694">		return iEndDate - iStartDate;</span>
 	}
 
 	/**
@@ -684,65 +714,65 @@ package org.drip.analytics.daycount;
 		int iNumDaysToRoll)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L687" title="1 of 2 branches missed.">		if (0 &gt; iNumDaysToRoll) throw new java.lang.Exception (&quot;Convention::RollDate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L717" title="1 of 2 branches missed.">		if (0 &gt; iNumDaysToRoll) throw new java.lang.Exception (&quot;Convention::RollDate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L689" title="2 of 6 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty() || DATE_ROLL_ACTUAL == iRollMode)</span>
-<span class="fc" id="L690">			return iDate + iNumDaysToRoll;</span>
+<span class="pc bpc" id="L719" title="2 of 6 branches missed.">		if (null == strCalendarSet || strCalendarSet.isEmpty() || DATE_ROLL_ACTUAL == iRollMode)</span>
+<span class="fc" id="L720">			return iDate + iNumDaysToRoll;</span>
 
-<span class="fc" id="L692">		int iRolledDate = iDate;</span>
+<span class="fc" id="L722">		int iRolledDate = iDate;</span>
 
-<span class="fc bfc" id="L694" title="All 2 branches covered.">		if (0 == iNumDaysToRoll) {</span>
-<span class="pc bpc" id="L695" title="2 of 6 branches missed.">			if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||</span>
+<span class="fc bfc" id="L724" title="All 2 branches covered.">		if (0 == iNumDaysToRoll) {</span>
+<span class="pc bpc" id="L725" title="2 of 6 branches missed.">			if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||</span>
 				DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {
-<span class="fc bfc" id="L697" title="All 2 branches covered.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="fc" id="L698">					++iRolledDate;</span>
-<span class="pc bpc" id="L699" title="3 of 4 branches missed.">			} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
-<span class="fc bfc" id="L700" title="All 2 branches covered.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="fc" id="L701">					--iRolledDate;</span>
+<span class="fc bfc" id="L727" title="All 2 branches covered.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="fc" id="L728">					++iRolledDate;</span>
+<span class="pc bpc" id="L729" title="3 of 4 branches missed.">			} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
+<span class="fc bfc" id="L730" title="All 2 branches covered.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="fc" id="L731">					--iRolledDate;</span>
 			}
 		} else {
-<span class="fc bfc" id="L704" title="All 2 branches covered.">			while (0 != iNumDaysToRoll) {</span>
-<span class="fc bfc" id="L705" title="All 6 branches covered.">				if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||</span>
+<span class="fc bfc" id="L734" title="All 2 branches covered.">			while (0 != iNumDaysToRoll) {</span>
+<span class="fc bfc" id="L735" title="All 6 branches covered.">				if (DATE_ROLL_FOLLOWING == iRollMode || DATE_ROLL_MODIFIED_FOLLOWING == iRollMode ||</span>
 					DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {
-<span class="fc bfc" id="L707" title="All 2 branches covered.">					while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="fc" id="L708">						++iRolledDate;</span>
-<span class="pc bpc" id="L709" title="1 of 4 branches missed.">				} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
-<span class="fc bfc" id="L710" title="All 2 branches covered.">					while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="fc" id="L711">						--iRolledDate;</span>
+<span class="fc bfc" id="L737" title="All 2 branches covered.">					while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="fc" id="L738">						++iRolledDate;</span>
+<span class="pc bpc" id="L739" title="1 of 4 branches missed.">				} else if (DATE_ROLL_PREVIOUS == iRollMode || DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
+<span class="fc bfc" id="L740" title="All 2 branches covered.">					while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="fc" id="L741">						--iRolledDate;</span>
 				}
 
-<span class="fc" id="L714">				--iNumDaysToRoll;</span>
+<span class="fc" id="L744">				--iNumDaysToRoll;</span>
 			}
 		}
 
-<span class="fc bfc" id="L718" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_FOLLOWING == iRollMode) {</span>
-<span class="fc" id="L719">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
-<span class="pc bpc" id="L720" title="1 of 2 branches missed.">				(iRolledDate)) {</span>
-<span class="nc bnc" id="L721" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="nc" id="L722">					--iRolledDate;</span>
+<span class="fc bfc" id="L748" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_FOLLOWING == iRollMode) {</span>
+<span class="fc" id="L749">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L750" title="1 of 2 branches missed.">				(iRolledDate)) {</span>
+<span class="nc bnc" id="L751" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="nc" id="L752">					--iRolledDate;</span>
 			}
 		}
 
-<span class="fc bfc" id="L726" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {</span>
-<span class="fc" id="L727">			int iOriginalDay = org.drip.analytics.date.DateUtil.Date (iDate);</span>
+<span class="fc bfc" id="L756" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY == iRollMode) {</span>
+<span class="fc" id="L757">			int iOriginalDay = org.drip.analytics.date.DateUtil.Date (iDate);</span>
 
-<span class="fc" id="L729">			int iRolledDay = org.drip.analytics.date.DateUtil.Date (iRolledDate);</span>
+<span class="fc" id="L759">			int iRolledDay = org.drip.analytics.date.DateUtil.Date (iRolledDate);</span>
 
-<span class="pc bpc" id="L731" title="5 of 8 branches missed.">			if ((15 &lt; iOriginalDay &amp;&amp; 15 &gt; iRolledDay) || (15 &gt; iOriginalDay &amp;&amp; 15 &lt; iRolledDay)) {</span>
-<span class="nc bnc" id="L732" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="nc" id="L733">					--iRolledDate;</span>
+<span class="pc bpc" id="L761" title="5 of 8 branches missed.">			if ((15 &lt; iOriginalDay &amp;&amp; 15 &gt; iRolledDay) || (15 &gt; iOriginalDay &amp;&amp; 15 &lt; iRolledDay)) {</span>
+<span class="nc bnc" id="L762" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="nc" id="L763">					--iRolledDate;</span>
 			}
 		}
 
-<span class="fc bfc" id="L737" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
-<span class="fc" id="L738">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
-<span class="pc bpc" id="L739" title="1 of 2 branches missed.">				(iRolledDate)) {</span>
-<span class="nc bnc" id="L740" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
-<span class="nc" id="L741">					++iRolledDate;</span>
+<span class="fc bfc" id="L767" title="All 2 branches covered.">		if (DATE_ROLL_MODIFIED_PREVIOUS == iRollMode) {</span>
+<span class="fc" id="L768">			if (org.drip.analytics.date.DateUtil.Month (iDate) != org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L769" title="1 of 2 branches missed.">				(iRolledDate)) {</span>
+<span class="nc bnc" id="L770" title="All 2 branches missed.">				while (IsHoliday (iRolledDate, strCalendarSet))</span>
+<span class="nc" id="L771">					++iRolledDate;</span>
 			}
 		}
 
-<span class="fc" id="L745">		return iRolledDate;</span>
+<span class="fc" id="L775">		return iRolledDate;</span>
 	}
 
 	/**
@@ -760,8 +790,8 @@ package org.drip.analytics.daycount;
 		final java.lang.String strCalendar,
 		final int iHolType)
 	{
-<span class="fc bfc" id="L763" title="All 4 branches covered.">		return LocationHoliday ((null == strCalendar || strCalendar.isEmpty() || &quot;&quot;.equalsIgnoreCase</span>
-<span class="pc bpc" id="L764" title="1 of 2 branches missed.">			(strCalendar)) ? &quot;USD&quot; : strCalendar, iDate, iHolType);</span>
+<span class="fc bfc" id="L793" title="All 4 branches covered.">		return LocationHoliday ((null == strCalendar || strCalendar.isEmpty() || &quot;&quot;.equalsIgnoreCase</span>
+<span class="pc bpc" id="L794" title="1 of 2 branches missed.">			(strCalendar)) ? &quot;USD&quot; : strCalendar, iDate, iHolType);</span>
 	}
 
 	/**
@@ -777,7 +807,7 @@ package org.drip.analytics.daycount;
 		final int iDate,
 		final java.lang.String strCalendar)
 	{
-<span class="fc" id="L780">		return IsHoliday (iDate, strCalendar, WEEKDAY_HOLS | WEEKEND_HOLS);</span>
+<span class="fc" id="L810">		return IsHoliday (iDate, strCalendar, WEEKDAY_HOLS | WEEKEND_HOLS);</span>
 	}
 
 	/**
@@ -798,21 +828,21 @@ package org.drip.analytics.daycount;
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L801" title="1 of 2 branches missed.">		if (iStartDate &gt; iEndDate)</span>
-<span class="nc" id="L802">			throw new java.lang.Exception (&quot;Convention::BusinessDays =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L831" title="1 of 2 branches missed.">		if (iStartDate &gt; iEndDate)</span>
+<span class="nc" id="L832">			throw new java.lang.Exception (&quot;Convention::BusinessDays =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L804" title="All 2 branches covered.">		if (iStartDate == iEndDate) return 0;</span>
+<span class="fc bfc" id="L834" title="All 2 branches covered.">		if (iStartDate == iEndDate) return 0;</span>
 
-<span class="fc" id="L806">		int iNumBusDays = 0;</span>
-<span class="fc" id="L807">		int iDate = iStartDate + 1;</span>
+<span class="fc" id="L836">		int iNumBusDays = 0;</span>
+<span class="fc" id="L837">		int iDate = iStartDate + 1;</span>
 
-<span class="fc bfc" id="L809" title="All 2 branches covered.">		while (iDate &lt;= iEndDate) {</span>
-<span class="fc bfc" id="L810" title="All 2 branches covered.">			if (!IsHoliday (iDate, strCalendar)) ++iNumBusDays;</span>
+<span class="fc bfc" id="L839" title="All 2 branches covered.">		while (iDate &lt;= iEndDate) {</span>
+<span class="fc bfc" id="L840" title="All 2 branches covered.">			if (!IsHoliday (iDate, strCalendar)) ++iNumBusDays;</span>
 
-<span class="fc" id="L812">			++iDate;</span>
+<span class="fc" id="L842">			++iDate;</span>
 		}
 
-<span class="fc" id="L815">		return iNumBusDays;</span>
+<span class="fc" id="L845">		return iNumBusDays;</span>
 	}
 
 	/**
@@ -830,27 +860,27 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final java.lang.String strCalendar)
 	{
-<span class="fc" id="L833">		java.util.List&lt;java.lang.Integer&gt; lsHolidays = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L863">		java.util.List&lt;java.lang.Integer&gt; lsHolidays = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L835">		int iLastDate = iEndDate;</span>
-<span class="fc" id="L836">		int iFirstDate = iStartDate;</span>
+<span class="fc" id="L865">		int iLastDate = iEndDate;</span>
+<span class="fc" id="L866">		int iFirstDate = iStartDate;</span>
 
-<span class="pc bpc" id="L838" title="1 of 2 branches missed.">		if (iFirstDate &gt; iLastDate) {</span>
-<span class="nc" id="L839">			iLastDate = iStartDate;</span>
-<span class="nc" id="L840">			iFirstDate = iEndDate;</span>
+<span class="pc bpc" id="L868" title="1 of 2 branches missed.">		if (iFirstDate &gt; iLastDate) {</span>
+<span class="nc" id="L869">			iLastDate = iStartDate;</span>
+<span class="nc" id="L870">			iFirstDate = iEndDate;</span>
 		}
 
-<span class="fc bfc" id="L843" title="All 2 branches covered.">		while (iFirstDate != iLastDate) {</span>
+<span class="fc bfc" id="L873" title="All 2 branches covered.">		while (iFirstDate != iLastDate) {</span>
 			try {
-<span class="fc bfc" id="L845" title="All 2 branches covered.">				if (IsHoliday (iFirstDate, strCalendar)) lsHolidays.add (iFirstDate);</span>
+<span class="fc bfc" id="L875" title="All 2 branches covered.">				if (IsHoliday (iFirstDate, strCalendar)) lsHolidays.add (iFirstDate);</span>
 
-<span class="fc" id="L847">				++iFirstDate;</span>
-<span class="nc" id="L848">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L849">				e.printStackTrace();</span>
-<span class="pc" id="L850">			}</span>
+<span class="fc" id="L877">				++iFirstDate;</span>
+<span class="nc" id="L878">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L879">				e.printStackTrace();</span>
+<span class="pc" id="L880">			}</span>
 		}
 
-<span class="fc" id="L853">		return lsHolidays;</span>
+<span class="fc" id="L883">		return lsHolidays;</span>
 	}
 
 	/**
@@ -868,20 +898,20 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final java.lang.String strCalendar)
 	{
-<span class="nc" id="L871">		int iNumHolidays = 0;</span>
-<span class="nc" id="L872">		int iLastDate = iEndDate;</span>
-<span class="nc" id="L873">		int iFirstDate = iStartDate;</span>
+<span class="nc" id="L901">		int iNumHolidays = 0;</span>
+<span class="nc" id="L902">		int iLastDate = iEndDate;</span>
+<span class="nc" id="L903">		int iFirstDate = iStartDate;</span>
 
-<span class="nc bnc" id="L875" title="All 2 branches missed.">		if (iFirstDate &gt; iLastDate) {</span>
-<span class="nc" id="L876">			iLastDate = iStartDate;</span>
-<span class="nc" id="L877">			iFirstDate = iEndDate;</span>
+<span class="nc bnc" id="L905" title="All 2 branches missed.">		if (iFirstDate &gt; iLastDate) {</span>
+<span class="nc" id="L906">			iLastDate = iStartDate;</span>
+<span class="nc" id="L907">			iFirstDate = iEndDate;</span>
 		}
 
-<span class="nc bnc" id="L880" title="All 2 branches missed.">		while (iFirstDate != iLastDate) {</span>
-<span class="nc bnc" id="L881" title="All 2 branches missed.">			if (IsHoliday (iFirstDate++, strCalendar)) ++iNumHolidays;</span>
+<span class="nc bnc" id="L910" title="All 2 branches missed.">		while (iFirstDate != iLastDate) {</span>
+<span class="nc bnc" id="L911" title="All 2 branches missed.">			if (IsHoliday (iFirstDate++, strCalendar)) ++iNumHolidays;</span>
 		}
 
-<span class="nc bnc" id="L884" title="All 2 branches missed.">		return iStartDate &gt; iEndDate ? -1 * iNumHolidays : iNumHolidays;</span>
+<span class="nc bnc" id="L914" title="All 2 branches missed.">		return iStartDate &gt; iEndDate ? -1 * iNumHolidays : iNumHolidays;</span>
 	}
 
 	/**
@@ -899,11 +929,11 @@ package org.drip.analytics.daycount;
 		final java.lang.String strCalendar,
 		final int iAdjustMode)
 	{
-<span class="fc" id="L902">		int iDateAdjusted = iDate;</span>
+<span class="fc" id="L932">		int iDateAdjusted = iDate;</span>
 
-<span class="fc bfc" id="L904" title="All 2 branches covered.">		while (IsHoliday (iDateAdjusted, strCalendar)) ++iDateAdjusted;</span>
+<span class="fc bfc" id="L934" title="All 2 branches covered.">		while (IsHoliday (iDateAdjusted, strCalendar)) ++iDateAdjusted;</span>
 
-<span class="fc" id="L906">		return iDateAdjusted;</span>
+<span class="fc" id="L936">		return iDateAdjusted;</span>
 	}
 
 	/**
@@ -921,16 +951,16 @@ package org.drip.analytics.daycount;
         final int iNumDays,
         final java.lang.String strCalendar)
     {
-<span class="fc" id="L924">		int iAdjustedDate = iDate;</span>
-<span class="fc" id="L925">		int iNumDaysIncremented = 0;</span>
+<span class="fc" id="L954">		int iAdjustedDate = iDate;</span>
+<span class="fc" id="L955">		int iNumDaysIncremented = 0;</span>
 
-<span class="fc bfc" id="L927" title="All 2 branches covered.">		while (iNumDaysIncremented &lt; iNumDays) {</span>
-<span class="fc" id="L928">			iAdjustedDate = Adjust (iAdjustedDate + 1, strCalendar, DATE_ROLL_FOLLOWING);</span>
+<span class="fc bfc" id="L957" title="All 2 branches covered.">		while (iNumDaysIncremented &lt; iNumDays) {</span>
+<span class="fc" id="L958">			iAdjustedDate = Adjust (iAdjustedDate + 1, strCalendar, DATE_ROLL_FOLLOWING);</span>
 
-<span class="fc" id="L930">			iNumDaysIncremented += 1;</span>
+<span class="fc" id="L960">			iNumDaysIncremented += 1;</span>
 		}
 
-<span class="fc" id="L933">		return iAdjustedDate;</span>
+<span class="fc" id="L963">		return iAdjustedDate;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,35 +6,53 @@ package org.drip.analytics.support;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,45 +69,52 @@ package org.drip.analytics.support;
  */
 
 /**
- * OptionHelper contains the collection of the option valuation related utility functions used by the modules.
+ * &lt;i&gt;OptionHelper&lt;/i&gt; contains the collection of the option valuation related utility functions used by the
+ *  modules.
+ *  &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L59">public class OptionHelper {</span>
+<span class="nc" id="L84">public class OptionHelper {</span>
 
 	static class CrossVolatilityQuantoProduct extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L62">		org.drip.state.volatility.VolatilityCurve _vcForward = null;</span>
-<span class="fc" id="L63">		org.drip.state.volatility.VolatilityCurve _vcForwardToDiscount = null;</span>
-<span class="fc" id="L64">		org.drip.function.definition.R1ToR1 _r1r1ForwardForwardToDiscountCorrelation = null;</span>
+<span class="fc" id="L87">		org.drip.state.volatility.VolatilityCurve _vcForward = null;</span>
+<span class="fc" id="L88">		org.drip.state.volatility.VolatilityCurve _vcForwardToDiscount = null;</span>
+<span class="fc" id="L89">		org.drip.function.definition.R1ToR1 _r1r1ForwardForwardToDiscountCorrelation = null;</span>
 
 		CrossVolatilityQuantoProduct (
 			final org.drip.state.volatility.VolatilityCurve vcForward,
 			final org.drip.state.volatility.VolatilityCurve vcForwardToDiscount,
 			final org.drip.function.definition.R1ToR1 r1r1ForwardForwardToDiscountCorrelation)
 		{
-<span class="fc" id="L71">			super (null);</span>
+<span class="fc" id="L96">			super (null);</span>
 
-<span class="fc" id="L73">			_vcForward = vcForward;</span>
-<span class="fc" id="L74">			_vcForwardToDiscount = vcForwardToDiscount;</span>
-<span class="fc" id="L75">			_r1r1ForwardForwardToDiscountCorrelation = r1r1ForwardForwardToDiscountCorrelation;</span>
-<span class="fc" id="L76">		}</span>
+<span class="fc" id="L98">			_vcForward = vcForward;</span>
+<span class="fc" id="L99">			_vcForwardToDiscount = vcForwardToDiscount;</span>
+<span class="fc" id="L100">			_r1r1ForwardForwardToDiscountCorrelation = r1r1ForwardForwardToDiscountCorrelation;</span>
+<span class="fc" id="L101">		}</span>
 
 		@Override public double evaluate (
 			final double dblVariate)
 			throws java.lang.Exception
 		{
-<span class="fc" id="L82">			return _vcForward.impliedVol ((int) dblVariate) * _vcForwardToDiscount.impliedVol ((int)</span>
-<span class="fc" id="L83">				dblVariate) * _r1r1ForwardForwardToDiscountCorrelation.evaluate (dblVariate);</span>
+<span class="fc" id="L107">			return _vcForward.impliedVol ((int) dblVariate) * _vcForwardToDiscount.impliedVol ((int)</span>
+<span class="fc" id="L108">				dblVariate) * _r1r1ForwardForwardToDiscountCorrelation.evaluate (dblVariate);</span>
 		}
 	}
 
 	static class CrossVolatilityConvexityExponent extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L88">		org.drip.state.volatility.VolatilityCurve _vcForward = null;</span>
-<span class="fc" id="L89">		org.drip.state.volatility.VolatilityCurve _vcFunding = null;</span>
-<span class="fc" id="L90">		double _dblForwardShiftedLogNormalScaler = java.lang.Double.NaN;</span>
-<span class="fc" id="L91">		double _dblFundingShiftedLogNormalScaler = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">		org.drip.function.definition.R1ToR1 _r1r1ForwardFundingCorrelation = null;</span>
+<span class="fc" id="L113">		org.drip.state.volatility.VolatilityCurve _vcForward = null;</span>
+<span class="fc" id="L114">		org.drip.state.volatility.VolatilityCurve _vcFunding = null;</span>
+<span class="fc" id="L115">		double _dblForwardShiftedLogNormalScaler = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">		double _dblFundingShiftedLogNormalScaler = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">		org.drip.function.definition.R1ToR1 _r1r1ForwardFundingCorrelation = null;</span>
 
 		CrossVolatilityConvexityExponent (
 			final org.drip.state.volatility.VolatilityCurve vcForward,
@@ -98,48 +123,48 @@ package org.drip.analytics.support;
 			final double dblFundingShiftedLogNormalScaler,
 			final org.drip.function.definition.R1ToR1 r1r1ForwardFundingCorrelation)
 		{
-<span class="fc" id="L101">			super (null);</span>
+<span class="fc" id="L126">			super (null);</span>
 
-<span class="fc" id="L103">			_vcForward = vcForward;</span>
-<span class="fc" id="L104">			_vcFunding = vcFunding;</span>
-<span class="fc" id="L105">			_r1r1ForwardFundingCorrelation = r1r1ForwardFundingCorrelation;</span>
-<span class="fc" id="L106">			_dblForwardShiftedLogNormalScaler = dblForwardShiftedLogNormalScaler;</span>
-<span class="fc" id="L107">			_dblFundingShiftedLogNormalScaler = dblFundingShiftedLogNormalScaler;</span>
-<span class="fc" id="L108">		}</span>
+<span class="fc" id="L128">			_vcForward = vcForward;</span>
+<span class="fc" id="L129">			_vcFunding = vcFunding;</span>
+<span class="fc" id="L130">			_r1r1ForwardFundingCorrelation = r1r1ForwardFundingCorrelation;</span>
+<span class="fc" id="L131">			_dblForwardShiftedLogNormalScaler = dblForwardShiftedLogNormalScaler;</span>
+<span class="fc" id="L132">			_dblFundingShiftedLogNormalScaler = dblFundingShiftedLogNormalScaler;</span>
+<span class="fc" id="L133">		}</span>
 
 		@Override public double evaluate (
 			final double dblVariate)
 			throws java.lang.Exception
 		{
-<span class="fc" id="L114">			double dblForwardShiftedLogNormalScaler = java.lang.Double.isNaN</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">				(_dblForwardShiftedLogNormalScaler) ? 1. : _dblForwardShiftedLogNormalScaler;</span>
-<span class="fc" id="L116">			double dblFundingShiftedLogNormalScaler = java.lang.Double.isNaN</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				(_dblFundingShiftedLogNormalScaler) ? 1. : _dblFundingShiftedLogNormalScaler;</span>
+<span class="fc" id="L139">			double dblForwardShiftedLogNormalScaler = java.lang.Double.isNaN</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">				(_dblForwardShiftedLogNormalScaler) ? 1. : _dblForwardShiftedLogNormalScaler;</span>
+<span class="fc" id="L141">			double dblFundingShiftedLogNormalScaler = java.lang.Double.isNaN</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">				(_dblFundingShiftedLogNormalScaler) ? 1. : _dblFundingShiftedLogNormalScaler;</span>
 
-<span class="fc" id="L119">			return _r1r1ForwardFundingCorrelation.evaluate (dblVariate) * _vcFunding.impliedVol ((int)</span>
-<span class="fc" id="L120">				dblVariate) * _vcFunding.impliedVol ((int) dblVariate) * dblFundingShiftedLogNormalScaler *</span>
-<span class="fc" id="L121">					dblForwardShiftedLogNormalScaler - _vcForward.impliedVol ((int) dblVariate) *</span>
-<span class="fc" id="L122">						_vcForward.impliedVol ((int) dblVariate) * dblForwardShiftedLogNormalScaler *</span>
+<span class="fc" id="L144">			return _r1r1ForwardFundingCorrelation.evaluate (dblVariate) * _vcFunding.impliedVol ((int)</span>
+<span class="fc" id="L145">				dblVariate) * _vcFunding.impliedVol ((int) dblVariate) * dblFundingShiftedLogNormalScaler *</span>
+<span class="fc" id="L146">					dblForwardShiftedLogNormalScaler - _vcForward.impliedVol ((int) dblVariate) *</span>
+<span class="fc" id="L147">						_vcForward.impliedVol ((int) dblVariate) * dblForwardShiftedLogNormalScaler *</span>
 							dblForwardShiftedLogNormalScaler;
 		}
 	}
 
 	static class PeriodVariance extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L128">		org.drip.state.volatility.VolatilityCurve _vc = null;</span>
+<span class="fc" id="L153">		org.drip.state.volatility.VolatilityCurve _vc = null;</span>
 
 		PeriodVariance (
 			final org.drip.state.volatility.VolatilityCurve vc)
 		{
-<span class="fc" id="L133">			super (null);</span>
+<span class="fc" id="L158">			super (null);</span>
 
-<span class="fc" id="L135">			_vc = vc;</span>
-<span class="fc" id="L136">		}</span>
+<span class="fc" id="L160">			_vc = vc;</span>
+<span class="fc" id="L161">		}</span>
 
 		@Override public double evaluate (
 			final double dblVariate)
 			throws java.lang.Exception
 		{
-<span class="fc" id="L142">			return _vc.impliedVol ((int) dblVariate) * _vc.impliedVol ((int) dblVariate);</span>
+<span class="fc" id="L167">			return _vc.impliedVol ((int) dblVariate) * _vc.impliedVol ((int) dblVariate);</span>
 		}
 	}
 
@@ -163,17 +188,17 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedSurfaceVariance =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L192">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedSurfaceVariance =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L169" title="All 8 branches missed.">		if (null == csqs || null == strCustomMetricLabel || strCustomMetricLabel.isEmpty() || iEndDate ==</span>
+<span class="nc bnc" id="L194" title="All 8 branches missed.">		if (null == csqs || null == strCustomMetricLabel || strCustomMetricLabel.isEmpty() || iEndDate ==</span>
 			iStartDate)
-<span class="nc" id="L171">			return 0.;</span>
+<span class="nc" id="L196">			return 0.;</span>
 
-<span class="nc" id="L173">		org.drip.state.volatility.VolatilityCurve vc = csqs.customVolatility</span>
-<span class="nc" id="L174">			(org.drip.state.identifier.CustomLabel.Standard (strCustomMetricLabel));</span>
+<span class="nc" id="L198">		org.drip.state.volatility.VolatilityCurve vc = csqs.customVolatility</span>
+<span class="nc" id="L199">			(org.drip.state.identifier.CustomLabel.Standard (strCustomMetricLabel));</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		return null != vc ? new PeriodVariance (vc).integrate (iStartDate, iEndDate) / 365.25 : 0.;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		return null != vc ? new PeriodVariance (vc).integrate (iStartDate, iEndDate) / 365.25 : 0.;</span>
 	}
 
 	/**
@@ -194,10 +219,10 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">		if (null == vc || iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L198">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedSurfaceVariance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L222" title="2 of 4 branches missed.">		if (null == vc || iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L223">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedSurfaceVariance =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		return null != vc ? new PeriodVariance (vc).integrate (iStartDate, iEndDate) / 365.25 : 0.;</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">		return null != vc ? new PeriodVariance (vc).integrate (iStartDate, iEndDate) / 365.25 : 0.;</span>
 	}
 
 	/**
@@ -223,11 +248,11 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L227">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedCrossVolQuanto =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L252">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedCrossVolQuanto =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L229" title="All 6 branches covered.">		return null == vc1 || null == vc2 || null == r1r1Correlation ? 0. : new CrossVolatilityQuantoProduct</span>
-<span class="fc" id="L230">			(vc1, vc2, r1r1Correlation).integrate (iStartDate, iEndDate) / 365.25;</span>
+<span class="fc bfc" id="L254" title="All 6 branches covered.">		return null == vc1 || null == vc2 || null == r1r1Correlation ? 0. : new CrossVolatilityQuantoProduct</span>
+<span class="fc" id="L255">			(vc1, vc2, r1r1Correlation).integrate (iStartDate, iEndDate) / 365.25;</span>
 	}
 
 	/**
@@ -258,13 +283,13 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L262">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L287">			throw new java.lang.Exception</span>
 				(&quot;OptionHelper::IntegratedFRACrossVolConvexityExponent =&gt; Invalid Inputs&quot;);
 
-<span class="pc bpc" id="L265" title="3 of 6 branches missed.">		return null == vcFunding || null == vcForward || null == r1r1ForwardFundingCorrelation ? 0. : new</span>
+<span class="pc bpc" id="L290" title="3 of 6 branches missed.">		return null == vcFunding || null == vcForward || null == r1r1ForwardFundingCorrelation ? 0. : new</span>
 			CrossVolatilityConvexityExponent (vcForward, dblForwardShiftedLogNormalScaler, vcFunding,
-<span class="fc" id="L267">				dblFundingShiftedLogNormalScaler, r1r1ForwardFundingCorrelation).integrate (iStartDate,</span>
+<span class="fc" id="L292">				dblFundingShiftedLogNormalScaler, r1r1ForwardFundingCorrelation).integrate (iStartDate,</span>
 					iEndDate) / 365.25;
 	}
 
@@ -291,21 +316,21 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L295">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedCrossVolQuanto =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L320">			throw new java.lang.Exception (&quot;OptionHelper::IntegratedCrossVolQuanto =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L297" title="All 8 branches missed.">		if (null == csqs || null == strCustomMetricLabel1 || strCustomMetricLabel1.isEmpty() || null ==</span>
-<span class="nc bnc" id="L298" title="All 4 branches missed.">			strCustomMetricLabel2 || strCustomMetricLabel2.isEmpty() || iEndDate == iStartDate)</span>
-<span class="nc" id="L299">			return 0.;</span>
+<span class="nc bnc" id="L322" title="All 8 branches missed.">		if (null == csqs || null == strCustomMetricLabel1 || strCustomMetricLabel1.isEmpty() || null ==</span>
+<span class="nc bnc" id="L323" title="All 4 branches missed.">			strCustomMetricLabel2 || strCustomMetricLabel2.isEmpty() || iEndDate == iStartDate)</span>
+<span class="nc" id="L324">			return 0.;</span>
 
-<span class="nc" id="L301">		org.drip.state.identifier.CustomLabel cml1 =</span>
-<span class="nc" id="L302">			org.drip.state.identifier.CustomLabel.Standard (strCustomMetricLabel1);</span>
+<span class="nc" id="L326">		org.drip.state.identifier.CustomLabel cml1 =</span>
+<span class="nc" id="L327">			org.drip.state.identifier.CustomLabel.Standard (strCustomMetricLabel1);</span>
 
-<span class="nc" id="L304">		org.drip.state.identifier.CustomLabel cml2 =</span>
-<span class="nc" id="L305">			org.drip.state.identifier.CustomLabel.Standard (strCustomMetricLabel2);</span>
+<span class="nc" id="L329">		org.drip.state.identifier.CustomLabel cml2 =</span>
+<span class="nc" id="L330">			org.drip.state.identifier.CustomLabel.Standard (strCustomMetricLabel2);</span>
 
-<span class="nc bnc" id="L307" title="All 4 branches missed.">		return null == cml1 || null == cml2 ? 0. : IntegratedCrossVolQuanto (csqs.customVolatility (cml1),</span>
-<span class="nc" id="L308">			csqs.customVolatility (cml2), csqs.customCustomCorrelation (cml1, cml2), iStartDate, iEndDate);</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">		return null == cml1 || null == cml2 ? 0. : IntegratedCrossVolQuanto (csqs.customVolatility (cml1),</span>
+<span class="nc" id="L333">			csqs.customVolatility (cml2), csqs.customCustomCorrelation (cml1, cml2), iStartDate, iEndDate);</span>
 	}
 
 	/**
@@ -331,7 +356,7 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L334">		return java.lang.Math.exp (-1. * IntegratedCrossVolQuanto (csqs, strCustomMetricLabel1,</span>
+<span class="nc" id="L359">		return java.lang.Math.exp (-1. * IntegratedCrossVolQuanto (csqs, strCustomMetricLabel1,</span>
 			strCustomMetricLabel2, iStartDate, iEndDate));
 	}
 
@@ -362,13 +387,13 @@ package org.drip.analytics.support;
 		final int iEndDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L365" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L366">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L391">			throw new java.lang.Exception</span>
 				(&quot;OptionHelper::IntegratedFRACrossVolConvexityAdjuster =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L369" title="All 8 branches missed.">		return null == csqs || null == forwardLabel || null == fundingLabel || iEndDate == iStartDate ? 0. :</span>
-<span class="nc" id="L370">			IntegratedFRACrossVolConvexityExponent (csqs.fundingVolatility (fundingLabel),</span>
-<span class="nc" id="L371">				csqs.forwardVolatility (forwardLabel), csqs.forwardFundingCorrelation (forwardLabel,</span>
+<span class="nc bnc" id="L394" title="All 8 branches missed.">		return null == csqs || null == forwardLabel || null == fundingLabel || iEndDate == iStartDate ? 0. :</span>
+<span class="nc" id="L395">			IntegratedFRACrossVolConvexityExponent (csqs.fundingVolatility (fundingLabel),</span>
+<span class="nc" id="L396">				csqs.forwardVolatility (forwardLabel), csqs.forwardFundingCorrelation (forwardLabel,</span>
 					fundingLabel), dblFundingShiftedLogNormalScaler, dblForwardShiftedLogNormalScaler,
 						iStartDate, iEndDate);
 	}

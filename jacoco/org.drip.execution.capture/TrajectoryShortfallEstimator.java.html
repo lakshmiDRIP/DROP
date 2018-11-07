@@ -6,33 +6,51 @@ package org.drip.execution.capture;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,29 +67,45 @@ package org.drip.execution.capture;
  */
 
 /**
- * TrajectoryShortfallEstimator estimates the Price/Short Fall Distribution associated with the Trading
- *  Trajectory generated using the specified Evolution Parameters. The References are:
+ * &lt;i&gt;TrajectoryShortfallEstimator&lt;/i&gt; estimates the Price/Short Fall Distribution associated with the
+ *  Trading Trajectory generated using the specified Evolution Parameters. The References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
- *
- * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
- * 		Journal of Finance, 50, 1147-1174.
- *
- * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
- * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional
+ * 				Trades &lt;i&gt;Journal of Finance&lt;/i&gt; &lt;b&gt;50&lt;/b&gt; 1147-1174
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 				Analysis of Institutional Equity Trades &lt;i&gt;Journal of Financial Economics&lt;/i&gt; &lt;b&gt;46&lt;/b&gt;
+ * 				265-292
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TrajectoryShortfallEstimator implements
 	org.drip.execution.sensitivity.ControlNodesGreekGenerator {
-<span class="fc" id="L74">	private org.drip.execution.strategy.DiscreteTradingTrajectory _tt = null;</span>
+<span class="fc" id="L108">	private org.drip.execution.strategy.DiscreteTradingTrajectory _tt = null;</span>
 
 	/**
 	 * TrajectoryShortfallEstimator Constructor
@@ -84,10 +118,10 @@ public class TrajectoryShortfallEstimator implements
 	public TrajectoryShortfallEstimator (
 		final org.drip.execution.strategy.DiscreteTradingTrajectory tt)
 		throws java.lang.Exception
-<span class="fc" id="L87">	{</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == (_tt = tt))</span>
-<span class="nc" id="L89">			throw new java.lang.Exception (&quot;TrajectoryShortfallEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L90">	}</span>
+<span class="fc" id="L121">	{</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == (_tt = tt))</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;TrajectoryShortfallEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L124">	}</span>
 
 	/**
 	 * Retrieve the Underlying Trading Trajectory Instance
@@ -97,7 +131,7 @@ public class TrajectoryShortfallEstimator implements
 
 	public org.drip.execution.strategy.DiscreteTradingTrajectory trajectory()
 	{
-<span class="fc" id="L100">		return _tt;</span>
+<span class="fc" id="L134">		return _tt;</span>
 	}
 
 	/**
@@ -115,48 +149,48 @@ public class TrajectoryShortfallEstimator implements
 		final org.drip.execution.dynamics.WalkSuite[] aWS,
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingEquilibriumPrice) || null == aWS)</span>
-<span class="nc" id="L119">			return null;</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingEquilibriumPrice) || null == aWS)</span>
+<span class="nc" id="L153">			return null;</span>
 
-<span class="nc" id="L121">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L155">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L123">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L157">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L125">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L126">		double dblPreviousEquilibriumPrice = dblStartingEquilibriumPrice;</span>
+<span class="nc" id="L159">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L160">		double dblPreviousEquilibriumPrice = dblStartingEquilibriumPrice;</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (aWS.length + 1 != iNumTimeNode) return null;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (aWS.length + 1 != iNumTimeNode) return null;</span>
 
-<span class="nc" id="L130">		java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; lsSI = new</span>
+<span class="nc" id="L164">		java.util.List&lt;org.drip.execution.discrete.ShortfallIncrement&gt; lsSI = new</span>
 			java.util.ArrayList&lt;org.drip.execution.discrete.ShortfallIncrement&gt;();
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L134">			org.drip.execution.discrete.ShortfallIncrement si = null;</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L168">			org.drip.execution.discrete.ShortfallIncrement si = null;</span>
 
 			try {
-<span class="nc" id="L137">				si = ( new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L171">				si = ( new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1])).costIncrementRealization
-<span class="nc" id="L139">						(dblPreviousEquilibriumPrice, aWS[i - 1], apep);</span>
-<span class="nc" id="L140">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L141">				e.printStackTrace();</span>
+<span class="nc" id="L173">						(dblPreviousEquilibriumPrice, aWS[i - 1], apep);</span>
+<span class="nc" id="L174">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L175">				e.printStackTrace();</span>
 
-<span class="nc" id="L143">				return null;</span>
-<span class="nc" id="L144">			}</span>
+<span class="nc" id="L177">				return null;</span>
+<span class="nc" id="L178">			}</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (null == si) return null;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			if (null == si) return null;</span>
 
-<span class="nc" id="L148">			lsSI.add (si);</span>
+<span class="nc" id="L182">			lsSI.add (si);</span>
 
-<span class="nc" id="L150">			dblPreviousEquilibriumPrice = si.compositePriceIncrement().newEquilibriumPrice();</span>
+<span class="nc" id="L184">			dblPreviousEquilibriumPrice = si.compositePriceIncrement().newEquilibriumPrice();</span>
 		}
 
 		try {
-<span class="nc" id="L154">			return new org.drip.execution.capture.TrajectoryShortfallRealization (lsSI);</span>
-<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="nc" id="L188">			return new org.drip.execution.capture.TrajectoryShortfallRealization (lsSI);</span>
+<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L190">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L159">		return null;</span>
+<span class="nc" id="L193">		return null;</span>
 	}
 
 	/**
@@ -170,37 +204,37 @@ public class TrajectoryShortfallEstimator implements
 	public org.drip.execution.capture.TrajectoryShortfallAggregate totalCostDistributionDetail (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L173">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="fc" id="L207">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="fc" id="L175">		double[] adblHoldings = _tt.holdings();</span>
+<span class="fc" id="L209">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="fc" id="L177">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="fc" id="L211">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
 
-<span class="fc" id="L179">		java.util.List&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt; lsSID = new</span>
+<span class="fc" id="L213">		java.util.List&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt; lsSID = new</span>
 			java.util.ArrayList&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt;();
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="fc" id="L183">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L217">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="fc" id="L186">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="fc" id="L220">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L188">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L189">				e.printStackTrace();</span>
+<span class="nc" id="L222">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L223">				e.printStackTrace();</span>
 
-<span class="nc" id="L191">				return null;</span>
-<span class="fc" id="L192">			}</span>
+<span class="nc" id="L225">				return null;</span>
+<span class="fc" id="L226">			}</span>
 
-<span class="fc" id="L194">			lsSID.add (s.costIncrementDistribution (apep));</span>
+<span class="fc" id="L228">			lsSID.add (s.costIncrementDistribution (apep));</span>
 		}
 
 		try {
-<span class="fc" id="L198">			return new org.drip.execution.capture.TrajectoryShortfallAggregate (lsSID);</span>
-<span class="nc" id="L199">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L200">			e.printStackTrace();</span>
+<span class="fc" id="L232">			return new org.drip.execution.capture.TrajectoryShortfallAggregate (lsSID);</span>
+<span class="nc" id="L233">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L234">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L203">		return null;</span>
+<span class="nc" id="L237">		return null;</span>
 	}
 
 	/**
@@ -214,473 +248,473 @@ public class TrajectoryShortfallEstimator implements
 	public org.drip.measure.gaussian.R1UnivariateNormal totalCostDistributionSynopsis (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L217">		org.drip.execution.capture.TrajectoryShortfallAggregate tsa = totalCostDistributionDetail (apep);</span>
+<span class="fc" id="L251">		org.drip.execution.capture.TrajectoryShortfallAggregate tsa = totalCostDistributionDetail (apep);</span>
 
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		return null == tsa ? null : tsa.totalCostDistribution();</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		return null == tsa ? null : tsa.totalCostDistribution();</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek permanentImpactExpectation (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L225">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L259">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L227">		double dblValue = 0.;</span>
-<span class="nc" id="L228">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L229">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="nc" id="L230">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="nc" id="L261">		double dblValue = 0.;</span>
+<span class="nc" id="L262">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L263">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="nc" id="L264">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="nc" id="L232">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L266">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L234">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="nc" id="L268">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L238">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L272">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="nc" id="L241">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L275">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L243">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L244">				e.printStackTrace();</span>
+<span class="nc" id="L277">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L278">				e.printStackTrace();</span>
 
-<span class="nc" id="L246">				return null;</span>
-<span class="nc" id="L247">			}</span>
+<span class="nc" id="L280">				return null;</span>
+<span class="nc" id="L281">			}</span>
 
-<span class="nc" id="L249">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.permanentImpactExpectation (apep);</span>
+<span class="nc" id="L283">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.permanentImpactExpectation (apep);</span>
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">			if (null == cng) return null;</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="nc" id="L253">			lsCNG.add (cng);</span>
+<span class="nc" id="L287">			lsCNG.add (cng);</span>
 
-<span class="nc" id="L255">			dblValue = dblValue + cng.value();</span>
+<span class="nc" id="L289">			dblValue = dblValue + cng.value();</span>
 
-<span class="nc" id="L257">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="nc" id="L291">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="nc" id="L259">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="nc" id="L293">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="nc" id="L261">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="nc" id="L262">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="nc" id="L263">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="nc" id="L264">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="nc" id="L265">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="nc" id="L266">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="nc" id="L295">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="nc" id="L296">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="nc" id="L297">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="nc" id="L298">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="nc" id="L299">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="nc" id="L300">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="nc" id="L271">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="nc" id="L305">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L273">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L274">			e.printStackTrace();</span>
+<span class="nc" id="L307">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L308">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L277">		return null;</span>
+<span class="nc" id="L311">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek permanentImpactVariance (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L283">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L317">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L285">		double dblValue = 0.;</span>
-<span class="nc" id="L286">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L287">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="nc" id="L288">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="nc" id="L319">		double dblValue = 0.;</span>
+<span class="nc" id="L320">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L321">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="nc" id="L322">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="nc" id="L290">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L324">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L292">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="nc" id="L326">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L296">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L330">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="nc" id="L299">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L333">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L301">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L302">				e.printStackTrace();</span>
+<span class="nc" id="L335">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L336">				e.printStackTrace();</span>
 
-<span class="nc" id="L304">				return null;</span>
-<span class="nc" id="L305">			}</span>
+<span class="nc" id="L338">				return null;</span>
+<span class="nc" id="L339">			}</span>
 
-<span class="nc" id="L307">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.permanentImpactVariance (apep);</span>
+<span class="nc" id="L341">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.permanentImpactVariance (apep);</span>
 
-<span class="nc bnc" id="L309" title="All 2 branches missed.">			if (null == cng) return null;</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="nc" id="L311">			lsCNG.add (cng);</span>
+<span class="nc" id="L345">			lsCNG.add (cng);</span>
 
-<span class="nc" id="L313">			dblValue = dblValue + cng.value();</span>
+<span class="nc" id="L347">			dblValue = dblValue + cng.value();</span>
 
-<span class="nc" id="L315">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="nc" id="L349">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="nc" id="L317">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="nc" id="L351">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="nc" id="L319">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="nc" id="L320">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="nc" id="L321">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="nc" id="L322">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="nc" id="L323">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="nc" id="L324">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="nc" id="L353">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="nc" id="L354">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="nc" id="L355">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="nc" id="L356">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="nc" id="L357">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="nc" id="L358">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="nc" id="L329">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="nc" id="L363">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L331">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L332">			e.printStackTrace();</span>
+<span class="nc" id="L365">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L366">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L335">		return null;</span>
+<span class="nc" id="L369">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek temporaryImpactExpectation (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L341">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L375">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L343">		double dblValue = 0.;</span>
-<span class="nc" id="L344">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L345">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="nc" id="L346">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="nc" id="L377">		double dblValue = 0.;</span>
+<span class="nc" id="L378">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L379">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="nc" id="L380">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="nc" id="L348">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L382">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L350">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="nc" id="L384">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="nc bnc" id="L353" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L354">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L388">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="nc" id="L357">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L391">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L359">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L360">				e.printStackTrace();</span>
+<span class="nc" id="L393">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L394">				e.printStackTrace();</span>
 
-<span class="nc" id="L362">				return null;</span>
-<span class="nc" id="L363">			}</span>
+<span class="nc" id="L396">				return null;</span>
+<span class="nc" id="L397">			}</span>
 
-<span class="nc" id="L365">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.temporaryImpactExpectation (apep);</span>
+<span class="nc" id="L399">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.temporaryImpactExpectation (apep);</span>
 
-<span class="nc bnc" id="L367" title="All 2 branches missed.">			if (null == cng) return null;</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="nc" id="L369">			lsCNG.add (cng);</span>
+<span class="nc" id="L403">			lsCNG.add (cng);</span>
 
-<span class="nc" id="L371">			dblValue = dblValue + cng.value();</span>
+<span class="nc" id="L405">			dblValue = dblValue + cng.value();</span>
 
-<span class="nc" id="L373">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="nc" id="L407">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="nc" id="L375">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="nc" id="L409">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="nc" id="L377">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="nc" id="L378">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="nc" id="L379">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="nc" id="L380">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="nc" id="L381">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="nc" id="L382">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="nc" id="L411">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="nc" id="L412">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="nc" id="L413">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="nc" id="L414">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="nc" id="L415">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="nc" id="L416">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="nc" id="L387">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="nc" id="L421">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L389">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L390">			e.printStackTrace();</span>
+<span class="nc" id="L423">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L424">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L393">		return null;</span>
+<span class="nc" id="L427">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek temporaryImpactVariance (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L399">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L433">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L401">		double dblValue = 0.;</span>
-<span class="nc" id="L402">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L403">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="nc" id="L404">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="nc" id="L435">		double dblValue = 0.;</span>
+<span class="nc" id="L436">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L437">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="nc" id="L438">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="nc" id="L406">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L440">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L408">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="nc" id="L442">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="nc bnc" id="L411" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L412">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L446">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="nc" id="L415">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L449">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L417">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L418">				e.printStackTrace();</span>
+<span class="nc" id="L451">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L452">				e.printStackTrace();</span>
 
-<span class="nc" id="L420">				return null;</span>
-<span class="nc" id="L421">			}</span>
+<span class="nc" id="L454">				return null;</span>
+<span class="nc" id="L455">			}</span>
 
-<span class="nc" id="L423">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.temporaryImpactVariance (apep);</span>
+<span class="nc" id="L457">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.temporaryImpactVariance (apep);</span>
 
-<span class="nc bnc" id="L425" title="All 2 branches missed.">			if (null == cng) return null;</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="nc" id="L427">			lsCNG.add (cng);</span>
+<span class="nc" id="L461">			lsCNG.add (cng);</span>
 
-<span class="nc" id="L429">			dblValue = dblValue + cng.value();</span>
+<span class="nc" id="L463">			dblValue = dblValue + cng.value();</span>
 
-<span class="nc" id="L431">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="nc" id="L465">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="nc" id="L433">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="nc" id="L467">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="nc" id="L435">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="nc" id="L436">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="nc" id="L437">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="nc" id="L438">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="nc" id="L439">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="nc" id="L440">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="nc" id="L469">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="nc" id="L470">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="nc" id="L471">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="nc" id="L472">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="nc" id="L473">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="nc" id="L474">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="nc" id="L445">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="nc" id="L479">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L447">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L448">			e.printStackTrace();</span>
+<span class="nc" id="L481">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L482">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L451">		return null;</span>
+<span class="nc" id="L485">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek marketDynamicsExpectation (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L457">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L491">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L459">		double dblValue = 0.;</span>
-<span class="nc" id="L460">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L461">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="nc" id="L462">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="nc" id="L493">		double dblValue = 0.;</span>
+<span class="nc" id="L494">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L495">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="nc" id="L496">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="nc" id="L464">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L498">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L466">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="nc" id="L500">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="nc bnc" id="L469" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L470">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L504">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="nc" id="L473">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L507">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L475">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L476">				e.printStackTrace();</span>
+<span class="nc" id="L509">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L510">				e.printStackTrace();</span>
 
-<span class="nc" id="L478">				return null;</span>
-<span class="nc" id="L479">			}</span>
+<span class="nc" id="L512">				return null;</span>
+<span class="nc" id="L513">			}</span>
 
-<span class="nc" id="L481">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.marketDynamicsExpectation (apep);</span>
+<span class="nc" id="L515">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.marketDynamicsExpectation (apep);</span>
 
-<span class="nc bnc" id="L483" title="All 2 branches missed.">			if (null == cng) return null;</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="nc" id="L485">			lsCNG.add (cng);</span>
+<span class="nc" id="L519">			lsCNG.add (cng);</span>
 
-<span class="nc" id="L487">			dblValue = dblValue + cng.value();</span>
+<span class="nc" id="L521">			dblValue = dblValue + cng.value();</span>
 
-<span class="nc" id="L489">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="nc" id="L523">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="nc" id="L491">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="nc" id="L525">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="nc" id="L493">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="nc" id="L494">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="nc" id="L495">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="nc" id="L496">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="nc" id="L497">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="nc" id="L498">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="nc" id="L527">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="nc" id="L528">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="nc" id="L529">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="nc" id="L530">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="nc" id="L531">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="nc" id="L532">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="nc" id="L503">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="nc" id="L537">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L505">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L506">			e.printStackTrace();</span>
+<span class="nc" id="L539">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L540">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L509">		return null;</span>
+<span class="nc" id="L543">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek marketDynamicsVariance (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L515">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="nc" id="L549">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="nc" id="L517">		double dblValue = 0.;</span>
-<span class="nc" id="L518">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="nc" id="L519">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="nc" id="L520">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="nc" id="L551">		double dblValue = 0.;</span>
+<span class="nc" id="L552">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="nc" id="L553">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="nc" id="L554">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="nc" id="L522">		double[] adblHoldings = _tt.holdings();</span>
+<span class="nc" id="L556">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="nc" id="L524">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="nc" id="L558">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="nc bnc" id="L527" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="nc" id="L528">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="nc" id="L562">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="nc" id="L531">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="nc" id="L565">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L533">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L534">				e.printStackTrace();</span>
+<span class="nc" id="L567">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L568">				e.printStackTrace();</span>
 
-<span class="nc" id="L536">				return null;</span>
-<span class="nc" id="L537">			}</span>
+<span class="nc" id="L570">				return null;</span>
+<span class="nc" id="L571">			}</span>
 
-<span class="nc" id="L539">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.marketDynamicsVariance (apep);</span>
+<span class="nc" id="L573">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.marketDynamicsVariance (apep);</span>
 
-<span class="nc bnc" id="L541" title="All 2 branches missed.">			if (null == cng) return null;</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="nc" id="L543">			lsCNG.add (cng);</span>
+<span class="nc" id="L577">			lsCNG.add (cng);</span>
 
-<span class="nc" id="L545">			dblValue = dblValue + cng.value();</span>
+<span class="nc" id="L579">			dblValue = dblValue + cng.value();</span>
 
-<span class="nc" id="L547">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="nc" id="L581">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="nc" id="L549">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="nc" id="L583">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="nc" id="L551">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="nc" id="L552">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="nc" id="L553">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="nc" id="L554">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="nc" id="L555">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="nc" id="L556">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="nc" id="L585">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="nc" id="L586">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="nc" id="L587">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="nc" id="L588">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="nc" id="L589">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="nc" id="L590">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="nc" id="L561">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="nc" id="L595">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L563">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L564">			e.printStackTrace();</span>
+<span class="nc" id="L597">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L598">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L567">		return null;</span>
+<span class="nc" id="L601">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek expectationContribution (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L573">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="fc" id="L607">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="fc" id="L575">		double dblValue = 0.;</span>
-<span class="fc" id="L576">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="fc" id="L577">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="fc" id="L578">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="fc" id="L609">		double dblValue = 0.;</span>
+<span class="fc" id="L610">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="fc" id="L611">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="fc" id="L612">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="fc" id="L580">		double[] adblHoldings = _tt.holdings();</span>
+<span class="fc" id="L614">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="fc" id="L582">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="fc" id="L616">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="fc bfc" id="L585" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="fc" id="L586">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="fc bfc" id="L619" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L620">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="fc" id="L589">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="fc" id="L623">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L591">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L592">				e.printStackTrace();</span>
+<span class="nc" id="L625">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L626">				e.printStackTrace();</span>
 
-<span class="nc" id="L594">				return null;</span>
-<span class="fc" id="L595">			}</span>
+<span class="nc" id="L628">				return null;</span>
+<span class="fc" id="L629">			}</span>
 
-<span class="fc" id="L597">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.expectationContribution (apep);</span>
+<span class="fc" id="L631">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.expectationContribution (apep);</span>
 
-<span class="pc bpc" id="L599" title="1 of 2 branches missed.">			if (null == cng) return null;</span>
+<span class="pc bpc" id="L633" title="1 of 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="fc" id="L601">			lsCNG.add (cng);</span>
+<span class="fc" id="L635">			lsCNG.add (cng);</span>
 
-<span class="fc" id="L603">			dblValue = dblValue + cng.value();</span>
+<span class="fc" id="L637">			dblValue = dblValue + cng.value();</span>
 
-<span class="fc" id="L605">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="fc" id="L639">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="fc" id="L607">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="fc" id="L641">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="fc" id="L609">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="fc" id="L610">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="fc" id="L611">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="fc" id="L612">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="fc" id="L613">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="fc" id="L614">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="fc" id="L643">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="fc" id="L644">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="fc" id="L645">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="fc" id="L646">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="fc" id="L647">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="fc" id="L648">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="fc" id="L619">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="fc" id="L653">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L621">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L622">			e.printStackTrace();</span>
+<span class="nc" id="L655">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L656">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L625">		return null;</span>
+<span class="nc" id="L659">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek varianceContribution (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L631">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="fc" id="L665">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="fc" id="L633">		double dblValue = 0.;</span>
-<span class="fc" id="L634">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="fc" id="L635">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
-<span class="fc" id="L636">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
+<span class="fc" id="L667">		double dblValue = 0.;</span>
+<span class="fc" id="L668">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="fc" id="L669">		double[] adblTrajectoryJacobian = new double[iNumTimeNode];</span>
+<span class="fc" id="L670">		double[][] aadblTrajectoryHessian = new double[iNumTimeNode][iNumTimeNode];</span>
 
-<span class="fc" id="L638">		double[] adblHoldings = _tt.holdings();</span>
+<span class="fc" id="L672">		double[] adblHoldings = _tt.holdings();</span>
 
-<span class="fc" id="L640">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
+<span class="fc" id="L674">		java.util.List&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt; lsCNG = new</span>
 			java.util.ArrayList&lt;org.drip.execution.sensitivity.ControlNodesGreek&gt;();
 
-<span class="fc bfc" id="L643" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="fc" id="L644">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="fc bfc" id="L677" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L678">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="fc" id="L647">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="fc" id="L681">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L649">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L650">				e.printStackTrace();</span>
+<span class="nc" id="L683">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L684">				e.printStackTrace();</span>
 
-<span class="nc" id="L652">				return null;</span>
-<span class="fc" id="L653">			}</span>
+<span class="nc" id="L686">				return null;</span>
+<span class="fc" id="L687">			}</span>
 
-<span class="fc" id="L655">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.varianceContribution (apep);</span>
+<span class="fc" id="L689">			org.drip.execution.sensitivity.ControlNodesGreek cng = s.varianceContribution (apep);</span>
 
-<span class="pc bpc" id="L657" title="1 of 2 branches missed.">			if (null == cng) return null;</span>
+<span class="pc bpc" id="L691" title="1 of 2 branches missed.">			if (null == cng) return null;</span>
 
-<span class="fc" id="L659">			lsCNG.add (cng);</span>
+<span class="fc" id="L693">			lsCNG.add (cng);</span>
 
-<span class="fc" id="L661">			dblValue = dblValue + cng.value();</span>
+<span class="fc" id="L695">			dblValue = dblValue + cng.value();</span>
 
-<span class="fc" id="L663">			double[] adblSliceJacobian = cng.jacobian();</span>
+<span class="fc" id="L697">			double[] adblSliceJacobian = cng.jacobian();</span>
 
-<span class="fc" id="L665">			double[][] aadblSliceHessian = cng.hessian();</span>
+<span class="fc" id="L699">			double[][] aadblSliceHessian = cng.hessian();</span>
 
-<span class="fc" id="L667">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
-<span class="fc" id="L668">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
-<span class="fc" id="L669">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
-<span class="fc" id="L670">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
-<span class="fc" id="L671">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
-<span class="fc" id="L672">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
+<span class="fc" id="L701">			adblTrajectoryJacobian[i] = adblTrajectoryJacobian[i] + adblSliceJacobian[1];</span>
+<span class="fc" id="L702">			adblTrajectoryJacobian[i - 1] = adblTrajectoryJacobian[i - 1] + adblSliceJacobian[0];</span>
+<span class="fc" id="L703">			aadblTrajectoryHessian[i][i] = aadblTrajectoryHessian[i][i] + aadblSliceHessian[1][1];</span>
+<span class="fc" id="L704">			aadblTrajectoryHessian[i][i - 1] = aadblTrajectoryHessian[i][i - 1] + aadblSliceHessian[1][0];</span>
+<span class="fc" id="L705">			aadblTrajectoryHessian[i - 1][i] = aadblTrajectoryHessian[i - 1][i] + aadblSliceHessian[0][1];</span>
+<span class="fc" id="L706">			aadblTrajectoryHessian[i - 1][i - 1] = aadblTrajectoryHessian[i - 1][i - 1] +</span>
 				aadblSliceHessian[0][0];
 		}
 
 		try {
-<span class="fc" id="L677">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
+<span class="fc" id="L711">			return new org.drip.execution.sensitivity.TrajectoryControlNodesGreek (dblValue,</span>
 				adblTrajectoryJacobian, aadblTrajectoryHessian, lsCNG);
-<span class="nc" id="L679">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L680">			e.printStackTrace();</span>
+<span class="nc" id="L713">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L714">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L683">		return null;</span>
+<span class="nc" id="L717">		return null;</span>
 	}
 
 	/**
@@ -694,38 +728,38 @@ public class TrajectoryShortfallEstimator implements
 	public org.drip.execution.discrete.OptimalSerialCorrelationAdjustment[] serialCorrelationAdjustment (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L697">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
+<span class="fc" id="L731">		double[] adblExecutionTimeNode = _tt.executionTimeNode();</span>
 
-<span class="fc" id="L699">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
-<span class="fc" id="L700">		org.drip.execution.discrete.OptimalSerialCorrelationAdjustment[] aOSCA = new</span>
+<span class="fc" id="L733">		int iNumTimeNode = adblExecutionTimeNode.length;</span>
+<span class="fc" id="L734">		org.drip.execution.discrete.OptimalSerialCorrelationAdjustment[] aOSCA = new</span>
 			org.drip.execution.discrete.OptimalSerialCorrelationAdjustment[iNumTimeNode];
 
-<span class="fc" id="L703">		double[] adblHoldings = _tt.holdings();</span>
+<span class="fc" id="L737">		double[] adblHoldings = _tt.holdings();</span>
 
 		try {
-<span class="fc" id="L706">			aOSCA[0] = new org.drip.execution.discrete.OptimalSerialCorrelationAdjustment (0., 0.);</span>
-<span class="nc" id="L707">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L708">			e.printStackTrace();</span>
+<span class="fc" id="L740">			aOSCA[0] = new org.drip.execution.discrete.OptimalSerialCorrelationAdjustment (0., 0.);</span>
+<span class="nc" id="L741">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L742">			e.printStackTrace();</span>
 
-<span class="nc" id="L710">			return null;</span>
-<span class="fc" id="L711">		}</span>
+<span class="nc" id="L744">			return null;</span>
+<span class="fc" id="L745">		}</span>
 
-<span class="fc bfc" id="L713" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="fc" id="L714">			org.drip.execution.discrete.Slice s = null;</span>
+<span class="fc bfc" id="L747" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L748">			org.drip.execution.discrete.Slice s = null;</span>
 
 			try {
-<span class="fc" id="L717">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
+<span class="fc" id="L751">				s = new org.drip.execution.discrete.Slice (adblHoldings[i - 1], adblHoldings[i],</span>
 					adblExecutionTimeNode[i] - adblExecutionTimeNode[i - 1]);
-<span class="nc" id="L719">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L720">				e.printStackTrace();</span>
+<span class="nc" id="L753">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L754">				e.printStackTrace();</span>
 
-<span class="nc" id="L722">				return null;</span>
-<span class="fc" id="L723">			}</span>
+<span class="nc" id="L756">				return null;</span>
+<span class="fc" id="L757">			}</span>
 
-<span class="pc bpc" id="L725" title="1 of 2 branches missed.">			if (null == (aOSCA[i] = s.serialCorrelationAdjustment (apep))) return null;</span>
+<span class="pc bpc" id="L759" title="1 of 2 branches missed.">			if (null == (aOSCA[i] = s.serialCorrelationAdjustment (apep))) return null;</span>
 		}
 
-<span class="fc" id="L728">		return aOSCA;</span>
+<span class="fc" id="L762">		return aOSCA;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

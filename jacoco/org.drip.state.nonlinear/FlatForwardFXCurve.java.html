@@ -57,9 +57,9 @@ package org.drip.state.nonlinear;
  */
 
 public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
-<span class="nc" id="L60">	private int[] _aiPillarDate = null;</span>
-<span class="nc" id="L61">	private double[] _adblFXForward = null;</span>
-<span class="nc" id="L62">	private double _dblFXSpot = java.lang.Double.NaN;</span>
+<span class="fc" id="L60">	private int[] _aiPillarDate = null;</span>
+<span class="fc" id="L61">	private double[] _adblFXForward = null;</span>
+<span class="fc" id="L62">	private double _dblFXSpot = java.lang.Double.NaN;</span>
 
 	private double nodeBasis (
 		final int iNodeDate,
@@ -95,34 +95,34 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		final double[] adblFXForward)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (iEpochDate, cp);</span>
+<span class="fc" id="L98">		super (iEpochDate, cp);</span>
 
-<span class="nc bnc" id="L100" title="All 8 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFXSpot = dblFXSpot) || null == (_aiPillarDate =</span>
+<span class="pc bpc" id="L100" title="4 of 8 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFXSpot = dblFXSpot) || null == (_aiPillarDate =</span>
 			aiPillarDate) || null == (_adblFXForward = adblFXForward) || _aiPillarDate.length !=
 				_adblFXForward.length)
 <span class="nc" id="L103">			throw new java.lang.Exception (&quot;FlatForwardFXCurve ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L105">		int iNumPillar = _aiPillarDate.length;</span>
+<span class="fc" id="L105">		int iNumPillar = _aiPillarDate.length;</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPillar; ++i) {</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblFXForward[i]))</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPillar; ++i) {</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblFXForward[i]))</span>
 <span class="nc" id="L109">				throw new java.lang.Exception (&quot;FlatForwardFXCurve ctr =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L111">	}</span>
+<span class="fc" id="L111">	}</span>
 
 	@Override public double fx (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (iDate &lt;= _iEpochDate) return _adblFXForward[0];</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return _adblFXForward[0];</span>
 
-<span class="nc" id="L119">		int iNumPillar = _adblFXForward.length;</span>
+<span class="fc" id="L119">		int iNumPillar = _adblFXForward.length;</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
 <span class="nc bnc" id="L122" title="All 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt; iDate) return _adblFXForward[i];</span>
 		}
 
-<span class="nc" id="L125">		return _adblFXForward[iNumPillar - 1];</span>
+<span class="fc" id="L125">		return _adblFXForward[iNumPillar - 1];</span>
 	}
 
 	/**

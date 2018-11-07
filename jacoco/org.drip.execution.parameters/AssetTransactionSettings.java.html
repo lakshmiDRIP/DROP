@@ -6,33 +6,51 @@ package org.drip.execution.parameters;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,31 +67,47 @@ package org.drip.execution.parameters;
  */
 
 /**
- * ArithmeticLinearMarketImpact contains the Arithmetic Linear Market Impact Inputs used in the Construction
- *  of the Impact Parameters for the Almgren and Chriss (2000) Optimal Trajectory Generation Scheme. The
- *  References are:
+ * &lt;i&gt;AssetTransactionSettings&lt;/i&gt; contains the Asset Transaction Settings Inputs used in the Construction of
+ * the Impact Parameters for the Almgren and Chriss (2000) Optimal Trajectory Generation Scheme. The
+ * References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
- *
- * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
- * 		Journal of Finance, 50, 1147-1174.
- *
- * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
- * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional
+ * 				Trades &lt;i&gt;Journal of Finance&lt;/i&gt; &lt;b&gt;50&lt;/b&gt; 1147-1174
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 				Analysis of Institutional Equity Trades &lt;i&gt;Journal of Financial Economics&lt;/i&gt; &lt;b&gt;46&lt;/b&gt;
+ * 				265-292
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class AssetTransactionSettings {
-<span class="fc" id="L74">	private double _dblPrice = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblBidAskSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _dblBackgroundVolume = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblBidAskSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblBackgroundVolume = java.lang.Double.NaN;</span>
 
 	/**
 	 * AssetTransactionSettings Constructor
@@ -90,13 +124,13 @@ public class AssetTransactionSettings {
 		final double dblBackgroundVolume,
 		final double dblBidAskSpread)
 		throws java.lang.Exception
-<span class="fc" id="L93">	{</span>
-<span class="pc bpc" id="L94" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPrice = dblPrice) || 0. &gt;= _dblPrice ||</span>
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBackgroundVolume = dblBackgroundVolume) || 0. &gt;=</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">				_dblBackgroundVolume || !org.drip.quant.common.NumberUtil.IsValid (_dblBidAskSpread =</span>
+<span class="fc" id="L127">	{</span>
+<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPrice = dblPrice) || 0. &gt;= _dblPrice ||</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBackgroundVolume = dblBackgroundVolume) || 0. &gt;=</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">				_dblBackgroundVolume || !org.drip.quant.common.NumberUtil.IsValid (_dblBidAskSpread =</span>
 					dblBidAskSpread))
-<span class="nc" id="L98">			throw new java.lang.Exception (&quot;AssetTransactionSettings Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L99">	}</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;AssetTransactionSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Asset Price
@@ -106,7 +140,7 @@ public class AssetTransactionSettings {
 
 	public double price()
 	{
-<span class="fc" id="L109">		return _dblPrice;</span>
+<span class="fc" id="L143">		return _dblPrice;</span>
 	}
 
 	/**
@@ -117,7 +151,7 @@ public class AssetTransactionSettings {
 
 	public double bidAskSpread()
 	{
-<span class="fc" id="L120">		return _dblBidAskSpread;</span>
+<span class="fc" id="L154">		return _dblBidAskSpread;</span>
 	}
 
 	/**
@@ -128,7 +162,7 @@ public class AssetTransactionSettings {
 
 	public double backgroundVolume()
 	{
-<span class="fc" id="L131">		return _dblBackgroundVolume;</span>
+<span class="fc" id="L165">		return _dblBackgroundVolume;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,31 +6,49 @@ package org.drip.exposure.generator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,30 +65,47 @@ package org.drip.exposure.generator;
  */
 
 /**
- * PortfolioMPoR estimates the MPoR Variation Margin and the Trade Payments for the Component MPoR's of a
- *  given Portfolio off of the Realized Market Path. The References are:
+ * &lt;i&gt;PortfolioMPoR&lt;/i&gt; estimates the MPoR Variation Margin and the Trade Payments for the Component MPoR's
+ * of a given Portfolio off of the Realized Market Path. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L71">public class PortfolioMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex</span>
+<span class="nc" id="L106">public class PortfolioMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex</span>
 {
-<span class="nc" id="L73">	private java.util.List&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt; _componentMPoRList = new</span>
+<span class="nc" id="L108">	private java.util.List&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt; _componentMPoRList = new</span>
 		java.util.ArrayList&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt;();
 
 	/**
@@ -81,7 +116,7 @@ package org.drip.exposure.generator;
 
 	public java.util.List&lt;org.drip.exposure.mpor.VariationMarginTradePaymentVertex&gt; componentMPoRList()
 	{
-<span class="nc" id="L84">		return _componentMPoRList;</span>
+<span class="nc" id="L119">		return _componentMPoRList;</span>
 	}
 
 	@Override public double variationMarginEstimate (
@@ -89,56 +124,56 @@ package org.drip.exposure.generator;
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L92">		double variationMarginEstimate = 0.;</span>
+<span class="nc" id="L127">		double variationMarginEstimate = 0.;</span>
 
-<span class="nc bnc" id="L94" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
 		{
-<span class="nc" id="L96">			variationMarginEstimate += componentMPoR.variationMarginEstimate (</span>
+<span class="nc" id="L131">			variationMarginEstimate += componentMPoR.variationMarginEstimate (</span>
 				forwardDate,
 				marketPath
 			);
-<span class="nc" id="L100">		}</span>
+<span class="nc" id="L135">		}</span>
 
-<span class="nc" id="L102">		return variationMarginEstimate;</span>
+<span class="nc" id="L137">		return variationMarginEstimate;</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L109">		double clientPayment = 0.;</span>
-<span class="nc" id="L110">		double dealerPayment = 0.;</span>
+<span class="nc" id="L144">		double clientPayment = 0.;</span>
+<span class="nc" id="L145">		double dealerPayment = 0.;</span>
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
 		{
-<span class="nc" id="L114">			org.drip.exposure.mpor.TradePayment tradePayment = componentMPoR.tradePayment (</span>
+<span class="nc" id="L149">			org.drip.exposure.mpor.TradePayment tradePayment = componentMPoR.tradePayment (</span>
 				forwardDate,
 				marketPath
 			);
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			if (null == tradePayment)</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			if (null == tradePayment)</span>
 			{
-<span class="nc" id="L121">				return null;</span>
+<span class="nc" id="L156">				return null;</span>
 			}
 
-<span class="nc" id="L124">			dealerPayment += tradePayment.dealer();</span>
+<span class="nc" id="L159">			dealerPayment += tradePayment.dealer();</span>
 
-<span class="nc" id="L126">			clientPayment += tradePayment.client();</span>
-<span class="nc" id="L127">		}</span>
+<span class="nc" id="L161">			clientPayment += tradePayment.client();</span>
+<span class="nc" id="L162">		}</span>
 
 		try
 		{
-<span class="nc" id="L131">			return new org.drip.exposure.mpor.TradePayment (</span>
+<span class="nc" id="L166">			return new org.drip.exposure.mpor.TradePayment (</span>
 				dealerPayment,
 				clientPayment
 			);
 		}
-<span class="nc" id="L136">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L171">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L173">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L141">		return null;</span>
+<span class="nc" id="L176">		return null;</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -146,65 +181,65 @@ package org.drip.exposure.generator;
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
 		{
-<span class="nc" id="L151">			return null;</span>
+<span class="nc" id="L186">			return null;</span>
 		}
 
-<span class="nc" id="L154">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L155">		double[] clientTradePaymentArray = new double[denseDateCount];</span>
-<span class="nc" id="L156">		double[] dealerTradePaymentArray = new double[denseDateCount];</span>
-<span class="nc" id="L157">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L189">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L190">		double[] clientTradePaymentArray = new double[denseDateCount];</span>
+<span class="nc" id="L191">		double[] dealerTradePaymentArray = new double[denseDateCount];</span>
+<span class="nc" id="L192">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc" id="L162">			clientTradePaymentArray[denseDateIndex] = 0.;</span>
-<span class="nc" id="L163">			dealerTradePaymentArray[denseDateIndex] = 0.;</span>
+<span class="nc" id="L197">			clientTradePaymentArray[denseDateIndex] = 0.;</span>
+<span class="nc" id="L198">			dealerTradePaymentArray[denseDateIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		for (org.drip.exposure.mpor.VariationMarginTradePaymentVertex componentMPoR : _componentMPoRList)</span>
 		{
-<span class="nc" id="L168">			org.drip.exposure.mpor.TradePayment[] componentDenseTradePaymentArray =</span>
-<span class="nc" id="L169">				componentMPoR.denseTradePaymentArray (</span>
+<span class="nc" id="L203">			org.drip.exposure.mpor.TradePayment[] componentDenseTradePaymentArray =</span>
+<span class="nc" id="L204">				componentMPoR.denseTradePaymentArray (</span>
 					startDate,
 					endDate,
 					marketPath
 				);
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (null == componentDenseTradePaymentArray)</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (null == componentDenseTradePaymentArray)</span>
 			{
-<span class="nc" id="L177">				return null;</span>
+<span class="nc" id="L212">				return null;</span>
 			}
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">			for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">			for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 			{
-<span class="nc" id="L182">				clientTradePaymentArray[denseDateIndex] +=</span>
-<span class="nc" id="L183">					componentDenseTradePaymentArray[denseDateIndex].client();</span>
+<span class="nc" id="L217">				clientTradePaymentArray[denseDateIndex] +=</span>
+<span class="nc" id="L218">					componentDenseTradePaymentArray[denseDateIndex].client();</span>
 
-<span class="nc" id="L185">				dealerTradePaymentArray[denseDateIndex] +=</span>
-<span class="nc" id="L186">					componentDenseTradePaymentArray[denseDateIndex].dealer();</span>
+<span class="nc" id="L220">				dealerTradePaymentArray[denseDateIndex] +=</span>
+<span class="nc" id="L221">					componentDenseTradePaymentArray[denseDateIndex].dealer();</span>
 			}
-<span class="nc" id="L188">		}</span>
+<span class="nc" id="L223">		}</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L194">				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (</span>
+<span class="nc" id="L229">				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (</span>
 					dealerTradePaymentArray[denseDateIndex],
 					clientTradePaymentArray[denseDateIndex]
 				);
 			}
-<span class="nc" id="L199">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L234">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L201">				e.printStackTrace();</span>
+<span class="nc" id="L236">				e.printStackTrace();</span>
 
-<span class="nc" id="L203">				return null;</span>
-<span class="nc" id="L204">			}</span>
+<span class="nc" id="L238">				return null;</span>
+<span class="nc" id="L239">			}</span>
 		}
 
-<span class="nc" id="L207">		return denseTradePaymentArray;</span>
+<span class="nc" id="L242">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

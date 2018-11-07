@@ -6,6 +6,7 @@ package org.drip.analytics.daycount;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.analytics.daycount;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,7 +71,12 @@ package org.drip.analytics.daycount;
  */
 
 /**
- * This class implements the Act/Act day count convention.
+ * &lt;i&gt;DCAct_Act&lt;/i&gt; implements the Act/Act day count convention.
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -65,17 +88,17 @@ public class DCAct_Act implements org.drip.analytics.daycount.DCFCalculator {
 	 */
 
 	public DCAct_Act()
-<span class="fc" id="L68">	{</span>
-<span class="fc" id="L69">	}</span>
+<span class="fc" id="L91">	{</span>
+<span class="fc" id="L92">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L73">		return &quot;DCAct_Act&quot;;</span>
+<span class="nc" id="L96">		return &quot;DCAct_Act&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L78">		return new java.lang.String[] {&quot;Actual/Actual&quot;, &quot;Actual/Actual ICMA&quot;, &quot;Act/Act&quot;, &quot;Act/Act ICMA&quot;,</span>
+<span class="fc" id="L101">		return new java.lang.String[] {&quot;Actual/Actual&quot;, &quot;Actual/Actual ICMA&quot;, &quot;Act/Act&quot;, &quot;Act/Act ICMA&quot;,</span>
 			&quot;ISMA-99&quot;, &quot;Act/Act ISMA&quot;, &quot;DCAct_Act&quot;};
 	}
 
@@ -87,39 +110,39 @@ public class DCAct_Act implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L90">		double dblDCF = 0.;</span>
-<span class="fc" id="L91">		int iNumLeapDays = 0;</span>
-<span class="fc" id="L92">		int iNumNonLeapDays = 0;</span>
+<span class="fc" id="L113">		double dblDCF = 0.;</span>
+<span class="fc" id="L114">		int iNumLeapDays = 0;</span>
+<span class="fc" id="L115">		int iNumNonLeapDays = 0;</span>
 
-<span class="fc" id="L94">		int iYearStart = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
+<span class="fc" id="L117">		int iYearStart = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
 
-<span class="fc" id="L96">		int iYearEnd = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
+<span class="fc" id="L119">		int iYearEnd = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
 
-<span class="fc bfc" id="L98" title="All 2 branches covered.">		if (iYearStart == iYearEnd)</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">			return org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate) ? (iEndDate - iStartDate) / 366.</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (iYearStart == iYearEnd)</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">			return org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate) ? (iEndDate - iStartDate) / 366.</span>
 				: (iEndDate - iStartDate) / 365.;
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate))</span>
-<span class="fc" id="L103">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate))</span>
+<span class="fc" id="L126">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
 		else
-<span class="fc" id="L105">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
+<span class="fc" id="L128">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
-<span class="fc" id="L108">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
+<span class="fc" id="L131">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 		else
-<span class="fc" id="L110">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
+<span class="fc" id="L133">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 
-<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
-<span class="fc" id="L113">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
+<span class="fc" id="L136">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
 				org.drip.analytics.date.DateUtil.JANUARY, 1);
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
-<span class="fc" id="L117">				iNumLeapDays += 366;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
+<span class="fc" id="L140">				iNumLeapDays += 366;</span>
 			else
-<span class="fc" id="L119">				iNumNonLeapDays += 365;</span>
+<span class="fc" id="L142">				iNumNonLeapDays += 365;</span>
 		}
 
-<span class="fc" id="L122">		return dblDCF + (((double) (iNumLeapDays)) / 366.) + (((double) (iNumNonLeapDays)) / 365.);</span>
+<span class="fc" id="L145">		return dblDCF + (((double) (iNumLeapDays)) / 366.) + (((double) (iNumNonLeapDays)) / 365.);</span>
 	}
 
 	@Override public int daysAccrued (
@@ -130,36 +153,36 @@ public class DCAct_Act implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L133">		int iNumLeapDays = 0;</span>
-<span class="fc" id="L134">		int iNumNonLeapDays = 0;</span>
+<span class="fc" id="L156">		int iNumLeapDays = 0;</span>
+<span class="fc" id="L157">		int iNumNonLeapDays = 0;</span>
 
-<span class="fc" id="L136">		int iYearStart = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
+<span class="fc" id="L159">		int iYearStart = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
 
-<span class="fc" id="L138">		int iYearEnd = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
+<span class="fc" id="L161">		int iYearEnd = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
 
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		if (iYearStart == iYearEnd) return iEndDate - iStartDate;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		if (iYearStart == iYearEnd) return iEndDate - iStartDate;</span>
 
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate))</span>
-<span class="nc" id="L143">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate))</span>
+<span class="nc" id="L166">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
 		else
-<span class="fc" id="L145">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
+<span class="fc" id="L168">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate);</span>
 
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
-<span class="fc" id="L148">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
+<span class="fc" id="L171">			iNumLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 		else
-<span class="nc" id="L150">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
+<span class="nc" id="L173">			iNumNonLeapDays += org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate);</span>
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
-<span class="fc" id="L153">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int iYear = iYearStart + 1; iYear &lt; iYearEnd; ++iYear) {</span>
+<span class="fc" id="L176">			int iYearJan1 = org.drip.analytics.date.DateUtil.ToJulian (iYear,</span>
 				org.drip.analytics.date.DateUtil.JANUARY, 1);
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
-<span class="nc" id="L157">				iNumLeapDays += 366;</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			if (org.drip.analytics.date.DateUtil.IsLeapYear (iYearJan1))</span>
+<span class="nc" id="L180">				iNumLeapDays += 366;</span>
 			else
-<span class="fc" id="L159">				iNumNonLeapDays += 365;</span>
+<span class="fc" id="L182">				iNumNonLeapDays += 365;</span>
 		}
 
-<span class="fc" id="L162">		return iNumLeapDays + iNumNonLeapDays;</span>
+<span class="fc" id="L185">		return iNumLeapDays + iNumNonLeapDays;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -71,10 +71,10 @@ package org.drip.xva.pde;
 
 public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 {
-<span class="nc" id="L74">	private double _derivativeXVAFundingGrowth = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _derivativeXVAHedgeErrorGrowth = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _derivativeXVAClientDefaultGrowth = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _derivativeXVADealerDefaultGrowth = java.lang.Double.NaN;</span>
+<span class="fc" id="L74">	private double _derivativeXVAFundingGrowth = java.lang.Double.NaN;</span>
+<span class="fc" id="L75">	private double _derivativeXVAHedgeErrorGrowth = java.lang.Double.NaN;</span>
+<span class="fc" id="L76">	private double _derivativeXVAClientDefaultGrowth = java.lang.Double.NaN;</span>
+<span class="fc" id="L77">	private double _derivativeXVADealerDefaultGrowth = java.lang.Double.NaN;</span>
 
 	/**
 	 * BurgardKjaerEdgeRun Constructor
@@ -108,7 +108,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 		final double derivativeXVAHedgeErrorGrowth)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (</span>
+<span class="fc" id="L111">		super (</span>
 			dblPositionValueBump,
 			derivativeXVAStochasticGrowthDown,
 			derivativeXVAStochasticGrowth,
@@ -116,18 +116,18 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 			derivativeXVACollateralGrowth
 		);
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =</span>
 				derivativeXVAFundingGrowth) ||
-<span class="nc bnc" id="L121" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =</span>
 				derivativeXVADealerDefaultGrowth) ||
-<span class="nc bnc" id="L123" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =</span>
 				derivativeXVAClientDefaultGrowth) ||
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =</span>
 				derivativeXVAHedgeErrorGrowth))
 		{
 <span class="nc" id="L128">			throw new java.lang.Exception (&quot;BurgardKjaerEdgeRun Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L130">	}</span>
+<span class="fc" id="L130">	}</span>
 
 	/**
 	 * Retrieve the Hedge Error Component of the Derivative XVA Value Growth
@@ -137,7 +137,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 
 	public double derivativeXVAHedgeErrorGrowth()
 	{
-<span class="nc" id="L140">		return _derivativeXVAHedgeErrorGrowth;</span>
+<span class="fc" id="L140">		return _derivativeXVAHedgeErrorGrowth;</span>
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 
 	public double derivativeXVAFundingGrowth()
 	{
-<span class="nc" id="L151">		return _derivativeXVAFundingGrowth;</span>
+<span class="fc" id="L151">		return _derivativeXVAFundingGrowth;</span>
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 
 	public double derivativeXVADealerDefaultGrowth()
 	{
-<span class="nc" id="L162">		return _derivativeXVADealerDefaultGrowth;</span>
+<span class="fc" id="L162">		return _derivativeXVADealerDefaultGrowth;</span>
 	}
 
 	/**
@@ -170,26 +170,26 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 
 	public double derivativeXVAClientDefaultGrowth()
 	{
-<span class="nc" id="L173">		return _derivativeXVAClientDefaultGrowth;</span>
+<span class="fc" id="L173">		return _derivativeXVAClientDefaultGrowth;</span>
 	}
 
 	@Override public double thetaPositionValueDown()
 	{
-<span class="nc" id="L178">		return super.derivativeXVAStochasticGrowthDown() + super.derivativeXVACollateralGrowth() +</span>
+<span class="fc" id="L178">		return super.derivativeXVAStochasticGrowthDown() + super.derivativeXVACollateralGrowth() +</span>
 			_derivativeXVAFundingGrowth + _derivativeXVADealerDefaultGrowth +
 				_derivativeXVAClientDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
 	}
 
 	@Override public double theta()
 	{
-<span class="nc" id="L185">		return super.derivativeXVAStochasticGrowth() + super.derivativeXVACollateralGrowth() +</span>
+<span class="fc" id="L185">		return super.derivativeXVAStochasticGrowth() + super.derivativeXVACollateralGrowth() +</span>
 			_derivativeXVAFundingGrowth + _derivativeXVADealerDefaultGrowth +
 				_derivativeXVAClientDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
 	}
 
 	@Override public double thetaPositionValueUp()
 	{
-<span class="nc" id="L192">		return super.derivativeXVAStochasticGrowthUp() + super.derivativeXVACollateralGrowth() +</span>
+<span class="fc" id="L192">		return super.derivativeXVAStochasticGrowthUp() + super.derivativeXVACollateralGrowth() +</span>
 			_derivativeXVAFundingGrowth + _derivativeXVADealerDefaultGrowth +
 				_derivativeXVAClientDefaultGrowth + _derivativeXVAHedgeErrorGrowth;
 	}

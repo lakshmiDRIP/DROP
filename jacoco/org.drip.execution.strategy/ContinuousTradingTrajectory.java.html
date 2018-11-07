@@ -6,33 +6,51 @@ package org.drip.execution.strategy;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,32 +67,48 @@ package org.drip.execution.strategy;
  */
 
 /**
- * ContinuousTradingTrajectory holds the Continuous Trajectory of a Trading Block that is to be executed over
- *  the Specified Horizon. The References are:
+ * &lt;i&gt;ContinuousTradingTrajectory&lt;/i&gt; holds the Continuous Trajectory of a Trading Block that is to be
+ * executed over the Specified Horizon. The References are:
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
- *
- * 	- Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional Trades,
- * 		Journal of Finance, 50, 1147-1174.
- *
- * 	- Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
- * 		Analysis of Institutional Equity Trades, Journal of Financial Economics, 46, 265-292.
+ * &lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chan, L. K. C., and J. Lakonishak (1995): The Behavior of Stock Prices around Institutional
+ * 				Trades &lt;i&gt;Journal of Finance&lt;/i&gt; &lt;b&gt;50&lt;/b&gt; 1147-1174
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Keim, D. B., and A. Madhavan (1997): Transaction Costs and Investment Style: An Inter-exchange
+ * 				Analysis of Institutional Equity Trades &lt;i&gt;Journal of Financial Economics&lt;/i&gt; &lt;b&gt;46&lt;/b&gt;
+ * 				265-292
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ContinuousTradingTrajectory implements org.drip.execution.strategy.TradingTrajectory {
-<span class="fc" id="L73">	private double _dblExecutionTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private org.drip.function.definition.R1ToR1 _r1ToR1Holdings = null;</span>
-<span class="fc" id="L75">	private org.drip.function.definition.R1ToR1 _r1ToR1TradeRate = null;</span>
-<span class="fc" id="L76">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostVariance = null;</span>
-<span class="fc" id="L77">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostExpectation = null;</span>
+<span class="fc" id="L107">	private double _dblExecutionTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private org.drip.function.definition.R1ToR1 _r1ToR1Holdings = null;</span>
+<span class="fc" id="L109">	private org.drip.function.definition.R1ToR1 _r1ToR1TradeRate = null;</span>
+<span class="fc" id="L110">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostVariance = null;</span>
+<span class="fc" id="L111">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostExpectation = null;</span>
 
 	/**
 	 * Construct a Standard Instance of ContinuousTradingTrajectory
@@ -93,26 +127,26 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation,
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance)
 	{
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (null == r1ToR1Holdings) return null;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == r1ToR1Holdings) return null;</span>
 
-<span class="nc" id="L98">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L99">		{</span>
+<span class="nc" id="L132">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L133">		{</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L104">				return r1ToR1Holdings.derivative (dblVariate, 1);</span>
+<span class="nc" id="L138">				return r1ToR1Holdings.derivative (dblVariate, 1);</span>
 			}
 		};
 
 		try {
-<span class="nc" id="L109">			return new ContinuousTradingTrajectory (dblExecutionTime, r1ToR1Holdings, r1ToR1TradeRate,</span>
+<span class="nc" id="L143">			return new ContinuousTradingTrajectory (dblExecutionTime, r1ToR1Holdings, r1ToR1TradeRate,</span>
 				r1ToR1TransactionCostExpectation, r1ToR1TransactionCostVariance);
-<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L115">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -134,45 +168,45 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation,
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance)
 		throws java.lang.Exception
-<span class="fc" id="L137">	{</span>
-<span class="pc bpc" id="L138" title="6 of 12 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExecutionTime = dblExecutionTime) || 0. &gt;=</span>
+<span class="fc" id="L171">	{</span>
+<span class="pc bpc" id="L172" title="6 of 12 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExecutionTime = dblExecutionTime) || 0. &gt;=</span>
 			_dblExecutionTime || null == (_r1ToR1Holdings = r1ToR1Holdings) || null == (_r1ToR1TradeRate =
 				r1ToR1TradeRate) || null == (_r1ToR1TransactionCostExpectation =
 					r1ToR1TransactionCostExpectation) || null == (_r1ToR1TransactionCostVariance =
 						r1ToR1TransactionCostVariance))
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;ContinuousTradingTrajectory Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L144">	}</span>
+<span class="nc" id="L177">			throw new java.lang.Exception (&quot;ContinuousTradingTrajectory Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L178">	}</span>
 
 	@Override public double tradeSize()
 	{
 		try {
-<span class="fc" id="L149">			return _r1ToR1Holdings.evaluate (0.);</span>
-<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L151">			e.printStackTrace();</span>
+<span class="fc" id="L183">			return _r1ToR1Holdings.evaluate (0.);</span>
+<span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L185">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L154">		return 0.;</span>
+<span class="nc" id="L188">		return 0.;</span>
 	}
 
 	@Override public double executedBlockSize()
 	{
 		try {
-<span class="nc" id="L160">			return _r1ToR1Holdings.evaluate (0.) - _r1ToR1Holdings.evaluate (_dblExecutionTime);</span>
-<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L194">			return _r1ToR1Holdings.evaluate (0.) - _r1ToR1Holdings.evaluate (_dblExecutionTime);</span>
+<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return 0.;</span>
+<span class="nc" id="L199">		return 0.;</span>
 	}
 
 	@Override public double executionTime()
 	{
-<span class="fc" id="L170">		return _dblExecutionTime;</span>
+<span class="fc" id="L204">		return _dblExecutionTime;</span>
 	}
 
 	@Override public double instantTradeRate()
 	{
-<span class="nc" id="L175">		return executedBlockSize() / executionTime();</span>
+<span class="nc" id="L209">		return executedBlockSize() / executionTime();</span>
 	}
 
 	/**
@@ -183,7 +217,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 holdings()
 	{
-<span class="fc" id="L186">		return _r1ToR1Holdings;</span>
+<span class="fc" id="L220">		return _r1ToR1Holdings;</span>
 	}
 
 	/**
@@ -194,7 +228,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 tradeRate()
 	{
-<span class="fc" id="L197">		return _r1ToR1TradeRate;</span>
+<span class="fc" id="L231">		return _r1ToR1TradeRate;</span>
 	}
 
 	/**
@@ -205,7 +239,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 transactionCostExpectationFunction()
 	{
-<span class="fc" id="L208">		return _r1ToR1TransactionCostExpectation;</span>
+<span class="fc" id="L242">		return _r1ToR1TransactionCostExpectation;</span>
 	}
 
 	/**
@@ -216,7 +250,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 transactionCostVarianceFunction()
 	{
-<span class="fc" id="L219">		return _r1ToR1TransactionCostVariance;</span>
+<span class="fc" id="L253">		return _r1ToR1TransactionCostVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

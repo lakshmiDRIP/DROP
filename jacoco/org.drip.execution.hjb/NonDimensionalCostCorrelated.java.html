@@ -6,33 +6,51 @@ package org.drip.execution.hjb;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,33 +67,48 @@ package org.drip.execution.hjb;
  */
 
 /**
- * NonDimensionalCostCorrelated contains the Level, the Gradient, and the Jacobian of the HJB Non-dimensional
- *  Cost Value Function to the Individual Correlated Market States. The References are:
+ * &lt;i&gt;NonDimensionalCostCorrelated&lt;/i&gt; contains the Level, the Gradient, and the Jacobian of the HJB Non
+ * dimensional Cost Value Function to the Individual Correlated Market States. The References are:
  * 
- * 	- Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3
- * 		(2) 5-39.
- *
- * 	- Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
- * 		https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf.
- *
- * 	- Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility, SIAM Journal of
- * 		Financial Mathematics  3 (1) 163-181.
- * 
- * 	- Geman, H., D. B. Madan, and M. Yor (2001): Time Changes for Levy Processes, Mathematical Finance 11 (1)
- * 		79-96.
- * 
- * 	- Jones, C. M., G. Kaul, and M. L. Lipson (1994): Transactions, Volume, and Volatility, Review of
- * 		Financial Studies 7 (4) 631-651.
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
+ * 				https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility &lt;i&gt;SIAM Journal
+ * 			of Financial Mathematics&lt;/i&gt; &lt;b&gt;3 (1)&lt;/b&gt; 163-181
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Geman, H., D. B. Madan, and M. Yor (2001): Time Changes for Levy Processes &lt;i&gt;Mathematical
+ * 				Finance&lt;/i&gt; &lt;b&gt;11 (1)&lt;/b&gt; 79-96
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Jones, C. M., G. Kaul, and M. L. Lipson (1994): Transactions, Volume, and Volatility &lt;i&gt;Review of
+ * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
+ * 		&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb&quot;&gt;HJB&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDimensionalCost {
-<span class="nc" id="L74">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
-<span class="nc" id="L78">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L107">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a Zero Sensitivity Correlated Non-dimensional Cost Instance
@@ -86,12 +119,12 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 	public static final NonDimensionalCostCorrelated Zero()
 	{
 		try {
-<span class="nc" id="L89">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
-<span class="nc" id="L90">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L91">			e.printStackTrace();</span>
+<span class="nc" id="L122">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
+<span class="nc" id="L123">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L124">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L94">		return null;</span>
+<span class="nc" id="L127">		return null;</span>
 	}
 
 	/**
@@ -118,16 +151,16 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 		final double dblNonDimensionalTradeRate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L121">		super (dblRealization, dblNonDimensionalTradeRate);</span>
+<span class="nc" id="L154">		super (dblRealization, dblNonDimensionalTradeRate);</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
 						dblVolatilityJacobian) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L128" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L130">	}</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L163">	}</span>
 
 	/**
 	 * Retrieve the Non Dimensional Value Liquidity Gradient
@@ -137,7 +170,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityGradient()
 	{
-<span class="nc" id="L140">		return _dblLiquidityGradient;</span>
+<span class="nc" id="L173">		return _dblLiquidityGradient;</span>
 	}
 
 	/**
@@ -148,7 +181,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityJacobian()
 	{
-<span class="nc" id="L151">		return _dblLiquidityJacobian;</span>
+<span class="nc" id="L184">		return _dblLiquidityJacobian;</span>
 	}
 
 	/**
@@ -159,7 +192,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double volatilityGradient()
 	{
-<span class="nc" id="L162">		return _dblVolatilityGradient;</span>
+<span class="nc" id="L195">		return _dblVolatilityGradient;</span>
 	}
 
 	/**
@@ -170,7 +203,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double volatilityJacobian()
 	{
-<span class="nc" id="L173">		return _dblVolatilityJacobian;</span>
+<span class="nc" id="L206">		return _dblVolatilityJacobian;</span>
 	}
 
 	/**
@@ -181,7 +214,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityVolatilityGradient()
 	{
-<span class="nc" id="L184">		return _dblLiquidityVolatilityGradient;</span>
+<span class="nc" id="L217">		return _dblLiquidityVolatilityGradient;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
