@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
@@ -53,20 +71,33 @@ package org.drip.function.r1tor1solver;
  */
 
 /**
- * ExecutionInitializer implements the initialization execution and customization functionality.
- * 
+ * <i>ExecutionInitializer</i> implements the initialization execution and customization functionality.
+ * <br><br>
  * ExecutionInitializer performs two types of variate initialization:
- * 	- Bracketing initialization: This brackets the fixed point using the bracketing algorithm described in
- * 		http://www.credit-trader.org. If successful, a pair of variate/OF coordinate nodes that bracket the
- * 		fixed point are generated. These brackets are eventually used by routines that iteratively determine
- * 		the fixed point. Bracketing initialization is controlled by the parameters in
- * 		BracketingControlParams.
- * 	- Convergence Zone initialization: This generates a variate that lies within the convergence zone for the
- * 		iterative determination of the fixed point using the Newton's method. Convergence Zone Determination
- * 		is controlled by the parameters in ConvergenceControlParams.
+ * <br>
+ * <ul>
+ * 	<li>
+ * 		Bracketing initialization: This brackets the fixed point using the bracketing algorithm described in
+ * 			https://lakshmidrip.github.io/DROP-Numerical-Core/. If successful, a pair of variate/OF
+ * 			coordinate nodes that bracket the fixed point are generated. These brackets are eventually used
+ * 			by routines that iteratively determine the fixed point. Bracketing initialization is controlled
+ * 			by the parameters in BracketingControlParams.
+ * 	</li>
+ * 	<li>
+ * 		Convergence Zone initialization: This generates a variate that lies within the convergence zone for
+ * 			the iterative determination of the fixed point using the Newton's method. Convergence Zone
+ * 			Determination is controlled by the parameters in ConvergenceControlParams.
+ * 	</li>
+ * </ul>
  *
  * ExecutionInitializer behavior can be customized/optimized through several of the initialization heuristics
- * 	techniques implemented in the InitializationHeuristics class. 
+ * 	techniques implemented in the InitializationHeuristics class.
+ * <br>
+ *  <ul>
+ *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function">Function</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver">R<sup>1</sup> To R<sup>1</sup></a> Solver</li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer">Numerical Optimizer Library</a></li>
+ *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
