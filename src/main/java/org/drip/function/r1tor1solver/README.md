@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Function R<sup>1</sup> Package contains several Built-in R<sup>1</sup> To R<sup>1</sup> Solvers.
+DROP Function R<sup>1</sup> Solver Package contains several Built-in R<sup>1</sup> To R<sup>1</sup> Solvers.
 
 ## Class Components
 

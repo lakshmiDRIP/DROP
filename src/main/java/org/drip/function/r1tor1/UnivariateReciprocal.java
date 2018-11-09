@@ -69,7 +69,7 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>UnivariateReciprocal<i> provides the evaluation 1/f(x) instead of f(x) for a given f.
+ * <i>UnivariateReciprocal</i> provides the evaluation 1/f(x) instead of f(x) for a given f.
  * <br>
  *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function">Function</a></li>

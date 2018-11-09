@@ -84,7 +84,7 @@ DROP Function R<sup>1</sup> Package contains several Built-in R<sup>1</sup> To R
  specified variate.
 
  * [***UnivariateReciprocal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/UnivariateReciprocal.java)
- <i>UnivariateReciprocal<i> provides the evaluation 1/f(x) instead of f(x) for a given f.
+ <i>UnivariateReciprocal</i> provides the evaluation 1/f(x) instead of f(x) for a given f.
 
  * [***UnivariateReflection***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/UnivariateReflection.java)
  <i>UnivariateReflection</i> provides the evaluation f(1-x) instead of f(x) for a given f.
