@@ -1,6 +1,6 @@
 
 /**
- * Kernal SVM Decision Function Operator
+ * Kernel SVM Decision Function Operator
  *
  * @author Lakshmi Krishnamurthy
  */
