@@ -49,10 +49,21 @@ package org.drip.measure.bayesian;
  */
 
 /**
- * TheilMixedEstimationModel implements the Theil's Mixed Model for the Estimation of the Distribution
- * 	Parameters. The Reference is:
- * 
- * 		- Theil, H. (1971): Principles of Econometrics, Wiley.
+ * <i>TheilMixedEstimationModel</i> implements the Theil's Mixed Model for the Estimation of the Distribution
+ * Parameters. The Reference is:
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Theil, H. (1971): <i>Principles of Econometrics</i> <b>Wiley</b>
+ * 		</li>
+ * 	</ul>
+ * <br><br>
+ * 	<ul>
+ *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure">Measure</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian">Bayesian</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income Analytics</a></li>
+ *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */

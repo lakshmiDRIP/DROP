@@ -72,7 +72,7 @@ package org.drip.json.assetallocation;
  * <br><br>
  *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">JSON</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation">Asset Allocation</li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation">Asset Allocation</a></li>
  *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/assetallocation">Asset Allocation Analytics</a></li>
  *  </ul>
  *

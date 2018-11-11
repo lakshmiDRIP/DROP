@@ -76,7 +76,7 @@ package org.drip.learning.svm;
  * <br><br>
  * <ul>
  * 	<li>
- *  	Ash, R. (1965): <i>Information Theory</i> Inter-science</b> New York
+ *  	Ash, R. (1965): <i>Information Theory</i> <b>Inter-science</b> New York
  * 	</li>
  * 	<li>
  * 		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and Approximation of Operators</i>
@@ -98,6 +98,7 @@ package org.drip.learning.svm;
  * </ul>
  * 
  * <br><br>
+ *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning">Learning</a></li>
  *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/svm">Support Vector Machines</a></li>
  *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning">Statistical Learning Library</a></li>

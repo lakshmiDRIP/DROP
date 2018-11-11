@@ -68,7 +68,7 @@ package org.drip.learning.rxtor1;
  */
 
 /**
- * <i>EmpiricalPenaltySupremum<i> holds the Learning Function that corresponds to the Empirical Supremum, as
+ * <i>EmpiricalPenaltySupremum</i> holds the Learning Function that corresponds to the Empirical Supremum, as
  * well as the corresponding Supremum Value.
  * 
  * <br><br>

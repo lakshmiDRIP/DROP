@@ -88,6 +88,7 @@ package org.drip.function.r1tor1solver;
  * 	<li>
  * 		The number of search iterations.
  * 	</li>
+ * </ul>
  * <br>
  *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function">Function</a></li>

@@ -76,7 +76,7 @@ package org.drip.learning.kernel;
  * <br><br>
  * <ul>
  * 	<li>
- *  	Ash, R. (1965): <i>Information Theory</i> Inter-science</b> New York
+ *  	Ash, R. (1965): <i>Information Theory</i> <b>Inter-science</b> New York
  * 	</li>
  * 	<li>
  *  	Konig, H. (1986): <i>Eigenvalue Distribution of Compact Operators</i> <b>Birkhauser</b> Basel,
@@ -90,6 +90,7 @@ package org.drip.learning.kernel;
  * </ul>
  * 
  * <br><br>
+ * 	<ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning">Learning</a></li>
  *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/kernel">Kernel</a></li>
  *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning">Statistical Learning Library</a></li>
