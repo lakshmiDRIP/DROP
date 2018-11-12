@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Learning Kernel Regularization R<sup>x</sup> -> R<sup>1</sup> the Suite of Statistical Learning Empirical Loss Penalizers.
+DROP Learning R<sup>x</sup> -> R<sup>1</sup> the Suite of Statistical Learning Empirical Loss Penalizers.
 
 ## Class Components
 

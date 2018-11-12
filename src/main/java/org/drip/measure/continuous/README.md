@@ -4,6 +4,7 @@
 
 DROP Measure Continuous implements the R<sup>1</sup> R<sup>d</sup> Continuous Random Measure.
 
+
 ## Class Components
 
  * [***MultivariateMeta***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/MultivariateMeta.java)

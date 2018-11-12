@@ -75,6 +75,7 @@ DROP Learning Module extracts the Agnostic Learning Bounds under Empirical Loss 
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

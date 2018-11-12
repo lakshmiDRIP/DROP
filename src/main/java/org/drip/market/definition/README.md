@@ -24,7 +24,7 @@ DROP Market Definition implements the IBOR, FX, Overnight Index Container.
 
  * [***OvernightIndexContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/definition/OvernightIndexContainer.java)
  <i>OvernightIndexContainer</i> holds the definitions of the overnight index definitions corresponding to
-different jurisdictions.
+ different jurisdictions.
 
 
 ## DROP Specifications
