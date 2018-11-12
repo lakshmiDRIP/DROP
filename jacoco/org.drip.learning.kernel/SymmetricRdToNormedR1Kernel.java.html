@@ -6,34 +6,52 @@ package org.drip.learning.kernel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,26 +68,42 @@ package org.drip.learning.kernel;
  */
 
 /**
- * SymmetricRdToNormedR1Kernel exposes the Functionality behind the Kernel that is Normed R^d X Normed R^d To
- *  Supremum R^1, that is, a Kernel that symmetric in the Input Metric Vector Space in terms of both the
- *  Metric and the Dimensionality.
+ * &lt;i&gt;SymmetricRdToNormedR1Kernel&lt;/i&gt; exposes the Functionality behind the Kernel that is Normed
+ * R&lt;sup&gt;d&lt;/sup&gt; X Normed R&lt;sup&gt;d&lt;/sup&gt; To Supremum R&lt;sup&gt;1&lt;/sup&gt;, that is, a Kernel that symmetric in the
+ * Input Metric Vector Space in terms of both the Metric and the Dimensionality.
  *  
+ * &lt;br&gt;&lt;br&gt;
  *  The References are:
- *  
- *  1) Ash, R. (1965): Information Theory, Inter-science New York.
- *  
- *  2) Konig, H. (1986): Eigenvalue Distribution of Compact Operators, Birkhauser, Basel, Switzerland. 
- *  
- *  3) Smola, A. J., A. Elisseff, B. Scholkopf, and R. C. Williamson (2000): Entropy Numbers for Convex
- *  	Combinations and mlps, in: Advances in Large Margin Classifiers, A. Smola, P. Bartlett, B. Scholkopf,
- *  	and D. Schuurmans - editors, MIT Press, Cambridge, MA.
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;ul&gt;
+ * 	&lt;li&gt;
+ *  	Ash, R. (1965): &lt;i&gt;Information Theory&lt;/i&gt; &lt;b&gt;Inter-science&lt;/b&gt; New York
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Konig, H. (1986): &lt;i&gt;Eigenvalue Distribution of Compact Operators&lt;/i&gt; &lt;b&gt;Birkhauser&lt;/b&gt; Basel,
+ *  		Switzerland
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Smola, A. J., A. Elisseff, B. Scholkopf, and R. C. Williamson (2000): Entropy Numbers for Convex
+ *  		Combinations and mlps, in: &lt;i&gt;Advances in Large Margin Classifiers, A. Smola, P. Bartlett, B.
+ *  		Scholkopf, and D. Schuurmans - editors&lt;/i&gt; &lt;b&gt;MIT Press&lt;/b&gt; Cambridge, MA
+ * 	&lt;/li&gt;
+ * &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/kernel&quot;&gt;Kernel&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class SymmetricRdToNormedR1Kernel {
-<span class="nc" id="L71">	private org.drip.spaces.metric.RdNormed _rdContinuousInput = null;</span>
-<span class="nc" id="L72">	private org.drip.spaces.metric.R1Normed _r1ContinuousOutput = null;</span>
+<span class="nc" id="L105">	private org.drip.spaces.metric.RdNormed _rdContinuousInput = null;</span>
+<span class="nc" id="L106">	private org.drip.spaces.metric.R1Normed _r1ContinuousOutput = null;</span>
 
 	/**
 	 * SymmetricRdToNormedR1Kernel Constructor
@@ -84,11 +118,11 @@ public abstract class SymmetricRdToNormedR1Kernel {
 		final org.drip.spaces.metric.RdNormed rdContinuousInput,
 		final org.drip.spaces.metric.R1Normed r1ContinuousOutput)
 		throws java.lang.Exception
-<span class="nc" id="L87">	{</span>
-<span class="nc bnc" id="L88" title="All 4 branches missed.">		if (null == (_rdContinuousInput = rdContinuousInput) || null == (_r1ContinuousOutput =</span>
+<span class="nc" id="L121">	{</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == (_rdContinuousInput = rdContinuousInput) || null == (_r1ContinuousOutput =</span>
 			r1ContinuousOutput))
-<span class="nc" id="L90">			throw new java.lang.Exception (&quot;SymmetricRdToNormedR1Kernel ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L91">	}</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;SymmetricRdToNormedR1Kernel ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L125">	}</span>
 
 	/**
 	 * Retrieve the Symmetric Input Metric R^d Vector Space
@@ -98,7 +132,7 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public org.drip.spaces.metric.RdNormed inputMetricVectorSpace()
 	{
-<span class="nc" id="L101">		return _rdContinuousInput;</span>
+<span class="nc" id="L135">		return _rdContinuousInput;</span>
 	}
 
 	/**
@@ -109,7 +143,7 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
 	{
-<span class="nc" id="L112">		return _r1ContinuousOutput;</span>
+<span class="nc" id="L146">		return _r1ContinuousOutput;</span>
 	}
 
 	/**
@@ -120,7 +154,7 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public int featureSpaceDimension()
 	{
-<span class="nc" id="L123">		return _rdContinuousInput.dimension();</span>
+<span class="nc" id="L157">		return _rdContinuousInput.dimension();</span>
 	}
 
 	/**

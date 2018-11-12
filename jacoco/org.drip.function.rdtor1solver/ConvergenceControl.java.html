@@ -6,33 +6,51 @@ package org.drip.function.rdtor1solver;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,7 +67,14 @@ package org.drip.function.rdtor1solver;
  */
 
 /**
- * ConvergenceControl contains the R^d To R^1 Convergence Control/Tuning Parameters.
+ * &lt;i&gt;ConvergenceControl&lt;/i&gt; contains the R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Convergence Control/Tuning
+ * Parameters.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -68,10 +93,10 @@ public class ConvergenceControl {
 
 	public static final int VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE = 2;
 
-<span class="fc" id="L71">	private int _iNumFinderSteps = -1;</span>
-<span class="fc" id="L72">	private double _dblAbsoluteTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L73">	private double _dblRelativeTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private int _iConvergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
+<span class="fc" id="L96">	private int _iNumFinderSteps = -1;</span>
+<span class="fc" id="L97">	private double _dblAbsoluteTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _dblRelativeTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private int _iConvergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
 
 	/**
 	 * Construct a Standard ConvergenceControl Instance
@@ -82,12 +107,12 @@ public class ConvergenceControl {
 	public static ConvergenceControl Standard()
 	{
 		try {
-<span class="fc" id="L85">			return new ConvergenceControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02, 1.0e-06, 70);</span>
-<span class="nc" id="L86">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L87">			e.printStackTrace();</span>
+<span class="fc" id="L110">			return new ConvergenceControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02, 1.0e-06, 70);</span>
+<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L112">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L90">		return null;</span>
+<span class="nc" id="L115">		return null;</span>
 	}
 
 	/**
@@ -107,14 +132,14 @@ public class ConvergenceControl {
 		final double dblAbsoluteTolerance,
 		final int iNumFinderSteps)
 		throws java.lang.Exception
-<span class="fc" id="L110">	{</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||</span>
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 &gt;</span>
+<span class="fc" id="L135">	{</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 &gt;</span>
 				(_iNumFinderSteps = iNumFinderSteps))
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L116">		_iConvergenceType = iConvergenceType;</span>
-<span class="fc" id="L117">	}</span>
+<span class="fc" id="L141">		_iConvergenceType = iConvergenceType;</span>
+<span class="fc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Convergence Type
@@ -124,7 +149,7 @@ public class ConvergenceControl {
 
 	public int convergenceType()
 	{
-<span class="fc" id="L127">		return _iConvergenceType;</span>
+<span class="fc" id="L152">		return _iConvergenceType;</span>
 	}
 
 	/**
@@ -135,7 +160,7 @@ public class ConvergenceControl {
 
 	public int numFinderSteps()
 	{
-<span class="nc" id="L138">		return _iNumFinderSteps;</span>
+<span class="nc" id="L163">		return _iNumFinderSteps;</span>
 	}
 
 	/**
@@ -146,7 +171,7 @@ public class ConvergenceControl {
 
 	public double relativeTolerance()
 	{
-<span class="fc" id="L149">		return _dblRelativeTolerance;</span>
+<span class="fc" id="L174">		return _dblRelativeTolerance;</span>
 	}
 
 	/**
@@ -157,7 +182,7 @@ public class ConvergenceControl {
 
 	public double absoluteTolerance()
 	{
-<span class="fc" id="L160">		return _dblAbsoluteTolerance;</span>
+<span class="fc" id="L185">		return _dblAbsoluteTolerance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

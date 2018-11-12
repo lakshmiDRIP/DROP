@@ -6,31 +6,49 @@ package org.drip.exposure.regression;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,30 +65,46 @@ package org.drip.exposure.regression;
  */
 
 /**
- * PykhtinPillarDynamics generates the Dynamics off of the Pillar Vertex Exposure Realizations to be used in
- *  eventual Exposure Regression using the Pykhtin (2009) Scheme. The References are:
+ * &lt;i&gt;PykhtinPillarDynamics&lt;/i&gt; generates the Dynamics off of the Pillar Vertex Exposure Realizations to be
+ * used in eventual Exposure Regression using the Pykhtin (2009) Scheme. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PykhtinPillarDynamics
 {
-<span class="nc" id="L73">	private java.util.List&lt;java.lang.Double&gt; _exposureList = null;</span>
+<span class="nc" id="L107">	private java.util.List&lt;java.lang.Double&gt; _exposureList = null;</span>
 
 	/**
 	 * Construct an Instance of PykhtinPillarDynamics from the Exposure Array
@@ -83,53 +117,53 @@ public class PykhtinPillarDynamics
 	public static final PykhtinPillarDynamics Standard (
 		final double[] exposureArray)
 	{
-<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (null == exposureArray)</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == exposureArray)</span>
 		{
-<span class="nc" id="L88">			return null;</span>
+<span class="nc" id="L122">			return null;</span>
 		}
 
-<span class="nc" id="L91">		java.util.List&lt;java.lang.Double&gt; exposureList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L125">		java.util.List&lt;java.lang.Double&gt; exposureList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L93">		int exposureCount = exposureArray.length;</span>
+<span class="nc" id="L127">		int exposureCount = exposureArray.length;</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (0 == exposureCount)</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (0 == exposureCount)</span>
 		{
-<span class="nc" id="L97">			return null;</span>
+<span class="nc" id="L131">			return null;</span>
 		}
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (double exposure : exposureArray)</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (double exposure : exposureArray)</span>
 		{
-<span class="nc bnc" id="L102" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (exposure))</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (exposure))</span>
 			{
-<span class="nc" id="L104">				return null;</span>
+<span class="nc" id="L138">				return null;</span>
 			}
 
-<span class="nc" id="L107">			exposureList.add (exposure);</span>
+<span class="nc" id="L141">			exposureList.add (exposure);</span>
 		}
 
-<span class="nc" id="L110">		java.util.Collections.sort (exposureList);</span>
+<span class="nc" id="L144">		java.util.Collections.sort (exposureList);</span>
 
 		try
 		{
-<span class="nc" id="L114">			return new PykhtinPillarDynamics (exposureList);</span>
+<span class="nc" id="L148">			return new PykhtinPillarDynamics (exposureList);</span>
 		}
-<span class="nc" id="L116">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L118">			e.printStackTrace();</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L121">		return null;</span>
+<span class="nc" id="L155">		return null;</span>
 	}
 
 	protected PykhtinPillarDynamics (
 		final java.util.List&lt;java.lang.Double&gt; exposureList)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == (_exposureList = exposureList) || 0 == _exposureList.size())</span>
+<span class="nc" id="L161">	{</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">		if (null == (_exposureList = exposureList) || 0 == _exposureList.size())</span>
 		{
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;PykhtinPillarVertexDynamics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L164">			throw new java.lang.Exception (&quot;PykhtinPillarVertexDynamics Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L132">	}</span>
+<span class="nc" id="L166">	}</span>
 
 	/**
 	 * Retrieve the Exposure Set
@@ -139,7 +173,7 @@ public class PykhtinPillarDynamics
 
 	public java.util.List&lt;java.lang.Double&gt; exposureList()
 	{
-<span class="nc" id="L142">		return _exposureList;</span>
+<span class="nc" id="L176">		return _exposureList;</span>
 	}
 
 	/**
@@ -153,64 +187,64 @@ public class PykhtinPillarDynamics
 	public org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray (
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (null == localVolatilityGenerationControl)</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (null == localVolatilityGenerationControl)</span>
 		{
-<span class="nc" id="L158">			return null;</span>
+<span class="nc" id="L192">			return null;</span>
 		}
 
-<span class="nc" id="L161">		int realizationCount = _exposureList.size();</span>
+<span class="nc" id="L195">		int realizationCount = _exposureList.size();</span>
 
-<span class="nc" id="L163">		double[] uniformCPDArray = localVolatilityGenerationControl.uniformCPDArray();</span>
+<span class="nc" id="L197">		double[] uniformCPDArray = localVolatilityGenerationControl.uniformCPDArray();</span>
 
-<span class="nc" id="L165">		int localVolatilityIndexShift = localVolatilityGenerationControl.localVolatilityIndexShift();</span>
+<span class="nc" id="L199">		int localVolatilityIndexShift = localVolatilityGenerationControl.localVolatilityIndexShift();</span>
 
-<span class="nc" id="L167">		double[] impliedBrownianVariateArray = localVolatilityGenerationControl.impliedBrownianVariateArray();</span>
+<span class="nc" id="L201">		double[] impliedBrownianVariateArray = localVolatilityGenerationControl.impliedBrownianVariateArray();</span>
 
-<span class="nc" id="L169">		int realizationIndex = 0;</span>
-<span class="nc" id="L170">		double[] exposureArray = new double[realizationCount];</span>
-<span class="nc" id="L171">		int localVolatilityIndexFloor = localVolatilityIndexShift;</span>
-<span class="nc" id="L172">		double[] localVolatilityArray = new double[realizationCount];</span>
-<span class="nc" id="L173">		int localVolatilityIndexCeiling = realizationCount - localVolatilityIndexShift;</span>
-<span class="nc" id="L174">		org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray = new</span>
+<span class="nc" id="L203">		int realizationIndex = 0;</span>
+<span class="nc" id="L204">		double[] exposureArray = new double[realizationCount];</span>
+<span class="nc" id="L205">		int localVolatilityIndexFloor = localVolatilityIndexShift;</span>
+<span class="nc" id="L206">		double[] localVolatilityArray = new double[realizationCount];</span>
+<span class="nc" id="L207">		int localVolatilityIndexCeiling = realizationCount - localVolatilityIndexShift;</span>
+<span class="nc" id="L208">		org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray = new</span>
 			org.drip.exposure.regression.PykhtinPillar[realizationCount];
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (double exposure : _exposureList)</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		for (double exposure : _exposureList)</span>
 		{
-<span class="nc" id="L179">			exposureArray[realizationIndex++] = exposure;</span>
-<span class="nc" id="L180">		}</span>
+<span class="nc" id="L213">			exposureArray[realizationIndex++] = exposure;</span>
+<span class="nc" id="L214">		}</span>
 
-<span class="nc" id="L182">		for (int realizationCoordinate = localVolatilityIndexFloor;</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">			realizationCoordinate &lt; localVolatilityIndexCeiling;</span>
-<span class="nc" id="L184">			++realizationCoordinate)</span>
+<span class="nc" id="L216">		for (int realizationCoordinate = localVolatilityIndexFloor;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			realizationCoordinate &lt; localVolatilityIndexCeiling;</span>
+<span class="nc" id="L218">			++realizationCoordinate)</span>
 		{
-<span class="nc" id="L186">			localVolatilityArray[realizationCoordinate] =</span>
+<span class="nc" id="L220">			localVolatilityArray[realizationCoordinate] =</span>
 				(exposureArray[realizationCoordinate - localVolatilityIndexShift] -
 					exposureArray[realizationCoordinate + localVolatilityIndexShift]) /
 				(impliedBrownianVariateArray[realizationCoordinate - localVolatilityIndexShift] -
 					impliedBrownianVariateArray[realizationCoordinate + localVolatilityIndexShift]);
 		}
 
-<span class="nc" id="L193">		for (int realizationCoordinate = 0;</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">			realizationCoordinate &lt; localVolatilityIndexFloor;</span>
-<span class="nc" id="L195">			++realizationCoordinate)</span>
+<span class="nc" id="L227">		for (int realizationCoordinate = 0;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			realizationCoordinate &lt; localVolatilityIndexFloor;</span>
+<span class="nc" id="L229">			++realizationCoordinate)</span>
 		{
-<span class="nc" id="L197">			localVolatilityArray[realizationCoordinate] = localVolatilityArray[localVolatilityIndexFloor];</span>
+<span class="nc" id="L231">			localVolatilityArray[realizationCoordinate] = localVolatilityArray[localVolatilityIndexFloor];</span>
 		}
 
-<span class="nc" id="L200">		for (int realizationCoordinate = localVolatilityIndexCeiling;</span>
-<span class="nc bnc" id="L201" title="All 2 branches missed.">			realizationCoordinate &lt; realizationCount;</span>
-<span class="nc" id="L202">			++realizationCoordinate)</span>
+<span class="nc" id="L234">		for (int realizationCoordinate = localVolatilityIndexCeiling;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			realizationCoordinate &lt; realizationCount;</span>
+<span class="nc" id="L236">			++realizationCoordinate)</span>
 		{
-<span class="nc" id="L204">			localVolatilityArray[realizationCoordinate] =</span>
+<span class="nc" id="L238">			localVolatilityArray[realizationCoordinate] =</span>
 				localVolatilityArray[localVolatilityIndexCeiling - 1];
 		}
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		for (int realizationCoordinate = 0; realizationCoordinate &lt; realizationCount;</span>
-<span class="nc" id="L209">			++realizationCoordinate)</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (int realizationCoordinate = 0; realizationCoordinate &lt; realizationCount;</span>
+<span class="nc" id="L243">			++realizationCoordinate)</span>
 		{
 			try
 			{
-<span class="nc" id="L213">				pillarVertexArray[realizationCoordinate] =</span>
+<span class="nc" id="L247">				pillarVertexArray[realizationCoordinate] =</span>
 					new org.drip.exposure.regression.PykhtinPillar (
 						exposureArray[realizationCoordinate],
 						realizationCoordinate,
@@ -219,17 +253,17 @@ public class PykhtinPillarDynamics
 						localVolatilityArray[realizationCoordinate]
 					);
 
-<span class="nc" id="L222">				++realizationIndex;</span>
+<span class="nc" id="L256">				++realizationIndex;</span>
 			}
-<span class="nc" id="L224">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L258">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L226">				e.printStackTrace();</span>
+<span class="nc" id="L260">				e.printStackTrace();</span>
 
-<span class="nc" id="L228">				return null;</span>
-<span class="nc" id="L229">			}</span>
+<span class="nc" id="L262">				return null;</span>
+<span class="nc" id="L263">			}</span>
 		}
 
-<span class="nc" id="L232">		return pillarVertexArray;</span>
+<span class="nc" id="L266">		return pillarVertexArray;</span>
 	}
 
 	/**
@@ -245,34 +279,34 @@ public class PykhtinPillarDynamics
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
 		final org.drip.exposure.regression.PykhtinPillar[] pillarVertexArray)
 	{
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (null == localVolatilityGenerationControl)</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		if (null == localVolatilityGenerationControl)</span>
 		{
-<span class="nc" id="L250">			return null;</span>
+<span class="nc" id="L284">			return null;</span>
 		}
 
-<span class="nc" id="L253">		int vertexCount = pillarVertexArray.length;</span>
-<span class="nc" id="L254">		double[] exposureArray = new double[vertexCount];</span>
-<span class="nc" id="L255">		double[] localVolatilityArray = new double[vertexCount];</span>
+<span class="nc" id="L287">		int vertexCount = pillarVertexArray.length;</span>
+<span class="nc" id="L288">		double[] exposureArray = new double[vertexCount];</span>
+<span class="nc" id="L289">		double[] localVolatilityArray = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L259">			exposureArray[vertexIndex] = pillarVertexArray[vertexIndex].exposure();</span>
+<span class="nc" id="L293">			exposureArray[vertexIndex] = pillarVertexArray[vertexIndex].exposure();</span>
 
-<span class="nc" id="L261">			localVolatilityArray[vertexIndex] = pillarVertexArray[vertexIndex].localVolatility();</span>
+<span class="nc" id="L295">			localVolatilityArray[vertexIndex] = pillarVertexArray[vertexIndex].localVolatility();</span>
 		}
 
-<span class="nc" id="L264">		org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =</span>
-<span class="nc" id="L265">			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
-<span class="nc" id="L266">				&quot;LocalVolatilityR1ToR1_&quot; + org.drip.quant.common.StringUtil.GUID(),</span>
+<span class="nc" id="L298">		org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =</span>
+<span class="nc" id="L299">			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
+<span class="nc" id="L300">				&quot;LocalVolatilityR1ToR1_&quot; + org.drip.quant.common.StringUtil.GUID(),</span>
 				exposureArray,
 				localVolatilityArray,
-<span class="nc" id="L269">				localVolatilityGenerationControl.segmentCustomBuilderControlArray(),</span>
+<span class="nc" id="L303">				localVolatilityGenerationControl.segmentCustomBuilderControlArray(),</span>
 				null,
-<span class="nc" id="L271">				org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="nc" id="L305">				org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 				org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
 			);
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		return null == multiSegmentSequence ? null : multiSegmentSequence.toAU();</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">		return null == multiSegmentSequence ? null : multiSegmentSequence.toAU();</span>
 	}
 
 	/**
@@ -286,9 +320,9 @@ public class PykhtinPillarDynamics
 	public org.drip.function.definition.R1ToR1 localVolatilityR1ToR1 (
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl)
 	{
-<span class="nc" id="L289">		return localVolatilityR1ToR1 (</span>
+<span class="nc" id="L323">		return localVolatilityR1ToR1 (</span>
 			localVolatilityGenerationControl,
-<span class="nc" id="L291">			pillarVertexArray (localVolatilityGenerationControl)</span>
+<span class="nc" id="L325">			pillarVertexArray (localVolatilityGenerationControl)</span>
 		);
 	}
 }

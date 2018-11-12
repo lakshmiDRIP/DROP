@@ -6,34 +6,52 @@ package org.drip.json.simple;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,146 +68,154 @@ package org.drip.json.simple;
  */
 
 /**
- * ItemList is an Adaptation of the ItemList Interface from the RFC4627 compliant JSON Simple
+ * &lt;i&gt;ItemList&lt;/i&gt; is an Adaptation of the ItemList Interface from the RFC4627 compliant JSON Simple
  *  (https://code.google.com/p/json-simple/).
  *
  * 		|a:b:c| = |a|,|b|,|c|
  * 		|:| = ||,||
  * 		|a:| = |a|,||
  * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple&quot;&gt;Simple&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
 public class ItemList {
-<span class="nc" id="L65">    private String sp=&quot;,&quot;;</span>
-<span class="nc" id="L66">    @SuppressWarnings (&quot;rawtypes&quot;) java.util.List items=new java.util.ArrayList();</span>
+<span class="nc" id="L91">    private String sp=&quot;,&quot;;</span>
+<span class="nc" id="L92">    @SuppressWarnings (&quot;rawtypes&quot;) java.util.List items=new java.util.ArrayList();</span>
     
     
-<span class="nc" id="L69">    public ItemList(){}</span>
+<span class="nc" id="L95">    public ItemList(){}</span>
     
     
-<span class="nc" id="L72">    public ItemList(String s){</span>
-<span class="nc" id="L73">            this.split(s,sp,items);</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L98">    public ItemList(String s){</span>
+<span class="nc" id="L99">            this.split(s,sp,items);</span>
+<span class="nc" id="L100">    }</span>
     
-<span class="nc" id="L76">    public ItemList(String s,String sp){</span>
-<span class="nc" id="L77">            this.sp=s;</span>
-<span class="nc" id="L78">            this.split(s,sp,items);</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L102">    public ItemList(String s,String sp){</span>
+<span class="nc" id="L103">            this.sp=s;</span>
+<span class="nc" id="L104">            this.split(s,sp,items);</span>
+<span class="nc" id="L105">    }</span>
     
-<span class="nc" id="L81">    public ItemList(String s,String sp,boolean isMultiToken){</span>
-<span class="nc" id="L82">            split(s,sp,items,isMultiToken);</span>
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L107">    public ItemList(String s,String sp,boolean isMultiToken){</span>
+<span class="nc" id="L108">            split(s,sp,items,isMultiToken);</span>
+<span class="nc" id="L109">    }</span>
     
     @SuppressWarnings (&quot;rawtypes&quot;) public java.util.List getItems(){
-<span class="nc" id="L86">            return this.items;</span>
+<span class="nc" id="L112">            return this.items;</span>
     }
     
     public String[] getArray(){
-<span class="nc" id="L90">            return (String[])this.items.toArray();</span>
+<span class="nc" id="L116">            return (String[])this.items.toArray();</span>
     }
     
     @SuppressWarnings ({&quot;rawtypes&quot;, &quot;unchecked&quot;}) public void split(String s,String sp,java.util.List append,boolean isMultiToken){
-<span class="nc bnc" id="L94" title="All 4 branches missed.">            if(s==null || sp==null)</span>
-<span class="nc" id="L95">                    return;</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if(isMultiToken){</span>
-<span class="nc" id="L97">            	java.util.StringTokenizer tokens=new java.util.StringTokenizer(s,sp);</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">                    while(tokens.hasMoreTokens()){</span>
-<span class="nc" id="L99">                            append.add(tokens.nextToken().trim());</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">            if(s==null || sp==null)</span>
+<span class="nc" id="L121">                    return;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            if(isMultiToken){</span>
+<span class="nc" id="L123">            	java.util.StringTokenizer tokens=new java.util.StringTokenizer(s,sp);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                    while(tokens.hasMoreTokens()){</span>
+<span class="nc" id="L125">                            append.add(tokens.nextToken().trim());</span>
                     }
-<span class="nc" id="L101">            }</span>
+<span class="nc" id="L127">            }</span>
             else{
-<span class="nc" id="L103">                    this.split(s,sp,append);</span>
+<span class="nc" id="L129">                    this.split(s,sp,append);</span>
             }
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L131">    }</span>
     
     @SuppressWarnings ({&quot;rawtypes&quot;, &quot;unchecked&quot;}) public void split(String s,String sp,java.util.List append){
-<span class="nc bnc" id="L108" title="All 4 branches missed.">            if(s==null || sp==null)</span>
-<span class="nc" id="L109">                    return;</span>
-<span class="nc" id="L110">            int pos=0;</span>
-<span class="nc" id="L111">            int prevPos=0;</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">            if(s==null || sp==null)</span>
+<span class="nc" id="L135">                    return;</span>
+<span class="nc" id="L136">            int pos=0;</span>
+<span class="nc" id="L137">            int prevPos=0;</span>
             do{
-<span class="nc" id="L113">                    prevPos=pos;</span>
-<span class="nc" id="L114">                    pos=s.indexOf(sp,pos);</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">                    if(pos==-1)</span>
-<span class="nc" id="L116">                            break;</span>
-<span class="nc" id="L117">                    append.add(s.substring(prevPos,pos).trim());</span>
-<span class="nc" id="L118">                    pos+=sp.length();</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">            }while(pos!=-1);</span>
-<span class="nc" id="L120">            append.add(s.substring(prevPos).trim());</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L139">                    prevPos=pos;</span>
+<span class="nc" id="L140">                    pos=s.indexOf(sp,pos);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                    if(pos==-1)</span>
+<span class="nc" id="L142">                            break;</span>
+<span class="nc" id="L143">                    append.add(s.substring(prevPos,pos).trim());</span>
+<span class="nc" id="L144">                    pos+=sp.length();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            }while(pos!=-1);</span>
+<span class="nc" id="L146">            append.add(s.substring(prevPos).trim());</span>
+<span class="nc" id="L147">    }</span>
     
     public void setSP(String sp){
-<span class="nc" id="L124">            this.sp=sp;</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L150">            this.sp=sp;</span>
+<span class="nc" id="L151">    }</span>
     
     @SuppressWarnings (&quot;unchecked&quot;) public void add(int i,String item){
-<span class="nc bnc" id="L128" title="All 2 branches missed.">            if(item==null)</span>
-<span class="nc" id="L129">                    return;</span>
-<span class="nc" id="L130">            items.add(i,item.trim());</span>
-<span class="nc" id="L131">    }</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            if(item==null)</span>
+<span class="nc" id="L155">                    return;</span>
+<span class="nc" id="L156">            items.add(i,item.trim());</span>
+<span class="nc" id="L157">    }</span>
 
     @SuppressWarnings (&quot;unchecked&quot;) public void add(String item){
-<span class="nc bnc" id="L134" title="All 2 branches missed.">            if(item==null)</span>
-<span class="nc" id="L135">                    return;</span>
-<span class="nc" id="L136">            items.add(item.trim());</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            if(item==null)</span>
+<span class="nc" id="L161">                    return;</span>
+<span class="nc" id="L162">            items.add(item.trim());</span>
+<span class="nc" id="L163">    }</span>
     
     @SuppressWarnings (&quot;unchecked&quot;) public void addAll(ItemList list){
-<span class="nc" id="L140">            items.addAll(list.items);</span>
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L166">            items.addAll(list.items);</span>
+<span class="nc" id="L167">    }</span>
     
     public void addAll(String s){
-<span class="nc" id="L144">            this.split(s,sp,items);</span>
-<span class="nc" id="L145">    }</span>
+<span class="nc" id="L170">            this.split(s,sp,items);</span>
+<span class="nc" id="L171">    }</span>
     
     public void addAll(String s,String sp){
-<span class="nc" id="L148">            this.split(s,sp,items);</span>
-<span class="nc" id="L149">    }</span>
+<span class="nc" id="L174">            this.split(s,sp,items);</span>
+<span class="nc" id="L175">    }</span>
     
     public void addAll(String s,String sp,boolean isMultiToken){
-<span class="nc" id="L152">            this.split(s,sp,items,isMultiToken);</span>
-<span class="nc" id="L153">    }</span>
+<span class="nc" id="L178">            this.split(s,sp,items,isMultiToken);</span>
+<span class="nc" id="L179">    }</span>
     
     /**
      * @param i 0-based
      * @return i
      */
     public String get(int i){
-<span class="nc" id="L160">            return (String)items.get(i);</span>
+<span class="nc" id="L186">            return (String)items.get(i);</span>
     }
     
     public int size(){
-<span class="nc" id="L164">            return items.size();</span>
+<span class="nc" id="L190">            return items.size();</span>
     }
 
     public String toString(){
-<span class="nc" id="L168">            return toString(sp);</span>
+<span class="nc" id="L194">            return toString(sp);</span>
     }
     
     public String toString(String sp){
-<span class="nc" id="L172">            StringBuffer sb=new StringBuffer();</span>
+<span class="nc" id="L198">            StringBuffer sb=new StringBuffer();</span>
             
-<span class="nc bnc" id="L174" title="All 2 branches missed.">            for(int i=0;i&lt;items.size();i++){</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">                    if(i==0)</span>
-<span class="nc" id="L176">                            sb.append(items.get(i));</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            for(int i=0;i&lt;items.size();i++){</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                    if(i==0)</span>
+<span class="nc" id="L202">                            sb.append(items.get(i));</span>
                     else{
-<span class="nc" id="L178">                            sb.append(sp);</span>
-<span class="nc" id="L179">                            sb.append(items.get(i));</span>
+<span class="nc" id="L204">                            sb.append(sp);</span>
+<span class="nc" id="L205">                            sb.append(items.get(i));</span>
                     }
             }
-<span class="nc" id="L182">            return sb.toString();</span>
+<span class="nc" id="L208">            return sb.toString();</span>
 
     }
     
     public void clear(){
-<span class="nc" id="L187">            items.clear();</span>
-<span class="nc" id="L188">    }</span>
+<span class="nc" id="L213">            items.clear();</span>
+<span class="nc" id="L214">    }</span>
     
     public void reset(){
-<span class="nc" id="L191">            sp=&quot;,&quot;;</span>
-<span class="nc" id="L192">            items.clear();</span>
-<span class="nc" id="L193">    }</span>
+<span class="nc" id="L217">            sp=&quot;,&quot;;</span>
+<span class="nc" id="L218">            items.clear();</span>
+<span class="nc" id="L219">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

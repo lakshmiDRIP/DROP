@@ -6,33 +6,51 @@ package org.drip.historical.attribution;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,8 +67,14 @@ package org.drip.historical.attribution;
  */
 
 /**
- * TreasuryFuturesMarketSnap contains the Metrics Snapshot associated with the relevant Manifest Measures for
- *  the given Treasury Futures Position.
+ * &lt;i&gt;TreasuryFuturesMarketSnap&lt;/i&gt; contains the Metrics Snapshot associated with the relevant Manifest
+ * Measures for the given Treasury Futures Position.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/attribution&quot;&gt;Attribution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -71,8 +95,8 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 		final double dblMarketValue)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L74">		super (dtSnap, dblMarketValue);</span>
-<span class="nc" id="L75">	}</span>
+<span class="nc" id="L98">		super (dtSnap, dblMarketValue);</span>
+<span class="nc" id="L99">	}</span>
 
 	/**
 	 * Set the Yield Level and Position Sensitivity
@@ -89,7 +113,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 		final double dblYieldSensitivity,
 		final double dblYieldRollDown)
 	{
-<span class="nc" id="L92">		return addManifestMeasureSnap (&quot;Yield&quot;, dblYield, dblYieldSensitivity, dblYieldRollDown);</span>
+<span class="nc" id="L116">		return addManifestMeasureSnap (&quot;Yield&quot;, dblYield, dblYieldSensitivity, dblYieldRollDown);</span>
 	}
 
 	/**
@@ -103,7 +127,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 	public boolean setExpiryDate (
 		final org.drip.analytics.date.JulianDate dtExpiry)
 	{
-<span class="nc" id="L106">		return setDate (&quot;Expiry&quot;, dtExpiry);</span>
+<span class="nc" id="L130">		return setDate (&quot;Expiry&quot;, dtExpiry);</span>
 	}
 
 	/**
@@ -114,7 +138,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 
 	public org.drip.analytics.date.JulianDate expiryDate()
 	{
-<span class="nc" id="L117">		return date (&quot;Expiry&quot;);</span>
+<span class="nc" id="L141">		return date (&quot;Expiry&quot;);</span>
 	}
 
 	/**
@@ -128,7 +152,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 	public boolean setCTDName (
 		final java.lang.String strCTDName)
 	{
-<span class="nc" id="L131">		return setC1 (&quot;CTDBondName&quot;, strCTDName);</span>
+<span class="nc" id="L155">		return setC1 (&quot;CTDBondName&quot;, strCTDName);</span>
 	}
 
 	/**
@@ -139,7 +163,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 
 	public java.lang.String ctdName()
 	{
-<span class="nc" id="L142">		return c1 (&quot;CTDBondName&quot;);</span>
+<span class="nc" id="L166">		return c1 (&quot;CTDBondName&quot;);</span>
 	}
 
 	/**
@@ -153,7 +177,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 	public boolean setCleanExpiryPrice (
 		final double dblExpiryCleanPrice)
 	{
-<span class="nc" id="L156">		return setR1 (&quot;ExpiryCleanPrice&quot;, dblExpiryCleanPrice);</span>
+<span class="nc" id="L180">		return setR1 (&quot;ExpiryCleanPrice&quot;, dblExpiryCleanPrice);</span>
 	}
 
 	/**
@@ -167,7 +191,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 	public double expiryCleanPrice()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L170">		return r1 (&quot;ExpiryCleanPrice&quot;);</span>
+<span class="nc" id="L194">		return r1 (&quot;ExpiryCleanPrice&quot;);</span>
 	}
 
 	/**
@@ -181,7 +205,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 	public boolean setConversionFactor (
 		final double dblConversionFactor)
 	{
-<span class="nc" id="L184">		return setR1 (&quot;ConversionFactor&quot;, dblConversionFactor);</span>
+<span class="nc" id="L208">		return setR1 (&quot;ConversionFactor&quot;, dblConversionFactor);</span>
 	}
 
 	/**
@@ -195,7 +219,7 @@ public class TreasuryFuturesMarketSnap extends org.drip.historical.attribution.P
 	public double conversionFactor()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L198">		return r1 (&quot;ConversionFactor&quot;);</span>
+<span class="nc" id="L222">		return r1 (&quot;ConversionFactor&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

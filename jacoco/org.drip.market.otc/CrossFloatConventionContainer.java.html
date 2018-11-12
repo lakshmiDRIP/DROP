@@ -6,34 +6,52 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,39 +68,48 @@ package org.drip.market.otc;
  */
 
 /**
- * CrossFloatConventionContainer contains the Conventions of Standard OTC Cross-Currency Float-Float Swaps.
+ * &lt;i&gt;CrossFloatConventionContainer&lt;/i&gt; contains the Conventions of Standard OTC Cross-Currency Float-Float
+ * Swaps.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;Over-the-Counter&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L58">public class CrossFloatConventionContainer {</span>
+<span class="nc" id="L85">public class CrossFloatConventionContainer {</span>
 	private static java.util.Map&lt;java.lang.String, org.drip.market.otc.CrossFloatSwapConvention&gt;
-<span class="fc" id="L60">		_mapConvention = null;</span>
+<span class="fc" id="L87">		_mapConvention = null;</span>
 
 	private static final boolean AddCrossCurrencyConvention (
 		final org.drip.market.otc.CrossFloatStreamConvention referenceConvention,
 		final org.drip.market.otc.CrossFloatStreamConvention derivedConvention)
 	{
-<span class="fc" id="L66">		org.drip.market.otc.CrossFloatSwapConvention xccyConvention = null;</span>
+<span class="fc" id="L93">		org.drip.market.otc.CrossFloatSwapConvention xccyConvention = null;</span>
 
 		try {
-<span class="fc" id="L69">			xccyConvention = new org.drip.market.otc.CrossFloatSwapConvention (referenceConvention,</span>
+<span class="fc" id="L96">			xccyConvention = new org.drip.market.otc.CrossFloatSwapConvention (referenceConvention,</span>
 				derivedConvention, org.drip.param.period.FixingSetting.FIXING_PRESET_STATIC, false, 2);
-<span class="nc" id="L71">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L72">			e.printStackTrace();</span>
+<span class="nc" id="L98">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L99">			e.printStackTrace();</span>
 
-<span class="nc" id="L74">			return false;</span>
-<span class="fc" id="L75">		}</span>
+<span class="nc" id="L101">			return false;</span>
+<span class="fc" id="L102">		}</span>
 
-<span class="fc" id="L77">		java.lang.String strDerivedCurrency = derivedConvention.currency();</span>
+<span class="fc" id="L104">		java.lang.String strDerivedCurrency = derivedConvention.currency();</span>
 
-<span class="fc" id="L79">		java.lang.String strReferenceCurrency = referenceConvention.currency();</span>
+<span class="fc" id="L106">		java.lang.String strReferenceCurrency = referenceConvention.currency();</span>
 
-<span class="fc" id="L81">		_mapConvention.put (strReferenceCurrency + &quot;_&quot; + strDerivedCurrency, xccyConvention);</span>
+<span class="fc" id="L108">		_mapConvention.put (strReferenceCurrency + &quot;_&quot; + strDerivedCurrency, xccyConvention);</span>
 
-<span class="fc" id="L83">		_mapConvention.put (strDerivedCurrency + &quot;_&quot; + strReferenceCurrency, xccyConvention);</span>
+<span class="fc" id="L110">		_mapConvention.put (strDerivedCurrency + &quot;_&quot; + strReferenceCurrency, xccyConvention);</span>
 
-<span class="fc" id="L85">		return true;</span>
+<span class="fc" id="L112">		return true;</span>
 	}
 
 	/**
@@ -94,72 +121,72 @@ package org.drip.market.otc;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L97" title="All 2 branches covered.">		if (null != _mapConvention) return true;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		if (null != _mapConvention) return true;</span>
 
-<span class="fc" id="L99">		_mapConvention = new java.util.TreeMap&lt;java.lang.String,</span>
+<span class="fc" id="L126">		_mapConvention = new java.util.TreeMap&lt;java.lang.String,</span>
 			org.drip.market.otc.CrossFloatSwapConvention&gt;();
 
 		try {
-<span class="fc" id="L103">			org.drip.market.otc.CrossFloatStreamConvention referenceConventionDerivedQuote = new</span>
+<span class="fc" id="L130">			org.drip.market.otc.CrossFloatStreamConvention referenceConventionDerivedQuote = new</span>
 				org.drip.market.otc.CrossFloatStreamConvention (&quot;USD&quot;, &quot;3M&quot;, false);
 
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
 				org.drip.market.otc.CrossFloatStreamConvention (&quot;AUD&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L108">				return false;</span>
+<span class="nc" id="L135">				return false;</span>
 
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
 				org.drip.market.otc.CrossFloatStreamConvention (&quot;CAD&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L112">				return false;</span>
+<span class="nc" id="L139">				return false;</span>
 
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
 				org.drip.market.otc.CrossFloatStreamConvention (&quot;CHF&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L116">				return false;</span>
+<span class="nc" id="L143">				return false;</span>
 
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
 				org.drip.market.otc.CrossFloatStreamConvention (&quot;DKK&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L120">				return false;</span>
+<span class="nc" id="L147">				return false;</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
 				org.drip.market.otc.CrossFloatStreamConvention (&quot;EUR&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L124">				return false;</span>
-
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;GBP&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L128">				return false;</span>
-
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;JPY&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L132">				return false;</span>
-
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;NOK&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L136">				return false;</span>
-
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;PLN&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L140">				return false;</span>
-
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;SEK&quot;, &quot;3M&quot;, true)))
-<span class="nc" id="L144">				return false;</span>
-
-<span class="fc" id="L146">			org.drip.market.otc.CrossFloatStreamConvention referenceConventionReferenceQuote = new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;USD&quot;, &quot;3M&quot;, true);
-
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionReferenceQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;CLP&quot;, &quot;3M&quot;, false)))
 <span class="nc" id="L151">				return false;</span>
 
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionReferenceQuote, new</span>
-				org.drip.market.otc.CrossFloatStreamConvention (&quot;MXN&quot;, &quot;3M&quot;, false)))
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;GBP&quot;, &quot;3M&quot;, true)))
 <span class="nc" id="L155">				return false;</span>
 
-<span class="fc" id="L157">			return true;</span>
-<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L159">			e.printStackTrace();</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;JPY&quot;, &quot;3M&quot;, true)))
+<span class="nc" id="L159">				return false;</span>
+
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;NOK&quot;, &quot;3M&quot;, true)))
+<span class="nc" id="L163">				return false;</span>
+
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;PLN&quot;, &quot;3M&quot;, true)))
+<span class="nc" id="L167">				return false;</span>
+
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionDerivedQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;SEK&quot;, &quot;3M&quot;, true)))
+<span class="nc" id="L171">				return false;</span>
+
+<span class="fc" id="L173">			org.drip.market.otc.CrossFloatStreamConvention referenceConventionReferenceQuote = new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;USD&quot;, &quot;3M&quot;, true);
+
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionReferenceQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;CLP&quot;, &quot;3M&quot;, false)))
+<span class="nc" id="L178">				return false;</span>
+
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">			if (!AddCrossCurrencyConvention (referenceConventionReferenceQuote, new</span>
+				org.drip.market.otc.CrossFloatStreamConvention (&quot;MXN&quot;, &quot;3M&quot;, false)))
+<span class="nc" id="L182">				return false;</span>
+
+<span class="fc" id="L184">			return true;</span>
+<span class="nc" id="L185">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L186">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L162">		return false;</span>
+<span class="nc" id="L189">		return false;</span>
 	}
 
 	/**
@@ -173,11 +200,11 @@ package org.drip.market.otc;
 	public static final org.drip.market.otc.CrossFloatSwapConvention ConventionFromJurisdiction (
 		final java.lang.String strCurrency)
 	{
-<span class="pc bpc" id="L176" title="2 of 4 branches missed.">		if (null == strCurrency || strCurrency.isEmpty()) return null;</span>
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">		if (null == strCurrency || strCurrency.isEmpty()) return null;</span>
 
-<span class="fc" id="L178">		java.lang.String strKey = &quot;USD_&quot; + strCurrency;</span>
+<span class="fc" id="L205">		java.lang.String strKey = &quot;USD_&quot; + strCurrency;</span>
 
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		return !_mapConvention.containsKey (strKey) ? null : _mapConvention.get (strKey);</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		return !_mapConvention.containsKey (strKey) ? null : _mapConvention.get (strKey);</span>
 	}
 
 	/**
@@ -194,13 +221,13 @@ package org.drip.market.otc;
 		final java.lang.String strReferenceCurrency,
 		final java.lang.String strDerivedCurrency)
 	{
-<span class="pc bpc" id="L197" title="3 of 6 branches missed.">		if (null == strReferenceCurrency || strReferenceCurrency.isEmpty() || null == strDerivedCurrency ||</span>
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">			strDerivedCurrency.isEmpty())</span>
-<span class="nc" id="L199">			return null;</span>
+<span class="pc bpc" id="L224" title="3 of 6 branches missed.">		if (null == strReferenceCurrency || strReferenceCurrency.isEmpty() || null == strDerivedCurrency ||</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">			strDerivedCurrency.isEmpty())</span>
+<span class="nc" id="L226">			return null;</span>
 
-<span class="fc" id="L201">		java.lang.String strKey = strReferenceCurrency + &quot;_&quot; + strDerivedCurrency;</span>
+<span class="fc" id="L228">		java.lang.String strKey = strReferenceCurrency + &quot;_&quot; + strDerivedCurrency;</span>
 
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		return !_mapConvention.containsKey (strKey) ? null : _mapConvention.get (strKey);</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		return !_mapConvention.containsKey (strKey) ? null : _mapConvention.get (strKey);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

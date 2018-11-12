@@ -6,33 +6,51 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,14 +67,23 @@ package org.drip.market.otc;
  */
 
 /**
- * CreditIndexConventionContainer contains the Conventions of the Credit Index of an OTC Index CDS Contract.
+ * &lt;i&gt;CreditIndexConventionContainer&lt;/i&gt; contains the Conventions of the Credit Index of an OTC Index CDS
+ * Contract.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;Over-the-Counter&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L57">public class CreditIndexConventionContainer {</span>
+<span class="nc" id="L84">public class CreditIndexConventionContainer {</span>
 	private static java.util.Map&lt;java.lang.String, org.drip.market.otc.CreditIndexConvention&gt;
-<span class="fc" id="L59">		_mapIndexConvention = null;</span>
+<span class="fc" id="L86">		_mapIndexConvention = null;</span>
 
 	private static final boolean AddIndexConvention (
 		final java.lang.String strIndexType,
@@ -73,18 +100,18 @@ package org.drip.market.otc;
 		final int iNumConstituent)
 	{
 		try {
-<span class="fc" id="L76">			org.drip.market.otc.CreditIndexConvention cic = new org.drip.market.otc.CreditIndexConvention</span>
+<span class="fc" id="L103">			org.drip.market.otc.CreditIndexConvention cic = new org.drip.market.otc.CreditIndexConvention</span>
 				(strIndexType, strIndexSubType, strSeriesName, strTenor, strCurrency, dtEffective,
 					dtMaturity, iFreq, strDayCount, dblFixedCoupon, dblRecoveryRate, iNumConstituent);
 
-<span class="fc" id="L80">			_mapIndexConvention.put (cic.fullName(), cic);</span>
+<span class="fc" id="L107">			_mapIndexConvention.put (cic.fullName(), cic);</span>
 
-<span class="fc" id="L82">			return true;</span>
-<span class="nc" id="L83">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L84">			e.printStackTrace();</span>
+<span class="fc" id="L109">			return true;</span>
+<span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L111">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L87">		return false;</span>
+<span class="nc" id="L114">		return false;</span>
 	}
 
 	private static final boolean AddCDXNAIG5YSeries (
@@ -92,7 +119,7 @@ package org.drip.market.otc;
 		final org.drip.analytics.date.JulianDate dtEffective,
 		final org.drip.analytics.date.JulianDate dtMaturity)
 	{
-<span class="fc" id="L95">		return AddIndexConvention (&quot;CDX.NA&quot;, &quot;IG&quot;, strSeriesName, &quot;5Y&quot;, &quot;USD&quot;, dtEffective, dtMaturity, 4,</span>
+<span class="fc" id="L122">		return AddIndexConvention (&quot;CDX.NA&quot;, &quot;IG&quot;, strSeriesName, &quot;5Y&quot;, &quot;USD&quot;, dtEffective, dtMaturity, 4,</span>
 			&quot;Act/360&quot;, 0.01, 0.4, 125);
 	}
 
@@ -104,72 +131,72 @@ package org.drip.market.otc;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		if (null != _mapIndexConvention) return true;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if (null != _mapIndexConvention) return true;</span>
 
-<span class="fc" id="L109">		_mapIndexConvention = new java.util.TreeMap&lt;java.lang.String,</span>
+<span class="fc" id="L136">		_mapIndexConvention = new java.util.TreeMap&lt;java.lang.String,</span>
 			org.drip.market.otc.CreditIndexConvention&gt;();
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S15&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2010,</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S15&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2010,</span>
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L114">				(2015, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
-<span class="nc" id="L115">			return false;</span>
+<span class="fc" id="L141">				(2015, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
+<span class="nc" id="L142">			return false;</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S16&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2011,</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S16&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2011,</span>
 			org.drip.analytics.date.DateUtil.MARCH, 21), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L119">				(2016, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
-<span class="nc" id="L120">			return false;</span>
+<span class="fc" id="L146">				(2016, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
+<span class="nc" id="L147">			return false;</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S17&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2011,</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S17&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2011,</span>
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L124">				(2016, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
-<span class="nc" id="L125">			return false;</span>
+<span class="fc" id="L151">				(2016, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
+<span class="nc" id="L152">			return false;</span>
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S18&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2012,</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S18&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2012,</span>
 			org.drip.analytics.date.DateUtil.MARCH, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L129">				(2017, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
-<span class="nc" id="L130">			return false;</span>
+<span class="fc" id="L156">				(2017, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
+<span class="nc" id="L157">			return false;</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S19&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2012,</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S19&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2012,</span>
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L134">				(2017, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
-<span class="nc" id="L135">			return false;</span>
+<span class="fc" id="L161">				(2017, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
+<span class="nc" id="L162">			return false;</span>
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S20&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2013,</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S20&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2013,</span>
 			org.drip.analytics.date.DateUtil.MARCH, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L139">				(2018, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
-<span class="nc" id="L140">			return false;</span>
+<span class="fc" id="L166">				(2018, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
+<span class="nc" id="L167">			return false;</span>
 
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S21&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2013,</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S21&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2013,</span>
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L144">				(2018, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
-<span class="nc" id="L145">			return false;</span>
+<span class="fc" id="L171">				(2018, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
+<span class="nc" id="L172">			return false;</span>
 
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S22&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2014,</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S22&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2014,</span>
 			org.drip.analytics.date.DateUtil.MARCH, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L149">				(2019, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
-<span class="nc" id="L150">			return false;</span>
+<span class="fc" id="L176">				(2019, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
+<span class="nc" id="L177">			return false;</span>
 
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S23&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2014,</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S23&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2014,</span>
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 22), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L154">				(2019, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
-<span class="nc" id="L155">			return false;</span>
+<span class="fc" id="L181">				(2019, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
+<span class="nc" id="L182">			return false;</span>
 
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S24&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2015,</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S24&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2015,</span>
 			org.drip.analytics.date.DateUtil.MARCH, 20), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L159">				(2020, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
-<span class="nc" id="L160">			return false;</span>
+<span class="fc" id="L186">				(2020, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
+<span class="nc" id="L187">			return false;</span>
 
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S25&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2015,</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S25&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2015,</span>
 			org.drip.analytics.date.DateUtil.SEPTEMBER, 21), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L164">				(2020, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
-<span class="nc" id="L165">			return false;</span>
+<span class="fc" id="L191">				(2020, org.drip.analytics.date.DateUtil.DECEMBER, 20)))</span>
+<span class="nc" id="L192">			return false;</span>
 
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S26&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2016,</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (!AddCDXNAIG5YSeries (&quot;S26&quot;, org.drip.analytics.date.DateUtil.CreateFromYMD (2016,</span>
 			org.drip.analytics.date.DateUtil.MARCH, 21), org.drip.analytics.date.DateUtil.CreateFromYMD
-<span class="fc" id="L169">				(2021, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
-<span class="nc" id="L170">			return false;</span>
+<span class="fc" id="L196">				(2021, org.drip.analytics.date.DateUtil.JUNE, 20)))</span>
+<span class="nc" id="L197">			return false;</span>
 
-<span class="fc" id="L172">		return true;</span>
+<span class="fc" id="L199">		return true;</span>
 	}
 
 	/**
@@ -183,8 +210,8 @@ package org.drip.market.otc;
 	public static final org.drip.market.otc.CreditIndexConvention ConventionFromFullName (
 		final java.lang.String strCreditIndexFullName)
 	{
-<span class="pc bpc" id="L186" title="2 of 4 branches missed.">		return null == strCreditIndexFullName || !_mapIndexConvention.containsKey (strCreditIndexFullName) ?</span>
-<span class="fc" id="L187">			null : _mapIndexConvention.get (strCreditIndexFullName);</span>
+<span class="pc bpc" id="L213" title="2 of 4 branches missed.">		return null == strCreditIndexFullName || !_mapIndexConvention.containsKey (strCreditIndexFullName) ?</span>
+<span class="fc" id="L214">			null : _mapIndexConvention.get (strCreditIndexFullName);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

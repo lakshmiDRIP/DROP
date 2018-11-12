@@ -6,33 +6,51 @@ package org.drip.historical.attribution;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,27 +67,33 @@ package org.drip.historical.attribution;
  */
 
 /**
- * PositionMarketSnap contains the Metrics Snapshot associated with the relevant Manifest Measures for a
- *  given Position.
+ * &lt;i&gt;PositionMarketSnap&lt;/i&gt; contains the Metrics Snapshot associated with the relevant Manifest Measures for
+ * a given Position.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/attribution&quot;&gt;Attribution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class PositionMarketSnap {
-<span class="nc" id="L59">	private double _dblMarketValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L60">	private org.drip.analytics.date.JulianDate _dtSnap = null;</span>
+<span class="nc" id="L83">	private double _dblMarketValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L84">	private org.drip.analytics.date.JulianDate _dtSnap = null;</span>
 
-<span class="nc" id="L62">	private java.util.Map&lt;java.lang.String, org.drip.historical.attribution.PositionManifestMeasureSnap&gt;</span>
+<span class="nc" id="L86">	private java.util.Map&lt;java.lang.String, org.drip.historical.attribution.PositionManifestMeasureSnap&gt;</span>
 		_mapPMMS = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.historical.attribution.PositionManifestMeasureSnap&gt;();
 
-<span class="nc" id="L66">	private java.util.Map&lt;java.lang.String, java.lang.String&gt; _mapCustomC1 = new</span>
+<span class="nc" id="L90">	private java.util.Map&lt;java.lang.String, java.lang.String&gt; _mapCustomC1 = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.String&gt;();
 
-<span class="nc" id="L69">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapCustomR1 = new</span>
+<span class="nc" id="L93">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapCustomR1 = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L72">	private java.util.Map&lt;java.lang.String, org.drip.analytics.date.JulianDate&gt; _mapCustomDate = new</span>
+<span class="nc" id="L96">	private java.util.Map&lt;java.lang.String, org.drip.analytics.date.JulianDate&gt; _mapCustomDate = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.analytics.date.JulianDate&gt;();
 
 	/**
@@ -85,11 +109,11 @@ public class PositionMarketSnap {
 		final org.drip.analytics.date.JulianDate dtSnap,
 		final double dblMarketValue)
 		throws java.lang.Exception
-<span class="nc" id="L88">	{</span>
-<span class="nc bnc" id="L89" title="All 4 branches missed.">		if (null == (_dtSnap = dtSnap) || !org.drip.quant.common.NumberUtil.IsValid (_dblMarketValue =</span>
+<span class="nc" id="L112">	{</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">		if (null == (_dtSnap = dtSnap) || !org.drip.quant.common.NumberUtil.IsValid (_dblMarketValue =</span>
 			dblMarketValue))
-<span class="nc" id="L91">			throw new java.lang.Exception (&quot;PositionMarketSnap Constructor: Invalid Inputs&quot;);</span>
-<span class="nc" id="L92">	}</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;PositionMarketSnap Constructor: Invalid Inputs&quot;);</span>
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Date of the Snap
@@ -99,7 +123,7 @@ public class PositionMarketSnap {
 
 	public org.drip.analytics.date.JulianDate snapDate()
 	{
-<span class="nc" id="L102">		return _dtSnap;</span>
+<span class="nc" id="L126">		return _dtSnap;</span>
 	}
 
 	/**
@@ -110,7 +134,7 @@ public class PositionMarketSnap {
 
 	public double marketValue()
 	{
-<span class="nc" id="L113">		return _dblMarketValue;</span>
+<span class="nc" id="L137">		return _dblMarketValue;</span>
 	}
 
 	/**
@@ -130,18 +154,18 @@ public class PositionMarketSnap {
 		final double dblManifestMeasureSensitivity,
 		final double dblManifestMeasureRollDown)
 	{
-<span class="nc bnc" id="L133" title="All 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return false;</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return false;</span>
 
 		try {
-<span class="nc" id="L136">			_mapPMMS.put (strManifestMeasure, new org.drip.historical.attribution.PositionManifestMeasureSnap</span>
+<span class="nc" id="L160">			_mapPMMS.put (strManifestMeasure, new org.drip.historical.attribution.PositionManifestMeasureSnap</span>
 				(dblManifestMeasureRealization, dblManifestMeasureSensitivity, dblManifestMeasureRollDown));
 
-<span class="nc" id="L139">			return true;</span>
-<span class="nc" id="L140">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L141">			e.printStackTrace();</span>
+<span class="nc" id="L163">			return true;</span>
+<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L165">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L144">		return false;</span>
+<span class="nc" id="L168">		return false;</span>
 	}
 
 	/**
@@ -155,8 +179,8 @@ public class PositionMarketSnap {
 	public org.drip.historical.attribution.PositionManifestMeasureSnap manifestMeasureSnap (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="nc bnc" id="L158" title="All 4 branches missed.">		return null == strManifestMeasure || !_mapPMMS.containsKey (strManifestMeasure) ? null : _mapPMMS.get</span>
-<span class="nc" id="L159">			(strManifestMeasure);</span>
+<span class="nc bnc" id="L182" title="All 4 branches missed.">		return null == strManifestMeasure || !_mapPMMS.containsKey (strManifestMeasure) ? null : _mapPMMS.get</span>
+<span class="nc" id="L183">			(strManifestMeasure);</span>
 	}
 
 	/**
@@ -167,7 +191,7 @@ public class PositionMarketSnap {
 
 	public java.util.Set&lt;java.lang.String&gt; manifestMeasures()
 	{
-<span class="nc" id="L170">		return _mapPMMS.keySet();</span>
+<span class="nc" id="L194">		return _mapPMMS.keySet();</span>
 	}
 
 	/**
@@ -183,11 +207,11 @@ public class PositionMarketSnap {
 		final java.lang.String strKey,
 		final org.drip.analytics.date.JulianDate dtCustom)
 	{
-<span class="nc bnc" id="L186" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || null == dtCustom) return false;</span>
+<span class="nc bnc" id="L210" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || null == dtCustom) return false;</span>
 
-<span class="nc" id="L188">		_mapCustomDate.put (strKey, dtCustom);</span>
+<span class="nc" id="L212">		_mapCustomDate.put (strKey, dtCustom);</span>
 
-<span class="nc" id="L190">		return true;</span>
+<span class="nc" id="L214">		return true;</span>
 	}
 
 	/**
@@ -201,7 +225,7 @@ public class PositionMarketSnap {
 	public org.drip.analytics.date.JulianDate date (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L204" title="All 4 branches missed.">		return null == strKey || !_mapCustomDate.containsKey (strKey) ? null : _mapCustomDate.get (strKey);</span>
+<span class="nc bnc" id="L228" title="All 4 branches missed.">		return null == strKey || !_mapCustomDate.containsKey (strKey) ? null : _mapCustomDate.get (strKey);</span>
 	}
 
 	/**
@@ -217,11 +241,11 @@ public class PositionMarketSnap {
 		final java.lang.String strKey,
 		final java.lang.String strC1)
 	{
-<span class="nc bnc" id="L220" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strC1 || strC1.isEmpty()) return false;</span>
+<span class="nc bnc" id="L244" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strC1 || strC1.isEmpty()) return false;</span>
 
-<span class="nc" id="L222">		_mapCustomC1.put (strKey, strC1);</span>
+<span class="nc" id="L246">		_mapCustomC1.put (strKey, strC1);</span>
 
-<span class="nc" id="L224">		return true;</span>
+<span class="nc" id="L248">		return true;</span>
 	}
 
 	/**
@@ -235,7 +259,7 @@ public class PositionMarketSnap {
 	public java.lang.String c1 (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L238" title="All 4 branches missed.">		return null == strKey || !_mapCustomC1.containsKey (strKey) ? null : _mapCustomC1.get (strKey);</span>
+<span class="nc bnc" id="L262" title="All 4 branches missed.">		return null == strKey || !_mapCustomC1.containsKey (strKey) ? null : _mapCustomC1.get (strKey);</span>
 	}
 
 	/**
@@ -253,13 +277,13 @@ public class PositionMarketSnap {
 		final double dblR1,
 		final boolean bIgnoreNaN)
 	{
-<span class="nc bnc" id="L256" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || (!bIgnoreNaN &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			(dblR1)))</span>
-<span class="nc" id="L258">			return false;</span>
+<span class="nc bnc" id="L280" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || (!bIgnoreNaN &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">			(dblR1)))</span>
+<span class="nc" id="L282">			return false;</span>
 
-<span class="nc" id="L260">		_mapCustomR1.put (strKey, dblR1);</span>
+<span class="nc" id="L284">		_mapCustomR1.put (strKey, dblR1);</span>
 
-<span class="nc" id="L262">		return true;</span>
+<span class="nc" id="L286">		return true;</span>
 	}
 
 	/**
@@ -275,7 +299,7 @@ public class PositionMarketSnap {
 		final java.lang.String strKey,
 		final double dblR1)
 	{
-<span class="nc" id="L278">		return setR1 (strKey, dblR1, true);</span>
+<span class="nc" id="L302">		return setR1 (strKey, dblR1, true);</span>
 	}
 
 	/**
@@ -292,10 +316,10 @@ public class PositionMarketSnap {
 		final java.lang.String strKey)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L295" title="All 4 branches missed.">		if (null == strKey || !_mapCustomR1.containsKey (strKey))</span>
-<span class="nc" id="L296">			throw new java.lang.Exception (&quot;PositionMarketSnap::r1 =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L319" title="All 4 branches missed.">		if (null == strKey || !_mapCustomR1.containsKey (strKey))</span>
+<span class="nc" id="L320">			throw new java.lang.Exception (&quot;PositionMarketSnap::r1 =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L298">		return _mapCustomR1.get (strKey);</span>
+<span class="nc" id="L322">		return _mapCustomR1.get (strKey);</span>
 	}
 
 	/**
@@ -309,7 +333,7 @@ public class PositionMarketSnap {
 	public boolean setMarketMeasureName (
 		final java.lang.String strMarketMeasureName)
 	{
-<span class="nc" id="L312">		return setC1 (&quot;MarketMeasureName&quot;, strMarketMeasureName);</span>
+<span class="nc" id="L336">		return setC1 (&quot;MarketMeasureName&quot;, strMarketMeasureName);</span>
 	}
 
 	/**
@@ -320,7 +344,7 @@ public class PositionMarketSnap {
 
 	public java.lang.String marketMeasureName()
 	{
-<span class="nc" id="L323">		return c1 (&quot;MarketMeasureName&quot;);</span>
+<span class="nc" id="L347">		return c1 (&quot;MarketMeasureName&quot;);</span>
 	}
 
 	/**
@@ -334,7 +358,7 @@ public class PositionMarketSnap {
 	public boolean setMarketMeasureValue (
 		final double dblMarketMeasureValue)
 	{
-<span class="nc" id="L337">		return setR1 (&quot;MarketMeasureValue&quot;, dblMarketMeasureValue);</span>
+<span class="nc" id="L361">		return setR1 (&quot;MarketMeasureValue&quot;, dblMarketMeasureValue);</span>
 	}
 
 	/**
@@ -348,7 +372,7 @@ public class PositionMarketSnap {
 	public double marketMeasureValue()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L351">		return r1 (&quot;MarketMeasureValue&quot;);</span>
+<span class="nc" id="L375">		return r1 (&quot;MarketMeasureValue&quot;);</span>
 	}
 
 	/**
@@ -362,7 +386,7 @@ public class PositionMarketSnap {
 	public boolean setCumulativeCouponAmount (
 		final double dblCumulativeCouponAmount)
 	{
-<span class="nc" id="L365">		return setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponAmount);</span>
+<span class="nc" id="L389">		return setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponAmount);</span>
 	}
 
 	/**
@@ -376,7 +400,7 @@ public class PositionMarketSnap {
 	public double cumulativeCouponAmount()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L379">		return r1 (&quot;CumulativeCouponAmount&quot;);</span>
+<span class="nc" id="L403">		return r1 (&quot;CumulativeCouponAmount&quot;);</span>
 	}
 
 	/**
@@ -390,18 +414,18 @@ public class PositionMarketSnap {
 	public java.lang.String header (
 		final java.lang.String strPrefix)
 	{
-<span class="nc" id="L393">		java.lang.String strHeader = &quot;&quot;;</span>
+<span class="nc" id="L417">		java.lang.String strHeader = &quot;&quot;;</span>
 
-<span class="nc bnc" id="L395" title="All 2 branches missed.">		for (java.lang.String strR1Key : _mapCustomR1.keySet())</span>
-<span class="nc" id="L396">			strHeader = strHeader + strPrefix + strR1Key + &quot;,&quot;;</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">		for (java.lang.String strR1Key : _mapCustomR1.keySet())</span>
+<span class="nc" id="L420">			strHeader = strHeader + strPrefix + strR1Key + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L398" title="All 2 branches missed.">		for (java.lang.String strC1Key : _mapCustomC1.keySet())</span>
-<span class="nc" id="L399">			strHeader = strHeader + strPrefix + strC1Key + &quot;,&quot;;</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">		for (java.lang.String strC1Key : _mapCustomC1.keySet())</span>
+<span class="nc" id="L423">			strHeader = strHeader + strPrefix + strC1Key + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L401" title="All 2 branches missed.">		for (java.lang.String strDateKey : _mapCustomDate.keySet())</span>
-<span class="nc" id="L402">			strHeader = strHeader + strPrefix + strDateKey + &quot;,&quot;;</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">		for (java.lang.String strDateKey : _mapCustomDate.keySet())</span>
+<span class="nc" id="L426">			strHeader = strHeader + strPrefix + strDateKey + &quot;,&quot;;</span>
 
-<span class="nc" id="L404">		return strHeader;</span>
+<span class="nc" id="L428">		return strHeader;</span>
 	}
 
 	/**
@@ -412,19 +436,19 @@ public class PositionMarketSnap {
 
 	public java.lang.String content()
 	{
-<span class="nc" id="L415">		java.lang.String strContent = &quot;&quot;;</span>
+<span class="nc" id="L439">		java.lang.String strContent = &quot;&quot;;</span>
 
-<span class="nc bnc" id="L417" title="All 2 branches missed.">		for (java.lang.String strR1Key : _mapCustomR1.keySet())</span>
-<span class="nc" id="L418">			strContent = strContent + org.drip.quant.common.FormatUtil.FormatDouble (_mapCustomR1.get</span>
-<span class="nc" id="L419">				(strR1Key), 1, 8, 1.) + &quot;,&quot;;</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">		for (java.lang.String strR1Key : _mapCustomR1.keySet())</span>
+<span class="nc" id="L442">			strContent = strContent + org.drip.quant.common.FormatUtil.FormatDouble (_mapCustomR1.get</span>
+<span class="nc" id="L443">				(strR1Key), 1, 8, 1.) + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L421" title="All 2 branches missed.">		for (java.lang.String strC1Key : _mapCustomC1.keySet())</span>
-<span class="nc" id="L422">			strContent = strContent + _mapCustomC1.get (strC1Key) + &quot;,&quot;;</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">		for (java.lang.String strC1Key : _mapCustomC1.keySet())</span>
+<span class="nc" id="L446">			strContent = strContent + _mapCustomC1.get (strC1Key) + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L424" title="All 2 branches missed.">		for (java.lang.String strDateKey : _mapCustomDate.keySet())</span>
-<span class="nc" id="L425">			strContent = strContent + _mapCustomDate.get (strDateKey).toString() + &quot;,&quot;;</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">		for (java.lang.String strDateKey : _mapCustomDate.keySet())</span>
+<span class="nc" id="L449">			strContent = strContent + _mapCustomDate.get (strDateKey).toString() + &quot;,&quot;;</span>
 
-<span class="nc" id="L427">		return strContent;</span>
+<span class="nc" id="L451">		return strContent;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

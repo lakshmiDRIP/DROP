@@ -6,34 +6,52 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,19 +68,27 @@ package org.drip.market.otc;
  */
 
 /**
- * FixedStreamConvention contains the details of the fixed stream of an OTC fixed-float IBOR/Overnight Swap
- * 	Contact.
+ * &lt;i&gt;FixedStreamConvention&lt;/i&gt; contains the details of the fixed stream of an OTC fixed-float IBOR/Overnight
+ * Swap Contact.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;Over-the-Counter&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FixedStreamConvention {
-<span class="fc" id="L60">	private int _iAccrualCompoundingRule = -1;</span>
-<span class="fc" id="L61">	private java.lang.String _strCalendar = &quot;&quot;;</span>
-<span class="fc" id="L62">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L63">	private java.lang.String _strDayCount = &quot;&quot;;</span>
-<span class="fc" id="L64">	private java.lang.String _strUnitPeriodTenor = &quot;&quot;;</span>
-<span class="fc" id="L65">	private java.lang.String _strCompositePeriodTenor = &quot;&quot;;</span>
+<span class="fc" id="L86">	private int _iAccrualCompoundingRule = -1;</span>
+<span class="fc" id="L87">	private java.lang.String _strCalendar = &quot;&quot;;</span>
+<span class="fc" id="L88">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L89">	private java.lang.String _strDayCount = &quot;&quot;;</span>
+<span class="fc" id="L90">	private java.lang.String _strUnitPeriodTenor = &quot;&quot;;</span>
+<span class="fc" id="L91">	private java.lang.String _strCompositePeriodTenor = &quot;&quot;;</span>
 
 	/**
 	 * FixedStreamConvention Constructor
@@ -85,16 +111,16 @@ public class FixedStreamConvention {
 		final java.lang.String strCompositePeriodTenor,
 		final int iAccrualCompoundingRule)
 		throws java.lang.Exception
-<span class="fc" id="L88">	{</span>
-<span class="pc bpc" id="L89" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strDayCount =</span>
-<span class="pc bpc" id="L90" title="2 of 4 branches missed.">			strDayCount) || _strDayCount.isEmpty() || null == (_strCalendar = strCalendar) ||</span>
-<span class="pc bpc" id="L91" title="2 of 4 branches missed.">				_strCalendar.isEmpty() || null == (_strUnitPeriodTenor = strUnitPeriodTenor) ||</span>
-<span class="pc bpc" id="L92" title="2 of 4 branches missed.">					_strUnitPeriodTenor.isEmpty() || null == (_strCompositePeriodTenor =</span>
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">						strCompositePeriodTenor) || _strCompositePeriodTenor.isEmpty() ||</span>
+<span class="fc" id="L114">	{</span>
+<span class="pc bpc" id="L115" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strDayCount =</span>
+<span class="pc bpc" id="L116" title="2 of 4 branches missed.">			strDayCount) || _strDayCount.isEmpty() || null == (_strCalendar = strCalendar) ||</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">				_strCalendar.isEmpty() || null == (_strUnitPeriodTenor = strUnitPeriodTenor) ||</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">					_strUnitPeriodTenor.isEmpty() || null == (_strCompositePeriodTenor =</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">						strCompositePeriodTenor) || _strCompositePeriodTenor.isEmpty() ||</span>
 							!org.drip.analytics.support.CompositePeriodBuilder.ValidateCompoundingRule
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">								(_iAccrualCompoundingRule = iAccrualCompoundingRule))</span>
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;FixedStreamConvention ctr =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L97">	}</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">								(_iAccrualCompoundingRule = iAccrualCompoundingRule))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;FixedStreamConvention ctr =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Holiday Calendar
@@ -104,7 +130,7 @@ public class FixedStreamConvention {
 
 	public java.lang.String calendar()
 	{
-<span class="fc" id="L107">		return _strCalendar;</span>
+<span class="fc" id="L133">		return _strCalendar;</span>
 	}
 
 	/**
@@ -115,7 +141,7 @@ public class FixedStreamConvention {
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L118">		return _strCurrency;</span>
+<span class="nc" id="L144">		return _strCurrency;</span>
 	}
 
 	/**
@@ -126,7 +152,7 @@ public class FixedStreamConvention {
 
 	public java.lang.String dayCount()
 	{
-<span class="nc" id="L129">		return _strDayCount;</span>
+<span class="nc" id="L155">		return _strDayCount;</span>
 	}
 
 	/**
@@ -137,7 +163,7 @@ public class FixedStreamConvention {
 
 	public java.lang.String unitPeriodTenor()
 	{
-<span class="nc" id="L140">		return _strUnitPeriodTenor;</span>
+<span class="nc" id="L166">		return _strUnitPeriodTenor;</span>
 	}
 
 	/**
@@ -148,7 +174,7 @@ public class FixedStreamConvention {
 
 	public java.lang.String compositePeriodTenor()
 	{
-<span class="nc" id="L151">		return _strCompositePeriodTenor;</span>
+<span class="nc" id="L177">		return _strCompositePeriodTenor;</span>
 	}
 
 	/**
@@ -159,7 +185,7 @@ public class FixedStreamConvention {
 
 	public int accrualCompoundingRule()
 	{
-<span class="nc" id="L162">		return _iAccrualCompoundingRule;</span>
+<span class="nc" id="L188">		return _iAccrualCompoundingRule;</span>
 	}
 
 	/**
@@ -180,39 +206,39 @@ public class FixedStreamConvention {
 		final double dblNotional)
 	{
 		try {
-<span class="fc" id="L183">			org.drip.param.period.UnitCouponAccrualSetting ucas = new</span>
+<span class="fc" id="L209">			org.drip.param.period.UnitCouponAccrualSetting ucas = new</span>
 				org.drip.param.period.UnitCouponAccrualSetting
-<span class="fc" id="L185">					(org.drip.analytics.support.Helper.TenorToFreq (_strUnitPeriodTenor),</span>
+<span class="fc" id="L211">					(org.drip.analytics.support.Helper.TenorToFreq (_strUnitPeriodTenor),</span>
 						_strDayCount, false, _strDayCount, false, _strCurrency, false,
 							org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
 
-<span class="fc" id="L189">			org.drip.param.period.ComposableFixedUnitSetting cfus = new</span>
+<span class="fc" id="L215">			org.drip.param.period.ComposableFixedUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFixedUnitSetting (_strUnitPeriodTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
 						dblCoupon, 0., _strCurrency);
 
-<span class="fc" id="L194">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L220">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting
-<span class="fc" id="L196">					(org.drip.analytics.support.Helper.TenorToFreq (_strCompositePeriodTenor),</span>
+<span class="fc" id="L222">					(org.drip.analytics.support.Helper.TenorToFreq (_strCompositePeriodTenor),</span>
 						_strCompositePeriodTenor, _strCurrency, null, dblNotional, null, null, null, null);
 
-<span class="fc" id="L199">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate =</span>
-<span class="fc" id="L200">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc" id="L225">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate =</span>
+<span class="fc" id="L226">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 					_strCompositePeriodTenor, strMaturityTenor, null);
 
-<span class="fc" id="L203">			return new org.drip.product.rates.Stream</span>
-<span class="fc" id="L204">				(org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (lsEdgeDate, cps, ucas,</span>
+<span class="fc" id="L229">			return new org.drip.product.rates.Stream</span>
+<span class="fc" id="L230">				(org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (lsEdgeDate, cps, ucas,</span>
 					cfus));
-<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L207">			e.printStackTrace();</span>
+<span class="nc" id="L232">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L233">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L210">		return null;</span>
+<span class="nc" id="L236">		return null;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L215">		return &quot;[FIXED: &quot; + _strCurrency + &quot; | &quot; + _strDayCount + &quot; | &quot; + _strCalendar + &quot; | &quot; +</span>
+<span class="fc" id="L241">		return &quot;[FIXED: &quot; + _strCurrency + &quot; | &quot; + _strDayCount + &quot; | &quot; + _strCalendar + &quot; | &quot; +</span>
 			_strUnitPeriodTenor + &quot; | &quot; + _strCompositePeriodTenor + &quot; | &quot; + _iAccrualCompoundingRule + &quot;]&quot;;
 	}
 }

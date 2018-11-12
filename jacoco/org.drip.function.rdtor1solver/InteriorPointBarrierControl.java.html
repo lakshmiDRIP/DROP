@@ -6,33 +6,51 @@ package org.drip.function.rdtor1solver;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,15 +67,21 @@ package org.drip.function.rdtor1solver;
  */
 
 /**
- * InteriorPointBarrierControl contains the Barrier Iteration Control Parameters.
+ * &lt;i&gt;InteriorPointBarrierControl&lt;/i&gt; contains the Barrier Iteration Control Parameters.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.ConvergenceControl {
-<span class="fc" id="L58">	private int _iNumDecaySteps = -1;</span>
-<span class="fc" id="L59">	private double _dblDecayVelocity = java.lang.Double.NaN;</span>
-<span class="fc" id="L60">	private double _dblInitialStrength = java.lang.Double.NaN;</span>
+<span class="fc" id="L82">	private int _iNumDecaySteps = -1;</span>
+<span class="fc" id="L83">	private double _dblDecayVelocity = java.lang.Double.NaN;</span>
+<span class="fc" id="L84">	private double _dblInitialStrength = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Standard InteriorPointBarrierControl Instance
@@ -68,13 +92,13 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 	public static InteriorPointBarrierControl Standard()
 	{
 		try {
-<span class="fc" id="L71">			return new InteriorPointBarrierControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02,</span>
+<span class="fc" id="L95">			return new InteriorPointBarrierControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02,</span>
 				1.0e-06, 1.0e+04, 0.5, 70);
-<span class="nc" id="L73">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L74">			e.printStackTrace();</span>
+<span class="nc" id="L97">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L98">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L77">		return null;</span>
+<span class="nc" id="L101">		return null;</span>
 	}
 
 	/**
@@ -99,13 +123,13 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 		final int iNumDecaySteps)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L102">		super (iConvergenceType, dblRelativeTolerance, dblAbsoluteTolerance, 100);</span>
+<span class="fc" id="L126">		super (iConvergenceType, dblRelativeTolerance, dblAbsoluteTolerance, 100);</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblInitialStrength = dblInitialStrength) ||</span>
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDecayVelocity = dblDecayVelocity) || 1 &gt;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblInitialStrength = dblInitialStrength) ||</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDecayVelocity = dblDecayVelocity) || 1 &gt;</span>
 				(_iNumDecaySteps = iNumDecaySteps))
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;InteriorPointBarrierControl Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L108">	}</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;InteriorPointBarrierControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Number of Decay Steps
@@ -115,7 +139,7 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 
 	public int numDecaySteps()
 	{
-<span class="fc" id="L118">		return _iNumDecaySteps;</span>
+<span class="fc" id="L142">		return _iNumDecaySteps;</span>
 	}
 
 	/**
@@ -126,7 +150,7 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 
 	public double initialStrength()
 	{
-<span class="fc" id="L129">		return _dblInitialStrength;</span>
+<span class="fc" id="L153">		return _dblInitialStrength;</span>
 	}
 
 	/**
@@ -137,7 +161,7 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 
 	public double decayVelocity()
 	{
-<span class="fc" id="L140">		return _dblDecayVelocity;</span>
+<span class="fc" id="L164">		return _dblDecayVelocity;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,34 +6,52 @@ package org.drip.learning.regularization;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,24 +68,40 @@ package org.drip.learning.regularization;
  */
 
 /**
- * RegularizerR1ContinuousToR1Continuous computes the Structural Loss and Risk for the specified Normed R^1
- * 	Continuous To Normed R^1 Continuous Learning Function.
+ * &lt;i&gt;RegularizerR1ContinuousToR1Continuous&lt;/i&gt; computes the Structural Loss and Risk for the specified
+ * Normed R&lt;sup&gt;1&lt;/sup&gt; Continuous To Normed R&lt;sup&gt;1&lt;/sup&gt; Continuous Learning Function.
  *  
- * The References are:
- *  
- *  1) Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
- *  	Convergence, and Learnability, Journal of Association of Computational Machinery, 44 (4) 615-631.
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;ul&gt;
+ * 	&lt;li&gt;
+ *  	Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
+ *  		Convergence, and Learnability &lt;i&gt;Journal of Association of Computational Machinery&lt;/i&gt; &lt;b&gt;44
+ *  		(4)&lt;/b&gt; 615-631
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Anthony, M., and P. L. Bartlett (1999): &lt;i&gt;Artificial Neural Network Learning - Theoretical
+ *  		Foundations&lt;/i&gt; &lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge, UK
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): &lt;i&gt;Towards Efficient Agnostic Learning&lt;/i&gt;
+ *  		Machine Learning &lt;b&gt;17 (2)&lt;/b&gt; 115-141
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
+ *  		Squared Loss &lt;i&gt;IEEE Transactions on Information Theory&lt;/i&gt; &lt;b&gt;44&lt;/b&gt; 1974-1980
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Vapnik, V. N. (1998): &lt;i&gt;Statistical learning Theory&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt; New York
+ * 	&lt;/li&gt;
+ * &lt;/ul&gt;
  * 
- *  2) Anthony, M., and P. L. Bartlett (1999): Artificial Neural Network Learning - Theoretical Foundations,
- *  	Cambridge University Press, Cambridge, UK.
- *  
- *  3) Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): Towards Efficient Agnostic Learning, Machine
- *  	Learning, 17 (2) 115-141.
- *  
- *  4) Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
- *  	Squared Loss, IEEE Transactions on Information Theory, 44 1974-1980.
- * 
- *  5) Vapnik, V. N. (1998): Statistical Learning Theory, Wiley, New York.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/regularization&quot;&gt;Regularization&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -75,7 +109,7 @@ package org.drip.learning.regularization;
 public class RegularizerR1ContinuousToR1Continuous extends
 	org.drip.spaces.rxtor1.NormedR1ContinuousToR1Continuous implements
 		org.drip.learning.regularization.RegularizerR1ToR1 {
-<span class="nc" id="L78">	private double _dblLambda = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dblLambda = java.lang.Double.NaN;</span>
 
 	/**
 	 * RegularizerR1ContinuousToR1Continuous Function Space Constructor
@@ -95,16 +129,16 @@ public class RegularizerR1ContinuousToR1Continuous extends
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (r1ContinuousInput, r1ContinuousOutput, funcRegularizerR1ToR1);</span>
+<span class="nc" id="L132">		super (r1ContinuousInput, r1ContinuousOutput, funcRegularizerR1ToR1);</span>
 
-<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 &gt; _dblLambda)</span>
-<span class="nc" id="L101">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 &gt; _dblLambda)</span>
+<span class="nc" id="L135">			throw new java.lang.Exception</span>
 				(&quot;RegularizerR1ContinuousToR1Continuous Constructor =&gt; Invalid Inputs&quot;);
-<span class="nc" id="L103">	}</span>
+<span class="nc" id="L137">	}</span>
 
 	@Override public double lambda()
 	{
-<span class="nc" id="L107">		return _dblLambda;</span>
+<span class="nc" id="L141">		return _dblLambda;</span>
 	}
 
 	@Override public double structuralLoss (
@@ -112,39 +146,39 @@ public class RegularizerR1ContinuousToR1Continuous extends
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L115" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == adblX)</span>
-<span class="nc" id="L116">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == adblX)</span>
+<span class="nc" id="L150">			throw new java.lang.Exception</span>
 				(&quot;RegularizerR1ContinuousToR1Continuous::structuralLoss =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L119">		double dblLoss = 0.;</span>
-<span class="nc" id="L120">		int iNumSample = adblX.length;</span>
+<span class="nc" id="L153">		double dblLoss = 0.;</span>
+<span class="nc" id="L154">		int iNumSample = adblX.length;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (0 == iNumSample)</span>
-<span class="nc" id="L123">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (0 == iNumSample)</span>
+<span class="nc" id="L157">			throw new java.lang.Exception</span>
 				(&quot;RegularizerR1ContinuousToR1Continuous::structuralLoss =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L126">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();</span>
+<span class="nc" id="L160">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();</span>
 
-<span class="nc" id="L128">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L162">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) {</span>
-<span class="nc" id="L131">			double dblSupremum = 0.;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) {</span>
+<span class="nc" id="L165">			double dblSupremum = 0.;</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L134">				double dblNodeValue = java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *</span>
-<span class="nc" id="L135">					funcR1ToR1.evaluate (adblX[i]));</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L168">				double dblNodeValue = java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *</span>
+<span class="nc" id="L169">					funcR1ToR1.evaluate (adblX[i]));</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">				if (dblSupremum &lt; dblNodeValue) dblSupremum = dblNodeValue;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">				if (dblSupremum &lt; dblNodeValue) dblSupremum = dblNodeValue;</span>
 			}
 
-<span class="nc" id="L140">			return dblSupremum;</span>
+<span class="nc" id="L174">			return dblSupremum;</span>
 		}
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L144">			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *</span>
-<span class="nc" id="L145">				funcR1ToR1.evaluate (adblX[i])), iPNorm);</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="nc" id="L178">			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *</span>
+<span class="nc" id="L179">				funcR1ToR1.evaluate (adblX[i])), iPNorm);</span>
 
-<span class="nc" id="L147">		return dblLoss / iPNorm;</span>
+<span class="nc" id="L181">		return dblLoss / iPNorm;</span>
 	}
 
 	@Override public double structuralRisk (
@@ -154,51 +188,51 @@ public class RegularizerR1ContinuousToR1Continuous extends
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L157" title="All 6 branches missed.">		if (null == funcR1ToR1 || null == adblX || null == adblY)</span>
-<span class="nc" id="L158">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L191" title="All 6 branches missed.">		if (null == funcR1ToR1 || null == adblX || null == adblY)</span>
+<span class="nc" id="L192">			throw new java.lang.Exception</span>
 				(&quot;RegularizerR1ContinuousToR1Continuous::structuralRisk =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L161">		double dblLoss = 0.;</span>
-<span class="nc" id="L162">		double dblNormalizer = 0.;</span>
-<span class="nc" id="L163">		int iNumSample = adblX.length;</span>
+<span class="nc" id="L195">		double dblLoss = 0.;</span>
+<span class="nc" id="L196">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L197">		int iNumSample = adblX.length;</span>
 
-<span class="nc bnc" id="L165" title="All 4 branches missed.">		if (0 == iNumSample || iNumSample != adblY.length)</span>
-<span class="nc" id="L166">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (0 == iNumSample || iNumSample != adblY.length)</span>
+<span class="nc" id="L200">			throw new java.lang.Exception</span>
 				(&quot;RegularizerR1ContinuousToR1Continuous::structuralRisk =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L169">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L203">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc" id="L171">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();</span>
+<span class="nc" id="L205">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) {</span>
-<span class="nc" id="L174">			double dblWeightedSupremum = 0.;</span>
-<span class="nc" id="L175">			double dblSupremumNodeValue = 0.;</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) {</span>
+<span class="nc" id="L208">			double dblWeightedSupremum = 0.;</span>
+<span class="nc" id="L209">			double dblSupremumNodeValue = 0.;</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L178">				double dblNodeValue = java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *</span>
-<span class="nc" id="L179">					funcR1ToR1.evaluate (adblX[i]));</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L212">				double dblNodeValue = java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *</span>
+<span class="nc" id="L213">					funcR1ToR1.evaluate (adblX[i]));</span>
 
-<span class="nc" id="L181">				double dblWeightedNodeValue = distR1R1.density (adblX[i], adblY[i]) * dblNodeValue;</span>
+<span class="nc" id="L215">				double dblWeightedNodeValue = distR1R1.density (adblX[i], adblY[i]) * dblNodeValue;</span>
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">				if (dblWeightedNodeValue &gt; dblWeightedSupremum) {</span>
-<span class="nc" id="L184">					dblSupremumNodeValue = dblNodeValue;</span>
-<span class="nc" id="L185">					dblWeightedSupremum = dblWeightedNodeValue;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">				if (dblWeightedNodeValue &gt; dblWeightedSupremum) {</span>
+<span class="nc" id="L218">					dblSupremumNodeValue = dblNodeValue;</span>
+<span class="nc" id="L219">					dblWeightedSupremum = dblWeightedNodeValue;</span>
 				}
 			}
 
-<span class="nc" id="L189">			return dblSupremumNodeValue;</span>
+<span class="nc" id="L223">			return dblSupremumNodeValue;</span>
 		}
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L193">			double dblDensity = distR1R1.density (adblX[i], adblY[i]);</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L227">			double dblDensity = distR1R1.density (adblX[i], adblY[i]);</span>
 
-<span class="nc" id="L195">			dblNormalizer += dblDensity;</span>
+<span class="nc" id="L229">			dblNormalizer += dblDensity;</span>
 
-<span class="nc" id="L197">			dblLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate</span>
-<span class="nc" id="L198">				(adblX[i]) * funcR1ToR1.evaluate (adblX[i])), iPNorm);</span>
+<span class="nc" id="L231">			dblLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate</span>
+<span class="nc" id="L232">				(adblX[i]) * funcR1ToR1.evaluate (adblX[i])), iPNorm);</span>
 		}
 
-<span class="nc" id="L201">		return dblLoss / iPNorm / dblNormalizer;</span>
+<span class="nc" id="L235">		return dblLoss / iPNorm / dblNormalizer;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

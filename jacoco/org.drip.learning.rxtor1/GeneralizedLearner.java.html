@@ -6,34 +6,52 @@ package org.drip.learning.rxtor1;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,34 +68,53 @@ package org.drip.learning.rxtor1;
  */
 
 /**
- * GeneralizedLearner implements the Learner Class that holds the Space of Normed R^x To Normed R^1 Learning
- * 	Functions along with their Custom Empirical Loss. Class-Specific Asymptotic Sample, Covering Number based
- *  Upper Probability Bounds and other Parameters are also maintained.
+ * &lt;i&gt;GeneralizedLearner&lt;/i&gt; implements the Learner Class that holds the Space of Normed R&lt;sup&gt;x&lt;/sup&gt; To
+ * Normed R&lt;sup&gt;1&lt;/sup&gt; Learning Functions along with their Custom Empirical Loss. Class-Specific Asymptotic
+ * Sample, Covering Number based Upper Probability Bounds and other Parameters are also maintained.
  *  
+ * &lt;br&gt;&lt;br&gt;
  * The References are:
  *  
- *  1) Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
- *  	Convergence, and Learnability, Journal of Association of Computational Machinery, 44 (4) 615-631.
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;ul&gt;
+ * 	&lt;li&gt;
+ *  	Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
+ *  		Convergence, and Learnability &lt;i&gt;Journal of Association of Computational Machinery&lt;/i&gt; &lt;b&gt;44
+ *  		(4)&lt;/b&gt; 615-631
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Anthony, M., and P. L. Bartlett (1999): &lt;i&gt;Artificial Neural Network Learning - Theoretical
+ *  		Foundations&lt;/i&gt; &lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge, UK
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): &lt;i&gt;Towards Efficient Agnostic Learning&lt;/i&gt;
+ *  		Machine Learning &lt;b&gt;17 (2)&lt;/b&gt; 115-141
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
+ *  		Squared Loss &lt;i&gt;IEEE Transactions on Information Theory&lt;/i&gt; &lt;b&gt;44&lt;/b&gt; 1974-1980
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Vapnik, V. N. (1998): &lt;i&gt;Statistical learning Theory&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt; New York
+ * 	&lt;/li&gt;
+ * &lt;/ul&gt;
  * 
- *  2) Anthony, M., and P. L. Bartlett (1999): Artificial Neural Network Learning - Theoretical Foundations,
- *  	Cambridge University Press, Cambridge, UK.
- *  
- *  3) Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): Towards Efficient Agnostic Learning, Machine
- *  	Learning, 17 (2) 115-141.
- *  
- *  4) Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
- *  	Squared Loss, IEEE Transactions on Information Theory, 44 1974-1980.
- * 
- *  5) Vapnik, V. N. (1998): Statistical Learning Theory, Wiley, New York.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.EmpiricalLearningMetricEstimator
 {
-<span class="nc" id="L78">	private org.drip.learning.bound.CoveringNumberLossBound _funcClassCNLB = null;</span>
-<span class="nc" id="L79">	private org.drip.spaces.functionclass.NormedRxToNormedR1Finite _funcClassRxToR1 = null;</span>
-<span class="nc" id="L80">	private org.drip.learning.regularization.RegularizationFunction _regularizerFunc = null;</span>
+<span class="nc" id="L115">	private org.drip.learning.bound.CoveringNumberLossBound _funcClassCNLB = null;</span>
+<span class="nc" id="L116">	private org.drip.spaces.functionclass.NormedRxToNormedR1Finite _funcClassRxToR1 = null;</span>
+<span class="nc" id="L117">	private org.drip.learning.regularization.RegularizationFunction _regularizerFunc = null;</span>
 
 	/**
 	 * GeneralizedLearner Constructor
@@ -95,20 +132,20 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.learning.bound.CoveringNumberLossBound funcClassCNLB,
 		final org.drip.learning.regularization.RegularizationFunction regularizerFunc)
 		throws java.lang.Exception
-<span class="nc" id="L98">	{</span>
-<span class="nc bnc" id="L99" title="All 6 branches missed.">		if (null == (_funcClassRxToR1 = funcClassRxToR1) || null == (_funcClassCNLB = funcClassCNLB) || null</span>
+<span class="nc" id="L135">	{</span>
+<span class="nc bnc" id="L136" title="All 6 branches missed.">		if (null == (_funcClassRxToR1 = funcClassRxToR1) || null == (_funcClassCNLB = funcClassCNLB) || null</span>
 			== (_regularizerFunc = regularizerFunc))
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;GeneralizedLearner ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L102">	}</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;GeneralizedLearner ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">	}</span>
 
 	@Override public org.drip.spaces.functionclass.NormedRxToNormedR1Finite functionClass()
 	{
-<span class="nc" id="L106">		return _funcClassRxToR1;</span>
+<span class="nc" id="L143">		return _funcClassRxToR1;</span>
 	}
 
 	@Override public org.drip.learning.regularization.RegularizationFunction regularizerFunction()
 	{
-<span class="nc" id="L111">		return _regularizerFunc;</span>
+<span class="nc" id="L148">		return _regularizerFunc;</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumEmpiricalLoss (
@@ -116,14 +153,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L119">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L156">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_EMPIRICAL_LOSS,
-<span class="nc" id="L121">					this, gvviY, null, null).supremum (gvviX);</span>
-<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L123">			e.printStackTrace();</span>
+<span class="nc" id="L158">					this, gvviY, null, null).supremum (gvviX);</span>
+<span class="nc" id="L159">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L160">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L126">		return null;</span>
+<span class="nc" id="L163">		return null;</span>
 	}
 
 	@Override public double structuralLoss (
@@ -131,40 +168,40 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L134" title="All 6 branches missed.">		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedR1) &amp;&amp;</span>
+<span class="nc bnc" id="L171" title="All 6 branches missed.">		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedR1) &amp;&amp;</span>
 			(_funcClassRxToR1 instanceof org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L173">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L138">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();</span>
+<span class="nc" id="L175">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (null == funcRegularizerR1ToR1)</span>
-<span class="nc" id="L141">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (null == funcRegularizerR1ToR1)</span>
+<span class="nc" id="L178">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L143">		org.drip.spaces.functionclass.NormedR1ToNormedR1Finite finiteClassR1ToR1 =</span>
+<span class="nc" id="L180">		org.drip.spaces.functionclass.NormedR1ToNormedR1Finite finiteClassR1ToR1 =</span>
 			(org.drip.spaces.functionclass.NormedR1ToNormedR1Finite) _funcClassRxToR1;
 
-<span class="nc" id="L146">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
-<span class="nc" id="L147">			finiteClassR1ToR1.inputMetricVectorSpace();</span>
+<span class="nc" id="L183">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
+<span class="nc" id="L184">			finiteClassR1ToR1.inputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.R1Normed)</span>
-<span class="nc" id="L150">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.R1Normed)</span>
+<span class="nc" id="L187">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L152">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
-<span class="nc" id="L153">			finiteClassR1ToR1.outputMetricVectorSpace();</span>
+<span class="nc" id="L189">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
+<span class="nc" id="L190">			finiteClassR1ToR1.outputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L193">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L158">		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =</span>
-<span class="nc" id="L159">			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,</span>
+<span class="nc" id="L195">		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =</span>
+<span class="nc" id="L196">			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,</span>
 				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
-<span class="nc" id="L161">					gmvsOutput, _regularizerFunc.lambda());</span>
+<span class="nc" id="L198">					gmvsOutput, _regularizerFunc.lambda());</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (null == regularizerR1ToR1)</span>
-<span class="nc" id="L164">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (null == regularizerR1ToR1)</span>
+<span class="nc" id="L201">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L166">		return regularizerR1ToR1.structuralLoss (funcLearnerR1ToR1, ((org.drip.spaces.instance.ValidatedR1)</span>
-<span class="nc" id="L167">			gvvi).instance());</span>
+<span class="nc" id="L203">		return regularizerR1ToR1.structuralLoss (funcLearnerR1ToR1, ((org.drip.spaces.instance.ValidatedR1)</span>
+<span class="nc" id="L204">			gvvi).instance());</span>
 	}
 
 	@Override public double structuralLoss (
@@ -172,54 +209,54 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L175" title="All 6 branches missed.">		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRd) &amp;&amp;</span>
+<span class="nc bnc" id="L212" title="All 6 branches missed.">		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRd) &amp;&amp;</span>
 			(_funcClassRxToR1 instanceof org.drip.spaces.functionclass.NormedRdToNormedR1Finite))
-<span class="nc" id="L177">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L214">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L179">		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();</span>
+<span class="nc" id="L216">		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null == funcRegularizerRdToR1)</span>
-<span class="nc" id="L182">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (null == funcRegularizerRdToR1)</span>
+<span class="nc" id="L219">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L184">		org.drip.spaces.functionclass.NormedRdToNormedR1Finite finiteClassRdToR1 =</span>
+<span class="nc" id="L221">		org.drip.spaces.functionclass.NormedRdToNormedR1Finite finiteClassRdToR1 =</span>
 			(org.drip.spaces.functionclass.NormedRdToNormedR1Finite) _funcClassRxToR1;
 
-<span class="nc" id="L187">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
-<span class="nc" id="L188">			finiteClassRdToR1.inputMetricVectorSpace();</span>
+<span class="nc" id="L224">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
+<span class="nc" id="L225">			finiteClassRdToR1.inputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.RdNormed)</span>
-<span class="nc" id="L191">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.RdNormed)</span>
+<span class="nc" id="L228">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L193">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
-<span class="nc" id="L194">			finiteClassRdToR1.outputMetricVectorSpace();</span>
+<span class="nc" id="L230">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
+<span class="nc" id="L231">			finiteClassRdToR1.outputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L197">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L234">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L199">		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =</span>
-<span class="nc" id="L200">			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,</span>
+<span class="nc" id="L236">		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =</span>
+<span class="nc" id="L237">			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,</span>
 				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
-<span class="nc" id="L202">					gmvsOutput, _regularizerFunc.lambda());</span>
+<span class="nc" id="L239">					gmvsOutput, _regularizerFunc.lambda());</span>
 
-<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (null == regularizerRdToR1)</span>
-<span class="nc" id="L205">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (null == regularizerRdToR1)</span>
+<span class="nc" id="L242">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L207">		return regularizerRdToR1.structuralLoss (funcLearnerRdToR1, ((org.drip.spaces.instance.ValidatedRd)</span>
-<span class="nc" id="L208">			gvvi).instance());</span>
+<span class="nc" id="L244">		return regularizerRdToR1.structuralLoss (funcLearnerRdToR1, ((org.drip.spaces.instance.ValidatedRd)</span>
+<span class="nc" id="L245">			gvvi).instance());</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumStructuralLoss (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
 	{
 		try {
-<span class="nc" id="L215">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L252">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_STRUCTURAL_LOSS,
-<span class="nc" id="L217">					this, null, null, null).supremum (gvviX);</span>
-<span class="nc" id="L218">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L219">			e.printStackTrace();</span>
+<span class="nc" id="L254">					this, null, null, null).supremum (gvviX);</span>
+<span class="nc" id="L255">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L256">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L222">		return null;</span>
+<span class="nc" id="L259">		return null;</span>
 	}
 
 	@Override public double regularizedLoss (
@@ -228,7 +265,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L231">		return empiricalLoss (funcLearnerR1ToR1, gvviX, gvviY) + structuralLoss (funcLearnerR1ToR1, gvviX);</span>
+<span class="nc" id="L268">		return empiricalLoss (funcLearnerR1ToR1, gvviX, gvviY) + structuralLoss (funcLearnerR1ToR1, gvviX);</span>
 	}
 
 	@Override public double regularizedLoss (
@@ -237,7 +274,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L240">		return empiricalLoss (funcLearnerRdToR1, gvviX, gvviY) + structuralLoss (funcLearnerRdToR1, gvviX);</span>
+<span class="nc" id="L277">		return empiricalLoss (funcLearnerRdToR1, gvviX, gvviY) + structuralLoss (funcLearnerRdToR1, gvviX);</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumRegularizedLoss (
@@ -245,14 +282,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L248">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L285">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_REGULARIZED_LOSS,
-<span class="nc" id="L250">				this, gvviY, null, null).supremum (gvviX);</span>
-<span class="nc" id="L251">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L252">			e.printStackTrace();</span>
+<span class="nc" id="L287">				this, gvviY, null, null).supremum (gvviX);</span>
+<span class="nc" id="L288">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L289">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L255">		return null;</span>
+<span class="nc" id="L292">		return null;</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
@@ -261,14 +298,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L264">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L301">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_EMPIRICAL_RISK,
-<span class="nc" id="L266">					this, gvviY, distR1R1, null).supremum (gvviX);</span>
-<span class="nc" id="L267">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L268">			e.printStackTrace();</span>
+<span class="nc" id="L303">					this, gvviY, distR1R1, null).supremum (gvviX);</span>
+<span class="nc" id="L304">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L305">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L271">		return null;</span>
+<span class="nc" id="L308">		return null;</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
@@ -277,14 +314,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L280">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L317">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_EMPIRICAL_RISK,
-<span class="nc" id="L282">					this, gvviY, null, distRdR1).supremum (gvviX);</span>
-<span class="nc" id="L283">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L284">			e.printStackTrace();</span>
+<span class="nc" id="L319">					this, gvviY, null, distRdR1).supremum (gvviX);</span>
+<span class="nc" id="L320">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L321">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L287">		return null;</span>
+<span class="nc" id="L324">		return null;</span>
 	}
 
 	@Override public double structuralRisk (
@@ -294,43 +331,43 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L297" title="All 12 branches missed.">		if (null == distR1R1 || null == gvviX || null == gvviY || !(gvviX instanceof</span>
+<span class="nc bnc" id="L334" title="All 12 branches missed.">		if (null == distR1R1 || null == gvviX || null == gvviY || !(gvviX instanceof</span>
 			org.drip.spaces.instance.ValidatedR1) || !(gvviY instanceof
 				org.drip.spaces.instance.ValidatedR1) &amp;&amp; !(_funcClassRxToR1 instanceof
 					org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
-<span class="nc" id="L301">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L338">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L303">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();</span>
+<span class="nc" id="L340">		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();</span>
 
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (null == funcRegularizerR1ToR1)</span>
-<span class="nc" id="L306">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		if (null == funcRegularizerR1ToR1)</span>
+<span class="nc" id="L343">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L308">		org.drip.spaces.functionclass.NormedR1ToNormedR1Finite finiteClassR1ToR1 =</span>
+<span class="nc" id="L345">		org.drip.spaces.functionclass.NormedR1ToNormedR1Finite finiteClassR1ToR1 =</span>
 			(org.drip.spaces.functionclass.NormedR1ToNormedR1Finite) _funcClassRxToR1;
 
-<span class="nc" id="L311">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
-<span class="nc" id="L312">			finiteClassR1ToR1.inputMetricVectorSpace();</span>
+<span class="nc" id="L348">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
+<span class="nc" id="L349">			finiteClassR1ToR1.inputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.R1Normed)</span>
-<span class="nc" id="L315">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.R1Normed)</span>
+<span class="nc" id="L352">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L317">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
-<span class="nc" id="L318">			finiteClassR1ToR1.outputMetricVectorSpace();</span>
+<span class="nc" id="L354">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
+<span class="nc" id="L355">			finiteClassR1ToR1.outputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L320" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L321">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L358">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L323">		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =</span>
-<span class="nc" id="L324">			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,</span>
+<span class="nc" id="L360">		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =</span>
+<span class="nc" id="L361">			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,</span>
 				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
-<span class="nc" id="L326">					gmvsOutput, _regularizerFunc.lambda());</span>
+<span class="nc" id="L363">					gmvsOutput, _regularizerFunc.lambda());</span>
 
-<span class="nc bnc" id="L328" title="All 2 branches missed.">		if (null == regularizerR1ToR1)</span>
-<span class="nc" id="L329">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">		if (null == regularizerR1ToR1)</span>
+<span class="nc" id="L366">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L331">		return regularizerR1ToR1.structuralRisk (distR1R1, funcLearnerR1ToR1,</span>
-<span class="nc" id="L332">			((org.drip.spaces.instance.ValidatedR1) gvviX).instance(),</span>
-<span class="nc" id="L333">				((org.drip.spaces.instance.ValidatedR1) gvviY).instance());</span>
+<span class="nc" id="L368">		return regularizerR1ToR1.structuralRisk (distR1R1, funcLearnerR1ToR1,</span>
+<span class="nc" id="L369">			((org.drip.spaces.instance.ValidatedR1) gvviX).instance(),</span>
+<span class="nc" id="L370">				((org.drip.spaces.instance.ValidatedR1) gvviY).instance());</span>
 	}
 
 	@Override public double structuralRisk (
@@ -340,43 +377,43 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L343" title="All 12 branches missed.">		if (null == distRdR1 || null == gvviX || null == gvviY || !(gvviX instanceof</span>
+<span class="nc bnc" id="L380" title="All 12 branches missed.">		if (null == distRdR1 || null == gvviX || null == gvviY || !(gvviX instanceof</span>
 			org.drip.spaces.instance.ValidatedRd) || !(gvviY instanceof
 				org.drip.spaces.instance.ValidatedR1) &amp;&amp; !(_funcClassRxToR1 instanceof
 					org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
-<span class="nc" id="L347">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L384">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L349">		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();</span>
+<span class="nc" id="L386">		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();</span>
 
-<span class="nc bnc" id="L351" title="All 2 branches missed.">		if (null == funcRegularizerRdToR1)</span>
-<span class="nc" id="L352">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (null == funcRegularizerRdToR1)</span>
+<span class="nc" id="L389">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L354">		org.drip.spaces.functionclass.NormedRdToNormedR1Finite finiteClassRdToR1 =</span>
+<span class="nc" id="L391">		org.drip.spaces.functionclass.NormedRdToNormedR1Finite finiteClassRdToR1 =</span>
 			(org.drip.spaces.functionclass.NormedRdToNormedR1Finite) _funcClassRxToR1;
 
-<span class="nc" id="L357">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
-<span class="nc" id="L358">			finiteClassRdToR1.inputMetricVectorSpace();</span>
+<span class="nc" id="L394">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
+<span class="nc" id="L395">			finiteClassRdToR1.inputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.RdNormed)</span>
-<span class="nc" id="L361">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		if (gmvsInput instanceof org.drip.spaces.metric.RdNormed)</span>
+<span class="nc" id="L398">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L363">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
-<span class="nc" id="L364">			finiteClassRdToR1.outputMetricVectorSpace();</span>
+<span class="nc" id="L400">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =</span>
+<span class="nc" id="L401">			finiteClassRdToR1.outputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L366" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L367">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L404">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L369">		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =</span>
-<span class="nc" id="L370">			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,</span>
+<span class="nc" id="L406">		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =</span>
+<span class="nc" id="L407">			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,</span>
 				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
-<span class="nc" id="L372">					gmvsOutput, _regularizerFunc.lambda());</span>
+<span class="nc" id="L409">					gmvsOutput, _regularizerFunc.lambda());</span>
 
-<span class="nc bnc" id="L374" title="All 2 branches missed.">		if (null == regularizerRdToR1)</span>
-<span class="nc" id="L375">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L411" title="All 2 branches missed.">		if (null == regularizerRdToR1)</span>
+<span class="nc" id="L412">			throw new java.lang.Exception (&quot;GeneralizedLearner::structuralRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L377">		return regularizerRdToR1.structuralRisk (distRdR1, funcLearnerRdToR1,</span>
-<span class="nc" id="L378">			((org.drip.spaces.instance.ValidatedRd) gvviX).instance(),</span>
-<span class="nc" id="L379">				((org.drip.spaces.instance.ValidatedR1) gvviY).instance());</span>
+<span class="nc" id="L414">		return regularizerRdToR1.structuralRisk (distRdR1, funcLearnerRdToR1,</span>
+<span class="nc" id="L415">			((org.drip.spaces.instance.ValidatedRd) gvviX).instance(),</span>
+<span class="nc" id="L416">				((org.drip.spaces.instance.ValidatedR1) gvviY).instance());</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumStructuralRisk (
@@ -385,14 +422,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L388">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L425">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_STRUCTURAL_RISK,
-<span class="nc" id="L390">					this, gvviY, distR1R1, null).supremum (gvviX);</span>
-<span class="nc" id="L391">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L392">			e.printStackTrace();</span>
+<span class="nc" id="L427">					this, gvviY, distR1R1, null).supremum (gvviX);</span>
+<span class="nc" id="L428">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L429">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L395">		return null;</span>
+<span class="nc" id="L432">		return null;</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumStructuralRisk (
@@ -401,14 +438,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L404">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L441">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_STRUCTURAL_RISK,
-<span class="nc" id="L406">					this, gvviY, null, distRdR1).supremum (gvviX);</span>
-<span class="nc" id="L407">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L408">			e.printStackTrace();</span>
+<span class="nc" id="L443">					this, gvviY, null, distRdR1).supremum (gvviX);</span>
+<span class="nc" id="L444">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L445">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L411">		return null;</span>
+<span class="nc" id="L448">		return null;</span>
 	}
 
 	@Override public double regularizedRisk (
@@ -418,7 +455,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L421">		return empiricalRisk (distR1R1, funcLearnerR1ToR1, gvviX, gvviY) + structuralRisk (distR1R1,</span>
+<span class="nc" id="L458">		return empiricalRisk (distR1R1, funcLearnerR1ToR1, gvviX, gvviY) + structuralRisk (distR1R1,</span>
 			funcLearnerR1ToR1, gvviX, gvviY);
 	}
 
@@ -429,7 +466,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L432">		return empiricalRisk (distRdR1, funcLearnerRdToR1, gvviX, gvviY) + structuralRisk (distRdR1,</span>
+<span class="nc" id="L469">		return empiricalRisk (distRdR1, funcLearnerRdToR1, gvviX, gvviY) + structuralRisk (distRdR1,</span>
 			funcLearnerRdToR1, gvviX, gvviY);
 	}
 
@@ -439,14 +476,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L442">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L479">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_REGULARIZED_RISK,
-<span class="nc" id="L444">				this, gvviY, distR1R1, null).supremum (gvviX);</span>
-<span class="nc" id="L445">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L446">			e.printStackTrace();</span>
+<span class="nc" id="L481">				this, gvviY, distR1R1, null).supremum (gvviX);</span>
+<span class="nc" id="L482">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L483">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L449">		return null;</span>
+<span class="nc" id="L486">		return null;</span>
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumRegularizedRisk (
@@ -455,14 +492,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
-<span class="nc" id="L458">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
+<span class="nc" id="L495">			return new org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator</span>
 				(org.drip.learning.rxtor1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_REGULARIZED_RISK,
-<span class="nc" id="L460">				this, gvviY, null, distRdR1).supremum (gvviX);</span>
-<span class="nc" id="L461">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L462">			e.printStackTrace();</span>
+<span class="nc" id="L497">				this, gvviY, null, distRdR1).supremum (gvviX);</span>
+<span class="nc" id="L498">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L499">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L465">		return null;</span>
+<span class="nc" id="L502">		return null;</span>
 	}
 
 	/**
@@ -473,7 +510,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 
 	public org.drip.learning.bound.CoveringNumberLossBound coveringLossBoundEvaluator()
 	{
-<span class="nc" id="L476">		return _funcClassCNLB;</span>
+<span class="nc" id="L513">		return _funcClassCNLB;</span>
 	}
 
 	/**
@@ -496,9 +533,9 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L499" title="All 2 branches missed.">		return _funcClassCNLB.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?</span>
-<span class="nc" id="L500">			_funcClassRxToR1.populationSupremumCoveringNumber (dblEpsilon) :</span>
-<span class="nc" id="L501">				_funcClassRxToR1.populationCoveringNumber (dblEpsilon));</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">		return _funcClassCNLB.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?</span>
+<span class="nc" id="L537">			_funcClassRxToR1.populationSupremumCoveringNumber (dblEpsilon) :</span>
+<span class="nc" id="L538">				_funcClassRxToR1.populationCoveringNumber (dblEpsilon));</span>
 	}
 
 	/**
@@ -520,30 +557,30 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L523" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
-<span class="nc bnc" id="L524" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
-<span class="nc" id="L525">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
+<span class="nc" id="L562">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::genericCoveringSampleSize =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L528">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
-<span class="nc" id="L529">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L565">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
+<span class="nc" id="L566">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L534">				return genericCoveringProbabilityBound ((int) dblSampleSize, dblEpsilon, bSupremum);</span>
+<span class="nc" id="L571">				return genericCoveringProbabilityBound ((int) dblSampleSize, dblEpsilon, bSupremum);</span>
 			}
 		};
 
-<span class="nc" id="L538">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
+<span class="nc" id="L575">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
-<span class="nc" id="L540">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
+<span class="nc" id="L577">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
 
-<span class="nc bnc" id="L542" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L543">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L579" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L580">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::genericCoveringSampleSize =&gt; Cannot Estimate Minimal Sample Size&quot;);
 
-<span class="nc" id="L546">		return fpfo.getRoot();</span>
+<span class="nc" id="L583">		return fpfo.getRoot();</span>
 	}
 
 	/**
@@ -570,8 +607,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L573">		return _funcClassCNLB.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) *</span>
-<span class="nc" id="L574">			lossSampleCoveringNumber (gvvi, dblEpsilon, bSupremum);</span>
+<span class="nc" id="L610">		return _funcClassCNLB.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) *</span>
+<span class="nc" id="L611">			lossSampleCoveringNumber (gvvi, dblEpsilon, bSupremum);</span>
 	}
 
 	/**
@@ -595,30 +632,30 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L598" title="All 4 branches missed.">		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
-<span class="nc bnc" id="L599" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
-<span class="nc" id="L600">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L635" title="All 4 branches missed.">		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
+<span class="nc bnc" id="L636" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
+<span class="nc" id="L637">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::genericCoveringSampleSize =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L603">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
-<span class="nc" id="L604">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L640">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
+<span class="nc" id="L641">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L609">				return genericCoveringProbabilityBound (gvvi, (int) dblSampleSize, dblEpsilon, bSupremum);</span>
+<span class="nc" id="L646">				return genericCoveringProbabilityBound (gvvi, (int) dblSampleSize, dblEpsilon, bSupremum);</span>
 			}
 		};
 
-<span class="nc" id="L613">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
+<span class="nc" id="L650">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
-<span class="nc" id="L615">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
+<span class="nc" id="L652">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
 
-<span class="nc bnc" id="L617" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L618">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L654" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L655">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::genericCoveringSampleSize =&gt; Cannot Estimate Minimal Sample Size&quot;);
 
-<span class="nc" id="L621">		return fpfo.getRoot();</span>
+<span class="nc" id="L658">		return fpfo.getRoot();</span>
 	}
 
 	/**
@@ -641,25 +678,25 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L644" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon || iSampleSize &lt; (2. /</span>
+<span class="nc bnc" id="L681" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon || iSampleSize &lt; (2. /</span>
 			(dblEpsilon * dblEpsilon)))
-<span class="nc" id="L646">			throw new java.lang.Exception</span>
+<span class="nc" id="L683">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::regressorCoveringProbabilityBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L649">		org.drip.function.definition.R1ToR1 funcSampleCoefficient = new</span>
-<span class="nc" id="L650">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L686">		org.drip.function.definition.R1ToR1 funcSampleCoefficient = new</span>
+<span class="nc" id="L687">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L655">				return 12. * dblSampleSize;</span>
+<span class="nc" id="L692">				return 12. * dblSampleSize;</span>
 			}
 		};
 
-<span class="nc" id="L659">		return (new org.drip.learning.bound.CoveringNumberLossBound (funcSampleCoefficient, 2.,</span>
-<span class="nc bnc" id="L660" title="All 2 branches missed.">			36.)).deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?</span>
-<span class="nc" id="L661">				_funcClassRxToR1.populationSupremumCoveringNumber (dblEpsilon / 6.) :</span>
-<span class="nc" id="L662">					_funcClassRxToR1.populationCoveringNumber (dblEpsilon / 6.));</span>
+<span class="nc" id="L696">		return (new org.drip.learning.bound.CoveringNumberLossBound (funcSampleCoefficient, 2.,</span>
+<span class="nc bnc" id="L697" title="All 2 branches missed.">			36.)).deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?</span>
+<span class="nc" id="L698">				_funcClassRxToR1.populationSupremumCoveringNumber (dblEpsilon / 6.) :</span>
+<span class="nc" id="L699">					_funcClassRxToR1.populationCoveringNumber (dblEpsilon / 6.));</span>
 	}
 
 	/**
@@ -682,30 +719,30 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L685" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
-<span class="nc bnc" id="L686" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
-<span class="nc" id="L687">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L722" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
+<span class="nc bnc" id="L723" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
+<span class="nc" id="L724">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::regressorCoveringSampleSize =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L690">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
-<span class="nc" id="L691">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L727">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
+<span class="nc" id="L728">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L696">				return regressorCoveringProbabilityBound ((int) dblSampleSize, dblEpsilon, bSupremum);</span>
+<span class="nc" id="L733">				return regressorCoveringProbabilityBound ((int) dblSampleSize, dblEpsilon, bSupremum);</span>
 			}
 		};
 
-<span class="nc" id="L700">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
+<span class="nc" id="L737">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
-<span class="nc" id="L702">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
+<span class="nc" id="L739">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
 
-<span class="nc bnc" id="L704" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L705">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L741" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L742">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::regressorCoveringSampleSize =&gt; Cannot Estimate Minimal Sample Size&quot;);
 
-<span class="nc" id="L708">		return fpfo.getRoot();</span>
+<span class="nc" id="L745">		return fpfo.getRoot();</span>
 	}
 
 	/**
@@ -732,23 +769,23 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L735" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon || iSampleSize &lt; (2. /</span>
+<span class="nc bnc" id="L772" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon || iSampleSize &lt; (2. /</span>
 			(dblEpsilon * dblEpsilon)))
-<span class="nc" id="L737">			throw new java.lang.Exception</span>
+<span class="nc" id="L774">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::regressorCoveringProbabilityBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L740">		org.drip.function.definition.R1ToR1 funcSampleCoefficient = new</span>
-<span class="nc" id="L741">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L777">		org.drip.function.definition.R1ToR1 funcSampleCoefficient = new</span>
+<span class="nc" id="L778">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L746">				return 12. * dblSampleSize;</span>
+<span class="nc" id="L783">				return 12. * dblSampleSize;</span>
 			}
 		};
 
-<span class="nc" id="L750">		return (new org.drip.learning.bound.CoveringNumberLossBound (funcSampleCoefficient, 2.,</span>
-<span class="nc" id="L751">			36.)).deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * lossSampleCoveringNumber (gvvi,</span>
+<span class="nc" id="L787">		return (new org.drip.learning.bound.CoveringNumberLossBound (funcSampleCoefficient, 2.,</span>
+<span class="nc" id="L788">			36.)).deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * lossSampleCoveringNumber (gvvi,</span>
 				dblEpsilon / 6., bSupremum);
 	}
 
@@ -774,30 +811,30 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L777" title="All 4 branches missed.">		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
-<span class="nc bnc" id="L778" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
-<span class="nc" id="L779">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L814" title="All 4 branches missed.">		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||</span>
+<span class="nc bnc" id="L815" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))</span>
+<span class="nc" id="L816">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::regressorCoveringSampleSize =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L782">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
-<span class="nc" id="L783">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L819">		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new</span>
+<span class="nc" id="L820">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L788">				return regressorCoveringProbabilityBound (gvvi, (int) dblSampleSize, dblEpsilon, bSupremum);</span>
+<span class="nc" id="L825">				return regressorCoveringProbabilityBound (gvvi, (int) dblSampleSize, dblEpsilon, bSupremum);</span>
 			}
 		};
 
-<span class="nc" id="L792">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
+<span class="nc" id="L829">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
-<span class="nc" id="L794">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
+<span class="nc" id="L831">				funcDeviationUpperProbabilityBound, false).findRoot();</span>
 
-<span class="nc bnc" id="L796" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L797">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L833" title="All 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L834">			throw new java.lang.Exception</span>
 				(&quot;GeneralizedLearner::regressorCoveringSampleSize =&gt; Cannot Estimate Minimal Sample Size&quot;);
 
-<span class="nc" id="L800">		return fpfo.getRoot();</span>
+<span class="nc" id="L837">		return fpfo.getRoot();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

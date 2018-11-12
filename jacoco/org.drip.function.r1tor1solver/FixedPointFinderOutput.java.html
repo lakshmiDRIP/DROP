@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,26 +71,41 @@ package org.drip.function.r1tor1solver;
  */
 
 /**
- * FixedPointFinderOutput holds the result of the fixed point search.
+ * &lt;i&gt;FixedPointFinderOutput&lt;/i&gt; holds the result of the fixed point search.
  *
  * FixedPointFinderOutput contains the following fields:
- * 	- Whether the search completed successfully
- * 	- The number of iterations, the number of objective function base/derivative calculations, and the time
- * 		taken for the search
- * 	- The output from initialization
+ * &lt;br&gt;
+ * &lt;ul&gt;
+ * 	&lt;li&gt;
+ * 		Whether the search completed successfully
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ * 		The number of iterations, the number of objective function base/derivative calculations, and the time
+ * 			taken for the search
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ * 		The output from initialization
+ * 	&lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FixedPointFinderOutput {
-<span class="fc" id="L68">	private int _iNumOFCalcs = 0;</span>
-<span class="fc" id="L69">	private long _lStartTime = 0L;</span>
-<span class="fc" id="L70">	private int _iNumIterations = 0;</span>
-<span class="fc" id="L71">	private int _iNumOFDerivCalcs = 0;</span>
-<span class="fc" id="L72">	private boolean _bHasRoot = false;</span>
-<span class="fc" id="L73">	private double _dblRoot = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _dblRootFindingTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private org.drip.function.r1tor1solver.ExecutionInitializationOutput _eiop = null;</span>
+<span class="fc" id="L101">	private int _iNumOFCalcs = 0;</span>
+<span class="fc" id="L102">	private long _lStartTime = 0L;</span>
+<span class="fc" id="L103">	private int _iNumIterations = 0;</span>
+<span class="fc" id="L104">	private int _iNumOFDerivCalcs = 0;</span>
+<span class="fc" id="L105">	private boolean _bHasRoot = false;</span>
+<span class="fc" id="L106">	private double _dblRoot = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblRootFindingTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private org.drip.function.r1tor1solver.ExecutionInitializationOutput _eiop = null;</span>
 
 	/**
 	 * FixedPointFinderOutput constructor
@@ -85,12 +118,12 @@ public class FixedPointFinderOutput {
 	public FixedPointFinderOutput (
 		final org.drip.function.r1tor1solver.ExecutionInitializationOutput eiop)
 		throws java.lang.Exception
-<span class="fc" id="L88">	{</span>
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == (_eiop = eiop))</span>
-<span class="nc" id="L90">			throw new java.lang.Exception (&quot;FixedPointFinderOutput constructor: Invalid inputs!&quot;);</span>
+<span class="fc" id="L121">	{</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == (_eiop = eiop))</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;FixedPointFinderOutput constructor: Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L92">		_lStartTime = System.nanoTime();</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L125">		_lStartTime = System.nanoTime();</span>
+<span class="fc" id="L126">	}</span>
 
 	/**
 	 * Set the Root
@@ -103,11 +136,11 @@ public class FixedPointFinderOutput {
 	public boolean setRoot (
 		final double dblRoot)
 	{
-<span class="fc" id="L106">		_dblRootFindingTime = (System.nanoTime() - _lStartTime) * 0.000001;</span>
+<span class="fc" id="L139">		_dblRootFindingTime = (System.nanoTime() - _lStartTime) * 0.000001;</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRoot = dblRoot)) return false;</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRoot = dblRoot)) return false;</span>
 
-<span class="fc" id="L110">		return _bHasRoot = true;</span>
+<span class="fc" id="L143">		return _bHasRoot = true;</span>
 	}
 
 	/**
@@ -118,7 +151,7 @@ public class FixedPointFinderOutput {
 
 	public boolean containsRoot()
 	{
-<span class="fc" id="L121">		return _bHasRoot;</span>
+<span class="fc" id="L154">		return _bHasRoot;</span>
 	}
 
 	/**
@@ -129,7 +162,7 @@ public class FixedPointFinderOutput {
 
 	public double time()
 	{
-<span class="nc" id="L132">		return _dblRootFindingTime;</span>
+<span class="nc" id="L165">		return _dblRootFindingTime;</span>
 	}
 
 	/**
@@ -140,7 +173,7 @@ public class FixedPointFinderOutput {
 
 	public double getRoot()
 	{
-<span class="fc" id="L143">		return _dblRoot;</span>
+<span class="fc" id="L176">		return _dblRoot;</span>
 	}
 
 	/**
@@ -151,8 +184,8 @@ public class FixedPointFinderOutput {
 
 	public boolean incrIterations()
 	{
-<span class="fc" id="L154">		++_iNumIterations;</span>
-<span class="fc" id="L155">		return true;</span>
+<span class="fc" id="L187">		++_iNumIterations;</span>
+<span class="fc" id="L188">		return true;</span>
 	}
 
 	/**
@@ -163,7 +196,7 @@ public class FixedPointFinderOutput {
 
 	public int getNumIterations()
 	{
-<span class="nc" id="L166">		return _iNumIterations;</span>
+<span class="nc" id="L199">		return _iNumIterations;</span>
 	}
 
 	/**
@@ -174,8 +207,8 @@ public class FixedPointFinderOutput {
 
 	public boolean incrOFCalcs()
 	{
-<span class="fc" id="L177">		++_iNumOFCalcs;</span>
-<span class="fc" id="L178">		return true;</span>
+<span class="fc" id="L210">		++_iNumOFCalcs;</span>
+<span class="fc" id="L211">		return true;</span>
 	}
 
 	/**
@@ -186,7 +219,7 @@ public class FixedPointFinderOutput {
 
 	public int getNumOFCalcs()
 	{
-<span class="nc" id="L189">		return _iNumOFCalcs;</span>
+<span class="nc" id="L222">		return _iNumOFCalcs;</span>
 	}
 
 	/**
@@ -197,8 +230,8 @@ public class FixedPointFinderOutput {
 
 	public boolean incrOFDerivCalcs()
 	{
-<span class="fc" id="L200">		++_iNumOFDerivCalcs;</span>
-<span class="fc" id="L201">		return true;</span>
+<span class="fc" id="L233">		++_iNumOFDerivCalcs;</span>
+<span class="fc" id="L234">		return true;</span>
 	}
 
 	/**
@@ -209,7 +242,7 @@ public class FixedPointFinderOutput {
 
 	public int getNumOFDerivCalcs()
 	{
-<span class="nc" id="L212">		return _iNumOFDerivCalcs;</span>
+<span class="nc" id="L245">		return _iNumOFDerivCalcs;</span>
 	}
 
 	/**
@@ -220,7 +253,7 @@ public class FixedPointFinderOutput {
 
 	public org.drip.function.r1tor1solver.ExecutionInitializationOutput getEIOP()
 	{
-<span class="nc" id="L223">		return _eiop;</span>
+<span class="nc" id="L256">		return _eiop;</span>
 	}
 
 	/**
@@ -231,21 +264,21 @@ public class FixedPointFinderOutput {
 
 	public java.lang.String displayString()
 	{
-<span class="fc" id="L234">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L267">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L236">		sb.append (_eiop.displayString());</span>
+<span class="fc" id="L269">		sb.append (_eiop.displayString());</span>
 
-<span class="fc" id="L238">		sb.append (&quot;\n\tRoot finding Done? &quot; + _bHasRoot + &quot; [&quot; + _dblRootFindingTime + &quot; msec]&quot;);</span>
+<span class="fc" id="L271">		sb.append (&quot;\n\tRoot finding Done? &quot; + _bHasRoot + &quot; [&quot; + _dblRootFindingTime + &quot; msec]&quot;);</span>
 
-<span class="fc" id="L240">		sb.append (&quot;\n\tRoot: &quot; + _dblRoot);</span>
+<span class="fc" id="L273">		sb.append (&quot;\n\tRoot: &quot; + _dblRoot);</span>
 
-<span class="fc" id="L242">		sb.append (&quot;\n\tNum Iterations: &quot; + _iNumIterations);</span>
+<span class="fc" id="L275">		sb.append (&quot;\n\tNum Iterations: &quot; + _iNumIterations);</span>
 
-<span class="fc" id="L244">		sb.append (&quot;\n\tNum OF Calculations: &quot; + _iNumOFCalcs);</span>
+<span class="fc" id="L277">		sb.append (&quot;\n\tNum OF Calculations: &quot; + _iNumOFCalcs);</span>
 
-<span class="fc" id="L246">		sb.append (&quot;\n\tNum OF Derivative Calculations: &quot; + _iNumOFDerivCalcs);</span>
+<span class="fc" id="L279">		sb.append (&quot;\n\tNum OF Derivative Calculations: &quot; + _iNumOFDerivCalcs);</span>
 
-<span class="fc" id="L248">		return sb.toString();</span>
+<span class="fc" id="L281">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

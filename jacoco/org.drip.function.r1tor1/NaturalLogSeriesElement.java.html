@@ -6,6 +6,7 @@ package org.drip.function.r1tor1;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,13 +70,19 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * NaturalLogSeriesElement implements an element in the natural log series expansion.
- *
+ * &lt;i&gt;NaturalLogSeriesElement&lt;/i&gt; implements an element in the natural log series expansion.
+ * &lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
  * @author Lakshmi Krishnamurthy
  */
 
 public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L61">	private int _iExponent = -1;</span>
+<span class="fc" id="L85">	private int _iExponent = -1;</span>
 
 	/**
 	 * NaturalLogSeriesElement constructor
@@ -72,18 +96,18 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final int iExponent)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L75">		super (null);</span>
+<span class="fc" id="L99">		super (null);</span>
 
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if (0 &gt; (_iExponent = iExponent))</span>
-<span class="nc" id="L78">			throw new java.lang.Exception (&quot;NaturalLogSeriesElement ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L79">	}</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (0 &gt; (_iExponent = iExponent))</span>
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;NaturalLogSeriesElement ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L103">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L85">		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.quant.common.NumberUtil.Factorial</span>
-<span class="fc" id="L86">			(_iExponent);</span>
+<span class="fc" id="L109">		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.quant.common.NumberUtil.Factorial</span>
+<span class="fc" id="L110">			(_iExponent);</span>
 	}
 
 	@Override public double derivative (
@@ -91,8 +115,8 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L94" title="All 2 branches covered.">		return iOrder &gt; _iExponent ? 0. : java.lang.Math.pow (dblVariate, _iExponent - iOrder) /</span>
-<span class="fc" id="L95">			org.drip.quant.common.NumberUtil.Factorial (_iExponent - iOrder);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		return iOrder &gt; _iExponent ? 0. : java.lang.Math.pow (dblVariate, _iExponent - iOrder) /</span>
+<span class="fc" id="L119">			org.drip.quant.common.NumberUtil.Factorial (_iExponent - iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -100,12 +124,12 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;NaturalLogSeriesElement::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;NaturalLogSeriesElement::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L107">		return (java.lang.Math.pow (dblEnd, _iExponent) - java.lang.Math.pow (dblBegin, _iExponent)) /</span>
-<span class="nc" id="L108">			org.drip.quant.common.NumberUtil.Factorial (_iExponent + 1);</span>
+<span class="nc" id="L131">		return (java.lang.Math.pow (dblEnd, _iExponent) - java.lang.Math.pow (dblBegin, _iExponent)) /</span>
+<span class="nc" id="L132">			org.drip.quant.common.NumberUtil.Factorial (_iExponent + 1);</span>
 	}
 
 	/**
@@ -116,7 +140,7 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 
 	public int getExponent()
 	{
-<span class="nc" id="L119">		return _iExponent;</span>
+<span class="nc" id="L143">		return _iExponent;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

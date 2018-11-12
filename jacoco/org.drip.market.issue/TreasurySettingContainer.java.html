@@ -6,33 +6,51 @@ package org.drip.market.issue;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,14 +67,22 @@ package org.drip.market.issue;
  */
 
 /**
- * TreasurySettingContainer contains the Parameters related to the Jurisdiction-specific Treasuries.
+ * &lt;i&gt;TreasurySettingContainer&lt;/i&gt; contains the Parameters related to the Jurisdiction-specific Treasuries.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/issue&quot;&gt;Issue&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L57">public class TreasurySettingContainer {</span>
-<span class="fc" id="L58">	private static java.util.Map&lt;java.lang.String, java.lang.String&gt; _mapCurrencyTreasuryCode = null;</span>
-<span class="fc" id="L59">	private static java.util.Map&lt;java.lang.String, org.drip.market.issue.TreasurySetting&gt; _mapTreasurySetting</span>
+<span class="nc" id="L83">public class TreasurySettingContainer {</span>
+<span class="fc" id="L84">	private static java.util.Map&lt;java.lang.String, java.lang.String&gt; _mapCurrencyTreasuryCode = null;</span>
+<span class="fc" id="L85">	private static java.util.Map&lt;java.lang.String, org.drip.market.issue.TreasurySetting&gt; _mapTreasurySetting</span>
 		= null;
 
 	private static final boolean AddSetting (
@@ -67,15 +93,15 @@ package org.drip.market.issue;
 		final java.lang.String strCalendar)
 	{
 		try {
-<span class="fc" id="L70">			_mapTreasurySetting.put (strCode, new org.drip.market.issue.TreasurySetting (strCode,</span>
+<span class="fc" id="L96">			_mapTreasurySetting.put (strCode, new org.drip.market.issue.TreasurySetting (strCode,</span>
 				strCurrency, iFrequency, strDayCount, strCalendar));
 
-<span class="fc" id="L73">			return true;</span>
-<span class="nc" id="L74">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L75">			e.printStackTrace();</span>
+<span class="fc" id="L99">			return true;</span>
+<span class="nc" id="L100">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L101">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L78">		return false;</span>
+<span class="nc" id="L104">		return false;</span>
 	}
 
 	/**
@@ -86,71 +112,71 @@ package org.drip.market.issue;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L89" title="All 2 branches covered.">		if (null != _mapCurrencyTreasuryCode) return true;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		if (null != _mapCurrencyTreasuryCode) return true;</span>
 
-<span class="fc" id="L91">		_mapCurrencyTreasuryCode = new</span>
+<span class="fc" id="L117">		_mapCurrencyTreasuryCode = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.String&gt;();
 
-<span class="fc" id="L94">		 _mapTreasurySetting = new</span>
+<span class="fc" id="L120">		 _mapTreasurySetting = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.market.issue.TreasurySetting&gt;();
 
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (!AddSetting (&quot;AGB&quot;, &quot;AUD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;AUD&quot;)) return false;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (!AddSetting (&quot;AGB&quot;, &quot;AUD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;AUD&quot;)) return false;</span>
 
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (!AddSetting (&quot;BTPS&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (!AddSetting (&quot;BTPS&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
 
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (!AddSetting (&quot;CAN&quot;, &quot;CAD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;CAD&quot;)) return false;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (!AddSetting (&quot;CAN&quot;, &quot;CAD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;CAD&quot;)) return false;</span>
 
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (!AddSetting (&quot;DBR&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!AddSetting (&quot;DBR&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
 
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!AddSetting (&quot;DGB&quot;, &quot;DKK&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;DKK&quot;)) return false;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (!AddSetting (&quot;DGB&quot;, &quot;DKK&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;DKK&quot;)) return false;</span>
 
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (!AddSetting (&quot;FRTR&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!AddSetting (&quot;FRTR&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (!AddSetting (&quot;GGB&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!AddSetting (&quot;GGB&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
 
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (!AddSetting (&quot;GILT&quot;, &quot;GBP&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;GBP&quot;)) return false;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!AddSetting (&quot;GILT&quot;, &quot;GBP&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;GBP&quot;)) return false;</span>
 
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (!AddSetting (&quot;GSWISS&quot;, &quot;CHF&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;CHF&quot;)) return false;</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (!AddSetting (&quot;GSWISS&quot;, &quot;CHF&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;CHF&quot;)) return false;</span>
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (!AddSetting (&quot;JGB&quot;, &quot;JPY&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;JPY&quot;)) return false;</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!AddSetting (&quot;JGB&quot;, &quot;JPY&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;JPY&quot;)) return false;</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (!AddSetting (&quot;MBONO&quot;, &quot;MXN&quot;, 2, &quot;DCAct_364&quot;, &quot;MXN&quot;)) return false;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (!AddSetting (&quot;MBONO&quot;, &quot;MXN&quot;, 2, &quot;DCAct_364&quot;, &quot;MXN&quot;)) return false;</span>
 
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!AddSetting (&quot;NGB&quot;, &quot;NOK&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;NOK&quot;)) return false;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (!AddSetting (&quot;NGB&quot;, &quot;NOK&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;NOK&quot;)) return false;</span>
 
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!AddSetting (&quot;NZGB&quot;, &quot;NZD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;NZD&quot;)) return false;</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!AddSetting (&quot;NZGB&quot;, &quot;NZD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;NZD&quot;)) return false;</span>
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (!AddSetting (&quot;SGB&quot;, &quot;SEK&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;SEK&quot;)) return false;</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (!AddSetting (&quot;SGB&quot;, &quot;SEK&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;SEK&quot;)) return false;</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (!AddSetting (&quot;SPGB&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (!AddSetting (&quot;SPGB&quot;, &quot;EUR&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;EUR&quot;)) return false;</span>
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (!AddSetting (&quot;UST&quot;, &quot;USD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;USD&quot;)) return false;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (!AddSetting (&quot;UST&quot;, &quot;USD&quot;, 2, &quot;DCAct_Act_UST&quot;, &quot;USD&quot;)) return false;</span>
 
-<span class="fc" id="L129">		_mapCurrencyTreasuryCode.put (&quot;AUD&quot;, &quot;AGB&quot;);</span>
+<span class="fc" id="L155">		_mapCurrencyTreasuryCode.put (&quot;AUD&quot;, &quot;AGB&quot;);</span>
 
-<span class="fc" id="L131">		_mapCurrencyTreasuryCode.put (&quot;CAD&quot;, &quot;CAN&quot;);</span>
+<span class="fc" id="L157">		_mapCurrencyTreasuryCode.put (&quot;CAD&quot;, &quot;CAN&quot;);</span>
 
-<span class="fc" id="L133">		_mapCurrencyTreasuryCode.put (&quot;CHF&quot;, &quot;GSWISS&quot;);</span>
+<span class="fc" id="L159">		_mapCurrencyTreasuryCode.put (&quot;CHF&quot;, &quot;GSWISS&quot;);</span>
 
-<span class="fc" id="L135">		_mapCurrencyTreasuryCode.put (&quot;DKK&quot;, &quot;DGB&quot;);</span>
+<span class="fc" id="L161">		_mapCurrencyTreasuryCode.put (&quot;DKK&quot;, &quot;DGB&quot;);</span>
 
-<span class="fc" id="L137">		_mapCurrencyTreasuryCode.put (&quot;EUR&quot;, &quot;DBR&quot;);</span>
+<span class="fc" id="L163">		_mapCurrencyTreasuryCode.put (&quot;EUR&quot;, &quot;DBR&quot;);</span>
 
-<span class="fc" id="L139">		_mapCurrencyTreasuryCode.put (&quot;GBP&quot;, &quot;GILT&quot;);</span>
+<span class="fc" id="L165">		_mapCurrencyTreasuryCode.put (&quot;GBP&quot;, &quot;GILT&quot;);</span>
 
-<span class="fc" id="L141">		_mapCurrencyTreasuryCode.put (&quot;JPY&quot;, &quot;JGB&quot;);</span>
+<span class="fc" id="L167">		_mapCurrencyTreasuryCode.put (&quot;JPY&quot;, &quot;JGB&quot;);</span>
 
-<span class="fc" id="L143">		_mapCurrencyTreasuryCode.put (&quot;MXN&quot;, &quot;MBONO&quot;);</span>
+<span class="fc" id="L169">		_mapCurrencyTreasuryCode.put (&quot;MXN&quot;, &quot;MBONO&quot;);</span>
 
-<span class="fc" id="L145">		_mapCurrencyTreasuryCode.put (&quot;NOK&quot;, &quot;NGB&quot;);</span>
+<span class="fc" id="L171">		_mapCurrencyTreasuryCode.put (&quot;NOK&quot;, &quot;NGB&quot;);</span>
 
-<span class="fc" id="L147">		_mapCurrencyTreasuryCode.put (&quot;NZD&quot;, &quot;NZGB&quot;);</span>
+<span class="fc" id="L173">		_mapCurrencyTreasuryCode.put (&quot;NZD&quot;, &quot;NZGB&quot;);</span>
 
-<span class="fc" id="L149">		_mapCurrencyTreasuryCode.put (&quot;SEK&quot;, &quot;SGB&quot;);</span>
+<span class="fc" id="L175">		_mapCurrencyTreasuryCode.put (&quot;SEK&quot;, &quot;SGB&quot;);</span>
 
-<span class="fc" id="L151">		_mapCurrencyTreasuryCode.put (&quot;USD&quot;, &quot;UST&quot;);</span>
+<span class="fc" id="L177">		_mapCurrencyTreasuryCode.put (&quot;USD&quot;, &quot;UST&quot;);</span>
 
-<span class="fc" id="L153">		return true;</span>
+<span class="fc" id="L179">		return true;</span>
 	}
 
 	/**
@@ -164,8 +190,8 @@ package org.drip.market.issue;
 	public static final org.drip.market.issue.TreasurySetting TreasurySetting (
 		final java.lang.String strTreasuryCode)
 	{
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		return !_mapTreasurySetting.containsKey (strTreasuryCode) ? null : _mapTreasurySetting.get</span>
-<span class="fc" id="L168">			(strTreasuryCode);</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		return !_mapTreasurySetting.containsKey (strTreasuryCode) ? null : _mapTreasurySetting.get</span>
+<span class="fc" id="L194">			(strTreasuryCode);</span>
 	}
 
 	/**
@@ -179,8 +205,8 @@ package org.drip.market.issue;
 	public static final java.lang.String CurrencyBenchmarkCode (
 		final java.lang.String strCurrency)
 	{
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		return !_mapCurrencyTreasuryCode.containsKey (strCurrency) ? null : _mapCurrencyTreasuryCode.get</span>
-<span class="fc" id="L183">			(strCurrency);</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">		return !_mapCurrencyTreasuryCode.containsKey (strCurrency) ? null : _mapCurrencyTreasuryCode.get</span>
+<span class="fc" id="L209">			(strCurrency);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

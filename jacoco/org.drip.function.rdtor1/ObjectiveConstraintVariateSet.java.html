@@ -6,33 +6,51 @@ package org.drip.function.rdtor1;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,15 +67,21 @@ package org.drip.function.rdtor1;
  */
 
 /**
- * ObjectiveConstraintVariateSet holds the R^d and R^1 Variates corresponding to the Objective Function and
- *  the Constraint Function respectively.
+ * &lt;i&gt;ObjectiveConstraintVariateSet&lt;/i&gt; holds a R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Variates corresponding to the
+ * Objective Function and the Constraint Function respectively.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ObjectiveConstraintVariateSet {
-<span class="fc" id="L59">	private double[] _adblObjectiveVariate = null;</span>
-<span class="fc" id="L60">	private double[] _adblConstraintVariate = null;</span>
+<span class="fc" id="L83">	private double[] _adblObjectiveVariate = null;</span>
+<span class="fc" id="L84">	private double[] _adblConstraintVariate = null;</span>
 
 	/**
 	 * Make a Unitary Variate Set
@@ -70,14 +94,14 @@ public class ObjectiveConstraintVariateSet {
 	public static final double[] Unitary (
 		final int iNumVariate)
 	{
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (0 &gt;= iNumVariate) return null;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (0 &gt;= iNumVariate) return null;</span>
 
-<span class="fc" id="L75">		double[] adblVariate = new double[iNumVariate];</span>
+<span class="fc" id="L99">		double[] adblVariate = new double[iNumVariate];</span>
 
-<span class="fc bfc" id="L77" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L78">			adblVariate[i] = 1.;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L102">			adblVariate[i] = 1.;</span>
 
-<span class="fc" id="L80">		return adblVariate;</span>
+<span class="fc" id="L104">		return adblVariate;</span>
 	}
 
 	/**
@@ -93,17 +117,17 @@ public class ObjectiveConstraintVariateSet {
 		final int iNumObjectiveFunctionVariate,
 		final int iNumConstraintFunctionVariate)
 	{
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (0 &gt;= iNumObjectiveFunctionVariate) return null;</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (0 &gt;= iNumObjectiveFunctionVariate) return null;</span>
 
-<span class="fc" id="L98">		double[] adblVariate = new double[iNumObjectiveFunctionVariate + iNumConstraintFunctionVariate];</span>
+<span class="fc" id="L122">		double[] adblVariate = new double[iNumObjectiveFunctionVariate + iNumConstraintFunctionVariate];</span>
 
-<span class="fc bfc" id="L100" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
-<span class="fc" id="L101">			adblVariate[i] = 1. / iNumObjectiveFunctionVariate;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
+<span class="fc" id="L125">			adblVariate[i] = 1. / iNumObjectiveFunctionVariate;</span>
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraintFunctionVariate; ++i)</span>
-<span class="fc" id="L104">			adblVariate[i + iNumObjectiveFunctionVariate] = 0.;</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraintFunctionVariate; ++i)</span>
+<span class="fc" id="L128">			adblVariate[i + iNumObjectiveFunctionVariate] = 0.;</span>
 
-<span class="fc" id="L106">		return adblVariate;</span>
+<span class="fc" id="L130">		return adblVariate;</span>
 	}
 
 	/**
@@ -119,21 +143,21 @@ public class ObjectiveConstraintVariateSet {
 		final double[] adblObjectiveFunctionVariate,
 		final int iNumConstraintFunctionVariate)
 	{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == adblObjectiveFunctionVariate) return null;</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == adblObjectiveFunctionVariate) return null;</span>
 
-<span class="nc" id="L124">		int iNumObjectiveFunctionVariate = adblObjectiveFunctionVariate.length;</span>
+<span class="nc" id="L148">		int iNumObjectiveFunctionVariate = adblObjectiveFunctionVariate.length;</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 &gt;= iNumObjectiveFunctionVariate) return null;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (0 &gt;= iNumObjectiveFunctionVariate) return null;</span>
 
-<span class="nc" id="L128">		double[] adblVariate = new double[iNumObjectiveFunctionVariate + iNumConstraintFunctionVariate];</span>
+<span class="nc" id="L152">		double[] adblVariate = new double[iNumObjectiveFunctionVariate + iNumConstraintFunctionVariate];</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
-<span class="nc" id="L131">			adblVariate[i] = adblObjectiveFunctionVariate[i];</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
+<span class="nc" id="L155">			adblVariate[i] = adblObjectiveFunctionVariate[i];</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraintFunctionVariate; ++i)</span>
-<span class="nc" id="L134">			adblVariate[i + iNumObjectiveFunctionVariate] = 0.;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraintFunctionVariate; ++i)</span>
+<span class="nc" id="L158">			adblVariate[i + iNumObjectiveFunctionVariate] = 0.;</span>
 
-<span class="nc" id="L136">		return adblVariate;</span>
+<span class="nc" id="L160">		return adblVariate;</span>
 	}
 
 	/**
@@ -149,27 +173,27 @@ public class ObjectiveConstraintVariateSet {
 		final double[] adblVariate,
 		final int iNumObjectiveFunctionVariate)
 	{
-<span class="pc bpc" id="L152" title="2 of 4 branches missed.">		if (null == adblVariate || 0 == iNumObjectiveFunctionVariate) return null;</span>
+<span class="pc bpc" id="L176" title="2 of 4 branches missed.">		if (null == adblVariate || 0 == iNumObjectiveFunctionVariate) return null;</span>
 
-<span class="fc" id="L154">		int iNumVariate = adblVariate.length;</span>
-<span class="fc" id="L155">		double[] adblObjectiveVariate = new double[iNumObjectiveFunctionVariate];</span>
-<span class="fc" id="L156">		double[] adblConstraintVariate = new double[iNumVariate - iNumObjectiveFunctionVariate];</span>
+<span class="fc" id="L178">		int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L179">		double[] adblObjectiveVariate = new double[iNumObjectiveFunctionVariate];</span>
+<span class="fc" id="L180">		double[] adblConstraintVariate = new double[iNumVariate - iNumObjectiveFunctionVariate];</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (iNumObjectiveFunctionVariate &gt;= iNumVariate) return null;</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (iNumObjectiveFunctionVariate &gt;= iNumVariate) return null;</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
-<span class="fc" id="L161">			adblObjectiveVariate[i] = adblVariate[i];</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
+<span class="fc" id="L185">			adblObjectiveVariate[i] = adblVariate[i];</span>
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (int i = iNumObjectiveFunctionVariate; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L164">			adblConstraintVariate[i - iNumObjectiveFunctionVariate] = adblVariate[i];</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = iNumObjectiveFunctionVariate; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L188">			adblConstraintVariate[i - iNumObjectiveFunctionVariate] = adblVariate[i];</span>
 
 		try {
-<span class="fc" id="L167">			return new ObjectiveConstraintVariateSet (adblObjectiveVariate, adblConstraintVariate);</span>
-<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L169">			e.printStackTrace();</span>
+<span class="fc" id="L191">			return new ObjectiveConstraintVariateSet (adblObjectiveVariate, adblConstraintVariate);</span>
+<span class="nc" id="L192">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L193">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L172">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	/**
@@ -185,13 +209,13 @@ public class ObjectiveConstraintVariateSet {
 		final double[] adblObjectiveVariate,
 		final double[] adblConstraintVariate)
 		throws java.lang.Exception
-<span class="fc" id="L188">	{</span>
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">		if (null == (_adblObjectiveVariate = adblObjectiveVariate) ||</span>
-<span class="pc bpc" id="L190" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_adblObjectiveVariate) || null ==</span>
+<span class="fc" id="L212">	{</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">		if (null == (_adblObjectiveVariate = adblObjectiveVariate) ||</span>
+<span class="pc bpc" id="L214" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_adblObjectiveVariate) || null ==</span>
 				(_adblConstraintVariate = adblConstraintVariate) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">					(adblConstraintVariate))</span>
-<span class="nc" id="L193">			throw new java.lang.Exception (&quot;ObjectiveConstraintVariateSet Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L194">	}</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">					(adblConstraintVariate))</span>
+<span class="nc" id="L217">			throw new java.lang.Exception (&quot;ObjectiveConstraintVariateSet Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L218">	}</span>
 
 	/**
 	 * Retrieve the Array of the Objective Function Variates
@@ -201,7 +225,7 @@ public class ObjectiveConstraintVariateSet {
 
 	public double[] objectiveVariates()
 	{
-<span class="fc" id="L204">		return _adblObjectiveVariate;</span>
+<span class="fc" id="L228">		return _adblObjectiveVariate;</span>
 	}
 
 	/**
@@ -212,7 +236,7 @@ public class ObjectiveConstraintVariateSet {
 
 	public double[] constraintVariates()
 	{
-<span class="fc" id="L215">		return _adblConstraintVariate;</span>
+<span class="fc" id="L239">		return _adblConstraintVariate;</span>
 	}
 
 	/**
@@ -223,18 +247,18 @@ public class ObjectiveConstraintVariateSet {
 
 	public double[] unify()
 	{
-<span class="nc" id="L226">		int iNumObjectiveFunctionVariate = _adblObjectiveVariate.length;</span>
-<span class="nc" id="L227">		int iNumConstraintFunctionVariate = _adblConstraintVariate.length;</span>
-<span class="nc" id="L228">		int iNumVariate = iNumObjectiveFunctionVariate + iNumConstraintFunctionVariate;</span>
-<span class="nc" id="L229">		double[] adblVariate = new double[iNumVariate];</span>
+<span class="nc" id="L250">		int iNumObjectiveFunctionVariate = _adblObjectiveVariate.length;</span>
+<span class="nc" id="L251">		int iNumConstraintFunctionVariate = _adblConstraintVariate.length;</span>
+<span class="nc" id="L252">		int iNumVariate = iNumObjectiveFunctionVariate + iNumConstraintFunctionVariate;</span>
+<span class="nc" id="L253">		double[] adblVariate = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
-<span class="nc" id="L232">			adblVariate[i] = _adblObjectiveVariate[i];</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObjectiveFunctionVariate; ++i)</span>
+<span class="nc" id="L256">			adblVariate[i] = _adblObjectiveVariate[i];</span>
 
-<span class="nc bnc" id="L234" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraintFunctionVariate; ++i)</span>
-<span class="nc" id="L235">			adblVariate[iNumObjectiveFunctionVariate + i] = _adblConstraintVariate[i];</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraintFunctionVariate; ++i)</span>
+<span class="nc" id="L259">			adblVariate[iNumObjectiveFunctionVariate + i] = _adblConstraintVariate[i];</span>
 
-<span class="nc" id="L237">		return adblVariate;</span>
+<span class="nc" id="L261">		return adblVariate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

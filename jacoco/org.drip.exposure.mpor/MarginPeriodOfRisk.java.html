@@ -6,32 +6,50 @@ package org.drip.exposure.mpor;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,22 +66,39 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * MarginPeriodOfRisk contains the Margining Information associated with the Client Exposure. The References
- *  are:
+ * &lt;i&gt;MarginPeriodOfRisk&lt;/i&gt; contains the Margining Information associated with the Client Exposure. The
+ * References are:
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-
+ *  				party Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  				86-90
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading
+ *  				Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market
+ *  				&lt;i&gt;World Scientific Publishing &lt;/i&gt; &lt;b&gt;Singapore&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/mpor&quot;&gt;MPoR&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -89,8 +124,8 @@ public class MarginPeriodOfRisk
 
 	public static final int MPOR_INTERPOLATION_BROWNIAN_BRIDGE = 4;
 
-<span class="nc" id="L92">	private int _interpolationType = -1;</span>
-<span class="nc" id="L93">	private int _marginCallFrequency = -1;</span>
+<span class="nc" id="L127">	private int _interpolationType = -1;</span>
+<span class="nc" id="L128">	private int _marginCallFrequency = -1;</span>
 
 	/**
 	 * Construct a Standard Instance of MarginPeriodOfRisk
@@ -102,17 +137,17 @@ public class MarginPeriodOfRisk
 	{
 		try
 		{
-<span class="nc" id="L105">			return new MarginPeriodOfRisk (</span>
+<span class="nc" id="L140">			return new MarginPeriodOfRisk (</span>
 				1,
 				MPOR_INTERPOLATION_BROWNIAN_BRIDGE
 			);
 		}
-<span class="nc" id="L110">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L145">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="nc" id="L147">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L115">		return null;</span>
+<span class="nc" id="L150">		return null;</span>
 	}
 
 	/**
@@ -128,15 +163,15 @@ public class MarginPeriodOfRisk
 		final int marginCallFrequency,
 		final int interpolationType)
 		throws java.lang.Exception
-<span class="nc" id="L131">	{</span>
-<span class="nc bnc" id="L132" title="All 8 branches missed.">		if (-1 &gt;= (_marginCallFrequency = marginCallFrequency) ||</span>
+<span class="nc" id="L166">	{</span>
+<span class="nc bnc" id="L167" title="All 8 branches missed.">		if (-1 &gt;= (_marginCallFrequency = marginCallFrequency) ||</span>
 			(MPOR_INTERPOLATION_LINEAR != (_interpolationType = interpolationType) &amp;&amp;
 			MPOR_INTERPOLATION_SQRT_T != _interpolationType &amp;&amp;
 			MPOR_INTERPOLATION_BROWNIAN_BRIDGE != _interpolationType))
 		{
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;MarginPeriodOfRisk Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;MarginPeriodOfRisk Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L139">	}</span>
+<span class="nc" id="L174">	}</span>
 
 	/**
 	 * Retrieve the MPoR Margin Call Frequency
@@ -146,7 +181,7 @@ public class MarginPeriodOfRisk
 
 	public int marginCallFrequency()
 	{
-<span class="nc" id="L149">		return _marginCallFrequency;</span>
+<span class="nc" id="L184">		return _marginCallFrequency;</span>
 	}
 
 	/**
@@ -157,7 +192,7 @@ public class MarginPeriodOfRisk
 
 	public int interpolationType()
 	{
-<span class="nc" id="L160">		return _interpolationType;</span>
+<span class="nc" id="L195">		return _interpolationType;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

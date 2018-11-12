@@ -6,33 +6,51 @@ package org.drip.function.rdtor1solver;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,7 +67,13 @@ package org.drip.function.rdtor1solver;
  */
 
 /**
- * FixedRdFinder exports the Methods needed for the locating a Fixed R^d Point.
+ * &lt;i&gt;FixedRdFinder&lt;/i&gt; exports the Methods needed for the locating a Fixed R&lt;sup&gt;d&lt;/sup&gt; Point.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -60,23 +84,23 @@ public abstract class FixedRdFinder {
 	 * Flag Indicating whether the Verifier Increment Metrics are to be Traced
 	 */
 
-<span class="fc" id="L63">	public static boolean s_bVerifierIncrementBlog = false;</span>
+<span class="fc" id="L87">	public static boolean s_bVerifierIncrementBlog = false;</span>
 
-<span class="fc" id="L65">	private org.drip.function.rdtor1solver.ConvergenceControl _cc = null;</span>
-<span class="fc" id="L66">	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;</span>
-<span class="fc" id="L67">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
+<span class="fc" id="L89">	private org.drip.function.rdtor1solver.ConvergenceControl _cc = null;</span>
+<span class="fc" id="L90">	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;</span>
+<span class="fc" id="L91">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
 
 	protected FixedRdFinder (
 		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
 		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec,
 		final org.drip.function.rdtor1solver.ConvergenceControl cc)
 		throws java.lang.Exception
-<span class="fc" id="L74">	{</span>
-<span class="pc bpc" id="L75" title="2 of 4 branches missed.">		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null == (_cc = cc))</span>
-<span class="nc" id="L76">			throw new java.lang.Exception (&quot;FixedRdFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L98">	{</span>
+<span class="pc bpc" id="L99" title="2 of 4 branches missed.">		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null == (_cc = cc))</span>
+<span class="nc" id="L100">			throw new java.lang.Exception (&quot;FixedRdFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L78">		_lsec = lsec;</span>
-<span class="fc" id="L79">	}</span>
+<span class="fc" id="L102">		_lsec = lsec;</span>
+<span class="fc" id="L103">	}</span>
 
 	/**
 	 * Retrieve the Objective Function
@@ -86,7 +110,7 @@ public abstract class FixedRdFinder {
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-<span class="fc" id="L89">		return _rdToR1ObjectiveFunction;</span>
+<span class="fc" id="L113">		return _rdToR1ObjectiveFunction;</span>
 	}
 
 	/**
@@ -97,7 +121,7 @@ public abstract class FixedRdFinder {
 
 	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
 	{
-<span class="nc" id="L100">		return _lsec;</span>
+<span class="nc" id="L124">		return _lsec;</span>
 	}
 
 	/**
@@ -108,7 +132,7 @@ public abstract class FixedRdFinder {
 
 	public org.drip.function.rdtor1solver.ConvergenceControl control()
 	{
-<span class="fc" id="L111">		return _cc;</span>
+<span class="fc" id="L135">		return _cc;</span>
 	}
 
 	/**
@@ -123,49 +147,49 @@ public abstract class FixedRdFinder {
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeVariate (
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
 	{
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == vicmStarting) return null;</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == vicmStarting) return null;</span>
 
-<span class="fc" id="L128">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+<span class="fc" id="L152">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
 
-<span class="fc" id="L130">		boolean bFixedPointFound = false;</span>
-<span class="fc" id="L131">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmCurrent = vicmStarting;</span>
-<span class="fc" id="L132">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmPrevious = vicmStarting;</span>
+<span class="fc" id="L154">		boolean bFixedPointFound = false;</span>
+<span class="fc" id="L155">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmCurrent = vicmStarting;</span>
+<span class="fc" id="L156">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmPrevious = vicmStarting;</span>
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">		int iNumComparisonVariate = rdToR1ObjectiveFunction instanceof</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		int iNumComparisonVariate = rdToR1ObjectiveFunction instanceof</span>
 			org.drip.function.rdtor1.LagrangianMultivariate ?
 				((org.drip.function.rdtor1.LagrangianMultivariate)
-<span class="fc" id="L137">					rdToR1ObjectiveFunction).objectiveFunctionDimension() :</span>
-<span class="fc" id="L138">						rdToR1ObjectiveFunction.dimension();</span>
+<span class="fc" id="L161">					rdToR1ObjectiveFunction).objectiveFunctionDimension() :</span>
+<span class="fc" id="L162">						rdToR1ObjectiveFunction.dimension();</span>
 
-<span class="fc" id="L140">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
+<span class="fc" id="L164">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
 
-<span class="fc" id="L142">		double dblAbsoluteToleranceFallback = cc.absoluteTolerance();</span>
+<span class="fc" id="L166">		double dblAbsoluteToleranceFallback = cc.absoluteTolerance();</span>
 
-<span class="fc" id="L144">		double dblRelativeTolerance = cc.relativeTolerance();</span>
+<span class="fc" id="L168">		double dblRelativeTolerance = cc.relativeTolerance();</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		while (!bFixedPointFound) {</span>
-<span class="fc" id="L147">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
-<span class="fc" id="L148">				(vicmCurrent);</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		while (!bFixedPointFound) {</span>
+<span class="fc" id="L171">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
+<span class="fc" id="L172">				(vicmCurrent);</span>
 
-<span class="pc bpc" id="L150" title="1 of 4 branches missed.">			if (null == vicmIncrement || null == (vicmCurrent = next (vicmPrevious, vicmIncrement,</span>
-<span class="fc" id="L151">				incrementFraction (vicmCurrent, vicmIncrement))))</span>
-<span class="fc" id="L152">				return null;</span>
+<span class="pc bpc" id="L174" title="1 of 4 branches missed.">			if (null == vicmIncrement || null == (vicmCurrent = next (vicmPrevious, vicmIncrement,</span>
+<span class="fc" id="L175">				incrementFraction (vicmCurrent, vicmIncrement))))</span>
+<span class="fc" id="L176">				return null;</span>
 
 			try {
-<span class="fc" id="L155">				bFixedPointFound =</span>
+<span class="fc" id="L179">				bFixedPointFound =</span>
 					org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Compare
-<span class="fc" id="L157">						(vicmCurrent, vicmPrevious, dblRelativeTolerance, dblAbsoluteToleranceFallback,</span>
+<span class="fc" id="L181">						(vicmCurrent, vicmPrevious, dblRelativeTolerance, dblAbsoluteToleranceFallback,</span>
 							iNumComparisonVariate);
-<span class="nc" id="L159">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L160">				e.printStackTrace();</span>
+<span class="nc" id="L183">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L184">				e.printStackTrace();</span>
 
-<span class="nc" id="L162">				return null;</span>
-<span class="fc" id="L163">			}</span>
+<span class="nc" id="L186">				return null;</span>
+<span class="fc" id="L187">			}</span>
 
-<span class="fc" id="L165">			vicmPrevious = vicmCurrent;</span>
-<span class="fc" id="L166">		}</span>
+<span class="fc" id="L189">			vicmPrevious = vicmCurrent;</span>
+<span class="fc" id="L190">		}</span>
 
-<span class="fc" id="L168">		return vicmCurrent;</span>
+<span class="fc" id="L192">		return vicmCurrent;</span>
 	}
 
 	/**
@@ -180,56 +204,56 @@ public abstract class FixedRdFinder {
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeObjectiveFunction (
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
 	{
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (null == vicmStarting) return null;</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (null == vicmStarting) return null;</span>
 
-<span class="fc" id="L185">		boolean bFixedPointFound = false;</span>
-<span class="fc" id="L186">		double dblObjectiveFunctionPrevious = java.lang.Double.NaN;</span>
-<span class="fc" id="L187">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = vicmStarting;</span>
+<span class="fc" id="L209">		boolean bFixedPointFound = false;</span>
+<span class="fc" id="L210">		double dblObjectiveFunctionPrevious = java.lang.Double.NaN;</span>
+<span class="fc" id="L211">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = vicmStarting;</span>
 
-<span class="fc" id="L189">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+<span class="fc" id="L213">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
 
 		try {
-<span class="fc" id="L192">			dblObjectiveFunctionPrevious = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
-<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="fc" id="L216">			dblObjectiveFunctionPrevious = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
+<span class="nc" id="L217">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
 
-<span class="nc" id="L196">			return null;</span>
-<span class="fc" id="L197">		}</span>
+<span class="nc" id="L220">			return null;</span>
+<span class="fc" id="L221">		}</span>
 
-<span class="fc" id="L199">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
+<span class="fc" id="L223">		org.drip.function.rdtor1solver.ConvergenceControl cc = control();</span>
 
-<span class="fc" id="L201">		double dblIPBCAbsoluteTolerance = cc.absoluteTolerance();</span>
+<span class="fc" id="L225">		double dblIPBCAbsoluteTolerance = cc.absoluteTolerance();</span>
 
-<span class="fc" id="L203">		double dblOFAbsoluteTolerance = java.lang.Math.abs (dblObjectiveFunctionPrevious *</span>
-<span class="fc" id="L204">			cc.relativeTolerance());</span>
+<span class="fc" id="L227">		double dblOFAbsoluteTolerance = java.lang.Math.abs (dblObjectiveFunctionPrevious *</span>
+<span class="fc" id="L228">			cc.relativeTolerance());</span>
 
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		double dblAbsoluteTolerance = dblIPBCAbsoluteTolerance &lt; dblOFAbsoluteTolerance ?</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		double dblAbsoluteTolerance = dblIPBCAbsoluteTolerance &lt; dblOFAbsoluteTolerance ?</span>
 			dblIPBCAbsoluteTolerance : dblOFAbsoluteTolerance;
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">		while (!bFixedPointFound) {</span>
-<span class="fc" id="L210">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
-<span class="fc" id="L211">				(vicm);</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		while (!bFixedPointFound) {</span>
+<span class="fc" id="L234">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment</span>
+<span class="fc" id="L235">				(vicm);</span>
 
-<span class="pc bpc" id="L213" title="2 of 4 branches missed.">			if (null == vicmIncrement || null == (vicm = next (vicm, vicmIncrement, incrementFraction (vicm,</span>
+<span class="pc bpc" id="L237" title="2 of 4 branches missed.">			if (null == vicmIncrement || null == (vicm = next (vicm, vicmIncrement, incrementFraction (vicm,</span>
 				vicmIncrement))))
-<span class="nc" id="L215">				return null;</span>
+<span class="nc" id="L239">				return null;</span>
 
 			try {
-<span class="fc" id="L218">				double dblObjectiveFunction = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
+<span class="fc" id="L242">				double dblObjectiveFunction = rdToR1ObjectiveFunction.evaluate (vicm.variates());</span>
 
-<span class="fc bfc" id="L220" title="All 2 branches covered.">				if (java.lang.Math.abs (dblObjectiveFunctionPrevious - dblObjectiveFunction) &lt;</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">				if (java.lang.Math.abs (dblObjectiveFunctionPrevious - dblObjectiveFunction) &lt;</span>
 					dblAbsoluteTolerance)
-<span class="fc" id="L222">					bFixedPointFound = true;</span>
+<span class="fc" id="L246">					bFixedPointFound = true;</span>
 
-<span class="fc" id="L224">				dblObjectiveFunctionPrevious = dblObjectiveFunction;</span>
-<span class="nc" id="L225">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L226">				e.printStackTrace();</span>
+<span class="fc" id="L248">				dblObjectiveFunctionPrevious = dblObjectiveFunction;</span>
+<span class="nc" id="L249">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L250">				e.printStackTrace();</span>
 
-<span class="nc" id="L228">				return null;</span>
-<span class="fc" id="L229">			}</span>
-<span class="fc" id="L230">		}</span>
+<span class="nc" id="L252">				return null;</span>
+<span class="fc" id="L253">			}</span>
+<span class="fc" id="L254">		}</span>
 
-<span class="fc" id="L232">		return vicm;</span>
+<span class="fc" id="L256">		return vicm;</span>
 	}
 
 	/**
@@ -244,17 +268,17 @@ public abstract class FixedRdFinder {
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier find (
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
 	{
-<span class="fc" id="L247">		int iConvergenceType = control().convergenceType();</span>
+<span class="fc" id="L271">		int iConvergenceType = control().convergenceType();</span>
 
-<span class="fc bfc" id="L249" title="All 2 branches covered.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE</span>
 			== iConvergenceType)
-<span class="fc" id="L251">			return convergeObjectiveFunction (vicmStarting);</span>
+<span class="fc" id="L275">			return convergeObjectiveFunction (vicmStarting);</span>
 
-<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE</span>
 			== iConvergenceType)
-<span class="fc" id="L255">			return convergeVariate (vicmStarting);</span>
+<span class="fc" id="L279">			return convergeVariate (vicmStarting);</span>
 
-<span class="nc" id="L257">		return null;</span>
+<span class="nc" id="L281">		return null;</span>
 	}
 
 	/**
@@ -270,38 +294,38 @@ public abstract class FixedRdFinder {
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm,
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmFullIncrement)
 	{
-<span class="pc bpc" id="L273" title="3 of 8 branches missed.">		if (null == _lsec || null == vicm || vicm.incremental() || null == vicmFullIncrement ||</span>
-<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			!vicmFullIncrement.incremental())</span>
-<span class="fc" id="L275">			return 1.;</span>
+<span class="pc bpc" id="L297" title="3 of 8 branches missed.">		if (null == _lsec || null == vicm || vicm.incremental() || null == vicmFullIncrement ||</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">			!vicmFullIncrement.incremental())</span>
+<span class="fc" id="L299">			return 1.;</span>
 
-<span class="fc" id="L277">		org.drip.function.rdtor1descent.LineEvolutionVerifier lev = _lsec.lineEvolutionVerifier();</span>
+<span class="fc" id="L301">		org.drip.function.rdtor1descent.LineEvolutionVerifier lev = _lsec.lineEvolutionVerifier();</span>
 
-<span class="fc" id="L279">		org.drip.function.definition.SizedVector sv = vicmFullIncrement.variateIncrementVector();</span>
+<span class="fc" id="L303">		org.drip.function.definition.SizedVector sv = vicmFullIncrement.variateIncrementVector();</span>
 
-<span class="fc" id="L281">		org.drip.function.definition.UnitVector uvDirection = sv.direction();</span>
+<span class="fc" id="L305">		org.drip.function.definition.UnitVector uvDirection = sv.direction();</span>
 
-<span class="fc" id="L283">		double dblReductionFactor = _lsec.reductionFactor();</span>
+<span class="fc" id="L307">		double dblReductionFactor = _lsec.reductionFactor();</span>
 
-<span class="fc" id="L285">		int iReductionStep = _lsec.reductionSteps();</span>
+<span class="fc" id="L309">		int iReductionStep = _lsec.reductionSteps();</span>
 
-<span class="fc" id="L287">		double[] adblVariate = vicm.variates();</span>
+<span class="fc" id="L311">		double[] adblVariate = vicm.variates();</span>
 
-<span class="fc" id="L289">		double dblStepLength = 1.;</span>
+<span class="fc" id="L313">		double dblStepLength = 1.;</span>
 
-<span class="fc bfc" id="L291" title="All 2 branches covered.">		while (0 &lt;= --iReductionStep) {</span>
-<span class="fc" id="L292">			org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = lev.metrics (uvDirection,</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">		while (0 &lt;= --iReductionStep) {</span>
+<span class="fc" id="L316">			org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = lev.metrics (uvDirection,</span>
 				adblVariate, _rdToR1ObjectiveFunction, dblStepLength);
 
-<span class="pc bpc" id="L295" title="1 of 2 branches missed.">			if (null == levm) return 1.;</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">			if (null == levm) return 1.;</span>
 
-<span class="fc bfc" id="L297" title="All 2 branches covered.">			if (s_bVerifierIncrementBlog) System.out.println (levm);</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">			if (s_bVerifierIncrementBlog) System.out.println (levm);</span>
 
-<span class="fc bfc" id="L299" title="All 2 branches covered.">			if (levm.verify()) return dblStepLength;</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">			if (levm.verify()) return dblStepLength;</span>
 
-<span class="fc" id="L301">			dblStepLength *= dblReductionFactor;</span>
-<span class="fc" id="L302">		}</span>
+<span class="fc" id="L325">			dblStepLength *= dblReductionFactor;</span>
+<span class="fc" id="L326">		}</span>
 
-<span class="fc" id="L304">		return 1.;</span>
+<span class="fc" id="L328">		return 1.;</span>
 	}
 
 	/**

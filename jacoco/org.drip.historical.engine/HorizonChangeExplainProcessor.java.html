@@ -6,15 +6,51 @@ package org.drip.historical.engine;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for fixed income analysts and developers -
- * 		http://www.credit-trader.org/Begin.html
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  DRIP is a free, full featured, fixed income rates, credit, and FX analytics library with a focus towards
- *  	pricing/valuation, risk, and market making.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -31,22 +67,28 @@ package org.drip.historical.engine;
  */
 
 /**
- * HorizonChangeExplainProcessor holds the Stubs associated with the Computation of the Horizon Position
- *  Change Components for the given Product.
+ * &lt;i&gt;HorizonChangeExplainProcessor&lt;/i&gt; holds the Stubs associated with the Computation of the Horizon
+ * Position Change Components for the given Product.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class HorizonChangeExplainProcessor {
-<span class="nc" id="L41">	private int _iSettleLag = -1;</span>
-<span class="nc" id="L42">	private java.lang.String _strMarketMeasureName = &quot;&quot;;</span>
-<span class="nc" id="L43">	private org.drip.product.definition.Component _comp = null;</span>
-<span class="nc" id="L44">	private org.drip.analytics.date.JulianDate _dtFirst = null;</span>
-<span class="nc" id="L45">	private org.drip.analytics.date.JulianDate _dtSecond = null;</span>
-<span class="nc" id="L46">	private double _dblMarketMeasureValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L47">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFirst = null;</span>
-<span class="nc" id="L48">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcSecond = null;</span>
-<span class="nc" id="L49">	private</span>
+<span class="nc" id="L83">	private int _iSettleLag = -1;</span>
+<span class="nc" id="L84">	private java.lang.String _strMarketMeasureName = &quot;&quot;;</span>
+<span class="nc" id="L85">	private org.drip.product.definition.Component _comp = null;</span>
+<span class="nc" id="L86">	private org.drip.analytics.date.JulianDate _dtFirst = null;</span>
+<span class="nc" id="L87">	private org.drip.analytics.date.JulianDate _dtSecond = null;</span>
+<span class="nc" id="L88">	private double _dblMarketMeasureValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L89">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFirst = null;</span>
+<span class="nc" id="L90">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcSecond = null;</span>
+<span class="nc" id="L91">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 			_mapCSQCRollDown = null;
 
@@ -63,15 +105,15 @@ public abstract class HorizonChangeExplainProcessor {
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 			mapCSQCRollDown)
 		throws java.lang.Exception
-<span class="nc" id="L66">	{</span>
-<span class="nc bnc" id="L67" title="All 6 branches missed.">		if (null == (_comp = comp) || 0 &gt; (_iSettleLag = iSettleLag) || null == (_strMarketMeasureName =</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">			strMarketMeasureName) || _strMarketMeasureName.isEmpty() ||</span>
-<span class="nc bnc" id="L69" title="All 6 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblMarketMeasureValue = dblMarketMeasureValue) ||</span>
-<span class="nc" id="L70">					null == (_dtFirst = dtFirst) || null == (_dtSecond = dtSecond) || _dtSecond.julian() &lt;=</span>
-<span class="nc bnc" id="L71" title="All 8 branches missed.">						_dtFirst.julian() || null == (_csqcFirst = csqcFirst) || null == (_csqcSecond =</span>
+<span class="nc" id="L108">	{</span>
+<span class="nc bnc" id="L109" title="All 6 branches missed.">		if (null == (_comp = comp) || 0 &gt; (_iSettleLag = iSettleLag) || null == (_strMarketMeasureName =</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			strMarketMeasureName) || _strMarketMeasureName.isEmpty() ||</span>
+<span class="nc bnc" id="L111" title="All 6 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblMarketMeasureValue = dblMarketMeasureValue) ||</span>
+<span class="nc" id="L112">					null == (_dtFirst = dtFirst) || null == (_dtSecond = dtSecond) || _dtSecond.julian() &lt;=</span>
+<span class="nc bnc" id="L113" title="All 8 branches missed.">						_dtFirst.julian() || null == (_csqcFirst = csqcFirst) || null == (_csqcSecond =</span>
 							csqcSecond) || null == (_mapCSQCRollDown = mapCSQCRollDown))
-<span class="nc" id="L73">			throw new java.lang.Exception (&quot;HorizonChangeExplainProcessor Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L74">	}</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;HorizonChangeExplainProcessor Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Component
@@ -81,7 +123,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public org.drip.product.definition.Component component()
 	{
-<span class="nc" id="L84">		return _comp;</span>
+<span class="nc" id="L126">		return _comp;</span>
 	}
 
 	/**
@@ -92,7 +134,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public int settleLag()
 	{
-<span class="nc" id="L95">		return _iSettleLag;</span>
+<span class="nc" id="L137">		return _iSettleLag;</span>
 	}
 
 	/**
@@ -103,7 +145,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public java.lang.String marketMeasureName()
 	{
-<span class="nc" id="L106">		return _strMarketMeasureName;</span>
+<span class="nc" id="L148">		return _strMarketMeasureName;</span>
 	}
 
 	/**
@@ -114,7 +156,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public double marketMeasureValue()
 	{
-<span class="nc" id="L117">		return _dblMarketMeasureValue;</span>
+<span class="nc" id="L159">		return _dblMarketMeasureValue;</span>
 	}
 
 	/**
@@ -125,7 +167,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public org.drip.analytics.date.JulianDate firstDate()
 	{
-<span class="nc" id="L128">		return _dtFirst;</span>
+<span class="nc" id="L170">		return _dtFirst;</span>
 	}
 
 	/**
@@ -136,7 +178,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer firstMarketParameters()
 	{
-<span class="nc" id="L139">		return _csqcFirst;</span>
+<span class="nc" id="L181">		return _csqcFirst;</span>
 	}
 
 	/**
@@ -147,7 +189,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public org.drip.analytics.date.JulianDate secondDate()
 	{
-<span class="nc" id="L150">		return _dtSecond;</span>
+<span class="nc" id="L192">		return _dtSecond;</span>
 	}
 
 	/**
@@ -158,7 +200,7 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer secondMarketParameters()
 	{
-<span class="nc" id="L161">		return _csqcSecond;</span>
+<span class="nc" id="L203">		return _csqcSecond;</span>
 	}
 
 	/**
@@ -171,7 +213,7 @@ public abstract class HorizonChangeExplainProcessor {
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 			rollDownMarketParameters()
 	{
-<span class="nc" id="L174">		return _mapCSQCRollDown;</span>
+<span class="nc" id="L216">		return _mapCSQCRollDown;</span>
 	}
 
 	/**
@@ -182,34 +224,34 @@ public abstract class HorizonChangeExplainProcessor {
 
 	public org.drip.historical.engine.MarketMeasureRollDown rollDownMeasureMap()
 	{
-<span class="nc" id="L185">		org.drip.param.valuation.ValuationParams valParamsRollDown =</span>
-<span class="nc" id="L186">			org.drip.param.valuation.ValuationParams.Spot (_dtSecond.addBusDays (_iSettleLag,</span>
-<span class="nc" id="L187">				_comp.payCurrency()).julian());</span>
+<span class="nc" id="L227">		org.drip.param.valuation.ValuationParams valParamsRollDown =</span>
+<span class="nc" id="L228">			org.drip.param.valuation.ValuationParams.Spot (_dtSecond.addBusDays (_iSettleLag,</span>
+<span class="nc" id="L229">				_comp.payCurrency()).julian());</span>
 
-<span class="nc" id="L189">		java.util.Set&lt;java.lang.String&gt; setstrRollDownTenor = _mapCSQCRollDown.keySet(); </span>
+<span class="nc" id="L231">		java.util.Set&lt;java.lang.String&gt; setstrRollDownTenor = _mapCSQCRollDown.keySet(); </span>
 
-<span class="nc" id="L191">		org.drip.historical.engine.MarketMeasureRollDown mmrd = null;</span>
+<span class="nc" id="L233">		org.drip.historical.engine.MarketMeasureRollDown mmrd = null;</span>
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : setstrRollDownTenor) {</span>
-<span class="nc" id="L194">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCompMeasures = _comp.value</span>
-<span class="nc" id="L195">				(valParamsRollDown, null, _mapCSQCRollDown.get (strRollDownTenor), null);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : setstrRollDownTenor) {</span>
+<span class="nc" id="L236">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCompMeasures = _comp.value</span>
+<span class="nc" id="L237">				(valParamsRollDown, null, _mapCSQCRollDown.get (strRollDownTenor), null);</span>
 
-<span class="nc bnc" id="L197" title="All 4 branches missed.">			if (null == mapCompMeasures || !mapCompMeasures.containsKey (_strMarketMeasureName)) return null;</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">			if (null == mapCompMeasures || !mapCompMeasures.containsKey (_strMarketMeasureName)) return null;</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (&quot;Native&quot;.equalsIgnoreCase (strRollDownTenor)) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			if (&quot;Native&quot;.equalsIgnoreCase (strRollDownTenor)) {</span>
 				try {
-<span class="nc" id="L201">					mmrd = new org.drip.historical.engine.MarketMeasureRollDown (mapCompMeasures.get</span>
-<span class="nc" id="L202">						(_strMarketMeasureName));</span>
-<span class="nc" id="L203">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L204">					e.printStackTrace();</span>
+<span class="nc" id="L243">					mmrd = new org.drip.historical.engine.MarketMeasureRollDown (mapCompMeasures.get</span>
+<span class="nc" id="L244">						(_strMarketMeasureName));</span>
+<span class="nc" id="L245">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L246">					e.printStackTrace();</span>
 
-<span class="nc" id="L206">					return null;</span>
-<span class="nc" id="L207">				}</span>
+<span class="nc" id="L248">					return null;</span>
+<span class="nc" id="L249">				}</span>
 			} else
-<span class="nc" id="L209">				mmrd.add (strRollDownTenor, mapCompMeasures.get (_strMarketMeasureName));</span>
-<span class="nc" id="L210">		}</span>
+<span class="nc" id="L251">				mmrd.add (strRollDownTenor, mapCompMeasures.get (_strMarketMeasureName));</span>
+<span class="nc" id="L252">		}</span>
 
-<span class="nc" id="L212">		return mmrd;</span>
+<span class="nc" id="L254">		return mmrd;</span>
 	}
 
 	/**
@@ -223,14 +265,14 @@ public abstract class HorizonChangeExplainProcessor {
 	public double metricRollUp()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L226">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCompMeasures = _comp.value</span>
-<span class="nc" id="L227">			(org.drip.param.valuation.ValuationParams.Spot (_dtSecond.addBusDays (_iSettleLag,</span>
-<span class="nc" id="L228">				_comp.payCurrency()).julian()), null, _csqcFirst, null);</span>
+<span class="nc" id="L268">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCompMeasures = _comp.value</span>
+<span class="nc" id="L269">			(org.drip.param.valuation.ValuationParams.Spot (_dtSecond.addBusDays (_iSettleLag,</span>
+<span class="nc" id="L270">				_comp.payCurrency()).julian()), null, _csqcFirst, null);</span>
 
-<span class="nc bnc" id="L230" title="All 4 branches missed.">		if (null == mapCompMeasures || !mapCompMeasures.containsKey (_strMarketMeasureName))</span>
-<span class="nc" id="L231">			throw new java.lang.Exception (&quot;HorizonChangeExplainProcessor::metricRollUp =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L272" title="All 4 branches missed.">		if (null == mapCompMeasures || !mapCompMeasures.containsKey (_strMarketMeasureName))</span>
+<span class="nc" id="L273">			throw new java.lang.Exception (&quot;HorizonChangeExplainProcessor::metricRollUp =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L233">		return mapCompMeasures.get (_strMarketMeasureName);</span>
+<span class="nc" id="L275">		return mapCompMeasures.get (_strMarketMeasureName);</span>
 	}
 
 	/**
