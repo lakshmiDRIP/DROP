@@ -6,33 +6,51 @@ package org.drip.historical.engine;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,8 +67,14 @@ package org.drip.historical.engine;
  */
 
 /**
- * TreasuryBondExplainProcessor contains the Functionality associated with the Horizon Analysis of the
- *  Treasury Bond.
+ * &lt;i&gt;TreasuryBondExplainProcessor&lt;/i&gt; contains the Functionality associated with the Horizon Analysis of the
+ * Treasury Bond.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -85,196 +109,196 @@ public class TreasuryBondExplainProcessor extends org.drip.historical.engine.Hor
 			mapCSQCRollDown)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L88">		super (tsyComponent, 0, strMarketMeasureName, dblMarketMeasureValue, dtFirst, dtSecond, csqcFirst,</span>
+<span class="nc" id="L112">		super (tsyComponent, 0, strMarketMeasureName, dblMarketMeasureValue, dtFirst, dtSecond, csqcFirst,</span>
 			csqcSecond, mapCSQCRollDown);
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L114">	}</span>
 
 	@Override public org.drip.historical.engine.MarketMeasureRollDown rollDownMeasureMap()
 	{
-<span class="nc" id="L94">		org.drip.product.definition.Component comp = component();</span>
+<span class="nc" id="L118">		org.drip.product.definition.Component comp = component();</span>
 
-<span class="nc" id="L96">		int iMaturityDate = comp.maturityDate().julian();</span>
+<span class="nc" id="L120">		int iMaturityDate = comp.maturityDate().julian();</span>
 
-<span class="nc" id="L98">		org.drip.historical.engine.MarketMeasureRollDown mmrd = null;</span>
+<span class="nc" id="L122">		org.drip.historical.engine.MarketMeasureRollDown mmrd = null;</span>
 
-<span class="nc" id="L100">		org.drip.state.identifier.GovvieLabel govvieLabel = comp.govvieLabel();</span>
+<span class="nc" id="L124">		org.drip.state.identifier.GovvieLabel govvieLabel = comp.govvieLabel();</span>
 
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L103">			mapCSQCRollDown = rollDownMarketParameters();</span>
+<span class="nc" id="L127">			mapCSQCRollDown = rollDownMarketParameters();</span>
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : mapCSQCRollDown.keySet()) {</span>
-<span class="nc" id="L106">			org.drip.state.govvie.GovvieCurve gc = mapCSQCRollDown.get (strRollDownTenor).govvieState</span>
-<span class="nc" id="L107">				(govvieLabel);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : mapCSQCRollDown.keySet()) {</span>
+<span class="nc" id="L130">			org.drip.state.govvie.GovvieCurve gc = mapCSQCRollDown.get (strRollDownTenor).govvieState</span>
+<span class="nc" id="L131">				(govvieLabel);</span>
 
 			try {
-<span class="nc" id="L110">				double dblMarketMeasureRollDown = gc.yield (iMaturityDate);</span>
+<span class="nc" id="L134">				double dblMarketMeasureRollDown = gc.yield (iMaturityDate);</span>
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">				if (&quot;Native&quot;.equalsIgnoreCase (strRollDownTenor))</span>
-<span class="nc" id="L113">					mmrd = new org.drip.historical.engine.MarketMeasureRollDown (dblMarketMeasureRollDown);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (&quot;Native&quot;.equalsIgnoreCase (strRollDownTenor))</span>
+<span class="nc" id="L137">					mmrd = new org.drip.historical.engine.MarketMeasureRollDown (dblMarketMeasureRollDown);</span>
 				else
-<span class="nc" id="L115">					mmrd.add (strRollDownTenor, dblMarketMeasureRollDown);</span>
-<span class="nc" id="L116">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L117">				e.printStackTrace();</span>
+<span class="nc" id="L139">					mmrd.add (strRollDownTenor, dblMarketMeasureRollDown);</span>
+<span class="nc" id="L140">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L141">				e.printStackTrace();</span>
 
-<span class="nc" id="L119">				return null;</span>
-<span class="nc" id="L120">			}</span>
-<span class="nc" id="L121">		}</span>
+<span class="nc" id="L143">				return null;</span>
+<span class="nc" id="L144">			}</span>
+<span class="nc" id="L145">		}</span>
 
-<span class="nc" id="L123">		return mmrd;</span>
+<span class="nc" id="L147">		return mmrd;</span>
 	}
 
 	@Override public org.drip.historical.attribution.PositionMarketSnap snapFirstMarketValue()
 	{
-<span class="nc" id="L128">		org.drip.analytics.date.JulianDate dtValuation = firstDate();</span>
+<span class="nc" id="L152">		org.drip.analytics.date.JulianDate dtValuation = firstDate();</span>
 
-<span class="nc" id="L130">		org.drip.product.govvie.TreasuryComponent tsyComponent = (org.drip.product.govvie.TreasuryComponent)</span>
-<span class="nc" id="L131">			component();</span>
+<span class="nc" id="L154">		org.drip.product.govvie.TreasuryComponent tsyComponent = (org.drip.product.govvie.TreasuryComponent)</span>
+<span class="nc" id="L155">			component();</span>
 
-<span class="nc" id="L133">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = firstMarketParameters();</span>
+<span class="nc" id="L157">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = firstMarketParameters();</span>
 
-<span class="nc" id="L135">		org.drip.state.identifier.GovvieLabel govvieLabel = tsyComponent.govvieLabel();</span>
+<span class="nc" id="L159">		org.drip.state.identifier.GovvieLabel govvieLabel = tsyComponent.govvieLabel();</span>
 
-<span class="nc" id="L137">		org.drip.analytics.date.JulianDate dtEffective = tsyComponent.effectiveDate();</span>
+<span class="nc" id="L161">		org.drip.analytics.date.JulianDate dtEffective = tsyComponent.effectiveDate();</span>
 
-<span class="nc" id="L139">		org.drip.analytics.date.JulianDate dtMaturity = tsyComponent.maturityDate();</span>
+<span class="nc" id="L163">		org.drip.analytics.date.JulianDate dtMaturity = tsyComponent.maturityDate();</span>
 
-<span class="nc" id="L141">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel);</span>
+<span class="nc" id="L165">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel);</span>
 
-<span class="nc" id="L143">		double dblFixedCoupon = tsyComponent.couponSetting().couponRate();</span>
+<span class="nc" id="L167">		double dblFixedCoupon = tsyComponent.couponSetting().couponRate();</span>
 
-<span class="nc" id="L145">		java.lang.String strCurrency = tsyComponent.currency();</span>
+<span class="nc" id="L169">		java.lang.String strCurrency = tsyComponent.currency();</span>
 
-<span class="nc" id="L147">		int iValuationDate = dtValuation.julian();</span>
+<span class="nc" id="L171">		int iValuationDate = dtValuation.julian();</span>
 
-<span class="nc" id="L149">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L150">			(iValuationDate);</span>
+<span class="nc" id="L173">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="nc" id="L174">			(iValuationDate);</span>
 
-<span class="nc" id="L152">		org.drip.historical.engine.MarketMeasureRollDown mmrd = rollDownMeasureMap();</span>
+<span class="nc" id="L176">		org.drip.historical.engine.MarketMeasureRollDown mmrd = rollDownMeasureMap();</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (null == mmrd) return null;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (null == mmrd) return null;</span>
 
-<span class="nc" id="L156">		double dblRollDownInnate = mmrd.innate();</span>
+<span class="nc" id="L180">		double dblRollDownInnate = mmrd.innate();</span>
 
-<span class="nc" id="L158">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapHorizonMetric =</span>
-<span class="nc" id="L159">			mmrd.horizon();</span>
+<span class="nc" id="L182">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapHorizonMetric =</span>
+<span class="nc" id="L183">			mmrd.horizon();</span>
 
-<span class="nc" id="L161">		java.lang.String strAccrualDC = tsyComponent.accrualDC();</span>
+<span class="nc" id="L185">		java.lang.String strAccrualDC = tsyComponent.accrualDC();</span>
 
 		try {
-<span class="nc" id="L164">			double dblYield = gc.yield (dtMaturity.julian());</span>
+<span class="nc" id="L188">			double dblYield = gc.yield (dtMaturity.julian());</span>
 
-<span class="nc" id="L166">			double dblAccrued = tsyComponent.accrued (iValuationDate, csqc);</span>
+<span class="nc" id="L190">			double dblAccrued = tsyComponent.accrued (iValuationDate, csqc);</span>
 
-<span class="nc" id="L168">			double dblCleanPrice = tsyComponent.priceFromYield (valParams, csqc, null, dblYield);</span>
+<span class="nc" id="L192">			double dblCleanPrice = tsyComponent.priceFromYield (valParams, csqc, null, dblYield);</span>
 
-<span class="nc" id="L170">			double dblYieldSensitivity = 10000. * tsyComponent.modifiedDurationFromYield (valParams, csqc,</span>
+<span class="nc" id="L194">			double dblYieldSensitivity = 10000. * tsyComponent.modifiedDurationFromYield (valParams, csqc,</span>
 				null, dblYield);
 
-<span class="nc" id="L173">			double dblCumulativeCouponDCF = org.drip.analytics.daycount.Convention.YearFraction</span>
-<span class="nc" id="L174">				(dtEffective.julian(), iValuationDate, strAccrualDC, false,</span>
-<span class="nc" id="L175">					org.drip.analytics.daycount.ActActDCParams.FromFrequency (gc.freq()), strCurrency);</span>
+<span class="nc" id="L197">			double dblCumulativeCouponDCF = org.drip.analytics.daycount.Convention.YearFraction</span>
+<span class="nc" id="L198">				(dtEffective.julian(), iValuationDate, strAccrualDC, false,</span>
+<span class="nc" id="L199">					org.drip.analytics.daycount.ActActDCParams.FromFrequency (gc.freq()), strCurrency);</span>
 
-<span class="nc" id="L177">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
+<span class="nc" id="L201">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
 				org.drip.historical.attribution.PositionMarketSnap (dtValuation, dblCleanPrice);
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Accrued&quot;, dblAccrued)) return null;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Accrued&quot;, dblAccrued)) return null;</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (!pms.setC1 (&quot;AccruedDC&quot;, strAccrualDC)) return null;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (!pms.setC1 (&quot;AccruedDC&quot;, strAccrualDC)) return null;</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CleanPrice&quot;, dblCleanPrice)) return null;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CleanPrice&quot;, dblCleanPrice)) return null;</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponDCF * dblFixedCoupon)) return null;</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponDCF * dblFixedCoupon)) return null;</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, dblCumulativeCouponDCF)) return null;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, dblCumulativeCouponDCF)) return null;</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (!pms.setC1 (&quot;Currency&quot;, strCurrency)) return null;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			if (!pms.setC1 (&quot;Currency&quot;, strCurrency)) return null;</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (!pms.setR1 (&quot;DirtyPrice&quot;, dblCleanPrice + dblAccrued)) return null;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (!pms.setR1 (&quot;DirtyPrice&quot;, dblCleanPrice + dblAccrued)) return null;</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">			if (!pms.setDate (&quot;EffectiveDate&quot;, dtEffective)) return null;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			if (!pms.setDate (&quot;EffectiveDate&quot;, dtEffective)) return null;</span>
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FixedAccrualDayCount&quot;, strAccrualDC)) return null;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FixedAccrualDayCount&quot;, strAccrualDC)) return null;</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCoupon&quot;, dblFixedCoupon)) return null;</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCoupon&quot;, dblFixedCoupon)) return null;</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">			if (!pms.setDate (&quot;MaturityDate&quot;, dtMaturity)) return null;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">			if (!pms.setDate (&quot;MaturityDate&quot;, dtMaturity)) return null;</span>
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">			if (!pms.setC1 (&quot;MaturityTenor&quot;, tsyComponent.tenor())) return null;</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (!pms.setC1 (&quot;MaturityTenor&quot;, tsyComponent.tenor())) return null;</span>
 
-<span class="nc bnc" id="L204" title="All 2 branches missed.">			if (!pms.setR1 (&quot;ModifiedDuration&quot;, dblYieldSensitivity)) return null;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (!pms.setR1 (&quot;ModifiedDuration&quot;, dblYieldSensitivity)) return null;</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Yield&quot;, dblYield)) return null;</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Yield&quot;, dblYield)) return null;</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (!pms.setR1 (&quot;YieldRollDown&quot;, dblRollDownInnate)) return null;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">			if (!pms.setR1 (&quot;YieldRollDown&quot;, dblRollDownInnate)) return null;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">			for (java.lang.String strRollDownTenor : mapHorizonMetric.keySet()) {</span>
-<span class="nc bnc" id="L211" title="All 2 branches missed.">				if (!pms.setR1 (&quot;YieldRollDown&quot; + strRollDownTenor, mapHorizonMetric.get (strRollDownTenor)))</span>
-<span class="nc" id="L212">					return null;</span>
-<span class="nc" id="L213">			}</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			for (java.lang.String strRollDownTenor : mapHorizonMetric.keySet()) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">				if (!pms.setR1 (&quot;YieldRollDown&quot; + strRollDownTenor, mapHorizonMetric.get (strRollDownTenor)))</span>
+<span class="nc" id="L236">					return null;</span>
+<span class="nc" id="L237">			}</span>
 
-<span class="nc bnc" id="L215" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;Yield&quot;, dblYield, -1. * dblYieldSensitivity,</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;Yield&quot;, dblYield, -1. * dblYieldSensitivity,</span>
 				dblRollDownInnate))
-<span class="nc" id="L217">				return null;</span>
+<span class="nc" id="L241">				return null;</span>
 
-<span class="nc" id="L219">			return pms;</span>
-<span class="nc" id="L220">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L221">			e.printStackTrace();</span>
+<span class="nc" id="L243">			return pms;</span>
+<span class="nc" id="L244">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L245">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L224">		return null;</span>
+<span class="nc" id="L248">		return null;</span>
 	}
 
 	@Override public boolean updateFixings()
 	{
-<span class="nc" id="L229">		return true;</span>
+<span class="nc" id="L253">		return true;</span>
 	}
 
 	@Override public org.drip.historical.attribution.PositionMarketSnap snapSecondMarketValue()
 	{
-<span class="nc" id="L234">		org.drip.product.govvie.TreasuryComponent tsyComponent = (org.drip.product.govvie.TreasuryComponent)</span>
-<span class="nc" id="L235">			component();</span>
+<span class="nc" id="L258">		org.drip.product.govvie.TreasuryComponent tsyComponent = (org.drip.product.govvie.TreasuryComponent)</span>
+<span class="nc" id="L259">			component();</span>
 
-<span class="nc" id="L237">		org.drip.analytics.date.JulianDate dtValuation = secondDate();</span>
+<span class="nc" id="L261">		org.drip.analytics.date.JulianDate dtValuation = secondDate();</span>
 
-<span class="nc" id="L239">		int iValuationDate = dtValuation.julian();</span>
+<span class="nc" id="L263">		int iValuationDate = dtValuation.julian();</span>
 
-<span class="nc" id="L241">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = secondMarketParameters();</span>
+<span class="nc" id="L265">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = secondMarketParameters();</span>
 
-<span class="nc" id="L243">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L244">			(iValuationDate);</span>
+<span class="nc" id="L267">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="nc" id="L268">			(iValuationDate);</span>
 
 		try {
-<span class="nc" id="L247">			org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (tsyComponent.govvieLabel());</span>
+<span class="nc" id="L271">			org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (tsyComponent.govvieLabel());</span>
 
-<span class="nc" id="L249">			double dblYield = gc.yield (tsyComponent.maturityDate().julian());</span>
+<span class="nc" id="L273">			double dblYield = gc.yield (tsyComponent.maturityDate().julian());</span>
 
-<span class="nc" id="L251">			double dblCumulativeCouponDCF = org.drip.analytics.daycount.Convention.YearFraction</span>
-<span class="nc" id="L252">				(tsyComponent.effectiveDate().julian(), iValuationDate, tsyComponent.accrualDC(), false,</span>
-<span class="nc" id="L253">					org.drip.analytics.daycount.ActActDCParams.FromFrequency (gc.freq()),</span>
-<span class="nc" id="L254">						tsyComponent.currency());</span>
+<span class="nc" id="L275">			double dblCumulativeCouponDCF = org.drip.analytics.daycount.Convention.YearFraction</span>
+<span class="nc" id="L276">				(tsyComponent.effectiveDate().julian(), iValuationDate, tsyComponent.accrualDC(), false,</span>
+<span class="nc" id="L277">					org.drip.analytics.daycount.ActActDCParams.FromFrequency (gc.freq()),</span>
+<span class="nc" id="L278">						tsyComponent.currency());</span>
 
-<span class="nc" id="L256">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
+<span class="nc" id="L280">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
 				org.drip.historical.attribution.PositionMarketSnap (dtValuation, tsyComponent.priceFromYield
-<span class="nc" id="L258">					(valParams, csqc, null, dblYield));</span>
+<span class="nc" id="L282">					(valParams, csqc, null, dblYield));</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponDCF *</span>
-<span class="nc" id="L261">				tsyComponent.couponSetting().couponRate()))</span>
-<span class="nc" id="L262">				return null;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponDCF *</span>
+<span class="nc" id="L285">				tsyComponent.couponSetting().couponRate()))</span>
+<span class="nc" id="L286">				return null;</span>
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, dblCumulativeCouponDCF)) return null;</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, dblCumulativeCouponDCF)) return null;</span>
 
-<span class="nc bnc" id="L266" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Yield&quot;, dblYield)) return null;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Yield&quot;, dblYield)) return null;</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;Yield&quot;, dblYield, -10000. *</span>
-<span class="nc" id="L269">				tsyComponent.modifiedDurationFromYield (valParams, csqc, null, dblYield), 0.))</span>
-<span class="nc" id="L270">				return null;</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;Yield&quot;, dblYield, -10000. *</span>
+<span class="nc" id="L293">				tsyComponent.modifiedDurationFromYield (valParams, csqc, null, dblYield), 0.))</span>
+<span class="nc" id="L294">				return null;</span>
 
-<span class="nc" id="L272">			return pms;</span>
-<span class="nc" id="L273">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L274">			e.printStackTrace();</span>
+<span class="nc" id="L296">			return pms;</span>
+<span class="nc" id="L297">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L298">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L277">		return null;</span>
+<span class="nc" id="L301">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;
@@ -282,48 +306,48 @@ public class TreasuryBondExplainProcessor extends org.drip.historical.engine.Hor
 			final org.drip.historical.attribution.PositionMarketSnap pmsFirst,
 			final org.drip.historical.attribution.PositionMarketSnap pmsSecond)
 	{
-<span class="nc bnc" id="L285" title="All 4 branches missed.">		if (null == pmsFirst || null == pmsSecond) return null;</span>
+<span class="nc bnc" id="L309" title="All 4 branches missed.">		if (null == pmsFirst || null == pmsSecond) return null;</span>
 
-<span class="nc" id="L287">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapDifferentialMetric = new</span>
+<span class="nc" id="L311">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapDifferentialMetric = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L290">		org.drip.analytics.date.JulianDate dtEffective = pmsFirst.date (&quot;EffectiveDate&quot;);</span>
+<span class="nc" id="L314">		org.drip.analytics.date.JulianDate dtEffective = pmsFirst.date (&quot;EffectiveDate&quot;);</span>
 
-<span class="nc" id="L292">		java.lang.String strAccrualDC = pmsFirst.c1 (&quot;AccruedDC&quot;);</span>
+<span class="nc" id="L316">		java.lang.String strAccrualDC = pmsFirst.c1 (&quot;AccruedDC&quot;);</span>
 
-<span class="nc" id="L294">		java.lang.String strCalendar = pmsFirst.c1 (&quot;Currency&quot;);</span>
+<span class="nc" id="L318">		java.lang.String strCalendar = pmsFirst.c1 (&quot;Currency&quot;);</span>
 
-<span class="nc" id="L296">		int iDate1M = dtEffective.addTenor (&quot;1M&quot;).julian();</span>
+<span class="nc" id="L320">		int iDate1M = dtEffective.addTenor (&quot;1M&quot;).julian();</span>
 
-<span class="nc" id="L298">		int iDate3M = dtEffective.addTenor (&quot;3M&quot;).julian();</span>
+<span class="nc" id="L322">		int iDate3M = dtEffective.addTenor (&quot;3M&quot;).julian();</span>
 
-<span class="nc" id="L300">		int iEffectiveDate = dtEffective.julian();</span>
+<span class="nc" id="L324">		int iEffectiveDate = dtEffective.julian();</span>
 
-<span class="nc" id="L302">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="nc" id="L326">		org.drip.analytics.daycount.ActActDCParams aap =</span>
 			org.drip.analytics.daycount.ActActDCParams.FromFrequency
-<span class="nc" id="L304">				(((org.drip.product.govvie.TreasuryComponent) component()).freq());</span>
+<span class="nc" id="L328">				(((org.drip.product.govvie.TreasuryComponent) component()).freq());</span>
 
 		try {
-<span class="nc" id="L307">			mapDifferentialMetric.put (&quot;CumulativeCouponAmount&quot;, pmsSecond.r1 (&quot;CumulativeCouponAmount&quot;) -</span>
-<span class="nc" id="L308">				pmsFirst.r1 (&quot;CumulativeCouponAmount&quot;));</span>
+<span class="nc" id="L331">			mapDifferentialMetric.put (&quot;CumulativeCouponAmount&quot;, pmsSecond.r1 (&quot;CumulativeCouponAmount&quot;) -</span>
+<span class="nc" id="L332">				pmsFirst.r1 (&quot;CumulativeCouponAmount&quot;));</span>
 
-<span class="nc" id="L310">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF&quot;, pmsSecond.r1 (&quot;CumulativeCouponDCF&quot;) -</span>
-<span class="nc" id="L311">				pmsFirst.r1 (&quot;CumulativeCouponDCF&quot;));</span>
+<span class="nc" id="L334">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF&quot;, pmsSecond.r1 (&quot;CumulativeCouponDCF&quot;) -</span>
+<span class="nc" id="L335">				pmsFirst.r1 (&quot;CumulativeCouponDCF&quot;));</span>
 
-<span class="nc" id="L313">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF1M&quot;,</span>
-<span class="nc" id="L314">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate1M, strAccrualDC,</span>
+<span class="nc" id="L337">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF1M&quot;,</span>
+<span class="nc" id="L338">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate1M, strAccrualDC,</span>
 					false, aap, strCalendar));
 
-<span class="nc" id="L317">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF3M&quot;,</span>
-<span class="nc" id="L318">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate3M, strAccrualDC,</span>
+<span class="nc" id="L341">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF3M&quot;,</span>
+<span class="nc" id="L342">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate3M, strAccrualDC,</span>
 					false, aap, strCalendar));
 
-<span class="nc" id="L321">			return mapDifferentialMetric;</span>
-<span class="nc" id="L322">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L323">			e.printStackTrace();</span>
+<span class="nc" id="L345">			return mapDifferentialMetric;</span>
+<span class="nc" id="L346">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L347">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L326">		return null;</span>
+<span class="nc" id="L350">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

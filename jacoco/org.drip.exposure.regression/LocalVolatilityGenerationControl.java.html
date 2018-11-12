@@ -6,31 +6,49 @@ package org.drip.exposure.regression;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,23 +65,39 @@ package org.drip.exposure.regression;
  */
 
 /**
- * LocalVolatilityGenerationControl holds the Parameters the control the Calculation of the Local Volatility
- * 	in the Pykhtin (2009) Brownian Bridge Calibration. The References are:
+ * &lt;i&gt;LocalVolatilityGenerationControl&lt;/i&gt; holds the Parameters the control the Calculation of the Local
+ * Volatility in the Pykhtin (2009) Brownian Bridge Calibration. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -89,10 +123,10 @@ public class LocalVolatilityGenerationControl
 
 	public static final double LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS = 0.90;
 
-<span class="nc" id="L92">	private double[] _uniformCPDArray = null;</span>
-<span class="nc" id="L93">	private int _localVolatilityIndexShift = -1;</span>
-<span class="nc" id="L94">	private double[] _impliedBrownianVariateArray = null;</span>
-<span class="nc" id="L95">	private org.drip.spline.params.SegmentCustomBuilderControl[] _segmentCustomBuilderControlArray = null;</span>
+<span class="nc" id="L126">	private double[] _uniformCPDArray = null;</span>
+<span class="nc" id="L127">	private int _localVolatilityIndexShift = -1;</span>
+<span class="nc" id="L128">	private double[] _impliedBrownianVariateArray = null;</span>
+<span class="nc" id="L129">	private org.drip.spline.params.SegmentCustomBuilderControl[] _segmentCustomBuilderControlArray = null;</span>
 
 	/**
 	 * Construct a Standard Instance of LocalVolatilityGenerationControl
@@ -105,49 +139,49 @@ public class LocalVolatilityGenerationControl
 	public static final LocalVolatilityGenerationControl Standard (
 		final int ensembleSize)
 	{
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; ensembleSize)</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; ensembleSize)</span>
 		{
-<span class="nc" id="L110">			return null;</span>
+<span class="nc" id="L144">			return null;</span>
 		}
 
-<span class="nc" id="L113">		double[] uniformCPDArray = new double[ensembleSize];</span>
-<span class="nc" id="L114">		double[] impliedBrownianVariateArray = new double[ensembleSize];</span>
-<span class="nc" id="L115">		int localVolatilityIndexShift = (int) (LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS *</span>
+<span class="nc" id="L147">		double[] uniformCPDArray = new double[ensembleSize];</span>
+<span class="nc" id="L148">		double[] impliedBrownianVariateArray = new double[ensembleSize];</span>
+<span class="nc" id="L149">		int localVolatilityIndexShift = (int) (LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS *</span>
 			PYKHTIN_2009_EMPIRICAL_FLOOR + (1 - LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS) * ensembleSize);
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; localVolatilityIndexShift)</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; localVolatilityIndexShift)</span>
 		{
-<span class="nc" id="L120">			return null;</span>
+<span class="nc" id="L154">			return null;</span>
 		}
 
-<span class="nc" id="L123">		for (int realizationCoordinate = 0;</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">			realizationCoordinate &lt; ensembleSize;</span>
-<span class="nc" id="L125">			++realizationCoordinate)</span>
+<span class="nc" id="L157">		for (int realizationCoordinate = 0;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			realizationCoordinate &lt; ensembleSize;</span>
+<span class="nc" id="L159">			++realizationCoordinate)</span>
 		{
 			try
 			{
-<span class="nc" id="L129">				impliedBrownianVariateArray[realizationCoordinate] =</span>
+<span class="nc" id="L163">				impliedBrownianVariateArray[realizationCoordinate] =</span>
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-<span class="nc" id="L131">						(uniformCPDArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) /</span>
+<span class="nc" id="L165">						(uniformCPDArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) /</span>
 							((double) ensembleSize));
 			}
-<span class="nc" id="L134">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L168">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L136">				e.printStackTrace();</span>
+<span class="nc" id="L170">				e.printStackTrace();</span>
 
-<span class="nc" id="L138">				return null;</span>
-<span class="nc" id="L139">			}</span>
+<span class="nc" id="L172">				return null;</span>
+<span class="nc" id="L173">			}</span>
 		}
 
 		try
 		{
-<span class="nc" id="L144">			org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new</span>
+<span class="nc" id="L178">			org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl[ensembleSize - 1];
-<span class="nc" id="L146">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
+<span class="nc" id="L180">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl (
 					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
-<span class="nc" id="L150">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
+<span class="nc" id="L184">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
 						0,
 						2
 					),
@@ -158,26 +192,26 @@ public class LocalVolatilityGenerationControl
 					null
 				);
 
-<span class="nc" id="L161">			for (int realizationCoordinate = 0;</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">				realizationCoordinate &lt; ensembleSize - 1;</span>
-<span class="nc" id="L163">				++realizationCoordinate)</span>
+<span class="nc" id="L195">			for (int realizationCoordinate = 0;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">				realizationCoordinate &lt; ensembleSize - 1;</span>
+<span class="nc" id="L197">				++realizationCoordinate)</span>
 			{
-<span class="nc" id="L165">				segmentCustomBuilderControlArray[realizationCoordinate] = segmentCustomBuilderControl;</span>
+<span class="nc" id="L199">				segmentCustomBuilderControlArray[realizationCoordinate] = segmentCustomBuilderControl;</span>
 			}
 
-<span class="nc" id="L168">			return new LocalVolatilityGenerationControl (</span>
+<span class="nc" id="L202">			return new LocalVolatilityGenerationControl (</span>
 				localVolatilityIndexShift,
 				uniformCPDArray,
 				impliedBrownianVariateArray,
 				segmentCustomBuilderControlArray
 			);
 		}
-<span class="nc" id="L175">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L209">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L177">			e.printStackTrace();</span>
+<span class="nc" id="L211">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L180">		return null;</span>
+<span class="nc" id="L214">		return null;</span>
 	}
 
 	/**
@@ -197,24 +231,24 @@ public class LocalVolatilityGenerationControl
 		final double[] impliedBrownianVariateArray,
 		final org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray)
 		throws java.lang.Exception
-<span class="nc" id="L200">	{</span>
-<span class="nc bnc" id="L201" title="All 8 branches missed.">		if (0 &gt;= (_localVolatilityIndexShift = localVolatilityIndexShift) ||</span>
+<span class="nc" id="L234">	{</span>
+<span class="nc bnc" id="L235" title="All 8 branches missed.">		if (0 &gt;= (_localVolatilityIndexShift = localVolatilityIndexShift) ||</span>
 			null == (_uniformCPDArray = uniformCPDArray) ||
 			null == (_impliedBrownianVariateArray = impliedBrownianVariateArray) ||
 			null == (_segmentCustomBuilderControlArray = segmentCustomBuilderControlArray))
 		{
-<span class="nc" id="L206">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L240">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L209">		int uniformCPDArraySize = _uniformCPDArray.length;</span>
+<span class="nc" id="L243">		int uniformCPDArraySize = _uniformCPDArray.length;</span>
 
-<span class="nc bnc" id="L211" title="All 6 branches missed.">		if (0 == uniformCPDArraySize ||</span>
+<span class="nc bnc" id="L245" title="All 6 branches missed.">		if (0 == uniformCPDArraySize ||</span>
 			uniformCPDArraySize != _impliedBrownianVariateArray.length ||
 			uniformCPDArraySize != _segmentCustomBuilderControlArray.length + 1)
 		{
-<span class="nc" id="L215">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L249">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L217">	}</span>
+<span class="nc" id="L251">	}</span>
 
 	/**
 	 * Retrieve the Local Volatility Index Shift
@@ -224,7 +258,7 @@ public class LocalVolatilityGenerationControl
 
 	public int localVolatilityIndexShift()
 	{
-<span class="nc" id="L227">		return _localVolatilityIndexShift;</span>
+<span class="nc" id="L261">		return _localVolatilityIndexShift;</span>
 	}
 
 	/**
@@ -235,7 +269,7 @@ public class LocalVolatilityGenerationControl
 
 	public double[] uniformCPDArray()
 	{
-<span class="nc" id="L238">		return _uniformCPDArray;</span>
+<span class="nc" id="L272">		return _uniformCPDArray;</span>
 	}
 
 	/**
@@ -246,7 +280,7 @@ public class LocalVolatilityGenerationControl
 
 	public double[] impliedBrownianVariateArray()
 	{
-<span class="nc" id="L249">		return _impliedBrownianVariateArray;</span>
+<span class="nc" id="L283">		return _impliedBrownianVariateArray;</span>
 	}
 
 	/**
@@ -257,7 +291,7 @@ public class LocalVolatilityGenerationControl
 
 	public org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray()
 	{
-<span class="nc" id="L260">		return _segmentCustomBuilderControlArray;</span>
+<span class="nc" id="L294">		return _segmentCustomBuilderControlArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

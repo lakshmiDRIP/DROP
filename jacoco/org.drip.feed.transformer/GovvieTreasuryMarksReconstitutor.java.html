@@ -6,33 +6,51 @@ package org.drip.feed.transformer;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,13 +67,19 @@ package org.drip.feed.transformer;
  */
 
 /**
- * GovvieTreasuryMarksReconstitutor transforms the Treasury Marks (e.g., Yield) Feed Inputs into Formats
- *  appropriate for Govvie Curve Construction and Measure Generation.
+ * &lt;i&gt;GovvieTreasuryMarksReconstitutor&lt;/i&gt; transforms the Treasury Marks (e.g., Yield) Feed Inputs into
+ * Formats appropriate for Govvie Curve Construction and Measure Generation.
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L58">public class GovvieTreasuryMarksReconstitutor {</span>
+<span class="nc" id="L82">public class GovvieTreasuryMarksReconstitutor {</span>
 
 	/**
 	 * The Standard Treasury Input Calibration Manifest Measure
@@ -73,7 +97,7 @@ package org.drip.feed.transformer;
 	 * The Standard Treasury Market Yield Re-constitution Benchmark Tenors
 	 */
 
-<span class="nc" id="L76">	public static final java.lang.String[] s_astrOutputBenchmarkTenor = new java.lang.String[] {</span>
+<span class="nc" id="L100">	public static final java.lang.String[] s_astrOutputBenchmarkTenor = new java.lang.String[] {</span>
 		&quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;7Y&quot;, &quot;10Y&quot;, &quot;20Y&quot;, &quot;30Y&quot;
 	};
 
@@ -95,90 +119,90 @@ package org.drip.feed.transformer;
 		final java.lang.String strManifestMeasure,
 		final java.lang.String[] astrOutputBenchmarkTenor)
 	{
-<span class="nc bnc" id="L98" title="All 6 branches missed.">		if (null == mapClosingMarks || 0 == mapClosingMarks.size() || null == astrOutputBenchmarkTenor)</span>
-<span class="nc" id="L99">			return false;</span>
+<span class="nc bnc" id="L122" title="All 6 branches missed.">		if (null == mapClosingMarks || 0 == mapClosingMarks.size() || null == astrOutputBenchmarkTenor)</span>
+<span class="nc" id="L123">			return false;</span>
 
-<span class="nc" id="L101">		java.lang.String strHeader = &quot;Date&quot;;</span>
-<span class="nc" id="L102">		int iNumOutputBenchmark = astrOutputBenchmarkTenor.length;</span>
+<span class="nc" id="L125">		java.lang.String strHeader = &quot;Date&quot;;</span>
+<span class="nc" id="L126">		int iNumOutputBenchmark = astrOutputBenchmarkTenor.length;</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (0 == iNumOutputBenchmark) return false;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (0 == iNumOutputBenchmark) return false;</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOutputBenchmark; ++i)</span>
-<span class="nc" id="L107">			strHeader += &quot;,&quot; + astrOutputBenchmarkTenor[i];</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOutputBenchmark; ++i)</span>
+<span class="nc" id="L131">			strHeader += &quot;,&quot; + astrOutputBenchmarkTenor[i];</span>
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOutputBenchmark; ++i)</span>
-<span class="nc" id="L110">			strHeader += &quot;,&lt;&lt;INPUT::&quot; + astrOutputBenchmarkTenor[i] + &quot;&gt;&gt;&quot;;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOutputBenchmark; ++i)</span>
+<span class="nc" id="L134">			strHeader += &quot;,&lt;&lt;INPUT::&quot; + astrOutputBenchmarkTenor[i] + &quot;&gt;&gt;&quot;;</span>
 
-<span class="nc" id="L112">		System.out.println (strHeader);</span>
+<span class="nc" id="L136">		System.out.println (strHeader);</span>
 
 		for (java.util.Map.Entry&lt;org.drip.analytics.date.JulianDate, java.util.Map&lt;java.lang.Double,
-<span class="nc bnc" id="L115" title="All 2 branches missed.">			java.lang.Double&gt;&gt; meClosingMarks : mapClosingMarks.entrySet()) {</span>
-<span class="nc" id="L116">			org.drip.analytics.date.JulianDate dtSpot = meClosingMarks.getKey();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			java.lang.Double&gt;&gt; meClosingMarks : mapClosingMarks.entrySet()) {</span>
+<span class="nc" id="L140">			org.drip.analytics.date.JulianDate dtSpot = meClosingMarks.getKey();</span>
 
-<span class="nc" id="L118">			java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapKeyMarks = meClosingMarks.getValue();</span>
+<span class="nc" id="L142">			java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapKeyMarks = meClosingMarks.getValue();</span>
 
-<span class="nc" id="L120">			int iNumInputBenchmark = mapKeyMarks.size();</span>
+<span class="nc" id="L144">			int iNumInputBenchmark = mapKeyMarks.size();</span>
 
-<span class="nc" id="L122">			int i = 0;</span>
-<span class="nc" id="L123">			double[] adblInputTreasuryYield = new double[iNumInputBenchmark];</span>
-<span class="nc" id="L124">			org.drip.analytics.date.JulianDate[] adtInputTreasuryMaturity = new</span>
+<span class="nc" id="L146">			int i = 0;</span>
+<span class="nc" id="L147">			double[] adblInputTreasuryYield = new double[iNumInputBenchmark];</span>
+<span class="nc" id="L148">			org.drip.analytics.date.JulianDate[] adtInputTreasuryMaturity = new</span>
 				org.drip.analytics.date.JulianDate[iNumInputBenchmark];
-<span class="nc" id="L126">			org.drip.analytics.date.JulianDate[] adtInputTreasuryEffective = new</span>
+<span class="nc" id="L150">			org.drip.analytics.date.JulianDate[] adtInputTreasuryEffective = new</span>
 				org.drip.analytics.date.JulianDate[iNumInputBenchmark];
-<span class="nc" id="L128">			org.drip.product.credit.BondComponent[] aInputBenchmarkTreasury = new</span>
+<span class="nc" id="L152">			org.drip.product.credit.BondComponent[] aInputBenchmarkTreasury = new</span>
 				org.drip.product.credit.BondComponent[iNumInputBenchmark];
-<span class="nc" id="L130">			org.drip.product.credit.BondComponent[] aOutputBenchmarkTreasury = new</span>
+<span class="nc" id="L154">			org.drip.product.credit.BondComponent[] aOutputBenchmarkTreasury = new</span>
 				org.drip.product.credit.BondComponent[iNumOutputBenchmark];
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; meKeyMarks : mapKeyMarks.entrySet())</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; meKeyMarks : mapKeyMarks.entrySet())</span>
 			{
-<span class="nc" id="L135">				double dblYear = meKeyMarks.getKey();</span>
+<span class="nc" id="L159">				double dblYear = meKeyMarks.getKey();</span>
 
-<span class="nc" id="L137">				if (null == (aInputBenchmarkTreasury[i] = org.drip.service.template.TreasuryBuilder.FromCode</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">					(strTreasuryType, adtInputTreasuryEffective[i] = dtSpot, adtInputTreasuryMaturity[i] =</span>
-<span class="nc" id="L139">						dtSpot.addYears ((int) dblYear), adblInputTreasuryYield[i] = meKeyMarks.getValue())))</span>
-<span class="nc" id="L140">					return false;</span>
+<span class="nc" id="L161">				if (null == (aInputBenchmarkTreasury[i] = org.drip.service.template.TreasuryBuilder.FromCode</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					(strTreasuryType, adtInputTreasuryEffective[i] = dtSpot, adtInputTreasuryMaturity[i] =</span>
+<span class="nc" id="L163">						dtSpot.addYears ((int) dblYear), adblInputTreasuryYield[i] = meKeyMarks.getValue())))</span>
+<span class="nc" id="L164">					return false;</span>
 
-<span class="nc" id="L142">				++i;</span>
-<span class="nc" id="L143">			}</span>
+<span class="nc" id="L166">				++i;</span>
+<span class="nc" id="L167">			}</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumOutputBenchmark; ++j) {</span>
-<span class="nc" id="L146">				if (null == (aOutputBenchmarkTreasury[j] = org.drip.service.template.TreasuryBuilder.FromCode</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">					(strTreasuryType, dtSpot, dtSpot.addTenor (astrOutputBenchmarkTenor[j]), 0.01)))</span>
-<span class="nc" id="L148">					return false;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumOutputBenchmark; ++j) {</span>
+<span class="nc" id="L170">				if (null == (aOutputBenchmarkTreasury[j] = org.drip.service.template.TreasuryBuilder.FromCode</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">					(strTreasuryType, dtSpot, dtSpot.addTenor (astrOutputBenchmarkTenor[j]), 0.01)))</span>
+<span class="nc" id="L172">					return false;</span>
 			}
 
-<span class="nc" id="L151">			org.drip.state.govvie.GovvieCurve gc =</span>
+<span class="nc" id="L175">			org.drip.state.govvie.GovvieCurve gc =</span>
 				org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve
-<span class="nc" id="L153">					(strTreasuryType, dtSpot, adtInputTreasuryEffective, adtInputTreasuryMaturity,</span>
+<span class="nc" id="L177">					(strTreasuryType, dtSpot, adtInputTreasuryEffective, adtInputTreasuryMaturity,</span>
 						adblInputTreasuryYield, adblInputTreasuryYield, strManifestMeasure);
 
-<span class="nc" id="L156">			java.lang.String strCleansedInput = &quot;&quot; + dtSpot;</span>
+<span class="nc" id="L180">			java.lang.String strCleansedInput = &quot;&quot; + dtSpot;</span>
 
-<span class="nc" id="L158">			org.drip.param.valuation.ValuationParams valParamsSpot =</span>
-<span class="nc" id="L159">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
+<span class="nc" id="L182">			org.drip.param.valuation.ValuationParams valParamsSpot =</span>
+<span class="nc" id="L183">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumOutputBenchmark; ++j) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumOutputBenchmark; ++j) {</span>
 				try {
-<span class="nc" id="L163">					strCleansedInput += &quot;,&quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L164">						(aOutputBenchmarkTreasury[j].yieldFromPrice (valParamsSpot, null, null,</span>
-<span class="nc" id="L165">							aOutputBenchmarkTreasury[j].priceFromYield (valParamsSpot, null, null, gc.yield</span>
-<span class="nc" id="L166">								(aOutputBenchmarkTreasury[j].maturityDate()))), 1, 6, 1.);</span>
-<span class="nc" id="L167">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L187">					strCleansedInput += &quot;,&quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L188">						(aOutputBenchmarkTreasury[j].yieldFromPrice (valParamsSpot, null, null,</span>
+<span class="nc" id="L189">							aOutputBenchmarkTreasury[j].priceFromYield (valParamsSpot, null, null, gc.yield</span>
+<span class="nc" id="L190">								(aOutputBenchmarkTreasury[j].maturityDate()))), 1, 6, 1.);</span>
+<span class="nc" id="L191">				} catch (java.lang.Exception e) {</span>
 					// e.printStackTrace();
 
-<span class="nc" id="L170">					continue;</span>
-<span class="nc" id="L171">				}</span>
+<span class="nc" id="L194">					continue;</span>
+<span class="nc" id="L195">				}</span>
 			}
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumInputBenchmark; ++j)</span>
-<span class="nc" id="L175">				strCleansedInput += &quot;,&quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L176">					(adblInputTreasuryYield[j], 1, 6, 1.);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumInputBenchmark; ++j)</span>
+<span class="nc" id="L199">				strCleansedInput += &quot;,&quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L200">					(adblInputTreasuryYield[j], 1, 6, 1.);</span>
 
-<span class="nc" id="L178">			System.out.println (strCleansedInput);</span>
-<span class="nc" id="L179">		}</span>
+<span class="nc" id="L202">			System.out.println (strCleansedInput);</span>
+<span class="nc" id="L203">		}</span>
 
-<span class="nc" id="L181">		return true;</span>
+<span class="nc" id="L205">		return true;</span>
 	}
 
 	/**
@@ -195,7 +219,7 @@ package org.drip.feed.transformer;
 		final java.util.Map&lt;org.drip.analytics.date.JulianDate, java.util.Map&lt;java.lang.Double,
 			java.lang.Double&gt;&gt; mapClosingMarks)
 	{
-<span class="nc" id="L198">		return RegularizeBenchmarkMarks (strTreasuryType, mapClosingMarks, s_strCalibrationMeasure,</span>
+<span class="nc" id="L222">		return RegularizeBenchmarkMarks (strTreasuryType, mapClosingMarks, s_strCalibrationMeasure,</span>
 			s_astrOutputBenchmarkTenor);
 	}
 
@@ -212,11 +236,11 @@ package org.drip.feed.transformer;
 		final java.lang.String strMarksLocation,
 		final java.lang.String strTreasuryType)
 	{
-<span class="nc" id="L215">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+<span class="nc" id="L239">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
 			false);
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeBenchmarkMarks (strTreasuryType, csvGrid.doubleMap</span>
-<span class="nc" id="L219">			(s_dblScaler), s_strCalibrationMeasure, s_astrOutputBenchmarkTenor);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeBenchmarkMarks (strTreasuryType, csvGrid.doubleMap</span>
+<span class="nc" id="L243">			(s_dblScaler), s_strCalibrationMeasure, s_astrOutputBenchmarkTenor);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

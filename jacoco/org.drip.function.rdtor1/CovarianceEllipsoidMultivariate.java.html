@@ -6,33 +6,51 @@ package org.drip.function.rdtor1;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,14 +67,20 @@ package org.drip.function.rdtor1;
  */
 
 /**
- * CovarianceEllipsoidMultivariate implements an R^d To R^1 Co-variance Estimate of the specified
- *  Distribution.
+ * &lt;i&gt;CovarianceEllipsoidMultivariate&lt;/i&gt; implements a R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Co-variance Estimate of
+ * the specified Distribution.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CovarianceEllipsoidMultivariate extends org.drip.function.definition.RdToR1 {
-<span class="fc" id="L59">	private double[][] _aadblCovarianceMatrix = null;</span>
+<span class="fc" id="L83">	private double[][] _aadblCovarianceMatrix = null;</span>
 
 	/**
 	 * CovarianceEllipsoidMultivariate Constructor
@@ -70,23 +94,23 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 		final double[][] aadblCovarianceMatrix)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L73">		super (null);</span>
+<span class="fc" id="L97">		super (null);</span>
 
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if (null == (_aadblCovarianceMatrix = aadblCovarianceMatrix))</span>
-<span class="nc" id="L76">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (null == (_aadblCovarianceMatrix = aadblCovarianceMatrix))</span>
+<span class="nc" id="L100">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L78">		int iSize = _aadblCovarianceMatrix.length;</span>
+<span class="fc" id="L102">		int iSize = _aadblCovarianceMatrix.length;</span>
 
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (0 == iSize)</span>
-<span class="nc" id="L81">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (0 == iSize)</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L83" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="pc bpc" id="L84" title="2 of 4 branches missed.">			if (null == _aadblCovarianceMatrix[i] || iSize != _aadblCovarianceMatrix[i].length ||</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]))</span>
-<span class="nc" id="L86">				throw new java.lang.Exception</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">			if (null == _aadblCovarianceMatrix[i] || iSize != _aadblCovarianceMatrix[i].length ||</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]))</span>
+<span class="nc" id="L110">				throw new java.lang.Exception</span>
 					(&quot;CovarianceEllipsoidMultivariate Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="fc" id="L89">	}</span>
+<span class="fc" id="L113">	}</span>
 
 	/**
 	 * Retrieve the Input Variate Dimension
@@ -96,7 +120,7 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 
 	public int dimension()
 	{
-<span class="fc" id="L99">		return _aadblCovarianceMatrix.length;</span>
+<span class="fc" id="L123">		return _aadblCovarianceMatrix.length;</span>
 	}
 
 	/**
@@ -107,63 +131,63 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 
 	public double[][] covariance()
 	{
-<span class="nc" id="L110">		return _aadblCovarianceMatrix;</span>
+<span class="nc" id="L134">		return _aadblCovarianceMatrix;</span>
 	}
 
 	@Override public double evaluate (
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L118">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L120">		double dblCovariance = 0.;</span>
-<span class="fc" id="L121">		int iDimension = adblVariate.length;</span>
+<span class="fc" id="L144">		double dblCovariance = 0.;</span>
+<span class="fc" id="L145">		int iDimension = adblVariate.length;</span>
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (iDimension != dimension())</span>
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (iDimension != dimension())</span>
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;CovarianceEllipsoidMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="fc" id="L128">				dblCovariance += adblVariate[i] * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L152">				dblCovariance += adblVariate[i] * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
 		}
 
-<span class="fc" id="L131">		return dblCovariance;</span>
+<span class="fc" id="L155">		return dblCovariance;</span>
 	}
 
 	@Override public double[] jacobian (
 		final double[] adblVariate)
 	{
-<span class="pc bpc" id="L137" title="2 of 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate)) return null;</span>
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate)) return null;</span>
 
-<span class="fc" id="L139">		int iDimension = adblVariate.length;</span>
-<span class="fc" id="L140">		double[] adblJacobian = new double[iDimension];</span>
+<span class="fc" id="L163">		int iDimension = adblVariate.length;</span>
+<span class="fc" id="L164">		double[] adblJacobian = new double[iDimension];</span>
 
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (iDimension != dimension()) return null;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (iDimension != dimension()) return null;</span>
 
-<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="fc" id="L145">			adblJacobian[i] = 0.;</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc" id="L169">			adblJacobian[i] = 0.;</span>
 
-<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="fc" id="L148">				adblJacobian[i] += 2. * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L172">				adblJacobian[i] += 2. * _aadblCovarianceMatrix[i][j] * adblVariate[j];</span>
 		}
 
-<span class="fc" id="L151">		return adblJacobian;</span>
+<span class="fc" id="L175">		return adblJacobian;</span>
 	}
 
 	@Override public double[][] hessian (
 		final double[] adblVariate)
 	{
-<span class="fc" id="L157">		int iDimension = dimension();</span>
+<span class="fc" id="L181">		int iDimension = dimension();</span>
 
-<span class="fc" id="L159">		double[][] aadblHessian = new double[iDimension][iDimension];</span>
+<span class="fc" id="L183">		double[][] aadblHessian = new double[iDimension][iDimension];</span>
 
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="fc" id="L163">				aadblHessian[i][j] += 2. * _aadblCovarianceMatrix[i][j];</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L187">				aadblHessian[i][j] += 2. * _aadblCovarianceMatrix[i][j];</span>
 		}
 
-<span class="fc" id="L166">		return aadblHessian;</span>
+<span class="fc" id="L190">		return aadblHessian;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

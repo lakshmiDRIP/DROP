@@ -6,32 +6,50 @@ package org.drip.exposure.mpor;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,37 +66,54 @@ package org.drip.exposure.mpor;
  */
 
 /**
- * CollateralAmountEstimatorOutput contains the Estimation Output of the Hypothecation Collateral that is to
- *  be Posted during a Single Run of a Collateral Hypothecation Group Valuation. The References are:
+ * &lt;i&gt;CollateralAmountEstimatorOutput&lt;/i&gt; contains the Estimation Output of the Hypothecation Collateral that
+ * is to be Posted during a Single Run of a Collateral Hypothecation Group Valuation. The References are:
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-
+ *  				party Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  				86-90
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading
+ *  				Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market
+ *  				&lt;i&gt;World Scientific Publishing &lt;/i&gt; &lt;b&gt;Singapore&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/mpor&quot;&gt;MPoR&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CollateralAmountEstimatorOutput
 {
-<span class="fc" id="L73">	private double _postingRequirement = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _clientWindowMarginValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dealerWindowMarginValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _clientPostingRequirement = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _dealerPostingRequirement = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">	private double _clientCollateralThreshold = java.lang.Double.NaN;</span>
-<span class="fc" id="L79">	private double _dealerCollateralThreshold = java.lang.Double.NaN;</span>
-<span class="fc" id="L80">	private org.drip.analytics.date.JulianDate _clientMarginDate = null;</span>
-<span class="fc" id="L81">	private org.drip.analytics.date.JulianDate _dealerMarginDate = null;</span>
+<span class="nc" id="L108">	private double _postingRequirement = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _clientWindowMarginValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dealerWindowMarginValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _clientPostingRequirement = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dealerPostingRequirement = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _clientCollateralThreshold = java.lang.Double.NaN;</span>
+<span class="nc" id="L114">	private double _dealerCollateralThreshold = java.lang.Double.NaN;</span>
+<span class="nc" id="L115">	private org.drip.analytics.date.JulianDate _clientMarginDate = null;</span>
+<span class="nc" id="L116">	private org.drip.analytics.date.JulianDate _dealerMarginDate = null;</span>
 
 	/**
 	 * CollateralAmountEstimatorOutput Constructor
@@ -107,24 +142,24 @@ public class CollateralAmountEstimatorOutput
 		final double clientPostingRequirement,
 		final double postingRequirement)
 		throws java.lang.Exception
-<span class="fc" id="L110">	{</span>
-<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == (_dealerMarginDate = dealerMarginDate) ||</span>
+<span class="nc" id="L145">	{</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (null == (_dealerMarginDate = dealerMarginDate) ||</span>
 			null == (_clientMarginDate = clientMarginDate) ||
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerWindowMarginValue = dealerWindowMarginValue) ||</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerCollateralThreshold =</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerWindowMarginValue = dealerWindowMarginValue) ||</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerCollateralThreshold =</span>
 				dealerCollateralThreshold) ||
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerPostingRequirement = dealerPostingRequirement)</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerPostingRequirement = dealerPostingRequirement)</span>
 				||
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientWindowMarginValue = clientWindowMarginValue) ||</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientCollateralThreshold =</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientWindowMarginValue = clientWindowMarginValue) ||</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientCollateralThreshold =</span>
 				clientCollateralThreshold) ||
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientPostingRequirement = clientPostingRequirement)</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientPostingRequirement = clientPostingRequirement)</span>
 				||
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))</span>
 		{
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;CollateralAmountEstimatorOutput Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;CollateralAmountEstimatorOutput Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L127">	}</span>
+<span class="nc" id="L162">	}</span>
 
 	/**
 	 * Retrieve the Dealer Margin Date
@@ -134,7 +169,7 @@ public class CollateralAmountEstimatorOutput
 
 	public org.drip.analytics.date.JulianDate dealerMarginDate()
 	{
-<span class="fc" id="L137">		return _dealerMarginDate;</span>
+<span class="nc" id="L172">		return _dealerMarginDate;</span>
 	}
 
 	/**
@@ -145,7 +180,7 @@ public class CollateralAmountEstimatorOutput
 
 	public org.drip.analytics.date.JulianDate clientMarginDate()
 	{
-<span class="fc" id="L148">		return _clientMarginDate;</span>
+<span class="nc" id="L183">		return _clientMarginDate;</span>
 	}
 
 	/**
@@ -156,7 +191,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double dealerWindowMarginValue()
 	{
-<span class="fc" id="L159">		return _dealerWindowMarginValue;</span>
+<span class="nc" id="L194">		return _dealerWindowMarginValue;</span>
 	}
 
 	/**
@@ -167,7 +202,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double dealerCollateralThreshold()
 	{
-<span class="fc" id="L170">		return _dealerCollateralThreshold;</span>
+<span class="nc" id="L205">		return _dealerCollateralThreshold;</span>
 	}
 
 	/**
@@ -178,7 +213,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double dealerPostingRequirement()
 	{
-<span class="fc" id="L181">		return _dealerPostingRequirement;</span>
+<span class="nc" id="L216">		return _dealerPostingRequirement;</span>
 	}
 
 	/**
@@ -189,7 +224,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double clientWindowMarginValue()
 	{
-<span class="fc" id="L192">		return _clientWindowMarginValue;</span>
+<span class="nc" id="L227">		return _clientWindowMarginValue;</span>
 	}
 
 	/**
@@ -200,7 +235,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double clientCollateralThreshold()
 	{
-<span class="fc" id="L203">		return _clientCollateralThreshold;</span>
+<span class="nc" id="L238">		return _clientCollateralThreshold;</span>
 	}
 
 	/**
@@ -211,7 +246,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double clientPostingRequirement()
 	{
-<span class="fc" id="L214">		return _clientPostingRequirement;</span>
+<span class="nc" id="L249">		return _clientPostingRequirement;</span>
 	}
 
 	/**
@@ -222,7 +257,7 @@ public class CollateralAmountEstimatorOutput
 
 	public double postingRequirement()
 	{
-<span class="fc" id="L225">		return _postingRequirement;</span>
+<span class="nc" id="L260">		return _postingRequirement;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

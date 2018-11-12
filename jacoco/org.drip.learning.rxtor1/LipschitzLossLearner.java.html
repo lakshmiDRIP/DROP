@@ -6,34 +6,52 @@ package org.drip.learning.rxtor1;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,32 +68,51 @@ package org.drip.learning.rxtor1;
  */
 
 /**
- * LipschitzLossLearner implements the Learner Class that holds the Space of Normed R^1 To Normed R^1
- *  Learning Functions for the Family of Loss Functions that are Lipschitz, i.e.,
+ * &lt;i&gt;LipschitzLossLearner&lt;/i&gt; implements the Learner Class that holds the Space of Normed R&lt;sup&gt;1&lt;/sup&gt; To
+ * Normed R&lt;sup&gt;1&lt;/sup&gt; Learning Functions for the Family of Loss Functions that are Lipschitz, i.e.,
  * 
  * 				loss (ep) - loss (ep') Less Than C * |ep-ep'|
  *  
+ * &lt;br&gt;&lt;br&gt;
  * The References are:
  *  
- *  1) Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
- *  	Convergence, and Learnability, Journal of Association of Computational Machinery, 44 (4) 615-631.
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;ul&gt;
+ * 	&lt;li&gt;
+ *  	Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
+ *  		Convergence, and Learnability &lt;i&gt;Journal of Association of Computational Machinery&lt;/i&gt; &lt;b&gt;44
+ *  		(4)&lt;/b&gt; 615-631
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Anthony, M., and P. L. Bartlett (1999): &lt;i&gt;Artificial Neural Network Learning - Theoretical
+ *  		Foundations&lt;/i&gt; &lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge, UK
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): &lt;i&gt;Towards Efficient Agnostic Learning&lt;/i&gt;
+ *  		Machine Learning &lt;b&gt;17 (2)&lt;/b&gt; 115-141
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
+ *  		Squared Loss &lt;i&gt;IEEE Transactions on Information Theory&lt;/i&gt; &lt;b&gt;44&lt;/b&gt; 1974-1980
+ * 	&lt;/li&gt;
+ * 	&lt;li&gt;
+ *  	Vapnik, V. N. (1998): &lt;i&gt;Statistical learning Theory&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt; New York
+ * 	&lt;/li&gt;
+ * &lt;/ul&gt;
  * 
- *  2) Anthony, M., and P. L. Bartlett (1999): Artificial Neural Network Learning - Theoretical Foundations,
- *  	Cambridge University Press, Cambridge, UK.
- *  
- *  3) Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): Towards Efficient Agnostic Learning, Machine
- *  	Learning, 17 (2) 115-141.
- *  
- *  4) Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
- *  	Squared Loss, IEEE Transactions on Information Theory, 44 1974-1980.
- * 
- *  5) Vapnik, V. N. (1998): Statistical Learning Theory, Wiley, New York.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
-<span class="nc" id="L78">	private double _dblLipschitzSlope = java.lang.Double.NaN;</span>
+<span class="nc" id="L115">	private double _dblLipschitzSlope = java.lang.Double.NaN;</span>
 
 	/**
 	 * LipschitzLossLearner Constructor
@@ -95,11 +132,11 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final double dblLipschitzSlope)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (funcClassRxToR1, cdpb, regularizerFunc);</span>
+<span class="nc" id="L135">		super (funcClassRxToR1, cdpb, regularizerFunc);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzSlope = dblLipschitzSlope))</span>
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;LipschitzLossLearner ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L102">	}</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzSlope = dblLipschitzSlope))</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;LipschitzLossLearner ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Lipschitz Slope Bound
@@ -109,7 +146,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 
 	public double lipschitzSlope()
 	{
-<span class="nc" id="L112">		return _dblLipschitzSlope;</span>
+<span class="nc" id="L149">		return _dblLipschitzSlope;</span>
 	}
 
 	@Override public double lossSampleCoveringNumber (
@@ -118,20 +155,20 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L121" title="All 6 branches missed.">		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon)</span>
-<span class="nc" id="L122">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L158" title="All 6 branches missed.">		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon)</span>
+<span class="nc" id="L159">			throw new java.lang.Exception</span>
 				(&quot;LipschitzLossLearner::lossSampleCoveringNumber =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L125">		double dblLipschitzCover = dblEpsilon / _dblLipschitzSlope;</span>
+<span class="nc" id="L162">		double dblLipschitzCover = dblEpsilon / _dblLipschitzSlope;</span>
 
-<span class="nc" id="L127">		org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1 = functionClass();</span>
+<span class="nc" id="L164">		org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1 = functionClass();</span>
 
-<span class="nc" id="L129">		org.drip.learning.bound.LipschitzCoveringNumberBound llcn = new</span>
+<span class="nc" id="L166">		org.drip.learning.bound.LipschitzCoveringNumberBound llcn = new</span>
 			org.drip.learning.bound.LipschitzCoveringNumberBound (funcClassRxToR1.sampleSupremumCoveringNumber
-<span class="nc" id="L131">				(gvvi, dblLipschitzCover), funcClassRxToR1.sampleCoveringNumber (gvvi, gvvi.sampleSize() *</span>
+<span class="nc" id="L168">				(gvvi, dblLipschitzCover), funcClassRxToR1.sampleCoveringNumber (gvvi, gvvi.sampleSize() *</span>
 					dblLipschitzCover));
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		return bSupremum ? llcn.supremumUpperBound() : llcn.lpUpperBound();</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		return bSupremum ? llcn.supremumUpperBound() : llcn.lpUpperBound();</span>
 	}
 
 	@Override public double empiricalLoss (
@@ -140,7 +177,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L143">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalLoss =&gt; No Generic Implementation&quot;);</span>
+<span class="nc" id="L180">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalLoss =&gt; No Generic Implementation&quot;);</span>
 	}
 
 	@Override public double empiricalLoss (
@@ -149,7 +186,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L152">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalLoss =&gt; No Generic Implementation&quot;);</span>
+<span class="nc" id="L189">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalLoss =&gt; No Generic Implementation&quot;);</span>
 	}
 
 	@Override public double empiricalRisk (
@@ -159,7 +196,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L162">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalRisk =&gt; No Generic Implementation&quot;);</span>
+<span class="nc" id="L199">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalRisk =&gt; No Generic Implementation&quot;);</span>
 	}
 
 	@Override public double empiricalRisk (
@@ -169,7 +206,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L172">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalRisk =&gt; No Generic Implementation&quot;);</span>
+<span class="nc" id="L209">		throw new java.lang.Exception (&quot;LipschitzLossLearner::empiricalRisk =&gt; No Generic Implementation&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

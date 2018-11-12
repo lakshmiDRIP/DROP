@@ -6,33 +6,51 @@ package org.drip.function.rdtor1descent;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,31 +67,45 @@ package org.drip.function.rdtor1descent;
  */
 
 /**
- * WolfeEvolutionVerifierMetrics implements the Wolfe Criterion used for the Inexact Line Search Increment
- *  Generation. The References are:
- * 
- * 	- Armijo, L. (1966): Minimization of Functions having Lipschitz-Continuous First Partial Derivatives,
- * 		Pacific Journal of Mathematics 16 (1) 1-3.
- * 
- * 	- Wolfe, P. (1969): Convergence Conditions for Ascent Methods, SIAM Review 11 (2) 226-235.
- * 
- * 	- Wolfe, P. (1971): Convergence Conditions for Ascent Methods; II: Some Corrections, SIAM Review 13 (2)
- * 		185-188.
- * 
- * 	- Nocedal, J., and S. Wright (1999): Numerical Optimization, Wiley.
+ * &lt;i&gt;WolfeEvolutionVerifierMetrics&lt;/i&gt; implements the Wolfe Criterion used for the Inexact Line Search
+ * Increment Generation. The References are:
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Armijo, L. (1966): Minimization of Functions having Lipschitz-Continuous First Partial
+ * 				Derivatives &lt;i&gt;Pacific Journal of Mathematics&lt;/i&gt; &lt;b&gt;16 (1)&lt;/b&gt; 1-3
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Nocedal, J., and S. Wright (1999): &lt;i&gt;Numerical Optimization&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wolfe, P. (1969): Convergence Conditions for Ascent Methods &lt;i&gt;SIAM Review&lt;/i&gt; &lt;b&gt;11 (2)&lt;/b&gt;
+ * 				226-235
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wolfe, P. (1971): Convergence Conditions for Ascent Methods; II: Some Corrections &lt;i&gt;SIAM
+ * 				Review&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 185-188
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Descent&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class WolfeEvolutionVerifierMetrics extends
 	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-<span class="fc" id="L70">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L71">	private boolean _bStrongCurvatureCriterion = false;</span>
-<span class="fc" id="L72">	private double[] _adblNextVariateFunctionJacobian = null;</span>
-<span class="fc" id="L73">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L74">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private boolean _bMaximizerCheck = false;</span>
+<span class="fc" id="L103">	private boolean _bStrongCurvatureCriterion = false;</span>
+<span class="fc" id="L104">	private double[] _adblNextVariateFunctionJacobian = null;</span>
+<span class="fc" id="L105">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * WolfeEvolutionVerifierMetrics Constructor
@@ -107,20 +139,20 @@ public class WolfeEvolutionVerifierMetrics extends
 		final double[] adblNextVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+<span class="fc" id="L142">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
 				null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
 						dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L117" title="2 of 4 branches missed.">							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||</span>
 								adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L121">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L122">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
-<span class="fc" id="L123">	}</span>
+<span class="fc" id="L153">		_bMaximizerCheck = bMaximizerCheck;</span>
+<span class="fc" id="L154">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Retrieve the Armijo Parameter
@@ -130,7 +162,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L133">		return _dblArmijoParameter;</span>
+<span class="nc" id="L165">		return _dblArmijoParameter;</span>
 	}
 
 	/**
@@ -141,7 +173,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L144">		return _bMaximizerCheck;</span>
+<span class="nc" id="L176">		return _bMaximizerCheck;</span>
 	}
 
 	/**
@@ -152,7 +184,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double curvatureParameter()
 	{
-<span class="nc" id="L155">		return _dblCurvatureParameter;</span>
+<span class="nc" id="L187">		return _dblCurvatureParameter;</span>
 	}
 
 	/**
@@ -163,7 +195,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean strongCurvatureCriterion()
 	{
-<span class="nc" id="L166">		return _bStrongCurvatureCriterion;</span>
+<span class="nc" id="L198">		return _bStrongCurvatureCriterion;</span>
 	}
 
 	/**
@@ -174,7 +206,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double currentVariateFunctionValue()
 	{
-<span class="nc" id="L177">		return _dblCurrentVariateFunctionValue;</span>
+<span class="nc" id="L209">		return _dblCurrentVariateFunctionValue;</span>
 	}
 
 	/**
@@ -185,7 +217,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double nextVariateFunctionValue()
 	{
-<span class="nc" id="L188">		return _dblNextVariateFunctionValue;</span>
+<span class="nc" id="L220">		return _dblNextVariateFunctionValue;</span>
 	}
 
 	/**
@@ -196,7 +228,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double[] nextVariateFunctionJacobian()
 	{
-<span class="nc" id="L199">		return _adblNextVariateFunctionJacobian;</span>
+<span class="nc" id="L231">		return _adblNextVariateFunctionJacobian;</span>
 	}
 
 	/**
@@ -207,34 +239,34 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean verify()
 	{
-<span class="fc" id="L210">		double[] adblDirectionVector = targetDirection().component();</span>
+<span class="fc" id="L242">		double[] adblDirectionVector = targetDirection().component();</span>
 
-<span class="fc" id="L212">		double[] adblCurrentVariateFunctionJacobian = currentVariateFunctionJacobian();</span>
+<span class="fc" id="L244">		double[] adblCurrentVariateFunctionJacobian = currentVariateFunctionJacobian();</span>
 
 		try {
-<span class="fc" id="L215">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
-<span class="fc" id="L216">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L247">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
+<span class="fc" id="L248">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 					adblCurrentVariateFunctionJacobian);
 
-<span class="pc bpc" id="L219" title="4 of 8 branches missed.">			if ((_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &lt; dblGradientUpdatedFunctionValue) ||</span>
+<span class="pc bpc" id="L251" title="4 of 8 branches missed.">			if ((_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &lt; dblGradientUpdatedFunctionValue) ||</span>
 				(!_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &gt; dblGradientUpdatedFunctionValue))
-<span class="fc" id="L221">				return false;</span>
+<span class="fc" id="L253">				return false;</span>
 
-<span class="fc" id="L223">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
-<span class="fc" id="L224">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
+<span class="fc" id="L255">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="fc" id="L256">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
 
-<span class="fc" id="L226">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
-<span class="fc" id="L227">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L258">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
+<span class="fc" id="L259">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 					adblCurrentVariateFunctionJacobian);
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>
-<span class="fc bfc" id="L231" title="All 4 branches covered.">				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement &gt;=</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>
+<span class="fc bfc" id="L263" title="All 4 branches covered.">				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement &gt;=</span>
 					dblParametrizedCurrentFunctionIncrement;
-<span class="nc" id="L233">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L234">			e.printStackTrace();</span>
+<span class="nc" id="L265">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L266">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L237">		return false;</span>
+<span class="nc" id="L269">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

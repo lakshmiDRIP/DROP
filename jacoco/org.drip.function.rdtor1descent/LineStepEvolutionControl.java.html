@@ -6,33 +6,51 @@ package org.drip.function.rdtor1descent;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,26 +67,40 @@ package org.drip.function.rdtor1descent;
  */
 
 /**
- * LineStepEvolutionControl contains the Parameters required to compute the Valid a Line Step. The References
- *  are:
- * 
- * 	- Armijo, L. (1966): Minimization of Functions having Lipschitz-Continuous First Partial Derivatives,
- * 		Pacific Journal of Mathematics 16 (1) 1-3.
- * 
- * 	- Wolfe, P. (1969): Convergence Conditions for Ascent Methods, SIAM Review 11 (2) 226-235.
- * 
- * 	- Wolfe, P. (1971): Convergence Conditions for Ascent Methods; II: Some Corrections, SIAM Review 13 (2)
- * 		185-188.
- * 
- * 	- Nocedal, J., and S. Wright (1999): Numerical Optimization, Wiley.
+ * &lt;i&gt;LineStepEvolutionControl&lt;/i&gt; contains the Parameters required to compute the Valid a Line Step. The
+ *  References are:
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Armijo, L. (1966): Minimization of Functions having Lipschitz-Continuous First Partial
+ * 				Derivatives &lt;i&gt;Pacific Journal of Mathematics&lt;/i&gt; &lt;b&gt;16 (1)&lt;/b&gt; 1-3
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Nocedal, J., and S. Wright (1999): &lt;i&gt;Numerical Optimization&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wolfe, P. (1969): Convergence Conditions for Ascent Methods &lt;i&gt;SIAM Review&lt;/i&gt; &lt;b&gt;11 (2)&lt;/b&gt;
+ * 				226-235
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wolfe, P. (1971): Convergence Conditions for Ascent Methods; II: Some Corrections &lt;i&gt;SIAM
+ * 				Review&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 185-188
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Descent&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LineStepEvolutionControl {
-<span class="fc" id="L69">	private int _iNumReductionStep = -1;</span>
-<span class="fc" id="L70">	private double _dblReductionFactor = java.lang.Double.NaN;</span>
-<span class="fc" id="L71">	private org.drip.function.rdtor1descent.LineEvolutionVerifier _lev = null;</span>
+<span class="fc" id="L101">	private int _iNumReductionStep = -1;</span>
+<span class="fc" id="L102">	private double _dblReductionFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L103">	private org.drip.function.rdtor1descent.LineEvolutionVerifier _lev = null;</span>
 
 	/**
 	 * Retrieve the Nocedal-Wright-Armijo Verifier Based Standard LineStepEvolutionControl Instance
@@ -82,14 +114,14 @@ public class LineStepEvolutionControl {
 		final boolean bMaximizerCheck)
 	{
 		try {
-<span class="fc" id="L85">			return new LineStepEvolutionControl</span>
+<span class="fc" id="L117">			return new LineStepEvolutionControl</span>
 				(org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NocedalWrightStandard
-<span class="fc" id="L87">					(bMaximizerCheck), 0.75, 1);</span>
-<span class="nc" id="L88">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L89">			e.printStackTrace();</span>
+<span class="fc" id="L119">					(bMaximizerCheck), 0.75, 1);</span>
+<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L121">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L92">		return null;</span>
+<span class="nc" id="L124">		return null;</span>
 	}
 
 	/**
@@ -101,14 +133,14 @@ public class LineStepEvolutionControl {
 	public static final LineStepEvolutionControl NocedalWrightWeakCurvature()
 	{
 		try {
-<span class="fc" id="L104">			return new LineStepEvolutionControl</span>
-<span class="fc" id="L105">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (false),</span>
+<span class="fc" id="L136">			return new LineStepEvolutionControl</span>
+<span class="fc" id="L137">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (false),</span>
 					0.75, 1);
-<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L108">			e.printStackTrace();</span>
+<span class="nc" id="L139">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L140">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L111">		return null;</span>
+<span class="nc" id="L143">		return null;</span>
 	}
 
 	/**
@@ -120,14 +152,14 @@ public class LineStepEvolutionControl {
 	public static final LineStepEvolutionControl NocedalWrightStrongCurvature()
 	{
 		try {
-<span class="fc" id="L123">			return new LineStepEvolutionControl</span>
-<span class="fc" id="L124">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (true),</span>
+<span class="fc" id="L155">			return new LineStepEvolutionControl</span>
+<span class="fc" id="L156">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (true),</span>
 					0.75, 1);
-<span class="nc" id="L126">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L127">			e.printStackTrace();</span>
+<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L159">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L130">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	/**
@@ -142,14 +174,14 @@ public class LineStepEvolutionControl {
 		final boolean bMaximizerCheck)
 	{
 		try {
-<span class="fc" id="L145">			return new LineStepEvolutionControl</span>
+<span class="fc" id="L177">			return new LineStepEvolutionControl</span>
 				(org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard
-<span class="fc" id="L147">					(bMaximizerCheck, false), 0.75, 1);</span>
-<span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L149">			e.printStackTrace();</span>
+<span class="fc" id="L179">					(bMaximizerCheck, false), 0.75, 1);</span>
+<span class="nc" id="L180">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L181">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L152">		return null;</span>
+<span class="nc" id="L184">		return null;</span>
 	}
 
 	/**
@@ -164,14 +196,14 @@ public class LineStepEvolutionControl {
 		final boolean bMaximizerCheck)
 	{
 		try {
-<span class="fc" id="L167">			return new LineStepEvolutionControl</span>
+<span class="fc" id="L199">			return new LineStepEvolutionControl</span>
 				(org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard
-<span class="fc" id="L169">					(bMaximizerCheck, true), 0.75, 1);</span>
-<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L171">			e.printStackTrace();</span>
+<span class="fc" id="L201">					(bMaximizerCheck, true), 0.75, 1);</span>
+<span class="nc" id="L202">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L203">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L174">		return null;</span>
+<span class="nc" id="L206">		return null;</span>
 	}
 
 	/**
@@ -189,12 +221,12 @@ public class LineStepEvolutionControl {
 		final double dblReductionFactor,
 		final int iNumReductionStep)
 		throws java.lang.Exception
-<span class="fc" id="L192">	{</span>
-<span class="pc bpc" id="L193" title="4 of 8 branches missed.">		if (null == (_lev = lev) || !org.drip.quant.common.NumberUtil.IsValid (_dblReductionFactor =</span>
+<span class="fc" id="L224">	{</span>
+<span class="pc bpc" id="L225" title="4 of 8 branches missed.">		if (null == (_lev = lev) || !org.drip.quant.common.NumberUtil.IsValid (_dblReductionFactor =</span>
 			dblReductionFactor) || 1. &lt;= _dblReductionFactor || 0 &gt;= (_iNumReductionStep =
 				iNumReductionStep))
-<span class="nc" id="L196">			throw new java.lang.Exception (&quot;LineStepEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L197">	}</span>
+<span class="nc" id="L228">			throw new java.lang.Exception (&quot;LineStepEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L229">	}</span>
 
 	/**
 	 * Retrieve the Line Evolution Verifier Instance
@@ -204,7 +236,7 @@ public class LineStepEvolutionControl {
 
 	public org.drip.function.rdtor1descent.LineEvolutionVerifier lineEvolutionVerifier()
 	{
-<span class="fc" id="L207">		return _lev;</span>
+<span class="fc" id="L239">		return _lev;</span>
 	}
 
 	/**
@@ -215,7 +247,7 @@ public class LineStepEvolutionControl {
 
 	public double reductionFactor()
 	{
-<span class="fc" id="L218">		return _dblReductionFactor;</span>
+<span class="fc" id="L250">		return _dblReductionFactor;</span>
 	}
 
 	/**
@@ -226,7 +258,7 @@ public class LineStepEvolutionControl {
 
 	public int reductionSteps()
 	{
-<span class="fc" id="L229">		return _iNumReductionStep;</span>
+<span class="fc" id="L261">		return _iNumReductionStep;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

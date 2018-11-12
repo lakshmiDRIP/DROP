@@ -6,34 +6,51 @@ package org.drip.json.parser;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,8 +67,15 @@ package org.drip.json.parser;
  */
 
 /**
- * ParseException is an Adaptation of the ParseException Class from the RFC4627 compliant JSON Simple
- *  (https://code.google.com/p/json-simple/).
+ * &lt;i&gt;ParseException&lt;/i&gt; is an Adaptation of the ParseException Class from the RFC4627 compliant JSON Simple
+ * (https://code.google.com/p/json-simple/).
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
@@ -69,26 +93,26 @@ public class ParseException extends java.lang.Exception {
     private int position;
     
     public ParseException(int errorType){
-<span class="nc" id="L72">            this(-1, errorType, null);</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L96">            this(-1, errorType, null);</span>
+<span class="nc" id="L97">    }</span>
     
     public ParseException(int errorType, Object unexpectedObject){
-<span class="nc" id="L76">            this(-1, errorType, unexpectedObject);</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L100">            this(-1, errorType, unexpectedObject);</span>
+<span class="nc" id="L101">    }</span>
     
-<span class="fc" id="L79">    public ParseException(int position, int errorType, Object unexpectedObject){</span>
-<span class="fc" id="L80">            this.position = position;</span>
-<span class="fc" id="L81">            this.errorType = errorType;</span>
-<span class="fc" id="L82">            this.unexpectedObject = unexpectedObject;</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L103">    public ParseException(int position, int errorType, Object unexpectedObject){</span>
+<span class="fc" id="L104">            this.position = position;</span>
+<span class="fc" id="L105">            this.errorType = errorType;</span>
+<span class="fc" id="L106">            this.unexpectedObject = unexpectedObject;</span>
+<span class="fc" id="L107">    }</span>
     
     public int getErrorType() {
-<span class="fc" id="L86">            return errorType;</span>
+<span class="fc" id="L110">            return errorType;</span>
     }
     
     public void setErrorType(int errorType) {
-<span class="nc" id="L90">            this.errorType = errorType;</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L114">            this.errorType = errorType;</span>
+<span class="nc" id="L115">    }</span>
     
     /**
      * @see org.drip.json.parser.JSONParser#getPosition()
@@ -96,12 +120,12 @@ public class ParseException extends java.lang.Exception {
      * @return The character position (starting with 0) of the input where the error occurs.
      */
     public int getPosition() {
-<span class="fc" id="L99">            return position;</span>
+<span class="fc" id="L123">            return position;</span>
     }
     
     public void setPosition(int position) {
-<span class="nc" id="L103">            this.position = position;</span>
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L127">            this.position = position;</span>
+<span class="nc" id="L128">    }</span>
     
     /**
      * @see org.drip.json.parser.Yytoken
@@ -112,31 +136,31 @@ public class ParseException extends java.lang.Exception {
      *                      ERROR_UNEXPECTED_EXCEPTION      java.lang.Exception
      */
     public Object getUnexpectedObject() {
-<span class="fc" id="L115">            return unexpectedObject;</span>
+<span class="fc" id="L139">            return unexpectedObject;</span>
     }
     
     public void setUnexpectedObject(Object unexpectedObject) {
-<span class="nc" id="L119">            this.unexpectedObject = unexpectedObject;</span>
-<span class="nc" id="L120">    }</span>
+<span class="nc" id="L143">            this.unexpectedObject = unexpectedObject;</span>
+<span class="nc" id="L144">    }</span>
     
     public String toString(){
-<span class="fc" id="L123">            StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L147">            StringBuffer sb = new StringBuffer();</span>
             
-<span class="pc bpc" id="L125" title="3 of 4 branches missed.">            switch(errorType){</span>
+<span class="pc bpc" id="L149" title="3 of 4 branches missed.">            switch(errorType){</span>
             case ERROR_UNEXPECTED_CHAR:
-<span class="fc" id="L127">                    sb.append(&quot;Unexpected character (&quot;).append(unexpectedObject).append(&quot;) at position &quot;).append(position).append(&quot;.&quot;);</span>
-<span class="fc" id="L128">                    break;</span>
+<span class="fc" id="L151">                    sb.append(&quot;Unexpected character (&quot;).append(unexpectedObject).append(&quot;) at position &quot;).append(position).append(&quot;.&quot;);</span>
+<span class="fc" id="L152">                    break;</span>
             case ERROR_UNEXPECTED_TOKEN:
-<span class="nc" id="L130">                    sb.append(&quot;Unexpected token &quot;).append(unexpectedObject).append(&quot; at position &quot;).append(position).append(&quot;.&quot;);</span>
-<span class="nc" id="L131">                    break;</span>
+<span class="nc" id="L154">                    sb.append(&quot;Unexpected token &quot;).append(unexpectedObject).append(&quot; at position &quot;).append(position).append(&quot;.&quot;);</span>
+<span class="nc" id="L155">                    break;</span>
             case ERROR_UNEXPECTED_EXCEPTION:
-<span class="nc" id="L133">                    sb.append(&quot;Unexpected exception at position &quot;).append(position).append(&quot;: &quot;).append(unexpectedObject);</span>
-<span class="nc" id="L134">                    break;</span>
+<span class="nc" id="L157">                    sb.append(&quot;Unexpected exception at position &quot;).append(position).append(&quot;: &quot;).append(unexpectedObject);</span>
+<span class="nc" id="L158">                    break;</span>
             default:
-<span class="nc" id="L136">                    sb.append(&quot;Unkown error at position &quot;).append(position).append(&quot;.&quot;);</span>
+<span class="nc" id="L160">                    sb.append(&quot;Unkown error at position &quot;).append(position).append(&quot;.&quot;);</span>
                     break;
             }
-<span class="fc" id="L139">            return sb.toString();</span>
+<span class="fc" id="L163">            return sb.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

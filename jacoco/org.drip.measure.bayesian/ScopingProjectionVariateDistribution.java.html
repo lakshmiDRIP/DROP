@@ -6,33 +6,51 @@ package org.drip.measure.bayesian;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,16 +67,24 @@ package org.drip.measure.bayesian;
  */
 
 /**
- * ScopingProjectionVariateContainer holds the Scoping Variate Distribution, the Projection Variate
- *  Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
+ * &lt;i&gt;ScopingProjectionVariateContainer&lt;/i&gt; holds the Scoping Variate Distribution, the Projection Variate
+ * Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ScopingProjectionVariateDistribution {
-<span class="fc" id="L59">	private org.drip.measure.continuous.R1Multivariate _r1mScopingDistribution = null;</span>
+<span class="fc" id="L85">	private org.drip.measure.continuous.R1Multivariate _r1mScopingDistribution = null;</span>
 
-<span class="fc" id="L61">	private java.util.Map&lt;java.lang.String, org.drip.measure.bayesian.ProjectionDistributionLoading&gt; _mapPDL</span>
+<span class="fc" id="L87">	private java.util.Map&lt;java.lang.String, org.drip.measure.bayesian.ProjectionDistributionLoading&gt; _mapPDL</span>
 		= new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.measure.bayesian.ProjectionDistributionLoading&gt;();
 
@@ -73,11 +99,11 @@ public class ScopingProjectionVariateDistribution {
 	public ScopingProjectionVariateDistribution (
 		final org.drip.measure.continuous.R1Multivariate r1mScopingDistribution)
 		throws java.lang.Exception
-<span class="fc" id="L76">	{</span>
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if (null == (_r1mScopingDistribution = r1mScopingDistribution))</span>
-<span class="nc" id="L78">			throw new java.lang.Exception</span>
+<span class="fc" id="L102">	{</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (null == (_r1mScopingDistribution = r1mScopingDistribution))</span>
+<span class="nc" id="L104">			throw new java.lang.Exception</span>
 				(&quot;ScopingProjectionVariateDistribution Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L80">	}</span>
+<span class="fc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Scoping Distribution
@@ -87,7 +113,7 @@ public class ScopingProjectionVariateDistribution {
 
 	public org.drip.measure.continuous.R1Multivariate scopingDistribution()
 	{
-<span class="fc" id="L90">		return _r1mScopingDistribution;</span>
+<span class="fc" id="L116">		return _r1mScopingDistribution;</span>
 	}
 
 	/**
@@ -98,16 +124,16 @@ public class ScopingProjectionVariateDistribution {
 
 	public double[][] nativeLoading()
 	{
-<span class="fc" id="L101">		int iNumScopingVariate = _r1mScopingDistribution.meta().numVariable();</span>
+<span class="fc" id="L127">		int iNumScopingVariate = _r1mScopingDistribution.meta().numVariable();</span>
 
-<span class="fc" id="L103">		double[][] aadblNativeLoading = new double[iNumScopingVariate][iNumScopingVariate];</span>
+<span class="fc" id="L129">		double[][] aadblNativeLoading = new double[iNumScopingVariate][iNumScopingVariate];</span>
 
-<span class="fc bfc" id="L105" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i) {</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumScopingVariate; ++j)</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">				aadblNativeLoading[i][j] = i == j ? 1. : 0.;</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumScopingVariate; ++j)</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">				aadblNativeLoading[i][j] = i == j ? 1. : 0.;</span>
 		}
 
-<span class="fc" id="L110">		return aadblNativeLoading;</span>
+<span class="fc" id="L136">		return aadblNativeLoading;</span>
 	}
 
 	/**
@@ -123,11 +149,11 @@ public class ScopingProjectionVariateDistribution {
 		final java.lang.String strName,
 		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl)
 	{
-<span class="pc bpc" id="L126" title="3 of 6 branches missed.">		if (null == strName || strName.isEmpty() || null == pdl) return false;</span>
+<span class="pc bpc" id="L152" title="3 of 6 branches missed.">		if (null == strName || strName.isEmpty() || null == pdl) return false;</span>
 
-<span class="fc" id="L128">		_mapPDL.put (strName, pdl);</span>
+<span class="fc" id="L154">		_mapPDL.put (strName, pdl);</span>
 
-<span class="fc" id="L130">		return true;</span>
+<span class="fc" id="L156">		return true;</span>
 	}
 
 	/**
@@ -141,20 +167,20 @@ public class ScopingProjectionVariateDistribution {
 	public org.drip.measure.bayesian.ProjectionDistributionLoading projectionDistributionLoading (
 		final java.lang.String strName)
 	{
-<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (null == strName || strName.isEmpty()) return null;</span>
+<span class="pc bpc" id="L170" title="2 of 4 branches missed.">		if (null == strName || strName.isEmpty()) return null;</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		if (strName.equalsIgnoreCase (&quot;NATIVE&quot;)) {</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		if (strName.equalsIgnoreCase (&quot;NATIVE&quot;)) {</span>
 			try {
-<span class="fc" id="L148">				return new org.drip.measure.bayesian.ProjectionDistributionLoading (_r1mScopingDistribution,</span>
-<span class="fc" id="L149">					nativeLoading());</span>
-<span class="nc" id="L150">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L151">				e.printStackTrace();</span>
+<span class="fc" id="L174">				return new org.drip.measure.bayesian.ProjectionDistributionLoading (_r1mScopingDistribution,</span>
+<span class="fc" id="L175">					nativeLoading());</span>
+<span class="nc" id="L176">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L177">				e.printStackTrace();</span>
 
-<span class="nc" id="L153">				return null;</span>
+<span class="nc" id="L179">				return null;</span>
 			}
 		}
 
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		return _mapPDL.containsKey (strName) ? _mapPDL.get (strName) : null;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		return _mapPDL.containsKey (strName) ? _mapPDL.get (strName) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

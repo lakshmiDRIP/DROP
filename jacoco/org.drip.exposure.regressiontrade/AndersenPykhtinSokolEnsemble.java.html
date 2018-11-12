@@ -6,31 +6,49 @@ package org.drip.exposure.regressiontrade;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,33 +65,49 @@ package org.drip.exposure.regressiontrade;
  */
 
 /**
- * AndersenPykhtinSokolEnsemble adjusts the Variation Margin, computes Path-wise Local Volatility, and
+ * &lt;i&gt;AndersenPykhtinSokolEnsemble&lt;/i&gt; adjusts the Variation Margin, computes Path-wise Local Volatility, and
  * 	eventually estimates the Path-wise Unadjusted Variation Margin across the Suite of Simulated Paths. The
  *  References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin Agreements,
- *  	http://www.risk-europe.com/protected/michael-pykhtin.pdf.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin
+ *  				Agreements http://www.risk-europe.com/protected/michael-pykhtin.pdf
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade&quot;&gt;Regression Trade&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AndersenPykhtinSokolEnsemble
 {
-<span class="nc" id="L74">	private int[] _sparseExposureDateArray = null;</span>
-<span class="nc" id="L75">	private org.drip.exposure.universe.MarketPath[] _marketPathArray = null;</span>
-<span class="nc" id="L76">	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _marginTradePaymentGenerator = null;</span>
+<span class="nc" id="L108">	private int[] _sparseExposureDateArray = null;</span>
+<span class="nc" id="L109">	private org.drip.exposure.universe.MarketPath[] _marketPathArray = null;</span>
+<span class="nc" id="L110">	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _marginTradePaymentGenerator = null;</span>
 
 	/**
 	 * AndersenPykhtinSokolEnsemble Constructor
@@ -90,30 +124,30 @@ public class AndersenPykhtinSokolEnsemble
 		final org.drip.exposure.universe.MarketPath[] marketPathArray,
 		final int[] sparseExposureDateArray)
 		throws java.lang.Exception
-<span class="nc" id="L93">	{</span>
-<span class="nc bnc" id="L94" title="All 6 branches missed.">		if (null == (_marginTradePaymentGenerator = marginTradePaymentGenerator) ||</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc bnc" id="L128" title="All 6 branches missed.">		if (null == (_marginTradePaymentGenerator = marginTradePaymentGenerator) ||</span>
 			null == (_marketPathArray = marketPathArray) ||
 			null == (_sparseExposureDateArray = sparseExposureDateArray))
 		{
-<span class="nc" id="L98">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolEnsemble =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolEnsemble =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L101">		int pathCount = _marketPathArray.length;</span>
-<span class="nc" id="L102">		int sparseExposureDateCount = _sparseExposureDateArray.length;</span>
+<span class="nc" id="L135">		int pathCount = _marketPathArray.length;</span>
+<span class="nc" id="L136">		int sparseExposureDateCount = _sparseExposureDateArray.length;</span>
 
-<span class="nc bnc" id="L104" title="All 4 branches missed.">		if (0 == pathCount || 0 == sparseExposureDateCount)</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (0 == pathCount || 0 == sparseExposureDateCount)</span>
 		{
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolEnsemble =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolEnsemble =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			if (null == _marketPathArray[pathIndex])</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (null == _marketPathArray[pathIndex])</span>
 			{
-<span class="nc" id="L113">				throw new java.lang.Exception (&quot;AndersenPykhtinSokolEnsemble =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L147">				throw new java.lang.Exception (&quot;AndersenPykhtinSokolEnsemble =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L150">	}</span>
 
 	/**
 	 * Retrieve the Path-wise Variation Margin/Trade Payment Generator
@@ -123,7 +157,7 @@ public class AndersenPykhtinSokolEnsemble
 
 	public org.drip.exposure.mpor.VariationMarginTradePaymentVertex marginTradePaymentGenerator()
 	{
-<span class="nc" id="L126">		return _marginTradePaymentGenerator;</span>
+<span class="nc" id="L160">		return _marginTradePaymentGenerator;</span>
 	}
 
 	/**
@@ -134,7 +168,7 @@ public class AndersenPykhtinSokolEnsemble
 
 	public org.drip.exposure.universe.MarketPath[] marketPathArray()
 	{
-<span class="nc" id="L137">		return _marketPathArray;</span>
+<span class="nc" id="L171">		return _marketPathArray;</span>
 	}
 
 	/**
@@ -145,7 +179,7 @@ public class AndersenPykhtinSokolEnsemble
 
 	public int[] sparseExposureDateArray()
 	{
-<span class="nc" id="L148">		return _sparseExposureDateArray;</span>
+<span class="nc" id="L182">		return _sparseExposureDateArray;</span>
 	}
 
 	/**
@@ -156,7 +190,7 @@ public class AndersenPykhtinSokolEnsemble
 
 	public int pathCount()
 	{
-<span class="nc" id="L159">		return _marketPathArray.length;</span>
+<span class="nc" id="L193">		return _marketPathArray.length;</span>
 	}
 
 	/**
@@ -167,7 +201,7 @@ public class AndersenPykhtinSokolEnsemble
 
 	public int sparseExposureDateCount()
 	{
-<span class="nc" id="L170">		return _sparseExposureDateArray.length;</span>
+<span class="nc" id="L204">		return _sparseExposureDateArray.length;</span>
 	}
 
 	/**
@@ -179,30 +213,30 @@ public class AndersenPykhtinSokolEnsemble
 	public org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator[]
 		pathAdjustedVariationMarginEstimator()
 	{
-<span class="nc" id="L182">		int pathCount = _marketPathArray.length;</span>
+<span class="nc" id="L216">		int pathCount = _marketPathArray.length;</span>
 		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator[]
-<span class="nc" id="L184">			adjustedVariationMarginEstimatorArray = new</span>
+<span class="nc" id="L218">			adjustedVariationMarginEstimatorArray = new</span>
 				org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator[pathCount];
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L191">				adjustedVariationMarginEstimatorArray[pathIndex] = new</span>
+<span class="nc" id="L225">				adjustedVariationMarginEstimatorArray[pathIndex] = new</span>
 					org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator (
 						_marginTradePaymentGenerator,
 						_marketPathArray[pathIndex]
 					);
 			}
-<span class="nc" id="L197">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L231">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L199">				e.printStackTrace();</span>
+<span class="nc" id="L233">				e.printStackTrace();</span>
 
-<span class="nc" id="L201">				return null;</span>
-<span class="nc" id="L202">			}</span>
+<span class="nc" id="L235">				return null;</span>
+<span class="nc" id="L236">			}</span>
 		}
 
-<span class="nc" id="L205">		return adjustedVariationMarginEstimatorArray;</span>
+<span class="nc" id="L239">		return adjustedVariationMarginEstimatorArray;</span>
 	}
 
 	/**
@@ -214,30 +248,30 @@ public class AndersenPykhtinSokolEnsemble
 	public org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
 		pathAdjustedVariationMarginEstimate()
 	{
-<span class="nc" id="L217">		int pathCount = _marketPathArray.length;</span>
+<span class="nc" id="L251">		int pathCount = _marketPathArray.length;</span>
 		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
-<span class="nc" id="L219">			adjustedVariationMarginEstimateArray = new</span>
+<span class="nc" id="L253">			adjustedVariationMarginEstimateArray = new</span>
 				org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[pathCount];
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L226">				adjustedVariationMarginEstimateArray[pathIndex] = new</span>
+<span class="nc" id="L260">				adjustedVariationMarginEstimateArray[pathIndex] = new</span>
 					org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator (
 						_marginTradePaymentGenerator,
 						_marketPathArray[pathIndex]
-<span class="nc" id="L230">					).adjustedVariationMarginEstimate (_sparseExposureDateArray);</span>
+<span class="nc" id="L264">					).adjustedVariationMarginEstimate (_sparseExposureDateArray);</span>
 			}
-<span class="nc" id="L232">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L266">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L234">				e.printStackTrace();</span>
+<span class="nc" id="L268">				e.printStackTrace();</span>
 
-<span class="nc" id="L236">				return null;</span>
-<span class="nc" id="L237">			}</span>
+<span class="nc" id="L270">				return null;</span>
+<span class="nc" id="L271">			}</span>
 		}
 
-<span class="nc" id="L240">		return adjustedVariationMarginEstimateArray;</span>
+<span class="nc" id="L274">		return adjustedVariationMarginEstimateArray;</span>
 	}
 
 	/**
@@ -249,40 +283,40 @@ public class AndersenPykhtinSokolEnsemble
 	public org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics
 		ensembleAdjustedVariationMarginDynamics()
 	{
-<span class="nc" id="L252">		int pathCount = _marketPathArray.length;</span>
+<span class="nc" id="L286">		int pathCount = _marketPathArray.length;</span>
 		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
-<span class="nc" id="L254">			adjustedVariationMarginEstimateArray = new</span>
+<span class="nc" id="L288">			adjustedVariationMarginEstimateArray = new</span>
 				org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[pathCount];
 
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L261">				adjustedVariationMarginEstimateArray[pathIndex] = new</span>
+<span class="nc" id="L295">				adjustedVariationMarginEstimateArray[pathIndex] = new</span>
 					org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimator (
 						_marginTradePaymentGenerator,
 						_marketPathArray[pathIndex]
-<span class="nc" id="L265">					).adjustedVariationMarginEstimate (_sparseExposureDateArray);</span>
+<span class="nc" id="L299">					).adjustedVariationMarginEstimate (_sparseExposureDateArray);</span>
 			}
-<span class="nc" id="L267">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L301">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L269">				e.printStackTrace();</span>
+<span class="nc" id="L303">				e.printStackTrace();</span>
 
-<span class="nc" id="L271">				return null;</span>
-<span class="nc" id="L272">			}</span>
+<span class="nc" id="L305">				return null;</span>
+<span class="nc" id="L306">			}</span>
 		}
 
 		try
 		{
-<span class="nc" id="L277">			return new org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics</span>
+<span class="nc" id="L311">			return new org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics</span>
 				(adjustedVariationMarginEstimateArray);
 		}
-<span class="nc" id="L280">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L314">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L282">			e.printStackTrace();</span>
+<span class="nc" id="L316">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L285">		return null;</span>
+<span class="nc" id="L319">		return null;</span>
 	}
 
 	/**
@@ -293,11 +327,11 @@ public class AndersenPykhtinSokolEnsemble
 
 	public org.drip.exposure.regression.PykhtinPillarDynamics[] ensemblePillarDynamics()
 	{
-<span class="nc" id="L296">		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =</span>
-<span class="nc" id="L297">			ensembleAdjustedVariationMarginDynamics();</span>
+<span class="nc" id="L330">		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =</span>
+<span class="nc" id="L331">			ensembleAdjustedVariationMarginDynamics();</span>
 
-<span class="nc bnc" id="L299" title="All 2 branches missed.">		return null == adjustedVariationMarginDynamics ? null :</span>
-<span class="nc" id="L300">			adjustedVariationMarginDynamics.pillarDynamics();</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">		return null == adjustedVariationMarginDynamics ? null :</span>
+<span class="nc" id="L334">			adjustedVariationMarginDynamics.pillarDynamics();</span>
 	}
 
 	/**
@@ -313,69 +347,69 @@ public class AndersenPykhtinSokolEnsemble
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
 		final double[][] wanderEnsemble)
 	{
-<span class="nc bnc" id="L316" title="All 2 branches missed.">		if (null == wanderEnsemble)</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		if (null == wanderEnsemble)</span>
 		{
-<span class="nc" id="L318">			return null;</span>
+<span class="nc" id="L352">			return null;</span>
 		}
 
-<span class="nc" id="L321">		int pathCount = _marketPathArray.length;</span>
-<span class="nc" id="L322">		double[][] denseVariationMargin = new double[pathCount][];</span>
-<span class="nc" id="L323">		int sparseExposureDateCount = _sparseExposureDateArray.length;</span>
-<span class="nc" id="L324">		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new</span>
+<span class="nc" id="L355">		int pathCount = _marketPathArray.length;</span>
+<span class="nc" id="L356">		double[][] denseVariationMargin = new double[pathCount][];</span>
+<span class="nc" id="L357">		int sparseExposureDateCount = _sparseExposureDateArray.length;</span>
+<span class="nc" id="L358">		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new</span>
 			org.drip.function.definition.R1ToR1[sparseExposureDateCount];
 
-<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (pathCount != wanderEnsemble.length)</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		if (pathCount != wanderEnsemble.length)</span>
 		{
-<span class="nc" id="L329">			return null;</span>
+<span class="nc" id="L363">			return null;</span>
 		}
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc bnc" id="L334" title="All 4 branches missed.">			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||</span>
-<span class="nc bnc" id="L335" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))</span>
+<span class="nc bnc" id="L368" title="All 4 branches missed.">			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))</span>
 			{
-<span class="nc" id="L337">				return null;</span>
+<span class="nc" id="L371">				return null;</span>
 			}
 		}
 
-<span class="nc" id="L341">		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =</span>
-<span class="nc" id="L342">			ensembleAdjustedVariationMarginDynamics();</span>
+<span class="nc" id="L375">		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =</span>
+<span class="nc" id="L376">			ensembleAdjustedVariationMarginDynamics();</span>
 
-<span class="nc" id="L344">		org.drip.exposure.regression.PykhtinPillarDynamics[] pillarDynamicsArray =</span>
-<span class="nc" id="L345">			adjustedVariationMarginDynamics.pillarDynamics();</span>
+<span class="nc" id="L378">		org.drip.exposure.regression.PykhtinPillarDynamics[] pillarDynamicsArray =</span>
+<span class="nc" id="L379">			adjustedVariationMarginDynamics.pillarDynamics();</span>
 
-<span class="nc" id="L347">		for (int sparseExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L348" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
-<span class="nc" id="L349">			++sparseExposureDateIndex)</span>
+<span class="nc" id="L381">		for (int sparseExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
+<span class="nc" id="L383">			++sparseExposureDateIndex)</span>
 		{
-<span class="nc" id="L351">			sparseLocalVolatilityArray[sparseExposureDateIndex] =</span>
+<span class="nc" id="L385">			sparseLocalVolatilityArray[sparseExposureDateIndex] =</span>
 				pillarDynamicsArray[sparseExposureDateIndex].localVolatilityR1ToR1
-<span class="nc" id="L353">					(localVolatilityGenerationControl);</span>
+<span class="nc" id="L387">					(localVolatilityGenerationControl);</span>
 		}
 
 		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
-<span class="nc" id="L357">			pathAdjustedVariationMarginEstimateArray =</span>
-<span class="nc" id="L358">				adjustedVariationMarginDynamics.adjustedVariationMarginEstimateArray();</span>
+<span class="nc" id="L391">			pathAdjustedVariationMarginEstimateArray =</span>
+<span class="nc" id="L392">				adjustedVariationMarginDynamics.adjustedVariationMarginEstimateArray();</span>
 
-<span class="nc bnc" id="L360" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L364">				denseVariationMargin[pathIndex] = new</span>
+<span class="nc" id="L398">				denseVariationMargin[pathIndex] = new</span>
 					org.drip.exposure.regression.AndersenPykhtinSokolStretch (
 						_sparseExposureDateArray,
-<span class="nc" id="L367">						pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),</span>
+<span class="nc" id="L401">						pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),</span>
 						sparseLocalVolatilityArray,
-<span class="nc" id="L369">						pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray()</span>
-<span class="nc" id="L370">					).denseExposure (wanderEnsemble[pathIndex]);</span>
+<span class="nc" id="L403">						pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray()</span>
+<span class="nc" id="L404">					).denseExposure (wanderEnsemble[pathIndex]);</span>
 			}
-<span class="nc" id="L372">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L406">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L374">				e.printStackTrace();</span>
-<span class="nc" id="L375">			}</span>
+<span class="nc" id="L408">				e.printStackTrace();</span>
+<span class="nc" id="L409">			}</span>
 		}
 
-<span class="nc" id="L378">		return denseVariationMargin;</span>
+<span class="nc" id="L412">		return denseVariationMargin;</span>
 	}
 
 	/**
@@ -391,94 +425,94 @@ public class AndersenPykhtinSokolEnsemble
 		final org.drip.exposure.regression.LocalVolatilityGenerationControl localVolatilityGenerationControl,
 		final double[][] wanderEnsemble)
 	{
-<span class="nc bnc" id="L394" title="All 2 branches missed.">		if (null == wanderEnsemble)</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">		if (null == wanderEnsemble)</span>
 		{
-<span class="nc" id="L396">			return null;</span>
+<span class="nc" id="L430">			return null;</span>
 		}
 
-<span class="nc" id="L399">		int pathCount = _marketPathArray.length;</span>
-<span class="nc" id="L400">		int denseExposureStartDate = _sparseExposureDateArray[0];</span>
-<span class="nc" id="L401">		int sparseExposureDateCount = _sparseExposureDateArray.length;</span>
-<span class="nc" id="L402">		int denseExposureEndDate = _sparseExposureDateArray[sparseExposureDateCount - 1];</span>
-<span class="nc" id="L403">		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new</span>
+<span class="nc" id="L433">		int pathCount = _marketPathArray.length;</span>
+<span class="nc" id="L434">		int denseExposureStartDate = _sparseExposureDateArray[0];</span>
+<span class="nc" id="L435">		int sparseExposureDateCount = _sparseExposureDateArray.length;</span>
+<span class="nc" id="L436">		int denseExposureEndDate = _sparseExposureDateArray[sparseExposureDateCount - 1];</span>
+<span class="nc" id="L437">		org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray = new</span>
 			org.drip.function.definition.R1ToR1[sparseExposureDateCount];
 		org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory[]
-<span class="nc" id="L406">			andersenPykhtinSokolTrajectoryArray = new</span>
+<span class="nc" id="L440">			andersenPykhtinSokolTrajectoryArray = new</span>
 				org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory[pathCount];
 
-<span class="nc bnc" id="L409" title="All 2 branches missed.">		if (pathCount != wanderEnsemble.length)</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">		if (pathCount != wanderEnsemble.length)</span>
 		{
-<span class="nc" id="L411">			return null;</span>
+<span class="nc" id="L445">			return null;</span>
 		}
 
-<span class="nc bnc" id="L414" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc bnc" id="L416" title="All 4 branches missed.">			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||</span>
-<span class="nc bnc" id="L417" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))</span>
+<span class="nc bnc" id="L450" title="All 4 branches missed.">			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))</span>
 			{
-<span class="nc" id="L419">				return null;</span>
+<span class="nc" id="L453">				return null;</span>
 			}
 		}
 
-<span class="nc" id="L423">		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =</span>
-<span class="nc" id="L424">			ensembleAdjustedVariationMarginDynamics();</span>
+<span class="nc" id="L457">		org.drip.exposure.regressiontrade.AdjustedVariationMarginDynamics adjustedVariationMarginDynamics =</span>
+<span class="nc" id="L458">			ensembleAdjustedVariationMarginDynamics();</span>
 
-<span class="nc" id="L426">		org.drip.exposure.regression.PykhtinPillarDynamics[] pillarDynamicsArray =</span>
-<span class="nc" id="L427">			adjustedVariationMarginDynamics.pillarDynamics();</span>
+<span class="nc" id="L460">		org.drip.exposure.regression.PykhtinPillarDynamics[] pillarDynamicsArray =</span>
+<span class="nc" id="L461">			adjustedVariationMarginDynamics.pillarDynamics();</span>
 
-<span class="nc" id="L429">		for (int sparseExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L430" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
-<span class="nc" id="L431">			++sparseExposureDateIndex)</span>
+<span class="nc" id="L463">		for (int sparseExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
+<span class="nc" id="L465">			++sparseExposureDateIndex)</span>
 		{
-<span class="nc" id="L433">			sparseLocalVolatilityArray[sparseExposureDateIndex] =</span>
+<span class="nc" id="L467">			sparseLocalVolatilityArray[sparseExposureDateIndex] =</span>
 				pillarDynamicsArray[sparseExposureDateIndex].localVolatilityR1ToR1
-<span class="nc" id="L435">					(localVolatilityGenerationControl);</span>
+<span class="nc" id="L469">					(localVolatilityGenerationControl);</span>
 		}
 
 		org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate[]
-<span class="nc" id="L439">			pathAdjustedVariationMarginEstimateArray =</span>
-<span class="nc" id="L440">				adjustedVariationMarginDynamics.adjustedVariationMarginEstimateArray();</span>
+<span class="nc" id="L473">			pathAdjustedVariationMarginEstimateArray =</span>
+<span class="nc" id="L474">				adjustedVariationMarginDynamics.adjustedVariationMarginEstimateArray();</span>
 
-<span class="nc bnc" id="L442" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L444">			java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory = new</span>
+<span class="nc" id="L478">			java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; variationMarginEstimateTrajectory = new</span>
 				java.util.HashMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
 			try
 			{
-<span class="nc" id="L449">				org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory =</span>
-<span class="nc" id="L450">					pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray();</span>
+<span class="nc" id="L483">				org.drip.exposure.mpor.TradePayment[] tradePaymentTrajectory =</span>
+<span class="nc" id="L484">					pathAdjustedVariationMarginEstimateArray[pathIndex].denseTradePaymentArray();</span>
 
-<span class="nc" id="L452">				double[] denseExposureArray = new org.drip.exposure.regression.AndersenPykhtinSokolStretch (</span>
+<span class="nc" id="L486">				double[] denseExposureArray = new org.drip.exposure.regression.AndersenPykhtinSokolStretch (</span>
 					_sparseExposureDateArray,
-<span class="nc" id="L454">					pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),</span>
+<span class="nc" id="L488">					pathAdjustedVariationMarginEstimateArray[pathIndex].adjustedVariationMarginEstimateArray(),</span>
 					sparseLocalVolatilityArray,
 					tradePaymentTrajectory
-<span class="nc" id="L457">				).denseExposure (wanderEnsemble[pathIndex]);</span>
+<span class="nc" id="L491">				).denseExposure (wanderEnsemble[pathIndex]);</span>
 
-<span class="nc" id="L459">				for (int denseExposureDate = denseExposureStartDate;</span>
-<span class="nc bnc" id="L460" title="All 2 branches missed.">					denseExposureDate &lt;= denseExposureEndDate;</span>
-<span class="nc" id="L461">					++denseExposureDate)</span>
+<span class="nc" id="L493">				for (int denseExposureDate = denseExposureStartDate;</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">					denseExposureDate &lt;= denseExposureEndDate;</span>
+<span class="nc" id="L495">					++denseExposureDate)</span>
 				{
-<span class="nc" id="L463">					variationMarginEstimateTrajectory.put (</span>
-<span class="nc" id="L464">						denseExposureDate,</span>
-<span class="nc" id="L465">						denseExposureArray[denseExposureDate - denseExposureStartDate]</span>
+<span class="nc" id="L497">					variationMarginEstimateTrajectory.put (</span>
+<span class="nc" id="L498">						denseExposureDate,</span>
+<span class="nc" id="L499">						denseExposureArray[denseExposureDate - denseExposureStartDate]</span>
 					);
 				}
 
-<span class="nc" id="L469">				andersenPykhtinSokolTrajectoryArray[pathIndex] = new</span>
+<span class="nc" id="L503">				andersenPykhtinSokolTrajectoryArray[pathIndex] = new</span>
 					org.drip.exposure.regressiontrade.AndersenPykhtinSokolTrajectory (
 					variationMarginEstimateTrajectory,
 					tradePaymentTrajectory
 				);
 			}
-<span class="nc" id="L475">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L509">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L477">				e.printStackTrace();</span>
-<span class="nc" id="L478">			}</span>
+<span class="nc" id="L511">				e.printStackTrace();</span>
+<span class="nc" id="L512">			}</span>
 		}
 
-<span class="nc" id="L481">		return andersenPykhtinSokolTrajectoryArray;</span>
+<span class="nc" id="L515">		return andersenPykhtinSokolTrajectoryArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

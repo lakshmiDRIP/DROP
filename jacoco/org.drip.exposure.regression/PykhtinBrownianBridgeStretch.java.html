@@ -6,31 +6,49 @@ package org.drip.exposure.regression;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,31 +65,47 @@ package org.drip.exposure.regression;
  */
 
 /**
- * PykhtinBrownianBridgeStretch generates the Regression Based Path Exposures off of the Pillar Vertexes
- *  using the Pykhtin (2009) Scheme. The References are:
+ * &lt;i&gt;PykhtinBrownianBridgeStretch&lt;/i&gt; generates the Regression Based Path Exposures off of the Pillar
+ * Vertexes using the Pykhtin (2009) Scheme. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PykhtinBrownianBridgeStretch
 {
-<span class="nc" id="L73">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _sparseVertexExposureTrajectory = null;</span>
-<span class="nc" id="L74">	private java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt; _localVolatilityTrajectory</span>
+<span class="nc" id="L107">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _sparseVertexExposureTrajectory = null;</span>
+<span class="nc" id="L108">	private java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt; _localVolatilityTrajectory</span>
 		= null;
 
 	/**
@@ -88,13 +122,13 @@ public class PykhtinBrownianBridgeStretch
 		final java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt;
 			localVolatilityTrajectory)
 		throws java.lang.Exception
-<span class="nc" id="L91">	{</span>
-<span class="nc bnc" id="L92" title="All 4 branches missed.">		if (null == (_sparseVertexExposureTrajectory = sparseVertexExposureTrajectory) ||</span>
+<span class="nc" id="L125">	{</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null == (_sparseVertexExposureTrajectory = sparseVertexExposureTrajectory) ||</span>
 			null == (_localVolatilityTrajectory = localVolatilityTrajectory))
 		{
-<span class="nc" id="L95">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeStretch Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeStretch Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L97">	}</span>
+<span class="nc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Path Sparse Vertex Exposure Trajectory
@@ -104,7 +138,7 @@ public class PykhtinBrownianBridgeStretch
 
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; sparseVertexExposureTrajectory()
 	{
-<span class="nc" id="L107">		return _sparseVertexExposureTrajectory;</span>
+<span class="nc" id="L141">		return _sparseVertexExposureTrajectory;</span>
 	}
 
 	/**
@@ -115,7 +149,7 @@ public class PykhtinBrownianBridgeStretch
 
 	public java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt; localVolatilityTrajectory()
 	{
-<span class="nc" id="L118">		return _localVolatilityTrajectory;</span>
+<span class="nc" id="L152">		return _localVolatilityTrajectory;</span>
 	}
 
 	/**
@@ -129,50 +163,50 @@ public class PykhtinBrownianBridgeStretch
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposure (
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; wanderTrajectory)
 	{
-<span class="nc" id="L132">		int sparseLeftPillarDate = -1;</span>
+<span class="nc" id="L166">		int sparseLeftPillarDate = -1;</span>
 
-<span class="nc" id="L134">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposureTrajectory = new</span>
+<span class="nc" id="L168">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposureTrajectory = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; sparseExposureTrajectoryEntry :
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			_sparseVertexExposureTrajectory.entrySet())</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			_sparseVertexExposureTrajectory.entrySet())</span>
 		{
-<span class="nc" id="L140">			int sparseRightPillarDate = sparseExposureTrajectoryEntry.getKey();</span>
+<span class="nc" id="L174">			int sparseRightPillarDate = sparseExposureTrajectoryEntry.getKey();</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			if (-1 == sparseLeftPillarDate)</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (-1 == sparseLeftPillarDate)</span>
 			{
-<span class="nc" id="L144">				sparseLeftPillarDate = sparseRightPillarDate;</span>
-<span class="nc" id="L145">				continue;</span>
+<span class="nc" id="L178">				sparseLeftPillarDate = sparseRightPillarDate;</span>
+<span class="nc" id="L179">				continue;</span>
 			}
 
 			try
 			{
-<span class="nc" id="L150">				new PykhtinBrownianBridgeSegment (</span>
+<span class="nc" id="L184">				new PykhtinBrownianBridgeSegment (</span>
 					new org.drip.exposure.regression.PillarVertex (
 						sparseLeftPillarDate,
-<span class="nc" id="L153">						_sparseVertexExposureTrajectory.get (sparseLeftPillarDate)</span>
+<span class="nc" id="L187">						_sparseVertexExposureTrajectory.get (sparseLeftPillarDate)</span>
 					),
 					new org.drip.exposure.regression.PillarVertex (
 						sparseRightPillarDate,
-<span class="nc" id="L157">						_sparseVertexExposureTrajectory.get (sparseRightPillarDate)</span>
+<span class="nc" id="L191">						_sparseVertexExposureTrajectory.get (sparseRightPillarDate)</span>
 					),
-<span class="nc" id="L159">					_localVolatilityTrajectory.get (sparseRightPillarDate)</span>
-<span class="nc" id="L160">				).denseExposureTrajectoryUpdate (</span>
+<span class="nc" id="L193">					_localVolatilityTrajectory.get (sparseRightPillarDate)</span>
+<span class="nc" id="L194">				).denseExposureTrajectoryUpdate (</span>
 					denseExposureTrajectory,
 					wanderTrajectory
 				);
 			}
-<span class="nc" id="L165">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L199">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L167">				e.printStackTrace();</span>
+<span class="nc" id="L201">				e.printStackTrace();</span>
 
-<span class="nc" id="L169">				return null;</span>
-<span class="nc" id="L170">			}</span>
+<span class="nc" id="L203">				return null;</span>
+<span class="nc" id="L204">			}</span>
 
-<span class="nc" id="L172">			sparseLeftPillarDate = sparseRightPillarDate;</span>
-<span class="nc" id="L173">		}</span>
+<span class="nc" id="L206">			sparseLeftPillarDate = sparseRightPillarDate;</span>
+<span class="nc" id="L207">		}</span>
 
-<span class="nc" id="L175">		return denseExposureTrajectory;</span>
+<span class="nc" id="L209">		return denseExposureTrajectory;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,34 +6,52 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,15 +68,23 @@ package org.drip.market.otc;
  */
 
 /**
- * FloatStreamConvention contains the details of the Floating Stream of an OTC IBOR/Overnight fix-float Swap
- *  Contract.
+ * &lt;i&gt;FloatStreamConvention&lt;/i&gt; contains the details of the Floating Stream of an OTC IBOR/Overnight Fix-
+ * Float Swap Contract.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;Over-the-Counter&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FloatStreamConvention {
-<span class="fc" id="L60">	private java.lang.String _strCompositePeriodTenor = &quot;&quot;;</span>
-<span class="fc" id="L61">	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;</span>
+<span class="fc" id="L86">	private java.lang.String _strCompositePeriodTenor = &quot;&quot;;</span>
+<span class="fc" id="L87">	private org.drip.state.identifier.ForwardLabel _forwardLabel = null;</span>
 
 	/**
 	 * FloatStreamConvention Constructor
@@ -73,11 +99,11 @@ public class FloatStreamConvention {
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final java.lang.String strCompositePeriodTenor)
 		throws java.lang.Exception
-<span class="fc" id="L76">	{</span>
-<span class="pc bpc" id="L77" title="2 of 4 branches missed.">		if (null == (_forwardLabel = forwardLabel) || null == (_strCompositePeriodTenor =</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">			strCompositePeriodTenor) || _strCompositePeriodTenor.isEmpty())</span>
-<span class="nc" id="L79">			throw new java.lang.Exception (&quot;FloatStreamConvention ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L80">	}</span>
+<span class="fc" id="L102">	{</span>
+<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (null == (_forwardLabel = forwardLabel) || null == (_strCompositePeriodTenor =</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">			strCompositePeriodTenor) || _strCompositePeriodTenor.isEmpty())</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;FloatStreamConvention ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Forward Label
@@ -87,7 +113,7 @@ public class FloatStreamConvention {
 
 	public org.drip.state.identifier.ForwardLabel floaterIndex()
 	{
-<span class="fc" id="L90">		return _forwardLabel;</span>
+<span class="fc" id="L116">		return _forwardLabel;</span>
 	}
 
 	/**
@@ -98,7 +124,7 @@ public class FloatStreamConvention {
 
 	public java.lang.String compositePeriodTenor()
 	{
-<span class="nc" id="L101">		return _strCompositePeriodTenor;</span>
+<span class="nc" id="L127">		return _strCompositePeriodTenor;</span>
 	}
 
 	/**
@@ -118,43 +144,43 @@ public class FloatStreamConvention {
 		final double dblBasis,
 		final double dblNotional)
 	{
-<span class="fc" id="L121">		boolean bOvernight = _forwardLabel.overnight();</span>
+<span class="fc" id="L147">		boolean bOvernight = _forwardLabel.overnight();</span>
 
 		try {
-<span class="fc bfc" id="L124" title="All 2 branches covered.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (bOvernight ? &quot;ON&quot; :
-<span class="fc bfc" id="L126" title="All 2 branches covered.">					_forwardLabel.tenor(), bOvernight ?</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">					_forwardLabel.tenor(), bOvernight ?</span>
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
 							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 								null, _forwardLabel,
 									org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				dblBasis);
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting (bOvernight ? 360 :
-<span class="fc" id="L135">					org.drip.analytics.support.Helper.TenorToFreq (_strCompositePeriodTenor),</span>
-<span class="fc" id="L136">						_strCompositePeriodTenor, _forwardLabel.currency(), null, dblNotional, null, null,</span>
+<span class="fc" id="L161">					org.drip.analytics.support.Helper.TenorToFreq (_strCompositePeriodTenor),</span>
+<span class="fc" id="L162">						_strCompositePeriodTenor, _forwardLabel.currency(), null, dblNotional, null, null,</span>
 							null, null);
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = bOvernight ? </span>
-<span class="fc" id="L140">				org.drip.analytics.support.CompositePeriodBuilder.OvernightEdgeDates (dtEffective,</span>
-<span class="fc" id="L141">					dtEffective.addTenor (strMaturityTenor), null):</span>
-<span class="fc" id="L142">						org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = bOvernight ? </span>
+<span class="fc" id="L166">				org.drip.analytics.support.CompositePeriodBuilder.OvernightEdgeDates (dtEffective,</span>
+<span class="fc" id="L167">					dtEffective.addTenor (strMaturityTenor), null):</span>
+<span class="fc" id="L168">						org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 							_strCompositePeriodTenor, strMaturityTenor, null);
 
-<span class="fc" id="L145">			return new org.drip.product.rates.Stream</span>
-<span class="fc" id="L146">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsEdgeDate, cps,</span>
+<span class="fc" id="L171">			return new org.drip.product.rates.Stream</span>
+<span class="fc" id="L172">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsEdgeDate, cps,</span>
 					cfus));
-<span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L149">			e.printStackTrace();</span>
+<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L175">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L152">		return null;</span>
+<span class="nc" id="L178">		return null;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L157">		return &quot;[FLOAT: &quot; + _forwardLabel.fullyQualifiedName() + &quot; | &quot; + _strCompositePeriodTenor + &quot;]&quot;;</span>
+<span class="fc" id="L183">		return &quot;[FLOAT: &quot; + _forwardLabel.fullyQualifiedName() + &quot; | &quot; + _strCompositePeriodTenor + &quot;]&quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

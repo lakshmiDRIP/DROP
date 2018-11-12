@@ -6,6 +6,7 @@ package org.drip.function.definition;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.function.definition;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,20 +71,26 @@ package org.drip.function.definition;
  */
 
 /**
- * R1ToR1 provides the evaluation of the objective function and its derivatives for a specified variate.
- *  Default implementation of the derivatives are for non-analytical black box objective functions.
+ * &lt;i&gt;R1ToR1&lt;/i&gt; provides the evaluation of the objective function and its derivatives for a specified
+ * variate. Default implementation of the derivatives are for non-analytical black box objective functions.
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class R1ToR1 {
-<span class="fc" id="L63">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
+<span class="fc" id="L87">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
 
 	protected R1ToR1 (
 		final org.drip.quant.calculus.DerivativeControl dc)
-<span class="fc" id="L67">	{</span>
-<span class="pc bpc" id="L68" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
-<span class="fc" id="L69">	}</span>
+<span class="fc" id="L91">	{</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
+<span class="fc" id="L93">	}</span>
 
 	/**
 	 * Evaluate for the given variate
@@ -97,40 +121,40 @@ public abstract class R1ToR1 {
 		final double dblOFBase,
 		final int iOrder)
 	{
-<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder) return null;</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder) return null;</span>
 
-<span class="fc" id="L102">		double dblDerivative = 0.;</span>
-<span class="fc" id="L103">		double dblOrderedVariateInfinitesimal = 1.;</span>
-<span class="fc" id="L104">		double dblVariateInfinitesimal = java.lang.Double.NaN;</span>
+<span class="fc" id="L126">		double dblDerivative = 0.;</span>
+<span class="fc" id="L127">		double dblOrderedVariateInfinitesimal = 1.;</span>
+<span class="fc" id="L128">		double dblVariateInfinitesimal = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L107">			dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblVariate);</span>
-<span class="nc" id="L108">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L109">			e.printStackTrace();</span>
+<span class="fc" id="L131">			dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblVariate);</span>
+<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L133">			e.printStackTrace();</span>
 
-<span class="nc" id="L111">			return null;</span>
-<span class="fc" id="L112">		}</span>
+<span class="nc" id="L135">			return null;</span>
+<span class="fc" id="L136">		}</span>
 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
-<span class="fc bfc" id="L115" title="All 2 branches covered.">			if (0 != i) dblOrderedVariateInfinitesimal *= (2. * dblVariateInfinitesimal);</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			if (0 != i) dblOrderedVariateInfinitesimal *= (2. * dblVariateInfinitesimal);</span>
 
 			try {
-<span class="fc bfc" id="L118" title="All 2 branches covered.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
-<span class="fc" id="L119">					evaluate (dblVariate + dblVariateInfinitesimal * (iOrder - 2. * i));</span>
-<span class="nc" id="L120">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L121">				e.printStackTrace();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="fc" id="L143">					evaluate (dblVariate + dblVariateInfinitesimal * (iOrder - 2. * i));</span>
+<span class="nc" id="L144">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">				e.printStackTrace();</span>
 
-<span class="nc" id="L123">				return null;</span>
-<span class="fc" id="L124">			}</span>
+<span class="nc" id="L147">				return null;</span>
+<span class="fc" id="L148">			}</span>
 		}
 
 		try {
-<span class="fc" id="L128">			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
-<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L130">			e.printStackTrace();</span>
+<span class="fc" id="L152">			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
+<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L154">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L133">		return null;</span>
+<span class="nc" id="L157">		return null;</span>
 	}
 
 	/**
@@ -147,12 +171,12 @@ public abstract class R1ToR1 {
 		final int iOrder)
 	{
 		try {
-<span class="fc" id="L150">			return differential (dblVariate, evaluate (dblVariate), iOrder);</span>
-<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="fc" id="L174">			return differential (dblVariate, evaluate (dblVariate), iOrder);</span>
+<span class="nc" id="L175">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L176">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L179">		return null;</span>
 	}
 
 	/**
@@ -171,7 +195,7 @@ public abstract class R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L174">		return differential (dblVariate, evaluate (dblVariate), iOrder).calcSlope (true);</span>
+<span class="fc" id="L198">		return differential (dblVariate, evaluate (dblVariate), iOrder).calcSlope (true);</span>
 	}
 
 	/**
@@ -190,7 +214,7 @@ public abstract class R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L193">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="fc" id="L217">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 	}
 
 	/**
@@ -201,34 +225,34 @@ public abstract class R1ToR1 {
 
 	public org.drip.function.definition.VariateOutputPair maxima()
 	{
-<span class="nc" id="L204">		R1ToR1 auDerivative = new R1ToR1 (null) {</span>
+<span class="nc" id="L228">		R1ToR1 auDerivative = new R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L209">				return derivative (dblX, 1);</span>
+<span class="nc" id="L233">				return derivative (dblX, 1);</span>
 			}
 		};
 
 		try {
-<span class="nc" id="L214">			org.drip.function.r1tor1solver.FixedPointFinder fpf = new</span>
+<span class="nc" id="L238">			org.drip.function.r1tor1solver.FixedPointFinder fpf = new</span>
 				org.drip.function.r1tor1solver.FixedPointFinderZheng (0., auDerivative, false);
 
-<span class="nc" id="L217">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = fpf.findRoot();</span>
+<span class="nc" id="L241">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = fpf.findRoot();</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">			if (null == fpfo) return null;</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">			if (null == fpfo) return null;</span>
 
-<span class="nc" id="L221">			double dblExtrema = fpfo.getRoot();</span>
+<span class="nc" id="L245">			double dblExtrema = fpfo.getRoot();</span>
 
-<span class="nc bnc" id="L223" title="All 2 branches missed.">			if (0. &lt;= derivative (dblExtrema, 2)) return null;</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">			if (0. &lt;= derivative (dblExtrema, 2)) return null;</span>
 
-<span class="nc" id="L225">			return new org.drip.function.definition.VariateOutputPair (new double[] {dblExtrema}, new</span>
-<span class="nc" id="L226">				double[] {evaluate (dblExtrema)});</span>
-<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L228">			e.printStackTrace();</span>
+<span class="nc" id="L249">			return new org.drip.function.definition.VariateOutputPair (new double[] {dblExtrema}, new</span>
+<span class="nc" id="L250">				double[] {evaluate (dblExtrema)});</span>
+<span class="nc" id="L251">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L252">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L231">		return null;</span>
+<span class="nc" id="L255">		return null;</span>
 	}
 
 	/**
@@ -244,32 +268,32 @@ public abstract class R1ToR1 {
 		final double dblVariateLeft,
 		final double dblVariateRight)
 	{
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
-<span class="nc bnc" id="L248" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
-<span class="nc" id="L249">			return null;</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
+<span class="nc bnc" id="L272" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
+<span class="nc" id="L273">			return null;</span>
 
-<span class="nc" id="L251">		org.drip.function.definition.VariateOutputPair vop = maxima();</span>
+<span class="nc" id="L275">		org.drip.function.definition.VariateOutputPair vop = maxima();</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (null != vop) {</span>
-<span class="nc" id="L254">			double dblRoot = vop.variates()[0];</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (null != vop) {</span>
+<span class="nc" id="L278">			double dblRoot = vop.variates()[0];</span>
 
-<span class="nc bnc" id="L256" title="All 4 branches missed.">			if (dblVariateLeft &lt;= dblRoot &amp;&amp; dblVariateRight &gt;= dblRoot) return vop;</span>
+<span class="nc bnc" id="L280" title="All 4 branches missed.">			if (dblVariateLeft &lt;= dblRoot &amp;&amp; dblVariateRight &gt;= dblRoot) return vop;</span>
 		}
 
 		try {
-<span class="nc" id="L260">			double dblLeftOutput = evaluate (dblVariateLeft);</span>
+<span class="nc" id="L284">			double dblLeftOutput = evaluate (dblVariateLeft);</span>
 
-<span class="nc" id="L262">			double dblRightOutput = evaluate (dblVariateRight);</span>
+<span class="nc" id="L286">			double dblRightOutput = evaluate (dblVariateRight);</span>
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">			return dblLeftOutput &gt; dblRightOutput ? new org.drip.function.definition.VariateOutputPair</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">			return dblLeftOutput &gt; dblRightOutput ? new org.drip.function.definition.VariateOutputPair</span>
 				(new double[] {dblVariateLeft}, new double[] {dblLeftOutput}) : new
 					org.drip.function.definition.VariateOutputPair (new double[] {dblVariateRight}, new
 						double[] {dblRightOutput});
-<span class="nc" id="L268">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L269">			e.printStackTrace();</span>
+<span class="nc" id="L292">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L293">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L272">		return null;</span>
+<span class="nc" id="L296">		return null;</span>
 	}
 
 	/**
@@ -280,34 +304,34 @@ public abstract class R1ToR1 {
 
 	public org.drip.function.definition.VariateOutputPair minima()
 	{
-<span class="nc" id="L283">		R1ToR1 auDerivative = new R1ToR1 (null) {</span>
+<span class="nc" id="L307">		R1ToR1 auDerivative = new R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L288">				return derivative (dblX, 1);</span>
+<span class="nc" id="L312">				return derivative (dblX, 1);</span>
 			}
 		};
 
 		try {
-<span class="nc" id="L293">			org.drip.function.r1tor1solver.FixedPointFinder fpf = new</span>
+<span class="nc" id="L317">			org.drip.function.r1tor1solver.FixedPointFinder fpf = new</span>
 				org.drip.function.r1tor1solver.FixedPointFinderZheng (0., auDerivative, false);
 
-<span class="nc" id="L296">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = fpf.findRoot();</span>
+<span class="nc" id="L320">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = fpf.findRoot();</span>
 
-<span class="nc bnc" id="L298" title="All 2 branches missed.">			if (null == fpfo) return null;</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			if (null == fpfo) return null;</span>
 
-<span class="nc" id="L300">			double dblExtrema = fpfo.getRoot();</span>
+<span class="nc" id="L324">			double dblExtrema = fpfo.getRoot();</span>
 
-<span class="nc bnc" id="L302" title="All 2 branches missed.">			if (0. &gt;= derivative (dblExtrema, 2)) return null;</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">			if (0. &gt;= derivative (dblExtrema, 2)) return null;</span>
 
-<span class="nc" id="L304">			return new org.drip.function.definition.VariateOutputPair (new double[] {dblExtrema}, new</span>
-<span class="nc" id="L305">				double[] {evaluate (dblExtrema)});</span>
-<span class="nc" id="L306">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L307">			e.printStackTrace();</span>
+<span class="nc" id="L328">			return new org.drip.function.definition.VariateOutputPair (new double[] {dblExtrema}, new</span>
+<span class="nc" id="L329">				double[] {evaluate (dblExtrema)});</span>
+<span class="nc" id="L330">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L331">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L310">		return null;</span>
+<span class="nc" id="L334">		return null;</span>
 	}
 
 	/**
@@ -323,32 +347,32 @@ public abstract class R1ToR1 {
 		final double dblVariateLeft,
 		final double dblVariateRight)
 	{
-<span class="nc bnc" id="L326" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
-<span class="nc bnc" id="L327" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
-<span class="nc" id="L328">			return null;</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
+<span class="nc bnc" id="L351" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
+<span class="nc" id="L352">			return null;</span>
 
-<span class="nc" id="L330">		org.drip.function.definition.VariateOutputPair vop = minima();</span>
+<span class="nc" id="L354">		org.drip.function.definition.VariateOutputPair vop = minima();</span>
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		if (null != vop) {</span>
-<span class="nc" id="L333">			double dblRoot = vop.variates()[0];</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">		if (null != vop) {</span>
+<span class="nc" id="L357">			double dblRoot = vop.variates()[0];</span>
 
-<span class="nc bnc" id="L335" title="All 4 branches missed.">			if (dblVariateLeft &lt;= dblRoot &amp;&amp; dblVariateRight &gt;= dblRoot) return vop;</span>
+<span class="nc bnc" id="L359" title="All 4 branches missed.">			if (dblVariateLeft &lt;= dblRoot &amp;&amp; dblVariateRight &gt;= dblRoot) return vop;</span>
 		}
 
 		try {
-<span class="nc" id="L339">			double dblLeftOutput = evaluate (dblVariateLeft);</span>
+<span class="nc" id="L363">			double dblLeftOutput = evaluate (dblVariateLeft);</span>
 
-<span class="nc" id="L341">			double dblRightOutput = evaluate (dblVariateRight);</span>
+<span class="nc" id="L365">			double dblRightOutput = evaluate (dblVariateRight);</span>
 
-<span class="nc bnc" id="L343" title="All 2 branches missed.">			return dblLeftOutput &lt; dblRightOutput ? new org.drip.function.definition.VariateOutputPair</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">			return dblLeftOutput &lt; dblRightOutput ? new org.drip.function.definition.VariateOutputPair</span>
 				(new double[] {dblVariateLeft}, new double[] {dblLeftOutput}) : new
 					org.drip.function.definition.VariateOutputPair (new double[] {dblVariateRight}, new
 						double[] {dblRightOutput});
-<span class="nc" id="L347">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L348">			e.printStackTrace();</span>
+<span class="nc" id="L371">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L372">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L351">		return null;</span>
+<span class="nc" id="L375">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

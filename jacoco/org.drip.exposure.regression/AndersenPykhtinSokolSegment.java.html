@@ -6,31 +6,49 @@ package org.drip.exposure.regression;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,34 +65,50 @@ package org.drip.exposure.regression;
  */
 
 /**
- * AndersenPykhtinSokolSegment generates the Segment Regression Based Exposures off of the corresponding
- *  Pillar Vertexes using the Pykhtin (2009) Scheme with the Andersen, Pykhtin, and Sokol (2017) Adjustments
- *  applied. The References are:
+ * &lt;i&gt;AndersenPykhtinSokolSegment&lt;/i&gt; generates the Segment Regression Based Exposures off of the
+ *  corresponding Pillar Vertexes using the Pykhtin (2009) Scheme with the Andersen, Pykhtin, and Sokol
+ *  (2017) Adjustments applied. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
- * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AndersenPykhtinSokolSegment
 {
-<span class="nc" id="L74">	private int _epochDate = -1;</span>
-<span class="nc" id="L75">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
-<span class="nc" id="L76">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
-<span class="nc" id="L77">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
+<span class="nc" id="L108">	private int _epochDate = -1;</span>
+<span class="nc" id="L109">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
+<span class="nc" id="L110">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
+<span class="nc" id="L111">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
 
 	/**
 	 * AndersenPykhtinSokolSegment Constructor
@@ -93,17 +127,17 @@ public class AndersenPykhtinSokolSegment
 		final org.drip.exposure.regression.PillarVertex rightPillar,
 		final org.drip.function.definition.R1ToR1 rightPillarLocalVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L96">	{</span>
-<span class="nc bnc" id="L97" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
+<span class="nc" id="L130">	{</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
 			null == (_rightPillar = rightPillar) ||
-<span class="nc bnc" id="L99" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
 			null == (_rightPillarLocalVolatility = rightPillarLocalVolatility))
 		{
-<span class="nc" id="L102">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolSegment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolSegment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L105">		_epochDate = epochDate;</span>
-<span class="nc" id="L106">	}</span>
+<span class="nc" id="L139">		_epochDate = epochDate;</span>
+<span class="nc" id="L140">	}</span>
 
 	/**
 	 * Retrieve the Epoch Date
@@ -113,7 +147,7 @@ public class AndersenPykhtinSokolSegment
 
 	public int epochDate()
 	{
-<span class="nc" id="L116">		return _epochDate;</span>
+<span class="nc" id="L150">		return _epochDate;</span>
 	}
 
 	/**
@@ -124,7 +158,7 @@ public class AndersenPykhtinSokolSegment
 
 	public org.drip.exposure.regression.PillarVertex leftPillar()
 	{
-<span class="nc" id="L127">		return _leftPillar;</span>
+<span class="nc" id="L161">		return _leftPillar;</span>
 	}
 
 	/**
@@ -135,7 +169,7 @@ public class AndersenPykhtinSokolSegment
 
 	public org.drip.exposure.regression.PillarVertex rightPillar()
 	{
-<span class="nc" id="L138">		return _rightPillar;</span>
+<span class="nc" id="L172">		return _rightPillar;</span>
 	}
 
 	/**
@@ -146,7 +180,7 @@ public class AndersenPykhtinSokolSegment
 
 	public org.drip.function.definition.R1ToR1 rightPillarLocalVolatility()
 	{
-<span class="nc" id="L149">		return _rightPillarLocalVolatility;</span>
+<span class="nc" id="L183">		return _rightPillarLocalVolatility;</span>
 	}
 
 	/**
@@ -162,47 +196,47 @@ public class AndersenPykhtinSokolSegment
 		final double[] denseExposureTrajectory,
 		final double[] wanderTrajectory)
 	{
-<span class="nc bnc" id="L165" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
 		{
-<span class="nc" id="L167">			return false;</span>
+<span class="nc" id="L201">			return false;</span>
 		}
 
-<span class="nc" id="L170">		int leftPillarDate = _leftPillar.date();</span>
+<span class="nc" id="L204">		int leftPillarDate = _leftPillar.date();</span>
 
-<span class="nc" id="L172">		int rightPillarDate = _rightPillar.date();</span>
+<span class="nc" id="L206">		int rightPillarDate = _rightPillar.date();</span>
 
-<span class="nc" id="L174">		double leftPillarExposure = _leftPillar.exposure();</span>
+<span class="nc" id="L208">		double leftPillarExposure = _leftPillar.exposure();</span>
 
-<span class="nc" id="L176">		double rightPillarExposure = _rightPillar.exposure();</span>
+<span class="nc" id="L210">		double rightPillarExposure = _rightPillar.exposure();</span>
 
-<span class="nc" id="L178">		int dateWidth = rightPillarDate - leftPillarDate;</span>
-<span class="nc" id="L179">		double urgency = 1. / dateWidth;</span>
-<span class="nc" id="L180">		double localVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L181">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
-<span class="nc" id="L182">		denseExposureTrajectory[leftPillarDate - _epochDate] = leftPillarExposure;</span>
-<span class="nc" id="L183">		denseExposureTrajectory[rightPillarDate - _epochDate] = rightPillarExposure;</span>
+<span class="nc" id="L212">		int dateWidth = rightPillarDate - leftPillarDate;</span>
+<span class="nc" id="L213">		double urgency = 1. / dateWidth;</span>
+<span class="nc" id="L214">		double localVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L215">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
+<span class="nc" id="L216">		denseExposureTrajectory[leftPillarDate - _epochDate] = leftPillarExposure;</span>
+<span class="nc" id="L217">		denseExposureTrajectory[rightPillarDate - _epochDate] = rightPillarExposure;</span>
 
 		try
 		{
-<span class="nc" id="L187">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
+<span class="nc" id="L221">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
 		}
-<span class="nc" id="L189">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="nc" id="L225">			e.printStackTrace();</span>
 
-<span class="nc" id="L193">			return false;</span>
-<span class="nc" id="L194">		}</span>
+<span class="nc" id="L227">			return false;</span>
+<span class="nc" id="L228">		}</span>
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
 		{
-<span class="nc" id="L198">			int epochIndex = leftPillarDate + dateIndex - _epochDate;</span>
+<span class="nc" id="L232">			int epochIndex = leftPillarDate + dateIndex - _epochDate;</span>
 
-<span class="nc" id="L200">			denseExposureTrajectory[epochIndex] = rightPillarExposure - localDrift * (dateWidth - dateIndex)</span>
-<span class="nc" id="L201">				+ localVolatility * urgency * wanderTrajectory[epochIndex] * java.lang.Math.sqrt (dateIndex *</span>
+<span class="nc" id="L234">			denseExposureTrajectory[epochIndex] = rightPillarExposure - localDrift * (dateWidth - dateIndex)</span>
+<span class="nc" id="L235">				+ localVolatility * urgency * wanderTrajectory[epochIndex] * java.lang.Math.sqrt (dateIndex *</span>
 					(dateWidth - dateIndex));
 		}
 
-<span class="nc" id="L205">		return true;</span>
+<span class="nc" id="L239">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

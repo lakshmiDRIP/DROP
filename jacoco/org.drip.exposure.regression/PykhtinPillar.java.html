@@ -6,31 +6,49 @@ package org.drip.exposure.regression;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,35 +65,51 @@ package org.drip.exposure.regression;
  */
 
 /**
- * PykhtinPillar holds the Details of the Pillar Vertex Realization Point - the Realization Value, the Order
- *  Index, the CDF, the Transform Variate, and the Local Volatility - in accordance with the Pykhtin (2009)
- *  Scheme. The References are:
+ * &lt;i&gt;PykhtinPillar&lt;/i&gt; holds the Details of the Pillar Vertex Realization Point - the Realization Value, the
+ *  Order Index, the CDF, the Transform Variate, and the Local Volatility - in accordance with the Pykhtin
+ *  (2009) Scheme. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ *  &lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of
+ *  				Initial Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
+ *  				the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives
+ *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 	&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PykhtinPillar
 {
-<span class="nc" id="L74">	private int _order = -1;</span>
-<span class="nc" id="L75">	private double _cdf = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _variate = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _exposure = java.lang.Double.NaN;</span>
-<span class="nc" id="L78">	private double _localVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private int _order = -1;</span>
+<span class="nc" id="L109">	private double _cdf = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _variate = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _exposure = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _localVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * PykhtinPillar Constructor
@@ -96,16 +130,16 @@ public class PykhtinPillar
 		final double variate,
 		final double localVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L99">	{</span>
-<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||</span>
+<span class="nc" id="L133">	{</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||</span>
 			0 &gt; (_order = order) ||
-<span class="nc bnc" id="L102" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))</span>
 		{
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;PykhtinPillar Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;PykhtinPillar Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Point Exposure
@@ -115,7 +149,7 @@ public class PykhtinPillar
 
 	public double exposure()
 	{
-<span class="nc" id="L118">		return _exposure;</span>
+<span class="nc" id="L152">		return _exposure;</span>
 	}
 
 	/**
@@ -126,7 +160,7 @@ public class PykhtinPillar
 
 	public int order()
 	{
-<span class="nc" id="L129">		return _order;</span>
+<span class="nc" id="L163">		return _order;</span>
 	}
 
 	/**
@@ -137,7 +171,7 @@ public class PykhtinPillar
 
 	public double cdf()
 	{
-<span class="nc" id="L140">		return _cdf;</span>
+<span class="nc" id="L174">		return _cdf;</span>
 	}
 
 	/**
@@ -148,7 +182,7 @@ public class PykhtinPillar
 
 	public double variate()
 	{
-<span class="nc" id="L151">		return _variate;</span>
+<span class="nc" id="L185">		return _variate;</span>
 	}
 
 	/**
@@ -159,7 +193,7 @@ public class PykhtinPillar
 
 	public double localVolatility()
 	{
-<span class="nc" id="L162">		return _localVolatility;</span>
+<span class="nc" id="L196">		return _localVolatility;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
