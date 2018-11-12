@@ -57,9 +57,6 @@ DROP Learning Module extracts the Agnostic Learning Bounds under Empirical Loss 
  * Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
  Squared Loss <i>IEEE Transactions on Information Theory</i> <b>44</b> 1974-1980
 
- * Lugosi, G. (2002): Pattern Classification and Learning Theory, in: <i>L. Györ, editor, Principles of
- Non-parametric Learning</i> <b>Springer</b> Wien 5-62
-
  * Shawe-Taylor, J., P. L. Bartlett, R. C. Williamson, and M. Anthony (1996): A Framework for Structural Risk
  Minimization, in: <i>Proceedings of the 9th Annual Conference on Computational Learning Theory</i>
  <b>ACM</b> New York 68-76
