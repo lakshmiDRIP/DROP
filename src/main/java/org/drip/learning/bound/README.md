@@ -80,6 +80,9 @@ DROP Learning Bound Package implements Covering Numbers, Concentration, Lipschit
  * Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
  Squared Loss <i>IEEE Transactions on Information Theory</i> <b>44</b> 1974-1980
 
+ * Lugosi, G. (2002): Pattern Classification and Learning Theory, in: <i>L. Gyor, editor, Principles of
+ Non-parametric Learning</i> <b>Springer</b> Wien 5-62
+
  * Smola, A. J., A. Elisseff, B. Scholkopf, and R. C. Williamson (2000): Entropy Numbers for Convex
  Combinations and mlps, in: <i>Advances in Large Margin Classifiers, A. Smola, P. Bartlett, B. Scholkopf, and
  D. Schuurmans - editors</i> <b>MIT Press</b> Cambridge, MA
