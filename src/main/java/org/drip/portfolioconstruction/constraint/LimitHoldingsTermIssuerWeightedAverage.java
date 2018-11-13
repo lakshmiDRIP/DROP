@@ -67,7 +67,7 @@ package org.drip.portfolioconstruction.constraint;
 
 /**
  * <i>LimitHoldingsTermIssuerWeightedAverage</i> holds the Details of Weighted Average Issuer Limit Holdings
- *  Constraint Term.
+ * Constraint Term.
  * 
  * <br><br>
  *  <ul>

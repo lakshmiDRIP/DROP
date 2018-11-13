@@ -66,7 +66,7 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * <i>LimitHoldingsTerm</i. holds the Details of a Limit Holdings Constraint Term - Limits can be
+ * <i>LimitHoldingsTerm</i> holds the Details of a Limit Holdings Constraint Term - Limits can be
  * Absolute/Net etc.
  * 
  * <br><br>
