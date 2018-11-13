@@ -49,13 +49,28 @@ package org.drip.portfolioconstruction.asset;
  */
 
 /**
- * PortfolioBenchmarkMetrics holds the Metrics that result from a Relative Valuation of a Portfolio with
- *  respect to a Benchmark.
+ * <i>PortfolioBenchmarkMetrics</i> holds the Metrics that result from a Relative Valuation of a Portfolio
+ * with respect to a Benchmark.
  *  
- *  - Grinold, R. C., and R. N. Kahn (1999): Active Portfolio Management, 2nd Edition, McGraw-Hill, NY.
- *  
- *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
- *  	Confidence Levels, Ibbotson Associates, Chicago
+ *  <br><br>
+ *  	<ul>
+ *  		<li>
+ *  			Grinold, R. C., and R. N. Kahn (1999): <i>Active Portfolio Management, 2nd Edition</i>
+ *  				<b>McGraw-Hill</b> NY
+ *  		<li>
+ *  		</li>
+ *  			Idzorek, T. (2005): <i>A Step-by-Step Guide to the Black-Litterman Model: Incorporating
+ *  				User-Specified Confidence Levels</i> <b>Ibbotson Associates</b> Chicago, IL
+ *  		</li>
+ *  	</ul>
+ * 
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction">Portfolio Construction</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/asset">Asset Component</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation">Asset Allocation Library</a></li>
+ *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
