@@ -14,6 +14,11 @@ DROP Param Market Package implements the Curves Surfaces Quotes Fixings Containe
  bumped up/down credit curves, recovery bumped up/down credit curves, and the tenor mapped up/down credit
  curves.
 
+ * [***CurveSurfaceQuoteContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/market/CurveSurfaceQuoteContainer.java)
+ <i>CurveSurfaceQuoteContainer</i> provides implementation of the set of the market curve parameters. It
+ serves as a place holder for the market parameters needed to value the product, i.e., discount curve, forward
+ curve, treasury curve, credit curve, product quote, treasury quote map, and fixings map.
+
  * [***CurveSurfaceScenarioContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/market/CurveSurfaceScenarioContainer.java)
  <i>CurveSurfaceScenarioContainer</i> extends MarketParams abstract class, and is the place holder for the
  comprehensive suite of the market set of curves for the given date. It exports the following functionality.
