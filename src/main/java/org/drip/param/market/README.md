@@ -21,7 +21,7 @@ DROP Param Market Package implements the Curves Surfaces Quotes Fixings Containe
 
  * [***CurveSurfaceScenarioContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/market/CurveSurfaceScenarioContainer.java)
  <i>CurveSurfaceScenarioContainer</i> extends MarketParams abstract class, and is the place holder for the
- comprehensive suite of the market set of curves for the given date. It exports the following functionality:
+ comprehensive suite of the market set of curves for the given date. It exports the following functionality.
  	* Add/remove/retrieve scenario discount curve
  	* Add/remove/retrieve scenario Forward curve
  	* Add/remove/retrieve scenario zero curve
@@ -38,7 +38,7 @@ DROP Param Market Package implements the Curves Surfaces Quotes Fixings Containe
 
  * [***DiscountCurveScenarioContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/market/DiscountCurveScenarioContainer.java)
  <i>DiscountCurveScenarioContainer</i> implements the RatesScenarioCurve abstract class that exposes the
- interface the constructs scenario discount curves. The following curve construction scenarios are supported:
+ interface the constructs scenario discount curves. The following curve construction scenarios are supported.
  	* Base, flat/tenor up/down by arbitrary bumps
  	* Tenor bumped discount curve set - keyed using the tenor
  	* NTP-based custom scenario curves
