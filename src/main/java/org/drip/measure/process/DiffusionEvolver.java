@@ -66,7 +66,7 @@ package org.drip.measure.process;
  */
 
 /**
- * <i>DiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>/<sup> Diffusion
+ * <i>DiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>/</sup> Diffusion
  * Random Process Variable Evolution.
  * 
  * <br><br>

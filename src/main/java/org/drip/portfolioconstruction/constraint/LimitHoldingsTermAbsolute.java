@@ -66,12 +66,12 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * <i>LimitHoldingsTermAbsolute</I. holds the Details of a Limit Absolute Holdings Constraint Term.
+ * <i>LimitHoldingsTermAbsolute</i> holds the Details of a Limit Absolute Holdings Constraint Term.
  * 
  * <br><br>
  *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction">Portfolio Construction</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint">Constraint/a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint">Constraint</a></li>
  *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation">Asset Allocation Library</a></li>
  *  </ul>
  * <br><br>

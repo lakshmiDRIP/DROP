@@ -75,8 +75,8 @@ package org.drip.portfolioconstruction.bayesian;
  *  		<li>
  *  			He. G., and R. Litterman (1999): <i>The Intuition behind the Black-Litterman Model
  *  				Portfolios</i> <b>Goldman Sachs Asset Management</b>
- *  		<li>
  *  		</li>
+ *  		<li>
  *  			Idzorek, T. (2005): <i>A Step-by-Step Guide to the Black-Litterman Model: Incorporating
  *  				User-Specified Confidence Levels</i> <b>Ibbotson Associates</b> Chicago, IL
  *  		</li>
@@ -85,7 +85,7 @@ package org.drip.portfolioconstruction.bayesian;
  * <br><br>
  *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction">Portfolio Construction</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian">Bayesian/a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian">Bayesian</a></li>
  *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation">Asset Allocation Library</a></li>
  *  </ul>
  * <br><br>

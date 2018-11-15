@@ -57,8 +57,8 @@ package org.drip.portfolioconstruction.asset;
  *  		<li>
  *  			Grinold, R. C., and R. N. Kahn (1999): <i>Active Portfolio Management, 2nd Edition</i>
  *  				<b>McGraw-Hill</b> NY
- *  		<li>
  *  		</li>
+ *  		<li>
  *  			Idzorek, T. (2005): <i>A Step-by-Step Guide to the Black-Litterman Model: Incorporating
  *  				User-Specified Confidence Levels</i> <b>Ibbotson Associates</b> Chicago, IL
  *  		</li>
