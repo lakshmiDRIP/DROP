@@ -6,33 +6,51 @@ package org.drip.measure.statistics;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,17 +67,25 @@ package org.drip.measure.statistics;
  */
 
 /**
- * MultivariateMoments generates and holds the Specified Multivariate Series Mean, Co-variance, and other
- *  selected Moments.
+ * &lt;i&gt;MultivariateMoments&lt;/i&gt; generates and holds the Specified Multivariate Series Mean, Co-variance, and
+ * other selected Moments.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics&quot;&gt;Statistics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultivariateMoments {
-<span class="fc" id="L59">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapMean = new</span>
+<span class="fc" id="L85">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapMean = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L62">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapCovariance = new</span>
+<span class="fc" id="L88">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapCovariance = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 	/**
@@ -75,47 +101,47 @@ public class MultivariateMoments {
 		final java.lang.String[] astrVariateName,
 		final double[][] aadblVariate)
 	{
-<span class="nc bnc" id="L78" title="All 4 branches missed.">		if (null == astrVariateName || null == aadblVariate) return null;</span>
+<span class="nc bnc" id="L104" title="All 4 branches missed.">		if (null == astrVariateName || null == aadblVariate) return null;</span>
 
-<span class="nc" id="L80">		int iNumVariate = astrVariateName.length;</span>
-<span class="nc" id="L81">		double[] adblMean = new double[iNumVariate];</span>
+<span class="nc" id="L106">		int iNumVariate = astrVariateName.length;</span>
+<span class="nc" id="L107">		double[] adblMean = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L83" title="All 4 branches missed.">		if (0 == iNumVariate || iNumVariate != aadblVariate.length) return null;</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (0 == iNumVariate || iNumVariate != aadblVariate.length) return null;</span>
 
-<span class="nc" id="L85">		int iNumSample = aadblVariate[0].length;</span>
+<span class="nc" id="L111">		int iNumSample = aadblVariate[0].length;</span>
 
-<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (0 == iNumSample) return null;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (0 == iNumSample) return null;</span>
 
-<span class="nc" id="L89">		MultivariateMoments mvm = new MultivariateMoments();</span>
+<span class="nc" id="L115">		MultivariateMoments mvm = new MultivariateMoments();</span>
 
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc" id="L92">			adblMean[i] = 0.;</span>
-<span class="nc" id="L93">			double[] adblVariateSample = aadblVariate[i];</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L118">			adblMean[i] = 0.;</span>
+<span class="nc" id="L119">			double[] adblVariateSample = aadblVariate[i];</span>
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">			if (null == adblVariateSample || adblVariateSample.length != iNumSample) return null;</span>
+<span class="nc bnc" id="L121" title="All 4 branches missed.">			if (null == adblVariateSample || adblVariateSample.length != iNumSample) return null;</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">			for (int k = 0; k &lt; iNumSample; ++k) {</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateSample[k])) return null;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			for (int k = 0; k &lt; iNumSample; ++k) {</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateSample[k])) return null;</span>
 
-<span class="nc" id="L100">				adblMean[i] += adblVariateSample[k];</span>
+<span class="nc" id="L126">				adblMean[i] += adblVariateSample[k];</span>
 			}
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			if (!mvm.addMean (astrVariateName[i], adblMean[i] /= iNumSample)) return null;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			if (!mvm.addMean (astrVariateName[i], adblMean[i] /= iNumSample)) return null;</span>
 		}
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
-<span class="nc" id="L108">				double dblCovariance = 0.;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
+<span class="nc" id="L134">				double dblCovariance = 0.;</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">				for (int k = 0; k &lt; iNumSample; ++k)</span>
-<span class="nc" id="L111">					dblCovariance += (aadblVariate[i][k] - adblMean[i]) * (aadblVariate[j][k] - adblMean[j]);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				for (int k = 0; k &lt; iNumSample; ++k)</span>
+<span class="nc" id="L137">					dblCovariance += (aadblVariate[i][k] - adblMean[i]) * (aadblVariate[j][k] - adblMean[j]);</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">				if (!mvm.addCovariance (astrVariateName[i], astrVariateName[j], dblCovariance / iNumSample))</span>
-<span class="nc" id="L114">					return null;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (!mvm.addCovariance (astrVariateName[i], astrVariateName[j], dblCovariance / iNumSample))</span>
+<span class="nc" id="L140">					return null;</span>
 			}
 		}
 
-<span class="nc" id="L118">		return mvm;</span>
+<span class="nc" id="L144">		return mvm;</span>
 	}
 
 	/**
@@ -133,33 +159,33 @@ public class MultivariateMoments {
 		final double[] adblMean,
 		final double[][] aadblCovariance)
 	{
-<span class="pc bpc" id="L136" title="3 of 6 branches missed.">		if (null == astrVariateName || null == adblMean || null == aadblCovariance) return null;</span>
+<span class="pc bpc" id="L162" title="3 of 6 branches missed.">		if (null == astrVariateName || null == adblMean || null == aadblCovariance) return null;</span>
 
-<span class="fc" id="L138">		int iNumVariate = astrVariateName.length;</span>
+<span class="fc" id="L164">		int iNumVariate = astrVariateName.length;</span>
 
-<span class="pc bpc" id="L140" title="5 of 10 branches missed.">		if (0 == iNumVariate || iNumVariate != adblMean.length || iNumVariate != aadblCovariance.length ||</span>
+<span class="pc bpc" id="L166" title="5 of 10 branches missed.">		if (0 == iNumVariate || iNumVariate != adblMean.length || iNumVariate != aadblCovariance.length ||</span>
 			null == aadblCovariance[0] || iNumVariate != aadblCovariance[0].length)
-<span class="nc" id="L142">			return null;</span>
+<span class="nc" id="L168">			return null;</span>
 
-<span class="fc" id="L144">		MultivariateMoments mvm = new MultivariateMoments();</span>
+<span class="fc" id="L170">		MultivariateMoments mvm = new MultivariateMoments();</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			if (!mvm.addMean (astrVariateName[i], adblMean[i])) return null;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			if (!mvm.addMean (astrVariateName[i], adblMean[i])) return null;</span>
 		}
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">				if (!mvm.addCovariance (astrVariateName[i], astrVariateName[j], aadblCovariance[i][j]))</span>
-<span class="nc" id="L153">					return null;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">				if (!mvm.addCovariance (astrVariateName[i], astrVariateName[j], aadblCovariance[i][j]))</span>
+<span class="nc" id="L179">					return null;</span>
 			}
 		}
 
-<span class="fc" id="L157">		return mvm;</span>
+<span class="fc" id="L183">		return mvm;</span>
 	}
 
 	protected MultivariateMoments()
-<span class="fc" id="L161">	{</span>
-<span class="fc" id="L162">	}</span>
+<span class="fc" id="L187">	{</span>
+<span class="fc" id="L188">	}</span>
 
 	/**
 	 * Retrieve the Number of Variates in the Distribution
@@ -169,7 +195,7 @@ public class MultivariateMoments {
 
 	public int numVariate()
 	{
-<span class="nc" id="L172">		return _mapMean.size();</span>
+<span class="nc" id="L198">		return _mapMean.size();</span>
 	}
 
 	/**
@@ -180,7 +206,7 @@ public class MultivariateMoments {
 
 	public java.util.Set&lt;java.lang.String&gt; variateList()
 	{
-<span class="fc" id="L183">		return _mapMean.keySet();</span>
+<span class="fc" id="L209">		return _mapMean.keySet();</span>
 	}
 
 	/**
@@ -196,13 +222,13 @@ public class MultivariateMoments {
 		final java.lang.String strVariateName,
 		final double dblMean)
 	{
-<span class="pc bpc" id="L199" title="2 of 4 branches missed.">		if (null == strVariateName || strVariateName.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">			(dblMean))</span>
-<span class="nc" id="L201">			return false;</span>
+<span class="pc bpc" id="L225" title="2 of 4 branches missed.">		if (null == strVariateName || strVariateName.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">			(dblMean))</span>
+<span class="nc" id="L227">			return false;</span>
 
-<span class="fc" id="L203">		_mapMean.put (strVariateName, dblMean);</span>
+<span class="fc" id="L229">		_mapMean.put (strVariateName, dblMean);</span>
 
-<span class="fc" id="L205">		return true;</span>
+<span class="fc" id="L231">		return true;</span>
 	}
 
 	/**
@@ -219,10 +245,10 @@ public class MultivariateMoments {
 		final java.lang.String strVariateName)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L222" title="3 of 6 branches missed.">		if (null == strVariateName || strVariateName.isEmpty() || !_mapMean.containsKey (strVariateName))</span>
-<span class="nc" id="L223">			throw new java.lang.Exception (&quot;MultivariateMetrics::mean =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L248" title="3 of 6 branches missed.">		if (null == strVariateName || strVariateName.isEmpty() || !_mapMean.containsKey (strVariateName))</span>
+<span class="nc" id="L249">			throw new java.lang.Exception (&quot;MultivariateMetrics::mean =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L225">		return _mapMean.get (strVariateName);</span>
+<span class="fc" id="L251">		return _mapMean.get (strVariateName);</span>
 	}
 
 	/**
@@ -240,15 +266,15 @@ public class MultivariateMoments {
 		final java.lang.String strVariate2Name,
 		final double dblCovariance)
 	{
-<span class="pc bpc" id="L243" title="3 of 6 branches missed.">		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||</span>
-<span class="pc bpc" id="L244" title="2 of 4 branches missed.">			strVariate2Name.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblCovariance))</span>
-<span class="nc" id="L245">			return false;</span>
+<span class="pc bpc" id="L269" title="3 of 6 branches missed.">		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||</span>
+<span class="pc bpc" id="L270" title="2 of 4 branches missed.">			strVariate2Name.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblCovariance))</span>
+<span class="nc" id="L271">			return false;</span>
 
-<span class="fc" id="L247">		_mapCovariance.put (strVariate1Name + &quot;@#&quot; + strVariate2Name, dblCovariance);</span>
+<span class="fc" id="L273">		_mapCovariance.put (strVariate1Name + &quot;@#&quot; + strVariate2Name, dblCovariance);</span>
 
-<span class="fc" id="L249">		_mapCovariance.put (strVariate2Name + &quot;@#&quot; + strVariate1Name, dblCovariance);</span>
+<span class="fc" id="L275">		_mapCovariance.put (strVariate2Name + &quot;@#&quot; + strVariate1Name, dblCovariance);</span>
 
-<span class="fc" id="L251">		return true;</span>
+<span class="fc" id="L277">		return true;</span>
 	}
 
 	/**
@@ -265,15 +291,15 @@ public class MultivariateMoments {
 		final java.lang.String strVariateName)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L268" title="2 of 4 branches missed.">		if (null == strVariateName || strVariateName.isEmpty())</span>
-<span class="nc" id="L269">			throw new java.lang.Exception (&quot;MultivariateMetrics::variance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L294" title="2 of 4 branches missed.">		if (null == strVariateName || strVariateName.isEmpty())</span>
+<span class="nc" id="L295">			throw new java.lang.Exception (&quot;MultivariateMetrics::variance =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L271">		java.lang.String strVarianceEntry = strVariateName + &quot;@#&quot; + strVariateName;</span>
+<span class="fc" id="L297">		java.lang.String strVarianceEntry = strVariateName + &quot;@#&quot; + strVariateName;</span>
 
-<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		if (!_mapCovariance.containsKey (strVarianceEntry))</span>
-<span class="nc" id="L274">			throw new java.lang.Exception (&quot;MultivariateMetrics::variance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		if (!_mapCovariance.containsKey (strVarianceEntry))</span>
+<span class="nc" id="L300">			throw new java.lang.Exception (&quot;MultivariateMetrics::variance =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L276">		return _mapCovariance.get (strVarianceEntry);</span>
+<span class="fc" id="L302">		return _mapCovariance.get (strVarianceEntry);</span>
 	}
 
 	/**
@@ -292,16 +318,16 @@ public class MultivariateMoments {
 		final java.lang.String strVariate2Name)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L295" title="3 of 6 branches missed.">		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||</span>
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">			strVariate2Name.isEmpty())</span>
-<span class="nc" id="L297">			throw new java.lang.Exception (&quot;MultivariateMetrics::covariance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L321" title="3 of 6 branches missed.">		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">			strVariate2Name.isEmpty())</span>
+<span class="nc" id="L323">			throw new java.lang.Exception (&quot;MultivariateMetrics::covariance =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L299">		java.lang.String strCovarianceEntry = strVariate1Name + &quot;@#&quot; + strVariate2Name;</span>
+<span class="fc" id="L325">		java.lang.String strCovarianceEntry = strVariate1Name + &quot;@#&quot; + strVariate2Name;</span>
 
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (!_mapCovariance.containsKey (strCovarianceEntry))</span>
-<span class="nc" id="L302">			throw new java.lang.Exception (&quot;MultivariateMetrics::coariance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">		if (!_mapCovariance.containsKey (strCovarianceEntry))</span>
+<span class="nc" id="L328">			throw new java.lang.Exception (&quot;MultivariateMetrics::coariance =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L304">		return _mapCovariance.get (strCovarianceEntry);</span>
+<span class="fc" id="L330">		return _mapCovariance.get (strCovarianceEntry);</span>
 	}
 
 	/**
@@ -320,8 +346,8 @@ public class MultivariateMoments {
 		final java.lang.String strVariate2Name)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L323">		return covariance (strVariate1Name, strVariate2Name) / java.lang.Math.sqrt (variance</span>
-<span class="fc" id="L324">			(strVariate1Name) * variance (strVariate2Name));</span>
+<span class="fc" id="L349">		return covariance (strVariate1Name, strVariate2Name) / java.lang.Math.sqrt (variance</span>
+<span class="fc" id="L350">			(strVariate1Name) * variance (strVariate2Name));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

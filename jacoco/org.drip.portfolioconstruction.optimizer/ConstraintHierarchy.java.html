@@ -6,32 +6,50 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,14 +66,22 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /**
- * ConstraintHierarchy holds the Details of a given set of Constraint Terms.
+ * &lt;i&gt;ConstraintHierarchy&lt;/i&gt; holds the Details of a given set of Constraint Terms.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConstraintHierarchy {
-<span class="nc" id="L57">	public int[] _aiOrder = null;</span>
-<span class="nc" id="L58">	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _aCT = null;</span>
+<span class="nc" id="L83">	public int[] _aiOrder = null;</span>
+<span class="nc" id="L84">	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _aCT = null;</span>
 
 	/**
 	 * Construct a Flat Non-Feudal Instance of ConstraintHierarchy
@@ -68,21 +94,21 @@ public class ConstraintHierarchy {
 	public static final ConstraintHierarchy NonFeudal (
 		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] aCT)
 	{
-<span class="nc bnc" id="L71" title="All 2 branches missed.">		if (null == aCT) return null;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (null == aCT) return null;</span>
 
-<span class="nc" id="L73">		int iNumConstraint = aCT.length;</span>
-<span class="nc" id="L74">		int[] aiOrder = new int[iNumConstraint];</span>
+<span class="nc" id="L99">		int iNumConstraint = aCT.length;</span>
+<span class="nc" id="L100">		int[] aiOrder = new int[iNumConstraint];</span>
 
-<span class="nc bnc" id="L76" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
-<span class="nc" id="L77">			aiOrder[i] = 0;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
+<span class="nc" id="L103">			aiOrder[i] = 0;</span>
 
 		try {
-<span class="nc" id="L80">			return new ConstraintHierarchy (aCT, aiOrder);</span>
-<span class="nc" id="L81">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L82">			e.printStackTrace();</span>
+<span class="nc" id="L106">			return new ConstraintHierarchy (aCT, aiOrder);</span>
+<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L108">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L85">		return null;</span>
+<span class="nc" id="L111">		return null;</span>
 	}
 
 	/**
@@ -98,21 +124,21 @@ public class ConstraintHierarchy {
 		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] aCT,
 		final int[] aiOrder)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 8 branches missed.">		if ((null == (_aCT = aCT) &amp;&amp; null != (_aiOrder = aiOrder)) &amp;&amp; (null != (_aCT = aCT) &amp;&amp; null ==</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc bnc" id="L128" title="All 8 branches missed.">		if ((null == (_aCT = aCT) &amp;&amp; null != (_aiOrder = aiOrder)) &amp;&amp; (null != (_aCT = aCT) &amp;&amp; null ==</span>
 			(_aiOrder = aiOrder)))
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L106">		int iNumConstraint = _aCT.length;</span>
+<span class="nc" id="L132">		int iNumConstraint = _aCT.length;</span>
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (iNumConstraint != _aiOrder.length)</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (iNumConstraint != _aiOrder.length)</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">			if (null == _aCT[i])</span>
-<span class="nc" id="L113">				throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (null == _aCT[i])</span>
+<span class="nc" id="L139">				throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L115">	}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Array of Constraint Term Order
@@ -122,7 +148,7 @@ public class ConstraintHierarchy {
 
 	public int[] order()
 	{
-<span class="nc" id="L125">		return _aiOrder;</span>
+<span class="nc" id="L151">		return _aiOrder;</span>
 	}
 
 	/**
@@ -133,7 +159,7 @@ public class ConstraintHierarchy {
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraints()
 	{
-<span class="nc" id="L136">		return _aCT;</span>
+<span class="nc" id="L162">		return _aCT;</span>
 	}
 
 	/**
@@ -144,15 +170,15 @@ public class ConstraintHierarchy {
 
 	public boolean nonFeudal()
 	{
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (null == _aCT) return true;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == _aCT) return true;</span>
 
-<span class="nc" id="L149">		int iNumConstraint = _aCT.length;</span>
+<span class="nc" id="L175">		int iNumConstraint = _aCT.length;</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">			if (0 != _aiOrder[i]) return false;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (0 != _aiOrder[i]) return false;</span>
 		}
 
-<span class="nc" id="L155">		return true;</span>
+<span class="nc" id="L181">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

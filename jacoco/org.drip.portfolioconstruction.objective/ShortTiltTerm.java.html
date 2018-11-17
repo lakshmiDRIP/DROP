@@ -6,32 +6,50 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,7 +66,15 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /**
- * ShortTiltTerm holds the Details of Short Tilt Unit Objective Term.
+ * &lt;i&gt;ShortTiltTerm&lt;/i&gt; holds the Details of Short Tilt Unit Objective Term.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -73,7 +99,7 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 		final double[] adblMembership)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L76">		super (</span>
+<span class="nc" id="L102">		super (</span>
 			strName,
 			&quot;OBJECTIVE_TERM_SHORT_TILT&quot;,
 			&quot;Short Tilt Objective Term&quot;,
@@ -81,40 +107,40 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 			adblMagnitude,
 			adblMembership
 		);
-<span class="nc" id="L84">	}</span>
+<span class="nc" id="L110">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L88">		return new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L114">		return new org.drip.function.definition.RdToR1 (null) {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L91">				return initialHoldings().length;</span>
+<span class="nc" id="L117">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L98" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L99">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L125">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L101">				double dblValue = 0.;</span>
-<span class="nc" id="L102">				int iDimension = adblVariate.length;</span>
+<span class="nc" id="L127">				double dblValue = 0.;</span>
+<span class="nc" id="L128">				int iDimension = adblVariate.length;</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">				if (iDimension != dimension())</span>
-<span class="nc" id="L105">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">				if (iDimension != dimension())</span>
+<span class="nc" id="L131">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L107">				double[] adblMagnitude = magnitude();</span>
+<span class="nc" id="L133">				double[] adblMagnitude = magnitude();</span>
 
-<span class="nc" id="L109">				double[] adblMembership = membership();</span>
+<span class="nc" id="L135">				double[] adblMembership = membership();</span>
 
-<span class="nc" id="L111">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L137">				double[] adblInitialHoldings = initialHoldings();</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L114">					dblValue -= adblMagnitude[i] * adblMembership[i] * (java.lang.Math.abs (adblVariate[i]) -</span>
-<span class="nc" id="L115">						java.lang.Math.abs (adblInitialHoldings[i]));</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L140">					dblValue -= adblMagnitude[i] * adblMembership[i] * (java.lang.Math.abs (adblVariate[i]) -</span>
+<span class="nc" id="L141">						java.lang.Math.abs (adblInitialHoldings[i]));</span>
 
-<span class="nc" id="L117">				return dblValue;</span>
+<span class="nc" id="L143">				return dblValue;</span>
 			}
 
 			@Override public double derivative (
@@ -123,19 +149,19 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L126" title="All 4 branches missed.">				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">					(adblVariate))</span>
-<span class="nc" id="L128">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">					(adblVariate))</span>
+<span class="nc" id="L154">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L130">				int iDimension = adblVariate.length;</span>
+<span class="nc" id="L156">				int iDimension = adblVariate.length;</span>
 
-<span class="nc bnc" id="L132" title="All 4 branches missed.">				if (iDimension != dimension() || iVariateIndex &gt;= iDimension)</span>
-<span class="nc" id="L133">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">				if (iDimension != dimension() || iVariateIndex &gt;= iDimension)</span>
+<span class="nc" id="L159">					throw new java.lang.Exception (&quot;ShortTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				if (2 &lt;= iOrder) return 0.;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">				if (2 &lt;= iOrder) return 0.;</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">				return (adblVariate[iVariateIndex] &gt; initialHoldings()[iVariateIndex] ? -1. : 1.) *</span>
-<span class="nc" id="L138">					magnitude()[iVariateIndex] * membership()[iVariateIndex];</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">				return (adblVariate[iVariateIndex] &gt; initialHoldings()[iVariateIndex] ? -1. : 1.) *</span>
+<span class="nc" id="L164">					magnitude()[iVariateIndex] * membership()[iVariateIndex];</span>
 			}
 		};
 	}

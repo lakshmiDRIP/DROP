@@ -342,50 +342,50 @@ public class CollateralAmountEstimator
 	public org.drip.exposure.mpor.CollateralAmountEstimatorOutput output (
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 	{
-<span class="nc bnc" id="L345" title="All 2 branches missed.">		if (null == valuationDateJulian)</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		if (null == valuationDateJulian)</span>
 		{
 <span class="nc" id="L347">			return null;</span>
 		}
 
-<span class="nc" id="L350">		org.drip.analytics.date.JulianDate dealerMarginDate = valuationDateJulian.subtractDays</span>
-<span class="nc" id="L351">			(_positionGroupSpecification.dealerDefaultWindow());</span>
+<span class="fc" id="L350">		org.drip.analytics.date.JulianDate dealerMarginDate = valuationDateJulian.subtractDays</span>
+<span class="fc" id="L351">			(_positionGroupSpecification.dealerDefaultWindow());</span>
 
-<span class="nc" id="L353">		org.drip.analytics.date.JulianDate clientMarginDate = valuationDateJulian.subtractDays</span>
-<span class="nc" id="L354">			(_positionGroupSpecification.clientDefaultWindow());</span>
+<span class="fc" id="L353">		org.drip.analytics.date.JulianDate clientMarginDate = valuationDateJulian.subtractDays</span>
+<span class="fc" id="L354">			(_positionGroupSpecification.clientDefaultWindow());</span>
 
-<span class="nc bnc" id="L356" title="All 4 branches missed.">		if (null == dealerMarginDate ||</span>
+<span class="pc bpc" id="L356" title="2 of 4 branches missed.">		if (null == dealerMarginDate ||</span>
 			null == clientMarginDate)
 		{
 <span class="nc" id="L359">			return null;</span>
 		}
 
-<span class="nc" id="L362">		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =</span>
-<span class="nc" id="L363">			_positionGroupSpecification.clientThresholdFunctionArray();</span>
+<span class="fc" id="L362">		org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray =</span>
+<span class="fc" id="L363">			_positionGroupSpecification.clientThresholdFunctionArray();</span>
 
-<span class="nc" id="L365">		org.drip.function.definition.R1ToR1 dealerThresholdFunction =</span>
-<span class="nc" id="L366">			_positionGroupSpecification.dealerThresholdFunction();</span>
+<span class="fc" id="L365">		org.drip.function.definition.R1ToR1 dealerThresholdFunction =</span>
+<span class="fc" id="L366">			_positionGroupSpecification.dealerThresholdFunction();</span>
 
-<span class="nc" id="L368">		double valuationDate = valuationDateJulian.julian();</span>
+<span class="fc" id="L368">		double valuationDate = valuationDateJulian.julian();</span>
 
 		try
 		{
-<span class="nc" id="L372">			double dealerWindowMarginValue = _brokenDateInterpolator.interpolate (dealerMarginDate.julian());</span>
+<span class="fc" id="L372">			double dealerWindowMarginValue = _brokenDateInterpolator.interpolate (dealerMarginDate.julian());</span>
 
-<span class="nc" id="L374">			double clientWindowMarginValue = _brokenDateInterpolator.interpolate (clientMarginDate.julian());</span>
+<span class="fc" id="L374">			double clientWindowMarginValue = _brokenDateInterpolator.interpolate (clientMarginDate.julian());</span>
 
-<span class="nc bnc" id="L376" title="All 2 branches missed.">			double dealerThresholdValue = null == dealerThresholdFunction ? 0. :</span>
-<span class="nc" id="L377">				dealerThresholdFunction.evaluate (valuationDate);</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">			double dealerThresholdValue = null == dealerThresholdFunction ? 0. :</span>
+<span class="fc" id="L377">				dealerThresholdFunction.evaluate (valuationDate);</span>
 
-<span class="nc bnc" id="L379" title="All 4 branches missed.">			double clientThresholdValue = null == clientThresholdFunctionArray || null ==</span>
+<span class="pc bpc" id="L379" title="2 of 4 branches missed.">			double clientThresholdValue = null == clientThresholdFunctionArray || null ==</span>
 				clientThresholdFunctionArray[0] ? 0. : clientThresholdFunctionArray[0].evaluate
-<span class="nc" id="L381">					(valuationDate);</span>
+<span class="fc" id="L381">					(valuationDate);</span>
 
-<span class="nc" id="L383">			double dealerPostingRequirement = dealerWindowMarginValue - dealerThresholdValue;</span>
-<span class="nc bnc" id="L384" title="All 2 branches missed.">			dealerPostingRequirement = 0. &lt; dealerPostingRequirement ? 0. : dealerPostingRequirement;</span>
-<span class="nc" id="L385">			double clientPostingRequirement = clientWindowMarginValue - clientThresholdValue;</span>
-<span class="nc bnc" id="L386" title="All 2 branches missed.">			clientPostingRequirement = 0. &gt; clientPostingRequirement ? 0. : clientPostingRequirement;</span>
+<span class="fc" id="L383">			double dealerPostingRequirement = dealerWindowMarginValue - dealerThresholdValue;</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">			dealerPostingRequirement = 0. &lt; dealerPostingRequirement ? 0. : dealerPostingRequirement;</span>
+<span class="fc" id="L385">			double clientPostingRequirement = clientWindowMarginValue - clientThresholdValue;</span>
+<span class="pc bpc" id="L386" title="1 of 2 branches missed.">			clientPostingRequirement = 0. &gt; clientPostingRequirement ? 0. : clientPostingRequirement;</span>
 
-<span class="nc" id="L388">			return new org.drip.exposure.mpor.CollateralAmountEstimatorOutput (</span>
+<span class="fc" id="L388">			return new org.drip.exposure.mpor.CollateralAmountEstimatorOutput (</span>
 				dealerMarginDate,
 				clientMarginDate,
 				dealerWindowMarginValue,
@@ -394,7 +394,7 @@ public class CollateralAmountEstimator
 				clientWindowMarginValue,
 				clientThresholdValue,
 				clientPostingRequirement,
-<span class="nc bnc" id="L397" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :</span>
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :</span>
 					dealerPostingRequirement + clientPostingRequirement);
 		}
 <span class="nc" id="L400">		catch (java.lang.Exception e)</span>

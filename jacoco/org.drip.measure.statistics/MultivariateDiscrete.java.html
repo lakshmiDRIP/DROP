@@ -6,32 +6,50 @@ package org.drip.measure.statistics;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,19 +66,27 @@ package org.drip.measure.statistics;
  */
 
 /**
- * MultivariateDiscrete analyzes and computes the Moment and Metric Statistics for the Realized Multivariate
- *  Sequence.
+ * &lt;i&gt;MultivariateDiscrete&lt;/i&gt; analyzes and computes the Moment and Metric Statistics for the Realized
+ * Multivariate Sequence.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics&quot;&gt;Statistics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultivariateDiscrete {
-<span class="fc" id="L58">	private double[] _adblMean = null;</span>
-<span class="fc" id="L59">	private double[] _adblError = null;</span>
-<span class="fc" id="L60">	private double[] _adblVariance = null;</span>
-<span class="fc" id="L61">	private double[][] _aadblCovariance = null;</span>
-<span class="fc" id="L62">	private double[][] _aadblCorrelation = null;</span>
-<span class="fc" id="L63">	private double[] _adblStandardDeviation = null;</span>
+<span class="fc" id="L84">	private double[] _adblMean = null;</span>
+<span class="fc" id="L85">	private double[] _adblError = null;</span>
+<span class="fc" id="L86">	private double[] _adblVariance = null;</span>
+<span class="fc" id="L87">	private double[][] _aadblCovariance = null;</span>
+<span class="fc" id="L88">	private double[][] _aadblCorrelation = null;</span>
+<span class="fc" id="L89">	private double[] _adblStandardDeviation = null;</span>
 
 	/**
 	 * MultivariateDiscrete Constructor
@@ -73,77 +99,77 @@ public class MultivariateDiscrete {
 	public MultivariateDiscrete (
 		final double[][] aadblSequence)
 		throws java.lang.Exception
-<span class="fc" id="L76">	{</span>
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if (null == aadblSequence)</span>
-<span class="nc" id="L78">			throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L102">	{</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (null == aadblSequence)</span>
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L80">		int iNumVariate = -1;</span>
-<span class="fc" id="L81">		int iSequenceSize = aadblSequence.length;</span>
+<span class="fc" id="L106">		int iNumVariate = -1;</span>
+<span class="fc" id="L107">		int iSequenceSize = aadblSequence.length;</span>
 
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		if (0 == iSequenceSize)</span>
-<span class="nc" id="L84">			throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (0 == iSequenceSize)</span>
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L86" title="All 2 branches covered.">		for (int iSequence = 0; iSequence &lt; iSequenceSize; ++iSequence) {</span>
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">			if (null == aadblSequence[iSequence] || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">				(aadblSequence[iSequence]))</span>
-<span class="nc" id="L89">				throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int iSequence = 0; iSequence &lt; iSequenceSize; ++iSequence) {</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			if (null == aadblSequence[iSequence] || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">				(aadblSequence[iSequence]))</span>
+<span class="nc" id="L115">				throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L91" title="All 2 branches covered.">			if (0 == iSequence) {</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">				if (0 == (iNumVariate = aadblSequence[0].length))</span>
-<span class="nc" id="L93">					throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">			if (0 == iSequence) {</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">				if (0 == (iNumVariate = aadblSequence[0].length))</span>
+<span class="nc" id="L119">					throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L95">				_adblMean = new double[iNumVariate];</span>
-<span class="fc" id="L96">				_adblError = new double[iNumVariate];</span>
-<span class="fc" id="L97">				_adblVariance = new double[iNumVariate];</span>
-<span class="fc" id="L98">				_adblStandardDeviation = new double[iNumVariate];</span>
-<span class="fc" id="L99">				_aadblCovariance = new double[iNumVariate][iNumVariate];</span>
-<span class="fc" id="L100">				_aadblCorrelation = new double[iNumVariate][iNumVariate];</span>
+<span class="fc" id="L121">				_adblMean = new double[iNumVariate];</span>
+<span class="fc" id="L122">				_adblError = new double[iNumVariate];</span>
+<span class="fc" id="L123">				_adblVariance = new double[iNumVariate];</span>
+<span class="fc" id="L124">				_adblStandardDeviation = new double[iNumVariate];</span>
+<span class="fc" id="L125">				_aadblCovariance = new double[iNumVariate][iNumVariate];</span>
+<span class="fc" id="L126">				_aadblCorrelation = new double[iNumVariate][iNumVariate];</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">				for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
-<span class="fc" id="L103">					_adblMean[iVariate] = 0.;</span>
-<span class="fc" id="L104">					_adblError[iVariate] = 0.;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">				for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
+<span class="fc" id="L129">					_adblMean[iVariate] = 0.;</span>
+<span class="fc" id="L130">					_adblError[iVariate] = 0.;</span>
 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">					for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
-<span class="fc" id="L107">						_aadblCovariance[iVariate][iVariateOther] = 0.;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">					for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
+<span class="fc" id="L133">						_aadblCovariance[iVariate][iVariateOther] = 0.;</span>
 				}
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">			} else if (iNumVariate != aadblSequence[iSequence].length)</span>
-<span class="nc" id="L110">				throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			} else if (iNumVariate != aadblSequence[iSequence].length)</span>
+<span class="nc" id="L136">				throw new java.lang.Exception (&quot;MultivariateDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L112" title="All 2 branches covered.">			for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate)</span>
-<span class="fc" id="L113">				_adblMean[iVariate] += aadblSequence[iSequence][iVariate];</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate)</span>
+<span class="fc" id="L139">				_adblMean[iVariate] += aadblSequence[iSequence][iVariate];</span>
 		}
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate)</span>
-<span class="fc" id="L117">			_adblMean[iVariate] /= iSequenceSize;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate)</span>
+<span class="fc" id="L143">			_adblMean[iVariate] /= iSequenceSize;</span>
 
-<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int iSequence = 0; iSequence &lt; iSequenceSize; ++iSequence) {</span>
-<span class="fc bfc" id="L120" title="All 2 branches covered.">			for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
-<span class="fc" id="L121">				double dblOffsetFromMean = aadblSequence[iSequence][iVariate] - _adblMean[iVariate];</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int iSequence = 0; iSequence &lt; iSequenceSize; ++iSequence) {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">			for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
+<span class="fc" id="L147">				double dblOffsetFromMean = aadblSequence[iSequence][iVariate] - _adblMean[iVariate];</span>
 
-<span class="fc" id="L123">				_adblError[iVariate] += java.lang.Math.abs (dblOffsetFromMean);</span>
+<span class="fc" id="L149">				_adblError[iVariate] += java.lang.Math.abs (dblOffsetFromMean);</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">				for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
-<span class="fc" id="L126">					_aadblCovariance[iVariate][iVariateOther] += dblOffsetFromMean *</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">				for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
+<span class="fc" id="L152">					_aadblCovariance[iVariate][iVariateOther] += dblOffsetFromMean *</span>
 						(aadblSequence[iSequence][iVariateOther] - _adblMean[iVariateOther]);
 			}
 		}
 
-<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
-<span class="fc" id="L132">			_adblError[iVariate] /= iSequenceSize;</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
+<span class="fc" id="L158">			_adblError[iVariate] /= iSequenceSize;</span>
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">			for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
-<span class="fc" id="L135">				_aadblCovariance[iVariate][iVariateOther] /= iSequenceSize;</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">			for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
+<span class="fc" id="L161">				_aadblCovariance[iVariate][iVariateOther] /= iSequenceSize;</span>
 
-<span class="fc" id="L137">			_adblStandardDeviation[iVariate] = java.lang.Math.sqrt (_adblVariance[iVariate] =</span>
+<span class="fc" id="L163">			_adblStandardDeviation[iVariate] = java.lang.Math.sqrt (_adblVariance[iVariate] =</span>
 				_aadblCovariance[iVariate][iVariate]);
 		}
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">			for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
-<span class="fc" id="L143">				_aadblCorrelation[iVariate][iVariateOther] = _aadblCovariance[iVariate][iVariateOther] /</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (int iVariate = 0; iVariate &lt; iNumVariate; ++iVariate) {</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">			for (int iVariateOther = 0; iVariateOther &lt; iNumVariate; ++iVariateOther)</span>
+<span class="fc" id="L169">				_aadblCorrelation[iVariate][iVariateOther] = _aadblCovariance[iVariate][iVariateOther] /</span>
 					(_adblStandardDeviation[iVariate] * _adblStandardDeviation[iVariateOther]);
 		}
-<span class="fc" id="L146">	}</span>
+<span class="fc" id="L172">	}</span>
 
 	/**
 	 * Retrieve the Multivariate Means
@@ -153,7 +179,7 @@ public class MultivariateDiscrete {
 
 	public double[] mean()
 	{
-<span class="fc" id="L156">		return _adblMean;</span>
+<span class="fc" id="L182">		return _adblMean;</span>
 	}
 
 	/**
@@ -164,7 +190,7 @@ public class MultivariateDiscrete {
 
 	public double[] error()
 	{
-<span class="fc" id="L167">		return _adblError;</span>
+<span class="fc" id="L193">		return _adblError;</span>
 	}
 
 	/**
@@ -175,7 +201,7 @@ public class MultivariateDiscrete {
 
 	public double[][] covariance()
 	{
-<span class="fc" id="L178">		return _aadblCovariance;</span>
+<span class="fc" id="L204">		return _aadblCovariance;</span>
 	}
 
 	/**
@@ -186,7 +212,7 @@ public class MultivariateDiscrete {
 
 	public double[][] correlation()
 	{
-<span class="fc" id="L189">		return _aadblCorrelation;</span>
+<span class="fc" id="L215">		return _aadblCorrelation;</span>
 	}
 
 	/**
@@ -197,7 +223,7 @@ public class MultivariateDiscrete {
 
 	public double[] variance()
 	{
-<span class="fc" id="L200">		return _adblVariance;</span>
+<span class="fc" id="L226">		return _adblVariance;</span>
 	}
 
 	/**
@@ -208,7 +234,7 @@ public class MultivariateDiscrete {
 
 	public double[] standardDeviation()
 	{
-<span class="fc" id="L211">		return _adblStandardDeviation;</span>
+<span class="fc" id="L237">		return _adblStandardDeviation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

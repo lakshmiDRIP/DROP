@@ -6,33 +6,51 @@ package org.drip.optimization.constrained;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,36 +67,55 @@ package org.drip.optimization.constrained;
  */
 
 /**
- * RegularityConditions holds the Results of the Verification of the Regularity Conditions/Constraint
+ * &lt;i&gt;RegularityConditions&lt;/i&gt; holds the Results of the Verification of the Regularity Conditions/Constraint
  *  Qualifications at the specified (possibly) Optimal Variate and the corresponding Fritz John Multipliers.
  *  The References are:
  * 
- * 	- Boyd, S., and L. van den Berghe (2009): Convex Optimization, Cambridge University Press, Cambridge UK.
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Boyd, S., and L. van den Berghe (2009): &lt;i&gt;Convex Optimization&lt;/i&gt; &lt;b&gt;Cambridge University
+ * 				Press&lt;/b&gt; Cambridge UK
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Eustaquio, R., E. Karas, and A. Ribeiro (2008): &lt;i&gt;Constraint Qualification for Nonlinear
+ * 				Programming&lt;/i&gt; &lt;b&gt;Federal University of Parana&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Karush, A. (1939): &lt;i&gt;Minima of Functions of Several Variables with Inequalities as Side
+ * 			Constraints&lt;/i&gt; &lt;b&gt;University of Chicago&lt;/b&gt; Chicago IL
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming &lt;i&gt;Proceedings of the Second Berkeley
+ * 				Symposium&lt;/i&gt; &lt;b&gt;University of California&lt;/b&gt; Berkeley CA 481-492
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ruszczynski, A. (2006): &lt;i&gt;Nonlinear Optimization&lt;/i&gt; &lt;b&gt;Princeton University Press&lt;/b&gt; Princeton
+ * 				NJ
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
  * 
- * 	- Eustaquio, R., E. Karas, and A. Ribeiro (2008): Constraint Qualification for Nonlinear Programming,
- * 		Technical Report, Federal University of Parana.
- * 
- * 	- Karush, A. (1939): Minima of Functions of Several Variables with Inequalities as Side Constraints,
- * 		M. Sc., University of Chicago, Chicago IL.
- * 
- * 	- Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming, Proceedings of the Second Berkeley
- * 		Symposium, University of California, Berkeley CA 481-492.
- * 
- * 	- Ruszczynski, A. (2006): Nonlinear Optimization, Princeton University Press, Princeton NJ.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization&quot;&gt;Optimization&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained&quot;&gt;Constrained&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class RegularityConditions {
-<span class="fc" id="L73">	private double[] _adblVariate = null;</span>
-<span class="fc" id="L74">	private org.drip.optimization.constrained.FritzJohnMultipliers _fjm = null;</span>
-<span class="fc" id="L75">	private org.drip.optimization.regularity.ConstraintQualifierLCQ _cqLCQ = null;</span>
-<span class="fc" id="L76">	private org.drip.optimization.regularity.ConstraintQualifierCRCQ _cqCRCQ = null;</span>
-<span class="fc" id="L77">	private org.drip.optimization.regularity.ConstraintQualifierLICQ _cqLICQ = null;</span>
-<span class="fc" id="L78">	private org.drip.optimization.regularity.ConstraintQualifierMFCQ _cqMFCQ = null;</span>
-<span class="fc" id="L79">	private org.drip.optimization.regularity.ConstraintQualifierQNCQ _cqQNCQ = null;</span>
-<span class="fc" id="L80">	private org.drip.optimization.regularity.ConstraintQualifierSCCQ _cqSCCQ = null;</span>
-<span class="fc" id="L81">	private org.drip.optimization.regularity.ConstraintQualifierCPLDCQ _cqCPLDCQ = null;</span>
+<span class="fc" id="L110">	private double[] _adblVariate = null;</span>
+<span class="fc" id="L111">	private org.drip.optimization.constrained.FritzJohnMultipliers _fjm = null;</span>
+<span class="fc" id="L112">	private org.drip.optimization.regularity.ConstraintQualifierLCQ _cqLCQ = null;</span>
+<span class="fc" id="L113">	private org.drip.optimization.regularity.ConstraintQualifierCRCQ _cqCRCQ = null;</span>
+<span class="fc" id="L114">	private org.drip.optimization.regularity.ConstraintQualifierLICQ _cqLICQ = null;</span>
+<span class="fc" id="L115">	private org.drip.optimization.regularity.ConstraintQualifierMFCQ _cqMFCQ = null;</span>
+<span class="fc" id="L116">	private org.drip.optimization.regularity.ConstraintQualifierQNCQ _cqQNCQ = null;</span>
+<span class="fc" id="L117">	private org.drip.optimization.regularity.ConstraintQualifierSCCQ _cqSCCQ = null;</span>
+<span class="fc" id="L118">	private org.drip.optimization.regularity.ConstraintQualifierCPLDCQ _cqCPLDCQ = null;</span>
 
 	/**
 	 * Construct a Standard Instance of RegularityConditions
@@ -108,7 +145,7 @@ public class RegularityConditions {
 		final boolean bValidSCCQ)
 	{
 		try {
-<span class="fc" id="L111">			return new RegularityConditions (adblVariate, fjm, new</span>
+<span class="fc" id="L148">			return new RegularityConditions (adblVariate, fjm, new</span>
 				org.drip.optimization.regularity.ConstraintQualifierLCQ (bValidLCQ), new
 					org.drip.optimization.regularity.ConstraintQualifierLICQ (bValidLICQ), new
 						org.drip.optimization.regularity.ConstraintQualifierMFCQ (bValidMFCQ), new
@@ -118,11 +155,11 @@ public class RegularityConditions {
 										(bValidQNCQ), new
 											org.drip.optimization.regularity.ConstraintQualifierSCCQ
 												(bValidSCCQ));
-<span class="nc" id="L121">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L122">			e.printStackTrace();</span>
+<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L159">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L125">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	/**
@@ -152,13 +189,13 @@ public class RegularityConditions {
 		final org.drip.optimization.regularity.ConstraintQualifierQNCQ cqQNCQ,
 		final org.drip.optimization.regularity.ConstraintQualifierSCCQ cqSCCQ)
 		throws java.lang.Exception
-<span class="fc" id="L155">	{</span>
-<span class="pc bpc" id="L156" title="10 of 20 branches missed.">		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length || null == (_fjm = fjm) || null</span>
+<span class="fc" id="L192">	{</span>
+<span class="pc bpc" id="L193" title="10 of 20 branches missed.">		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length || null == (_fjm = fjm) || null</span>
 			== (_cqLCQ = cqLCQ) || null == (_cqLICQ = cqLICQ) || null == (_cqMFCQ = cqMFCQ) || null ==
 				(_cqCRCQ = cqCRCQ) || null == (_cqCPLDCQ = cqCPLDCQ) || null == (_cqQNCQ = cqQNCQ) || null ==
 					(_cqSCCQ = cqSCCQ))
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;RegularityConditions Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L161">	}</span>
+<span class="nc" id="L197">			throw new java.lang.Exception (&quot;RegularityConditions Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L198">	}</span>
 
 	/**
 	 * Retrieve the Candidate Variate Array
@@ -168,7 +205,7 @@ public class RegularityConditions {
 
 	public double[] variate()
 	{
-<span class="nc" id="L171">		return _adblVariate;</span>
+<span class="nc" id="L208">		return _adblVariate;</span>
 	}
 
 	/**
@@ -179,7 +216,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.constrained.FritzJohnMultipliers fjm()
 	{
-<span class="nc" id="L182">		return _fjm;</span>
+<span class="nc" id="L219">		return _fjm;</span>
 	}
 
 	/**
@@ -190,7 +227,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierLCQ lcq()
 	{
-<span class="nc" id="L193">		return _cqLCQ;</span>
+<span class="nc" id="L230">		return _cqLCQ;</span>
 	}
 
 	/**
@@ -201,7 +238,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierLICQ licq()
 	{
-<span class="nc" id="L204">		return _cqLICQ;</span>
+<span class="nc" id="L241">		return _cqLICQ;</span>
 	}
 
 	/**
@@ -212,7 +249,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierMFCQ mfcq()
 	{
-<span class="nc" id="L215">		return _cqMFCQ;</span>
+<span class="nc" id="L252">		return _cqMFCQ;</span>
 	}
 
 	/**
@@ -223,7 +260,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierCRCQ crcq()
 	{
-<span class="nc" id="L226">		return _cqCRCQ;</span>
+<span class="nc" id="L263">		return _cqCRCQ;</span>
 	}
 
 	/**
@@ -234,7 +271,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierCPLDCQ cpldcq()
 	{
-<span class="nc" id="L237">		return _cqCPLDCQ;</span>
+<span class="nc" id="L274">		return _cqCPLDCQ;</span>
 	}
 
 	/**
@@ -245,7 +282,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierQNCQ qncq()
 	{
-<span class="nc" id="L248">		return _cqQNCQ;</span>
+<span class="nc" id="L285">		return _cqQNCQ;</span>
 	}
 
 	/**
@@ -256,7 +293,7 @@ public class RegularityConditions {
 
 	public org.drip.optimization.regularity.ConstraintQualifierSCCQ sccq()
 	{
-<span class="nc" id="L259">		return _cqSCCQ;</span>
+<span class="nc" id="L296">		return _cqSCCQ;</span>
 	}
 
 	/**
@@ -267,7 +304,7 @@ public class RegularityConditions {
 
 	public boolean valid()
 	{
-<span class="nc bnc" id="L270" title="All 10 branches missed.">		return _cqLICQ.valid() &amp;&amp; _cqCRCQ.valid() &amp;&amp; _cqMFCQ.valid() &amp;&amp; _cqCPLDCQ.valid() &amp;&amp; _cqQNCQ.valid();</span>
+<span class="nc bnc" id="L307" title="All 10 branches missed.">		return _cqLICQ.valid() &amp;&amp; _cqCRCQ.valid() &amp;&amp; _cqMFCQ.valid() &amp;&amp; _cqCPLDCQ.valid() &amp;&amp; _cqQNCQ.valid();</span>
 	}
 
 	/**
@@ -278,14 +315,14 @@ public class RegularityConditions {
 
 	public java.lang.String[] strengthOrder()
 	{
-<span class="fc" id="L281">		return new java.lang.String[] {&quot;EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #1: &quot; + _cqLICQ.display() +</span>
-<span class="fc" id="L282">			&quot; &gt;&gt; &quot; + _cqMFCQ.display() + &quot; &gt;&gt; &quot; + _cqCPLDCQ.display() + &quot; &gt;&gt; &quot; + _cqQNCQ.display(),</span>
-<span class="fc" id="L283">				&quot;EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #2: &quot; + _cqLICQ.display() + &quot; &gt;&gt; &quot; +</span>
-<span class="fc" id="L284">					_cqCRCQ.display() + &quot; &gt;&gt; &quot; + _cqCPLDCQ.display() + &quot; &gt;&gt; &quot; + _cqQNCQ.display(),</span>
-<span class="fc" id="L285">						&quot;EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #3: &quot; + _cqLCQ.display() + &quot; &gt;&gt; &quot; +</span>
-<span class="fc" id="L286">							_cqLICQ.display() + &quot; &gt;&gt; &quot; + _cqMFCQ.display() + &quot; &gt;&gt; &quot; + _cqCRCQ.display() +</span>
-<span class="fc" id="L287">								&quot; &gt;&gt; &quot; + _cqCPLDCQ.display() + &quot; &gt;&gt; &quot; + _cqQNCQ.display() + &quot; &gt;&gt; &quot; + &quot; &gt;&gt; &quot; +</span>
-<span class="fc" id="L288">									_cqSCCQ.display()};</span>
+<span class="fc" id="L318">		return new java.lang.String[] {&quot;EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #1: &quot; + _cqLICQ.display() +</span>
+<span class="fc" id="L319">			&quot; &gt;&gt; &quot; + _cqMFCQ.display() + &quot; &gt;&gt; &quot; + _cqCPLDCQ.display() + &quot; &gt;&gt; &quot; + _cqQNCQ.display(),</span>
+<span class="fc" id="L320">				&quot;EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #2: &quot; + _cqLICQ.display() + &quot; &gt;&gt; &quot; +</span>
+<span class="fc" id="L321">					_cqCRCQ.display() + &quot; &gt;&gt; &quot; + _cqCPLDCQ.display() + &quot; &gt;&gt; &quot; + _cqQNCQ.display(),</span>
+<span class="fc" id="L322">						&quot;EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #3: &quot; + _cqLCQ.display() + &quot; &gt;&gt; &quot; +</span>
+<span class="fc" id="L323">							_cqLICQ.display() + &quot; &gt;&gt; &quot; + _cqMFCQ.display() + &quot; &gt;&gt; &quot; + _cqCRCQ.display() +</span>
+<span class="fc" id="L324">								&quot; &gt;&gt; &quot; + _cqCPLDCQ.display() + &quot; &gt;&gt; &quot; + _cqQNCQ.display() + &quot; &gt;&gt; &quot; + &quot; &gt;&gt; &quot; +</span>
+<span class="fc" id="L325">									_cqSCCQ.display()};</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

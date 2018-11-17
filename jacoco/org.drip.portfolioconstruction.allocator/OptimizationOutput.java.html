@@ -6,33 +6,51 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,15 +67,23 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /**
- * OptimizationOutput holds the Output of an Optimal Portfolio Construction Run, i.e., the Optimal Asset
- *  Weights in the Portfolio and the related Portfolio Metrics.
+ * &lt;i&gt;OptimizationOutput&lt;/i&gt; holds the Output of an Optimal Portfolio Construction Run, i.e., the Optimal
+ * Asset Weights in the Portfolio and the related Portfolio Metrics.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator&quot;&gt;Allocator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class OptimizationOutput {
-<span class="fc" id="L59">	private org.drip.portfolioconstruction.asset.Portfolio _pfOptimal = null;</span>
-<span class="fc" id="L60">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmOptimal = null;</span>
+<span class="fc" id="L85">	private org.drip.portfolioconstruction.asset.Portfolio _pfOptimal = null;</span>
+<span class="fc" id="L86">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmOptimal = null;</span>
 
 	/**
 	 * Create an Instance of the Optimal Portfolio
@@ -72,42 +98,42 @@ public class OptimizationOutput {
 		final org.drip.portfolioconstruction.asset.AssetComponent[] aACOptimal,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
 	{
-<span class="pc bpc" id="L75" title="2 of 4 branches missed.">		if (null == aACOptimal || null == ausp) return null;</span>
+<span class="pc bpc" id="L101" title="2 of 4 branches missed.">		if (null == aACOptimal || null == ausp) return null;</span>
 
-<span class="fc" id="L77">		int iNumAsset = aACOptimal.length;</span>
+<span class="fc" id="L103">		int iNumAsset = aACOptimal.length;</span>
 
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
 
 		try {
-<span class="fc" id="L82">			org.drip.portfolioconstruction.asset.Portfolio pfOptimal = new</span>
+<span class="fc" id="L108">			org.drip.portfolioconstruction.asset.Portfolio pfOptimal = new</span>
 				org.drip.portfolioconstruction.asset.Portfolio (aACOptimal);
 
-<span class="fc" id="L85">			double dblPortfolioExcessReturnsMean = pfOptimal.expectedReturn (ausp);</span>
+<span class="fc" id="L111">			double dblPortfolioExcessReturnsMean = pfOptimal.expectedReturn (ausp);</span>
 
-<span class="fc" id="L87">			double dblPortfolioExcessReturnsVariance = pfOptimal.variance (ausp);</span>
+<span class="fc" id="L113">			double dblPortfolioExcessReturnsVariance = pfOptimal.variance (ausp);</span>
 
-<span class="fc" id="L89">			double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt</span>
-<span class="fc" id="L90">				(dblPortfolioExcessReturnsVariance);</span>
+<span class="fc" id="L115">			double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt</span>
+<span class="fc" id="L116">				(dblPortfolioExcessReturnsVariance);</span>
 
-<span class="fc" id="L92">			double[] adblImpliedBeta = org.drip.quant.linearalgebra.Matrix.Product (ausp.covariance</span>
-<span class="fc" id="L93">				(pfOptimal.id()), pfOptimal.weights());</span>
+<span class="fc" id="L118">			double[] adblImpliedBeta = org.drip.quant.linearalgebra.Matrix.Product (ausp.covariance</span>
+<span class="fc" id="L119">				(pfOptimal.id()), pfOptimal.weights());</span>
 
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">			if (null == adblImpliedBeta) return null;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			if (null == adblImpliedBeta) return null;</span>
 
-<span class="fc bfc" id="L97" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L98">				adblImpliedBeta[i] = adblImpliedBeta[i] / dblPortfolioExcessReturnsVariance;</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="fc" id="L124">				adblImpliedBeta[i] = adblImpliedBeta[i] / dblPortfolioExcessReturnsVariance;</span>
 
-<span class="fc" id="L100">			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (new</span>
+<span class="fc" id="L126">			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (new</span>
 				org.drip.portfolioconstruction.asset.Portfolio (aACOptimal), new
 					org.drip.portfolioconstruction.asset.PortfolioMetrics (dblPortfolioExcessReturnsMean,
 						dblPortfolioExcessReturnsVariance, dblPortfolioExcessReturnsSigma,
 							dblPortfolioExcessReturnsMean / dblPortfolioExcessReturnsSigma,
 								adblImpliedBeta));
-<span class="nc" id="L106">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L107">			e.printStackTrace();</span>
+<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L133">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L110">		return null;</span>
+<span class="nc" id="L136">		return null;</span>
 	}
 
 	/**
@@ -123,10 +149,10 @@ public class OptimizationOutput {
 		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmOptimal)
 		throws java.lang.Exception
-<span class="fc" id="L126">	{</span>
-<span class="pc bpc" id="L127" title="2 of 4 branches missed.">		if (null == (_pfOptimal = pfOptimal) || null == (_pmOptimal = pmOptimal))</span>
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;OptimizationOutput Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L152">	{</span>
+<span class="pc bpc" id="L153" title="2 of 4 branches missed.">		if (null == (_pfOptimal = pfOptimal) || null == (_pmOptimal = pmOptimal))</span>
+<span class="nc" id="L154">			throw new java.lang.Exception (&quot;OptimizationOutput Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Retrieve the Optimal Portfolio Metrics
@@ -136,7 +162,7 @@ public class OptimizationOutput {
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics optimalMetrics()
 	{
-<span class="fc" id="L139">		return _pmOptimal;</span>
+<span class="fc" id="L165">		return _pmOptimal;</span>
 	}
 
 	/**
@@ -147,7 +173,7 @@ public class OptimizationOutput {
 
 	public org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio()
 	{
-<span class="fc" id="L150">		return _pfOptimal;</span>
+<span class="fc" id="L176">		return _pfOptimal;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

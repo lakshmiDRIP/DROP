@@ -6,32 +6,50 @@ package org.drip.measure.joint;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,39 +66,47 @@ package org.drip.measure.joint;
  */
 
 /**
- * Evolver exposes the Functionality that guides the Multi-Factor Random Process Variable Evolution.
+ * &lt;i&gt;Evolver&lt;/i&gt; exposes the Functionality that guides the Multi-Factor Random Process Variable Evolution.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/joint&quot;&gt;Joint&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class Evolver {
-<span class="nc" id="L57">	private double[][] _aadblCorrelation = null;</span>
-<span class="nc" id="L58">	private org.drip.measure.dynamics.LocalEvaluator[] _aLDEVDrift = null;</span>
-<span class="nc" id="L59">	private org.drip.measure.dynamics.LocalEvaluator[] _aLDEVVolatility = null;</span>
+<span class="nc" id="L83">	private double[][] _aadblCorrelation = null;</span>
+<span class="nc" id="L84">	private org.drip.measure.dynamics.LocalEvaluator[] _aLDEVDrift = null;</span>
+<span class="nc" id="L85">	private org.drip.measure.dynamics.LocalEvaluator[] _aLDEVVolatility = null;</span>
 
 	protected Evolver (
 		final org.drip.measure.dynamics.LocalEvaluator[] aLDEVDrift,
 		final org.drip.measure.dynamics.LocalEvaluator[] aLDEVVolatility,
 		final double[][] aadblCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L66">	{</span>
-<span class="nc bnc" id="L67" title="All 6 branches missed.">		if (null == (_aLDEVDrift = aLDEVDrift) || null == (_aLDEVVolatility = aLDEVVolatility) || null ==</span>
+<span class="nc" id="L92">	{</span>
+<span class="nc bnc" id="L93" title="All 6 branches missed.">		if (null == (_aLDEVDrift = aLDEVDrift) || null == (_aLDEVVolatility = aLDEVVolatility) || null ==</span>
 			(_aadblCorrelation = aadblCorrelation))
-<span class="nc" id="L69">			throw new java.lang.Exception (&quot;Evolver Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L95">			throw new java.lang.Exception (&quot;Evolver Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L71">		int iNumFactor = _aLDEVDrift.length;</span>
+<span class="nc" id="L97">		int iNumFactor = _aLDEVDrift.length;</span>
 
-<span class="nc bnc" id="L73" title="All 6 branches missed.">		if (0 == iNumFactor || iNumFactor != _aLDEVVolatility.length || iNumFactor !=</span>
+<span class="nc bnc" id="L99" title="All 6 branches missed.">		if (0 == iNumFactor || iNumFactor != _aLDEVVolatility.length || iNumFactor !=</span>
 			_aadblCorrelation.length)
-<span class="nc" id="L75">			throw new java.lang.Exception (&quot;Evolver Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L101">			throw new java.lang.Exception (&quot;Evolver Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L77" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="nc bnc" id="L78" title="All 8 branches missed.">			if (null == _aLDEVDrift[i] || null == _aLDEVVolatility[i] || null == _aadblCorrelation[i] ||</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="nc bnc" id="L104" title="All 8 branches missed.">			if (null == _aLDEVDrift[i] || null == _aLDEVVolatility[i] || null == _aadblCorrelation[i] ||</span>
 				iNumFactor != _aadblCorrelation[i].length || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L80" title="All 2 branches missed.">					(_aadblCorrelation[i]))</span>
-<span class="nc" id="L81">				throw new java.lang.Exception (&quot;Evolver Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">					(_aadblCorrelation[i]))</span>
+<span class="nc" id="L107">				throw new java.lang.Exception (&quot;Evolver Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L83">	}</span>
+<span class="nc" id="L109">	}</span>
 
 	/**
 	 * Retrieve the Array of the LDEV Drift Functions of the Individual Marginal Processes
@@ -90,7 +116,7 @@ public abstract class Evolver {
 
 	public org.drip.measure.dynamics.LocalEvaluator[] driftLDEV()
 	{
-<span class="nc" id="L93">		return _aLDEVDrift;</span>
+<span class="nc" id="L119">		return _aLDEVDrift;</span>
 	}
 
 	/**
@@ -101,7 +127,7 @@ public abstract class Evolver {
 
 	public org.drip.measure.dynamics.LocalEvaluator[] volatilityLDEV()
 	{
-<span class="nc" id="L104">		return _aLDEVVolatility;</span>
+<span class="nc" id="L130">		return _aLDEVVolatility;</span>
 	}
 
 	/**
@@ -112,7 +138,7 @@ public abstract class Evolver {
 
 	public double[][] correlation()
 	{
-<span class="nc" id="L115">		return _aadblCorrelation;</span>
+<span class="nc" id="L141">		return _aadblCorrelation;</span>
 	}
 
 	/**

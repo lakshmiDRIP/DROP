@@ -6,32 +6,50 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,13 +66,21 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * TransactionChargeGroup contains the Transaction Charge Values for the specified Set of Assets.
+ * &lt;i&gt;TransactionChargeGroup\&lt;/i&gt; contains the Transaction Charge Values for the specified Set of Assets.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/composite&quot;&gt;Composite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L56">public class TransactionChargeGroup {</span>
-<span class="nc" id="L57">	private</span>
+<span class="nc" id="L82">public class TransactionChargeGroup {</span>
+<span class="nc" id="L83">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;
 		_mapTransactionCharge = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;();
@@ -72,11 +98,11 @@ package org.drip.portfolioconstruction.composite;
 		final java.lang.String strAssetID,
 		final org.drip.portfolioconstruction.cost.TransactionCharge tc)
 	{
-<span class="nc bnc" id="L75" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;</span>
+<span class="nc bnc" id="L101" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;</span>
 
-<span class="nc" id="L77">		_mapTransactionCharge.put (strAssetID, tc);</span>
+<span class="nc" id="L103">		_mapTransactionCharge.put (strAssetID, tc);</span>
 
-<span class="nc" id="L79">		return true;</span>
+<span class="nc" id="L105">		return true;</span>
 	}
 
 	/**
@@ -90,7 +116,7 @@ package org.drip.portfolioconstruction.composite;
 	public boolean contains (
 		final java.lang.String strAssetID)
 	{
-<span class="nc bnc" id="L93" title="All 6 branches missed.">		return null != strAssetID &amp;&amp; !strAssetID.isEmpty() &amp;&amp; _mapTransactionCharge.containsKey (strAssetID);</span>
+<span class="nc bnc" id="L119" title="All 6 branches missed.">		return null != strAssetID &amp;&amp; !strAssetID.isEmpty() &amp;&amp; _mapTransactionCharge.containsKey (strAssetID);</span>
 	}
 
 	/**
@@ -104,10 +130,10 @@ package org.drip.portfolioconstruction.composite;
 	public org.drip.portfolioconstruction.cost.TransactionCharge get (
 		final java.lang.String strAssetID)
 	{
-<span class="nc bnc" id="L107" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCharge.containsKey (strAssetID))</span>
-<span class="nc" id="L108">			return null;</span>
+<span class="nc bnc" id="L133" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCharge.containsKey (strAssetID))</span>
+<span class="nc" id="L134">			return null;</span>
 
-<span class="nc" id="L110">		return _mapTransactionCharge.get (strAssetID);</span>
+<span class="nc" id="L136">		return _mapTransactionCharge.get (strAssetID);</span>
 	}
 
 	/**
@@ -118,7 +144,7 @@ package org.drip.portfolioconstruction.composite;
 
 	public java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.cost.TransactionCharge&gt; map()
 	{
-<span class="nc" id="L121">		return _mapTransactionCharge;</span>
+<span class="nc" id="L147">		return _mapTransactionCharge;</span>
 	}
 
 	/**
@@ -132,17 +158,17 @@ package org.drip.portfolioconstruction.composite;
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (null == holdings) return null;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == holdings) return null;</span>
 
-<span class="nc" id="L137">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
+<span class="nc" id="L163">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
 
-<span class="nc" id="L139">		java.util.List&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt; lsTransactionCharge = new</span>
+<span class="nc" id="L165">		java.util.List&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt; lsTransactionCharge = new</span>
 			java.util.ArrayList&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;();
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset)</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">			lsTransactionCharge.add (contains (strAssetID) ? get (strAssetID) : null);</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset)</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			lsTransactionCharge.add (contains (strAssetID) ? get (strAssetID) : null);</span>
 
-<span class="nc" id="L145">		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) lsTransactionCharge.toArray();</span>
+<span class="nc" id="L171">		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) lsTransactionCharge.toArray();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

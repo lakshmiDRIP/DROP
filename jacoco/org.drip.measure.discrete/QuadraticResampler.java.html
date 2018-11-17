@@ -6,32 +6,50 @@ package org.drip.measure.discrete;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,14 +66,22 @@ package org.drip.measure.discrete;
  */
 
 /**
- * QuadraticResampler Quadratically Re-samples the Input Points to Convert it to a Standard Normal.
+ * &lt;i&gt;QuadraticResampler&lt;/i&gt; Quadratically Re-samples the Input Points to Convert it to a Standard Normal.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class QuadraticResampler {
-<span class="fc" id="L57">	private boolean _bDebias = false;</span>
-<span class="fc" id="L58">	private boolean _bMeanCenter = false;</span>
+<span class="fc" id="L83">	private boolean _bDebias = false;</span>
+<span class="fc" id="L84">	private boolean _bMeanCenter = false;</span>
 
 	/**
 	 * QuadraticResampler Constructor
@@ -70,10 +96,10 @@ public class QuadraticResampler {
 		final boolean bMeanCenter,
 		final boolean bDebias)
 		throws java.lang.Exception
-<span class="fc" id="L73">	{</span>
-<span class="fc" id="L74">		_bDebias = bDebias;</span>
-<span class="fc" id="L75">		_bMeanCenter = bMeanCenter;</span>
-<span class="fc" id="L76">	}</span>
+<span class="fc" id="L99">	{</span>
+<span class="fc" id="L100">		_bDebias = bDebias;</span>
+<span class="fc" id="L101">		_bMeanCenter = bMeanCenter;</span>
+<span class="fc" id="L102">	}</span>
 
 	/**
 	 * Indicate if the Sequence is to be Mean Centered
@@ -83,7 +109,7 @@ public class QuadraticResampler {
 
 	public boolean meanCenter()
 	{
-<span class="nc" id="L86">		return _bMeanCenter;</span>
+<span class="nc" id="L112">		return _bMeanCenter;</span>
 	}
 
 	/**
@@ -94,7 +120,7 @@ public class QuadraticResampler {
 
 	public boolean debias()
 	{
-<span class="nc" id="L97">		return _bDebias;</span>
+<span class="nc" id="L123">		return _bDebias;</span>
 	}
 
 	/**
@@ -108,34 +134,34 @@ public class QuadraticResampler {
 	public double[] transform (
 		final double[] adblSequence)
 	{
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (null == adblSequence) return null;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (null == adblSequence) return null;</span>
 
-<span class="fc" id="L113">		double dblMean = 0.;</span>
-<span class="fc" id="L114">		double dblVariance = 0.;</span>
-<span class="fc" id="L115">		int iSequenceSize = adblSequence.length;</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		double[] adblTransfomedSequence = 0 == iSequenceSize ? null : new double[iSequenceSize];</span>
+<span class="fc" id="L139">		double dblMean = 0.;</span>
+<span class="fc" id="L140">		double dblVariance = 0.;</span>
+<span class="fc" id="L141">		int iSequenceSize = adblSequence.length;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		double[] adblTransfomedSequence = 0 == iSequenceSize ? null : new double[iSequenceSize];</span>
 
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (0 == iSequenceSize) return null;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (0 == iSequenceSize) return null;</span>
 
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		if (_bMeanCenter) {</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">			for (int i = 0; i &lt; iSequenceSize; ++i)</span>
-<span class="fc" id="L122">				dblMean += adblSequence[i];</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		if (_bMeanCenter) {</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int i = 0; i &lt; iSequenceSize; ++i)</span>
+<span class="fc" id="L148">				dblMean += adblSequence[i];</span>
 
-<span class="fc" id="L124">			dblMean = dblMean / iSequenceSize;</span>
+<span class="fc" id="L150">			dblMean = dblMean / iSequenceSize;</span>
 		}
 
-<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i) {</span>
-<span class="fc" id="L128">			double dblOffset = adblSequence[i] - dblMean;</span>
-<span class="fc" id="L129">			dblVariance += dblOffset * dblOffset;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i) {</span>
+<span class="fc" id="L154">			double dblOffset = adblSequence[i] - dblMean;</span>
+<span class="fc" id="L155">			dblVariance += dblOffset * dblOffset;</span>
 		}
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		double dblStandardDeviation = java.lang.Math.sqrt (dblVariance / (_bDebias ? iSequenceSize - 1 :</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		double dblStandardDeviation = java.lang.Math.sqrt (dblVariance / (_bDebias ? iSequenceSize - 1 :</span>
 			iSequenceSize));
 
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i)</span>
-<span class="fc" id="L136">			adblTransfomedSequence[i] = adblSequence[i] / dblStandardDeviation;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceSize; ++i)</span>
+<span class="fc" id="L162">			adblTransfomedSequence[i] = adblSequence[i] / dblStandardDeviation;</span>
 
-<span class="fc" id="L138">		return adblTransfomedSequence;</span>
+<span class="fc" id="L164">		return adblTransfomedSequence;</span>
 	}
 
 	/**
@@ -149,17 +175,17 @@ public class QuadraticResampler {
 	public double[][] transform (
 		final double[][] aadblSequence)
 	{
-<span class="fc" id="L152">		double[][] aadblFlippedSequence = org.drip.quant.linearalgebra.Matrix.Transpose (aadblSequence);</span>
+<span class="fc" id="L178">		double[][] aadblFlippedSequence = org.drip.quant.linearalgebra.Matrix.Transpose (aadblSequence);</span>
 
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == aadblFlippedSequence) return null;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (null == aadblFlippedSequence) return null;</span>
 
-<span class="fc" id="L156">		int iDimension = aadblFlippedSequence.length;</span>
-<span class="fc" id="L157">		double[][] aadblFlippedTransformedSequence = new double[iDimension][];</span>
+<span class="fc" id="L182">		int iDimension = aadblFlippedSequence.length;</span>
+<span class="fc" id="L183">		double[][] aadblFlippedTransformedSequence = new double[iDimension][];</span>
 
-<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="fc" id="L160">			aadblFlippedTransformedSequence[i] = transform (aadblFlippedSequence[i]);</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="fc" id="L186">			aadblFlippedTransformedSequence[i] = transform (aadblFlippedSequence[i]);</span>
 		
-<span class="fc" id="L162">		return org.drip.quant.linearalgebra.Matrix.Transpose (aadblFlippedTransformedSequence);</span>
+<span class="fc" id="L188">		return org.drip.quant.linearalgebra.Matrix.Transpose (aadblFlippedTransformedSequence);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
