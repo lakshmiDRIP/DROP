@@ -6,6 +6,7 @@ package org.drip.param.creator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.param.creator;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,13 +71,21 @@ package org.drip.param.creator;
  */
 
 /**
- * MarketParamsBuilder implements the various ways of constructing, de-serializing, and building the Market
- *  Parameters.
+ * &lt;i&gt;MarketParamsBuilder&lt;/i&gt; implements the various ways of constructing, de-serializing, and building the
+ * Market Parameters.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L62">public class MarketParamsBuilder {</span>
+<span class="nc" id="L88">public class MarketParamsBuilder {</span>
 
 	/**
 	 * Create a Market Parameters instance with the funding discount curve, the forward discount curve, the
@@ -89,26 +115,26 @@ package org.drip.param.creator;
 			mTSYQuotes,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc)
 	{
-<span class="fc" id="L92">		org.drip.param.market.CurveSurfaceQuoteContainer csqs = new</span>
+<span class="fc" id="L118">		org.drip.param.market.CurveSurfaceQuoteContainer csqs = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="pc bpc" id="L95" title="1 of 4 branches missed.">		if (null != cc &amp;&amp; !csqs.setCreditState (cc)) return null;</span>
+<span class="pc bpc" id="L121" title="1 of 4 branches missed.">		if (null != cc &amp;&amp; !csqs.setCreditState (cc)) return null;</span>
 
-<span class="pc bpc" id="L97" title="1 of 4 branches missed.">		if (null != gc &amp;&amp; !csqs.setGovvieState (gc)) return null;</span>
+<span class="pc bpc" id="L123" title="1 of 4 branches missed.">		if (null != gc &amp;&amp; !csqs.setGovvieState (gc)) return null;</span>
 
-<span class="pc bpc" id="L99" title="1 of 4 branches missed.">		if (null != lsfc &amp;&amp; !csqs.setFixings (lsfc)) return null;</span>
+<span class="pc bpc" id="L125" title="1 of 4 branches missed.">		if (null != lsfc &amp;&amp; !csqs.setFixings (lsfc)) return null;</span>
 
-<span class="pc bpc" id="L101" title="1 of 4 branches missed.">		if (null != dcFunding &amp;&amp; !csqs.setFundingState (dcFunding)) return null;</span>
+<span class="pc bpc" id="L127" title="1 of 4 branches missed.">		if (null != dcFunding &amp;&amp; !csqs.setFundingState (dcFunding)) return null;</span>
 
-<span class="pc bpc" id="L103" title="1 of 4 branches missed.">		if (null != mTSYQuotes &amp;&amp; !csqs.setQuoteMap (mTSYQuotes)) return null;</span>
+<span class="pc bpc" id="L129" title="1 of 4 branches missed.">		if (null != mTSYQuotes &amp;&amp; !csqs.setQuoteMap (mTSYQuotes)) return null;</span>
 
-<span class="pc bpc" id="L105" title="2 of 6 branches missed.">		if (null != compQuote &amp;&amp; null != strComponentCode &amp;&amp; !strComponentCode.isEmpty() &amp;&amp;</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			!csqs.setProductQuote (strComponentCode, compQuote))</span>
-<span class="nc" id="L107">			return null;</span>
+<span class="pc bpc" id="L131" title="2 of 6 branches missed.">		if (null != compQuote &amp;&amp; null != strComponentCode &amp;&amp; !strComponentCode.isEmpty() &amp;&amp;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			!csqs.setProductQuote (strComponentCode, compQuote))</span>
+<span class="nc" id="L133">			return null;</span>
 
-<span class="pc bpc" id="L109" title="1 of 4 branches missed.">		if (null != fc &amp;&amp; !csqs.setForwardState (fc)) return null;</span>
+<span class="pc bpc" id="L135" title="1 of 4 branches missed.">		if (null != fc &amp;&amp; !csqs.setForwardState (fc)) return null;</span>
 
-<span class="fc" id="L111">		return csqs;</span>
+<span class="fc" id="L137">		return csqs;</span>
 	}
 
 	/**
@@ -122,7 +148,7 @@ package org.drip.param.creator;
 	public static final org.drip.param.market.CurveSurfaceQuoteContainer Discount (
 		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding)
 	{
-<span class="fc" id="L125">		return Create (dcFunding, null, null, null, &quot;&quot;, null, null, null);</span>
+<span class="fc" id="L151">		return Create (dcFunding, null, null, null, &quot;&quot;, null, null, null);</span>
 	}
 
 	/**
@@ -138,7 +164,7 @@ package org.drip.param.creator;
 		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
 		final org.drip.state.forward.ForwardCurve fc)
 	{
-<span class="nc" id="L141">		return Create (dcFunding, fc, null, null, &quot;&quot;, null, null, null);</span>
+<span class="nc" id="L167">		return Create (dcFunding, fc, null, null, &quot;&quot;, null, null, null);</span>
 	}
 
 	/**
@@ -154,7 +180,7 @@ package org.drip.param.creator;
 		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
 		final org.drip.state.govvie.GovvieCurve gc)
 	{
-<span class="nc" id="L157">		return Create (dcFunding, null, gc, null, &quot;&quot;, null, null, null);</span>
+<span class="nc" id="L183">		return Create (dcFunding, null, gc, null, &quot;&quot;, null, null, null);</span>
 	}
 
 	/**
@@ -170,7 +196,7 @@ package org.drip.param.creator;
 		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding,
 		final org.drip.state.credit.CreditCurve cc)
 	{
-<span class="fc" id="L173">		return Create (dcFunding, null, null, cc, &quot;&quot;, null, null, null);</span>
+<span class="fc" id="L199">		return Create (dcFunding, null, null, cc, &quot;&quot;, null, null, null);</span>
 	}
 
 	/**
@@ -198,7 +224,7 @@ package org.drip.param.creator;
 			mTSYQuotes,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc)
 	{
-<span class="fc" id="L201">		return Create (dcFunding, null, gc, cc, strComponentCode, compQuote, mTSYQuotes, lsfc);</span>
+<span class="fc" id="L227">		return Create (dcFunding, null, gc, cc, strComponentCode, compQuote, mTSYQuotes, lsfc);</span>
 	}
 
 	/**
@@ -210,12 +236,12 @@ package org.drip.param.creator;
 	public static final org.drip.param.definition.ScenarioMarketParams CreateMarketParams()
 	{
 		try {
-<span class="nc" id="L213">			return new org.drip.param.market.CurveSurfaceScenarioContainer();</span>
-<span class="nc" id="L214">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L215">			e.printStackTrace();</span>
+<span class="nc" id="L239">			return new org.drip.param.market.CurveSurfaceScenarioContainer();</span>
+<span class="nc" id="L240">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L241">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L218">		return null;</span>
+<span class="nc" id="L244">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

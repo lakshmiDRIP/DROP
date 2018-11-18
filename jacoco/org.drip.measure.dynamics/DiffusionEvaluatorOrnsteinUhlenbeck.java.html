@@ -6,32 +6,50 @@ package org.drip.measure.dynamics;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,17 +66,25 @@ package org.drip.measure.dynamics;
  */
 
 /**
- * DiffusionEvaluatorOrnsteinUhlenbeck evaluates the Drift/Volatility of the Diffusion Random Variable
- *  Evolution according to R^1 Ornstein Uhlenbeck Process.
+ * &lt;i&gt;DiffusionEvaluatorOrnsteinUhlenbeck&lt;/i&gt; evaluates the Drift/Volatility of the Diffusion Random Variable
+ * Evolution according to R&lt;sup&gt;1&lt;/sup&gt; Ornstein Uhlenbeck Process.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynamics.DiffusionEvaluator
 	implements org.drip.measure.process.OrnsteinUhlenbeck {
-<span class="fc" id="L59">	private double _dblBurstiness = java.lang.Double.NaN;</span>
-<span class="fc" id="L60">	private double _dblRelaxationTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L61">	private double _dblMeanReversionLevel = java.lang.Double.NaN;</span>
+<span class="fc" id="L85">	private double _dblBurstiness = java.lang.Double.NaN;</span>
+<span class="fc" id="L86">	private double _dblRelaxationTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L87">	private double _dblMeanReversionLevel = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Standard Instance of DiffusionEvaluatorOrnsteinUhlenbeck
@@ -75,37 +101,37 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 		final double dblBurstiness,
 		final double dblRelaxationTime)
 	{
-<span class="fc" id="L78">		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {</span>
+<span class="fc" id="L104">		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {</span>
 			@Override public double value (
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				if (null == jdv)</span>
-<span class="nc" id="L84">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">				if (null == jdv)</span>
+<span class="nc" id="L110">					throw new java.lang.Exception</span>
 						(&quot;DiffusionEvaluatorOrnsteinUhlenbeck::DriftLDEV::value =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L87">				return -1. * jdv.value() / dblRelaxationTime;</span>
+<span class="fc" id="L113">				return -1. * jdv.value() / dblRelaxationTime;</span>
 			}
 		};
 
-<span class="fc" id="L91">		org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
-<span class="fc" id="L92">			org.drip.measure.dynamics.LocalEvaluator() {</span>
+<span class="fc" id="L117">		org.drip.measure.dynamics.LocalEvaluator leVolatility = new</span>
+<span class="fc" id="L118">			org.drip.measure.dynamics.LocalEvaluator() {</span>
 			@Override public double value (
 				final org.drip.measure.realization.JumpDiffusionVertex jdv)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L97">				return dblBurstiness * java.lang.Math.sqrt (1. / dblRelaxationTime);</span>
+<span class="fc" id="L123">				return dblBurstiness * java.lang.Math.sqrt (1. / dblRelaxationTime);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L102">			return new DiffusionEvaluatorOrnsteinUhlenbeck (dblMeanReversionLevel, dblBurstiness,</span>
+<span class="fc" id="L128">			return new DiffusionEvaluatorOrnsteinUhlenbeck (dblMeanReversionLevel, dblBurstiness,</span>
 				dblRelaxationTime, leDrift, leVolatility);
-<span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L105">			e.printStackTrace();</span>
+<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L108">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	/**
@@ -121,7 +147,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 		final double dblBurstiness,
 		final double dblRelaxationTime)
 	{
-<span class="fc" id="L124">		return Standard (0., dblBurstiness, dblRelaxationTime);</span>
+<span class="fc" id="L150">		return Standard (0., dblBurstiness, dblRelaxationTime);</span>
 	}
 
 	private DiffusionEvaluatorOrnsteinUhlenbeck (
@@ -132,15 +158,15 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 		final org.drip.measure.dynamics.LocalEvaluator leVolatility)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L135">		super (leDrift, leVolatility);</span>
+<span class="fc" id="L161">		super (leDrift, leVolatility);</span>
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||</span>
-<span class="pc bpc" id="L138" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. &gt;=</span>
-<span class="pc bpc" id="L139" title="2 of 4 branches missed.">				_dblBurstiness || !org.drip.quant.common.NumberUtil.IsValid (_dblRelaxationTime =</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||</span>
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. &gt;=</span>
+<span class="pc bpc" id="L165" title="2 of 4 branches missed.">				_dblBurstiness || !org.drip.quant.common.NumberUtil.IsValid (_dblRelaxationTime =</span>
 					dblRelaxationTime) || 0. &gt;= _dblRelaxationTime)
-<span class="nc" id="L141">			throw new java.lang.Exception</span>
+<span class="nc" id="L167">			throw new java.lang.Exception</span>
 				(&quot;DiffusionEvaluatorOrnsteinUhlenbeck Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L143">	}</span>
+<span class="fc" id="L169">	}</span>
 
 	/**
 	 * Retrieve the Mean Reversion Level
@@ -150,7 +176,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double meanReversionLevel()
 	{
-<span class="nc" id="L153">		return _dblMeanReversionLevel;</span>
+<span class="nc" id="L179">		return _dblMeanReversionLevel;</span>
 	}
 
 	/**
@@ -161,7 +187,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double burstiness()
 	{
-<span class="fc" id="L164">		return _dblBurstiness;</span>
+<span class="fc" id="L190">		return _dblBurstiness;</span>
 	}
 
 	/**
@@ -172,22 +198,22 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double relaxationTime()
 	{
-<span class="fc" id="L175">		return _dblRelaxationTime;</span>
+<span class="fc" id="L201">		return _dblRelaxationTime;</span>
 	}
 
 	@Override public double referenceRelaxationTime()
 	{
-<span class="fc" id="L180">		return relaxationTime();</span>
+<span class="fc" id="L206">		return relaxationTime();</span>
 	}
 
 	@Override public double referenceBurstiness()
 	{
-<span class="fc" id="L185">		return burstiness();</span>
+<span class="fc" id="L211">		return burstiness();</span>
 	}
 
 	@Override public double referenceMeanReversionLevel()
 	{
-<span class="nc" id="L190">		return meanReversionLevel();</span>
+<span class="nc" id="L216">		return meanReversionLevel();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

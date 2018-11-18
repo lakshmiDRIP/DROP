@@ -6,33 +6,51 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,15 +67,23 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /**
- * BoundedPortfolioConstructionParameters holds the Parameters needed to build the Portfolio with Bounds on
- * 	the Underlying Assets.
+ * &lt;i&gt;BoundedPortfolioConstructionParameters&lt;/i&gt; holds the Parameters needed to build the Portfolio with
+ * Bounds on the Underlying Assets.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator&quot;&gt;Allocator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BoundedPortfolioConstructionParameters extends
 	org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters {
-<span class="fc" id="L60">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;</span>
+<span class="fc" id="L86">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;</span>
 		_mapBounds = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;();
 
@@ -77,8 +103,8 @@ public class BoundedPortfolioConstructionParameters extends
 		final org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings pecs)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L80">		super (astrAssetID, qcru, pecs);</span>
-<span class="fc" id="L81">	}</span>
+<span class="fc" id="L106">		super (astrAssetID, qcru, pecs);</span>
+<span class="fc" id="L107">	}</span>
 
 	/**
 	 * Set the Bounds for the specified Asset
@@ -95,18 +121,18 @@ public class BoundedPortfolioConstructionParameters extends
 		final double dblLowerBound,
 		final double dblUpperBound)
 	{
-<span class="pc bpc" id="L98" title="2 of 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty()) return false;</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty()) return false;</span>
 
 		try {
-<span class="fc" id="L101">			_mapBounds.put (strAssetID, new org.drip.portfolioconstruction.asset.AssetBounds (dblLowerBound,</span>
+<span class="fc" id="L127">			_mapBounds.put (strAssetID, new org.drip.portfolioconstruction.asset.AssetBounds (dblLowerBound,</span>
 				dblUpperBound));
 
-<span class="fc" id="L104">			return true;</span>
-<span class="nc" id="L105">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L106">			e.printStackTrace();</span>
+<span class="fc" id="L130">			return true;</span>
+<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L132">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L109">		return false;</span>
+<span class="nc" id="L135">		return false;</span>
 	}
 
 	/**
@@ -123,11 +149,11 @@ public class BoundedPortfolioConstructionParameters extends
 		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
-<span class="nc" id="L127">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
+<span class="nc" id="L153">			throw new java.lang.Exception</span>
 				(&quot;BoundedPortfolioConstructionParameters::lowerBound =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L130">		return _mapBounds.get (strAssetID).lower();</span>
+<span class="fc" id="L156">		return _mapBounds.get (strAssetID).lower();</span>
 	}
 
 	/**
@@ -144,11 +170,11 @@ public class BoundedPortfolioConstructionParameters extends
 		final java.lang.String strAssetID)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
-<span class="nc" id="L148">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if (!_mapBounds.containsKey (strAssetID))</span>
+<span class="nc" id="L174">			throw new java.lang.Exception</span>
 				(&quot;BoundedPortfolioConstructionParameters::upperBound =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L151">		return _mapBounds.get (strAssetID).upper();</span>
+<span class="fc" id="L177">		return _mapBounds.get (strAssetID).upper();</span>
 	}
 
 	/**
@@ -162,48 +188,48 @@ public class BoundedPortfolioConstructionParameters extends
 	public org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraints (
 		final int iNumExtraneousVariate)
 	{
-<span class="fc" id="L165">		java.lang.String[] astrAssetID = assets();</span>
+<span class="fc" id="L191">		java.lang.String[] astrAssetID = assets();</span>
 
-<span class="fc" id="L167">		int iNumAsset = astrAssetID.length;</span>
+<span class="fc" id="L193">		int iNumAsset = astrAssetID.length;</span>
 
-<span class="fc" id="L169">		java.util.List&lt;org.drip.function.rdtor1.AffineBoundMultivariate&gt; lsRdToR1 = new</span>
+<span class="fc" id="L195">		java.util.List&lt;org.drip.function.rdtor1.AffineBoundMultivariate&gt; lsRdToR1 = new</span>
 			java.util.ArrayList&lt;org.drip.function.rdtor1.AffineBoundMultivariate&gt;();
 
-<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			if (!_mapBounds.containsKey (astrAssetID[i])) continue;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">			if (!_mapBounds.containsKey (astrAssetID[i])) continue;</span>
 
-<span class="fc" id="L175">			org.drip.portfolioconstruction.asset.AssetBounds ab = _mapBounds.get (astrAssetID[i]);</span>
+<span class="fc" id="L201">			org.drip.portfolioconstruction.asset.AssetBounds ab = _mapBounds.get (astrAssetID[i]);</span>
 
-<span class="fc" id="L177">			double dblLowerBound = ab.lower();</span>
+<span class="fc" id="L203">			double dblLowerBound = ab.lower();</span>
 
-<span class="fc" id="L179">			double dblUpperBound = ab.upper();</span>
+<span class="fc" id="L205">			double dblUpperBound = ab.upper();</span>
 
 			try {
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblLowerBound))</span>
-<span class="fc" id="L183">					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (false, i, iNumAsset +</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblLowerBound))</span>
+<span class="fc" id="L209">					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (false, i, iNumAsset +</span>
 						iNumExtraneousVariate, dblLowerBound));
 
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblUpperBound))</span>
-<span class="fc" id="L187">					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (true, i, iNumAsset +</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblUpperBound))</span>
+<span class="fc" id="L213">					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (true, i, iNumAsset +</span>
 						iNumExtraneousVariate, dblUpperBound));
-<span class="nc" id="L189">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L190">				e.printStackTrace();</span>
+<span class="nc" id="L215">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L216">				e.printStackTrace();</span>
 
-<span class="nc" id="L192">				return null;</span>
-<span class="fc" id="L193">			}</span>
+<span class="nc" id="L218">				return null;</span>
+<span class="fc" id="L219">			}</span>
 		}
 
-<span class="fc" id="L196">		int iNumConstraint = lsRdToR1.size();</span>
+<span class="fc" id="L222">		int iNumConstraint = lsRdToR1.size();</span>
 
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">		if (0 == iNumConstraint) return null;</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">		if (0 == iNumConstraint) return null;</span>
 
-<span class="fc" id="L200">		org.drip.function.rdtor1.AffineBoundMultivariate[] aRdToR1Constraint = new</span>
+<span class="fc" id="L226">		org.drip.function.rdtor1.AffineBoundMultivariate[] aRdToR1Constraint = new</span>
 			org.drip.function.rdtor1.AffineBoundMultivariate[iNumConstraint];
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
-<span class="fc" id="L204">			aRdToR1Constraint[i] = lsRdToR1.get (i);</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
+<span class="fc" id="L230">			aRdToR1Constraint[i] = lsRdToR1.get (i);</span>
 
-<span class="fc" id="L206">		return aRdToR1Constraint;</span>
+<span class="fc" id="L232">		return aRdToR1Constraint;</span>
 	}
 
 	/**
@@ -214,21 +240,21 @@ public class BoundedPortfolioConstructionParameters extends
 
 	public double[] feasibleStart()
 	{
-<span class="nc" id="L217">		boolean bReturnsConstraintPresent = org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc" id="L218">			(constraintSettings().returnsConstraint());</span>
+<span class="nc" id="L243">		boolean bReturnsConstraintPresent = org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc" id="L244">			(constraintSettings().returnsConstraint());</span>
 
-<span class="nc" id="L220">		java.lang.String[] astrAssetID = assets();</span>
+<span class="nc" id="L246">		java.lang.String[] astrAssetID = assets();</span>
 
-<span class="nc" id="L222">		int iNumAsset = astrAssetID.length;</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];</span>
+<span class="nc" id="L248">		int iNumAsset = astrAssetID.length;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L226">			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).feasibleStart();</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc" id="L252">			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).feasibleStart();</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;</span>
 
-<span class="nc" id="L230">		adblStartingVariate[iNumAsset] = 0.;</span>
-<span class="nc" id="L231">		return adblStartingVariate;</span>
+<span class="nc" id="L256">		adblStartingVariate[iNumAsset] = 0.;</span>
+<span class="nc" id="L257">		return adblStartingVariate;</span>
 	}
 
 	/**
@@ -239,32 +265,32 @@ public class BoundedPortfolioConstructionParameters extends
 
 	public double[] weightConstrainedFeasibleStart()
 	{
-<span class="fc" id="L242">		boolean bReturnsConstraintPresent = org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="fc" id="L243">			(constraintSettings().returnsConstraint());</span>
+<span class="fc" id="L268">		boolean bReturnsConstraintPresent = org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="fc" id="L269">			(constraintSettings().returnsConstraint());</span>
 
-<span class="fc" id="L245">		java.lang.String[] astrAssetID = assets();</span>
+<span class="fc" id="L271">		java.lang.String[] astrAssetID = assets();</span>
 
-<span class="fc" id="L247">		double dblCumulativeWeight = 0.;</span>
-<span class="fc" id="L248">		int iNumAsset = astrAssetID.length;</span>
-<span class="fc bfc" id="L249" title="All 2 branches covered.">		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];</span>
+<span class="fc" id="L273">		double dblCumulativeWeight = 0.;</span>
+<span class="fc" id="L274">		int iNumAsset = astrAssetID.length;</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];</span>
 
-<span class="fc bfc" id="L251" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L252">			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).lower();</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L278">			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).lower();</span>
 
-<span class="fc" id="L254">			dblCumulativeWeight += adblStartingVariate[i];</span>
+<span class="fc" id="L280">			dblCumulativeWeight += adblStartingVariate[i];</span>
 		}
 
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">		if (1. &lt; dblCumulativeWeight) return null;</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">		if (1. &lt; dblCumulativeWeight) return null;</span>
 
-<span class="fc" id="L259">		double dblWeightGap = (1. - dblCumulativeWeight) / iNumAsset;</span>
+<span class="fc" id="L285">		double dblWeightGap = (1. - dblCumulativeWeight) / iNumAsset;</span>
 
-<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L262">			adblStartingVariate[i] += dblWeightGap;</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="fc" id="L288">			adblStartingVariate[i] += dblWeightGap;</span>
 
-<span class="fc bfc" id="L264" title="All 2 branches covered.">		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;</span>
 
-<span class="fc" id="L266">		adblStartingVariate[iNumAsset] = 0.;</span>
-<span class="fc" id="L267">		return adblStartingVariate;</span>
+<span class="fc" id="L292">		adblStartingVariate[iNumAsset] = 0.;</span>
+<span class="fc" id="L293">		return adblStartingVariate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

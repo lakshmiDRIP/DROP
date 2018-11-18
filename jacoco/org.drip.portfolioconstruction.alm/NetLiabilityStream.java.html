@@ -6,33 +6,51 @@ package org.drip.portfolioconstruction.alm;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,17 +67,25 @@ package org.drip.portfolioconstruction.alm;
  */
 
 /**
- * NetLiabilityStream holds the Investor's Horizon, Consumption, and Income Settings needed to generate and
- * 	value the Net Liability Cash Flow Stream.
+ * &lt;i&gt;NetLiabilityStream&lt;/i&gt; holds the Investor's Horizon, Consumption, and Income Settings needed to
+ * generate and value the Net Liability Cash Flow Stream.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/alm&quot;&gt;Asset Liability Management&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class NetLiabilityStream {
-<span class="fc" id="L59">	private double _dblAfterTaxIncome = java.lang.Double.NaN;</span>
-<span class="fc" id="L60">	private org.drip.portfolioconstruction.alm.InvestorCliffSettings _ics = null;</span>
-<span class="fc" id="L61">	private org.drip.portfolioconstruction.alm.ExpectedBasicConsumption _ebc = null;</span>
-<span class="fc" id="L62">	private org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome _enfi = null;</span>
+<span class="fc" id="L85">	private double _dblAfterTaxIncome = java.lang.Double.NaN;</span>
+<span class="fc" id="L86">	private org.drip.portfolioconstruction.alm.InvestorCliffSettings _ics = null;</span>
+<span class="fc" id="L87">	private org.drip.portfolioconstruction.alm.ExpectedBasicConsumption _ebc = null;</span>
+<span class="fc" id="L88">	private org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome _enfi = null;</span>
 
 	/**
 	 * NetLiabilityStream Constructor
@@ -78,11 +104,11 @@ public class NetLiabilityStream {
 		final org.drip.portfolioconstruction.alm.ExpectedBasicConsumption ebc,
 		final double dblAfterTaxIncome)
 		throws java.lang.Exception
-<span class="fc" id="L81">	{</span>
-<span class="pc bpc" id="L82" title="3 of 6 branches missed.">		if (null == (_ics = ics) || null == (_enfi = enfi) || null == (_ebc = ebc) ||</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome))</span>
-<span class="nc" id="L84">			throw new java.lang.Exception (&quot;NetLiabilityStream Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L85">	}</span>
+<span class="fc" id="L107">	{</span>
+<span class="pc bpc" id="L108" title="3 of 6 branches missed.">		if (null == (_ics = ics) || null == (_enfi = enfi) || null == (_ebc = ebc) ||</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome))</span>
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;NetLiabilityStream Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L111">	}</span>
 
 	/**
 	 * Retrieve the Investor's Time Horizon Settings
@@ -92,7 +118,7 @@ public class NetLiabilityStream {
 
 	public org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings()
 	{
-<span class="nc" id="L95">		return _ics;</span>
+<span class="nc" id="L121">		return _ics;</span>
 	}
 
 	/**
@@ -103,7 +129,7 @@ public class NetLiabilityStream {
 
 	public org.drip.portfolioconstruction.alm.ExpectedBasicConsumption basicConsumption()
 	{
-<span class="nc" id="L106">		return _ebc;</span>
+<span class="nc" id="L132">		return _ebc;</span>
 	}
 
 	/**
@@ -114,7 +140,7 @@ public class NetLiabilityStream {
 
 	public org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome nonFinancialIncome()
 	{
-<span class="nc" id="L117">		return _enfi;</span>
+<span class="nc" id="L143">		return _enfi;</span>
 	}
 
 	/**
@@ -125,7 +151,7 @@ public class NetLiabilityStream {
 
 	public double afterTaxIncome()
 	{
-<span class="nc" id="L128">		return _dblAfterTaxIncome;</span>
+<span class="nc" id="L154">		return _dblAfterTaxIncome;</span>
 	}
 
 	/**
@@ -143,62 +169,62 @@ public class NetLiabilityStream {
 		final double dblEndAge,
 		final org.drip.portfolioconstruction.alm.DiscountRate dr)
 	{
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartAge) ||</span>
-<span class="pc bpc" id="L147" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEndAge) || dblStartAge &gt;= dblEndAge || null == dr)</span>
-<span class="nc" id="L148">			return null;</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartAge) ||</span>
+<span class="pc bpc" id="L173" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEndAge) || dblStartAge &gt;= dblEndAge || null == dr)</span>
+<span class="nc" id="L174">			return null;</span>
 
-<span class="fc" id="L150">		java.util.List&lt;org.drip.portfolioconstruction.alm.NetLiabilityCashFlow&gt; lsNLCF = new</span>
+<span class="fc" id="L176">		java.util.List&lt;org.drip.portfolioconstruction.alm.NetLiabilityCashFlow&gt; lsNLCF = new</span>
 			java.util.ArrayList&lt;org.drip.portfolioconstruction.alm.NetLiabilityCashFlow&gt;();
 
-<span class="fc" id="L153">		double dblBasicConsumptionPV = 0.;</span>
-<span class="fc" id="L154">		double dblWorkingAgeIncomePV = 0.;</span>
-<span class="fc" id="L155">		double dblPensionBenefitsIncomePV = 0.;</span>
+<span class="fc" id="L179">		double dblBasicConsumptionPV = 0.;</span>
+<span class="fc" id="L180">		double dblWorkingAgeIncomePV = 0.;</span>
+<span class="fc" id="L181">		double dblPensionBenefitsIncomePV = 0.;</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (double dblCurrentAge = dblStartAge + 1.; dblCurrentAge &lt;= dblEndAge; ++dblCurrentAge) {</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (double dblCurrentAge = dblStartAge + 1.; dblCurrentAge &lt;= dblEndAge; ++dblCurrentAge) {</span>
 			try {
-<span class="fc" id="L159">				double dblHorizon = dblCurrentAge - dblStartAge;</span>
+<span class="fc" id="L185">				double dblHorizon = dblCurrentAge - dblStartAge;</span>
 
-<span class="fc" id="L161">				boolean bIsAlive = _ics.isAlive (dblCurrentAge);</span>
+<span class="fc" id="L187">				boolean bIsAlive = _ics.isAlive (dblCurrentAge);</span>
 
-<span class="fc" id="L163">				boolean bIsRetirement = _ics.retirementIndicator (dblCurrentAge);</span>
+<span class="fc" id="L189">				boolean bIsRetirement = _ics.retirementIndicator (dblCurrentAge);</span>
 
-<span class="fc" id="L165">				double dblBasicConsumptionDF = dr.basicConsumptionDF (dblHorizon);</span>
+<span class="fc" id="L191">				double dblBasicConsumptionDF = dr.basicConsumptionDF (dblHorizon);</span>
 
-<span class="fc" id="L167">				double dblWorkingAgeIncomeDF = dr.workingAgeIncomeDF (dblHorizon);</span>
+<span class="fc" id="L193">				double dblWorkingAgeIncomeDF = dr.workingAgeIncomeDF (dblHorizon);</span>
 
-<span class="fc" id="L169">				double dblPensionBenefitsIncomeDF = dr.pensionBenefitsIncomeDF (dblHorizon);</span>
+<span class="fc" id="L195">				double dblPensionBenefitsIncomeDF = dr.pensionBenefitsIncomeDF (dblHorizon);</span>
 
-<span class="fc" id="L171">				double dblBasicConsumption = _dblAfterTaxIncome * _ebc.rate (dblCurrentAge, _ics);</span>
+<span class="fc" id="L197">				double dblBasicConsumption = _dblAfterTaxIncome * _ebc.rate (dblCurrentAge, _ics);</span>
 
-<span class="pc bpc" id="L173" title="1 of 4 branches missed.">				double dblWorkingAgeIncome = !bIsRetirement &amp;&amp; bIsAlive ? _dblAfterTaxIncome * _enfi.rate</span>
-<span class="fc" id="L174">					(dblCurrentAge, _ics) : 0.;</span>
+<span class="pc bpc" id="L199" title="1 of 4 branches missed.">				double dblWorkingAgeIncome = !bIsRetirement &amp;&amp; bIsAlive ? _dblAfterTaxIncome * _enfi.rate</span>
+<span class="fc" id="L200">					(dblCurrentAge, _ics) : 0.;</span>
 
-<span class="fc bfc" id="L176" title="All 4 branches covered.">				double dblPensionBenefitsIncome = bIsRetirement &amp;&amp; bIsAlive ? _dblAfterTaxIncome * _enfi.rate</span>
-<span class="fc" id="L177">					(dblCurrentAge, _ics) : 0.;</span>
+<span class="fc bfc" id="L202" title="All 4 branches covered.">				double dblPensionBenefitsIncome = bIsRetirement &amp;&amp; bIsAlive ? _dblAfterTaxIncome * _enfi.rate</span>
+<span class="fc" id="L203">					(dblCurrentAge, _ics) : 0.;</span>
 
-<span class="fc" id="L179">				lsNLCF.add (new org.drip.portfolioconstruction.alm.NetLiabilityCashFlow (dblCurrentAge,</span>
+<span class="fc" id="L205">				lsNLCF.add (new org.drip.portfolioconstruction.alm.NetLiabilityCashFlow (dblCurrentAge,</span>
 					bIsRetirement, bIsAlive, dblHorizon, _dblAfterTaxIncome, dblWorkingAgeIncome,
 						dblPensionBenefitsIncome, dblBasicConsumption, dblWorkingAgeIncomeDF,
 							dblPensionBenefitsIncomeDF, dblBasicConsumptionDF));
 
-<span class="fc" id="L184">				dblBasicConsumptionPV += dblBasicConsumption * dblBasicConsumptionDF;</span>
-<span class="fc" id="L185">				dblWorkingAgeIncomePV += dblWorkingAgeIncome * dblWorkingAgeIncomeDF;</span>
-<span class="fc" id="L186">				dblPensionBenefitsIncomePV += dblPensionBenefitsIncome * dblPensionBenefitsIncomeDF;</span>
-<span class="nc" id="L187">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L188">				e.printStackTrace();</span>
+<span class="fc" id="L210">				dblBasicConsumptionPV += dblBasicConsumption * dblBasicConsumptionDF;</span>
+<span class="fc" id="L211">				dblWorkingAgeIncomePV += dblWorkingAgeIncome * dblWorkingAgeIncomeDF;</span>
+<span class="fc" id="L212">				dblPensionBenefitsIncomePV += dblPensionBenefitsIncome * dblPensionBenefitsIncomeDF;</span>
+<span class="nc" id="L213">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L214">				e.printStackTrace();</span>
 
-<span class="nc" id="L190">				return null;</span>
-<span class="fc" id="L191">			}</span>
+<span class="nc" id="L216">				return null;</span>
+<span class="fc" id="L217">			}</span>
 		}
 
 		try {
-<span class="fc" id="L195">			return new org.drip.portfolioconstruction.alm.NetLiabilityMetrics (lsNLCF, dblWorkingAgeIncomePV,</span>
+<span class="fc" id="L221">			return new org.drip.portfolioconstruction.alm.NetLiabilityMetrics (lsNLCF, dblWorkingAgeIncomePV,</span>
 				dblPensionBenefitsIncomePV, dblBasicConsumptionPV);
-<span class="nc" id="L197">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L198">			e.printStackTrace();</span>
+<span class="nc" id="L223">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L224">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L201">		return null;</span>
+<span class="nc" id="L227">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

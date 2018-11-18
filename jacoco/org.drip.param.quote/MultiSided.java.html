@@ -6,6 +6,7 @@ package org.drip.param.quote;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.param.quote;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,66 +72,74 @@ package org.drip.param.quote;
  */
 
 /**
- * MultiSided implements the Quote interface, which contains the stubs corresponding to a product quote. It
- *  contains the quote value, quote instant for the different quote sides (bid/ask/mid).
+ * &lt;i&gt;MultiSided&lt;/i&gt; implements the Quote interface, which contains the stubs corresponding to a product
+ * quote. It contains the quote value, quote instant for the different quote sides (bid/ask/mid).
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote&quot;&gt;Quote&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *   
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultiSided extends org.drip.param.definition.Quote {
 	class SingleSided {
-<span class="fc" id="L65">		double _dblSize = java.lang.Double.NaN;</span>
-<span class="fc" id="L66">		double _dblQuote = java.lang.Double.NaN;</span>
-<span class="fc" id="L67">		org.drip.analytics.date.DateTime _dt = null;</span>
+<span class="fc" id="L91">		double _dblSize = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">		double _dblQuote = java.lang.Double.NaN;</span>
+<span class="fc" id="L93">		org.drip.analytics.date.DateTime _dt = null;</span>
 
 		SingleSided (
 			final double dblQuote,
 			final double dblSize)
 			throws java.lang.Exception
-<span class="fc" id="L73">		{</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_dblQuote = dblQuote))</span>
-<span class="nc" id="L75">				throw new java.lang.Exception (&quot;MultiSided::SingleSided ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L99">		{</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_dblQuote = dblQuote))</span>
+<span class="nc" id="L101">				throw new java.lang.Exception (&quot;MultiSided::SingleSided ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L77">			_dblSize = dblSize;</span>
+<span class="fc" id="L103">			_dblSize = dblSize;</span>
 
-<span class="fc" id="L79">			_dt = new org.drip.analytics.date.DateTime();</span>
-<span class="fc" id="L80">		}</span>
+<span class="fc" id="L105">			_dt = new org.drip.analytics.date.DateTime();</span>
+<span class="fc" id="L106">		}</span>
 
 		double quote()
 		{
-<span class="fc" id="L84">			return _dblQuote;</span>
+<span class="fc" id="L110">			return _dblQuote;</span>
 		}
 
 		double size()
 		{
-<span class="nc" id="L89">			return _dblSize;</span>
+<span class="nc" id="L115">			return _dblSize;</span>
 		}
 
 		org.drip.analytics.date.DateTime time()
 		{
-<span class="nc" id="L94">			return _dt;</span>
+<span class="nc" id="L120">			return _dt;</span>
 		}
 
 		boolean setQuote (
 			final double dblQuote)
 		{
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblQuote)) return false;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblQuote)) return false;</span>
 
-<span class="nc" id="L102">			_dblQuote = dblQuote;</span>
-<span class="nc" id="L103">			return true;</span>
+<span class="nc" id="L128">			_dblQuote = dblQuote;</span>
+<span class="nc" id="L129">			return true;</span>
 		}
 
 		boolean setSize (
 			final double dblSize)
 		{
-<span class="nc bnc" id="L109" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblSize)) return false;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblSize)) return false;</span>
 
-<span class="nc" id="L111">			_dblSize = dblSize;</span>
-<span class="nc" id="L112">			return true;</span>
+<span class="nc" id="L137">			_dblSize = dblSize;</span>
+<span class="nc" id="L138">			return true;</span>
 		}
 	};
 
-<span class="fc" id="L116">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;SingleSided&gt; _mapSingleSidedQuote = new</span>
+<span class="fc" id="L142">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;SingleSided&gt; _mapSingleSidedQuote = new</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;SingleSided&gt;();
 
 	/**
@@ -129,12 +155,12 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		final java.lang.String strSide,
 		final double dblQuote)
 		throws java.lang.Exception
-<span class="fc" id="L132">	{</span>
-<span class="pc bpc" id="L133" title="3 of 6 branches missed.">		if (null == strSide || strSide.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblQuote))</span>
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;MultiSided ctr: Invalid Side/Quote/Size!&quot;);</span>
+<span class="fc" id="L158">	{</span>
+<span class="pc bpc" id="L159" title="3 of 6 branches missed.">		if (null == strSide || strSide.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblQuote))</span>
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;MultiSided ctr: Invalid Side/Quote/Size!&quot;);</span>
 
-<span class="fc" id="L136">		_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, java.lang.Double.NaN));</span>
-<span class="fc" id="L137">	}</span>
+<span class="fc" id="L162">		_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, java.lang.Double.NaN));</span>
+<span class="fc" id="L163">	}</span>
 
 	/**
 	 * MultiSided Constructor: Constructs a Quote object from the quote size/value and the side string.
@@ -151,35 +177,35 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		final double dblQuote,
 		final double dblSize)
 		throws java.lang.Exception
-<span class="fc" id="L154">	{</span>
-<span class="pc bpc" id="L155" title="3 of 6 branches missed.">		if (null == strSide || strSide.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblQuote))</span>
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;MultiSided ctr: Invalid Side/Quote/Size!&quot;);</span>
+<span class="fc" id="L180">	{</span>
+<span class="pc bpc" id="L181" title="3 of 6 branches missed.">		if (null == strSide || strSide.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblQuote))</span>
+<span class="nc" id="L182">			throw new java.lang.Exception (&quot;MultiSided ctr: Invalid Side/Quote/Size!&quot;);</span>
 
-<span class="fc" id="L158">		_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, dblSize));</span>
-<span class="fc" id="L159">	}</span>
+<span class="fc" id="L184">		_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, dblSize));</span>
+<span class="fc" id="L185">	}</span>
 
 	@Override public double value (
 		final java.lang.String strSide)
 	{
-<span class="pc bpc" id="L164" title="2 of 4 branches missed.">		if (null == strSide || strSide.isEmpty()) return java.lang.Double.NaN;</span>
+<span class="pc bpc" id="L190" title="2 of 4 branches missed.">		if (null == strSide || strSide.isEmpty()) return java.lang.Double.NaN;</span>
 
-<span class="fc" id="L166">		return _mapSingleSidedQuote.get (strSide).quote();</span>
+<span class="fc" id="L192">		return _mapSingleSidedQuote.get (strSide).quote();</span>
 	}
 
 	@Override public double size (
 		final java.lang.String strSide)
 	{
-<span class="nc bnc" id="L172" title="All 4 branches missed.">		if (null == strSide || strSide.isEmpty()) return java.lang.Double.NaN;</span>
+<span class="nc bnc" id="L198" title="All 4 branches missed.">		if (null == strSide || strSide.isEmpty()) return java.lang.Double.NaN;</span>
 
-<span class="nc" id="L174">		return _mapSingleSidedQuote.get (strSide).size();</span>
+<span class="nc" id="L200">		return _mapSingleSidedQuote.get (strSide).size();</span>
 	}
 
 	@Override public org.drip.analytics.date.DateTime time (
 		final java.lang.String strSide)
 	{
-<span class="nc bnc" id="L180" title="All 4 branches missed.">		if (null == strSide || strSide.isEmpty()) return null;</span>
+<span class="nc bnc" id="L206" title="All 4 branches missed.">		if (null == strSide || strSide.isEmpty()) return null;</span>
 
-<span class="nc" id="L182">		return _mapSingleSidedQuote.get (strSide).time();</span>
+<span class="nc" id="L208">		return _mapSingleSidedQuote.get (strSide).time();</span>
 	}
 
 	@Override public boolean setSide (
@@ -187,18 +213,18 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		final double dblQuote,
 		final double dblSize)
 	{
-<span class="nc bnc" id="L190" title="All 6 branches missed.">		if (null != strSide &amp;&amp; !strSide.isEmpty() &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (dblQuote))</span>
-<span class="nc" id="L191">			return false;</span>
+<span class="nc bnc" id="L216" title="All 6 branches missed.">		if (null != strSide &amp;&amp; !strSide.isEmpty() &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (dblQuote))</span>
+<span class="nc" id="L217">			return false;</span>
 
 		try {
-<span class="nc" id="L194">			_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, dblSize));</span>
-<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L196">			e.printStackTrace();</span>
+<span class="nc" id="L220">			_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, dblSize));</span>
+<span class="nc" id="L221">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L222">			e.printStackTrace();</span>
 
-<span class="nc" id="L198">			return false;</span>
-<span class="nc" id="L199">		}</span>
+<span class="nc" id="L224">			return false;</span>
+<span class="nc" id="L225">		}</span>
 
-<span class="nc" id="L201">		return true;</span>
+<span class="nc" id="L227">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

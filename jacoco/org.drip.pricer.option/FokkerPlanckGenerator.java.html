@@ -6,34 +6,53 @@ package org.drip.pricer.option;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,13 +69,21 @@ package org.drip.pricer.option;
  */
 
 /**
- * FokkerPlanckGenerator holds the base functionality that the performs the PDF evolution oriented Option
- *  Pricing.
+ * &lt;i&gt;FokkerPlanckGenerator&lt;/i&gt; holds the base functionality that the performs the PDF evolution oriented
+ * Option Pricing.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer&quot;&gt;Pricer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer/option&quot;&gt;Option&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L59">public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.GenericPricer {</span>
+<span class="fc" id="L86">public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.GenericPricer {</span>
 
 	/**
 	 * Compute the Expected Payoff of the Option from the Inputs
@@ -139,11 +166,11 @@ package org.drip.pricer.option;
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L142" title="3 of 6 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			dcFunding || !org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility))</span>
-<span class="nc" id="L144">			throw new java.lang.Exception (&quot;FokkerPlanckGenerator::payoff =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L169" title="3 of 6 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			dcFunding || !org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility))</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;FokkerPlanckGenerator::payoff =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L146">		return payoff (dblStrike, 1. * (iExpiryDate - iSpotDate) / 365.25, dcFunding.libor (iSpotDate,</span>
+<span class="fc" id="L173">		return payoff (dblStrike, 1. * (iExpiryDate - iSpotDate) / 365.25, dcFunding.libor (iSpotDate,</span>
 			iExpiryDate), dblUnderlier, bIsPut, bIsForward, dblInitialVolatility, bAsPrice);
 	}
 
@@ -177,28 +204,28 @@ package org.drip.pricer.option;
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L180" title="All 8 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
+<span class="nc bnc" id="L207" title="All 8 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
 			dcFunding || null == funcVolatilityR1ToR1)
-<span class="nc" id="L182">			throw new java.lang.Exception (&quot;FokkerPlanckGenerator::payoff =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L209">			throw new java.lang.Exception (&quot;FokkerPlanckGenerator::payoff =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L184">		int iDaysToExpiry = iExpiryDate - iSpotDate;</span>
+<span class="nc" id="L211">		int iDaysToExpiry = iExpiryDate - iSpotDate;</span>
 
-<span class="nc" id="L186">		double dblRiskFreeRate = dcFunding.libor (iSpotDate, iExpiryDate);</span>
+<span class="nc" id="L213">		double dblRiskFreeRate = dcFunding.libor (iSpotDate, iExpiryDate);</span>
 
-<span class="nc" id="L188">		org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L189">			(null) {</span>
+<span class="nc" id="L215">		org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L216">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L194">				return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);</span>
+<span class="nc" id="L221">				return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L198">		double dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (iSpotDate,</span>
+<span class="nc" id="L225">		double dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (iSpotDate,</span>
 			iExpiryDate) / iDaysToExpiry);
 
-<span class="nc" id="L201">		return payoff (dblStrike, 1. * iDaysToExpiry / 365.25, dblRiskFreeRate, dblUnderlier, bIsPut,</span>
+<span class="nc" id="L228">		return payoff (dblStrike, 1. * iDaysToExpiry / 365.25, dblRiskFreeRate, dblUnderlier, bIsPut,</span>
 			bIsForward, dblEffectiveVolatility, bAsPrice);
 	}
 
@@ -227,21 +254,21 @@ package org.drip.pricer.option;
 		final boolean bIsForward,
 		final double dblIntegratedSurfaceVariance)
 	{
-<span class="pc bpc" id="L230" title="3 of 6 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">			dcFunding || !org.drip.quant.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))</span>
-<span class="nc" id="L232">			return null;</span>
+<span class="pc bpc" id="L257" title="3 of 6 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">			dcFunding || !org.drip.quant.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))</span>
+<span class="nc" id="L259">			return null;</span>
 
-<span class="fc" id="L234">		double dblTimeToExpiry = 1. * (iExpiryDate - iSpotDate) / 365.25;</span>
+<span class="fc" id="L261">		double dblTimeToExpiry = 1. * (iExpiryDate - iSpotDate) / 365.25;</span>
 
 		try {
-<span class="fc" id="L237">			return greeks (dblStrike, dblTimeToExpiry, dcFunding.libor (iSpotDate, iExpiryDate),</span>
-<span class="fc" id="L238">				dblUnderlier, bIsPut, bIsForward, java.lang.Math.sqrt (dblIntegratedSurfaceVariance /</span>
+<span class="fc" id="L264">			return greeks (dblStrike, dblTimeToExpiry, dcFunding.libor (iSpotDate, iExpiryDate),</span>
+<span class="fc" id="L265">				dblUnderlier, bIsPut, bIsForward, java.lang.Math.sqrt (dblIntegratedSurfaceVariance /</span>
 					dblTimeToExpiry));
-<span class="nc" id="L240">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L241">			e.printStackTrace();</span>
+<span class="nc" id="L267">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L268">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L244">		return null;</span>
+<span class="nc" id="L271">		return null;</span>
 	}
 
 	/**
@@ -269,36 +296,36 @@ package org.drip.pricer.option;
 		final boolean bIsForward,
 		final org.drip.function.definition.R1ToR1 funcVolatilityR1ToR1)
 	{
-<span class="nc bnc" id="L272" title="All 8 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
+<span class="nc bnc" id="L299" title="All 8 branches missed.">		if (iExpiryDate &lt;= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==</span>
 			dcFunding || null == funcVolatilityR1ToR1)
-<span class="nc" id="L274">			return null;</span>
+<span class="nc" id="L301">			return null;</span>
 
-<span class="nc" id="L276">		double dblRiskFreeRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L277">		double dblEffectiveVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L278">		double dblTimeToExpiry = 1. * (iExpiryDate - iSpotDate) / 365.25;</span>
+<span class="nc" id="L303">		double dblRiskFreeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L304">		double dblEffectiveVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L305">		double dblTimeToExpiry = 1. * (iExpiryDate - iSpotDate) / 365.25;</span>
 
-<span class="nc" id="L280">		org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L281">			(null) {</span>
+<span class="nc" id="L307">		org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L308">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L286">				return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);</span>
+<span class="nc" id="L313">				return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);</span>
 			}
 		};
 
 		try {
-<span class="nc" id="L291">			dblRiskFreeRate = dcFunding.libor (iSpotDate, iExpiryDate);</span>
+<span class="nc" id="L318">			dblRiskFreeRate = dcFunding.libor (iSpotDate, iExpiryDate);</span>
 
-<span class="nc" id="L293">			dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (iSpotDate,</span>
+<span class="nc" id="L320">			dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (iSpotDate,</span>
 				iExpiryDate) / (365.25 * dblTimeToExpiry));
-<span class="nc" id="L295">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L296">			e.printStackTrace();</span>
+<span class="nc" id="L322">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L323">			e.printStackTrace();</span>
 
-<span class="nc" id="L298">			return null;</span>
-<span class="nc" id="L299">		}</span>
+<span class="nc" id="L325">			return null;</span>
+<span class="nc" id="L326">		}</span>
 
-<span class="nc" id="L301">		return greeks (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,</span>
+<span class="nc" id="L328">		return greeks (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,</span>
 			dblEffectiveVolatility);
 	}
 
@@ -328,24 +355,24 @@ package org.drip.pricer.option;
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L331">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L358">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblSpotVolatility)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L336">				return payoff (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,</span>
+<span class="fc" id="L363">				return payoff (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,</span>
 					dblSpotVolatility, true) - dblPrice;
 			}
 		};
 
-<span class="fc" id="L341">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
-<span class="fc" id="L342">			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., au, true).findRoot();</span>
+<span class="fc" id="L368">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
+<span class="fc" id="L369">			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., au, true).findRoot();</span>
 
-<span class="pc bpc" id="L344" title="2 of 4 branches missed.">		if (null == fpop || !fpop.containsRoot())</span>
-<span class="nc" id="L345">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L371" title="2 of 4 branches missed.">		if (null == fpop || !fpop.containsRoot())</span>
+<span class="nc" id="L372">			throw new java.lang.Exception</span>
 				(&quot;FokkerPlanckGenerator::impliedVolatilityFromPrice =&gt; Cannot imply Volatility&quot;);
 
-<span class="fc" id="L348">		return java.lang.Math.abs (fpop.getRoot());</span>
+<span class="fc" id="L375">		return java.lang.Math.abs (fpop.getRoot());</span>
 	}
 
 	/**
@@ -376,24 +403,24 @@ package org.drip.pricer.option;
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L379">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L406">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblInitialVolatility)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L384">				return payoff (iSpotDate, iExpiryDate, dblStrike, dcFunding, dblUnderlier, bIsPut,</span>
+<span class="nc" id="L411">				return payoff (iSpotDate, iExpiryDate, dblStrike, dcFunding, dblUnderlier, bIsPut,</span>
 					bIsForward, dblInitialVolatility, true) - dblPrice;
 			}
 		};
 
-<span class="nc" id="L389">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
-<span class="nc" id="L390">			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., au, true).findRoot();</span>
+<span class="nc" id="L416">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
+<span class="nc" id="L417">			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., au, true).findRoot();</span>
 
-<span class="nc bnc" id="L392" title="All 4 branches missed.">		if (null == fpop || !fpop.containsRoot())</span>
-<span class="nc" id="L393">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L419" title="All 4 branches missed.">		if (null == fpop || !fpop.containsRoot())</span>
+<span class="nc" id="L420">			throw new java.lang.Exception</span>
 				(&quot;FokkerPlanckGenerator::impliedVolatilityFromPrice =&gt; Cannot imply Volatility&quot;);
 
-<span class="nc" id="L396">		return java.lang.Math.abs (fpop.getRoot());</span>
+<span class="nc" id="L423">		return java.lang.Math.abs (fpop.getRoot());</span>
 	}
 
 	/**
@@ -422,7 +449,7 @@ package org.drip.pricer.option;
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L425">		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (dblStrike,</span>
+<span class="fc" id="L452">		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (dblStrike,</span>
 			dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward, dblPrice);
 	}
 }

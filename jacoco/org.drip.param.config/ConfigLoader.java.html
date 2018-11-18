@@ -6,6 +6,7 @@ package org.drip.param.config;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.param.config;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,46 +72,67 @@ package org.drip.param.config;
  */
 
 /**
- * ConfigLoader implements the configuration functionality. It exposes the following:
- * 	- Parses the XML configuration file and extract the tag pairs information.
- * 	- Retrieve the logger.
- * 	- Load the holiday calendars and retrieve the location holidays.
- * 	- Connect to analytics server and the database server.
- *
+ * &lt;i&gt;ConfigLoader&lt;/i&gt; implements the configuration functionality. It exposes the following:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Parses the XML configuration file and extract the tag pairs information.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Retrieve the logger.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Load the holiday calendars and retrieve the location holidays.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Connect to analytics server and the database server.
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
  *	Depending on the configuration setting, ConfigLoader loads the above from either a file or the specified
  *		database.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/config&quot;&gt;Configurator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L69">public class ConfigLoader {</span>
-<span class="fc" id="L70">	private static boolean s_bInit = false;</span>
-<span class="fc" id="L71">	private static java.sql.Statement s_Statement = null;</span>
+<span class="nc" id="L108">public class ConfigLoader {</span>
+<span class="fc" id="L109">	private static boolean s_bInit = false;</span>
+<span class="fc" id="L110">	private static java.sql.Statement s_Statement = null;</span>
 
 	private static final int IntegerTagValue (
 		final org.w3c.dom.Element eTag,
 		final java.lang.String strTag)
 		throws java.lang.Exception {
-<span class="nc bnc" id="L77" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag))</span>
-<span class="nc" id="L78">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L116" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag))</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L80">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
+<span class="nc" id="L119">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
 
-<span class="nc bnc" id="L82" title="All 4 branches missed.">		if (null == nl.item (0) || !(nl.item (0) instanceof org.w3c.dom.Element))</span>
-<span class="nc" id="L83">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L121" title="All 4 branches missed.">		if (null == nl.item (0) || !(nl.item (0) instanceof org.w3c.dom.Element))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L85">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
+<span class="nc" id="L124">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
 
-<span class="nc bnc" id="L87" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
-<span class="nc" id="L89">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L126" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L91">		org.w3c.dom.Node node = elem.getChildNodes().item (0);</span>
+<span class="nc" id="L130">		org.w3c.dom.Node node = elem.getChildNodes().item (0);</span>
 
-<span class="nc bnc" id="L93" title="All 4 branches missed.">		if (null == node || null == node.getNodeValue())</span>
-<span class="nc" id="L94">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (null == node || null == node.getNodeValue())</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;Cannot get int value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L96">		return Integer.parseInt (node.getNodeValue());</span>
+<span class="nc" id="L135">		return Integer.parseInt (node.getNodeValue());</span>
 	}
 
 	private static final boolean BooleanTagValue (
@@ -101,102 +140,102 @@ package org.drip.param.config;
 		final java.lang.String strTag)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L104" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L143" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag))</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L107">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
+<span class="nc" id="L146">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
 
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == nl.item (0) || !(nl.item (0) instanceof org.w3c.dom.Element))</span>
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == nl.item (0) || !(nl.item (0) instanceof org.w3c.dom.Element))</span>
+<span class="nc" id="L149">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L112">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
+<span class="nc" id="L151">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
 
-<span class="nc bnc" id="L114" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L153" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L118">		org.w3c.dom.Node node = elem.getChildNodes().item (0);</span>
+<span class="nc" id="L157">		org.w3c.dom.Node node = elem.getChildNodes().item (0);</span>
 
-<span class="nc bnc" id="L120" title="All 4 branches missed.">		if (null == node || null == node.getNodeValue())</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (null == node || null == node.getNodeValue())</span>
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;Cannot get bool value for &lt;&quot; + strTag + &quot;&gt;&quot;);</span>
 
-<span class="nc" id="L123">		return java.lang.Boolean.parseBoolean (node.getNodeValue());</span>
+<span class="nc" id="L162">		return java.lang.Boolean.parseBoolean (node.getNodeValue());</span>
 	}
 
 	private static final java.lang.String StringTagValue (
 		final org.w3c.dom.Element eTag,
 		final java.lang.String strTag)
 	{
-<span class="nc bnc" id="L130" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag)) return null;</span>
+<span class="nc bnc" id="L169" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag)) return null;</span>
 
-<span class="nc" id="L132">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
+<span class="nc" id="L171">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
 
-<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (null == nl.item (0) || !(nl.item (0) instanceof org.w3c.dom.Element)) return null;</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == nl.item (0) || !(nl.item (0) instanceof org.w3c.dom.Element)) return null;</span>
 
-<span class="nc" id="L136">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
+<span class="nc" id="L175">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
 
-<span class="nc bnc" id="L138" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
-<span class="nc" id="L140">			return null;</span>
+<span class="nc bnc" id="L177" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
+<span class="nc" id="L179">			return null;</span>
 
-<span class="nc" id="L142">		org.w3c.dom.Node node = elem.getChildNodes().item (0);</span>
+<span class="nc" id="L181">		org.w3c.dom.Node node = elem.getChildNodes().item (0);</span>
 
-<span class="nc bnc" id="L144" title="All 4 branches missed.">		if (null == node || null == node.getNodeValue()) return null;</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">		if (null == node || null == node.getNodeValue()) return null;</span>
 
-<span class="nc" id="L146">		return node.getNodeValue();</span>
+<span class="nc" id="L185">		return node.getNodeValue();</span>
 	}
 
 	private static final int[] IntegerArrayTagValue (
 		final org.w3c.dom.Element eTag,
 		final java.lang.String strTag)
 	{
-<span class="nc bnc" id="L153" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag)) return null;</span>
+<span class="nc bnc" id="L192" title="All 6 branches missed.">		if (null == eTag || null == strTag || null == eTag.getElementsByTagName (strTag)) return null;</span>
 
-<span class="nc" id="L155">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
+<span class="nc" id="L194">		org.w3c.dom.NodeList nl = eTag.getElementsByTagName (strTag);</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (!(nl.item (0) instanceof org.w3c.dom.Element)) return null;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (!(nl.item (0) instanceof org.w3c.dom.Element)) return null;</span>
 
-<span class="nc" id="L159">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
+<span class="nc" id="L198">		org.w3c.dom.Element elem = (org.w3c.dom.Element) nl.item (0);</span>
 
-<span class="nc bnc" id="L161" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
-<span class="nc" id="L163">			return null;</span>
+<span class="nc bnc" id="L200" title="All 6 branches missed.">		if (null == elem || null == elem.getChildNodes() || null == elem.getChildNodes().item (0) ||</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			!(elem.getChildNodes().item (0) instanceof org.w3c.dom.Node))</span>
+<span class="nc" id="L202">			return null;</span>
 
-<span class="nc" id="L165">		java.lang.String strValue = elem.getChildNodes().item (0).getNodeValue();</span>
+<span class="nc" id="L204">		java.lang.String strValue = elem.getChildNodes().item (0).getNodeValue();</span>
 
-<span class="nc bnc" id="L167" title="All 4 branches missed.">		if (null == strValue || strValue.isEmpty()) return null;</span>
+<span class="nc bnc" id="L206" title="All 4 branches missed.">		if (null == strValue || strValue.isEmpty()) return null;</span>
 
-<span class="nc" id="L169">		java.lang.String[] astrValue = strValue.split (&quot;,&quot;);</span>
+<span class="nc" id="L208">		java.lang.String[] astrValue = strValue.split (&quot;,&quot;);</span>
 
-<span class="nc" id="L171">		int[] ai = new int[astrValue.length];</span>
+<span class="nc" id="L210">		int[] ai = new int[astrValue.length];</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = 0; i &lt; astrValue.length; ++i)</span>
-<span class="nc" id="L174">			ai[i] = Integer.parseInt (astrValue[i]);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		for (int i = 0; i &lt; astrValue.length; ++i)</span>
+<span class="nc" id="L213">			ai[i] = Integer.parseInt (astrValue[i]);</span>
 
-<span class="nc" id="L176">		return ai;</span>
+<span class="nc" id="L215">		return ai;</span>
 	}
 
 	private static final org.w3c.dom.Document NormalizedXMLDoc (
 		final java.lang.String strXMLFile)
 	{
-<span class="pc bpc" id="L182" title="2 of 4 branches missed.">		if (null == strXMLFile || strXMLFile.isEmpty()) return null;</span>
+<span class="pc bpc" id="L221" title="2 of 4 branches missed.">		if (null == strXMLFile || strXMLFile.isEmpty()) return null;</span>
 
-<span class="nc" id="L184">		org.w3c.dom.Document doc = null;</span>
+<span class="nc" id="L223">		org.w3c.dom.Document doc = null;</span>
 
 		try {
-<span class="nc" id="L187">			doc = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse (new</span>
+<span class="nc" id="L226">			doc = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse (new</span>
 				java.io.File (strXMLFile));
-<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L190">			e.printStackTrace();</span>
+<span class="nc" id="L228">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L229">			e.printStackTrace();</span>
 
-<span class="nc" id="L192">			return null;</span>
-<span class="nc" id="L193">		}</span>
+<span class="nc" id="L231">			return null;</span>
+<span class="nc" id="L232">		}</span>
 
-<span class="nc bnc" id="L195" title="All 4 branches missed.">		if (null == doc || null == doc.getDocumentElement()) return null;</span>
+<span class="nc bnc" id="L234" title="All 4 branches missed.">		if (null == doc || null == doc.getDocumentElement()) return null;</span>
 
-<span class="nc" id="L197">		doc.getDocumentElement().normalize();</span>
+<span class="nc" id="L236">		doc.getDocumentElement().normalize();</span>
 
-<span class="nc" id="L199">		return doc;</span>
+<span class="nc" id="L238">		return doc;</span>
 	}
 
 	/**
@@ -212,64 +251,64 @@ package org.drip.param.config;
 		final org.w3c.dom.Document doc,
 		final java.lang.String strLoc)
 	{
-<span class="nc bnc" id="L215" title="All 4 branches missed.">		if (null == doc || null == strLoc) return null;</span>
+<span class="nc bnc" id="L254" title="All 4 branches missed.">		if (null == doc || null == strLoc) return null;</span>
 
-<span class="nc" id="L217">		org.w3c.dom.NodeList nlLoc = doc.getElementsByTagName (strLoc);</span>
+<span class="nc" id="L256">		org.w3c.dom.NodeList nlLoc = doc.getElementsByTagName (strLoc);</span>
 
-<span class="nc bnc" id="L219" title="All 4 branches missed.">		if (null == nlLoc || null == nlLoc.item (0) || org.w3c.dom.Node.ELEMENT_NODE != nlLoc.item</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">			(0).getNodeType())</span>
-<span class="nc" id="L221">			return null;</span>
+<span class="nc bnc" id="L258" title="All 4 branches missed.">		if (null == nlLoc || null == nlLoc.item (0) || org.w3c.dom.Node.ELEMENT_NODE != nlLoc.item</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">			(0).getNodeType())</span>
+<span class="nc" id="L260">			return null;</span>
 
-<span class="nc" id="L223">		org.drip.analytics.eventday.Locale locHols = new org.drip.analytics.eventday.Locale();</span>
+<span class="nc" id="L262">		org.drip.analytics.eventday.Locale locHols = new org.drip.analytics.eventday.Locale();</span>
 
-<span class="nc" id="L225">		org.w3c.dom.Element e = (org.w3c.dom.Element) nlLoc.item (0);</span>
+<span class="nc" id="L264">		org.w3c.dom.Element e = (org.w3c.dom.Element) nlLoc.item (0);</span>
 
-<span class="nc" id="L227">		org.w3c.dom.NodeList nlHols = e.getElementsByTagName (&quot;Weekend&quot;);</span>
+<span class="nc" id="L266">		org.w3c.dom.NodeList nlHols = e.getElementsByTagName (&quot;Weekend&quot;);</span>
 
-<span class="nc bnc" id="L229" title="All 4 branches missed.">		if (null != nlHols &amp;&amp; null != nlHols.item (0) &amp;&amp; org.w3c.dom.Node.ELEMENT_NODE == nlHols.item</span>
-<span class="nc bnc" id="L230" title="All 2 branches missed.">			(0).getNodeType())</span>
-<span class="nc" id="L231">			locHols.addWeekend (IntegerArrayTagValue ((org.w3c.dom.Element) nlHols.item (0), &quot;DaysInWeek&quot;));</span>
+<span class="nc bnc" id="L268" title="All 4 branches missed.">		if (null != nlHols &amp;&amp; null != nlHols.item (0) &amp;&amp; org.w3c.dom.Node.ELEMENT_NODE == nlHols.item</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			(0).getNodeType())</span>
+<span class="nc" id="L270">			locHols.addWeekend (IntegerArrayTagValue ((org.w3c.dom.Element) nlHols.item (0), &quot;DaysInWeek&quot;));</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (null != (nlHols = e.getElementsByTagName (&quot;FixedHoliday&quot;))) {</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">			for (int j = 0; j &lt; nlHols.getLength(); ++j) {</span>
-<span class="nc bnc" id="L235" title="All 2 branches missed.">				if (null == nlHols.item (j) || org.w3c.dom.Node.ELEMENT_NODE != nlHols.item</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">					(j).getNodeType())</span>
-<span class="nc" id="L237">					continue;</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		if (null != (nlHols = e.getElementsByTagName (&quot;FixedHoliday&quot;))) {</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">			for (int j = 0; j &lt; nlHols.getLength(); ++j) {</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">				if (null == nlHols.item (j) || org.w3c.dom.Node.ELEMENT_NODE != nlHols.item</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">					(j).getNodeType())</span>
+<span class="nc" id="L276">					continue;</span>
 
-<span class="nc" id="L239">				org.w3c.dom.Element elemHol = (org.w3c.dom.Element) nlHols.item (j);</span>
+<span class="nc" id="L278">				org.w3c.dom.Element elemHol = (org.w3c.dom.Element) nlHols.item (j);</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">				if (null != elemHol) {</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">				if (null != elemHol) {</span>
 					try {
-<span class="nc" id="L243">						locHols.addFixedHoliday (IntegerTagValue (elemHol, &quot;Date&quot;), IntegerTagValue (elemHol,</span>
+<span class="nc" id="L282">						locHols.addFixedHoliday (IntegerTagValue (elemHol, &quot;Date&quot;), IntegerTagValue (elemHol,</span>
 							&quot;Month&quot;), &quot;&quot;);
-<span class="nc" id="L245">					} catch (java.lang.Exception ex) {</span>
-<span class="nc" id="L246">						ex.printStackTrace();</span>
-<span class="nc" id="L247">					}</span>
+<span class="nc" id="L284">					} catch (java.lang.Exception ex) {</span>
+<span class="nc" id="L285">						ex.printStackTrace();</span>
+<span class="nc" id="L286">					}</span>
 				}
 			}
 		}	
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (null != (nlHols = e.getElementsByTagName (&quot;FloatingHoliday&quot;))) {</span>
-<span class="nc bnc" id="L253" title="All 2 branches missed.">			for (int j = 0; j &lt; nlHols.getLength(); ++j) {</span>
-<span class="nc bnc" id="L254" title="All 2 branches missed.">				if (null == nlHols.item (j) || org.w3c.dom.Node.ELEMENT_NODE != nlHols.item</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">					(j).getNodeType())</span>
-<span class="nc" id="L256">					continue;</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		if (null != (nlHols = e.getElementsByTagName (&quot;FloatingHoliday&quot;))) {</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">			for (int j = 0; j &lt; nlHols.getLength(); ++j) {</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">				if (null == nlHols.item (j) || org.w3c.dom.Node.ELEMENT_NODE != nlHols.item</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">					(j).getNodeType())</span>
+<span class="nc" id="L295">					continue;</span>
 
-<span class="nc" id="L258">				org.w3c.dom.Element elemHol = (org.w3c.dom.Element) nlHols.item (j);</span>
+<span class="nc" id="L297">				org.w3c.dom.Element elemHol = (org.w3c.dom.Element) nlHols.item (j);</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">				if (null != elemHol) {</span>
+<span class="nc bnc" id="L299" title="All 2 branches missed.">				if (null != elemHol) {</span>
 					try {
-<span class="nc" id="L262">						locHols.addFloatingHoliday (IntegerTagValue (elemHol, &quot;WeekInMonth&quot;), IntegerTagValue</span>
-<span class="nc" id="L263">							(elemHol, &quot;WeekDay&quot;), IntegerTagValue (elemHol, &quot;Month&quot;), BooleanTagValue</span>
-<span class="nc" id="L264">								(elemHol, &quot;FromFront&quot;), &quot;&quot;);</span>
-<span class="nc" id="L265">					} catch (java.lang.Exception ex) {</span>
-<span class="nc" id="L266">						ex.printStackTrace();</span>
-<span class="nc" id="L267">					}</span>
+<span class="nc" id="L301">						locHols.addFloatingHoliday (IntegerTagValue (elemHol, &quot;WeekInMonth&quot;), IntegerTagValue</span>
+<span class="nc" id="L302">							(elemHol, &quot;WeekDay&quot;), IntegerTagValue (elemHol, &quot;Month&quot;), BooleanTagValue</span>
+<span class="nc" id="L303">								(elemHol, &quot;FromFront&quot;), &quot;&quot;);</span>
+<span class="nc" id="L304">					} catch (java.lang.Exception ex) {</span>
+<span class="nc" id="L305">						ex.printStackTrace();</span>
+<span class="nc" id="L306">					}</span>
 				}
 			}
 		}
 
-<span class="nc" id="L272">		return locHols;</span>
+<span class="nc" id="L311">		return locHols;</span>
 	}
 
 	/**
@@ -283,17 +322,17 @@ package org.drip.param.config;
 	public static java.lang.String LoggerLocation (
 		final java.lang.String strConfigFile)
 	{
-<span class="nc" id="L286">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
+<span class="nc" id="L325">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
 
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (null == doc) return null;</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (null == doc) return null;</span>
 
-<span class="nc" id="L290">		org.w3c.dom.NodeList nlLogger = doc.getElementsByTagName (&quot;logger&quot;);</span>
+<span class="nc" id="L329">		org.w3c.dom.NodeList nlLogger = doc.getElementsByTagName (&quot;logger&quot;);</span>
 
-<span class="nc bnc" id="L292" title="All 4 branches missed.">		if (null == nlLogger || null == nlLogger.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
-<span class="nc bnc" id="L293" title="All 2 branches missed.">			nlLogger.item (0).getNodeType())</span>
-<span class="nc" id="L294">			return null;</span>
+<span class="nc bnc" id="L331" title="All 4 branches missed.">		if (null == nlLogger || null == nlLogger.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">			nlLogger.item (0).getNodeType())</span>
+<span class="nc" id="L333">			return null;</span>
 
-<span class="nc" id="L296">		return StringTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;Location&quot;);</span>
+<span class="nc" id="L335">		return StringTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;Location&quot;);</span>
 	}
 
 	/**
@@ -307,24 +346,24 @@ package org.drip.param.config;
 	public static java.net.Socket ConnectToAnalServer (
 		final java.lang.String strConfigFile)
 	{
-<span class="nc" id="L310">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
+<span class="nc" id="L349">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
 
-<span class="nc bnc" id="L312" title="All 2 branches missed.">		if (null == doc) return null;</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">		if (null == doc) return null;</span>
 
-<span class="nc" id="L314">		org.w3c.dom.NodeList nlLogger = doc.getElementsByTagName (&quot;analserver&quot;);</span>
+<span class="nc" id="L353">		org.w3c.dom.NodeList nlLogger = doc.getElementsByTagName (&quot;analserver&quot;);</span>
 
-<span class="nc bnc" id="L316" title="All 4 branches missed.">		if (null == nlLogger || null == nlLogger.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
-<span class="nc bnc" id="L317" title="All 2 branches missed.">			nlLogger.item (0).getNodeType())</span>
-<span class="nc" id="L318">			return null;</span>
+<span class="nc bnc" id="L355" title="All 4 branches missed.">		if (null == nlLogger || null == nlLogger.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">			nlLogger.item (0).getNodeType())</span>
+<span class="nc" id="L357">			return null;</span>
 
 		try {
-<span class="nc" id="L321">			return new java.net.Socket (StringTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;host&quot;),</span>
-<span class="nc" id="L322">				IntegerTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;port&quot;));</span>
-<span class="nc" id="L323">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L324">			e.printStackTrace();</span>
+<span class="nc" id="L360">			return new java.net.Socket (StringTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;host&quot;),</span>
+<span class="nc" id="L361">				IntegerTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;port&quot;));</span>
+<span class="nc" id="L362">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L363">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L327">		return null;</span>
+<span class="nc" id="L366">		return null;</span>
 	}
 
 	/**
@@ -338,24 +377,24 @@ package org.drip.param.config;
 	public static java.net.ServerSocket InitAnalServer (
 		final java.lang.String strConfigFile)
 	{
-<span class="nc" id="L341">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
+<span class="nc" id="L380">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
 
-<span class="nc bnc" id="L343" title="All 2 branches missed.">		if (null == doc) return null;</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">		if (null == doc) return null;</span>
 
-<span class="nc" id="L345">		org.w3c.dom.NodeList nlLogger = doc.getElementsByTagName (&quot;analserver&quot;);</span>
+<span class="nc" id="L384">		org.w3c.dom.NodeList nlLogger = doc.getElementsByTagName (&quot;analserver&quot;);</span>
 
-<span class="nc bnc" id="L347" title="All 4 branches missed.">		if (null == nlLogger || null == nlLogger.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
-<span class="nc bnc" id="L348" title="All 2 branches missed.">			nlLogger.item (0).getNodeType())</span>
-<span class="nc" id="L349">			return null;</span>
+<span class="nc bnc" id="L386" title="All 4 branches missed.">		if (null == nlLogger || null == nlLogger.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">			nlLogger.item (0).getNodeType())</span>
+<span class="nc" id="L388">			return null;</span>
 
 		try {
-<span class="nc" id="L352">			return new java.net.ServerSocket (IntegerTagValue ((org.w3c.dom.Element) nlLogger.item (0),</span>
-<span class="nc" id="L353">				&quot;port&quot;), IntegerTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;maxconn&quot;));</span>
-<span class="nc" id="L354">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L355">			e.printStackTrace();</span>
+<span class="nc" id="L391">			return new java.net.ServerSocket (IntegerTagValue ((org.w3c.dom.Element) nlLogger.item (0),</span>
+<span class="nc" id="L392">				&quot;port&quot;), IntegerTagValue ((org.w3c.dom.Element) nlLogger.item (0), &quot;maxconn&quot;));</span>
+<span class="nc" id="L393">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L394">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L358">		return null;</span>
+<span class="nc" id="L397">		return null;</span>
 	}
 
 	/**
@@ -370,20 +409,20 @@ package org.drip.param.config;
 		LoadHolidayCalendars (
 			final java.lang.String strConfigFile)
 		{
-<span class="nc" id="L373">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
+<span class="nc" id="L412">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
 
-<span class="nc bnc" id="L375" title="All 2 branches missed.">		if (null == doc) return null;</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		if (null == doc) return null;</span>
 
-<span class="nc" id="L377">		org.drip.analytics.eventday.Locale lhNYB = LocationHolidays (doc, &quot;NYB&quot;);</span>
+<span class="nc" id="L416">		org.drip.analytics.eventday.Locale lhNYB = LocationHolidays (doc, &quot;NYB&quot;);</span>
 
-<span class="nc bnc" id="L379" title="All 2 branches missed.">		if (null == lhNYB) return null;</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">		if (null == lhNYB) return null;</span>
 
-<span class="nc" id="L381">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols = new</span>
+<span class="nc" id="L420">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt;();
 
-<span class="nc" id="L384">		mapHols.put (&quot;NYB&quot;, lhNYB);</span>
+<span class="nc" id="L423">		mapHols.put (&quot;NYB&quot;, lhNYB);</span>
 
-<span class="nc" id="L386">		return mapHols;</span>
+<span class="nc" id="L425">		return mapHols;</span>
 	}
 
 	/**
@@ -397,44 +436,44 @@ package org.drip.param.config;
 	public static java.sql.Statement OracleInit (
 		final java.lang.String strConfigFile)
 	{
-<span class="fc bfc" id="L400" title="All 2 branches covered.">		if (s_bInit) return s_Statement;</span>
+<span class="fc bfc" id="L439" title="All 2 branches covered.">		if (s_bInit) return s_Statement;</span>
 
-<span class="fc" id="L402">		s_bInit = true;</span>
+<span class="fc" id="L441">		s_bInit = true;</span>
 
-<span class="fc" id="L404">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
+<span class="fc" id="L443">		org.w3c.dom.Document doc = NormalizedXMLDoc (strConfigFile);</span>
 
-<span class="pc bpc" id="L406" title="1 of 2 branches missed.">		if (null == doc) return null;</span>
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">		if (null == doc) return null;</span>
 
-<span class="nc" id="L408">		org.w3c.dom.NodeList nlDBConn = doc.getElementsByTagName (&quot;dbconn&quot;);</span>
+<span class="nc" id="L447">		org.w3c.dom.NodeList nlDBConn = doc.getElementsByTagName (&quot;dbconn&quot;);</span>
 
-<span class="nc bnc" id="L410" title="All 4 branches missed.">		if (null == nlDBConn || null == nlDBConn.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
-<span class="nc bnc" id="L411" title="All 2 branches missed.">			nlDBConn.item (0).getNodeType())</span>
-<span class="nc" id="L412">			return null;</span>
+<span class="nc bnc" id="L449" title="All 4 branches missed.">		if (null == nlDBConn || null == nlDBConn.item (0) || org.w3c.dom.Node.ELEMENT_NODE !=</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">			nlDBConn.item (0).getNodeType())</span>
+<span class="nc" id="L451">			return null;</span>
 
-<span class="nc" id="L414">		org.w3c.dom.Element elemDBConn = (org.w3c.dom.Element) nlDBConn.item (0);</span>
+<span class="nc" id="L453">		org.w3c.dom.Element elemDBConn = (org.w3c.dom.Element) nlDBConn.item (0);</span>
 
 		try {
-<span class="nc" id="L417">			java.lang.Class.forName (&quot;oracle.jdbc.driver.OracleDriver&quot;);</span>
+<span class="nc" id="L456">			java.lang.Class.forName (&quot;oracle.jdbc.driver.OracleDriver&quot;);</span>
 
-<span class="nc" id="L419">			java.lang.String strURL = &quot;jdbc:oracle:thin:@//&quot; + StringTagValue (elemDBConn, &quot;host&quot;) + &quot;:&quot; +</span>
-<span class="nc" id="L420">				StringTagValue (elemDBConn, &quot;port&quot;) + &quot;/&quot; + StringTagValue (elemDBConn, &quot;dbname&quot;);</span>
+<span class="nc" id="L458">			java.lang.String strURL = &quot;jdbc:oracle:thin:@//&quot; + StringTagValue (elemDBConn, &quot;host&quot;) + &quot;:&quot; +</span>
+<span class="nc" id="L459">				StringTagValue (elemDBConn, &quot;port&quot;) + &quot;/&quot; + StringTagValue (elemDBConn, &quot;dbname&quot;);</span>
 
 			// java.lang.String strURL = &quot;jdbc:oracle:thin:@//localhost:1521/XE&quot;;
 
-<span class="nc" id="L424">			System.out.println (&quot;URL: &quot; + strURL);</span>
+<span class="nc" id="L463">			System.out.println (&quot;URL: &quot; + strURL);</span>
 
-<span class="nc" id="L426">			java.sql.Connection conn = java.sql.DriverManager.getConnection (strURL, &quot;hr&quot;, &quot;hr&quot;);</span>
+<span class="nc" id="L465">			java.sql.Connection conn = java.sql.DriverManager.getConnection (strURL, &quot;hr&quot;, &quot;hr&quot;);</span>
 
-<span class="nc" id="L428">			System.out.println (&quot;Conn: &quot; + conn);</span>
+<span class="nc" id="L467">			System.out.println (&quot;Conn: &quot; + conn);</span>
 
-<span class="nc" id="L430">			conn.setAutoCommit (false);</span>
+<span class="nc" id="L469">			conn.setAutoCommit (false);</span>
 
-<span class="nc" id="L432">			return s_Statement = conn.createStatement();</span>
-<span class="nc" id="L433">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L434">			e.printStackTrace();</span>
+<span class="nc" id="L471">			return s_Statement = conn.createStatement();</span>
+<span class="nc" id="L472">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L473">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L437">		return null;</span>
+<span class="nc" id="L476">		return null;</span>
 	}
 
 	/**
@@ -449,70 +488,70 @@ package org.drip.param.config;
 		LoadHolidayCalendarsFromDB (
 			final java.lang.String strConfigFile)
 	{
-<span class="nc" id="L452">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols = new</span>
+<span class="nc" id="L491">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt;();
 
-<span class="nc" id="L455">		java.sql.Statement stmt = OracleInit (strConfigFile);</span>
+<span class="nc" id="L494">		java.sql.Statement stmt = OracleInit (strConfigFile);</span>
 
-<span class="nc bnc" id="L457" title="All 2 branches missed.">		if (null == stmt) return null;</span>
+<span class="nc bnc" id="L496" title="All 2 branches missed.">		if (null == stmt) return null;</span>
 
-<span class="nc" id="L459">		long lStart = System.nanoTime();</span>
+<span class="nc" id="L498">		long lStart = System.nanoTime();</span>
 
 		try {
-<span class="nc" id="L462">			java.sql.ResultSet rs = stmt.executeQuery (&quot;SELECT Location, Holiday FROM Holidays&quot;);</span>
+<span class="nc" id="L501">			java.sql.ResultSet rs = stmt.executeQuery (&quot;SELECT Location, Holiday FROM Holidays&quot;);</span>
 
-<span class="nc bnc" id="L464" title="All 4 branches missed.">			while (null != rs &amp;&amp; rs.next()) {</span>
-<span class="nc" id="L465">				java.lang.String strLocation = rs.getString (&quot;Location&quot;);</span>
+<span class="nc bnc" id="L503" title="All 4 branches missed.">			while (null != rs &amp;&amp; rs.next()) {</span>
+<span class="nc" id="L504">				java.lang.String strLocation = rs.getString (&quot;Location&quot;);</span>
 
-<span class="nc" id="L467">				java.util.Date dtSQLHoliday = rs.getDate (&quot;Holiday&quot;);</span>
+<span class="nc" id="L506">				java.util.Date dtSQLHoliday = rs.getDate (&quot;Holiday&quot;);</span>
 
-<span class="nc bnc" id="L469" title="All 2 branches missed.">				if (null != dtSQLHoliday) {</span>
-<span class="nc" id="L470">					org.drip.analytics.eventday.Locale lh = mapHols.get (strLocation);</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">				if (null != dtSQLHoliday) {</span>
+<span class="nc" id="L509">					org.drip.analytics.eventday.Locale lh = mapHols.get (strLocation);</span>
 
-<span class="nc bnc" id="L472" title="All 2 branches missed.">					if (null == lh) lh = new org.drip.analytics.eventday.Locale();</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">					if (null == lh) lh = new org.drip.analytics.eventday.Locale();</span>
 
-<span class="nc" id="L474">					lh.addStaticHoliday (org.drip.analytics.date.DateUtil.CreateFromYMD</span>
-<span class="nc" id="L475">						(org.drip.analytics.date.DateUtil.Year (dtSQLHoliday),</span>
-<span class="nc" id="L476">							org.drip.analytics.date.DateUtil.Month (dtSQLHoliday),</span>
-<span class="nc" id="L477">								org.drip.analytics.date.DateUtil.Year (dtSQLHoliday)), &quot;&quot;);</span>
+<span class="nc" id="L513">					lh.addStaticHoliday (org.drip.analytics.date.DateUtil.CreateFromYMD</span>
+<span class="nc" id="L514">						(org.drip.analytics.date.DateUtil.Year (dtSQLHoliday),</span>
+<span class="nc" id="L515">							org.drip.analytics.date.DateUtil.Month (dtSQLHoliday),</span>
+<span class="nc" id="L516">								org.drip.analytics.date.DateUtil.Year (dtSQLHoliday)), &quot;&quot;);</span>
 
-<span class="nc" id="L479">					mapHols.put (strLocation, lh);</span>
+<span class="nc" id="L518">					mapHols.put (strLocation, lh);</span>
 				}
-<span class="nc" id="L481">			}</span>
-<span class="nc" id="L482">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L483">			e.printStackTrace();</span>
+<span class="nc" id="L520">			}</span>
+<span class="nc" id="L521">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L522">			e.printStackTrace();</span>
 
-<span class="nc" id="L485">			return null;</span>
-<span class="nc" id="L486">		}</span>
+<span class="nc" id="L524">			return null;</span>
+<span class="nc" id="L525">		}</span>
 
-<span class="nc" id="L488">		int[] aiWeekend = new int[2];</span>
-<span class="nc" id="L489">		aiWeekend[1] = org.drip.analytics.date.DateUtil.SUNDAY;</span>
-<span class="nc" id="L490">		aiWeekend[0] = org.drip.analytics.date.DateUtil.SATURDAY;</span>
+<span class="nc" id="L527">		int[] aiWeekend = new int[2];</span>
+<span class="nc" id="L528">		aiWeekend[1] = org.drip.analytics.date.DateUtil.SUNDAY;</span>
+<span class="nc" id="L529">		aiWeekend[0] = org.drip.analytics.date.DateUtil.SATURDAY;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.analytics.eventday.Locale&gt; me :
-<span class="nc bnc" id="L493" title="All 2 branches missed.">			mapHols.entrySet())</span>
-<span class="nc" id="L494">			me.getValue().addWeekend (aiWeekend);</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">			mapHols.entrySet())</span>
+<span class="nc" id="L533">			me.getValue().addWeekend (aiWeekend);</span>
 
-<span class="nc" id="L496">		System.out.println (&quot;Loading hols from DB took &quot; + (System.nanoTime() - lStart) * 1.e-06 +</span>
+<span class="nc" id="L535">		System.out.println (&quot;Loading hols from DB took &quot; + (System.nanoTime() - lStart) * 1.e-06 +</span>
 			&quot; m-sec\n&quot;);
 
-<span class="nc" id="L499">		return mapHols;</span>
+<span class="nc" id="L538">		return mapHols;</span>
 	}
 
 	public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L506">		java.lang.String strConfigFile = &quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;;</span>
+<span class="nc" id="L545">		java.lang.String strConfigFile = &quot;c:\\Lakshmi\\java\\BondAnal\\Config.xml&quot;;</span>
 
-<span class="nc" id="L508">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols =</span>
-<span class="nc" id="L509">			LoadHolidayCalendars (strConfigFile);</span>
+<span class="nc" id="L547">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.eventday.Locale&gt; mapHols =</span>
+<span class="nc" id="L548">			LoadHolidayCalendars (strConfigFile);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.analytics.eventday.Locale&gt; me :
-<span class="nc bnc" id="L512" title="All 2 branches missed.">			mapHols.entrySet())</span>
-<span class="nc" id="L513">			System.out.println (me.getKey() + &quot;=&quot; + me.getValue());</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">			mapHols.entrySet())</span>
+<span class="nc" id="L552">			System.out.println (me.getKey() + &quot;=&quot; + me.getValue());</span>
 
-<span class="nc" id="L515">		System.out.println (&quot;Logger: &quot; + LoggerLocation (strConfigFile));</span>
-<span class="nc" id="L516">	}</span>
+<span class="nc" id="L554">		System.out.println (&quot;Logger: &quot; + LoggerLocation (strConfigFile));</span>
+<span class="nc" id="L555">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

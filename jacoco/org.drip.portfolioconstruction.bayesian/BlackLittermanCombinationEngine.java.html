@@ -6,33 +6,51 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,73 +67,88 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /**
- * BlackLittermanCombinationEngine implements the Engine that generates the Combined/Posterior Distributions
- *  from the Prior and the Conditional Joint R^1 Multivariate Normal Distributions. The References are:
+ * &lt;i&gt;BlackLittermanCombinationEngine&lt;/i&gt; implements the Engine that generates the Combined/Posterior
+ * Distributions from the Prior and the Conditional Joint R&lt;sup&gt;1&lt;/sup&gt; Multivariate Normal Distributions.
+ * The References are:
  *  
- *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
- *  	Sachs Asset Management
- *  
- *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
- *  	Confidence Levels, Ibbotson Associates, Chicago
+ *  &lt;br&gt;&lt;br&gt;
+ *  	&lt;ul&gt;
+ *  		&lt;li&gt;
+ *  			He. G., and R. Litterman (1999): &lt;i&gt;The Intuition behind the Black-Litterman Model
+ *  				Portfolios&lt;/i&gt; &lt;b&gt;Goldman Sachs Asset Management&lt;/b&gt;
+ *  		&lt;/li&gt;
+ *  		&lt;li&gt;
+ *  			Idzorek, T. (2005): &lt;i&gt;A Step-by-Step Guide to the Black-Litterman Model: Incorporating
+ *  				User-Specified Confidence Levels&lt;/i&gt; &lt;b&gt;Ibbotson Associates&lt;/b&gt; Chicago, IL
+ *  		&lt;/li&gt;
+ *  	&lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BlackLittermanCombinationEngine {
-<span class="fc" id="L65">	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _ps = null;</span>
-<span class="fc" id="L66">	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _pcs = null;</span>
-<span class="fc" id="L67">	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput _frooUnadjusted = null;</span>
+<span class="fc" id="L98">	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _ps = null;</span>
+<span class="fc" id="L99">	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _pcs = null;</span>
+<span class="fc" id="L100">	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput _frooUnadjusted = null;</span>
 
 	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionDistribution()
 	{
-<span class="fc" id="L71">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="fc" id="L104">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="fc" id="L73">		double[] adblPriorMean = _frooUnadjusted.expectedAssetExcessReturns();</span>
+<span class="fc" id="L106">		double[] adblPriorMean = _frooUnadjusted.expectedAssetExcessReturns();</span>
 
-<span class="fc" id="L75">		int iNumAsset = aadblAssetSpaceExcessReturnsCovariance.length;</span>
-<span class="fc" id="L76">		double[][] aadblPriorCovariance = new double[iNumAsset][iNumAsset];</span>
+<span class="fc" id="L108">		int iNumAsset = aadblAssetSpaceExcessReturnsCovariance.length;</span>
+<span class="fc" id="L109">		double[][] aadblPriorCovariance = new double[iNumAsset][iNumAsset];</span>
 
-<span class="fc" id="L78">		double dblRiskFreeRate = _pcs.riskFreeRate();</span>
+<span class="fc" id="L111">		double dblRiskFreeRate = _pcs.riskFreeRate();</span>
 
-<span class="fc" id="L80">		double dblTau = _pcs.tau();</span>
+<span class="fc" id="L113">		double dblTau = _pcs.tau();</span>
 
-<span class="fc bfc" id="L82" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L83">			adblPriorMean[i] = adblPriorMean[i] + dblRiskFreeRate;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L116">			adblPriorMean[i] = adblPriorMean[i] + dblRiskFreeRate;</span>
 
-<span class="fc bfc" id="L85" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="fc" id="L86">				aadblPriorCovariance[i][j] = aadblAssetSpaceExcessReturnsCovariance[i][j] * dblTau;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="fc" id="L119">				aadblPriorCovariance[i][j] = aadblAssetSpaceExcessReturnsCovariance[i][j] * dblTau;</span>
 		}
 
 		try {
-<span class="fc" id="L90">			org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd = new</span>
+<span class="fc" id="L123">			org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd = new</span>
 				org.drip.measure.bayesian.ScopingProjectionVariateDistribution
 					(org.drip.measure.gaussian.R1MultivariateNormal.Standard
-<span class="fc" id="L93">						(_frooUnadjusted.optimalPortfolio().meta(), adblPriorMean, aadblPriorCovariance));</span>
+<span class="fc" id="L126">						(_frooUnadjusted.optimalPortfolio().meta(), adblPriorMean, aadblPriorCovariance));</span>
 
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">			return spvd.addProjectionDistributionLoading (&quot;VIEW&quot;, new</span>
-<span class="fc" id="L96">				org.drip.measure.bayesian.ProjectionDistributionLoading (_ps.excessReturnsDistribution(),</span>
-<span class="fc" id="L97">					_ps.assetSpaceLoading())) ? spvd : null;</span>
-<span class="nc" id="L98">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L99">			e.printStackTrace();</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			return spvd.addProjectionDistributionLoading (&quot;VIEW&quot;, new</span>
+<span class="fc" id="L129">				org.drip.measure.bayesian.ProjectionDistributionLoading (_ps.excessReturnsDistribution(),</span>
+<span class="fc" id="L130">					_ps.assetSpaceLoading())) ? spvd : null;</span>
+<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L132">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L102">		return null;</span>
+<span class="nc" id="L135">		return null;</span>
 	}
 
 	private double[] allocationTilt (
 		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted)
 	{
-<span class="fc" id="L108">		double[] adblUnadjustedWeights = _frooUnadjusted.optimalPortfolio().weights();</span>
+<span class="fc" id="L141">		double[] adblUnadjustedWeights = _frooUnadjusted.optimalPortfolio().weights();</span>
 
-<span class="fc" id="L110">		double[] adblAdjustedWeights = frooAdjusted.optimalPortfolio().weights();</span>
+<span class="fc" id="L143">		double[] adblAdjustedWeights = frooAdjusted.optimalPortfolio().weights();</span>
 
-<span class="fc" id="L112">		int iNumAsset = adblUnadjustedWeights.length;</span>
-<span class="fc" id="L113">		double[] adblAllocationTilt = new double[iNumAsset];</span>
+<span class="fc" id="L145">		int iNumAsset = adblUnadjustedWeights.length;</span>
+<span class="fc" id="L146">		double[] adblAllocationTilt = new double[iNumAsset];</span>
 
-<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L116">			adblAllocationTilt[i] = adblAdjustedWeights[i] - adblUnadjustedWeights[i];</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="fc" id="L149">			adblAllocationTilt[i] = adblAdjustedWeights[i] - adblUnadjustedWeights[i];</span>
 
-<span class="fc" id="L118">		return adblAllocationTilt;</span>
+<span class="fc" id="L151">		return adblAllocationTilt;</span>
 	}
 
 	/**
@@ -133,10 +166,10 @@ public class BlackLittermanCombinationEngine {
 		final org.drip.portfolioconstruction.bayesian.PriorControlSpecification pcs,
 		final org.drip.portfolioconstruction.bayesian.ProjectionSpecification ps)
 		throws java.lang.Exception
-<span class="fc" id="L136">	{</span>
-<span class="pc bpc" id="L137" title="3 of 6 branches missed.">		if (null == (_frooUnadjusted = frooUnadjusted) || null == (_pcs = pcs) || null == (_ps = ps))</span>
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;BlackLittermanCombinationEngine Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L169">	{</span>
+<span class="pc bpc" id="L170" title="3 of 6 branches missed.">		if (null == (_frooUnadjusted = frooUnadjusted) || null == (_pcs = pcs) || null == (_ps = ps))</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;BlackLittermanCombinationEngine Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L172">	}</span>
 
 	/**
 	 * Conduct a Black Litterman Run using a Theil-like Mixed Model Estimator For 0% Confidence in the
@@ -147,34 +180,34 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput noConfidenceRun()
 	{
-<span class="nc" id="L150">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="nc" id="L183">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="nc" id="L152">		double dblTau = _pcs.tau();</span>
+<span class="nc" id="L185">		double dblTau = _pcs.tau();</span>
 
-<span class="nc" id="L154">		int iNumAsset = aadblAssetSpaceExcessReturnsCovariance.length;</span>
-<span class="nc" id="L155">		double[][] aadblBayesianExcessReturnsCovariance = new double[iNumAsset][iNumAsset];</span>
+<span class="nc" id="L187">		int iNumAsset = aadblAssetSpaceExcessReturnsCovariance.length;</span>
+<span class="nc" id="L188">		double[][] aadblBayesianExcessReturnsCovariance = new double[iNumAsset][iNumAsset];</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="nc" id="L159">				aadblBayesianExcessReturnsCovariance[i][j] = aadblAssetSpaceExcessReturnsCovariance[i][j] *</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="nc" id="L192">				aadblBayesianExcessReturnsCovariance[i][j] = aadblAssetSpaceExcessReturnsCovariance[i][j] *</span>
 					dblTau;
 		}
 
-<span class="nc" id="L163">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted =</span>
+<span class="nc" id="L196">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted =</span>
 			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-<span class="nc" id="L165">				(_frooUnadjusted.optimalPortfolio().meta().names(),</span>
-<span class="nc" id="L166">					_frooUnadjusted.expectedAssetExcessReturns(), aadblBayesianExcessReturnsCovariance,</span>
-<span class="nc" id="L167">						_frooUnadjusted.riskAversion());</span>
+<span class="nc" id="L198">				(_frooUnadjusted.optimalPortfolio().meta().names(),</span>
+<span class="nc" id="L199">					_frooUnadjusted.expectedAssetExcessReturns(), aadblBayesianExcessReturnsCovariance,</span>
+<span class="nc" id="L200">						_frooUnadjusted.riskAversion());</span>
 
 		try {
-<span class="nc bnc" id="L170" title="All 2 branches missed.">			return null == frooAdjusted ? null : new</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			return null == frooAdjusted ? null : new</span>
 				org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (frooAdjusted, allocationTilt
-<span class="nc" id="L172">					(frooAdjusted));</span>
-<span class="nc" id="L173">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L174">			e.printStackTrace();</span>
+<span class="nc" id="L205">					(frooAdjusted));</span>
+<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L207">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L177">		return null;</span>
+<span class="nc" id="L210">		return null;</span>
 	}
 
 	/**
@@ -186,41 +219,41 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceRun()
 	{
-<span class="fc" id="L189">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="fc" id="L222">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="fc" id="L191">		org.drip.measure.continuous.MultivariateMeta meta = _frooUnadjusted.optimalPortfolio().meta();</span>
+<span class="fc" id="L224">		org.drip.measure.continuous.MultivariateMeta meta = _frooUnadjusted.optimalPortfolio().meta();</span>
 
-<span class="fc" id="L193">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
-<span class="fc" id="L194">			scopingProjectionDistribution();</span>
+<span class="fc" id="L226">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
+<span class="fc" id="L227">			scopingProjectionDistribution();</span>
 
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L198">		org.drip.measure.bayesian.JointPosteriorMetrics jpm =</span>
-<span class="fc" id="L199">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (spvd, &quot;VIEW&quot;,</span>
-<span class="fc" id="L200">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
-<span class="fc" id="L201">					spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
+<span class="fc" id="L231">		org.drip.measure.bayesian.JointPosteriorMetrics jpm =</span>
+<span class="fc" id="L232">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (spvd, &quot;VIEW&quot;,</span>
+<span class="fc" id="L233">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
+<span class="fc" id="L234">					spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
 
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		if (null == jpm) return null;</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">		if (null == jpm) return null;</span>
 
-<span class="fc" id="L205">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();</span>
+<span class="fc" id="L238">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();</span>
 
-<span class="fc" id="L207">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted =</span>
-<span class="fc" id="L208">			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (meta.names(),</span>
-<span class="fc bfc" id="L209" title="All 2 branches covered.">				r1mPosterior.mean(), _pcs.useAlternateReferenceModel() ?</span>
+<span class="fc" id="L240">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted =</span>
+<span class="fc" id="L241">			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (meta.names(),</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">				r1mPosterior.mean(), _pcs.useAlternateReferenceModel() ?</span>
 					aadblAssetSpaceExcessReturnsCovariance :
 						((org.drip.measure.gaussian.R1MultivariateNormal)
-<span class="fc" id="L212">							r1mPosterior).covariance().covarianceMatrix(), _frooUnadjusted.riskAversion());</span>
+<span class="fc" id="L245">							r1mPosterior).covariance().covarianceMatrix(), _frooUnadjusted.riskAversion());</span>
 
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		if (null == frooAdjusted) return null;</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">		if (null == frooAdjusted) return null;</span>
 
 		try {
-<span class="fc" id="L217">			return new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput</span>
-<span class="fc" id="L218">				(frooAdjusted, allocationTilt (frooAdjusted), jpm);</span>
-<span class="nc" id="L219">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L220">			e.printStackTrace();</span>
+<span class="fc" id="L250">			return new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput</span>
+<span class="fc" id="L251">				(frooAdjusted, allocationTilt (frooAdjusted), jpm);</span>
+<span class="nc" id="L252">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L253">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L223">		return null;</span>
+<span class="nc" id="L256">		return null;</span>
 	}
 
 	/**
@@ -232,47 +265,47 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
 	{
-<span class="fc" id="L235">		org.drip.measure.continuous.MultivariateMeta meta = _frooUnadjusted.optimalPortfolio().meta();</span>
+<span class="fc" id="L268">		org.drip.measure.continuous.MultivariateMeta meta = _frooUnadjusted.optimalPortfolio().meta();</span>
 
-<span class="fc" id="L237">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="fc" id="L270">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="fc" id="L239">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
+<span class="fc" id="L272">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
 
-<span class="fc" id="L241">		java.lang.String[] astrAssetID = meta.names();</span>
+<span class="fc" id="L274">		java.lang.String[] astrAssetID = meta.names();</span>
 
-<span class="fc" id="L243">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
-<span class="fc" id="L244">			scopingProjectionDistribution();</span>
+<span class="fc" id="L276">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
+<span class="fc" id="L277">			scopingProjectionDistribution();</span>
 
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L248">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted = null;</span>
+<span class="fc" id="L281">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted = null;</span>
 
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">		if (_pcs.useAlternateReferenceModel())</span>
-<span class="fc" id="L251">			frooAdjusted = org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward</span>
-<span class="fc" id="L252">				(astrAssetID,</span>
-<span class="fc" id="L253">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (spvd,</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">		if (_pcs.useAlternateReferenceModel())</span>
+<span class="fc" id="L284">			frooAdjusted = org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward</span>
+<span class="fc" id="L285">				(astrAssetID,</span>
+<span class="fc" id="L286">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (spvd,</span>
 						&quot;VIEW&quot;), aadblAssetSpaceExcessReturnsCovariance, dblRiskAversion);
 		else {
-<span class="nc" id="L256">			org.drip.measure.gaussian.R1MultivariateNormal r1mnCombined =</span>
+<span class="nc" id="L289">			org.drip.measure.gaussian.R1MultivariateNormal r1mnCombined =</span>
 				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution
-<span class="nc" id="L258">					(spvd, &quot;VIEW&quot;, org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
-<span class="nc" id="L259">						spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
+<span class="nc" id="L291">					(spvd, &quot;VIEW&quot;, org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
+<span class="nc" id="L292">						spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
 
-<span class="nc bnc" id="L261" title="All 2 branches missed.">			frooAdjusted = null == r1mnCombined ? null :</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">			frooAdjusted = null == r1mnCombined ? null :</span>
 				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-<span class="nc" id="L263">					(astrAssetID, r1mnCombined.mean(), aadblAssetSpaceExcessReturnsCovariance,</span>
+<span class="nc" id="L296">					(astrAssetID, r1mnCombined.mean(), aadblAssetSpaceExcessReturnsCovariance,</span>
 						dblRiskAversion);
 		}
 
 		try {
-<span class="pc bpc" id="L268" title="1 of 2 branches missed.">			return null == frooAdjusted ? null : new</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">			return null == frooAdjusted ? null : new</span>
 				org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (frooAdjusted, allocationTilt
-<span class="fc" id="L270">					(frooAdjusted));</span>
-<span class="nc" id="L271">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L272">			e.printStackTrace();</span>
+<span class="fc" id="L303">					(frooAdjusted));</span>
+<span class="nc" id="L304">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L305">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L275">		return null;</span>
+<span class="nc" id="L308">		return null;</span>
 	}
 
 	/**
@@ -283,72 +316,72 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput impliedConfidenceRun()
 	{
-<span class="fc" id="L286">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="fc" id="L319">		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="fc" id="L288">		org.drip.portfolioconstruction.asset.Portfolio pfUnadjusted = _frooUnadjusted.optimalPortfolio();</span>
+<span class="fc" id="L321">		org.drip.portfolioconstruction.asset.Portfolio pfUnadjusted = _frooUnadjusted.optimalPortfolio();</span>
 
-<span class="fc" id="L290">		org.drip.measure.continuous.MultivariateMeta meta = pfUnadjusted.meta();</span>
+<span class="fc" id="L323">		org.drip.measure.continuous.MultivariateMeta meta = pfUnadjusted.meta();</span>
 
-<span class="fc" id="L292">		boolean bUseAlternateReferenceModel = _pcs.useAlternateReferenceModel();</span>
+<span class="fc" id="L325">		boolean bUseAlternateReferenceModel = _pcs.useAlternateReferenceModel();</span>
 
-<span class="fc" id="L294">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
+<span class="fc" id="L327">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
 
-<span class="fc" id="L296">		java.lang.String[] astrAssetID = meta.names();</span>
+<span class="fc" id="L329">		java.lang.String[] astrAssetID = meta.names();</span>
 
-<span class="fc" id="L298">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
-<span class="fc" id="L299">			scopingProjectionDistribution();</span>
+<span class="fc" id="L331">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
+<span class="fc" id="L332">			scopingProjectionDistribution();</span>
 
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L303">		org.drip.measure.bayesian.JointPosteriorMetrics jpm =</span>
-<span class="fc" id="L304">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (spvd, &quot;VIEW&quot;,</span>
-<span class="fc" id="L305">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
-<span class="fc" id="L306">					spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
+<span class="fc" id="L336">		org.drip.measure.bayesian.JointPosteriorMetrics jpm =</span>
+<span class="fc" id="L337">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (spvd, &quot;VIEW&quot;,</span>
+<span class="fc" id="L338">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
+<span class="fc" id="L339">					spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
 
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">		if (null == jpm) return null;</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		if (null == jpm) return null;</span>
 
-<span class="fc" id="L310">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();</span>
+<span class="fc" id="L343">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();</span>
 
-<span class="fc" id="L312">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooCustomConfidence =</span>
-<span class="fc" id="L313">			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (astrAssetID,</span>
-<span class="pc bpc" id="L314" title="1 of 2 branches missed.">				r1mPosterior.mean(), bUseAlternateReferenceModel ? aadblAssetSpaceExcessReturnsCovariance :</span>
+<span class="fc" id="L345">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooCustomConfidence =</span>
+<span class="fc" id="L346">			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (astrAssetID,</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">				r1mPosterior.mean(), bUseAlternateReferenceModel ? aadblAssetSpaceExcessReturnsCovariance :</span>
 					((org.drip.measure.gaussian.R1MultivariateNormal)
-<span class="pc" id="L316">						r1mPosterior).covariance().covarianceMatrix(), dblRiskAversion);</span>
+<span class="pc" id="L349">						r1mPosterior).covariance().covarianceMatrix(), dblRiskAversion);</span>
 
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		if (null == frooCustomConfidence) return null;</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">		if (null == frooCustomConfidence) return null;</span>
 
-<span class="fc" id="L320">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooFullConfidence = null;</span>
+<span class="fc" id="L353">		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooFullConfidence = null;</span>
 
-<span class="pc bpc" id="L322" title="1 of 2 branches missed.">		if (bUseAlternateReferenceModel)</span>
-<span class="fc" id="L323">			frooFullConfidence =</span>
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		if (bUseAlternateReferenceModel)</span>
+<span class="fc" id="L356">			frooFullConfidence =</span>
 				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-<span class="fc" id="L325">					(astrAssetID,</span>
+<span class="fc" id="L358">					(astrAssetID,</span>
 						org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean
-<span class="fc" id="L327">							(spvd, &quot;VIEW&quot;), aadblAssetSpaceExcessReturnsCovariance, dblRiskAversion);</span>
+<span class="fc" id="L360">							(spvd, &quot;VIEW&quot;), aadblAssetSpaceExcessReturnsCovariance, dblRiskAversion);</span>
 		else {
-<span class="nc" id="L329">			org.drip.measure.gaussian.R1MultivariateNormal r1mnCombined =</span>
+<span class="nc" id="L362">			org.drip.measure.gaussian.R1MultivariateNormal r1mnCombined =</span>
 				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution
-<span class="nc" id="L331">					(spvd, &quot;VIEW&quot;, org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
-<span class="nc" id="L332">						spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
+<span class="nc" id="L364">					(spvd, &quot;VIEW&quot;, org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,</span>
+<span class="nc" id="L365">						spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));</span>
 
-<span class="nc bnc" id="L334" title="All 2 branches missed.">			frooFullConfidence = null == r1mnCombined ? null :</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">			frooFullConfidence = null == r1mnCombined ? null :</span>
 				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-<span class="nc" id="L336">					(astrAssetID, r1mnCombined.mean(), aadblAssetSpaceExcessReturnsCovariance,</span>
+<span class="nc" id="L369">					(astrAssetID, r1mnCombined.mean(), aadblAssetSpaceExcessReturnsCovariance,</span>
 						dblRiskAversion);
 		}
 
 		try {
-<span class="fc" id="L341">			return new org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput</span>
-<span class="fc" id="L342">				(pfUnadjusted.weights(), new</span>
+<span class="fc" id="L374">			return new org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput</span>
+<span class="fc" id="L375">				(pfUnadjusted.weights(), new</span>
 					org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput
-<span class="fc" id="L344">						(frooCustomConfidence, allocationTilt (frooCustomConfidence), jpm), new</span>
+<span class="fc" id="L377">						(frooCustomConfidence, allocationTilt (frooCustomConfidence), jpm), new</span>
 							org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (frooFullConfidence,
-<span class="fc" id="L346">								allocationTilt (frooFullConfidence)));</span>
-<span class="nc" id="L347">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L348">			e.printStackTrace();</span>
+<span class="fc" id="L379">								allocationTilt (frooFullConfidence)));</span>
+<span class="nc" id="L380">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L381">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L351">		return null;</span>
+<span class="nc" id="L384">		return null;</span>
 	}
 
 	/**
@@ -359,80 +392,80 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution()
 	{
-<span class="fc" id="L362">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
-<span class="fc" id="L363">			scopingProjectionDistribution();</span>
+<span class="fc" id="L395">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =</span>
+<span class="fc" id="L396">			scopingProjectionDistribution();</span>
 
-<span class="pc bpc" id="L365" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L398" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L367">		double[] adblIntraViewComponent =</span>
-<span class="fc" id="L368">			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (spvd,</span>
+<span class="fc" id="L400">		double[] adblIntraViewComponent =</span>
+<span class="fc" id="L401">			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (spvd,</span>
 				&quot;VIEW&quot;);
 
-<span class="pc bpc" id="L371" title="1 of 2 branches missed.">		if (null == adblIntraViewComponent) return null;</span>
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">		if (null == adblIntraViewComponent) return null;</span>
 
-<span class="fc" id="L373">		double dblTau = _pcs.tau();</span>
+<span class="fc" id="L406">		double dblTau = _pcs.tau();</span>
 
-<span class="fc" id="L375">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
+<span class="fc" id="L408">		double dblRiskAversion = _frooUnadjusted.riskAversion();</span>
 
-<span class="fc" id="L377">		double[][] aadblProjectionSpaceLoading = _ps.assetSpaceLoading();</span>
+<span class="fc" id="L410">		double[][] aadblProjectionSpaceLoading = _ps.assetSpaceLoading();</span>
 
-<span class="fc" id="L379">		double[][] aadblAssetExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
+<span class="fc" id="L412">		double[][] aadblAssetExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();</span>
 
-<span class="fc" id="L381">		int iNumView = adblIntraViewComponent.length;</span>
-<span class="fc" id="L382">		double dblProjectionConfidenceScaler = 1. / dblTau;</span>
-<span class="fc" id="L383">		double dblAssetConfidenceScaler = 1. / (1. + dblTau);</span>
-<span class="fc" id="L384">		int iNumAsset = aadblAssetExcessReturnsCovariance.length;</span>
-<span class="fc" id="L385">		double[][] aadblCompositeConfidenceCovariance = new double[iNumView][iNumView];</span>
+<span class="fc" id="L414">		int iNumView = adblIntraViewComponent.length;</span>
+<span class="fc" id="L415">		double dblProjectionConfidenceScaler = 1. / dblTau;</span>
+<span class="fc" id="L416">		double dblAssetConfidenceScaler = 1. / (1. + dblTau);</span>
+<span class="fc" id="L417">		int iNumAsset = aadblAssetExcessReturnsCovariance.length;</span>
+<span class="fc" id="L418">		double[][] aadblCompositeConfidenceCovariance = new double[iNumView][iNumView];</span>
 
-<span class="fc bfc" id="L387" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i)</span>
-<span class="fc" id="L388">			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i)</span>
+<span class="fc" id="L421">			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;</span>
 
-<span class="fc" id="L390">		double[][] aadblProjectionSpaceAssetCovariance = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L391">			(org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,</span>
+<span class="fc" id="L423">		double[][] aadblProjectionSpaceAssetCovariance = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L424">			(org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,</span>
 				aadblAssetExcessReturnsCovariance), org.drip.quant.linearalgebra.Matrix.Transpose
-<span class="fc" id="L393">					(aadblProjectionSpaceLoading));</span>
+<span class="fc" id="L426">					(aadblProjectionSpaceLoading));</span>
 
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">		if (null == aadblProjectionSpaceAssetCovariance) return null;</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">		if (null == aadblProjectionSpaceAssetCovariance) return null;</span>
 
-<span class="fc" id="L397">		double[][] aadblProjectionCovariance =</span>
-<span class="fc" id="L398">			_ps.excessReturnsDistribution().covariance().covarianceMatrix();</span>
+<span class="fc" id="L430">		double[][] aadblProjectionCovariance =</span>
+<span class="fc" id="L431">			_ps.excessReturnsDistribution().covariance().covarianceMatrix();</span>
 
-<span class="fc bfc" id="L400" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
-<span class="fc bfc" id="L401" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumView; ++j)</span>
-<span class="fc" id="L402">				aadblCompositeConfidenceCovariance[i][j] = aadblProjectionCovariance[i][j] *</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumView; ++j)</span>
+<span class="fc" id="L435">				aadblCompositeConfidenceCovariance[i][j] = aadblProjectionCovariance[i][j] *</span>
 					dblProjectionConfidenceScaler + aadblProjectionSpaceAssetCovariance[i][j] *
 						dblAssetConfidenceScaler;
 		}
 
-<span class="fc" id="L407">		double[][] aadblCompositePrecisionProjectionScoping = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L408">			(org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L409">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="fc" id="L410">					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),</span>
+<span class="fc" id="L440">		double[][] aadblCompositePrecisionProjectionScoping = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L441">			(org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L442">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L443">					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),</span>
 						aadblAssetExcessReturnsCovariance);
 
-<span class="pc bpc" id="L413" title="1 of 2 branches missed.">		if (null == aadblCompositePrecisionProjectionScoping) return null;</span>
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">		if (null == aadblCompositePrecisionProjectionScoping) return null;</span>
 
-<span class="fc bfc" id="L415" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
-<span class="fc bfc" id="L416" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="fc" id="L417">				aadblCompositePrecisionProjectionScoping[i][j] = -1. * dblAssetConfidenceScaler *</span>
+<span class="fc bfc" id="L448" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="fc" id="L450">				aadblCompositePrecisionProjectionScoping[i][j] = -1. * dblAssetConfidenceScaler *</span>
 					aadblCompositePrecisionProjectionScoping[i][j];
 		}
 
 		try {
-<span class="fc" id="L422">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,</span>
-<span class="fc" id="L423">				org.drip.quant.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,</span>
-<span class="fc" id="L424">					_frooUnadjusted.optimalPortfolio().weights()),</span>
+<span class="fc" id="L455">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,</span>
+<span class="fc" id="L456">				org.drip.quant.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,</span>
+<span class="fc" id="L457">					_frooUnadjusted.optimalPortfolio().weights()),</span>
 						org.drip.quant.linearalgebra.Matrix.Product
-<span class="fc" id="L426">							(org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L427">								(aadblCompositePrecisionProjectionScoping,</span>
+<span class="fc" id="L459">							(org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L460">								(aadblCompositePrecisionProjectionScoping,</span>
 									org.drip.quant.linearalgebra.Matrix.Transpose
-<span class="fc" id="L429">										(aadblProjectionSpaceLoading)), adblIntraViewComponent),</span>
+<span class="fc" id="L462">										(aadblProjectionSpaceLoading)), adblIntraViewComponent),</span>
 											aadblCompositeConfidenceCovariance);
-<span class="nc" id="L431">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L432">			e.printStackTrace();</span>
+<span class="nc" id="L464">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L465">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L435">		return null;</span>
+<span class="nc" id="L468">		return null;</span>
 	}
 
 	/**
@@ -446,29 +479,29 @@ public class BlackLittermanCombinationEngine {
 	public double[][] userConfidenceProjectionTilt (
 		final double[] adblUserSpecifiedProjectionConfidence)
 	{
-<span class="pc bpc" id="L449" title="1 of 2 branches missed.">		if (null == adblUserSpecifiedProjectionConfidence) return null;</span>
+<span class="pc bpc" id="L482" title="1 of 2 branches missed.">		if (null == adblUserSpecifiedProjectionConfidence) return null;</span>
 
-<span class="fc" id="L451">		double[][] aadblAssetSpaceLoading = _ps.assetSpaceLoading();</span>
+<span class="fc" id="L484">		double[][] aadblAssetSpaceLoading = _ps.assetSpaceLoading();</span>
 
-<span class="fc" id="L453">		int iNumAsset = aadblAssetSpaceLoading[0].length;</span>
-<span class="fc" id="L454">		int iNumProjection = aadblAssetSpaceLoading.length;</span>
-<span class="fc" id="L455">		double[][] aadblProjectionTilt = new double[iNumProjection][iNumAsset];</span>
+<span class="fc" id="L486">		int iNumAsset = aadblAssetSpaceLoading[0].length;</span>
+<span class="fc" id="L487">		int iNumProjection = aadblAssetSpaceLoading.length;</span>
+<span class="fc" id="L488">		double[][] aadblProjectionTilt = new double[iNumProjection][iNumAsset];</span>
 
-<span class="pc bpc" id="L457" title="1 of 2 branches missed.">		if (iNumProjection != adblUserSpecifiedProjectionConfidence.length) return null;</span>
+<span class="pc bpc" id="L490" title="1 of 2 branches missed.">		if (iNumProjection != adblUserSpecifiedProjectionConfidence.length) return null;</span>
 
-<span class="fc" id="L459">		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput bloFullConfidence = fullConfidenceRun();</span>
+<span class="fc" id="L492">		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput bloFullConfidence = fullConfidenceRun();</span>
 
-<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		if (null == bloFullConfidence) return null;</span>
+<span class="pc bpc" id="L494" title="1 of 2 branches missed.">		if (null == bloFullConfidence) return null;</span>
 
-<span class="fc" id="L463">		double[] adblFullConfidenceWeightsDeviation = bloFullConfidence.allocationAdjustmentTilt();</span>
+<span class="fc" id="L496">		double[] adblFullConfidenceWeightsDeviation = bloFullConfidence.allocationAdjustmentTilt();</span>
 
-<span class="fc bfc" id="L465" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumProjection; ++i) {</span>
-<span class="fc bfc" id="L466" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="fc" id="L467">				aadblProjectionTilt[i][j] = adblFullConfidenceWeightsDeviation[j] *</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumProjection; ++i) {</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="fc" id="L500">				aadblProjectionTilt[i][j] = adblFullConfidenceWeightsDeviation[j] *</span>
 					aadblAssetSpaceLoading[i][j] * adblUserSpecifiedProjectionConfidence[i];
 		}
 
-<span class="fc" id="L471">		return aadblProjectionTilt;</span>
+<span class="fc" id="L504">		return aadblProjectionTilt;</span>
 	}
 
 	/**
@@ -489,55 +522,55 @@ public class BlackLittermanCombinationEngine {
 		final double dblProjectionVariance)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L492" title="1 of 2 branches missed.">		if (null == adblUserConfidenceProjectionTilt || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L493" title="1 of 2 branches missed.">			(dblProjectionVariance))</span>
-<span class="nc" id="L494">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L525" title="1 of 2 branches missed.">		if (null == adblUserConfidenceProjectionTilt || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">			(dblProjectionVariance))</span>
+<span class="nc" id="L527">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L497">		org.drip.measure.gaussian.R1MultivariateNormal r1mnTotal = _ps.excessReturnsDistribution();</span>
+<span class="fc" id="L530">		org.drip.measure.gaussian.R1MultivariateNormal r1mnTotal = _ps.excessReturnsDistribution();</span>
 
-<span class="fc" id="L499">		org.drip.measure.gaussian.R1MultivariateNormal r1mnProjection =</span>
-<span class="fc" id="L500">			org.drip.measure.gaussian.R1MultivariateNormal.Standard (new java.lang.String[]</span>
-<span class="fc" id="L501">				{r1mnTotal.meta().names()[iProjectionIndex]}, new double[]</span>
-<span class="fc" id="L502">					{r1mnTotal.mean()[iProjectionIndex]}, new double[][] {{dblProjectionVariance}});</span>
+<span class="fc" id="L532">		org.drip.measure.gaussian.R1MultivariateNormal r1mnProjection =</span>
+<span class="fc" id="L533">			org.drip.measure.gaussian.R1MultivariateNormal.Standard (new java.lang.String[]</span>
+<span class="fc" id="L534">				{r1mnTotal.meta().names()[iProjectionIndex]}, new double[]</span>
+<span class="fc" id="L535">					{r1mnTotal.mean()[iProjectionIndex]}, new double[][] {{dblProjectionVariance}});</span>
 
-<span class="pc bpc" id="L504" title="1 of 2 branches missed.">		if (null == r1mnProjection)</span>
-<span class="nc" id="L505">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">		if (null == r1mnProjection)</span>
+<span class="nc" id="L538">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L508">		org.drip.portfolioconstruction.bayesian.ProjectionSpecification psProjection = new</span>
+<span class="fc" id="L541">		org.drip.portfolioconstruction.bayesian.ProjectionSpecification psProjection = new</span>
 			org.drip.portfolioconstruction.bayesian.ProjectionSpecification (r1mnProjection, new double[][]
-<span class="fc" id="L510">				{_ps.assetSpaceLoading()[iProjectionIndex]});</span>
+<span class="fc" id="L543">				{_ps.assetSpaceLoading()[iProjectionIndex]});</span>
 
-<span class="fc" id="L512">		BlackLittermanCombinationEngine blceProjection = new BlackLittermanCombinationEngine</span>
+<span class="fc" id="L545">		BlackLittermanCombinationEngine blceProjection = new BlackLittermanCombinationEngine</span>
 			(_frooUnadjusted, _pcs, psProjection);
 
-<span class="fc" id="L515">		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blcco =</span>
-<span class="fc" id="L516">			blceProjection.customConfidenceRun();</span>
+<span class="fc" id="L548">		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blcco =</span>
+<span class="fc" id="L549">			blceProjection.customConfidenceRun();</span>
 
-<span class="pc bpc" id="L518" title="1 of 2 branches missed.">		if (null == blcco)</span>
-<span class="nc" id="L519">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L551" title="1 of 2 branches missed.">		if (null == blcco)</span>
+<span class="nc" id="L552">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L522">		double[] adblPosteriorTilt = blcco.allocationAdjustmentTilt();</span>
+<span class="fc" id="L555">		double[] adblPosteriorTilt = blcco.allocationAdjustmentTilt();</span>
 
-<span class="fc" id="L524">		int iNumAsset = adblPosteriorTilt.length;</span>
-<span class="fc" id="L525">		double dblTiltGap = 0.;</span>
+<span class="fc" id="L557">		int iNumAsset = adblPosteriorTilt.length;</span>
+<span class="fc" id="L558">		double dblTiltGap = 0.;</span>
 
-<span class="pc bpc" id="L527" title="1 of 2 branches missed.">		if (iNumAsset != adblUserConfidenceProjectionTilt.length)</span>
-<span class="nc" id="L528">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L560" title="1 of 2 branches missed.">		if (iNumAsset != adblUserConfidenceProjectionTilt.length)</span>
+<span class="nc" id="L561">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 
-<span class="fc bfc" id="L531" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))</span>
-<span class="nc" id="L533">				throw new java.lang.Exception</span>
+<span class="fc bfc" id="L564" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))</span>
+<span class="nc" id="L566">				throw new java.lang.Exception</span>
 					(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L536">			double dblAssetTiltGap = adblPosteriorTilt[i] - adblUserConfidenceProjectionTilt[i];</span>
-<span class="fc" id="L537">			dblTiltGap = dblTiltGap + dblAssetTiltGap * dblAssetTiltGap;</span>
+<span class="fc" id="L569">			double dblAssetTiltGap = adblPosteriorTilt[i] - adblUserConfidenceProjectionTilt[i];</span>
+<span class="fc" id="L570">			dblTiltGap = dblTiltGap + dblAssetTiltGap * dblAssetTiltGap;</span>
 		}
 
-<span class="fc" id="L540">		return dblTiltGap;</span>
+<span class="fc" id="L573">		return dblTiltGap;</span>
 	}
 
 	/**
@@ -555,25 +588,25 @@ public class BlackLittermanCombinationEngine {
 		final int iProjectionIndex,
 		final boolean bDerivative)
 	{
-<span class="fc" id="L558">		final org.drip.function.definition.R1ToR1 r1ToR1TiltDeparture = new</span>
-<span class="fc" id="L559">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L591">		final org.drip.function.definition.R1ToR1 r1ToR1TiltDeparture = new</span>
+<span class="fc" id="L592">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblProjectionVariance)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L564">				return tiltMismatch (adblUserConfidenceProjectionTilt, iProjectionIndex,</span>
+<span class="fc" id="L597">				return tiltMismatch (adblUserConfidenceProjectionTilt, iProjectionIndex,</span>
 					dblProjectionVariance);
 			}
 		};
 
-<span class="fc bfc" id="L569" title="All 2 branches covered.">		if (!bDerivative) return r1ToR1TiltDeparture;</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">		if (!bDerivative) return r1ToR1TiltDeparture;</span>
 
-<span class="fc" id="L571">		return new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L604">		return new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblProjectionVariance)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L576">				return r1ToR1TiltDeparture.derivative (dblProjectionVariance, 1);</span>
+<span class="fc" id="L609">				return r1ToR1TiltDeparture.derivative (dblProjectionVariance, 1);</span>
 			}
 		};
 	}

@@ -6,32 +6,50 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,7 +66,15 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /**
- * LimitChargeTermIssuer constrains the Limit Issuer Transaction Charge Term.
+ * &lt;i&gt;LimitChargeTermIssuer&lt;/i&gt; constrains the Limit Issuer Transaction Charge Term.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -80,7 +106,7 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 	{
 		try {
-<span class="nc" id="L83">			return new LimitChargeTermIssuer (</span>
+<span class="nc" id="L109">			return new LimitChargeTermIssuer (</span>
 				strName,
 				&quot;CT_LIMIT_TRANSACTION_CHARGE&quot;,
 				&quot;Constrains the Total Transaction Charge&quot;,
@@ -90,11 +116,11 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 				dblMaximum,
 				adblInitialHoldings,
 				aTransactionCharge);
-<span class="nc" id="L93">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L94">			e.printStackTrace();</span>
+<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L97">		return null;</span>
+<span class="nc" id="L123">		return null;</span>
 	}
 
 	/**
@@ -122,7 +148,7 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 			aTransactionChargeGSS)
 	{
 		try {
-<span class="nc" id="L125">			return new LimitChargeTermIssuer (</span>
+<span class="nc" id="L151">			return new LimitChargeTermIssuer (</span>
 				strName,
 				&quot;CT_LIMIT_GOLDMAN_SACHS_SHORTFALL&quot;,
 				&quot;Constrains the Total Transaction Charge using the Goldman Sachs Shortfall Model&quot;,
@@ -132,15 +158,15 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 				dblMaximum,
 				adblInitialHoldings,
 				aTransactionChargeGSS);
-<span class="nc" id="L135">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L136">			e.printStackTrace();</span>
+<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L162">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L165">		return null;</span>
 	}
 
-<span class="nc" id="L142">	private double[] _adblInitialHoldings = null;</span>
-<span class="nc" id="L143">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;</span>
+<span class="nc" id="L168">	private double[] _adblInitialHoldings = null;</span>
+<span class="nc" id="L169">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;</span>
 
 	/**
 	 * LimitChargeTermIssuer Constructor
@@ -170,7 +196,7 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L173">		super (</span>
+<span class="nc" id="L199">		super (</span>
 			strName,
 			strID,
 			strDescription,
@@ -181,22 +207,22 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 			dblMaximum
 		);
 
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) ||</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) ||</span>
 			null == (_aTransactionCharge = aTransactionCharge))
-<span class="nc" id="L186">			throw new java.lang.Exception (&quot;LimitChargeTermIssuer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L212">			throw new java.lang.Exception (&quot;LimitChargeTermIssuer Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L188">		int iNumAsset = _adblInitialHoldings.length;</span>
+<span class="nc" id="L214">		int iNumAsset = _adblInitialHoldings.length;</span>
 
-<span class="nc bnc" id="L190" title="All 4 branches missed.">		if (0 == iNumAsset || iNumAsset != _aTransactionCharge.length)</span>
-<span class="nc" id="L191">			throw new java.lang.Exception (&quot;LimitChargeTermIssuer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L216" title="All 4 branches missed.">		if (0 == iNumAsset || iNumAsset != _aTransactionCharge.length)</span>
+<span class="nc" id="L217">			throw new java.lang.Exception (&quot;LimitChargeTermIssuer Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
 		{
-<span class="nc bnc" id="L195" title="All 4 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings[i]) ||</span>
+<span class="nc bnc" id="L221" title="All 4 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings[i]) ||</span>
 				null == _aTransactionCharge[i])
-<span class="nc" id="L197">				throw new java.lang.Exception (&quot;LimitChargeTermIssuer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L223">				throw new java.lang.Exception (&quot;LimitChargeTermIssuer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L199">	}</span>
+<span class="nc" id="L225">	}</span>
 
 	/**
 	 * Retrieve the Array of Initial Holdings
@@ -206,7 +232,7 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 
 	public double[] initialHoldings()
 	{
-<span class="nc" id="L209">		return _adblInitialHoldings;</span>
+<span class="nc" id="L235">		return _adblInitialHoldings;</span>
 	}
 
 	/**
@@ -217,39 +243,39 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
 	{
-<span class="nc" id="L220">		return _aTransactionCharge;</span>
+<span class="nc" id="L246">		return _aTransactionCharge;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L225">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L226">		{</span>
+<span class="nc" id="L251">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L252">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L229">				return initialHoldings().length;</span>
+<span class="nc" id="L255">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L236">				double dblConstraintValue = 0.;</span>
-<span class="nc" id="L237">				int iNumAsset = _adblInitialHoldings.length;</span>
+<span class="nc" id="L262">				double dblConstraintValue = 0.;</span>
+<span class="nc" id="L263">				int iNumAsset = _adblInitialHoldings.length;</span>
 
-<span class="nc bnc" id="L239" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L240" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L241">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L266" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
+<span class="nc" id="L267">					throw new java.lang.Exception</span>
 						(&quot;LimitChargeTermIssuer::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc" id="L245">					dblConstraintValue +=</span>
-<span class="nc" id="L246">						_aTransactionCharge[i].estimate (</span>
-<span class="nc" id="L247">							_adblInitialHoldings[i],</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="nc" id="L271">					dblConstraintValue +=</span>
+<span class="nc" id="L272">						_aTransactionCharge[i].estimate (</span>
+<span class="nc" id="L273">							_adblInitialHoldings[i],</span>
 							adblFinalHoldings[i]
 					);
 				}
 
-<span class="nc" id="L252">				return dblConstraintValue;</span>
+<span class="nc" id="L278">				return dblConstraintValue;</span>
 			}
 		};
 	}

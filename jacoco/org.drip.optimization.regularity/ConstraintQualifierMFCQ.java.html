@@ -6,33 +6,51 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,20 +67,40 @@ package org.drip.optimization.regularity;
  */
 
 /**
- * ConstraintQualifierMFCQ holds the Mangasarian-Fromovitz Constraint Qualifier (MFCQ). The References are:
+ * &lt;i&gt;ConstraintQualifierMFCQ&lt;/i&gt; holds the Mangasarian-Fromovitz Constraint Qualifier (MFCQ). The
+ * References are:
  * 
- * 	- Boyd, S., and L. van den Berghe (2009): Convex Optimization, Cambridge University Press, Cambridge UK.
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Boyd, S., and L. van den Berghe (2009): &lt;i&gt;Convex Optimization&lt;/i&gt; &lt;b&gt;Cambridge University
+ * 				Press&lt;/b&gt; Cambridge UK
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Eustaquio, R., E. Karas, and A. Ribeiro (2008): &lt;i&gt;Constraint Qualification for Nonlinear
+ * 				Programming&lt;/i&gt; &lt;b&gt;Federal University of Parana&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Karush, A. (1939): &lt;i&gt;Minima of Functions of Several Variables with Inequalities as Side
+ * 			Constraints&lt;/i&gt; &lt;b&gt;University of Chicago&lt;/b&gt; Chicago IL
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming &lt;i&gt;Proceedings of the Second Berkeley
+ * 				Symposium&lt;/i&gt; &lt;b&gt;University of California&lt;/b&gt; Berkeley CA 481-492
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ruszczynski, A. (2006): &lt;i&gt;Nonlinear Optimization&lt;/i&gt; &lt;b&gt;Princeton University Press&lt;/b&gt; Princeton
+ * 				NJ
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
  * 
- * 	- Eustaquio, R., E. Karas, and A. Ribeiro (2008): Constraint Qualification for Nonlinear Programming,
- * 		Technical Report, Federal University of Parana.
- * 
- * 	- Karush, A. (1939): Minima of Functions of Several Variables with Inequalities as Side Constraints,
- * 		M. Sc., University of Chicago, Chicago IL.
- * 
- * 	- Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming, Proceedings of the Second Berkeley
- * 		Symposium, University of California, Berkeley CA 481-492.
- * 
- * 	- Ruszczynski, A. (2006): Nonlinear Optimization, Princeton University Press, Princeton NJ.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization&quot;&gt;Optimization&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity&quot;&gt;Regularity Conditions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -81,7 +119,7 @@ public class ConstraintQualifierMFCQ extends org.drip.optimization.regularity.Co
 		final boolean bValid)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L84">		super (&quot;MFCQ&quot;, &quot;MANGASARIAN FROMOVITZ CONSTRAINT QUALIFICATION&quot;, bValid);</span>
-<span class="fc" id="L85">	}</span>
+<span class="fc" id="L122">		super (&quot;MFCQ&quot;, &quot;MANGASARIAN FROMOVITZ CONSTRAINT QUALIFICATION&quot;, bValid);</span>
+<span class="fc" id="L123">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

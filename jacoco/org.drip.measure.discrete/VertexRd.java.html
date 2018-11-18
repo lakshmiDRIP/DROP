@@ -6,32 +6,50 @@ package org.drip.measure.discrete;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,13 +66,21 @@ package org.drip.measure.discrete;
  */
 
 /**
- * VertexRd holds the R^d Realizations at the Individual Vertexes.
+ * &lt;i&gt;VertexRd&lt;/i&gt; holds the R&lt;sup&gt;d&lt;/sup&gt; Realizations at the Individual Vertexes.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class VertexRd {
-<span class="fc" id="L57">	private java.util.List&lt;double[]&gt; _lsVertexRd = new java.util.ArrayList&lt;double[]&gt;();</span>
+<span class="fc" id="L83">	private java.util.List&lt;double[]&gt; _lsVertexRd = new java.util.ArrayList&lt;double[]&gt;();</span>
 
 	/**
 	 * Construct a VertexRd Instance from the R^d Sequence
@@ -67,20 +93,20 @@ public class VertexRd {
 	public static final VertexRd FromFlatForm (
 		final double[][] aadblSequence)
 	{
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">		if (null == aadblSequence) return null;</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (null == aadblSequence) return null;</span>
 
-<span class="fc" id="L72">		int iSequenceSize = aadblSequence.length;</span>
+<span class="fc" id="L98">		int iSequenceSize = aadblSequence.length;</span>
 
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		if (0 == iSequenceSize) return null;</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (0 == iSequenceSize) return null;</span>
 
-<span class="fc" id="L76">		VertexRd vertexRd = new VertexRd();</span>
+<span class="fc" id="L102">		VertexRd vertexRd = new VertexRd();</span>
 
-<span class="fc bfc" id="L78" title="All 2 branches covered.">		for (int iSequence = 0; iSequence &lt; iSequenceSize; ++iSequence) {</span>
-<span class="pc bpc" id="L79" title="2 of 4 branches missed.">			if (null == aadblSequence[iSequence] || !vertexRd.add (iSequence, aadblSequence[iSequence]))</span>
-<span class="nc" id="L80">				return null;</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int iSequence = 0; iSequence &lt; iSequenceSize; ++iSequence) {</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">			if (null == aadblSequence[iSequence] || !vertexRd.add (iSequence, aadblSequence[iSequence]))</span>
+<span class="nc" id="L106">				return null;</span>
 		}
 
-<span class="fc" id="L83">		return vertexRd;</span>
+<span class="fc" id="L109">		return vertexRd;</span>
 	}
 
 	/**
@@ -88,8 +114,8 @@ public class VertexRd {
 	 */
 
 	public VertexRd()
-<span class="fc" id="L91">	{</span>
-<span class="fc" id="L92">	}</span>
+<span class="fc" id="L117">	{</span>
+<span class="fc" id="L118">	}</span>
 
 	/**
 	 * Retrieve the Vertex R^d List
@@ -99,7 +125,7 @@ public class VertexRd {
 
 	public java.util.List&lt;double[]&gt; vertexList()
 	{
-<span class="fc" id="L102">		return _lsVertexRd;</span>
+<span class="fc" id="L128">		return _lsVertexRd;</span>
 	}
 
 	/**
@@ -115,13 +141,13 @@ public class VertexRd {
 		final int iVertex,
 		final double[] adblRealization)
 	{
-<span class="pc bpc" id="L118" title="3 of 6 branches missed.">		if (-1 &gt;= iVertex || null == adblRealization || 0 == adblRealization.length ||</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblRealization))</span>
-<span class="nc" id="L120">			return false;</span>
+<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (-1 &gt;= iVertex || null == adblRealization || 0 == adblRealization.length ||</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblRealization))</span>
+<span class="nc" id="L146">			return false;</span>
 
-<span class="fc" id="L122">		_lsVertexRd.add (iVertex, adblRealization);</span>
+<span class="fc" id="L148">		_lsVertexRd.add (iVertex, adblRealization);</span>
 
-<span class="fc" id="L124">		return true;</span>
+<span class="fc" id="L150">		return true;</span>
 	}
 
 	/**
@@ -135,7 +161,7 @@ public class VertexRd {
 	public double[] vertexRealization (
 		final int iVertex)
 	{
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		return -1 &gt;= iVertex ? null : _lsVertexRd.get (iVertex);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		return -1 &gt;= iVertex ? null : _lsVertexRd.get (iVertex);</span>
 	}
 
 	/**
@@ -146,16 +172,16 @@ public class VertexRd {
 
 	public double[][] flatform()
 	{
-<span class="fc" id="L149">		int iSize = _lsVertexRd.size();</span>
+<span class="fc" id="L175">		int iSize = _lsVertexRd.size();</span>
 
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
 
-<span class="fc" id="L153">		double[][] aadblSequence = new double[iSize][];</span>
+<span class="fc" id="L179">		double[][] aadblSequence = new double[iSize][];</span>
 
-<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="fc" id="L156">			aadblSequence[i] = _lsVertexRd.get (i);</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L182">			aadblSequence[i] = _lsVertexRd.get (i);</span>
 
-<span class="fc" id="L158">		return aadblSequence;</span>
+<span class="fc" id="L184">		return aadblSequence;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

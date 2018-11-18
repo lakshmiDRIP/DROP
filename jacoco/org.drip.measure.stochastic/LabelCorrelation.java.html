@@ -6,31 +6,49 @@ package org.drip.measure.stochastic;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,34 +65,52 @@ package org.drip.measure.stochastic;
  */
 
 /**
- * LabelCorrelation holds the Correlations between any Stochastic Variates identified by their Labels. The
- *  References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;LabelCorrelation&lt;/i&gt; holds the Correlations between any Stochastic Variates identified by their Labels.
+ * The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  			&lt;b&gt;eSSRN&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic&quot;&gt;Stochastic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class LabelCorrelation
 {
-<span class="fc" id="L74">	private double[][] _matrix = null;</span>
-<span class="fc" id="L75">	private java.util.List&lt;java.lang.String&gt; _labelList = null;</span>
+<span class="fc" id="L110">	private double[][] _matrix = null;</span>
+<span class="fc" id="L111">	private java.util.List&lt;java.lang.String&gt; _labelList = null;</span>
 
-<span class="fc" id="L77">	private java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _labelIndexMap = new</span>
+<span class="fc" id="L113">	private java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _labelIndexMap = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Integer&gt;();
 
 	/**
@@ -90,34 +126,34 @@ public class LabelCorrelation
 		final java.util.List&lt;java.lang.String&gt; labelList,
 		final double[][] matrix)
 		throws java.lang.Exception
-<span class="fc" id="L93">	{</span>
-<span class="pc bpc" id="L94" title="2 of 4 branches missed.">		if (null == (_labelList = labelList) ||</span>
+<span class="fc" id="L129">	{</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == (_labelList = labelList) ||</span>
 			null == (_matrix = matrix))
 		{
-<span class="nc" id="L97">			throw new java.lang.Exception (&quot;LabelCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;LabelCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L100">		int labelCount = _labelList.size();</span>
+<span class="fc" id="L136">		int labelCount = _labelList.size();</span>
 
-<span class="pc bpc" id="L102" title="2 of 4 branches missed.">		if (0 == labelCount || labelCount != _matrix.length)</span>
+<span class="pc bpc" id="L138" title="2 of 4 branches missed.">		if (0 == labelCount || labelCount != _matrix.length)</span>
 		{
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;LabelCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;LabelCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int labelIndex = 0; labelIndex &lt; labelCount; ++labelIndex)</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int labelIndex = 0; labelIndex &lt; labelCount; ++labelIndex)</span>
 		{
-<span class="fc" id="L109">			_labelIndexMap.put (</span>
-<span class="fc" id="L110">				_labelList.get (labelIndex),</span>
-<span class="fc" id="L111">				labelIndex</span>
+<span class="fc" id="L145">			_labelIndexMap.put (</span>
+<span class="fc" id="L146">				_labelList.get (labelIndex),</span>
+<span class="fc" id="L147">				labelIndex</span>
 			);
 
-<span class="pc bpc" id="L114" title="2 of 4 branches missed.">			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_matrix[labelIndex]))</span>
+<span class="pc bpc" id="L150" title="2 of 4 branches missed.">			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_matrix[labelIndex]))</span>
 			{
-<span class="nc" id="L117">				throw new java.lang.Exception (&quot;LabelCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L153">				throw new java.lang.Exception (&quot;LabelCorrelation Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Cross-Label Correlation Matrix
@@ -127,7 +163,7 @@ public class LabelCorrelation
 
 	public double[][] matrix()
 	{
-<span class="nc" id="L130">		return _matrix;</span>
+<span class="nc" id="L166">		return _matrix;</span>
 	}
 
 	/**
@@ -138,7 +174,7 @@ public class LabelCorrelation
 
 	public java.util.List&lt;java.lang.String&gt; labelList()
 	{
-<span class="nc" id="L141">		return _labelList;</span>
+<span class="nc" id="L177">		return _labelList;</span>
 	}
 
 	/**
@@ -157,13 +193,13 @@ public class LabelCorrelation
 		final java.lang.String label2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L160" title="All 6 branches missed.">		if (null == label1 || !_labelList.contains (label1) ||</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			null == label2 || !_labelList.contains (label2))</span>
+<span class="nc bnc" id="L196" title="All 6 branches missed.">		if (null == label1 || !_labelList.contains (label1) ||</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">			null == label2 || !_labelList.contains (label2))</span>
 		{
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;LabelCorrelation::entry =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L199">			throw new java.lang.Exception (&quot;LabelCorrelation::entry =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L166">		return _matrix[_labelIndexMap.get (label1)][_labelIndexMap.get (label2)];</span>
+<span class="nc" id="L202">		return _matrix[_labelIndexMap.get (label1)][_labelIndexMap.get (label2)];</span>
 	}
 
 	/**
@@ -177,53 +213,53 @@ public class LabelCorrelation
 	public LabelCorrelation subTenor (
 		final java.util.List&lt;java.lang.String&gt; subTenorList)
 	{
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (null == subTenorList)</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (null == subTenorList)</span>
 		{
-<span class="nc" id="L182">			return null;</span>
+<span class="nc" id="L218">			return null;</span>
 		}
 
-<span class="nc" id="L185">		int subTenorSize = subTenorList.size();</span>
+<span class="nc" id="L221">		int subTenorSize = subTenorList.size();</span>
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">		if (0 == subTenorSize)</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (0 == subTenorSize)</span>
 		{
-<span class="nc" id="L189">			return null;</span>
+<span class="nc" id="L225">			return null;</span>
 		}
 
-<span class="nc" id="L192">		double[][] subTenorMatrix = new double[subTenorSize][subTenorSize];</span>
+<span class="nc" id="L228">		double[][] subTenorMatrix = new double[subTenorSize][subTenorSize];</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int subTenorOuterIndex = 0; subTenorOuterIndex &lt; subTenorSize; ++subTenorOuterIndex)</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int subTenorOuterIndex = 0; subTenorOuterIndex &lt; subTenorSize; ++subTenorOuterIndex)</span>
 		{
-<span class="nc bnc" id="L196" title="All 2 branches missed.">			for (int subTenorInnerIndex = 0; subTenorInnerIndex &lt; subTenorSize; ++subTenorInnerIndex)</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">			for (int subTenorInnerIndex = 0; subTenorInnerIndex &lt; subTenorSize; ++subTenorInnerIndex)</span>
 			{
 				try
 				{
-<span class="nc" id="L200">					subTenorMatrix[subTenorOuterIndex][subTenorInnerIndex] = entry (</span>
-<span class="nc" id="L201">						subTenorList.get (subTenorOuterIndex),</span>
-<span class="nc" id="L202">						subTenorList.get (subTenorInnerIndex)</span>
+<span class="nc" id="L236">					subTenorMatrix[subTenorOuterIndex][subTenorInnerIndex] = entry (</span>
+<span class="nc" id="L237">						subTenorList.get (subTenorOuterIndex),</span>
+<span class="nc" id="L238">						subTenorList.get (subTenorInnerIndex)</span>
 					);
 				}
-<span class="nc" id="L205">				catch (java.lang.Exception e)</span>
+<span class="nc" id="L241">				catch (java.lang.Exception e)</span>
 				{
-<span class="nc" id="L207">					e.printStackTrace();</span>
+<span class="nc" id="L243">					e.printStackTrace();</span>
 
-<span class="nc" id="L209">					return null;</span>
-<span class="nc" id="L210">				}</span>
+<span class="nc" id="L245">					return null;</span>
+<span class="nc" id="L246">				}</span>
 			}
 		}
 
 		try
 		{
-<span class="nc" id="L216">			return new LabelCorrelation (</span>
+<span class="nc" id="L252">			return new LabelCorrelation (</span>
 				subTenorList,
 				subTenorMatrix
 			);
 		}
-<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L257">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L223">			e.printStackTrace();</span>
+<span class="nc" id="L259">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L226">		return null;</span>
+<span class="nc" id="L262">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

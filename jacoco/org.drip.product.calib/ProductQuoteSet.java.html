@@ -6,35 +6,53 @@ package org.drip.product.calib;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,16 +69,24 @@ package org.drip.product.calib;
  */
 
 /**
- * ProductQuoteSet implements the Calibratable type-free Product Quote Shell. The derived calibration sets
- * 	provide custom accessors.
+ * &lt;i&gt;ProductQuoteSet&lt;/i&gt; implements the Calibratable type-free Product Quote Shell. The derived calibration
+ * sets provide custom accessors.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/calib&quot;&gt;Calibrator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ProductQuoteSet {
-<span class="fc" id="L61">	private org.drip.state.representation.LatentStateSpecification[] _aLSS = null;</span>
+<span class="fc" id="L87">	private org.drip.state.representation.LatentStateSpecification[] _aLSS = null;</span>
 
-<span class="fc" id="L63">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapQuote = new</span>
+<span class="fc" id="L89">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapQuote = new</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
 	/**
@@ -74,17 +100,17 @@ public class ProductQuoteSet {
 	public ProductQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 		throws java.lang.Exception
-<span class="fc" id="L77">	{</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (null == (_aLSS = aLSS)) throw new java.lang.Exception (&quot;ProductQuoteSet ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L103">	{</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == (_aLSS = aLSS)) throw new java.lang.Exception (&quot;ProductQuoteSet ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L80">		int iNumLSS = _aLSS.length;</span>
+<span class="fc" id="L106">		int iNumLSS = _aLSS.length;</span>
 
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">		if (0 == iNumLSS) throw new java.lang.Exception (&quot;ProductQuoteSet ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (0 == iNumLSS) throw new java.lang.Exception (&quot;ProductQuoteSet ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L84" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumLSS; ++i) {</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">			if (null == _aLSS[i]) throw new java.lang.Exception (&quot;ProductQuoteSet ctr: Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumLSS; ++i) {</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			if (null == _aLSS[i]) throw new java.lang.Exception (&quot;ProductQuoteSet ctr: Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L87">	}</span>
+<span class="fc" id="L113">	}</span>
 
 	/**
 	 * Retrieve the Array of Latent State Specification
@@ -94,7 +120,7 @@ public class ProductQuoteSet {
 
 	public org.drip.state.representation.LatentStateSpecification[] lss()
 	{
-<span class="fc" id="L97">		return _aLSS;</span>
+<span class="fc" id="L123">		return _aLSS;</span>
 	}
 
 	/**
@@ -108,13 +134,13 @@ public class ProductQuoteSet {
 	public boolean containsLatentStateType (
 		final java.lang.String strLatentStateType)
 	{
-<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == strLatentStateType || strLatentStateType.isEmpty()) return false;</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">		if (null == strLatentStateType || strLatentStateType.isEmpty()) return false;</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">			if (lss.latentState().equalsIgnoreCase (strLatentStateType)) return true;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			if (lss.latentState().equalsIgnoreCase (strLatentStateType)) return true;</span>
 		}
 
-<span class="fc" id="L117">		return false;</span>
+<span class="fc" id="L143">		return false;</span>
 	}
 
 	/**
@@ -125,13 +151,13 @@ public class ProductQuoteSet {
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="fc" id="L129">			if (lss.latentState().equalsIgnoreCase</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD))</span>
-<span class="fc" id="L131">				return (org.drip.state.identifier.ForwardLabel) lss.label();</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="fc" id="L155">			if (lss.latentState().equalsIgnoreCase</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD))</span>
+<span class="fc" id="L157">				return (org.drip.state.identifier.ForwardLabel) lss.label();</span>
 		}
 
-<span class="nc" id="L134">		return null;</span>
+<span class="nc" id="L160">		return null;</span>
 	}
 
 	/**
@@ -142,13 +168,13 @@ public class ProductQuoteSet {
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="fc" id="L146">			if (lss.latentState().equalsIgnoreCase</span>
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING))</span>
-<span class="fc" id="L148">				return (org.drip.state.identifier.FundingLabel) lss.label();</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="fc" id="L172">			if (lss.latentState().equalsIgnoreCase</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING))</span>
+<span class="fc" id="L174">				return (org.drip.state.identifier.FundingLabel) lss.label();</span>
 		}
 
-<span class="nc" id="L151">		return null;</span>
+<span class="nc" id="L177">		return null;</span>
 	}
 
 	/**
@@ -159,13 +185,13 @@ public class ProductQuoteSet {
 
 	public org.drip.state.identifier.FXLabel fxLabel()
 	{
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="nc" id="L163">			if (lss.latentState().equalsIgnoreCase</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX))</span>
-<span class="nc" id="L165">				return (org.drip.state.identifier.FXLabel) lss.label();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="nc" id="L189">			if (lss.latentState().equalsIgnoreCase</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX))</span>
+<span class="nc" id="L191">				return (org.drip.state.identifier.FXLabel) lss.label();</span>
 		}
 
-<span class="nc" id="L168">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	/**
@@ -176,13 +202,13 @@ public class ProductQuoteSet {
 
 	public org.drip.state.identifier.GovvieLabel govvieLabel()
 	{
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="nc" id="L180">			if (lss.latentState().equalsIgnoreCase</span>
-<span class="nc bnc" id="L181" title="All 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_GOVVIE))</span>
-<span class="nc" id="L182">				return (org.drip.state.identifier.GovvieLabel) lss.label();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="nc" id="L206">			if (lss.latentState().equalsIgnoreCase</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_GOVVIE))</span>
+<span class="nc" id="L208">				return (org.drip.state.identifier.GovvieLabel) lss.label();</span>
 		}
 
-<span class="nc" id="L185">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 
 	/**
@@ -193,13 +219,13 @@ public class ProductQuoteSet {
 
 	public org.drip.state.identifier.VolatilityLabel volatilityLabel()
 	{
-<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="nc" id="L197">			if (lss.latentState().equalsIgnoreCase</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_VOLATILITY))</span>
-<span class="nc" id="L199">				return (org.drip.state.identifier.VolatilityLabel) lss.label();</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="nc" id="L223">			if (lss.latentState().equalsIgnoreCase</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_VOLATILITY))</span>
+<span class="nc" id="L225">				return (org.drip.state.identifier.VolatilityLabel) lss.label();</span>
 		}
 
-<span class="nc" id="L202">		return null;</span>
+<span class="nc" id="L228">		return null;</span>
 	}
 
 	/**
@@ -213,15 +239,15 @@ public class ProductQuoteSet {
 	public boolean containsLatentStateQuantificationMetric (
 		final java.lang.String strLatentStateQuantificationMetric)
 	{
-<span class="pc bpc" id="L216" title="2 of 4 branches missed.">		if (null == strLatentStateQuantificationMetric || strLatentStateQuantificationMetric.isEmpty())</span>
-<span class="nc" id="L217">			return false;</span>
+<span class="pc bpc" id="L242" title="2 of 4 branches missed.">		if (null == strLatentStateQuantificationMetric || strLatentStateQuantificationMetric.isEmpty())</span>
+<span class="nc" id="L243">			return false;</span>
 
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="fc bfc" id="L220" title="All 2 branches covered.">			if (lss.latentStateQuantificationMetric().equalsIgnoreCase (strLatentStateQuantificationMetric))</span>
-<span class="fc" id="L221">				return true;</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">			if (lss.latentStateQuantificationMetric().equalsIgnoreCase (strLatentStateQuantificationMetric))</span>
+<span class="fc" id="L247">				return true;</span>
 		}
 
-<span class="nc" id="L224">		return false;</span>
+<span class="nc" id="L250">		return false;</span>
 	}
 
 	/**
@@ -239,22 +265,22 @@ public class ProductQuoteSet {
 		final java.lang.String strLatentStateQuantificationMetric,
 		final org.drip.state.identifier.LatentStateLabel label)
 	{
-<span class="nc" id="L242">		org.drip.state.representation.LatentStateSpecification lssExternal = null;</span>
+<span class="nc" id="L268">		org.drip.state.representation.LatentStateSpecification lssExternal = null;</span>
 
 		try {
-<span class="nc" id="L245">			lssExternal = new org.drip.state.representation.LatentStateSpecification (strLatentState,</span>
+<span class="nc" id="L271">			lssExternal = new org.drip.state.representation.LatentStateSpecification (strLatentState,</span>
 				strLatentStateQuantificationMetric, label);
-<span class="nc" id="L247">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L248">			e.printStackTrace();</span>
+<span class="nc" id="L273">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L274">			e.printStackTrace();</span>
 
-<span class="nc" id="L250">			return false;</span>
-<span class="nc" id="L251">		}</span>
+<span class="nc" id="L276">			return false;</span>
+<span class="nc" id="L277">		}</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
-<span class="nc bnc" id="L254" title="All 2 branches missed.">			if (lss.match (lssExternal)) return true;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateSpecification lss : _aLSS) {</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			if (lss.match (lssExternal)) return true;</span>
 		}
 
-<span class="nc" id="L257">		return false;</span>
+<span class="nc" id="L283">		return false;</span>
 	}
 
 	/**
@@ -270,13 +296,13 @@ public class ProductQuoteSet {
 		final java.lang.String strManifestMeasure,
 		final double dblManifestMeasureQuote)
 	{
-<span class="pc bpc" id="L273" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty() ||</span>
-<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasureQuote))</span>
-<span class="nc" id="L275">			return false;</span>
+<span class="pc bpc" id="L299" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty() ||</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasureQuote))</span>
+<span class="nc" id="L301">			return false;</span>
 
-<span class="fc" id="L277">		_mapQuote.put (strManifestMeasure, dblManifestMeasureQuote);</span>
+<span class="fc" id="L303">		_mapQuote.put (strManifestMeasure, dblManifestMeasureQuote);</span>
 
-<span class="fc" id="L279">		return true;</span>
+<span class="fc" id="L305">		return true;</span>
 	}
 
 	/**
@@ -293,11 +319,11 @@ public class ProductQuoteSet {
 		final java.lang.String strManifestMeasure)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L296" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty() || !_mapQuote.containsKey</span>
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">			(strManifestMeasure))</span>
-<span class="nc" id="L298">			throw new java.lang.Exception (&quot;ProductQuoteSet::get - Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L322" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty() || !_mapQuote.containsKey</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">			(strManifestMeasure))</span>
+<span class="nc" id="L324">			throw new java.lang.Exception (&quot;ProductQuoteSet::get - Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L300">		return _mapQuote.get (strManifestMeasure);</span>
+<span class="fc" id="L326">		return _mapQuote.get (strManifestMeasure);</span>
 	}
 
 	/**
@@ -311,8 +337,8 @@ public class ProductQuoteSet {
 	public boolean contains (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L314" title="2 of 4 branches missed.">		return null != strManifestMeasure &amp;&amp; !strManifestMeasure.isEmpty() &amp;&amp; _mapQuote.containsKey</span>
-<span class="fc bfc" id="L315" title="All 2 branches covered.">			(strManifestMeasure);</span>
+<span class="pc bpc" id="L340" title="2 of 4 branches missed.">		return null != strManifestMeasure &amp;&amp; !strManifestMeasure.isEmpty() &amp;&amp; _mapQuote.containsKey</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">			(strManifestMeasure);</span>
 	}
 
 	/**
@@ -323,7 +349,7 @@ public class ProductQuoteSet {
 
 	public java.util.Set&lt;java.lang.String&gt; fields()
 	{
-<span class="fc" id="L326">		return _mapQuote.keySet();</span>
+<span class="fc" id="L352">		return _mapQuote.keySet();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

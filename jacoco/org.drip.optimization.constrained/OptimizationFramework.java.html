@@ -6,33 +6,51 @@ package org.drip.optimization.constrained;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,29 +67,48 @@ package org.drip.optimization.constrained;
  */
 
 /**
- * OptimizationFramework holds the Non Linear Objective Function and the Collection of Equality and the
- *  Inequality Constraints that correspond to the Optimization Setup. The References are:
+ * &lt;i&gt;OptimizationFramework&lt;/i&gt; holds the Non Linear Objective Function and the Collection of Equality and
+ * the Inequality Constraints that correspond to the Optimization Setup. The References are:
  * 
- * 	- Boyd, S., and L. van den Berghe (2009): Convex Optimization, Cambridge University Press, Cambridge UK.
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Boyd, S., and L. van den Berghe (2009): &lt;i&gt;Convex Optimization&lt;/i&gt; &lt;b&gt;Cambridge University
+ * 				Press&lt;/b&gt; Cambridge UK
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Eustaquio, R., E. Karas, and A. Ribeiro (2008): &lt;i&gt;Constraint Qualification for Nonlinear
+ * 				Programming&lt;/i&gt; &lt;b&gt;Federal University of Parana&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Karush, A. (1939): &lt;i&gt;Minima of Functions of Several Variables with Inequalities as Side
+ * 			Constraints&lt;/i&gt; &lt;b&gt;University of Chicago&lt;/b&gt; Chicago IL
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming &lt;i&gt;Proceedings of the Second Berkeley
+ * 				Symposium&lt;/i&gt; &lt;b&gt;University of California&lt;/b&gt; Berkeley CA 481-492
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ruszczynski, A. (2006): &lt;i&gt;Nonlinear Optimization&lt;/i&gt; &lt;b&gt;Princeton University Press&lt;/b&gt; Princeton
+ * 				NJ
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
  * 
- * 	- Eustaquio, R., E. Karas, and A. Ribeiro (2008): Constraint Qualification for Nonlinear Programming,
- * 		Technical Report, Federal University of Parana.
- * 
- * 	- Karush, A. (1939): Minima of Functions of Several Variables with Inequalities as Side Constraints,
- * 		M. Sc., University of Chicago, Chicago IL.
- * 
- * 	- Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming, Proceedings of the Second Berkeley
- * 		Symposium, University of California, Berkeley CA 481-492.
- * 
- * 	- Ruszczynski, A. (2006): Nonlinear Optimization, Princeton University Press, Princeton NJ.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization&quot;&gt;Optimization&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained&quot;&gt;Constrained&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class OptimizationFramework {
-<span class="fc" id="L72">	private org.drip.function.definition.RdToR1 _rdToR1Objective = null;</span>
-<span class="fc" id="L73">	private org.drip.function.definition.RdToR1[] _aRdToR1EqualityConstraint = null;</span>
-<span class="fc" id="L74">	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;</span>
+<span class="fc" id="L109">	private org.drip.function.definition.RdToR1 _rdToR1Objective = null;</span>
+<span class="fc" id="L110">	private org.drip.function.definition.RdToR1[] _aRdToR1EqualityConstraint = null;</span>
+<span class="fc" id="L111">	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;</span>
 
 	/**
 	 * OptimizationFramework Constructor
@@ -88,32 +125,32 @@ public class OptimizationFramework {
 		final org.drip.function.definition.RdToR1[] aRdToR1EqualityConstraint,
 		final org.drip.function.definition.RdToR1[] aRdToR1InequalityConstraint)
 		throws java.lang.Exception
-<span class="fc" id="L91">	{</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (null == (_rdToR1Objective = rdToR1Objective))</span>
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;OptimizationFramework Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L128">	{</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (null == (_rdToR1Objective = rdToR1Objective))</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;OptimizationFramework Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L95">		int iObjectiveDimension = _rdToR1Objective.dimension();</span>
+<span class="fc" id="L132">		int iObjectiveDimension = _rdToR1Objective.dimension();</span>
 
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (null != (_aRdToR1EqualityConstraint = aRdToR1EqualityConstraint)) {</span>
-<span class="nc" id="L98">			int iNumEqualityConstraint = _aRdToR1EqualityConstraint.length;</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null != (_aRdToR1EqualityConstraint = aRdToR1EqualityConstraint)) {</span>
+<span class="nc" id="L135">			int iNumEqualityConstraint = _aRdToR1EqualityConstraint.length;</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L101" title="All 4 branches missed.">				if (null == _aRdToR1EqualityConstraint[i] || _aRdToR1EqualityConstraint[i].dimension() !=</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">				if (null == _aRdToR1EqualityConstraint[i] || _aRdToR1EqualityConstraint[i].dimension() !=</span>
 					iObjectiveDimension)
-<span class="nc" id="L103">					throw new java.lang.Exception (&quot;OptimizationFramework Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">					throw new java.lang.Exception (&quot;OptimizationFramework Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
 
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null != (_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint)) {</span>
-<span class="fc" id="L108">			int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (null != (_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint)) {</span>
+<span class="fc" id="L145">			int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
 
-<span class="fc bfc" id="L110" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L111" title="2 of 4 branches missed.">				if (null == _aRdToR1InequalityConstraint[i] || _aRdToR1InequalityConstraint[i].dimension() !=</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">				if (null == _aRdToR1InequalityConstraint[i] || _aRdToR1InequalityConstraint[i].dimension() !=</span>
 					iObjectiveDimension)
-<span class="nc" id="L113">					throw new java.lang.Exception (&quot;OptimizationFramework Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L150">					throw new java.lang.Exception (&quot;OptimizationFramework Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="fc" id="L116">	}</span>
+<span class="fc" id="L153">	}</span>
 
 	/**
 	 * Retrieve the R^d To R^1 Objective Function
@@ -123,7 +160,7 @@ public class OptimizationFramework {
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-<span class="nc" id="L126">		return _rdToR1Objective;</span>
+<span class="nc" id="L163">		return _rdToR1Objective;</span>
 	}
 
 	/**
@@ -134,7 +171,7 @@ public class OptimizationFramework {
 
 	public org.drip.function.definition.RdToR1[] equalityConstraint()
 	{
-<span class="nc" id="L137">		return _aRdToR1EqualityConstraint;</span>
+<span class="nc" id="L174">		return _aRdToR1EqualityConstraint;</span>
 	}
 
 	/**
@@ -145,7 +182,7 @@ public class OptimizationFramework {
 
 	public org.drip.function.definition.RdToR1[] inequalityConstraint()
 	{
-<span class="nc" id="L148">		return _aRdToR1InequalityConstraint;</span>
+<span class="nc" id="L185">		return _aRdToR1InequalityConstraint;</span>
 	}
 
 	/**
@@ -156,7 +193,7 @@ public class OptimizationFramework {
 
 	public int numEqualityConstraint()
 	{
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		return null == _aRdToR1EqualityConstraint ? 0 : _aRdToR1EqualityConstraint.length;</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		return null == _aRdToR1EqualityConstraint ? 0 : _aRdToR1EqualityConstraint.length;</span>
 	}
 
 	/**
@@ -167,7 +204,7 @@ public class OptimizationFramework {
 
 	public int numInequalityConstraint()
 	{
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		return null == _aRdToR1InequalityConstraint ? 0 : _aRdToR1InequalityConstraint.length;</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		return null == _aRdToR1InequalityConstraint ? 0 : _aRdToR1InequalityConstraint.length;</span>
 	}
 
 	/**
@@ -178,7 +215,7 @@ public class OptimizationFramework {
 
 	public boolean isLagrangian()
 	{
-<span class="nc bnc" id="L181" title="All 4 branches missed.">		return 0 == numInequalityConstraint() &amp;&amp; 0 != numEqualityConstraint();</span>
+<span class="nc bnc" id="L218" title="All 4 branches missed.">		return 0 == numInequalityConstraint() &amp;&amp; 0 != numEqualityConstraint();</span>
 	}
 
 	/**
@@ -189,7 +226,7 @@ public class OptimizationFramework {
 
 	public boolean isUnconstrained()
 	{
-<span class="nc bnc" id="L192" title="All 4 branches missed.">		return 0 == numInequalityConstraint() &amp;&amp; 0 == numEqualityConstraint();</span>
+<span class="nc bnc" id="L229" title="All 4 branches missed.">		return 0 == numInequalityConstraint() &amp;&amp; 0 == numEqualityConstraint();</span>
 	}
 
 	/**
@@ -203,17 +240,17 @@ public class OptimizationFramework {
 	public boolean isCompatible (
 		final org.drip.optimization.constrained.FritzJohnMultipliers fjm)
 	{
-<span class="fc" id="L206">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L243">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L208">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L245">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">		int iNumEqualityFJMMultiplier = null == fjm ? 0 : fjm.numEqualityCoefficients();</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">		int iNumEqualityFJMMultiplier = null == fjm ? 0 : fjm.numEqualityCoefficients();</span>
 
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (iNumEqualityConstraint != iNumEqualityFJMMultiplier) return false;</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (iNumEqualityConstraint != iNumEqualityFJMMultiplier) return false;</span>
 
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		int iNumInequalityFJMMultiplier = null == fjm ? 0 : fjm.numInequalityCoefficients();</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">		int iNumInequalityFJMMultiplier = null == fjm ? 0 : fjm.numInequalityCoefficients();</span>
 
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		return iNumInequalityConstraint == iNumInequalityFJMMultiplier;</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		return iNumInequalityConstraint == iNumInequalityFJMMultiplier;</span>
 	}
 
 	/**
@@ -230,19 +267,19 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L233">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L270">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L235">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L272">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L237" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L238" title="All 2 branches missed.">			if (0. != _aRdToR1EqualityConstraint[i].evaluate (adblVariate)) return false;</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			if (0. != _aRdToR1EqualityConstraint[i].evaluate (adblVariate)) return false;</span>
 		}
 
-<span class="fc bfc" id="L241" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">			if (0. &lt; _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) return false;</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">			if (0. &lt; _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) return false;</span>
 		}
 
-<span class="fc" id="L245">		return true;</span>
+<span class="fc" id="L282">		return true;</span>
 	}
 
 	/**
@@ -261,22 +298,22 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L264" title="1 of 2 branches missed.">		if (!isCompatible (fjm))</span>
-<span class="nc" id="L265">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (!isCompatible (fjm))</span>
+<span class="nc" id="L302">			throw new java.lang.Exception</span>
 				(&quot;OptimizationFramework::complementarySlacknessCheck =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L268">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L305">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L271">			fjm.inequalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L308">			fjm.inequalityConstraintCoefficient();</span>
 
-<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			if (0. != _aRdToR1InequalityConstraint[i].evaluate (adblVariate) *</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">			if (0. != _aRdToR1InequalityConstraint[i].evaluate (adblVariate) *</span>
 				adblInequalityConstraintCoefficient[i])
-<span class="fc" id="L276">				return false;</span>
+<span class="fc" id="L313">				return false;</span>
 		}
 
-<span class="nc" id="L279">		return true;</span>
+<span class="nc" id="L316">		return true;</span>
 	}
 
 	/**
@@ -295,53 +332,53 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">		if (!isCompatible (fjm))</span>
-<span class="nc" id="L299">			throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		if (!isCompatible (fjm))</span>
+<span class="nc" id="L336">			throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L301">		double[] adblFONCJacobian = _rdToR1Objective.jacobian (adblVariate);</span>
+<span class="fc" id="L338">		double[] adblFONCJacobian = _rdToR1Objective.jacobian (adblVariate);</span>
 
-<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		if (null == adblFONCJacobian)</span>
-<span class="nc" id="L304">			throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Cannot calculate Jacobian&quot;);</span>
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">		if (null == adblFONCJacobian)</span>
+<span class="nc" id="L341">			throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Cannot calculate Jacobian&quot;);</span>
 
-<span class="fc" id="L306">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L343">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L308">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L345">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L310" title="1 of 2 branches missed.">		double[] adblEqualityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L311">			fjm.equalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">		double[] adblEqualityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L348">			fjm.equalityConstraintCoefficient();</span>
 
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L314">			fjm.inequalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L351">			fjm.inequalityConstraintCoefficient();</span>
 
-<span class="fc" id="L316">		int iDimension = _rdToR1Objective.dimension();</span>
+<span class="fc" id="L353">		int iDimension = _rdToR1Objective.dimension();</span>
 
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc" id="L319">			double[] adblJacobian = _aRdToR1EqualityConstraint[i].jacobian (adblVariate);</span>
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc" id="L356">			double[] adblJacobian = _aRdToR1EqualityConstraint[i].jacobian (adblVariate);</span>
 
-<span class="nc bnc" id="L321" title="All 2 branches missed.">			if (null == adblJacobian)</span>
-<span class="nc" id="L322">				throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Cannot calculate Jacobian&quot;);</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">			if (null == adblJacobian)</span>
+<span class="nc" id="L359">				throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Cannot calculate Jacobian&quot;);</span>
 
-<span class="nc bnc" id="L324" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="nc" id="L325">				adblFONCJacobian[j] = adblFONCJacobian[j] + adblEqualityConstraintCoefficient[j] *</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="nc" id="L362">				adblFONCJacobian[j] = adblFONCJacobian[j] + adblEqualityConstraintCoefficient[j] *</span>
 					adblJacobian[j];
 		}
 
-<span class="fc bfc" id="L329" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="fc" id="L330">			double[] adblJacobian = _aRdToR1InequalityConstraint[i].jacobian (adblVariate);</span>
+<span class="fc bfc" id="L366" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="fc" id="L367">			double[] adblJacobian = _aRdToR1InequalityConstraint[i].jacobian (adblVariate);</span>
 
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">			if (null == adblJacobian)</span>
-<span class="nc" id="L333">				throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Cannot calculate Jacobian&quot;);</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">			if (null == adblJacobian)</span>
+<span class="nc" id="L370">				throw new java.lang.Exception (&quot;OptimizationFramework::isFONC =&gt; Cannot calculate Jacobian&quot;);</span>
 
-<span class="fc bfc" id="L335" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="fc" id="L336">				adblFONCJacobian[j] = adblFONCJacobian[j] + adblInequalityConstraintCoefficient[j] *</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L373">				adblFONCJacobian[j] = adblFONCJacobian[j] + adblInequalityConstraintCoefficient[j] *</span>
 					adblJacobian[j];
 		}
 
-<span class="fc bfc" id="L340" title="All 2 branches covered.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="pc bpc" id="L341" title="1 of 2 branches missed.">			if (0. != adblFONCJacobian[j]) return false;</span>
+<span class="fc bfc" id="L377" title="All 2 branches covered.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">			if (0. != adblFONCJacobian[j]) return false;</span>
 		}
 
-<span class="fc" id="L344">		return true;</span>
+<span class="fc" id="L381">		return true;</span>
 	}
 
 	/**
@@ -362,55 +399,55 @@ public class OptimizationFramework {
 		final boolean bCheckForMinima)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L365" title="1 of 2 branches missed.">		if (!isFONC (fjm, adblVariate)) return false;</span>
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">		if (!isFONC (fjm, adblVariate)) return false;</span>
 
-<span class="fc" id="L367">		double[][] aadblSOSCHessian = _rdToR1Objective.hessian (adblVariate);</span>
+<span class="fc" id="L404">		double[][] aadblSOSCHessian = _rdToR1Objective.hessian (adblVariate);</span>
 
-<span class="pc bpc" id="L369" title="1 of 2 branches missed.">		if (null == aadblSOSCHessian)</span>
-<span class="nc" id="L370">			throw new java.lang.Exception (&quot;OptimizationFramework::isSOSC =&gt; Cannot calculate Jacobian&quot;);</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">		if (null == aadblSOSCHessian)</span>
+<span class="nc" id="L407">			throw new java.lang.Exception (&quot;OptimizationFramework::isSOSC =&gt; Cannot calculate Jacobian&quot;);</span>
 
-<span class="fc" id="L372">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L409">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L374">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L411">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L376" title="1 of 2 branches missed.">		double[] adblEqualityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L377">			fjm.equalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">		double[] adblEqualityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L414">			fjm.equalityConstraintCoefficient();</span>
 
-<span class="pc bpc" id="L379" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L380">			fjm.inequalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L417">			fjm.inequalityConstraintCoefficient();</span>
 
-<span class="fc" id="L382">		int iDimension = _rdToR1Objective.dimension();</span>
+<span class="fc" id="L419">		int iDimension = _rdToR1Objective.dimension();</span>
 
-<span class="pc bpc" id="L384" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc" id="L385">			double[][] aadblHessian = _aRdToR1EqualityConstraint[i].hessian (adblVariate);</span>
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc" id="L422">			double[][] aadblHessian = _aRdToR1EqualityConstraint[i].hessian (adblVariate);</span>
 
-<span class="nc bnc" id="L387" title="All 2 branches missed.">			if (null == aadblHessian)</span>
-<span class="nc" id="L388">				throw new java.lang.Exception (&quot;OptimizationFramework::isSOSC =&gt; Cannot calculate Jacobian&quot;);</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">			if (null == aadblHessian)</span>
+<span class="nc" id="L425">				throw new java.lang.Exception (&quot;OptimizationFramework::isSOSC =&gt; Cannot calculate Jacobian&quot;);</span>
 
-<span class="nc bnc" id="L390" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L391" title="All 2 branches missed.">				for (int k = 0; k &lt; iDimension; ++k)</span>
-<span class="nc" id="L392">					aadblSOSCHessian[j][k] = aadblSOSCHessian[j][k] + adblEqualityConstraintCoefficient[j] *</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">				for (int k = 0; k &lt; iDimension; ++k)</span>
+<span class="nc" id="L429">					aadblSOSCHessian[j][k] = aadblSOSCHessian[j][k] + adblEqualityConstraintCoefficient[j] *</span>
 						aadblHessian[j][k];
 			}
 		}
 
-<span class="fc bfc" id="L397" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="fc" id="L398">			double[][] aadblHessian = _aRdToR1InequalityConstraint[i].hessian (adblVariate);</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="fc" id="L435">			double[][] aadblHessian = _aRdToR1InequalityConstraint[i].hessian (adblVariate);</span>
 
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">			if (null == aadblHessian)</span>
-<span class="nc" id="L401">				throw new java.lang.Exception (&quot;OptimizationFramework::isSOSC =&gt; Cannot calculate Jacobian&quot;);</span>
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">			if (null == aadblHessian)</span>
+<span class="nc" id="L438">				throw new java.lang.Exception (&quot;OptimizationFramework::isSOSC =&gt; Cannot calculate Jacobian&quot;);</span>
 
-<span class="fc bfc" id="L403" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="fc bfc" id="L404" title="All 2 branches covered.">				for (int k = 0; k &lt; iDimension; ++k)</span>
-<span class="fc" id="L405">					aadblSOSCHessian[j][k] = aadblSOSCHessian[j][k] + adblInequalityConstraintCoefficient[j]</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">				for (int k = 0; k &lt; iDimension; ++k)</span>
+<span class="fc" id="L442">					aadblSOSCHessian[j][k] = aadblSOSCHessian[j][k] + adblInequalityConstraintCoefficient[j]</span>
 						* aadblHessian[j][k];
 			}
 		}
 
-<span class="fc" id="L410">		double dblSOSC = org.drip.quant.linearalgebra.Matrix.DotProduct (adblVariate,</span>
-<span class="fc" id="L411">			org.drip.quant.linearalgebra.Matrix.Product (aadblSOSCHessian, adblVariate));</span>
+<span class="fc" id="L447">		double dblSOSC = org.drip.quant.linearalgebra.Matrix.DotProduct (adblVariate,</span>
+<span class="fc" id="L448">			org.drip.quant.linearalgebra.Matrix.Product (aadblSOSCHessian, adblVariate));</span>
 
-<span class="pc bpc" id="L413" title="6 of 8 branches missed.">		return (bCheckForMinima &amp;&amp; dblSOSC &gt; 0.) || (!bCheckForMinima &amp;&amp; dblSOSC &lt; 0.);</span>
+<span class="pc bpc" id="L450" title="6 of 8 branches missed.">		return (bCheckForMinima &amp;&amp; dblSOSC &gt; 0.) || (!bCheckForMinima &amp;&amp; dblSOSC &lt; 0.);</span>
 	}
 
 	/**
@@ -429,15 +466,15 @@ public class OptimizationFramework {
 		final boolean bCheckForMinima)
 	{
 		try {
-<span class="fc" id="L432">			return org.drip.optimization.constrained.NecessarySufficientConditions.Standard (adblVariate, fjm,</span>
-<span class="fc" id="L433">				bCheckForMinima, primalFeasibilityCheck (adblVariate), fjm.dualFeasibilityCheck(),</span>
-<span class="fc" id="L434">					complementarySlacknessCheck (fjm, adblVariate), isFONC (fjm, adblVariate), isSOSC (fjm,</span>
+<span class="fc" id="L469">			return org.drip.optimization.constrained.NecessarySufficientConditions.Standard (adblVariate, fjm,</span>
+<span class="fc" id="L470">				bCheckForMinima, primalFeasibilityCheck (adblVariate), fjm.dualFeasibilityCheck(),</span>
+<span class="fc" id="L471">					complementarySlacknessCheck (fjm, adblVariate), isFONC (fjm, adblVariate), isSOSC (fjm,</span>
 						adblVariate, bCheckForMinima));
-<span class="nc" id="L436">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L437">			e.printStackTrace();</span>
+<span class="nc" id="L473">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L474">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L440">		return null;</span>
+<span class="nc" id="L477">		return null;</span>
 	}
 
 	/**
@@ -451,36 +488,36 @@ public class OptimizationFramework {
 	public org.drip.function.definition.RdToR1[] activeConstraints (
 		final double[] adblVariate)
 	{
-<span class="nc" id="L454">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="nc" id="L491">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="nc" id="L456">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="nc" id="L493">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="nc" id="L458">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; lsActiveConstraint = new</span>
+<span class="nc" id="L495">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; lsActiveConstraint = new</span>
 			java.util.ArrayList&lt;org.drip.function.definition.RdToR1&gt;();
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i)</span>
-<span class="nc" id="L462">			lsActiveConstraint.add (_aRdToR1EqualityConstraint[i]);</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i)</span>
+<span class="nc" id="L499">			lsActiveConstraint.add (_aRdToR1EqualityConstraint[i]);</span>
 
-<span class="nc bnc" id="L464" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
 			try {
-<span class="nc bnc" id="L466" title="All 2 branches missed.">				if (0. == _aRdToR1InequalityConstraint[i].evaluate (adblVariate))</span>
-<span class="nc" id="L467">					lsActiveConstraint.add (_aRdToR1InequalityConstraint[i]);</span>
-<span class="nc" id="L468">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L469">				e.printStackTrace();</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">				if (0. == _aRdToR1InequalityConstraint[i].evaluate (adblVariate))</span>
+<span class="nc" id="L504">					lsActiveConstraint.add (_aRdToR1InequalityConstraint[i]);</span>
+<span class="nc" id="L505">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L506">				e.printStackTrace();</span>
 
-<span class="nc" id="L471">				return null;</span>
-<span class="nc" id="L472">			}</span>
+<span class="nc" id="L508">				return null;</span>
+<span class="nc" id="L509">			}</span>
 		}
 
-<span class="nc" id="L475">		int iNumActiveConstraint = lsActiveConstraint.size();</span>
+<span class="nc" id="L512">		int iNumActiveConstraint = lsActiveConstraint.size();</span>
 
-<span class="nc" id="L477">		org.drip.function.definition.RdToR1[] aRdToR1ActiveConstraint = new</span>
+<span class="nc" id="L514">		org.drip.function.definition.RdToR1[] aRdToR1ActiveConstraint = new</span>
 			org.drip.function.definition.RdToR1[iNumActiveConstraint];
 
-<span class="nc bnc" id="L480" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumActiveConstraint; ++i)</span>
-<span class="nc" id="L481">			aRdToR1ActiveConstraint[i] = lsActiveConstraint.get (i);</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumActiveConstraint; ++i)</span>
+<span class="nc" id="L518">			aRdToR1ActiveConstraint[i] = lsActiveConstraint.get (i);</span>
 
-<span class="nc" id="L483">		return aRdToR1ActiveConstraint;</span>
+<span class="nc" id="L520">		return aRdToR1ActiveConstraint;</span>
 	}
 
 	/**
@@ -497,45 +534,45 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L500">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L537">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L502">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L539">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="fc" id="L504">		java.util.List&lt;double[]&gt; lsJacobian = new java.util.ArrayList&lt;double[]&gt;();</span>
+<span class="fc" id="L541">		java.util.List&lt;double[]&gt; lsJacobian = new java.util.ArrayList&lt;double[]&gt;();</span>
 
-<span class="fc" id="L506">		double[] adblJacobian = _rdToR1Objective.jacobian (adblVariate);</span>
+<span class="fc" id="L543">		double[] adblJacobian = _rdToR1Objective.jacobian (adblVariate);</span>
 
-<span class="pc bpc" id="L508" title="1 of 2 branches missed.">		if (null == adblJacobian)</span>
-<span class="nc" id="L509">			throw new java.lang.Exception (&quot;OptimizationFramework::activeConstraintRank =&gt; Cannot Compute&quot;);</span>
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">		if (null == adblJacobian)</span>
+<span class="nc" id="L546">			throw new java.lang.Exception (&quot;OptimizationFramework::activeConstraintRank =&gt; Cannot Compute&quot;);</span>
 
-<span class="fc" id="L511">		lsJacobian.add (adblJacobian);</span>
+<span class="fc" id="L548">		lsJacobian.add (adblJacobian);</span>
 
-<span class="pc bpc" id="L513" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L514" title="All 2 branches missed.">			if (null == (adblJacobian = _aRdToR1EqualityConstraint[i].jacobian (adblVariate)))</span>
-<span class="nc" id="L515">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L550" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">			if (null == (adblJacobian = _aRdToR1EqualityConstraint[i].jacobian (adblVariate)))</span>
+<span class="nc" id="L552">				throw new java.lang.Exception</span>
 					(&quot;OptimizationFramework::activeConstraintRank =&gt; Cannot Compute&quot;);
 
-<span class="nc" id="L518">			lsJacobian.add (adblJacobian);</span>
+<span class="nc" id="L555">			lsJacobian.add (adblJacobian);</span>
 		}
 
-<span class="fc bfc" id="L521" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L522" title="1 of 2 branches missed.">			if (0. == _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) {</span>
-<span class="nc bnc" id="L523" title="All 2 branches missed.">				if (null == (adblJacobian = _aRdToR1InequalityConstraint[i].jacobian (adblVariate)))</span>
-<span class="nc" id="L524">					throw new java.lang.Exception</span>
+<span class="fc bfc" id="L558" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">			if (0. == _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) {</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">				if (null == (adblJacobian = _aRdToR1InequalityConstraint[i].jacobian (adblVariate)))</span>
+<span class="nc" id="L561">					throw new java.lang.Exception</span>
 						(&quot;OptimizationFramework::activeConstraintRank =&gt; Cannot Compute&quot;);
 
-<span class="nc" id="L527">				lsJacobian.add (adblJacobian);</span>
+<span class="nc" id="L564">				lsJacobian.add (adblJacobian);</span>
 			}
 		}
 
-<span class="fc" id="L531">		int iNumJacobian = lsJacobian.size();</span>
+<span class="fc" id="L568">		int iNumJacobian = lsJacobian.size();</span>
 
-<span class="fc" id="L533">		double[][] aadblJacobian = new double[iNumJacobian][];</span>
+<span class="fc" id="L570">		double[][] aadblJacobian = new double[iNumJacobian][];</span>
 
-<span class="fc bfc" id="L535" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumJacobian; ++i)</span>
-<span class="fc" id="L536">			aadblJacobian[i] = lsJacobian.get (i);</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumJacobian; ++i)</span>
+<span class="fc" id="L573">			aadblJacobian[i] = lsJacobian.get (i);</span>
 
-<span class="fc" id="L538">		return org.drip.quant.linearalgebra.Matrix.Rank (aadblJacobian);</span>
+<span class="fc" id="L575">		return org.drip.quant.linearalgebra.Matrix.Rank (aadblJacobian);</span>
 	}
 
 	/**
@@ -554,7 +591,7 @@ public class OptimizationFramework {
 		final int iRank)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L557" title="All 2 branches missed.">		return activeConstraintRank (adblVariate) == iRank;</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">		return activeConstraintRank (adblVariate) == iRank;</span>
 	}
 
 	/**
@@ -573,48 +610,48 @@ public class OptimizationFramework {
 		final boolean bPositiveLinearDependenceCheck)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L576">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L613">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L578">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L615">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="fc" id="L580">		int iNumConstraint = iNumEqualityConstraint + iNumInequalityConstraint;</span>
-<span class="fc" id="L581">		double[][] aadblJacobian = new double[iNumConstraint][];</span>
+<span class="fc" id="L617">		int iNumConstraint = iNumEqualityConstraint + iNumInequalityConstraint;</span>
+<span class="fc" id="L618">		double[][] aadblJacobian = new double[iNumConstraint][];</span>
 
-<span class="pc bpc" id="L583" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L584" title="All 2 branches missed.">			if (null == (aadblJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian (adblVariate)))</span>
-<span class="nc" id="L585">				return false;</span>
+<span class="pc bpc" id="L620" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">			if (null == (aadblJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian (adblVariate)))</span>
+<span class="nc" id="L622">				return false;</span>
 		}
 
-<span class="fc bfc" id="L588" title="All 2 branches covered.">		for (int i = iNumEqualityConstraint; i &lt; iNumConstraint; ++i) {</span>
-<span class="fc" id="L589">			aadblJacobian[i] = null;</span>
-<span class="fc" id="L590">			org.drip.function.definition.RdToR1 rdToR1InequalityConstraint =</span>
+<span class="fc bfc" id="L625" title="All 2 branches covered.">		for (int i = iNumEqualityConstraint; i &lt; iNumConstraint; ++i) {</span>
+<span class="fc" id="L626">			aadblJacobian[i] = null;</span>
+<span class="fc" id="L627">			org.drip.function.definition.RdToR1 rdToR1InequalityConstraint =</span>
 				_aRdToR1InequalityConstraint[i - iNumEqualityConstraint];
 
-<span class="pc bpc" id="L593" title="1 of 2 branches missed.">			if (0. == rdToR1InequalityConstraint.evaluate (adblVariate)) {</span>
-<span class="nc bnc" id="L594" title="All 2 branches missed.">				if (null == (aadblJacobian[i] = rdToR1InequalityConstraint.jacobian (adblVariate)))</span>
-<span class="nc" id="L595">					return false;</span>
+<span class="pc bpc" id="L630" title="1 of 2 branches missed.">			if (0. == rdToR1InequalityConstraint.evaluate (adblVariate)) {</span>
+<span class="nc bnc" id="L631" title="All 2 branches missed.">				if (null == (aadblJacobian[i] = rdToR1InequalityConstraint.jacobian (adblVariate)))</span>
+<span class="nc" id="L632">					return false;</span>
 			}
 		}
 
-<span class="fc bfc" id="L599" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
-<span class="pc bpc" id="L600" title="1 of 2 branches missed.">			if (null != aadblJacobian[i]) {</span>
-<span class="nc bnc" id="L601" title="All 2 branches missed.">				for (int j = i + 1; j &lt; iNumConstraint; ++j) {</span>
-<span class="nc bnc" id="L602" title="All 2 branches missed.">					if (null != aadblJacobian[j] &amp;&amp; 0. != org.drip.quant.linearalgebra.Matrix.DotProduct</span>
-<span class="nc bnc" id="L603" title="All 2 branches missed.">						(aadblJacobian[i], aadblJacobian[j]))</span>
-<span class="nc" id="L604">						return false;</span>
+<span class="fc bfc" id="L636" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
+<span class="pc bpc" id="L637" title="1 of 2 branches missed.">			if (null != aadblJacobian[i]) {</span>
+<span class="nc bnc" id="L638" title="All 2 branches missed.">				for (int j = i + 1; j &lt; iNumConstraint; ++j) {</span>
+<span class="nc bnc" id="L639" title="All 2 branches missed.">					if (null != aadblJacobian[j] &amp;&amp; 0. != org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="nc bnc" id="L640" title="All 2 branches missed.">						(aadblJacobian[i], aadblJacobian[j]))</span>
+<span class="nc" id="L641">						return false;</span>
 				}
 			}
 		}
 
-<span class="fc bfc" id="L609" title="All 2 branches covered.">		if (bPositiveLinearDependenceCheck) {</span>
-<span class="fc bfc" id="L610" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
-<span class="pc bpc" id="L611" title="1 of 2 branches missed.">				if (null != aadblJacobian[i] &amp;&amp;</span>
-<span class="nc bnc" id="L612" title="All 2 branches missed.">					!org.drip.quant.linearalgebra.Matrix.PositiveLinearlyIndependent (aadblJacobian[i]))</span>
-<span class="nc" id="L613">					return false;</span>
+<span class="fc bfc" id="L646" title="All 2 branches covered.">		if (bPositiveLinearDependenceCheck) {</span>
+<span class="fc bfc" id="L647" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
+<span class="pc bpc" id="L648" title="1 of 2 branches missed.">				if (null != aadblJacobian[i] &amp;&amp;</span>
+<span class="nc bnc" id="L649" title="All 2 branches missed.">					!org.drip.quant.linearalgebra.Matrix.PositiveLinearlyIndependent (aadblJacobian[i]))</span>
+<span class="nc" id="L650">					return false;</span>
 			}
 		}
 
-<span class="fc" id="L617">		return true;</span>
+<span class="fc" id="L654">		return true;</span>
 	}
 
 	/**
@@ -628,22 +665,22 @@ public class OptimizationFramework {
 	public double[][] alongAwayVariate (
 		final double[] adblVariate)
 	{
-<span class="fc" id="L631">		double[] adblVariateIncrement = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L632">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination (_rdToR1Objective.hessian</span>
-<span class="fc" id="L633">				(adblVariate)), _rdToR1Objective.jacobian (adblVariate));</span>
+<span class="fc" id="L668">		double[] adblVariateIncrement = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L669">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination (_rdToR1Objective.hessian</span>
+<span class="fc" id="L670">				(adblVariate)), _rdToR1Objective.jacobian (adblVariate));</span>
 
-<span class="pc bpc" id="L635" title="1 of 2 branches missed.">		if (null == adblVariateIncrement) return null;</span>
+<span class="pc bpc" id="L672" title="1 of 2 branches missed.">		if (null == adblVariateIncrement) return null;</span>
 
-<span class="fc" id="L637">		int iVariateDimension = adblVariate.length;</span>
-<span class="fc" id="L638">		double[] adblVariateAway = new double[iVariateDimension];</span>
-<span class="fc" id="L639">		double[] adblVariateAlong = new double[iVariateDimension];</span>
+<span class="fc" id="L674">		int iVariateDimension = adblVariate.length;</span>
+<span class="fc" id="L675">		double[] adblVariateAway = new double[iVariateDimension];</span>
+<span class="fc" id="L676">		double[] adblVariateAlong = new double[iVariateDimension];</span>
 
-<span class="fc bfc" id="L641" title="All 2 branches covered.">		for (int i = 0; i &lt; iVariateDimension; ++i) {</span>
-<span class="fc" id="L642">			adblVariateAway[i] = adblVariate[i] - adblVariateIncrement[i];</span>
-<span class="fc" id="L643">			adblVariateAlong[i] = adblVariate[i] + adblVariateIncrement[i];</span>
+<span class="fc bfc" id="L678" title="All 2 branches covered.">		for (int i = 0; i &lt; iVariateDimension; ++i) {</span>
+<span class="fc" id="L679">			adblVariateAway[i] = adblVariate[i] - adblVariateIncrement[i];</span>
+<span class="fc" id="L680">			adblVariateAlong[i] = adblVariate[i] + adblVariateIncrement[i];</span>
 		}
 
-<span class="fc" id="L646">		return new double[][] {adblVariateAlong, adblVariateAway};</span>
+<span class="fc" id="L683">		return new double[][] {adblVariateAlong, adblVariateAway};</span>
 	}
 
 	/**
@@ -654,21 +691,21 @@ public class OptimizationFramework {
 
 	public boolean isLCQ()
 	{
-<span class="fc" id="L657">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L694">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="fc" id="L659">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L696">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L661" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L662" title="All 2 branches missed.">			if (!(_aRdToR1EqualityConstraint[i] instanceof org.drip.function.rdtor1.AffineMultivariate))</span>
-<span class="nc" id="L663">				return false;</span>
+<span class="pc bpc" id="L698" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L699" title="All 2 branches missed.">			if (!(_aRdToR1EqualityConstraint[i] instanceof org.drip.function.rdtor1.AffineMultivariate))</span>
+<span class="nc" id="L700">				return false;</span>
 		}
 
-<span class="pc bpc" id="L666" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L667" title="1 of 2 branches missed.">			if (!(_aRdToR1InequalityConstraint[i] instanceof org.drip.function.rdtor1.AffineMultivariate))</span>
-<span class="fc" id="L668">				return false;</span>
+<span class="pc bpc" id="L703" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L704" title="1 of 2 branches missed.">			if (!(_aRdToR1InequalityConstraint[i] instanceof org.drip.function.rdtor1.AffineMultivariate))</span>
+<span class="fc" id="L705">				return false;</span>
 		}
 
-<span class="nc" id="L671">		return true;</span>
+<span class="nc" id="L708">		return true;</span>
 	}
 
 	/**
@@ -685,7 +722,7 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L688">		return activeConstraintLinearDependence (adblVariate, false);</span>
+<span class="fc" id="L725">		return activeConstraintLinearDependence (adblVariate, false);</span>
 	}
 
 	/**
@@ -702,7 +739,7 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L705">		return activeConstraintLinearDependence (adblVariate, true);</span>
+<span class="fc" id="L742">		return activeConstraintLinearDependence (adblVariate, true);</span>
 	}
 
 	/**
@@ -719,15 +756,15 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L722">		int iRank = activeConstraintRank (adblVariate);</span>
+<span class="fc" id="L759">		int iRank = activeConstraintRank (adblVariate);</span>
 
-<span class="fc" id="L724">		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);</span>
+<span class="fc" id="L761">		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);</span>
 
-<span class="pc bpc" id="L726" title="1 of 2 branches missed.">		if (null == aadblAlongAwayVariatePair)</span>
-<span class="nc" id="L727">			throw new java.lang.Exception (&quot;OptimizationFramework::isCRCQ =&gt; Cannot generate along/away&quot;);</span>
+<span class="pc bpc" id="L763" title="1 of 2 branches missed.">		if (null == aadblAlongAwayVariatePair)</span>
+<span class="nc" id="L764">			throw new java.lang.Exception (&quot;OptimizationFramework::isCRCQ =&gt; Cannot generate along/away&quot;);</span>
 
-<span class="pc bpc" id="L729" title="1 of 2 branches missed.">		return iRank == activeConstraintRank (aadblAlongAwayVariatePair[0]) &amp;&amp; iRank == activeConstraintRank</span>
-<span class="pc bpc" id="L730" title="1 of 2 branches missed.">			(aadblAlongAwayVariatePair[1]);</span>
+<span class="pc bpc" id="L766" title="1 of 2 branches missed.">		return iRank == activeConstraintRank (aadblAlongAwayVariatePair[0]) &amp;&amp; iRank == activeConstraintRank</span>
+<span class="pc bpc" id="L767" title="1 of 2 branches missed.">			(aadblAlongAwayVariatePair[1]);</span>
 	}
 
 	/**
@@ -744,14 +781,14 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L747" title="1 of 2 branches missed.">		if (!isMFCQ (adblVariate)) return false;</span>
+<span class="pc bpc" id="L784" title="1 of 2 branches missed.">		if (!isMFCQ (adblVariate)) return false;</span>
 
-<span class="fc" id="L749">		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);</span>
+<span class="fc" id="L786">		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);</span>
 
-<span class="pc bpc" id="L751" title="1 of 2 branches missed.">		if (null == aadblAlongAwayVariatePair)</span>
-<span class="nc" id="L752">			throw new java.lang.Exception (&quot;OptimizationFramework::isCPLDCQ =&gt; Cannot generate along/away&quot;);</span>
+<span class="pc bpc" id="L788" title="1 of 2 branches missed.">		if (null == aadblAlongAwayVariatePair)</span>
+<span class="nc" id="L789">			throw new java.lang.Exception (&quot;OptimizationFramework::isCPLDCQ =&gt; Cannot generate along/away&quot;);</span>
 
-<span class="pc bpc" id="L754" title="2 of 4 branches missed.">		return isMFCQ (aadblAlongAwayVariatePair[0]) &amp;&amp; isMFCQ (aadblAlongAwayVariatePair[1]);</span>
+<span class="pc bpc" id="L791" title="2 of 4 branches missed.">		return isMFCQ (aadblAlongAwayVariatePair[0]) &amp;&amp; isMFCQ (aadblAlongAwayVariatePair[1]);</span>
 	}
 
 	/**
@@ -770,35 +807,35 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L773" title="1 of 2 branches missed.">		if (!isCompatible (fjm))</span>
-<span class="nc" id="L774">			throw new java.lang.Exception (&quot;OptimizationFramework::isQNCQ =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L810" title="1 of 2 branches missed.">		if (!isCompatible (fjm))</span>
+<span class="nc" id="L811">			throw new java.lang.Exception (&quot;OptimizationFramework::isQNCQ =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L776" title="1 of 2 branches missed.">		if (!isMFCQ (adblVariate)) return false;</span>
+<span class="pc bpc" id="L813" title="1 of 2 branches missed.">		if (!isMFCQ (adblVariate)) return false;</span>
 
-<span class="fc" id="L778">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="fc" id="L815">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="pc bpc" id="L780" title="1 of 2 branches missed.">		double[] adblEqualityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L781">			fjm.equalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L817" title="1 of 2 branches missed.">		double[] adblEqualityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L818">			fjm.equalityConstraintCoefficient();</span>
 
-<span class="pc bpc" id="L783" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L784" title="All 2 branches missed.">			if (0. != adblEqualityConstraintCoefficient[i] &amp;&amp; 0. &lt;= _aRdToR1EqualityConstraint[i].evaluate</span>
-<span class="nc bnc" id="L785" title="All 2 branches missed.">				(adblVariate) * adblEqualityConstraintCoefficient[i])</span>
-<span class="nc" id="L786">				return false;</span>
+<span class="pc bpc" id="L820" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L821" title="All 2 branches missed.">			if (0. != adblEqualityConstraintCoefficient[i] &amp;&amp; 0. &lt;= _aRdToR1EqualityConstraint[i].evaluate</span>
+<span class="nc bnc" id="L822" title="All 2 branches missed.">				(adblVariate) * adblEqualityConstraintCoefficient[i])</span>
+<span class="nc" id="L823">				return false;</span>
 		}
 
-<span class="fc" id="L789">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="fc" id="L826">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="pc bpc" id="L791" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
-<span class="fc" id="L792">			fjm.inequalityConstraintCoefficient();</span>
+<span class="pc bpc" id="L828" title="1 of 2 branches missed.">		double[] adblInequalityConstraintCoefficient = null == fjm ? null :</span>
+<span class="fc" id="L829">			fjm.inequalityConstraintCoefficient();</span>
 
-<span class="fc bfc" id="L794" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L795" title="1 of 2 branches missed.">			if (0. != adblInequalityConstraintCoefficient[i] &amp;&amp; 0. &lt;=</span>
-<span class="pc bpc" id="L796" title="1 of 2 branches missed.">				_aRdToR1InequalityConstraint[i].evaluate (adblVariate) *</span>
+<span class="fc bfc" id="L831" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L832" title="1 of 2 branches missed.">			if (0. != adblInequalityConstraintCoefficient[i] &amp;&amp; 0. &lt;=</span>
+<span class="pc bpc" id="L833" title="1 of 2 branches missed.">				_aRdToR1InequalityConstraint[i].evaluate (adblVariate) *</span>
 					adblInequalityConstraintCoefficient[i])
-<span class="nc" id="L798">				return false;</span>
+<span class="nc" id="L835">				return false;</span>
 		}
 
-<span class="fc" id="L801">		return true;</span>
+<span class="fc" id="L838">		return true;</span>
 	}
 
 	/**
@@ -815,21 +852,21 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L818" title="1 of 2 branches missed.">		if (!(_rdToR1Objective instanceof org.drip.function.rdtor1.ConvexMultivariate)) return false;</span>
+<span class="pc bpc" id="L855" title="1 of 2 branches missed.">		if (!(_rdToR1Objective instanceof org.drip.function.rdtor1.ConvexMultivariate)) return false;</span>
 
-<span class="nc" id="L820">		int iNumEqualityConstraint = numEqualityConstraint();</span>
+<span class="nc" id="L857">		int iNumEqualityConstraint = numEqualityConstraint();</span>
 
-<span class="nc" id="L822">		int iNumInequalityConstraint = numInequalityConstraint();</span>
+<span class="nc" id="L859">		int iNumInequalityConstraint = numInequalityConstraint();</span>
 
-<span class="nc bnc" id="L824" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
-<span class="nc bnc" id="L825" title="All 2 branches missed.">			if (0. != _aRdToR1EqualityConstraint[i].evaluate (adblVariate)) return false;</span>
+<span class="nc bnc" id="L861" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumEqualityConstraint; ++i) {</span>
+<span class="nc bnc" id="L862" title="All 2 branches missed.">			if (0. != _aRdToR1EqualityConstraint[i].evaluate (adblVariate)) return false;</span>
 		}
 
-<span class="nc bnc" id="L828" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="nc bnc" id="L829" title="All 2 branches missed.">			if (0. &lt;= _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) return false;</span>
+<span class="nc bnc" id="L865" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="nc bnc" id="L866" title="All 2 branches missed.">			if (0. &lt;= _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) return false;</span>
 		}
 
-<span class="nc" id="L832">		return true;</span>
+<span class="nc" id="L869">		return true;</span>
 	}
 
 	/**
@@ -846,14 +883,14 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 	{
 		try {
-<span class="fc" id="L849">			return org.drip.optimization.constrained.RegularityConditions.Standard (adblVariate, fjm,</span>
-<span class="fc" id="L850">				isLCQ(), isLICQ (adblVariate), isMFCQ (adblVariate), isCRCQ (adblVariate), isCPLDCQ</span>
-<span class="fc" id="L851">					(adblVariate), isQNCQ (fjm, adblVariate), isSCCQ (adblVariate));</span>
-<span class="nc" id="L852">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L853">			e.printStackTrace();</span>
+<span class="fc" id="L886">			return org.drip.optimization.constrained.RegularityConditions.Standard (adblVariate, fjm,</span>
+<span class="fc" id="L887">				isLCQ(), isLICQ (adblVariate), isMFCQ (adblVariate), isCRCQ (adblVariate), isCPLDCQ</span>
+<span class="fc" id="L888">					(adblVariate), isQNCQ (fjm, adblVariate), isSCCQ (adblVariate));</span>
+<span class="nc" id="L889">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L890">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L856">		return null;</span>
+<span class="nc" id="L893">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

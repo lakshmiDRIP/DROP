@@ -6,33 +6,51 @@ package org.drip.portfolioconstruction.asset;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,14 +67,22 @@ package org.drip.portfolioconstruction.asset;
  */
 
 /**
- * AssetBounds holds the Upper/Lower Bounds on an Asset.
+ * &lt;i&gt;AssetBounds&lt;/i&gt; holds the Upper/Lower Bounds on an Asset.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/asset&quot;&gt;Asset Component&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class AssetBounds {
-<span class="fc" id="L58">	private double _dblLower = java.lang.Double.NaN;</span>
-<span class="fc" id="L59">	private double _dblUpper = java.lang.Double.NaN;</span>
+<span class="fc" id="L84">	private double _dblLower = java.lang.Double.NaN;</span>
+<span class="fc" id="L85">	private double _dblUpper = java.lang.Double.NaN;</span>
 
 	/**
 	 * AssetBounds Constructor
@@ -71,14 +97,14 @@ public class AssetBounds {
 		final double dblLower,
 		final double dblUpper)
 		throws java.lang.Exception
-<span class="fc" id="L74">	{</span>
-<span class="fc" id="L75">		_dblLower = dblLower;</span>
-<span class="fc" id="L76">		_dblUpper = dblUpper;</span>
+<span class="fc" id="L100">	{</span>
+<span class="fc" id="L101">		_dblLower = dblLower;</span>
+<span class="fc" id="L102">		_dblUpper = dblUpper;</span>
 
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp; org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L79" title="2 of 4 branches missed.">			(_dblUpper) &amp;&amp; _dblLower &gt;= _dblUpper)</span>
-<span class="nc" id="L80">			throw new java.lang.Exception (&quot;AssetBounds Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L81">	}</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp; org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">			(_dblUpper) &amp;&amp; _dblLower &gt;= _dblUpper)</span>
+<span class="nc" id="L106">			throw new java.lang.Exception (&quot;AssetBounds Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L107">	}</span>
 
 	/**
 	 * Retrieve the Lower Bound
@@ -88,7 +114,7 @@ public class AssetBounds {
 
 	public double lower()
 	{
-<span class="fc" id="L91">		return _dblLower;</span>
+<span class="fc" id="L117">		return _dblLower;</span>
 	}
 
 	/**
@@ -99,7 +125,7 @@ public class AssetBounds {
 
 	public double upper()
 	{
-<span class="fc" id="L102">		return _dblUpper;</span>
+<span class="fc" id="L128">		return _dblUpper;</span>
 	}
 
 	/**
@@ -110,15 +136,15 @@ public class AssetBounds {
 
 	public double feasibleStart()
 	{
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp;</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper))</span>
-<span class="nc" id="L115">			return 0.;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp;</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper))</span>
+<span class="nc" id="L141">			return 0.;</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower)) return 0.5 * _dblUpper;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower)) return 0.5 * _dblUpper;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblUpper)) return 2.0 * _dblLower;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblUpper)) return 2.0 * _dblLower;</span>
 
-<span class="nc" id="L121">		return 0.5 * (_dblLower + _dblUpper);</span>
+<span class="nc" id="L147">		return 0.5 * (_dblLower + _dblUpper);</span>
 	}
 
 	/**
@@ -135,18 +161,18 @@ public class AssetBounds {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;AssetBounds::localize =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L165">			throw new java.lang.Exception (&quot;AssetBounds::localize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp;</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper))</span>
-<span class="nc" id="L143">			return dblVariate;</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper))</span>
+<span class="nc" id="L169">			return dblVariate;</span>
 
-<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp; dblVariate &lt; _dblLower) return _dblLower;</span>
+<span class="nc bnc" id="L171" title="All 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp; dblVariate &lt; _dblLower) return _dblLower;</span>
 
-<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblUpper) &amp;&amp; dblVariate &gt; _dblUpper) return _dblUpper;</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblUpper) &amp;&amp; dblVariate &gt; _dblUpper) return _dblUpper;</span>
 
-<span class="nc" id="L149">		return dblVariate;</span>
+<span class="nc" id="L175">		return dblVariate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
