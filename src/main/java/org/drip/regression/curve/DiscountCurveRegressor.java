@@ -6,6 +6,7 @@ package org.drip.regression.curve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.regression.curve;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
@@ -53,19 +71,53 @@ package org.drip.regression.curve;
  */
 
 /**
- * DiscountCurveRegressor implements the regression set analysis for the Discount Curve.
- * 	DiscountCurveRegressor regresses 11 scenarios:
- * 	- #1: Create the discount curve from a set 30 instruments (cash/future/swap).
- * 	- #2: Create the discount curve from a flat discount rate.
- * 	- #3: Create the discount curve from a set of discount factors.
- * 	- #4: Create the discount curve from the implied discount rates.
- * 	- #5: Extract the discount curve instruments and quotes.
- * 	- #6: Create a parallel shifted discount curve.
- * 	- #7: Create a rate shifted discount curve.
- * 	- #8: Create a basis rate shifted discount curve.
- * 	- #9: Create a node tweaked discount curve.
- * 	- #10: Compute the effective discount factor between 2 dates.
- * 	- #11: Compute the effective implied rate between 2 dates.
+ * <i>DiscountCurveRegressor</i> implements the regression set analysis for the Discount Curve.
+ * DiscountCurveRegressor regresses 11 scenarios:
+ * 
+ * <br><br>
+ *  <ul>
+ *  	<li>
+ * 			#1: Create the discount curve from a set 30 instruments (cash/future/swap).
+ *  	</li>
+ *  	<li>
+ * 			#2: Create the discount curve from a flat discount rate.
+ *  	</li>
+ *  	<li>
+ * 			#3: Create the discount curve from a set of discount factors.
+ *  	</li>
+ *  	<li>
+ * 			#4: Create the discount curve from the implied discount rates.
+ *  	</li>
+ *  	<li>
+ * 			#5: Extract the discount curve instruments and quotes.
+ *  	</li>
+ *  	<li>
+ * 			#6: Create a parallel shifted discount curve.
+ *  	</li>
+ *  	<li>
+ * 			#7: Create a rate shifted discount curve.
+ *  	</li>
+ *  	<li>
+ * 			#8: Create a basis rate shifted discount curve.
+ *  	</li>
+ *  	<li>
+ * 			#9: Create a node tweaked discount curve.
+ *  	</li>
+ *  	<li>
+ * 			#10: Compute the effective discount factor between 2 dates.
+ *  	</li>
+ *  	<li>
+ * 			#11: Compute the effective implied rate between 2 dates.
+ *  	</li>
+ *  </ul>
+ * 
+ * <br><br>
+ *  <ul>
+ *		<li><b>Project</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression">Regression</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/curve">Curve</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer">Numerical Optimizer Library</a></li>
+ *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
