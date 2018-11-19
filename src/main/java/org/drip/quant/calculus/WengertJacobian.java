@@ -78,20 +78,20 @@ package org.drip.quant.calculus;
  *  <ul>
  *  	<li>
  * 			Set/Retrieve the Wengert variables
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Accumulate the Partials
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Scale the partial entries
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Merge the Jacobian with another
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Retrieve the WengertJacobian elements
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Display the contents of the WengertJacobian
  *  	</li>
  *  </ul>

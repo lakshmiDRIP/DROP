@@ -1,8 +1,8 @@
-# DROP Service Common Package
+# DROP SIMM Common Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Service Common Package contains the Common Cross Risk Factor Utilities.
+DROP SIMM Common Package contains the Common Cross Risk Factor Utilities.
 
 
 ## Class Components

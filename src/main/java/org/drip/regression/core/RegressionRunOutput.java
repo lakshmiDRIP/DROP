@@ -77,17 +77,17 @@ package org.drip.regression.core;
  *  <ul>
  *  	<li>
  * 			The execution time
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			The Success/failure status of the run
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			The regression scenario that was executed
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			The Completion time for the regression module
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			The Regression Run Detail for the regression run
  *  	</li>
  *  </ul>

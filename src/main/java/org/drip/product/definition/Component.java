@@ -78,23 +78,23 @@ package org.drip.product.definition;
  *  <ul>
  *  	<li>
  *  		Get the product's initial notional, notional, and coupon.
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Get the Effective date, Maturity date, First Coupon Date.
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		List the coupon periods.
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Set the market curves - discount, TSY, forward, and Credit curves.
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Retrieve the product's settlement parameters.
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Value the product's using standard/custom market parameters.
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Retrieve the product's named measures and named measure values.
  *  	</li>
  *  </ul>

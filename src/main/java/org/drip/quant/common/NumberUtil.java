@@ -77,14 +77,14 @@ package org.drip.quant.common;
  *  <ul>
  *  	<li>
  *			Verify number/number array validity, and closeness/sign match
- *  	<li>
  *  	</li>
+ *  	<li>
  *			Factorial Permutation/Combination functionality
- *  	<li>
  *  	</li>
+ *  	<li>
  *			Dump multi-dimensional array contents
- *  	<li>
  *  	</li>
+ *  	<li>
  *			Min/Max/Bound the array entries within limits
  *  	</li>
  *  </ul>

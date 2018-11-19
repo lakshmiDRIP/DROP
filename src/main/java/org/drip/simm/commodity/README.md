@@ -1,8 +1,8 @@
-# DROP Service Commodity Package
+# DROP SIMM Commodity Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Service Commodity Package implements the Commodity Risk Factor Calibration Settings.
+DROP SIMM Commodity Package implements the Commodity Risk Factor Calibration Settings.
 
 
 ## Class Components
