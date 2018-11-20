@@ -1,12 +1,12 @@
-# DROP Execution Module
+# DROP Execution
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Execution Module contains the Functionality that implements Optimal Impact/Capture Based Trading
-	Trajectories - Deterministic, Stochastic, Static, and Dynamic.
+DROP Execution contains the Functionality that implements Optimal Impact/Capture Based Trading Trajectories -
+	Deterministic, Stochastic, Static, and Dynamic.
 
 
-## Package Components
+## Component Packages
 
  * [***Adaptive***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive)
 DROP Execution Adaptive Package implements the Coordinate Variation Based Adaptive Execution.
@@ -68,6 +68,7 @@ DROP Execution Strategy Package implements the Discrete/Continuous Trading Traje
  * [***Trading Time***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime)
 DROP Execution Trading Time Package implements the Coordinated Variation Trading Time Models.
 
+
 ## References
 
  * Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -122,6 +123,7 @@ DROP Execution Trading Time Package implements the Coordinated Variation Trading
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

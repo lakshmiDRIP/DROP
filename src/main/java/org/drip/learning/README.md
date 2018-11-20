@@ -1,11 +1,11 @@
-# DROP Learning Module
+# DROP Learning
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Learning Module extracts the Agnostic Learning Bounds under Empirical Loss Minimization Schemes.
+DROP Learning extracts the Agnostic Learning Bounds under Empirical Loss Minimization Schemes.
 
 
-## Package Components
+## Component Packages
 
  * [***Bound***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/bound)
  DROP Learning Bound Package implements Covering Numbers, Concentration, Lipschitz Bounds.

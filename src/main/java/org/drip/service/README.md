@@ -1,12 +1,12 @@
-# DROP Service Project
+# DROP Service
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Service Project maintains the Environment, Product/Definition Containers, and hosts the Scenario/State
+DROP Service maintains the Environment, Product/Definition Containers, and hosts the Scenario/State
 	Manipulation APIs.
 
 
-## Package Components
+## Component Packages
 
  * [***API***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api)
  DROP Service API Package implements the Horizon Roll Attribution Service API.

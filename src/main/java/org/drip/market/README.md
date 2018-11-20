@@ -1,12 +1,12 @@
-# DROP Market Module
+# DROP Market
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Market Module holds the Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and
-	Treasury Settings.
+DROP Market holds the Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury
+	Settings.
 
 
-## Package Components
+## Component Packages
 
  * [***Definition***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/definition)
  DROP Market Definition implements the IBOR, FX, Overnight Index Container.
@@ -22,6 +22,7 @@ DROP Market Module holds the Static Market Fields - the Definitions, the OTC/Exc
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

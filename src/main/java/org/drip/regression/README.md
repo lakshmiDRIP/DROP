@@ -1,12 +1,12 @@
-# DROP Regression Project
+# DROP Regression
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Regression Project implements the Regression Runs for Fixed Income, Numerical Analysis, and Spline
+DROP Regression implements the Regression Test Runs for Fixed Income, Numerical Analysis, and Spline
 	Libraries.
 
 
-## Package Components
+## Component Packages
 
  * [***Core***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core)
  DROP Regression Core implements the Regression Engine Core and the Unit Regressors.

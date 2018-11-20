@@ -37,9 +37,9 @@ DROP Analytics Cash-flow Package implements the Unit/Composite Cash Flow Periods
  * [***Loss Quadrature Metrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/LossQuadratureMetrics.java)
  <i>LossPeriodCurveFactors</i> is an Implementation of the Period Class enhanced by the Loss Period Measures.
  It exports the following Functionality:
- ** Start/End Survival Probabilities
- ** Period Effective Notional/Recovery/Discount Factor
- ** Serialization into and De-serialization out of Byte Arrays
+ 	* Start/End Survival Probabilities
+ 	* Period Effective Notional/Recovery/Discount Factor
+ 	* Serialization into and De-serialization out of Byte Arrays
 
  * [***Reference Index Period***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/ReferenceIndexPeriod.java)
  <i>ReferenceIndexPeriod</i> contains the Cash Flow Period Details. Currently it holds the Start Date, the

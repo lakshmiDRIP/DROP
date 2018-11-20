@@ -1,12 +1,12 @@
-# DROP Optimization Module
+# DROP Optimization
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Optimization Module implements the Necessary, Sufficient, and Regulatiry Checks for Gradient Descent in
-	a Constrained Optimization Setup.
+DROP Optimization implements the Necessary, Sufficient, and Regulatiry Checks for Gradient Descent in a
+	Constrained Optimization Setup.
 
 
-## Package Components
+## Component Packages
 
  * [***Constrained***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained)
  DROP Optimization Constrained implements the KKT Fritz-John Constrained Optimizer Framework.

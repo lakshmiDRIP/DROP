@@ -1,12 +1,11 @@
-# DROP Function Module
+# DROP Function
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Function Module contains Implementation and Solvers for a Suite of R<sup>x</sup> To R<sup>1</sup>
-	Functions.
+DROP Function contains Implementation and Solvers for a Suite of R<sup>x</sup> To R<sup>1</sup> Functions.
 
 
-## Package Components
+## Component Packages
 
  * [***Definition***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition)
 DROP Function Definition Package contains the Function Execution Ancillary Support Objects.
@@ -30,8 +29,8 @@ DROP Function R<sup>d</sup> To R<sup>1</sup> Solver Package implements the Suite
 	R<sup>1</sup> Solvers.
 
 
-
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

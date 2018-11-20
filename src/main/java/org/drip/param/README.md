@@ -1,12 +1,12 @@
-# DROP Param Module
+# DROP Param
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Param Module implements the Core Suite of Parameters - Product Cash Flow, Valuation, Market, Pricing,
-	and Quoting Parameters.
+DROP Param implements the Core Suite of Parameters - Product Cash Flow, Valuation, Market, Pricing, and
+	Quoting Parameters.
 
 
-## Package Components
+## Component Packages
 
  * [***Config***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/config)
  DROP Param Config Package holds the Library Level Configuration Parameters Setting.

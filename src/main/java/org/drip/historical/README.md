@@ -1,11 +1,11 @@
-# DROP Historical Module
+# DROP Historical
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Historical Module contains the Historical State Processing Utilities.
+DROP Historical contains the Historical State Processing Utilities.
 
 
-## Package Components
+## Component Packages
 
  * [***Attribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/attribution)
 DROP Historical Attribution Package contains the Position Market Change Components Attribution.
@@ -21,6 +21,7 @@ DROP Historical State Package contains the Historical Implied Curve Node Metrics
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

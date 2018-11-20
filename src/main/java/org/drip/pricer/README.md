@@ -1,12 +1,11 @@
-# DROP Pricer Project
+# DROP Pricer
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Pricer Project implements the Custom Pricing Algorithms and the Derivative Fokker Planck Trajectory
-	Generators.
+DROP Pricer implements the Custom Pricing Algorithms and the Derivative Fokker Planck Trajectory Generators.
 
 
-## Package Components
+## Component Packages
 
  * [***Option***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer/option)
  DROP Pricer Option Package implements the Deterministic/Stochastic Volatility Algorithms/Greeks.

@@ -1,11 +1,11 @@
-# DROP Sequence Project
+# DROP Sequence
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Sequence Project computes Bounds Metics for Random, Custom, and Functional Sequences.
+DROP Sequence computes Bounds Metics for Random, Custom, and Functional Sequences.
 
 
-## Package Components
+## Component Packages
 
  * [***Custom***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/custom)
  DROP Sequence Custom Package implements the Glivenko Cantelli Supremum Deviation Bounds.

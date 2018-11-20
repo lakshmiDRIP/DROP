@@ -1,11 +1,11 @@
-# DROP Dynamics Module
+# DROP Dynamics
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Dynamics Module contains implementations of the HJM, Hull-White, LMM, and SABR Dynamic Evolution Models.
+DROP Dynamics contains implementations of the HJM, Hull-White, LMM, and SABR Dynamic Evolution Models.
 
 
-## Package Components
+## Component Packages
 
  * [***Evolution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution)
 DROP Dynamics Evolution Package implements the Latent State Evolution Edges/Vertexes.
@@ -24,6 +24,7 @@ DROP Dynamics SABR Package implements the SABR Based Latent State Evolution.
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

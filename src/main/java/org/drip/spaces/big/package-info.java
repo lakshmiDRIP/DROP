@@ -1,6 +1,6 @@
 
 /**
- * Big-date In-place Manipulator
+ * Big-data In-place Manipulator
  *
  * @author Lakshmi Krishnamurthy
  */

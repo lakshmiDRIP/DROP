@@ -1,11 +1,11 @@
-# DROP Measure Module
+# DROP Measure
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Measure Module implements the Continuous and Discrete Measure Distributions and Variate Evolutions.
+DROP Measure implements the Continuous and Discrete Measure Distributions and Variate Evolutions.
 
 
-## Package Components
+## Component Packages
 
  * [***Bayesian***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian)
  DROP Measure Bayesian contains the Functionality to generate the Prior, Conditional, Posterior Theil

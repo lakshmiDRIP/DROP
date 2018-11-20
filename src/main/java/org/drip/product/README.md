@@ -1,12 +1,12 @@
-# DROP Product Project
+# DROP Product
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Product Project implements the Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option
-	Asset Classes.
+DROP Product implements the Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option Asset
+	Classes.
 
 
-## Package Components
+## Component Packages
 
  * [***Calib***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/calib)
  DROP Product Calib Package holds the Curve/Surface Calibration Quote Sets.

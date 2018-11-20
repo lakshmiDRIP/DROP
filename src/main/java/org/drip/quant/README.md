@@ -1,11 +1,11 @@
-# DROP Quant Project
+# DROP Quant
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Quant Project implements the Suite of DROP Linear Algebra Utilities.
+DROP Quant implements the Suite of DROP Linear Algebra Utilities.
 
 
-## Package Components
+## Component Packages
 
  * [***Calculus***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus)
  DROP Quant Calculus Package implements the R<sup>1</sup> To R<sup>1</sup> Numerical Integration

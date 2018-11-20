@@ -1,11 +1,11 @@
-# DROP Exposure Module
+# DROP Exposure
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Exposure Module computes the Exposure Group Level Collateralized/Uncollateralized Exposure.
+DROP Exposure computes the Exposure Group Level Collateralized/Uncollateralized Exposure.
 
 
-## Package Components
+## Component Packages
 
  * [***CSA Dynamics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csadynamics)
 DROP Exposure CSA Dynamics Package implements the CSA Numeraire Basis/Measure Dynamics.
@@ -86,6 +86,7 @@ DROP Exposure Regression Trade Package computes the Exposure Regression under Ma
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

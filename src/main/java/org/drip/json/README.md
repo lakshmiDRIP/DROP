@@ -1,11 +1,11 @@
-# DROP JSON Module
+# DROP JSON
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP JSON Module contains the Implementation of the RFC-4627 Compliant JSON Encoder/Decoder (Parser).
+DROP JSON contains the Implementation of the RFC-4627 Compliant JSON Encoder/Decoder (Parser).
 
 
-## Package Components
+## Component Packages
 
  * [***Asset Allocation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation)
  DROP JSON Asset Allocation Package implements the JSON Based In/Out Service.
@@ -18,6 +18,7 @@ DROP JSON Module contains the Implementation of the RFC-4627 Compliant JSON Enco
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

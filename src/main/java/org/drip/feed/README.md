@@ -1,11 +1,11 @@
-# DROP Feed Module
+# DROP Feed
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Feed Module contains the Functionality to load, transform, and compute target metrics across feeds.
+DROP Feed contains the Functionality to load, transform, and compute target metrics across feeds.
 
 
-## Package Components
+## Component Packages
 
  * [***Loader***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader)
 DROP Feed Loader Package contains the Reference/Market Data Feed Loader.
@@ -18,6 +18,7 @@ DROP Feed Transformer Package implements the Market Data Reconstitutive Feed Tra
 
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

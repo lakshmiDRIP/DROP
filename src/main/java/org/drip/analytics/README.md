@@ -1,11 +1,11 @@
-# DROP Analytics Module
+# DROP Analytics
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Analytics Module contains Date, Cash Flow, and Cash Flow Period Measure Generation Utilities.
+DROP Analytics contains Date, Cash Flow, and Cash Flow Period Measure Generation Utilities.
 
 
-## Package Components
+## Component Packages
 
  * [***Cash Flow***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow)
 DROP Analytics Cash-flow Package implements the Unit/Composite Cash Flow Periods.
@@ -55,6 +55,7 @@ DROP Analytics Support Package contains Assorted Support and Helper Utilities.
  <i>Risk</i> <b>21 (2)</b> 97-102
 
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP

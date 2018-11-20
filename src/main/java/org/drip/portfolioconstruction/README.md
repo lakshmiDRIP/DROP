@@ -1,12 +1,11 @@
-# DROP Portfolio Construction Project
+# DROP Portfolio Construction
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Portfolio Construction Project implements the Optimal and Constrained Portfolio Construction
-	Functionality.
+DROP Portfolio Construction implements the Optimal and Constrained Portfolio Construction Functionality.
 
 
-## Package Components
+## Component Packages
 
  * [***Allocator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator)
  DROP Portfolio Construction Allocator Package implements the MVO Based Portfolio Allocation Construction.
