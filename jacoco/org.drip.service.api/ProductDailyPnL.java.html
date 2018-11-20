@@ -6,6 +6,7 @@ package org.drip.service.api;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.service.api;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,59 +70,79 @@ package org.drip.service.api;
  */
 
 /**
- * ProductDailyPnL contains the following daily measures computed:
- * 	- 1D Carry, Roll Down, Curve Shift, and Full Return PnL
- * 	- 3D Carry and Roll Down PnL
- * 	- 3M Carry and Roll Down PnL
- * 	- Current DV01
+ * &lt;i&gt;ProductDailyPnL&lt;/i&gt; contains the following daily measures computed:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			1D Carry, Roll Down, Curve Shift, and Full Return PnL
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			3D Carry and Roll Down PnL
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			3M Carry and Roll Down PnL
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Current DV01
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ProductDailyPnL {
-<span class="nc" id="L65">	private int _i1DFixedAccrualDays = 0;</span>
-<span class="nc" id="L66">	private int _i1DFloatingAccrualDays = 0;</span>
-<span class="nc" id="L67">	private double _dblDV01 = java.lang.Double.NaN;</span>
-<span class="nc" id="L68">	private double _dbl1DCarryPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L69">	private double _dbl1MCarryPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L70">	private double _dbl3MCarryPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L71">	private double _dbl1DFixedDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L72">	private double _dbl1MFixedDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L73">	private double _dbl3MFixedDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L74">	private double _dbl1DCleanPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _dbl1DDirtyPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _dbl1DTotalPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _dbl1DTimeRollPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L78">	private double _dbl1DFloatingDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L79">	private double _dbl1MFloatingDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L80">	private double _dbl3MFloatingDCF = java.lang.Double.NaN;</span>
-<span class="nc" id="L81">	private double _dblCleanFixedDV01 = java.lang.Double.NaN;</span>
-<span class="nc" id="L82">	private double _dblCleanFloatDV01 = java.lang.Double.NaN;</span>
-<span class="nc" id="L83">	private double _dblDV01WithFixing = java.lang.Double.NaN;</span>
-<span class="nc" id="L84">	private double _dbl1DCurveShiftPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L85">	private double _dblPeriodFixedRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L86">	private double _dblBaselineSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private double _dbl1DTimeRollSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L88">	private double _dbl1DCleanPnLWithFixing = java.lang.Double.NaN;</span>
-<span class="nc" id="L89">	private double _dbl1DDirtyPnLWithFixing = java.lang.Double.NaN;</span>
-<span class="nc" id="L90">	private double _dbl1DTotalPnLWithFixing = java.lang.Double.NaN;</span>
-<span class="nc" id="L91">	private double _dbl1DCurveShiftSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L92">	private double _dblPeriodFloatingRateUsed = java.lang.Double.NaN;</span>
-<span class="nc" id="L93">	private double _dblPeriodCurveFloatingRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L94">	private double _dbl1DMaturityRollUpSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L95">	private double _dblCleanFloatDV01WithFixing = java.lang.Double.NaN;</span>
-<span class="nc" id="L96">	private double _dblPeriodProductFloatingRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L97">	private double _dbl1DMaturityRollDownSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L98">	private double _dbl1MMaturityRollDownSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L99">	private double _dbl3MMaturityRollDownSwapRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L100">	private double _dbl1DMaturityRollUpSwapRatePnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L101">	private double _dbl1DMaturityRollUpFairPremium = java.lang.Double.NaN;</span>
-<span class="nc" id="L102">	private double _dbl1DMaturityRollDownSwapRatePnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L103">	private double _dbl1MMaturityRollDownSwapRatePnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L104">	private double _dbl3MMaturityRollDownSwapRatePnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L105">	private double _dbl1DMaturityRollUpFairPremiumPnL = java.lang.Double.NaN;</span>
-<span class="nc" id="L106">	private double _dbl1DMaturityRollUpFairPremiumWithFixing = java.lang.Double.NaN;</span>
-<span class="nc" id="L107">	private double _dbl1DMaturityRollUpFairPremiumWithFixingPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L103">	private int _i1DFixedAccrualDays = 0;</span>
+<span class="nc" id="L104">	private int _i1DFloatingAccrualDays = 0;</span>
+<span class="nc" id="L105">	private double _dblDV01 = java.lang.Double.NaN;</span>
+<span class="nc" id="L106">	private double _dbl1DCarryPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L107">	private double _dbl1MCarryPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private double _dbl3MCarryPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dbl1DFixedDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dbl1MFixedDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dbl3MFixedDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dbl1DCleanPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _dbl1DDirtyPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L114">	private double _dbl1DTotalPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L115">	private double _dbl1DTimeRollPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L116">	private double _dbl1DFloatingDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L117">	private double _dbl1MFloatingDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L118">	private double _dbl3MFloatingDCF = java.lang.Double.NaN;</span>
+<span class="nc" id="L119">	private double _dblCleanFixedDV01 = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private double _dblCleanFloatDV01 = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _dblDV01WithFixing = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _dbl1DCurveShiftPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private double _dblPeriodFixedRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private double _dblBaselineSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L125">	private double _dbl1DTimeRollSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L126">	private double _dbl1DCleanPnLWithFixing = java.lang.Double.NaN;</span>
+<span class="nc" id="L127">	private double _dbl1DDirtyPnLWithFixing = java.lang.Double.NaN;</span>
+<span class="nc" id="L128">	private double _dbl1DTotalPnLWithFixing = java.lang.Double.NaN;</span>
+<span class="nc" id="L129">	private double _dbl1DCurveShiftSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L130">	private double _dblPeriodFloatingRateUsed = java.lang.Double.NaN;</span>
+<span class="nc" id="L131">	private double _dblPeriodCurveFloatingRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L132">	private double _dbl1DMaturityRollUpSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L133">	private double _dblCleanFloatDV01WithFixing = java.lang.Double.NaN;</span>
+<span class="nc" id="L134">	private double _dblPeriodProductFloatingRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L135">	private double _dbl1DMaturityRollDownSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L136">	private double _dbl1MMaturityRollDownSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L137">	private double _dbl3MMaturityRollDownSwapRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L138">	private double _dbl1DMaturityRollUpSwapRatePnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L139">	private double _dbl1DMaturityRollUpFairPremium = java.lang.Double.NaN;</span>
+<span class="nc" id="L140">	private double _dbl1DMaturityRollDownSwapRatePnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L141">	private double _dbl1MMaturityRollDownSwapRatePnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L142">	private double _dbl3MMaturityRollDownSwapRatePnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L143">	private double _dbl1DMaturityRollUpFairPremiumPnL = java.lang.Double.NaN;</span>
+<span class="nc" id="L144">	private double _dbl1DMaturityRollUpFairPremiumWithFixing = java.lang.Double.NaN;</span>
+<span class="nc" id="L145">	private double _dbl1DMaturityRollUpFairPremiumWithFixingPnL = java.lang.Double.NaN;</span>
 
 	/**
 	 * ProductDailyPnL constructor
@@ -203,85 +241,85 @@ public class ProductDailyPnL {
 		final double dbl3MFixedDCF,
 		final double dbl3MFloatingDCF)
 		throws java.lang.Exception
-<span class="nc" id="L206">	{</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTotalPnL = dbl1DTotalPnL) ||</span>
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCleanPnL = dbl1DCleanPnL) ||</span>
-<span class="nc bnc" id="L209" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dbl1DDirtyPnL = dbl1DDirtyPnL) ||</span>
-<span class="nc bnc" id="L210" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTotalPnLWithFixing =</span>
+<span class="nc" id="L244">	{</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTotalPnL = dbl1DTotalPnL) ||</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCleanPnL = dbl1DCleanPnL) ||</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dbl1DDirtyPnL = dbl1DDirtyPnL) ||</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTotalPnLWithFixing =</span>
 						dbl1DTotalPnLWithFixing) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L212" title="All 2 branches missed.">							(_dbl1DCleanPnLWithFixing = dbl1DCleanPnLWithFixing) ||</span>
-<span class="nc bnc" id="L213" title="All 2 branches missed.">								!org.drip.quant.common.NumberUtil.IsValid (_dbl1DDirtyPnLWithFixing =</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">							(_dbl1DCleanPnLWithFixing = dbl1DCleanPnLWithFixing) ||</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">								!org.drip.quant.common.NumberUtil.IsValid (_dbl1DDirtyPnLWithFixing =</span>
 									dbl1DDirtyPnLWithFixing) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L215" title="All 2 branches missed.">										(_dbl1DCarryPnL = dbl1DCarryPnL) ||</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">											!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTimeRollPnL =</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">										(_dbl1DCarryPnL = dbl1DCarryPnL) ||</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">											!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTimeRollPnL =</span>
 												dbl1DTimeRollPnL) ||
 													!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L219" title="All 2 branches missed.">														(_dbl1DMaturityRollDownSwapRatePnL =</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">														(_dbl1DMaturityRollDownSwapRatePnL =</span>
 															dbl1DMaturityRollDownSwapRatePnL) ||
 																!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L222" title="All 2 branches missed.">																	(_dbl1DMaturityRollUpSwapRatePnL =</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">																	(_dbl1DMaturityRollUpSwapRatePnL =</span>
 																		dbl1DMaturityRollUpSwapRatePnL) ||
-<span class="nc bnc" id="L224" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumPnL =</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumPnL =</span>
 				dbl1DMaturityRollUpFairPremiumPnL) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L226" title="All 2 branches missed.">					(_dbl1DMaturityRollUpFairPremiumWithFixingPnL =</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">					(_dbl1DMaturityRollUpFairPremiumWithFixingPnL =</span>
 						dbl1DMaturityRollUpFairPremiumWithFixingPnL) ||
-<span class="nc bnc" id="L228" title="All 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCurveShiftPnL =</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCurveShiftPnL =</span>
 								dbl1DCurveShiftPnL) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L230" title="All 2 branches missed.">									(_dbl1MCarryPnL = dbl1MCarryPnL) ||</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">									(_dbl1MCarryPnL = dbl1MCarryPnL) ||</span>
 										!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L232" title="All 2 branches missed.">											(_dbl1MMaturityRollDownSwapRatePnL =</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">											(_dbl1MMaturityRollDownSwapRatePnL =</span>
 												dbl1MMaturityRollDownSwapRatePnL) ||
-<span class="nc bnc" id="L234" title="All 2 branches missed.">													!org.drip.quant.common.NumberUtil.IsValid (_dbl3MCarryPnL</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">													!org.drip.quant.common.NumberUtil.IsValid (_dbl3MCarryPnL</span>
 														= dbl3MCarryPnL) ||
 															!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L237" title="All 2 branches missed.">																(_dbl3MMaturityRollDownSwapRatePnL =</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">																(_dbl3MMaturityRollDownSwapRatePnL =</span>
 																	dbl3MMaturityRollDownSwapRatePnL) ||
 																		!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L240" title="All 4 branches missed.">			(_dblDV01 = dblDV01) || !org.drip.quant.common.NumberUtil.IsValid (_dblDV01WithFixing =</span>
-<span class="nc bnc" id="L241" title="All 2 branches missed.">				dblDV01WithFixing) || !org.drip.quant.common.NumberUtil.IsValid (_dblCleanFixedDV01 =</span>
-<span class="nc bnc" id="L242" title="All 2 branches missed.">					dblCleanFixedDV01) || !org.drip.quant.common.NumberUtil.IsValid (_dblCleanFloatDV01 =</span>
+<span class="nc bnc" id="L278" title="All 4 branches missed.">			(_dblDV01 = dblDV01) || !org.drip.quant.common.NumberUtil.IsValid (_dblDV01WithFixing =</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">				dblDV01WithFixing) || !org.drip.quant.common.NumberUtil.IsValid (_dblCleanFixedDV01 =</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">					dblCleanFixedDV01) || !org.drip.quant.common.NumberUtil.IsValid (_dblCleanFloatDV01 =</span>
 						dblCleanFloatDV01) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L244" title="All 2 branches missed.">							(_dblCleanFloatDV01WithFixing = dblCleanFloatDV01WithFixing) ||</span>
-<span class="nc bnc" id="L245" title="All 2 branches missed.">								!org.drip.quant.common.NumberUtil.IsValid (_dblBaselineSwapRate =</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">							(_dblCleanFloatDV01WithFixing = dblCleanFloatDV01WithFixing) ||</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">								!org.drip.quant.common.NumberUtil.IsValid (_dblBaselineSwapRate =</span>
 									dblBaselineSwapRate) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L247" title="All 2 branches missed.">										(_dbl1DTimeRollSwapRate = dbl1DTimeRollSwapRate) ||</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">										(_dbl1DTimeRollSwapRate = dbl1DTimeRollSwapRate) ||</span>
 											!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L249" title="All 2 branches missed.">												(_dbl1DMaturityRollDownSwapRate =</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">												(_dbl1DMaturityRollDownSwapRate =</span>
 													dbl1DMaturityRollDownSwapRate) ||
 														!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L252" title="All 2 branches missed.">															(_dbl1MMaturityRollDownSwapRate =</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">															(_dbl1MMaturityRollDownSwapRate =</span>
 																dbl1MMaturityRollDownSwapRate) ||
 																	!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L255" title="All 2 branches missed.">																		(_dbl3MMaturityRollDownSwapRate =</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">																		(_dbl3MMaturityRollDownSwapRate =</span>
 																			dbl3MMaturityRollDownSwapRate) ||
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpSwapRate =</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpSwapRate =</span>
 				dbl1DMaturityRollUpSwapRate) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L259" title="All 2 branches missed.">					(_dbl1DMaturityRollUpFairPremium = dbl1DMaturityRollUpFairPremium) ||</span>
-<span class="nc bnc" id="L260" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumWithFixing</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">					(_dbl1DMaturityRollUpFairPremium = dbl1DMaturityRollUpFairPremium) ||</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumWithFixing</span>
 							= dbl1DMaturityRollUpFairPremiumWithFixing) ||
-<span class="nc bnc" id="L262" title="All 2 branches missed.">								!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCurveShiftSwapRate =</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">								!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCurveShiftSwapRate =</span>
 									dbl1DCurveShiftSwapRate) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L264" title="All 2 branches missed.">										(_dblPeriodFixedRate = dblPeriodFixedRate) ||</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">										(_dblPeriodFixedRate = dblPeriodFixedRate) ||</span>
 											!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L266" title="All 2 branches missed.">												(_dblPeriodCurveFloatingRate = dblPeriodCurveFloatingRate) ||</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">												(_dblPeriodCurveFloatingRate = dblPeriodCurveFloatingRate) ||</span>
 													!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L268" title="All 2 branches missed.">														(_dblPeriodProductFloatingRate =</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">														(_dblPeriodProductFloatingRate =</span>
 															dblPeriodProductFloatingRate) ||
 																!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L271" title="All 2 branches missed.">																	(_dblPeriodFloatingRateUsed =</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">																	(_dblPeriodFloatingRateUsed =</span>
 																		dblPeriodFloatingRateUsed) ||
 																			!org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L274" title="All 4 branches missed.">			(_dbl1DFixedDCF = dbl1DFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1DFloatingDCF</span>
-<span class="nc bnc" id="L275" title="All 2 branches missed.">				= dbl1DFloatingDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1MFixedDCF =</span>
-<span class="nc bnc" id="L276" title="All 2 branches missed.">					dbl1MFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1MFloatingDCF =</span>
-<span class="nc bnc" id="L277" title="All 2 branches missed.">						dbl1MFloatingDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl3MFixedDCF =</span>
-<span class="nc bnc" id="L278" title="All 2 branches missed.">							dbl3MFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl3MFloatingDCF =</span>
+<span class="nc bnc" id="L312" title="All 4 branches missed.">			(_dbl1DFixedDCF = dbl1DFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1DFloatingDCF</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">				= dbl1DFloatingDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1MFixedDCF =</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">					dbl1MFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1MFloatingDCF =</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">						dbl1MFloatingDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl3MFixedDCF =</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">							dbl3MFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl3MFloatingDCF =</span>
 								dbl3MFloatingDCF))
-<span class="nc" id="L280">			throw new java.lang.Exception (&quot;ProductDailyPnL ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L318">			throw new java.lang.Exception (&quot;ProductDailyPnL ctr: Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L282">		_i1DFixedAccrualDays = i1DFixedAccrualDays;</span>
-<span class="nc" id="L283">		_i1DFloatingAccrualDays = i1DFloatingAccrualDays;</span>
-<span class="nc" id="L284">	}</span>
+<span class="nc" id="L320">		_i1DFixedAccrualDays = i1DFixedAccrualDays;</span>
+<span class="nc" id="L321">		_i1DFloatingAccrualDays = i1DFloatingAccrualDays;</span>
+<span class="nc" id="L322">	}</span>
 
 	/**
 	 * Retrieve the 1D Clean PnL
@@ -291,7 +329,7 @@ public class ProductDailyPnL {
 
 	public double clean1DPnL()
 	{
-<span class="nc" id="L294">		return _dbl1DCleanPnL;</span>
+<span class="nc" id="L332">		return _dbl1DCleanPnL;</span>
 	}
 
 	/**
@@ -302,7 +340,7 @@ public class ProductDailyPnL {
 
 	public double dirty1DPnL()
 	{
-<span class="nc" id="L305">		return _dbl1DDirtyPnL;</span>
+<span class="nc" id="L343">		return _dbl1DDirtyPnL;</span>
 	}
 
 	/**
@@ -313,7 +351,7 @@ public class ProductDailyPnL {
 
 	public double total1DPnL()
 	{
-<span class="nc" id="L316">		return _dbl1DTotalPnL;</span>
+<span class="nc" id="L354">		return _dbl1DTotalPnL;</span>
 	}
 
 	/**
@@ -324,7 +362,7 @@ public class ProductDailyPnL {
 
 	public double clean1DPnLWithFixing()
 	{
-<span class="nc" id="L327">		return _dbl1DCleanPnLWithFixing;</span>
+<span class="nc" id="L365">		return _dbl1DCleanPnLWithFixing;</span>
 	}
 
 	/**
@@ -335,7 +373,7 @@ public class ProductDailyPnL {
 
 	public double dirty1DPnLWithFixing()
 	{
-<span class="nc" id="L338">		return _dbl1DDirtyPnLWithFixing;</span>
+<span class="nc" id="L376">		return _dbl1DDirtyPnLWithFixing;</span>
 	}
 
 	/**
@@ -346,7 +384,7 @@ public class ProductDailyPnL {
 
 	public double total1DPnLWithFixing()
 	{
-<span class="nc" id="L349">		return _dbl1DTotalPnLWithFixing;</span>
+<span class="nc" id="L387">		return _dbl1DTotalPnLWithFixing;</span>
 	}
 
 	/**
@@ -357,7 +395,7 @@ public class ProductDailyPnL {
 
 	public double carry1DPnL()
 	{
-<span class="nc" id="L360">		return _dbl1DCarryPnL;</span>
+<span class="nc" id="L398">		return _dbl1DCarryPnL;</span>
 	}
 
 	/**
@@ -368,7 +406,7 @@ public class ProductDailyPnL {
 
 	public double timeRoll1DPnL()
 	{
-<span class="nc" id="L371">		return _dbl1DTimeRollPnL;</span>
+<span class="nc" id="L409">		return _dbl1DTimeRollPnL;</span>
 	}
 
 	/**
@@ -379,7 +417,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollDownSwapRate1DPnL()
 	{
-<span class="nc" id="L382">		return _dbl1DMaturityRollDownSwapRatePnL;</span>
+<span class="nc" id="L420">		return _dbl1DMaturityRollDownSwapRatePnL;</span>
 	}
 
 	/**
@@ -390,7 +428,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollUpSwapRate1DPnL()
 	{
-<span class="nc" id="L393">		return _dbl1DMaturityRollUpSwapRatePnL;</span>
+<span class="nc" id="L431">		return _dbl1DMaturityRollUpSwapRatePnL;</span>
 	}
 
 	/**
@@ -401,7 +439,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollUpFairPremium1DPnL()
 	{
-<span class="nc" id="L404">		return _dbl1DMaturityRollUpFairPremiumPnL;</span>
+<span class="nc" id="L442">		return _dbl1DMaturityRollUpFairPremiumPnL;</span>
 	}
 
 	/**
@@ -412,7 +450,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollUpFairPremiumWithFixing1DPnL()
 	{
-<span class="nc" id="L415">		return _dbl1DMaturityRollUpFairPremiumWithFixingPnL;</span>
+<span class="nc" id="L453">		return _dbl1DMaturityRollUpFairPremiumWithFixingPnL;</span>
 	}
 
 	/**
@@ -423,7 +461,7 @@ public class ProductDailyPnL {
 
 	public double curveShift1DPnL()
 	{
-<span class="nc" id="L426">		return _dbl1DCurveShiftPnL;</span>
+<span class="nc" id="L464">		return _dbl1DCurveShiftPnL;</span>
 	}
 
 	/**
@@ -434,7 +472,7 @@ public class ProductDailyPnL {
 
 	public double carry1MPnL()
 	{
-<span class="nc" id="L437">		return _dbl1MCarryPnL;</span>
+<span class="nc" id="L475">		return _dbl1MCarryPnL;</span>
 	}
 
 	/**
@@ -445,7 +483,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollDownSwapRate1MPnL()
 	{
-<span class="nc" id="L448">		return _dbl1MMaturityRollDownSwapRatePnL;</span>
+<span class="nc" id="L486">		return _dbl1MMaturityRollDownSwapRatePnL;</span>
 	}
 
 	/**
@@ -456,7 +494,7 @@ public class ProductDailyPnL {
 
 	public double carry3MPnL()
 	{
-<span class="nc" id="L459">		return _dbl3MCarryPnL;</span>
+<span class="nc" id="L497">		return _dbl3MCarryPnL;</span>
 	}
 
 	/**
@@ -467,7 +505,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollDownSwapRate3MPnL()
 	{
-<span class="nc" id="L470">		return _dbl3MMaturityRollDownSwapRatePnL;</span>
+<span class="nc" id="L508">		return _dbl3MMaturityRollDownSwapRatePnL;</span>
 	}
 
 	/**
@@ -478,7 +516,7 @@ public class ProductDailyPnL {
 
 	public double DV01()
 	{
-<span class="nc" id="L481">		return _dblDV01;</span>
+<span class="nc" id="L519">		return _dblDV01;</span>
 	}
 
 	/**
@@ -489,7 +527,7 @@ public class ProductDailyPnL {
 
 	public double DV01WithFixing()
 	{
-<span class="nc" id="L492">		return _dblDV01WithFixing;</span>
+<span class="nc" id="L530">		return _dblDV01WithFixing;</span>
 	}
 
 	/**
@@ -500,7 +538,7 @@ public class ProductDailyPnL {
 
 	public double cleanFixedDV01()
 	{
-<span class="nc" id="L503">		return _dblCleanFixedDV01;</span>
+<span class="nc" id="L541">		return _dblCleanFixedDV01;</span>
 	}
 
 	/**
@@ -511,7 +549,7 @@ public class ProductDailyPnL {
 
 	public double cleanFloatDV01()
 	{
-<span class="nc" id="L514">		return _dblCleanFloatDV01;</span>
+<span class="nc" id="L552">		return _dblCleanFloatDV01;</span>
 	}
 
 	/**
@@ -522,7 +560,7 @@ public class ProductDailyPnL {
 
 	public double cleanFloatDV01WithFixing()
 	{
-<span class="nc" id="L525">		return _dblCleanFloatDV01WithFixing;</span>
+<span class="nc" id="L563">		return _dblCleanFloatDV01WithFixing;</span>
 	}
 
 	/**
@@ -533,7 +571,7 @@ public class ProductDailyPnL {
 
 	public double baselineSwapRate()
 	{
-<span class="nc" id="L536">		return _dblBaselineSwapRate;</span>
+<span class="nc" id="L574">		return _dblBaselineSwapRate;</span>
 	}
 
 	/**
@@ -544,7 +582,7 @@ public class ProductDailyPnL {
 
 	public double timeRollSwapRate1D()
 	{
-<span class="nc" id="L547">		return _dbl1DTimeRollSwapRate;</span>
+<span class="nc" id="L585">		return _dbl1DTimeRollSwapRate;</span>
 	}
 
 	/**
@@ -555,7 +593,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollDownSwapRate1D()
 	{
-<span class="nc" id="L558">		return _dbl1DMaturityRollDownSwapRate;</span>
+<span class="nc" id="L596">		return _dbl1DMaturityRollDownSwapRate;</span>
 	}
 
 	/**
@@ -566,7 +604,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollDownSwapRate1M()
 	{
-<span class="nc" id="L569">		return _dbl1MMaturityRollDownSwapRate;</span>
+<span class="nc" id="L607">		return _dbl1MMaturityRollDownSwapRate;</span>
 	}
 
 	/**
@@ -577,7 +615,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollDownSwapRate3M()
 	{
-<span class="nc" id="L580">		return _dbl3MMaturityRollDownSwapRate;</span>
+<span class="nc" id="L618">		return _dbl3MMaturityRollDownSwapRate;</span>
 	}
 
 	/**
@@ -588,7 +626,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollUpSwapRate1D()
 	{
-<span class="nc" id="L591">		return _dbl1DMaturityRollUpSwapRate;</span>
+<span class="nc" id="L629">		return _dbl1DMaturityRollUpSwapRate;</span>
 	}
 
 	/**
@@ -599,7 +637,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollUpFairPremium1D()
 	{
-<span class="nc" id="L602">		return _dbl1DMaturityRollUpFairPremium;</span>
+<span class="nc" id="L640">		return _dbl1DMaturityRollUpFairPremium;</span>
 	}
 
 	/**
@@ -610,7 +648,7 @@ public class ProductDailyPnL {
 
 	public double maturityRollUpFairPremiumWithFixing1D()
 	{
-<span class="nc" id="L613">		return _dbl1DMaturityRollUpFairPremiumWithFixing;</span>
+<span class="nc" id="L651">		return _dbl1DMaturityRollUpFairPremiumWithFixing;</span>
 	}
 
 	/**
@@ -621,7 +659,7 @@ public class ProductDailyPnL {
 
 	public double curveShiftSwapRate1D()
 	{
-<span class="nc" id="L624">		return _dbl1DCurveShiftSwapRate;</span>
+<span class="nc" id="L662">		return _dbl1DCurveShiftSwapRate;</span>
 	}
 
 	/**
@@ -632,7 +670,7 @@ public class ProductDailyPnL {
 
 	public double periodFixedRate()
 	{
-<span class="nc" id="L635">		return _dblPeriodFixedRate;</span>
+<span class="nc" id="L673">		return _dblPeriodFixedRate;</span>
 	}
 
 	/**
@@ -643,7 +681,7 @@ public class ProductDailyPnL {
 
 	public double periodCurveFloatingRate()
 	{
-<span class="nc" id="L646">		return _dblPeriodCurveFloatingRate;</span>
+<span class="nc" id="L684">		return _dblPeriodCurveFloatingRate;</span>
 	}
 
 	/**
@@ -654,7 +692,7 @@ public class ProductDailyPnL {
 
 	public double periodProductFloatingRate()
 	{
-<span class="nc" id="L657">		return _dblPeriodProductFloatingRate;</span>
+<span class="nc" id="L695">		return _dblPeriodProductFloatingRate;</span>
 	}
 
 	/**
@@ -665,7 +703,7 @@ public class ProductDailyPnL {
 
 	public double periodFloatingRateUsed()
 	{
-<span class="nc" id="L668">		return _dblPeriodFloatingRateUsed;</span>
+<span class="nc" id="L706">		return _dblPeriodFloatingRateUsed;</span>
 	}
 
 	/**
@@ -676,7 +714,7 @@ public class ProductDailyPnL {
 
 	public int fixed1DAccrualDays()
 	{
-<span class="nc" id="L679">		return _i1DFixedAccrualDays;</span>
+<span class="nc" id="L717">		return _i1DFixedAccrualDays;</span>
 	}
 
 	/**
@@ -687,7 +725,7 @@ public class ProductDailyPnL {
 
 	public int floating1DAccrualDays()
 	{
-<span class="nc" id="L690">		return _i1DFloatingAccrualDays;</span>
+<span class="nc" id="L728">		return _i1DFloatingAccrualDays;</span>
 	}
 
 	/**
@@ -698,7 +736,7 @@ public class ProductDailyPnL {
 
 	public double fixed1DDCF()
 	{
-<span class="nc" id="L701">		return _dbl1DFixedDCF;</span>
+<span class="nc" id="L739">		return _dbl1DFixedDCF;</span>
 	}
 
 	/**
@@ -709,7 +747,7 @@ public class ProductDailyPnL {
 
 	public double floating1DDCF()
 	{
-<span class="nc" id="L712">		return _dbl1DFloatingDCF;</span>
+<span class="nc" id="L750">		return _dbl1DFloatingDCF;</span>
 	}
 
 	/**
@@ -720,7 +758,7 @@ public class ProductDailyPnL {
 
 	public double fixed1MDCF()
 	{
-<span class="nc" id="L723">		return _dbl1MFixedDCF;</span>
+<span class="nc" id="L761">		return _dbl1MFixedDCF;</span>
 	}
 
 	/**
@@ -731,7 +769,7 @@ public class ProductDailyPnL {
 
 	public double floating1MDCF()
 	{
-<span class="nc" id="L734">		return _dbl1MFloatingDCF;</span>
+<span class="nc" id="L772">		return _dbl1MFloatingDCF;</span>
 	}
 
 	/**
@@ -742,7 +780,7 @@ public class ProductDailyPnL {
 
 	public double fixed3MDCF()
 	{
-<span class="nc" id="L745">		return _dbl3MFixedDCF;</span>
+<span class="nc" id="L783">		return _dbl3MFixedDCF;</span>
 	}
 
 	/**
@@ -753,7 +791,7 @@ public class ProductDailyPnL {
 
 	public double floating3MDCF()
 	{
-<span class="nc" id="L756">		return _dbl3MFloatingDCF;</span>
+<span class="nc" id="L794">		return _dbl3MFloatingDCF;</span>
 	}
 
 	/**
@@ -764,120 +802,120 @@ public class ProductDailyPnL {
 
 	public double[] toArray()
 	{
-<span class="nc" id="L767">		java.util.List&lt;java.lang.Double&gt; lsPnLMetric = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L805">		java.util.List&lt;java.lang.Double&gt; lsPnLMetric = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L769">		lsPnLMetric.add (_dbl1DTotalPnL);</span>
+<span class="nc" id="L807">		lsPnLMetric.add (_dbl1DTotalPnL);</span>
 
-<span class="nc" id="L771">		lsPnLMetric.add (_dbl1DCleanPnL);</span>
+<span class="nc" id="L809">		lsPnLMetric.add (_dbl1DCleanPnL);</span>
 
-<span class="nc" id="L773">		lsPnLMetric.add (_dbl1DDirtyPnL);</span>
+<span class="nc" id="L811">		lsPnLMetric.add (_dbl1DDirtyPnL);</span>
 
-<span class="nc" id="L775">		lsPnLMetric.add (_dbl1DTotalPnLWithFixing);</span>
+<span class="nc" id="L813">		lsPnLMetric.add (_dbl1DTotalPnLWithFixing);</span>
 
-<span class="nc" id="L777">		lsPnLMetric.add (_dbl1DCleanPnLWithFixing);</span>
+<span class="nc" id="L815">		lsPnLMetric.add (_dbl1DCleanPnLWithFixing);</span>
 
-<span class="nc" id="L779">		lsPnLMetric.add (_dbl1DDirtyPnLWithFixing);</span>
+<span class="nc" id="L817">		lsPnLMetric.add (_dbl1DDirtyPnLWithFixing);</span>
 
-<span class="nc" id="L781">		lsPnLMetric.add (_dbl1DCarryPnL);</span>
+<span class="nc" id="L819">		lsPnLMetric.add (_dbl1DCarryPnL);</span>
 
-<span class="nc" id="L783">		lsPnLMetric.add (_dbl1DTimeRollPnL);</span>
+<span class="nc" id="L821">		lsPnLMetric.add (_dbl1DTimeRollPnL);</span>
 
-<span class="nc" id="L785">		lsPnLMetric.add (_dbl1DMaturityRollDownSwapRatePnL);</span>
+<span class="nc" id="L823">		lsPnLMetric.add (_dbl1DMaturityRollDownSwapRatePnL);</span>
 
-<span class="nc" id="L787">		lsPnLMetric.add (_dbl1DMaturityRollUpSwapRatePnL);</span>
+<span class="nc" id="L825">		lsPnLMetric.add (_dbl1DMaturityRollUpSwapRatePnL);</span>
 
-<span class="nc" id="L789">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumPnL);</span>
+<span class="nc" id="L827">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumPnL);</span>
 
-<span class="nc" id="L791">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumWithFixingPnL);</span>
+<span class="nc" id="L829">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumWithFixingPnL);</span>
 
-<span class="nc" id="L793">		lsPnLMetric.add (_dbl1DCurveShiftPnL);</span>
+<span class="nc" id="L831">		lsPnLMetric.add (_dbl1DCurveShiftPnL);</span>
 
-<span class="nc" id="L795">		lsPnLMetric.add (_dbl1MCarryPnL);</span>
+<span class="nc" id="L833">		lsPnLMetric.add (_dbl1MCarryPnL);</span>
 
-<span class="nc" id="L797">		lsPnLMetric.add (_dbl1MMaturityRollDownSwapRatePnL);</span>
+<span class="nc" id="L835">		lsPnLMetric.add (_dbl1MMaturityRollDownSwapRatePnL);</span>
 
-<span class="nc" id="L799">		lsPnLMetric.add (_dbl3MCarryPnL);</span>
+<span class="nc" id="L837">		lsPnLMetric.add (_dbl3MCarryPnL);</span>
 
-<span class="nc" id="L801">		lsPnLMetric.add (_dbl3MMaturityRollDownSwapRatePnL);</span>
+<span class="nc" id="L839">		lsPnLMetric.add (_dbl3MMaturityRollDownSwapRatePnL);</span>
 
-<span class="nc" id="L803">		lsPnLMetric.add (_dblDV01);</span>
+<span class="nc" id="L841">		lsPnLMetric.add (_dblDV01);</span>
 
-<span class="nc" id="L805">		lsPnLMetric.add (_dblDV01WithFixing);</span>
+<span class="nc" id="L843">		lsPnLMetric.add (_dblDV01WithFixing);</span>
 
-<span class="nc" id="L807">		lsPnLMetric.add (_dblCleanFixedDV01);</span>
+<span class="nc" id="L845">		lsPnLMetric.add (_dblCleanFixedDV01);</span>
 
-<span class="nc" id="L809">		lsPnLMetric.add (_dblCleanFloatDV01);</span>
+<span class="nc" id="L847">		lsPnLMetric.add (_dblCleanFloatDV01);</span>
 
-<span class="nc" id="L811">		lsPnLMetric.add (_dblCleanFloatDV01WithFixing);</span>
+<span class="nc" id="L849">		lsPnLMetric.add (_dblCleanFloatDV01WithFixing);</span>
 
-<span class="nc" id="L813">		lsPnLMetric.add (_dblBaselineSwapRate);</span>
+<span class="nc" id="L851">		lsPnLMetric.add (_dblBaselineSwapRate);</span>
 
-<span class="nc" id="L815">		lsPnLMetric.add (_dbl1DTimeRollSwapRate);</span>
+<span class="nc" id="L853">		lsPnLMetric.add (_dbl1DTimeRollSwapRate);</span>
 
-<span class="nc" id="L817">		lsPnLMetric.add (_dbl1DMaturityRollDownSwapRate);</span>
+<span class="nc" id="L855">		lsPnLMetric.add (_dbl1DMaturityRollDownSwapRate);</span>
 
-<span class="nc" id="L819">		lsPnLMetric.add (_dbl1MMaturityRollDownSwapRate);</span>
+<span class="nc" id="L857">		lsPnLMetric.add (_dbl1MMaturityRollDownSwapRate);</span>
 
-<span class="nc" id="L821">		lsPnLMetric.add (_dbl3MMaturityRollDownSwapRate);</span>
+<span class="nc" id="L859">		lsPnLMetric.add (_dbl3MMaturityRollDownSwapRate);</span>
 
-<span class="nc" id="L823">		lsPnLMetric.add (_dbl1DMaturityRollUpSwapRate);</span>
+<span class="nc" id="L861">		lsPnLMetric.add (_dbl1DMaturityRollUpSwapRate);</span>
 
-<span class="nc" id="L825">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremium);</span>
+<span class="nc" id="L863">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremium);</span>
 
-<span class="nc" id="L827">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumWithFixing);</span>
+<span class="nc" id="L865">		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumWithFixing);</span>
 
-<span class="nc" id="L829">		lsPnLMetric.add (_dbl1DCurveShiftSwapRate);</span>
+<span class="nc" id="L867">		lsPnLMetric.add (_dbl1DCurveShiftSwapRate);</span>
 
-<span class="nc" id="L831">		lsPnLMetric.add (_dblPeriodFixedRate);</span>
+<span class="nc" id="L869">		lsPnLMetric.add (_dblPeriodFixedRate);</span>
 
-<span class="nc" id="L833">		lsPnLMetric.add (_dblPeriodCurveFloatingRate);</span>
+<span class="nc" id="L871">		lsPnLMetric.add (_dblPeriodCurveFloatingRate);</span>
 
-<span class="nc" id="L835">		lsPnLMetric.add (_dblPeriodProductFloatingRate);</span>
+<span class="nc" id="L873">		lsPnLMetric.add (_dblPeriodProductFloatingRate);</span>
 
-<span class="nc" id="L837">		lsPnLMetric.add (_dblPeriodFloatingRateUsed);</span>
+<span class="nc" id="L875">		lsPnLMetric.add (_dblPeriodFloatingRateUsed);</span>
 
-<span class="nc" id="L839">		lsPnLMetric.add ((double) _i1DFixedAccrualDays);</span>
+<span class="nc" id="L877">		lsPnLMetric.add ((double) _i1DFixedAccrualDays);</span>
 
-<span class="nc" id="L841">		lsPnLMetric.add ((double) _i1DFloatingAccrualDays);</span>
+<span class="nc" id="L879">		lsPnLMetric.add ((double) _i1DFloatingAccrualDays);</span>
 
-<span class="nc" id="L843">		lsPnLMetric.add (_dbl1DFixedDCF);</span>
+<span class="nc" id="L881">		lsPnLMetric.add (_dbl1DFixedDCF);</span>
 
-<span class="nc" id="L845">		lsPnLMetric.add (_dbl1DFloatingDCF);</span>
+<span class="nc" id="L883">		lsPnLMetric.add (_dbl1DFloatingDCF);</span>
 
-<span class="nc" id="L847">		lsPnLMetric.add (_dbl1MFixedDCF);</span>
+<span class="nc" id="L885">		lsPnLMetric.add (_dbl1MFixedDCF);</span>
 
-<span class="nc" id="L849">		lsPnLMetric.add (_dbl1MFloatingDCF);</span>
+<span class="nc" id="L887">		lsPnLMetric.add (_dbl1MFloatingDCF);</span>
 
-<span class="nc" id="L851">		lsPnLMetric.add (_dbl3MFixedDCF);</span>
+<span class="nc" id="L889">		lsPnLMetric.add (_dbl3MFixedDCF);</span>
 
-<span class="nc" id="L853">		lsPnLMetric.add (_dbl3MFloatingDCF);</span>
+<span class="nc" id="L891">		lsPnLMetric.add (_dbl3MFloatingDCF);</span>
 
-<span class="nc" id="L855">		int i = 0;</span>
+<span class="nc" id="L893">		int i = 0;</span>
 
-<span class="nc" id="L857">		double[] adblSPCA = new double[lsPnLMetric.size()];</span>
+<span class="nc" id="L895">		double[] adblSPCA = new double[lsPnLMetric.size()];</span>
 
-<span class="nc bnc" id="L859" title="All 2 branches missed.">		for (double dbl : lsPnLMetric)</span>
-<span class="nc" id="L860">			adblSPCA[i++] = dbl;</span>
+<span class="nc bnc" id="L897" title="All 2 branches missed.">		for (double dbl : lsPnLMetric)</span>
+<span class="nc" id="L898">			adblSPCA[i++] = dbl;</span>
 
-<span class="nc" id="L862">		return adblSPCA;</span>
+<span class="nc" id="L900">		return adblSPCA;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L867">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L905">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc" id="L869">		boolean bStart = true;</span>
+<span class="nc" id="L907">		boolean bStart = true;</span>
 
-<span class="nc bnc" id="L871" title="All 2 branches missed.">		for (double dbl : toArray()) {</span>
-<span class="nc bnc" id="L872" title="All 2 branches missed.">			if (bStart)</span>
-<span class="nc" id="L873">				bStart = false;</span>
+<span class="nc bnc" id="L909" title="All 2 branches missed.">		for (double dbl : toArray()) {</span>
+<span class="nc bnc" id="L910" title="All 2 branches missed.">			if (bStart)</span>
+<span class="nc" id="L911">				bStart = false;</span>
 			else
-<span class="nc" id="L875">				sb.append (&quot;,&quot;);</span>
+<span class="nc" id="L913">				sb.append (&quot;,&quot;);</span>
 
-<span class="nc" id="L877">			sb.append (dbl);</span>
+<span class="nc" id="L915">			sb.append (dbl);</span>
 		}
 
-<span class="nc" id="L880">		return sb.toString();</span>
+<span class="nc" id="L918">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

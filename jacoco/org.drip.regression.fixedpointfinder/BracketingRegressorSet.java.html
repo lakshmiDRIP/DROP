@@ -6,6 +6,7 @@ package org.drip.regression.fixedpointfinder;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.regression.fixedpointfinder;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,30 +71,38 @@ package org.drip.regression.fixedpointfinder;
  */
 
 /**
- * BracketingRegressorSet implements regression run for the Primitive Bracketing Fixed Point Search Method.
- *  It implements the following 4 primitive bracketing schemes: Bisection, False Position, Quadratic, and
- *  Inverse Quadratic.
+ * &lt;i&gt;BracketingRegressorSet&lt;/i&gt; implements regression run for the Primitive Bracketing Fixed Point Search
+ * Method. It implements the following 4 primitive bracketing schemes: Bisection, False Position, Quadratic,
+ * and Inverse Quadratic.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/fixedpointfinder&quot;&gt;Fixed Point Finder&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BracketingRegressorSet implements org.drip.regression.core.RegressorSet {
-<span class="fc" id="L64">	private org.drip.function.definition.R1ToR1 _of = null;</span>
-<span class="fc" id="L65">	private java.lang.String _strRegressionScenario = &quot;org.drip.math.solver1D.FixedPointFinderPrimitive&quot;;</span>
+<span class="fc" id="L90">	private org.drip.function.definition.R1ToR1 _of = null;</span>
+<span class="fc" id="L91">	private java.lang.String _strRegressionScenario = &quot;org.drip.math.solver1D.FixedPointFinderPrimitive&quot;;</span>
 
-<span class="fc" id="L67">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+<span class="fc" id="L93">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
 		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
 
 	public BracketingRegressorSet()
-<span class="fc" id="L71">	{</span>
-<span class="fc" id="L72">		_of = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="fc" id="L73">		{</span>
+<span class="fc" id="L97">	{</span>
+<span class="fc" id="L98">		_of = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="fc" id="L99">		{</span>
 			public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">				if (java.lang.Double.isNaN (dblVariate))</span>
-<span class="nc" id="L79">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">				if (java.lang.Double.isNaN (dblVariate))</span>
+<span class="nc" id="L105">					throw new java.lang.Exception</span>
 						(&quot;FixedPointFinderRegressorOF.evalTarget =&gt; Invalid variate!&quot;);
 
 				/* return java.lang.Math.cos (dblVariate) - dblVariate * dblVariate * dblVariate;
@@ -90,7 +116,7 @@ public class BracketingRegressorSet implements org.drip.regression.core.Regresso
 					- 48. * dblVariate * dblVariate * dblVariate * dblVariate + 18. * dblVariate *
 						dblVariate - 1.; */
 
-<span class="fc" id="L93">				return 1. + 3. * dblVariate - 2. * java.lang.Math.sin (dblVariate);</span>
+<span class="fc" id="L119">				return 1. + 3. * dblVariate - 2. * java.lang.Math.sin (dblVariate);</span>
 			}
 
 			@Override public double integrate (
@@ -98,209 +124,209 @@ public class BracketingRegressorSet implements org.drip.regression.core.Regresso
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L101">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L127">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
-<span class="fc" id="L104">	}</span>
+<span class="fc" id="L130">	}</span>
 
 	@Override public boolean setupRegressors()
 	{
 		try {
-<span class="fc" id="L109">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L135">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;BisectionFixedPointFinder&quot;, _strRegressionScenario)
-<span class="fc" id="L111">			{</span>
-<span class="fc" id="L112">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopBisect = null;</span>
-<span class="fc" id="L113">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbBisect = null;</span>
+<span class="fc" id="L137">			{</span>
+<span class="fc" id="L138">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopBisect = null;</span>
+<span class="fc" id="L139">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbBisect = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L118">						fpfbBisect = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of, null,</span>
+<span class="fc" id="L144">						fpfbBisect = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of, null,</span>
 							org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, true);
 
-<span class="fc" id="L121">						return true;</span>
-<span class="nc" id="L122">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L123">						e.printStackTrace();</span>
+<span class="fc" id="L147">						return true;</span>
+<span class="nc" id="L148">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L149">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L126">					return false;</span>
+<span class="nc" id="L152">					return false;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">					if (null == (fpfopBisect = fpfbBisect.findRoot())) return false;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">					if (null == (fpfopBisect = fpfbBisect.findRoot())) return false;</span>
 
-<span class="fc" id="L133">					return true;</span>
+<span class="fc" id="L159">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L139">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopBisect.getRoot());</span>
+<span class="fc" id="L165">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopBisect.getRoot());</span>
 
-<span class="fc" id="L141">					return true;</span>
+<span class="fc" id="L167">					return true;</span>
 				}
 			});
 
-<span class="fc" id="L145">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L171">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;FalsePositionFixedPointFinder&quot;, _strRegressionScenario)
-<span class="fc" id="L147">			{</span>
-<span class="fc" id="L148">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopFalsePosition = null;</span>
-<span class="fc" id="L149">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbFalsePosition = null;</span>
+<span class="fc" id="L173">			{</span>
+<span class="fc" id="L174">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopFalsePosition = null;</span>
+<span class="fc" id="L175">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbFalsePosition = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L154">						fpfbFalsePosition = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of,</span>
+<span class="fc" id="L180">						fpfbFalsePosition = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of,</span>
 							null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.FALSE_POSITION, true);
 
-<span class="fc" id="L157">						return true;</span>
-<span class="nc" id="L158">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L159">						e.printStackTrace();</span>
+<span class="fc" id="L183">						return true;</span>
+<span class="nc" id="L184">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L185">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L162">					return false;</span>
+<span class="nc" id="L188">					return false;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">					if (null == (fpfopFalsePosition = fpfbFalsePosition.findRoot())) return false;</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">					if (null == (fpfopFalsePosition = fpfbFalsePosition.findRoot())) return false;</span>
 
-<span class="fc" id="L169">					return true;</span>
+<span class="fc" id="L195">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L175">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopFalsePosition.getRoot());</span>
+<span class="fc" id="L201">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopFalsePosition.getRoot());</span>
 
-<span class="fc" id="L177">					return true;</span>
+<span class="fc" id="L203">					return true;</span>
 				}
 			});
 
-<span class="fc" id="L181">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
-<span class="fc" id="L182">				(&quot;QuadraticFixedPointFinder&quot;, _strRegressionScenario) {</span>
-<span class="fc" id="L183">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopQuadratic = null;</span>
-<span class="fc" id="L184">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbQuadratic = null;</span>
+<span class="fc" id="L207">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L208">				(&quot;QuadraticFixedPointFinder&quot;, _strRegressionScenario) {</span>
+<span class="fc" id="L209">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopQuadratic = null;</span>
+<span class="fc" id="L210">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbQuadratic = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L189">						fpfbQuadratic = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of,</span>
+<span class="fc" id="L215">						fpfbQuadratic = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of,</span>
 							null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.QUADRATIC_INTERPOLATION,
 								true);
 
-<span class="fc" id="L193">						return true;</span>
-<span class="nc" id="L194">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">						e.printStackTrace();</span>
+<span class="fc" id="L219">						return true;</span>
+<span class="nc" id="L220">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L221">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L198">					return false;</span>
+<span class="nc" id="L224">					return false;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">					if (null == (fpfopQuadratic = fpfbQuadratic.findRoot())) return false;</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">					if (null == (fpfopQuadratic = fpfbQuadratic.findRoot())) return false;</span>
 
-<span class="fc" id="L205">					return true;</span>
+<span class="fc" id="L231">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L211">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopQuadratic.getRoot());</span>
+<span class="fc" id="L237">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopQuadratic.getRoot());</span>
 
-<span class="fc" id="L213">					return true;</span>
+<span class="fc" id="L239">					return true;</span>
 				}
 			});
 
-<span class="fc" id="L217">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L243">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;InverseQuadraticFixedPointFinder&quot;, _strRegressionScenario)
-<span class="fc" id="L219">			{</span>
-<span class="fc" id="L220">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopInverseQuadratic = null;</span>
-<span class="fc" id="L221">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbInverseQuadratic = null;</span>
+<span class="fc" id="L245">			{</span>
+<span class="fc" id="L246">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopInverseQuadratic = null;</span>
+<span class="fc" id="L247">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbInverseQuadratic = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L226">						fpfbInverseQuadratic = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0.,</span>
-<span class="fc" id="L227">							_of, null,</span>
+<span class="fc" id="L252">						fpfbInverseQuadratic = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0.,</span>
+<span class="fc" id="L253">							_of, null,</span>
 								org.drip.function.r1tor1solver.VariateIteratorPrimitive.INVERSE_QUADRATIC_INTERPOLATION,
 							true);
 
-<span class="fc" id="L231">						return true;</span>
-<span class="nc" id="L232">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L233">						e.printStackTrace();</span>
+<span class="fc" id="L257">						return true;</span>
+<span class="nc" id="L258">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L259">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L236">					return false;</span>
+<span class="nc" id="L262">					return false;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L241" title="1 of 2 branches missed.">					if (null == (fpfopInverseQuadratic = fpfbInverseQuadratic.findRoot())) return false;</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">					if (null == (fpfopInverseQuadratic = fpfbInverseQuadratic.findRoot())) return false;</span>
 
-<span class="fc" id="L243">					return true;</span>
+<span class="fc" id="L269">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L249">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopInverseQuadratic.getRoot());</span>
+<span class="fc" id="L275">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopInverseQuadratic.getRoot());</span>
 
-<span class="fc" id="L251">					return true;</span>
+<span class="fc" id="L277">					return true;</span>
 				}
 			});
 
-<span class="fc" id="L255">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L281">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;RidderFixedPointFinder&quot;, _strRegressionScenario)
-<span class="fc" id="L257">			{</span>
-<span class="fc" id="L258">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopRidder = null;</span>
-<span class="fc" id="L259">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbRidder = null;</span>
+<span class="fc" id="L283">			{</span>
+<span class="fc" id="L284">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopRidder = null;</span>
+<span class="fc" id="L285">				org.drip.function.r1tor1solver.FixedPointFinderBracketing fpfbRidder = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L264">						fpfbRidder = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of, null,</span>
+<span class="fc" id="L290">						fpfbRidder = new org.drip.function.r1tor1solver.FixedPointFinderBracketing (0., _of, null,</span>
 							org.drip.function.r1tor1solver.VariateIteratorPrimitive.RIDDER, true);
 
-<span class="fc" id="L267">						return true;</span>
-<span class="nc" id="L268">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L269">						e.printStackTrace();</span>
+<span class="fc" id="L293">						return true;</span>
+<span class="nc" id="L294">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L295">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L272">					return false;</span>
+<span class="nc" id="L298">					return false;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L277" title="1 of 2 branches missed.">					if (null == (fpfopRidder = fpfbRidder.findRoot())) return false;</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">					if (null == (fpfopRidder = fpfbRidder.findRoot())) return false;</span>
 
-<span class="fc" id="L279">					return true;</span>
+<span class="fc" id="L305">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd) {
-<span class="fc" id="L284">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopRidder.getRoot());</span>
+<span class="fc" id="L310">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopRidder.getRoot());</span>
 
-<span class="fc" id="L286">					return true;</span>
+<span class="fc" id="L312">					return true;</span>
 				}
 			});
-<span class="nc" id="L289">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L290">			e.printStackTrace();</span>
-<span class="fc" id="L291">		}</span>
+<span class="nc" id="L315">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L316">			e.printStackTrace();</span>
+<span class="fc" id="L317">		}</span>
 
-<span class="fc" id="L293">		return true;</span>
+<span class="fc" id="L319">		return true;</span>
 	}
 
 	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
 	{
-<span class="fc" id="L298">		return _setRegressors;</span>
+<span class="fc" id="L324">		return _setRegressors;</span>
 	}
 
 	@Override public java.lang.String getSetName()
 	{
-<span class="fc" id="L303">		return _strRegressionScenario;</span>
+<span class="fc" id="L329">		return _strRegressionScenario;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

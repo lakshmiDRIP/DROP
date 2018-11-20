@@ -6,6 +6,7 @@ package org.drip.regression.curve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.regression.curve;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,32 +71,68 @@ package org.drip.regression.curve;
  */
 
 /**
- * CreditCurveRegressor implements the regression set analysis for the Credit Curve. CreditCurveRegressor
- *  regresses 12 scenarios:
- * 	- #1: Create an SNAC CDS.
- * 	- #2: Create the credit curve from a set of CDS instruments.
- * 	- #3: Create the credit curve from a flat hazard rate.
- * 	- #4: Create the credit curve from a set of survival probabilities.
- * 	- #5: Create the credit curve from an array of hazard rates.
- * 	- #6: Extract the credit curve instruments and quotes.
- * 	- #7: Create a parallel hazard shifted credit curve.
- * 	- #8: Create a parallel quote shifted credit curve.
- * 	- #9: Create a node tweaked credit curve.
- * 	- #10: Set a specific default date on the credit curve.
- * 	- #11: Compute the effective survival probability between 2 dates.
- * 	- #12: Compute the effective hazard rate between 2 dates.
+ * &lt;i&gt;CreditCurveRegressor&lt;/i&gt; implements the regression set analysis for the Credit Curve.
+ * CreditCurveRegressor regresses 12 scenarios:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			#1: Create an SNAC CDS.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#2: Create the credit curve from a set of CDS instruments.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#3: Create the credit curve from a flat hazard rate.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#4: Create the credit curve from a set of survival probabilities.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#5: Create the credit curve from an array of hazard rates.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#6: Extract the credit curve instruments and quotes.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#7: Create a parallel hazard shifted credit curve.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#8: Create a parallel quote shifted credit curve.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#9: Create a node tweaked credit curve.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#10: Set a specific default date on the credit curve.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#11: Compute the effective survival probability between 2 dates.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			#12: Compute the effective hazard rate between 2 dates.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CreditCurveRegressor implements org.drip.regression.core.RegressorSet {
-<span class="fc" id="L75">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L76">	private org.drip.state.credit.CreditCurve _cc = null;</span>
-<span class="fc" id="L77">	private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
-<span class="fc" id="L78">	private org.drip.analytics.date.JulianDate _dtStart = null;</span>
-<span class="fc" id="L79">	private java.lang.String _strRegressionScenario = &quot;org.drip.analytics.curve.CreditCurve&quot;;</span>
+<span class="fc" id="L129">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L130">	private org.drip.state.credit.CreditCurve _cc = null;</span>
+<span class="fc" id="L131">	private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
+<span class="fc" id="L132">	private org.drip.analytics.date.JulianDate _dtStart = null;</span>
+<span class="fc" id="L133">	private java.lang.String _strRegressionScenario = &quot;org.drip.analytics.curve.CreditCurve&quot;;</span>
 
-<span class="fc" id="L81">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+<span class="fc" id="L135">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
 		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
 
 	/**
@@ -86,8 +140,8 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 	 */
 
 	public CreditCurveRegressor()
-<span class="fc" id="L89">	{</span>
-<span class="fc" id="L90">	}</span>
+<span class="fc" id="L143">	{</span>
+<span class="fc" id="L144">	}</span>
 
 	/*
 	 * Set up the unit functional regressors for the credit curve regression set
@@ -101,43 +155,43 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L104">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;CreateSNAC&quot;,</span>
+<span class="fc" id="L158">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;CreateSNAC&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L106">			{</span>
-<span class="fc" id="L107">				private double[] _adblQuotes = new double[5];</span>
-<span class="fc" id="L108">				private java.lang.String[] _astrCalibMeasure = new java.lang.String[5];</span>
-<span class="fc" id="L109">				private org.drip.product.definition.CreditDefaultSwap[] _aCDS = new</span>
+<span class="fc" id="L160">			{</span>
+<span class="fc" id="L161">				private double[] _adblQuotes = new double[5];</span>
+<span class="fc" id="L162">				private java.lang.String[] _astrCalibMeasure = new java.lang.String[5];</span>
+<span class="fc" id="L163">				private org.drip.product.definition.CreditDefaultSwap[] _aCDS = new</span>
 					org.drip.product.definition.CreditDefaultSwap[5];
 
 				@Override public boolean preRegression()
 				{
-<span class="fc" id="L114">					_strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L168">					_strCurrency = &quot;USD&quot;;</span>
 
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">					if (null == (_dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2010,</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">					if (null == (_dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2010,</span>
 						org.drip.analytics.date.DateUtil.MAY, 12)))
-<span class="nc" id="L118">						return false;</span>
+<span class="nc" id="L172">						return false;</span>
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">					if (null == (_dc =</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">					if (null == (_dc =</span>
 						org.drip.state.creator.ScenarioDiscountCurveBuilder.ExponentiallyCompoundedFlatRate
-<span class="fc" id="L122">							(_dtStart, _strCurrency, 0.04)))</span>
-<span class="nc" id="L123">						return false;</span>
+<span class="fc" id="L176">							(_dtStart, _strCurrency, 0.04)))</span>
+<span class="nc" id="L177">						return false;</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">					for (int i = 0; i &lt; 5; ++i) {</span>
-<span class="fc" id="L126">						_adblQuotes[i] = 50. * (i + 1);</span>
-<span class="fc" id="L127">						_astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">					for (int i = 0; i &lt; 5; ++i) {</span>
+<span class="fc" id="L180">						_adblQuotes[i] = 50. * (i + 1);</span>
+<span class="fc" id="L181">						_astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
 
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">						if (null == (_aCDS[i] = org.drip.product.creator.CDSBuilder.CreateSNAC (_dtStart, (i</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">						if (null == (_aCDS[i] = org.drip.product.creator.CDSBuilder.CreateSNAC (_dtStart, (i</span>
 							+ 1) + &quot;Y&quot;, 0.01, &quot;CORP&quot;)))
-<span class="nc" id="L131">							return false;</span>
+<span class="nc" id="L185">							return false;</span>
 			 		}
 
-<span class="fc" id="L134">					return true;</span>
+<span class="fc" id="L188">					return true;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">					return null != (_cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (&quot;CORP&quot;,</span>
-<span class="fc" id="L140">						_dtStart, _aCDS, _dc, _adblQuotes, _astrCalibMeasure, 0.4, false));</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">					return null != (_cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (&quot;CORP&quot;,</span>
+<span class="fc" id="L194">						_dtStart, _aCDS, _dc, _adblQuotes, _astrCalibMeasure, 0.4, false));</span>
 				}
 			});
 
@@ -146,45 +200,45 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L149">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FromFlatHazard&quot;,</span>
+<span class="fc" id="L203">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FromFlatHazard&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L151">			{</span>
-<span class="fc" id="L152">				private org.drip.state.credit.CreditCurve _ccFromFlatHazard = null;</span>
+<span class="fc" id="L205">			{</span>
+<span class="fc" id="L206">				private org.drip.state.credit.CreditCurve _ccFromFlatHazard = null;</span>
 
 				@Override public boolean execRegression()
 				{
-<span class="fc" id="L156">					return null != (_ccFromFlatHazard =</span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (_dtStart.julian(),</span>
+<span class="fc" id="L210">					return null != (_ccFromFlatHazard =</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (_dtStart.julian(),</span>
 							&quot;CORP&quot;, &quot;USD&quot;, 0.02, 0.4));
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L164">					final int NUM_DC_INSTRUMENTS = 5;</span>
-<span class="fc" id="L165">					double adblHazard[] = new double[NUM_DC_INSTRUMENTS];</span>
-<span class="fc" id="L166">					org.drip.analytics.date.JulianDate adt[] = new</span>
+<span class="fc" id="L218">					final int NUM_DC_INSTRUMENTS = 5;</span>
+<span class="fc" id="L219">					double adblHazard[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L220">					org.drip.analytics.date.JulianDate adt[] = new</span>
 						org.drip.analytics.date.JulianDate[NUM_DC_INSTRUMENTS];
 
-<span class="fc bfc" id="L169" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (adblHazard[i] =</span>
-<span class="fc" id="L172">								_ccFromFlatHazard.hazard (_dtStart, (adt[i] = _dtStart.addYears (i + 1)))))</span>
-<span class="nc" id="L173">								return false;</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (adblHazard[i] =</span>
+<span class="fc" id="L226">								_ccFromFlatHazard.hazard (_dtStart, (adt[i] = _dtStart.addYears (i + 1)))))</span>
+<span class="nc" id="L227">								return false;</span>
 
-<span class="fc" id="L175">							rnvd.set (&quot;HazardRateFromHazardCurve[&quot; + adt[i] + &quot;]&quot;,</span>
-<span class="fc" id="L176">								org.drip.quant.common.FormatUtil.FormatDouble (adblHazard[i], 1, 4, 1));</span>
+<span class="fc" id="L229">							rnvd.set (&quot;HazardRateFromHazardCurve[&quot; + adt[i] + &quot;]&quot;,</span>
+<span class="fc" id="L230">								org.drip.quant.common.FormatUtil.FormatDouble (adblHazard[i], 1, 4, 1));</span>
 
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblHazard[i], 0.02))</span>
-<span class="nc" id="L179">								return false;</span>
-<span class="nc" id="L180">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L181">							e.printStackTrace();</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblHazard[i], 0.02))</span>
+<span class="nc" id="L233">								return false;</span>
+<span class="nc" id="L234">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L235">							e.printStackTrace();</span>
 
-<span class="nc" id="L183">							return false;</span>
-<span class="fc" id="L184">						}</span>
+<span class="nc" id="L237">							return false;</span>
+<span class="fc" id="L238">						}</span>
 					}
 
-<span class="fc" id="L187">					return true;</span>
+<span class="fc" id="L241">					return true;</span>
 				}
 			});
 
@@ -193,64 +247,64 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L196">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FromSurvival&quot;,</span>
+<span class="fc" id="L250">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FromSurvival&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L198">			{</span>
+<span class="fc" id="L252">			{</span>
 				private static final int NUM_DC_INSTRUMENTS = 5;
 
-<span class="fc" id="L201">				private int _aiDate[] = new int[NUM_DC_INSTRUMENTS];</span>
-<span class="fc" id="L202">				private double _adblSurvival[] = new double[NUM_DC_INSTRUMENTS];</span>
-<span class="fc" id="L203">				private org.drip.state.credit.CreditCurve _ccFromSurvival = null;</span>
+<span class="fc" id="L255">				private int _aiDate[] = new int[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L256">				private double _adblSurvival[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L257">				private org.drip.state.credit.CreditCurve _ccFromSurvival = null;</span>
 
 				@Override public boolean preRegression()
 				{
-<span class="fc bfc" id="L207" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
-<span class="fc" id="L208">						_aiDate[i] = _dtStart.addYears (i + 1).julian();</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc" id="L262">						_aiDate[i] = _dtStart.addYears (i + 1).julian();</span>
 
-<span class="fc" id="L210">						_adblSurvival[i] = 1. - (i + 1) * 0.1;</span>
+<span class="fc" id="L264">						_adblSurvival[i] = 1. - (i + 1) * 0.1;</span>
 					}
 
-<span class="fc" id="L213">					return true;</span>
+<span class="fc" id="L267">					return true;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="fc" id="L218">					return null != (_ccFromSurvival =</span>
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioCreditCurveBuilder.Survival (_dtStart.julian(),</span>
+<span class="fc" id="L272">					return null != (_ccFromSurvival =</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioCreditCurveBuilder.Survival (_dtStart.julian(),</span>
 							&quot;CORP&quot;, &quot;USD&quot;, _aiDate, _adblSurvival, 0.4));
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L226">					double adblSurvivalCalc[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L280">					double adblSurvivalCalc[] = new double[NUM_DC_INSTRUMENTS];</span>
 
-<span class="fc bfc" id="L228" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalCalc[i] =</span>
-<span class="fc" id="L231">								_ccFromSurvival.survival (_aiDate[i])))</span>
-<span class="nc" id="L232">								return false;</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalCalc[i] =</span>
+<span class="fc" id="L285">								_ccFromSurvival.survival (_aiDate[i])))</span>
+<span class="nc" id="L286">								return false;</span>
 
-<span class="fc" id="L234">							org.drip.analytics.date.JulianDate dt = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L288">							org.drip.analytics.date.JulianDate dt = new org.drip.analytics.date.JulianDate</span>
 								(_aiDate[i]);
 
-<span class="fc" id="L237">							rnvd.set (&quot;SurvivalFromOriginal[&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L238">								org.drip.quant.common.FormatUtil.FormatDouble (_adblSurvival[i], 1, 4, 1));</span>
+<span class="fc" id="L291">							rnvd.set (&quot;SurvivalFromOriginal[&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L292">								org.drip.quant.common.FormatUtil.FormatDouble (_adblSurvival[i], 1, 4, 1));</span>
 
-<span class="fc" id="L240">							rnvd.set (&quot;SurvivalFromSurvival[&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L241">								org.drip.quant.common.FormatUtil.FormatDouble (adblSurvivalCalc[i], 1, 4, 1));</span>
+<span class="fc" id="L294">							rnvd.set (&quot;SurvivalFromSurvival[&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L295">								org.drip.quant.common.FormatUtil.FormatDouble (adblSurvivalCalc[i], 1, 4, 1));</span>
 
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblSurvivalCalc[i],</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblSurvivalCalc[i],</span>
 								_adblSurvival[i]))
-<span class="nc" id="L245">								return false;</span>
-<span class="nc" id="L246">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L247">							e.printStackTrace();</span>
+<span class="nc" id="L299">								return false;</span>
+<span class="nc" id="L300">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L301">							e.printStackTrace();</span>
 
-<span class="nc" id="L249">							return false;</span>
-<span class="fc" id="L250">						}</span>
+<span class="nc" id="L303">							return false;</span>
+<span class="fc" id="L304">						}</span>
 					}
 
-<span class="fc" id="L253">					return true;</span>
+<span class="fc" id="L307">					return true;</span>
 				}
 			});
 
@@ -259,65 +313,65 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L262">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FromHazard&quot;,</span>
+<span class="fc" id="L316">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FromHazard&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L264">			{</span>
+<span class="fc" id="L318">			{</span>
 				private static final int NUM_DC_INSTRUMENTS = 5;
 
-<span class="fc" id="L267">				private int _aiDate[] = new int[NUM_DC_INSTRUMENTS];</span>
-<span class="fc" id="L268">				private double _adblHazard[] = new double[NUM_DC_INSTRUMENTS];</span>
-<span class="fc" id="L269">				private org.drip.state.credit.CreditCurve _ccFromHazard = null;</span>
+<span class="fc" id="L321">				private int _aiDate[] = new int[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L322">				private double _adblHazard[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L323">				private org.drip.state.credit.CreditCurve _ccFromHazard = null;</span>
 
 				@Override public boolean preRegression()
 				{
-<span class="fc bfc" id="L273" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
-<span class="fc" id="L274">						_aiDate[i] = _dtStart.addYears (i + 1).julian();</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc" id="L328">						_aiDate[i] = _dtStart.addYears (i + 1).julian();</span>
 
-<span class="fc" id="L276">						_adblHazard[i] = 0.01 * (1. - (i + 1) * 0.1);</span>
+<span class="fc" id="L330">						_adblHazard[i] = 0.01 * (1. - (i + 1) * 0.1);</span>
 					}
 
-<span class="fc" id="L279">					return true;</span>
+<span class="fc" id="L333">					return true;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="fc" id="L284">					return null != (_ccFromHazard = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard</span>
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">						(_dtStart, &quot;CORP&quot;, &quot;USD&quot;, _aiDate, _adblHazard, 0.4));</span>
+<span class="fc" id="L338">					return null != (_ccFromHazard = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">						(_dtStart, &quot;CORP&quot;, &quot;USD&quot;, _aiDate, _adblHazard, 0.4));</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L291">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
-<span class="fc" id="L292">					double adblHazardCalc[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L345">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
+<span class="fc" id="L346">					double adblHazardCalc[] = new double[NUM_DC_INSTRUMENTS];</span>
 
-<span class="fc bfc" id="L294" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (adblHazardCalc[i] =</span>
-<span class="fc" id="L297">								_ccFromHazard.hazard (dt1, dt1.addYears (1))))</span>
-<span class="nc" id="L298">								return false;</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (adblHazardCalc[i] =</span>
+<span class="fc" id="L351">								_ccFromHazard.hazard (dt1, dt1.addYears (1))))</span>
+<span class="nc" id="L352">								return false;</span>
 
-<span class="fc" id="L300">							org.drip.analytics.date.JulianDate dt2 = dt1.addYears (1);</span>
+<span class="fc" id="L354">							org.drip.analytics.date.JulianDate dt2 = dt1.addYears (1);</span>
 
-<span class="fc" id="L302">							rnvd.set (&quot;HazardFromOriginal[&quot; + dt1 + &quot;-&quot; + dt2 + &quot;]&quot;,</span>
-<span class="fc" id="L303">								org.drip.quant.common.FormatUtil.FormatDouble (_adblHazard[i], 1, 4, 1));</span>
+<span class="fc" id="L356">							rnvd.set (&quot;HazardFromOriginal[&quot; + dt1 + &quot;-&quot; + dt2 + &quot;]&quot;,</span>
+<span class="fc" id="L357">								org.drip.quant.common.FormatUtil.FormatDouble (_adblHazard[i], 1, 4, 1));</span>
 
-<span class="fc" id="L305">							rnvd.set (&quot;HazardFromHazard[&quot; + dt1 + &quot;-&quot; + dt2 + &quot;]&quot;,</span>
-<span class="fc" id="L306">								org.drip.quant.common.FormatUtil.FormatDouble (adblHazardCalc[i], 1, 4, 1));</span>
+<span class="fc" id="L359">							rnvd.set (&quot;HazardFromHazard[&quot; + dt1 + &quot;-&quot; + dt2 + &quot;]&quot;,</span>
+<span class="fc" id="L360">								org.drip.quant.common.FormatUtil.FormatDouble (adblHazardCalc[i], 1, 4, 1));</span>
 
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblHazardCalc[i],</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblHazardCalc[i],</span>
 								_adblHazard[i]))
-<span class="nc" id="L310">								return false;</span>
+<span class="nc" id="L364">								return false;</span>
 
-<span class="fc" id="L312">							dt1 = dt1.addYears (1);</span>
-<span class="nc" id="L313">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L314">							e.printStackTrace();</span>
+<span class="fc" id="L366">							dt1 = dt1.addYears (1);</span>
+<span class="nc" id="L367">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L368">							e.printStackTrace();</span>
 
-<span class="nc" id="L316">							return false;</span>
-<span class="fc" id="L317">						}</span>
+<span class="nc" id="L370">							return false;</span>
+<span class="fc" id="L371">						}</span>
 					}
 
-<span class="fc" id="L320">					return true;</span>
+<span class="fc" id="L374">					return true;</span>
 				}
 			});
 
@@ -326,38 +380,38 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L329">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;CompAndQuotes&quot;,</span>
+<span class="fc" id="L383">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;CompAndQuotes&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L331">			{</span>
-<span class="fc" id="L332">				private org.drip.product.definition.CalibratableComponent[] _aCalibComp = null;</span>
+<span class="fc" id="L385">			{</span>
+<span class="fc" id="L386">				private org.drip.product.definition.CalibratableComponent[] _aCalibComp = null;</span>
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L336" title="2 of 4 branches missed.">					return null != (_aCalibComp = _cc.calibComp()) &amp;&amp; 0 != _aCalibComp.length;</span>
+<span class="pc bpc" id="L390" title="2 of 4 branches missed.">					return null != (_aCalibComp = _cc.calibComp()) &amp;&amp; 0 != _aCalibComp.length;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc bfc" id="L342" title="All 2 branches covered.">					for (int i = 0; i &lt; _aCalibComp.length; ++i) {</span>
-<span class="fc" id="L343">						org.drip.analytics.date.JulianDate dt = _aCalibComp[i].maturityDate();</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">					for (int i = 0; i &lt; _aCalibComp.length; ++i) {</span>
+<span class="fc" id="L397">						org.drip.analytics.date.JulianDate dt = _aCalibComp[i].maturityDate();</span>
 
-<span class="fc" id="L345">						java.lang.String strCode = _aCalibComp[i].primaryCode();</span>
+<span class="fc" id="L399">						java.lang.String strCode = _aCalibComp[i].primaryCode();</span>
 
-<span class="pc bpc" id="L347" title="3 of 6 branches missed.">						if (null == dt || null == strCode || strCode.isEmpty()) return false;</span>
+<span class="pc bpc" id="L401" title="3 of 6 branches missed.">						if (null == dt || null == strCode || strCode.isEmpty()) return false;</span>
 
 						try {
-<span class="fc" id="L350">							rnvd.set (&quot;CompQuote&quot; + &quot;_&quot; + strCode + &quot;[&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L351">								org.drip.quant.common.FormatUtil.FormatDouble (_cc.manifestMeasure</span>
-<span class="fc" id="L352">									(strCode).get (&quot;FairPremium&quot;), 1, 4, 1));</span>
-<span class="nc" id="L353">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L354">							e.printStackTrace();</span>
+<span class="fc" id="L404">							rnvd.set (&quot;CompQuote&quot; + &quot;_&quot; + strCode + &quot;[&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L405">								org.drip.quant.common.FormatUtil.FormatDouble (_cc.manifestMeasure</span>
+<span class="fc" id="L406">									(strCode).get (&quot;FairPremium&quot;), 1, 4, 1));</span>
+<span class="nc" id="L407">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L408">							e.printStackTrace();</span>
 
-<span class="nc" id="L356">							return false;</span>
-<span class="fc" id="L357">						}</span>
+<span class="nc" id="L410">							return false;</span>
+<span class="fc" id="L411">						}</span>
 					}
 
-<span class="fc" id="L360">					return true;</span>
+<span class="fc" id="L414">					return true;</span>
 				}
 			});
 
@@ -366,60 +420,60 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L369">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L423">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;ParallelHazardShiftedCurve&quot;, _strRegressionScenario)
-<span class="fc" id="L371">			{</span>
-<span class="fc" id="L372">				private org.drip.state.credit.CreditCurve _ccParallelShifted = null;</span>
+<span class="fc" id="L425">			{</span>
+<span class="fc" id="L426">				private org.drip.state.credit.CreditCurve _ccParallelShifted = null;</span>
 
 				@Override public boolean execRegression()
 				{
-<span class="fc" id="L376">					if (null == (_ccParallelShifted = (org.drip.state.credit.CreditCurve)</span>
-<span class="pc bpc" id="L377" title="1 of 2 branches missed.">						_cc.parallelShiftQuantificationMetric (0.0005)))</span>
-<span class="nc" id="L378">						return false;</span>
+<span class="fc" id="L430">					if (null == (_ccParallelShifted = (org.drip.state.credit.CreditCurve)</span>
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">						_cc.parallelShiftQuantificationMetric (0.0005)))</span>
+<span class="nc" id="L432">						return false;</span>
 
-<span class="fc" id="L380">					return true;</span>
+<span class="fc" id="L434">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L386">					org.drip.product.definition.CalibratableComponent[] aCalibComp =</span>
-<span class="fc" id="L387">						_cc.calibComp();</span>
+<span class="fc" id="L440">					org.drip.product.definition.CalibratableComponent[] aCalibComp =</span>
+<span class="fc" id="L441">						_cc.calibComp();</span>
 
-<span class="fc" id="L389">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
+<span class="fc" id="L443">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
 
-<span class="fc bfc" id="L391" title="All 2 branches covered.">					for (int i = 0; i &lt; aCalibComp.length; ++i) {</span>
-<span class="fc" id="L392">						org.drip.analytics.date.JulianDate dt = aCalibComp[i].maturityDate();</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">					for (int i = 0; i &lt; aCalibComp.length; ++i) {</span>
+<span class="fc" id="L446">						org.drip.analytics.date.JulianDate dt = aCalibComp[i].maturityDate();</span>
 
-<span class="fc" id="L394">						double dblBaseHazard = java.lang.Double.NaN;</span>
-<span class="fc" id="L395">						double dblShiftedHazard = java.lang.Double.NaN;</span>
+<span class="fc" id="L448">						double dblBaseHazard = java.lang.Double.NaN;</span>
+<span class="fc" id="L449">						double dblShiftedHazard = java.lang.Double.NaN;</span>
 
 						try {
-<span class="pc bpc" id="L398" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (dblShiftedHazard =</span>
-<span class="fc" id="L399">								_ccParallelShifted.hazard (dt1, dt)) ||</span>
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard</span>
-<span class="fc" id="L401">										(dt1, dt)))</span>
-<span class="nc" id="L402">								return false;</span>
-<span class="nc" id="L403">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L404">							e.printStackTrace();</span>
+<span class="pc bpc" id="L452" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (dblShiftedHazard =</span>
+<span class="fc" id="L453">								_ccParallelShifted.hazard (dt1, dt)) ||</span>
+<span class="pc bpc" id="L454" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard</span>
+<span class="fc" id="L455">										(dt1, dt)))</span>
+<span class="nc" id="L456">								return false;</span>
+<span class="nc" id="L457">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L458">							e.printStackTrace();</span>
 
-<span class="nc" id="L406">							return false;</span>
-<span class="fc" id="L407">						}</span>
+<span class="nc" id="L460">							return false;</span>
+<span class="fc" id="L461">						}</span>
 
-<span class="fc" id="L409">						rnvd.set (&quot;BaseCurveHazard[&quot; + dt1 + &quot;-&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L410">							org.drip.quant.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 4, 1));</span>
+<span class="fc" id="L463">						rnvd.set (&quot;BaseCurveHazard[&quot; + dt1 + &quot;-&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L464">							org.drip.quant.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 4, 1));</span>
 
-<span class="fc" id="L412">						rnvd.set (&quot;ParallelShiftedCurveHazard[&quot; + dt1 + &quot;-&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L413">							org.drip.quant.common.FormatUtil.FormatDouble (dblShiftedHazard, 1, 4, 1));</span>
+<span class="fc" id="L466">						rnvd.set (&quot;ParallelShiftedCurveHazard[&quot; + dt1 + &quot;-&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L467">							org.drip.quant.common.FormatUtil.FormatDouble (dblShiftedHazard, 1, 4, 1));</span>
 
-<span class="fc" id="L415">						dt = dt1;</span>
+<span class="fc" id="L469">						dt = dt1;</span>
 
-<span class="pc bpc" id="L417" title="1 of 2 branches missed.">						if (!org.drip.quant.common.NumberUtil.WithinTolerance (dblBaseHazard + 0.0005,</span>
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">						if (!org.drip.quant.common.NumberUtil.WithinTolerance (dblBaseHazard + 0.0005,</span>
 							dblShiftedHazard))
-<span class="nc" id="L419">							return false;</span>
+<span class="nc" id="L473">							return false;</span>
 					}
 
-<span class="fc" id="L422">					return true;</span>
+<span class="fc" id="L476">					return true;</span>
 				}
 			});
 
@@ -428,53 +482,53 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L431">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L485">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;ParallelQuoteShiftedCurve&quot;, _strRegressionScenario)
-<span class="fc" id="L433">			{</span>
-<span class="fc" id="L434">				private org.drip.state.credit.CreditCurve _ccParallelShifted = null;</span>
+<span class="fc" id="L487">			{</span>
+<span class="fc" id="L488">				private org.drip.state.credit.CreditCurve _ccParallelShifted = null;</span>
 
 				@Override public boolean execRegression()
 				{
-<span class="fc" id="L438">					return null != (_ccParallelShifted = (org.drip.state.credit.CreditCurve)</span>
-<span class="pc bpc" id="L439" title="1 of 2 branches missed.">						_cc.parallelShiftManifestMeasure (&quot;FairPremium&quot;, 5.));</span>
+<span class="fc" id="L492">					return null != (_ccParallelShifted = (org.drip.state.credit.CreditCurve)</span>
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">						_cc.parallelShiftManifestMeasure (&quot;FairPremium&quot;, 5.));</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L445">					org.drip.product.definition.CalibratableComponent[] aCalibComp =</span>
-<span class="fc" id="L446">						_cc.calibComp();</span>
+<span class="fc" id="L499">					org.drip.product.definition.CalibratableComponent[] aCalibComp =</span>
+<span class="fc" id="L500">						_cc.calibComp();</span>
 
-<span class="fc" id="L448">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
+<span class="fc" id="L502">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
 
-<span class="fc bfc" id="L450" title="All 2 branches covered.">					for (int i = 0; i &lt; aCalibComp.length; ++i) {</span>
-<span class="fc" id="L451">						org.drip.analytics.date.JulianDate dt = aCalibComp[i].maturityDate();</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">					for (int i = 0; i &lt; aCalibComp.length; ++i) {</span>
+<span class="fc" id="L505">						org.drip.analytics.date.JulianDate dt = aCalibComp[i].maturityDate();</span>
 
 						try {
-<span class="fc" id="L454">							rnvd.set (&quot;BaseCurveQuote[&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L455">								org.drip.quant.common.FormatUtil.FormatDouble (_cc.manifestMeasure</span>
-<span class="fc" id="L456">									(aCalibComp[i].primaryCode()).get (&quot;FairPremium&quot;), 1, 5, 1));</span>
+<span class="fc" id="L508">							rnvd.set (&quot;BaseCurveQuote[&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L509">								org.drip.quant.common.FormatUtil.FormatDouble (_cc.manifestMeasure</span>
+<span class="fc" id="L510">									(aCalibComp[i].primaryCode()).get (&quot;FairPremium&quot;), 1, 5, 1));</span>
 
-<span class="fc" id="L458">							rnvd.set (&quot;ParallelShiftedCurveQuote[&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L512">							rnvd.set (&quot;ParallelShiftedCurveQuote[&quot; + dt + &quot;]&quot;,</span>
 								org.drip.quant.common.FormatUtil.FormatDouble
-<span class="fc" id="L460">									(_ccParallelShifted.manifestMeasure (aCalibComp[i].primaryCode()).get</span>
-<span class="fc" id="L461">										(&quot;FairPremium&quot;), 1, 5, 1));</span>
+<span class="fc" id="L514">									(_ccParallelShifted.manifestMeasure (aCalibComp[i].primaryCode()).get</span>
+<span class="fc" id="L515">										(&quot;FairPremium&quot;), 1, 5, 1));</span>
 
-<span class="fc" id="L463">							dt = dt1;</span>
+<span class="fc" id="L517">							dt = dt1;</span>
 
-<span class="pc bpc" id="L465" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (_cc.manifestMeasure</span>
-<span class="fc" id="L466">								(aCalibComp[i].primaryCode()).get (&quot;FairPremium&quot;) + 5.,</span>
-<span class="fc" id="L467">									_ccParallelShifted.manifestMeasure (aCalibComp[i].primaryCode()).get</span>
-<span class="fc" id="L468">										(&quot;FairPremium&quot;)))</span>
-<span class="nc" id="L469">								return false;</span>
-<span class="nc" id="L470">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L471">							e.printStackTrace();</span>
+<span class="pc bpc" id="L519" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.WithinTolerance (_cc.manifestMeasure</span>
+<span class="fc" id="L520">								(aCalibComp[i].primaryCode()).get (&quot;FairPremium&quot;) + 5.,</span>
+<span class="fc" id="L521">									_ccParallelShifted.manifestMeasure (aCalibComp[i].primaryCode()).get</span>
+<span class="fc" id="L522">										(&quot;FairPremium&quot;)))</span>
+<span class="nc" id="L523">								return false;</span>
+<span class="nc" id="L524">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L525">							e.printStackTrace();</span>
 
-<span class="nc" id="L473">							return false;</span>
-<span class="fc" id="L474">						}</span>
+<span class="nc" id="L527">							return false;</span>
+<span class="fc" id="L528">						}</span>
 					}
 
-<span class="fc" id="L477">					return true;</span>
+<span class="fc" id="L531">					return true;</span>
 				}
 			});
 
@@ -483,72 +537,72 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L486">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;NodeTweakedCurve&quot;,</span>
+<span class="fc" id="L540">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;NodeTweakedCurve&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L488">			{</span>
+<span class="fc" id="L542">			{</span>
 				private static final int TWEAKED_NODE = 0;
 
-<span class="fc" id="L491">				private org.drip.param.definition.CreditManifestMeasureTweak _cntp = null;</span>
-<span class="fc" id="L492">				private org.drip.state.credit.CreditCurve _ccTweakedCurve = null;</span>
+<span class="fc" id="L545">				private org.drip.param.definition.CreditManifestMeasureTweak _cntp = null;</span>
+<span class="fc" id="L546">				private org.drip.state.credit.CreditCurve _ccTweakedCurve = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L497">						_cntp = new org.drip.param.definition.CreditManifestMeasureTweak</span>
+<span class="fc" id="L551">						_cntp = new org.drip.param.definition.CreditManifestMeasureTweak</span>
 							(org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_QUOTE,
 								org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_QUOTE,
 							TWEAKED_NODE, true, 0.1, false);
-<span class="nc" id="L501">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L502">						e.printStackTrace();</span>
+<span class="nc" id="L555">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L556">						e.printStackTrace();</span>
 
-<span class="nc" id="L504">						return false;</span>
-<span class="fc" id="L505">					}</span>
+<span class="nc" id="L558">						return false;</span>
+<span class="fc" id="L559">					}</span>
 
-<span class="fc" id="L507">					return true;</span>
+<span class="fc" id="L561">					return true;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="fc" id="L512">					return null != (_ccTweakedCurve = (org.drip.state.credit.CreditCurve)</span>
-<span class="pc bpc" id="L513" title="1 of 2 branches missed.">						_cc.customTweakManifestMeasure (&quot;FairPremium&quot;, _cntp));</span>
+<span class="fc" id="L566">					return null != (_ccTweakedCurve = (org.drip.state.credit.CreditCurve)</span>
+<span class="pc bpc" id="L567" title="1 of 2 branches missed.">						_cc.customTweakManifestMeasure (&quot;FairPremium&quot;, _cntp));</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L519">					org.drip.product.definition.CalibratableComponent[] aCalibComp =</span>
-<span class="fc" id="L520">						_cc.calibComp();</span>
+<span class="fc" id="L573">					org.drip.product.definition.CalibratableComponent[] aCalibComp =</span>
+<span class="fc" id="L574">						_cc.calibComp();</span>
 
-<span class="fc" id="L522">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
+<span class="fc" id="L576">					org.drip.analytics.date.JulianDate dt1 = _dtStart;</span>
 
-<span class="fc bfc" id="L524" title="All 2 branches covered.">					for (int i = 0; i &lt; aCalibComp.length; ++i) {</span>
-<span class="fc" id="L525">						org.drip.analytics.date.JulianDate dt = aCalibComp[i].maturityDate();</span>
+<span class="fc bfc" id="L578" title="All 2 branches covered.">					for (int i = 0; i &lt; aCalibComp.length; ++i) {</span>
+<span class="fc" id="L579">						org.drip.analytics.date.JulianDate dt = aCalibComp[i].maturityDate();</span>
 
-<span class="fc" id="L527">						double dblBaseHazard = java.lang.Double.NaN;</span>
-<span class="fc" id="L528">						double dblShiftedHazard = java.lang.Double.NaN;</span>
+<span class="fc" id="L581">						double dblBaseHazard = java.lang.Double.NaN;</span>
+<span class="fc" id="L582">						double dblShiftedHazard = java.lang.Double.NaN;</span>
 
 						try {
-<span class="pc bpc" id="L531" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (dblShiftedHazard =</span>
-<span class="fc" id="L532">								_ccTweakedCurve.hazard (dt1, dt)) ||</span>
-<span class="pc bpc" id="L533" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard</span>
-<span class="fc" id="L534">										(dt1, dt)))</span>
-<span class="nc" id="L535">								return false;</span>
-<span class="nc" id="L536">						} catch (Exception e) {</span>
-<span class="nc" id="L537">							e.printStackTrace();</span>
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (dblShiftedHazard =</span>
+<span class="fc" id="L586">								_ccTweakedCurve.hazard (dt1, dt)) ||</span>
+<span class="pc bpc" id="L587" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard</span>
+<span class="fc" id="L588">										(dt1, dt)))</span>
+<span class="nc" id="L589">								return false;</span>
+<span class="nc" id="L590">						} catch (Exception e) {</span>
+<span class="nc" id="L591">							e.printStackTrace();</span>
 
-<span class="nc" id="L539">							return false;</span>
-<span class="fc" id="L540">						}</span>
+<span class="nc" id="L593">							return false;</span>
+<span class="fc" id="L594">						}</span>
 
-<span class="fc" id="L542">						rnvd.set (&quot;UntweakedHazard[&quot; + dt + &quot;]&quot;,</span>
-<span class="fc" id="L543">							org.drip.quant.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 5, 1));</span>
+<span class="fc" id="L596">						rnvd.set (&quot;UntweakedHazard[&quot; + dt + &quot;]&quot;,</span>
+<span class="fc" id="L597">							org.drip.quant.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 5, 1));</span>
 
-<span class="fc" id="L545">						rnvd.set (&quot;TweakedHazard[&quot; + dt + &quot;]&quot;, org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="fc" id="L546">							(dblShiftedHazard, 1, 5, 1));</span>
+<span class="fc" id="L599">						rnvd.set (&quot;TweakedHazard[&quot; + dt + &quot;]&quot;, org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L600">							(dblShiftedHazard, 1, 5, 1));</span>
 
-<span class="fc" id="L548">						dt = dt1;</span>
+<span class="fc" id="L602">						dt = dt1;</span>
 					}
 
-<span class="fc" id="L551">					return true;</span>
+<span class="fc" id="L605">					return true;</span>
 				}
 			});
 
@@ -557,43 +611,43 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L560">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FlatCurve&quot;,</span>
+<span class="fc" id="L614">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;FlatCurve&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L562">			{</span>
-<span class="fc" id="L563">				private org.drip.state.credit.CreditCurve _ccFlatCurve = null;</span>
+<span class="fc" id="L616">			{</span>
+<span class="fc" id="L617">				private org.drip.state.credit.CreditCurve _ccFlatCurve = null;</span>
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L567" title="1 of 2 branches missed.">					if (null == (_ccFlatCurve = _cc.flatCurve (90., false, 0.35))) return false;</span>
+<span class="pc bpc" id="L621" title="1 of 2 branches missed.">					if (null == (_ccFlatCurve = _cc.flatCurve (90., false, 0.35))) return false;</span>
 
-<span class="fc" id="L569">					return true;</span>
+<span class="fc" id="L623">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L575">					final int NUM_DC_INSTRUMENTS = 5;</span>
+<span class="fc" id="L629">					final int NUM_DC_INSTRUMENTS = 5;</span>
 
-<span class="fc bfc" id="L577" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
-<span class="fc" id="L578">						org.drip.analytics.date.JulianDate dt = _dtStart.addYears (i + 1);</span>
+<span class="fc bfc" id="L631" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc" id="L632">						org.drip.analytics.date.JulianDate dt = _dtStart.addYears (i + 1);</span>
 
-<span class="fc" id="L580">						double dblHazard = java.lang.Double.NaN;</span>
+<span class="fc" id="L634">						double dblHazard = java.lang.Double.NaN;</span>
 
 						try {
-<span class="pc bpc" id="L583" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (dblHazard = _ccFlatCurve.hazard</span>
-<span class="fc" id="L584">								(dt)))</span>
-<span class="nc" id="L585">								return false;</span>
-<span class="nc" id="L586">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L587">							e.printStackTrace();</span>
+<span class="pc bpc" id="L637" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (dblHazard = _ccFlatCurve.hazard</span>
+<span class="fc" id="L638">								(dt)))</span>
+<span class="nc" id="L639">								return false;</span>
+<span class="nc" id="L640">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L641">							e.printStackTrace();</span>
 
-<span class="nc" id="L589">							return false;</span>
-<span class="fc" id="L590">						}</span>
+<span class="nc" id="L643">							return false;</span>
+<span class="fc" id="L644">						}</span>
 
-<span class="fc" id="L592">						rnvd.set (&quot;FlatHazard[&quot; + dt + &quot;]&quot;, org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="fc" id="L593">							(dblHazard, 1, 5, 1));</span>
+<span class="fc" id="L646">						rnvd.set (&quot;FlatHazard[&quot; + dt + &quot;]&quot;, org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L647">							(dblHazard, 1, 5, 1));</span>
 					}
 
-<span class="fc" id="L596">					return true;</span>
+<span class="fc" id="L650">					return true;</span>
 				}
 			});
 
@@ -602,58 +656,58 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L605">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;SpecificDefault&quot;,</span>
+<span class="fc" id="L659">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;SpecificDefault&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L607">			{</span>
-<span class="fc" id="L608">				private int _iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L661">			{</span>
+<span class="fc" id="L662">				private int _iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;</span>
 
 				@Override public boolean preRegression()
 				{
-<span class="pc bpc" id="L612" title="1 of 2 branches missed.">					return !org.drip.quant.common.NumberUtil.IsValid (_iSpecificDefaultDate = _dtStart.addYears</span>
-<span class="fc" id="L613">						(2).julian());</span>
+<span class="pc bpc" id="L666" title="1 of 2 branches missed.">					return !org.drip.quant.common.NumberUtil.IsValid (_iSpecificDefaultDate = _dtStart.addYears</span>
+<span class="fc" id="L667">						(2).julian());</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="nc" id="L618">					return _cc.setSpecificDefault (_iSpecificDefaultDate);</span>
+<span class="nc" id="L672">					return _cc.setSpecificDefault (_iSpecificDefaultDate);</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="nc" id="L624">					double dblSurvivalProb = java.lang.Double.NaN;</span>
+<span class="nc" id="L678">					double dblSurvivalProb = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L626">					org.drip.analytics.date.JulianDate dtSurvival = _dtStart.addYears (3);</span>
+<span class="nc" id="L680">					org.drip.analytics.date.JulianDate dtSurvival = _dtStart.addYears (3);</span>
 
-<span class="nc" id="L628">					int iSurvivalDate = dtSurvival.julian();</span>
-
-					try {
-<span class="nc bnc" id="L631" title="All 2 branches missed.">						if (!org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival</span>
-<span class="nc" id="L632">							(iSurvivalDate)))</span>
-<span class="nc" id="L633">							return false;</span>
-<span class="nc" id="L634">					} catch (Exception e) {</span>
-<span class="nc" id="L635">						e.printStackTrace();</span>
-
-<span class="nc" id="L637">						return false;</span>
-<span class="nc" id="L638">					}</span>
-
-<span class="nc" id="L640">					rnvd.set (&quot;SpecificDefaultSetSurvival[&quot; + dtSurvival + &quot;]&quot;, &quot;&quot; + dblSurvivalProb);</span>
-
-<span class="nc bnc" id="L642" title="All 2 branches missed.">					if (!_cc.unsetSpecificDefault()) return false;</span>
+<span class="nc" id="L682">					int iSurvivalDate = dtSurvival.julian();</span>
 
 					try {
-<span class="nc bnc" id="L645" title="All 2 branches missed.">						if (!org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival</span>
-<span class="nc" id="L646">							(iSurvivalDate)))</span>
-<span class="nc" id="L647">							return false;</span>
-<span class="nc" id="L648">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L649">						e.printStackTrace();</span>
+<span class="nc bnc" id="L685" title="All 2 branches missed.">						if (!org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival</span>
+<span class="nc" id="L686">							(iSurvivalDate)))</span>
+<span class="nc" id="L687">							return false;</span>
+<span class="nc" id="L688">					} catch (Exception e) {</span>
+<span class="nc" id="L689">						e.printStackTrace();</span>
 
-<span class="nc" id="L651">						return false;</span>
-<span class="nc" id="L652">					}</span>
+<span class="nc" id="L691">						return false;</span>
+<span class="nc" id="L692">					}</span>
 
-<span class="nc" id="L654">					rnvd.set (&quot;SpecificDefaultUnsetSurvival[&quot; + dtSurvival + &quot;]&quot;, &quot;&quot; + dblSurvivalProb);</span>
+<span class="nc" id="L694">					rnvd.set (&quot;SpecificDefaultSetSurvival[&quot; + dtSurvival + &quot;]&quot;, &quot;&quot; + dblSurvivalProb);</span>
 
-<span class="nc" id="L656">					return true;</span>
+<span class="nc bnc" id="L696" title="All 2 branches missed.">					if (!_cc.unsetSpecificDefault()) return false;</span>
+
+					try {
+<span class="nc bnc" id="L699" title="All 2 branches missed.">						if (!org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival</span>
+<span class="nc" id="L700">							(iSurvivalDate)))</span>
+<span class="nc" id="L701">							return false;</span>
+<span class="nc" id="L702">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L703">						e.printStackTrace();</span>
+
+<span class="nc" id="L705">						return false;</span>
+<span class="nc" id="L706">					}</span>
+
+<span class="nc" id="L708">					rnvd.set (&quot;SpecificDefaultUnsetSurvival[&quot; + dtSurvival + &quot;]&quot;, &quot;&quot; + dblSurvivalProb);</span>
+
+<span class="nc" id="L710">					return true;</span>
 				}
 			});
 
@@ -662,55 +716,55 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L665">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;EffectiveSurvival&quot;,</span>
+<span class="fc" id="L719">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;EffectiveSurvival&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L667">			{</span>
+<span class="fc" id="L721">			{</span>
 				private static final int NUM_DC_INSTRUMENTS = 5;
 
-<span class="fc" id="L670">				private int _aiDate[] = new int[NUM_DC_INSTRUMENTS];</span>
-<span class="fc" id="L671">				private double _adblSurvival[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L724">				private int _aiDate[] = new int[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L725">				private double _adblSurvival[] = new double[NUM_DC_INSTRUMENTS];</span>
 
 				@Override public boolean preRegression()
 				{
-<span class="fc bfc" id="L675" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i)</span>
-<span class="fc" id="L676">						_aiDate[i] = _dtStart.addYears (i + 1).julian();</span>
+<span class="fc bfc" id="L729" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i)</span>
+<span class="fc" id="L730">						_aiDate[i] = _dtStart.addYears (i + 1).julian();</span>
 
-<span class="fc" id="L678">					return true;</span>
+<span class="fc" id="L732">					return true;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="fc bfc" id="L683" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L737" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="pc bpc" id="L685" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (_adblSurvival[i] =</span>
-<span class="fc" id="L686">								_cc.effectiveSurvival ((i + 1) + &quot;Y&quot;, (i + 2) + &quot;Y&quot;)))</span>
-<span class="nc" id="L687">								return false;</span>
-<span class="nc" id="L688">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L689">							e.printStackTrace();</span>
+<span class="pc bpc" id="L739" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (_adblSurvival[i] =</span>
+<span class="fc" id="L740">								_cc.effectiveSurvival ((i + 1) + &quot;Y&quot;, (i + 2) + &quot;Y&quot;)))</span>
+<span class="nc" id="L741">								return false;</span>
+<span class="nc" id="L742">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L743">							e.printStackTrace();</span>
 
-<span class="nc" id="L691">							return false;</span>
-<span class="fc" id="L692">						}</span>
+<span class="nc" id="L745">							return false;</span>
+<span class="fc" id="L746">						}</span>
 					}
 
-<span class="fc" id="L695">					return true;</span>
+<span class="fc" id="L749">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc bfc" id="L701" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L755" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="fc" id="L703">							rnvd.set (&quot;EffectiveSurvival[&quot; + new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L757">							rnvd.set (&quot;EffectiveSurvival[&quot; + new org.drip.analytics.date.JulianDate</span>
 								(_aiDate[i]) + &quot;]&quot;, org.drip.quant.common.FormatUtil.FormatDouble
-<span class="fc" id="L705">									(_adblSurvival[i], 1, 4, 1));</span>
-<span class="nc" id="L706">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L707">							e.printStackTrace();</span>
+<span class="fc" id="L759">									(_adblSurvival[i], 1, 4, 1));</span>
+<span class="nc" id="L760">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L761">							e.printStackTrace();</span>
 
-<span class="nc" id="L709">							return false;</span>
-<span class="fc" id="L710">						}</span>
+<span class="nc" id="L763">							return false;</span>
+<span class="fc" id="L764">						}</span>
 					}
 
-<span class="fc" id="L713">					return true;</span>
+<span class="fc" id="L767">					return true;</span>
 				}
 			});
 
@@ -719,70 +773,70 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 			 * 	post-regression, and the actual regression functionality of the UnitRegressorExecutor class.
 			 */
 
-<span class="fc" id="L722">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;EffectiveRecovery&quot;,</span>
+<span class="fc" id="L776">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;EffectiveRecovery&quot;,</span>
 				_strRegressionScenario)
-<span class="fc" id="L724">			{</span>
+<span class="fc" id="L778">			{</span>
 				private static final int NUM_DC_INSTRUMENTS = 5;
 
-<span class="fc" id="L727">				private double _adblEffectiveRecovery[] = new double[NUM_DC_INSTRUMENTS];</span>
+<span class="fc" id="L781">				private double _adblEffectiveRecovery[] = new double[NUM_DC_INSTRUMENTS];</span>
 
 				@Override public boolean execRegression()
 				{
-<span class="fc bfc" id="L731" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L785" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="pc bpc" id="L733" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (_adblEffectiveRecovery[i] =</span>
-<span class="fc" id="L734">								_cc.effectiveRecovery ((i + 1) + &quot;Y&quot;, (i + 2) + &quot;Y&quot;)))</span>
-<span class="nc" id="L735">								return false;</span>
-<span class="nc" id="L736">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L737">							e.printStackTrace();</span>
+<span class="pc bpc" id="L787" title="1 of 2 branches missed.">							if (!org.drip.quant.common.NumberUtil.IsValid (_adblEffectiveRecovery[i] =</span>
+<span class="fc" id="L788">								_cc.effectiveRecovery ((i + 1) + &quot;Y&quot;, (i + 2) + &quot;Y&quot;)))</span>
+<span class="nc" id="L789">								return false;</span>
+<span class="nc" id="L790">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L791">							e.printStackTrace();</span>
 
-<span class="nc" id="L739">							return false;</span>
-<span class="fc" id="L740">						}</span>
+<span class="nc" id="L793">							return false;</span>
+<span class="fc" id="L794">						}</span>
 					}
 
-<span class="fc" id="L743">					return true;</span>
+<span class="fc" id="L797">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc bfc" id="L749" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
+<span class="fc bfc" id="L803" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_DC_INSTRUMENTS; ++i) {</span>
 						try {
-<span class="fc" id="L751">							rnvd.set (&quot;EffectiveRecovery[&quot; + (i + 1) + &quot;Y-&quot; + (i + 2) + &quot;Y]&quot;,</span>
-<span class="fc" id="L752">								org.drip.quant.common.FormatUtil.FormatDouble (_adblEffectiveRecovery[i], 1,</span>
+<span class="fc" id="L805">							rnvd.set (&quot;EffectiveRecovery[&quot; + (i + 1) + &quot;Y-&quot; + (i + 2) + &quot;Y]&quot;,</span>
+<span class="fc" id="L806">								org.drip.quant.common.FormatUtil.FormatDouble (_adblEffectiveRecovery[i], 1,</span>
 									4, 1));
 
-<span class="fc" id="L755">							rnvd.set (&quot;CurveRecovery[&quot; + (i + 1) + &quot;Y-&quot; + (i + 2) + &quot;Y]&quot;,</span>
-<span class="fc" id="L756">								org.drip.quant.common.FormatUtil.FormatDouble (_cc.recovery ((i + 1) + &quot;Y&quot;),</span>
+<span class="fc" id="L809">							rnvd.set (&quot;CurveRecovery[&quot; + (i + 1) + &quot;Y-&quot; + (i + 2) + &quot;Y]&quot;,</span>
+<span class="fc" id="L810">								org.drip.quant.common.FormatUtil.FormatDouble (_cc.recovery ((i + 1) + &quot;Y&quot;),</span>
 									1, 4, 1) + &quot;-&quot; + org.drip.quant.common.FormatUtil.FormatDouble
-<span class="fc" id="L758">										(_cc.recovery ((i + 2) + &quot;Y&quot;), 1, 4, 1));</span>
-<span class="nc" id="L759">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L760">							e.printStackTrace();</span>
+<span class="fc" id="L812">										(_cc.recovery ((i + 2) + &quot;Y&quot;), 1, 4, 1));</span>
+<span class="nc" id="L813">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L814">							e.printStackTrace();</span>
 
-<span class="nc" id="L762">							return false;</span>
-<span class="fc" id="L763">						}</span>
+<span class="nc" id="L816">							return false;</span>
+<span class="fc" id="L817">						}</span>
 					}
 
-<span class="fc" id="L766">					return true;</span>
+<span class="fc" id="L820">					return true;</span>
 				}
 			});
-<span class="nc" id="L769">		} catch (Exception e) {</span>
-<span class="nc" id="L770">			e.printStackTrace();</span>
+<span class="nc" id="L823">		} catch (Exception e) {</span>
+<span class="nc" id="L824">			e.printStackTrace();</span>
 
-<span class="nc" id="L772">			return false;</span>
-<span class="fc" id="L773">		}</span>
+<span class="nc" id="L826">			return false;</span>
+<span class="fc" id="L827">		}</span>
 
-<span class="fc" id="L775">		return true;</span>
+<span class="fc" id="L829">		return true;</span>
 	}
 
 	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
 	{
-<span class="fc" id="L780">		return _setRegressors;</span>
+<span class="fc" id="L834">		return _setRegressors;</span>
 	}
 
 	@Override public java.lang.String getSetName()
 	{
-<span class="fc" id="L785">		return _strRegressionScenario;</span>
+<span class="fc" id="L839">		return _strRegressionScenario;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

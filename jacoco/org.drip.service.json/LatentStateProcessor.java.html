@@ -6,33 +6,52 @@ package org.drip.service.json;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,38 +68,46 @@ package org.drip.service.json;
  */
 
 /**
- * LatentStateProcessor Sets Up and Executes a JSON Based In/Out Curve Processor.
+ * &lt;i&gt;LatentStateProcessor&lt;/i&gt; Sets Up and Executes a JSON Based In/Out Curve Processor.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L57">public class LatentStateProcessor {</span>
+<span class="nc" id="L84">public class LatentStateProcessor {</span>
 
 	static final org.drip.state.discount.MergedDiscountForwardCurve FundingCurve (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L62">		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L89">		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 			&quot;SpotDate&quot;);
 
-<span class="fc" id="L65">		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L92">		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;Currency&quot;);
 
-<span class="fc" id="L68">		java.lang.String[] astrDepositMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
-<span class="fc" id="L69">			(jsonParameter, &quot;DepositTenor&quot;);</span>
+<span class="fc" id="L95">		java.lang.String[] astrDepositMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
+<span class="fc" id="L96">			(jsonParameter, &quot;DepositTenor&quot;);</span>
 
-<span class="fc" id="L71">		double[] adblDepositQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L98">		double[] adblDepositQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;DepositQuote&quot;);
 
-<span class="fc" id="L74">		double[] adblFuturesQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L101">		double[] adblFuturesQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;FuturesQuote&quot;);
 
-<span class="fc" id="L77">		java.lang.String[] astrFixFloatMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
-<span class="fc" id="L78">			(jsonParameter, &quot;FixFloatTenor&quot;);</span>
+<span class="fc" id="L104">		java.lang.String[] astrFixFloatMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
+<span class="fc" id="L105">			(jsonParameter, &quot;FixFloatTenor&quot;);</span>
 
-<span class="fc" id="L80">		double[] adblFixFloatQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L107">		double[] adblFixFloatQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;FixFloatQuote&quot;);
 
-<span class="fc" id="L83">		return org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot, strCurrency,</span>
+<span class="fc" id="L110">		return org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot, strCurrency,</span>
 			astrDepositMaturityTenor, adblDepositQuote, &quot;ForwardRate&quot;, adblFuturesQuote, &quot;ForwardRate&quot;,
 				astrFixFloatMaturityTenor, adblFixFloatQuote, &quot;SwapRate&quot;);
 	}
@@ -88,32 +115,32 @@ package org.drip.service.json;
 	static final org.drip.state.govvie.GovvieCurve TreasuryCurve (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L91">		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L118">		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 			&quot;SpotDate&quot;);
 
-<span class="fc" id="L94">		java.lang.String strCode = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L121">		java.lang.String strCode = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;TreasuryCode&quot;);
 
-<span class="fc" id="L97">		java.lang.String[] astrTenor = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
+<span class="fc" id="L124">		java.lang.String[] astrTenor = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
 			&quot;TreasuryTenor&quot;);
 
-<span class="fc" id="L100">		double[] adblYield = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L127">		double[] adblYield = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;TreasuryYield&quot;);
 
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		int iNumTenor = null == adblYield ? 0 : adblYield.length;</span>
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		double[] adblCoupon = 0 == iNumTenor ? null : new double[iNumTenor];</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adtMaturity = 0 == iNumTenor ? null : new</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		int iNumTenor = null == adblYield ? 0 : adblYield.length;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		double[] adblCoupon = 0 == iNumTenor ? null : new double[iNumTenor];</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adtMaturity = 0 == iNumTenor ? null : new</span>
 			org.drip.analytics.date.JulianDate[iNumTenor];
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adtEffective = 0 == iNumTenor ? null : new</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adtEffective = 0 == iNumTenor ? null : new</span>
 			org.drip.analytics.date.JulianDate[iNumTenor];
 
-<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
-<span class="fc" id="L111">			adblCoupon[i] = adblYield[i];</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
+<span class="fc" id="L138">			adblCoupon[i] = adblYield[i];</span>
 
-<span class="fc" id="L113">			adtMaturity[i] = (adtEffective[i] = dtSpot).addTenor (astrTenor[i]);</span>
+<span class="fc" id="L140">			adtMaturity[i] = (adtEffective[i] = dtSpot).addTenor (astrTenor[i]);</span>
 		}
 
-<span class="fc" id="L116">		return org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSpot, adtEffective,</span>
+<span class="fc" id="L143">		return org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSpot, adtEffective,</span>
 			adtMaturity, adblCoupon, adblYield, &quot;Yield&quot;,
 				org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 	}
@@ -122,17 +149,17 @@ package org.drip.service.json;
 		final org.drip.json.simple.JSONObject jsonParameter,
 		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding)
 	{
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="fc" id="L127">		java.lang.String strReferenceEntity = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L154">		java.lang.String strReferenceEntity = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;ReferenceEntity&quot;);
 
-<span class="fc" id="L130">		java.lang.String[] astrCDSMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
-<span class="fc" id="L131">			(jsonParameter, &quot;CDSTenor&quot;);</span>
+<span class="fc" id="L157">		java.lang.String[] astrCDSMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
+<span class="fc" id="L158">			(jsonParameter, &quot;CDSTenor&quot;);</span>
 
-<span class="fc" id="L133">		double[] adblCDSQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter, &quot;CDSQuote&quot;);</span>
+<span class="fc" id="L160">		double[] adblCDSQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter, &quot;CDSQuote&quot;);</span>
 
-<span class="fc" id="L135">		return org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dcFunding.epoch(),</span>
+<span class="fc" id="L162">		return org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dcFunding.epoch(),</span>
 			strReferenceEntity, astrCDSMaturityTenor, adblCDSQuote, adblCDSQuote, &quot;FairPremium&quot;, dcFunding);
 	}
 
@@ -147,123 +174,123 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject FundingCurveThunker (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L150">		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
+<span class="fc" id="L177">		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,</span>
 			&quot;SpotDate&quot;);
 
-<span class="fc" id="L153">		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L180">		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;Currency&quot;);
 
-<span class="fc" id="L156">		java.lang.String[] astrDepositMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
-<span class="fc" id="L157">			(jsonParameter, &quot;DepositTenor&quot;);</span>
+<span class="fc" id="L183">		java.lang.String[] astrDepositMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
+<span class="fc" id="L184">			(jsonParameter, &quot;DepositTenor&quot;);</span>
 
-<span class="fc" id="L159">		double[] adblDepositQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L186">		double[] adblDepositQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;DepositQuote&quot;);
 
-<span class="fc" id="L162">		double[] adblFuturesQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L189">		double[] adblFuturesQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;FuturesQuote&quot;);
 
-<span class="fc" id="L165">		java.lang.String[] astrFixFloatMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
-<span class="fc" id="L166">			(jsonParameter, &quot;FixFloatTenor&quot;);</span>
+<span class="fc" id="L192">		java.lang.String[] astrFixFloatMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
+<span class="fc" id="L193">			(jsonParameter, &quot;FixFloatTenor&quot;);</span>
 
-<span class="fc" id="L168">		double[] adblFixFloatQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L195">		double[] adblFixFloatQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;FixFloatQuote&quot;);
 
-<span class="fc" id="L171">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="fc" id="L172">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot, strCurrency,</span>
+<span class="fc" id="L198">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L199">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot, strCurrency,</span>
 				astrDepositMaturityTenor, adblDepositQuote, &quot;ForwardRate&quot;, adblFuturesQuote, &quot;ForwardRate&quot;,
 					astrFixFloatMaturityTenor, adblFixFloatQuote, &quot;SwapRate&quot;);
 
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		int iNumDeposit = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		int iNumFutures = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;</span>
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		int iNumFixFloat = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		int iNumDeposit = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		int iNumFutures = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		int iNumFixFloat = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
 
-<span class="fc" id="L182">		org.drip.json.simple.JSONArray jsonDepositArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L209">		org.drip.json.simple.JSONArray jsonDepositArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
-<span class="fc" id="L185">			org.drip.json.simple.JSONObject jsonDeposit = new org.drip.json.simple.JSONObject();</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeposit; ++i) {</span>
+<span class="fc" id="L212">			org.drip.json.simple.JSONObject jsonDeposit = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L187">			jsonDeposit.put (&quot;InstrumentType&quot;, &quot;DEPOSIT&quot;);</span>
+<span class="fc" id="L214">			jsonDeposit.put (&quot;InstrumentType&quot;, &quot;DEPOSIT&quot;);</span>
 
-<span class="fc" id="L189">			jsonDeposit.put (&quot;MaturityTenor&quot;, astrDepositMaturityTenor[i]);</span>
+<span class="fc" id="L216">			jsonDeposit.put (&quot;MaturityTenor&quot;, astrDepositMaturityTenor[i]);</span>
 
-<span class="fc" id="L191">			jsonDeposit.put (&quot;InstrumentQuote&quot;, adblDepositQuote[i]);</span>
+<span class="fc" id="L218">			jsonDeposit.put (&quot;InstrumentQuote&quot;, adblDepositQuote[i]);</span>
 
-<span class="fc" id="L193">			jsonDeposit.put (&quot;CalibrationMeasure&quot;, &quot;ForwardRate&quot;);</span>
-
-			try {
-<span class="fc" id="L196">				jsonDeposit.put (&quot;DiscountFactor&quot;, dcFunding.df (astrDepositMaturityTenor[i]));</span>
-<span class="nc" id="L197">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L198">				e.printStackTrace();</span>
-
-<span class="nc" id="L200">				return null;</span>
-<span class="fc" id="L201">			}</span>
-
-<span class="fc" id="L203">			jsonDepositArray.add (i, jsonDeposit);</span>
-		}
-
-<span class="fc" id="L206">		org.drip.json.simple.JSONArray jsonFuturesArray = new org.drip.json.simple.JSONArray();</span>
-
-<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFutures; ++i) {</span>
-<span class="fc" id="L209">			org.drip.json.simple.JSONObject jsonFutures = new org.drip.json.simple.JSONObject();</span>
-
-<span class="fc" id="L211">			jsonFutures.put (&quot;InstrumentType&quot;, &quot;FUTURES&quot;);</span>
-
-<span class="fc" id="L213">			jsonFutures.put (&quot;InstrumentQuote&quot;, adblFuturesQuote[i]);</span>
-
-<span class="fc" id="L215">			jsonFutures.put (&quot;CalibrationMeasure&quot;, &quot;ForwardRate&quot;);</span>
+<span class="fc" id="L220">			jsonDeposit.put (&quot;CalibrationMeasure&quot;, &quot;ForwardRate&quot;);</span>
 
 			try {
-<span class="fc" id="L218">				jsonFutures.put (&quot;DiscountFactor&quot;, dcFunding.df ((3 + 3 * i) + &quot;M&quot;));</span>
-<span class="nc" id="L219">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L220">				e.printStackTrace();</span>
+<span class="fc" id="L223">				jsonDeposit.put (&quot;DiscountFactor&quot;, dcFunding.df (astrDepositMaturityTenor[i]));</span>
+<span class="nc" id="L224">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L225">				e.printStackTrace();</span>
 
-<span class="nc" id="L222">				return null;</span>
-<span class="fc" id="L223">			}</span>
+<span class="nc" id="L227">				return null;</span>
+<span class="fc" id="L228">			}</span>
 
-<span class="fc" id="L225">			jsonFuturesArray.add (i, jsonFutures);</span>
+<span class="fc" id="L230">			jsonDepositArray.add (i, jsonDeposit);</span>
 		}
 
-<span class="fc" id="L228">		org.drip.json.simple.JSONArray jsonFixFloatArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L233">		org.drip.json.simple.JSONArray jsonFuturesArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFixFloat; ++i) {</span>
-<span class="fc" id="L231">			org.drip.json.simple.JSONObject jsonFixFloat = new org.drip.json.simple.JSONObject();</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFutures; ++i) {</span>
+<span class="fc" id="L236">			org.drip.json.simple.JSONObject jsonFutures = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L233">			jsonFixFloat.put (&quot;InstrumentType&quot;, &quot;FIXFLOAT&quot;);</span>
+<span class="fc" id="L238">			jsonFutures.put (&quot;InstrumentType&quot;, &quot;FUTURES&quot;);</span>
 
-<span class="fc" id="L235">			jsonFixFloat.put (&quot;MaturityTenor&quot;, astrFixFloatMaturityTenor[i]);</span>
+<span class="fc" id="L240">			jsonFutures.put (&quot;InstrumentQuote&quot;, adblFuturesQuote[i]);</span>
 
-<span class="fc" id="L237">			jsonFixFloat.put (&quot;InstrumentQuote&quot;, adblFixFloatQuote[i]);</span>
-
-<span class="fc" id="L239">			jsonFixFloat.put (&quot;CalibrationMeasure&quot;, &quot;SwapRate&quot;);</span>
+<span class="fc" id="L242">			jsonFutures.put (&quot;CalibrationMeasure&quot;, &quot;ForwardRate&quot;);</span>
 
 			try {
-<span class="fc" id="L242">				jsonFixFloat.put (&quot;DiscountFactor&quot;, dcFunding.df (astrFixFloatMaturityTenor[i]));</span>
-<span class="nc" id="L243">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L244">				e.printStackTrace();</span>
+<span class="fc" id="L245">				jsonFutures.put (&quot;DiscountFactor&quot;, dcFunding.df ((3 + 3 * i) + &quot;M&quot;));</span>
+<span class="nc" id="L246">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L247">				e.printStackTrace();</span>
 
-<span class="nc" id="L246">				return null;</span>
-<span class="fc" id="L247">			}</span>
+<span class="nc" id="L249">				return null;</span>
+<span class="fc" id="L250">			}</span>
 
-<span class="fc" id="L249">			jsonFixFloatArray.add (i, jsonFixFloat);</span>
+<span class="fc" id="L252">			jsonFuturesArray.add (i, jsonFutures);</span>
 		}
 
-<span class="fc" id="L252">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L255">		org.drip.json.simple.JSONArray jsonFixFloatArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc" id="L254">		jsonResponse.put (&quot;SpotDate&quot;, dtSpot.toString());</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFixFloat; ++i) {</span>
+<span class="fc" id="L258">			org.drip.json.simple.JSONObject jsonFixFloat = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L256">		jsonResponse.put (&quot;Currency&quot;, strCurrency);</span>
+<span class="fc" id="L260">			jsonFixFloat.put (&quot;InstrumentType&quot;, &quot;FIXFLOAT&quot;);</span>
 
-<span class="fc" id="L258">		jsonResponse.put (&quot;FundingLabel&quot;, dcFunding.label().fullyQualifiedName());</span>
+<span class="fc" id="L262">			jsonFixFloat.put (&quot;MaturityTenor&quot;, astrFixFloatMaturityTenor[i]);</span>
 
-<span class="fc" id="L260">		jsonResponse.put (&quot;DepositMetrics&quot;, jsonDepositArray);</span>
+<span class="fc" id="L264">			jsonFixFloat.put (&quot;InstrumentQuote&quot;, adblFixFloatQuote[i]);</span>
 
-<span class="fc" id="L262">		jsonResponse.put (&quot;FuturesMetrics&quot;, jsonFuturesArray);</span>
+<span class="fc" id="L266">			jsonFixFloat.put (&quot;CalibrationMeasure&quot;, &quot;SwapRate&quot;);</span>
 
-<span class="fc" id="L264">		jsonResponse.put (&quot;FixFloatMetrics&quot;, jsonFixFloatArray);</span>
+			try {
+<span class="fc" id="L269">				jsonFixFloat.put (&quot;DiscountFactor&quot;, dcFunding.df (astrFixFloatMaturityTenor[i]));</span>
+<span class="nc" id="L270">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L271">				e.printStackTrace();</span>
 
-<span class="fc" id="L266">		return jsonResponse;</span>
+<span class="nc" id="L273">				return null;</span>
+<span class="fc" id="L274">			}</span>
+
+<span class="fc" id="L276">			jsonFixFloatArray.add (i, jsonFixFloat);</span>
+		}
+
+<span class="fc" id="L279">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+
+<span class="fc" id="L281">		jsonResponse.put (&quot;SpotDate&quot;, dtSpot.toString());</span>
+
+<span class="fc" id="L283">		jsonResponse.put (&quot;Currency&quot;, strCurrency);</span>
+
+<span class="fc" id="L285">		jsonResponse.put (&quot;FundingLabel&quot;, dcFunding.label().fullyQualifiedName());</span>
+
+<span class="fc" id="L287">		jsonResponse.put (&quot;DepositMetrics&quot;, jsonDepositArray);</span>
+
+<span class="fc" id="L289">		jsonResponse.put (&quot;FuturesMetrics&quot;, jsonFuturesArray);</span>
+
+<span class="fc" id="L291">		jsonResponse.put (&quot;FixFloatMetrics&quot;, jsonFixFloatArray);</span>
+
+<span class="fc" id="L293">		return jsonResponse;</span>
 	}
 
 	/**
@@ -277,73 +304,73 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject CreditCurveThunker (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L280">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = FundingCurve (jsonParameter);</span>
+<span class="fc" id="L307">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = FundingCurve (jsonParameter);</span>
 
-<span class="pc bpc" id="L282" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="fc" id="L284">		java.lang.String strReferenceEntity = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L311">		java.lang.String strReferenceEntity = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;ReferenceEntity&quot;);
 
-<span class="fc" id="L287">		java.lang.String[] astrCDSMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
-<span class="fc" id="L288">			(jsonParameter, &quot;CDSTenor&quot;);</span>
+<span class="fc" id="L314">		java.lang.String[] astrCDSMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry</span>
+<span class="fc" id="L315">			(jsonParameter, &quot;CDSTenor&quot;);</span>
 
-<span class="fc" id="L290">		double[] adblCDSQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter, &quot;CDSQuote&quot;);</span>
+<span class="fc" id="L317">		double[] adblCDSQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter, &quot;CDSQuote&quot;);</span>
 
-<span class="fc" id="L292">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
+<span class="fc" id="L319">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
 
-<span class="fc" id="L294">		org.drip.state.credit.CreditCurve ccSurvivalRecovery =</span>
-<span class="fc" id="L295">			org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot, strReferenceEntity,</span>
+<span class="fc" id="L321">		org.drip.state.credit.CreditCurve ccSurvivalRecovery =</span>
+<span class="fc" id="L322">			org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot, strReferenceEntity,</span>
 				astrCDSMaturityTenor, adblCDSQuote, adblCDSQuote, &quot;FairPremium&quot;, dcFunding);
 
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">		if (null == ccSurvivalRecovery) return null;</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">		if (null == ccSurvivalRecovery) return null;</span>
 
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		int iNumCDS = null == adblCDSQuote ? 0 : adblCDSQuote.length;</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">		int iNumCDS = null == adblCDSQuote ? 0 : adblCDSQuote.length;</span>
 
-<span class="fc" id="L302">		String strLatentStateLabel = ccSurvivalRecovery.label().fullyQualifiedName();</span>
+<span class="fc" id="L329">		String strLatentStateLabel = ccSurvivalRecovery.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L304">		org.drip.json.simple.JSONArray jsonCDSArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L331">		org.drip.json.simple.JSONArray jsonCDSArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L306" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCDS; ++i) {</span>
-<span class="fc" id="L307">			org.drip.json.simple.JSONObject jsonCDS = new org.drip.json.simple.JSONObject();</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCDS; ++i) {</span>
+<span class="fc" id="L334">			org.drip.json.simple.JSONObject jsonCDS = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L309">			jsonCDS.put (&quot;ReferenceEntity&quot;, strLatentStateLabel);</span>
+<span class="fc" id="L336">			jsonCDS.put (&quot;ReferenceEntity&quot;, strLatentStateLabel);</span>
 
-<span class="fc" id="L311">			jsonCDS.put (&quot;InstrumentType&quot;, &quot;CDS&quot;);</span>
+<span class="fc" id="L338">			jsonCDS.put (&quot;InstrumentType&quot;, &quot;CDS&quot;);</span>
 
-<span class="fc" id="L313">			jsonCDS.put (&quot;MaturityTenor&quot;, astrCDSMaturityTenor[i]);</span>
+<span class="fc" id="L340">			jsonCDS.put (&quot;MaturityTenor&quot;, astrCDSMaturityTenor[i]);</span>
 
-<span class="fc" id="L315">			jsonCDS.put (&quot;InstrumentQuote&quot;, adblCDSQuote[i]);</span>
+<span class="fc" id="L342">			jsonCDS.put (&quot;InstrumentQuote&quot;, adblCDSQuote[i]);</span>
 
-<span class="fc" id="L317">			jsonCDS.put (&quot;CalibrationMeasure&quot;, &quot;FairPremium&quot;);</span>
+<span class="fc" id="L344">			jsonCDS.put (&quot;CalibrationMeasure&quot;, &quot;FairPremium&quot;);</span>
 
 			try {
-<span class="fc" id="L320">				jsonCDS.put (&quot;SurvivalProbability&quot;, ccSurvivalRecovery.survival (astrCDSMaturityTenor[i]));</span>
+<span class="fc" id="L347">				jsonCDS.put (&quot;SurvivalProbability&quot;, ccSurvivalRecovery.survival (astrCDSMaturityTenor[i]));</span>
 
-<span class="fc" id="L322">				jsonCDS.put (&quot;Recovery&quot;, ccSurvivalRecovery.recovery (astrCDSMaturityTenor[i]));</span>
-<span class="nc" id="L323">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L324">				e.printStackTrace();</span>
+<span class="fc" id="L349">				jsonCDS.put (&quot;Recovery&quot;, ccSurvivalRecovery.recovery (astrCDSMaturityTenor[i]));</span>
+<span class="nc" id="L350">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L351">				e.printStackTrace();</span>
 
-<span class="nc" id="L326">				return null;</span>
-<span class="fc" id="L327">			}</span>
+<span class="nc" id="L353">				return null;</span>
+<span class="fc" id="L354">			}</span>
 
-<span class="fc" id="L329">			jsonCDSArray.add (i, jsonCDS);</span>
+<span class="fc" id="L356">			jsonCDSArray.add (i, jsonCDS);</span>
 		}
 
-<span class="fc" id="L332">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L359">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L334">		jsonResponse.put (&quot;SpotDate&quot;, dtSpot.toString());</span>
+<span class="fc" id="L361">		jsonResponse.put (&quot;SpotDate&quot;, dtSpot.toString());</span>
 
-<span class="fc" id="L336">		jsonResponse.put (&quot;Currency&quot;, dcFunding.currency());</span>
+<span class="fc" id="L363">		jsonResponse.put (&quot;Currency&quot;, dcFunding.currency());</span>
 
-<span class="fc" id="L338">		jsonResponse.put (&quot;ReferenceEntity&quot;, strReferenceEntity);</span>
+<span class="fc" id="L365">		jsonResponse.put (&quot;ReferenceEntity&quot;, strReferenceEntity);</span>
 
-<span class="fc" id="L340">		jsonResponse.put (&quot;CreditLabel&quot;, strLatentStateLabel);</span>
+<span class="fc" id="L367">		jsonResponse.put (&quot;CreditLabel&quot;, strLatentStateLabel);</span>
 
-<span class="fc" id="L342">		jsonResponse.put (&quot;FundingLabel&quot;, dcFunding.label().fullyQualifiedName());</span>
+<span class="fc" id="L369">		jsonResponse.put (&quot;FundingLabel&quot;, dcFunding.label().fullyQualifiedName());</span>
 
-<span class="fc" id="L344">		jsonResponse.put (&quot;CDSMetrics&quot;, jsonCDSArray);</span>
+<span class="fc" id="L371">		jsonResponse.put (&quot;CDSMetrics&quot;, jsonCDSArray);</span>
 
-<span class="fc" id="L346">		return jsonResponse;</span>
+<span class="fc" id="L373">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

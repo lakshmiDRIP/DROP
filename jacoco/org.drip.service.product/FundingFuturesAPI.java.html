@@ -6,33 +6,51 @@ package org.drip.service.product;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,12 +67,21 @@ package org.drip.service.product;
  */
 
 /**
- * FundingFuturesAPI contains the Functionality associated with the Horizon Analysis of the Funding Futures.
+ * &lt;i&gt;FundingFuturesAPI&lt;/i&gt; contains the Functionality associated with the Horizon Analysis of the Funding
+ * Futures.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L57">public class FundingFuturesAPI {</span>
+<span class="nc" id="L84">public class FundingFuturesAPI {</span>
 
 	/**
 	 * Generate the Funding Futures Horizon Metrics
@@ -77,77 +104,77 @@ package org.drip.service.product;
 		final double dblSpotQuote,
 		final java.lang.String strCurrency)
 	{
-<span class="nc" id="L80">		org.drip.product.rates.SingleStreamComponent sscFutures =</span>
-<span class="nc" id="L81">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtExpiry.addMonths (3),</span>
+<span class="nc" id="L107">		org.drip.product.rates.SingleStreamComponent sscFutures =</span>
+<span class="nc" id="L108">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtExpiry.addMonths (3),</span>
 				strCurrency);
 
-<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (null == sscFutures) return null;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (null == sscFutures) return null;</span>
 
-<span class="nc" id="L86">		org.drip.analytics.cashflow.ComposableUnitPeriod cup = sscFutures.couponPeriods().get</span>
-<span class="nc" id="L87">			(0).periods().get (0);</span>
+<span class="nc" id="L113">		org.drip.analytics.cashflow.ComposableUnitPeriod cup = sscFutures.couponPeriods().get</span>
+<span class="nc" id="L114">			(0).periods().get (0);</span>
 
-<span class="nc" id="L89">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="nc" id="L116">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc" id="L92">		if (!csqc.setFundingState</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtPrevious,</span>
-<span class="nc" id="L94">				strCurrency, dblPreviousQuote, cup.couponDC(), cup.freq())))</span>
-<span class="nc" id="L95">			return null;</span>
+<span class="nc" id="L119">		if (!csqc.setFundingState</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtPrevious,</span>
+<span class="nc" id="L121">				strCurrency, dblPreviousQuote, cup.couponDC(), cup.freq())))</span>
+<span class="nc" id="L122">			return null;</span>
 
-<span class="nc" id="L97">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapPreviousMeasures = sscFutures.value</span>
-<span class="nc" id="L98">			(org.drip.param.valuation.ValuationParams.Spot (dtPrevious.julian()), null, csqc, null);</span>
+<span class="nc" id="L124">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapPreviousMeasures = sscFutures.value</span>
+<span class="nc" id="L125">			(org.drip.param.valuation.ValuationParams.Spot (dtPrevious.julian()), null, csqc, null);</span>
 
-<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (null == mapPreviousMeasures || !mapPreviousMeasures.containsKey (&quot;DV01&quot;) ||</span>
-<span class="nc bnc" id="L101" title="All 4 branches missed.">			!mapPreviousMeasures.containsKey (&quot;ForwardRate&quot;) || !mapPreviousMeasures.containsKey (&quot;PV&quot;))</span>
-<span class="nc" id="L102">			return null;</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == mapPreviousMeasures || !mapPreviousMeasures.containsKey (&quot;DV01&quot;) ||</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">			!mapPreviousMeasures.containsKey (&quot;ForwardRate&quot;) || !mapPreviousMeasures.containsKey (&quot;PV&quot;))</span>
+<span class="nc" id="L129">			return null;</span>
 
-<span class="nc" id="L104">		double dblPreviousDV01 = 10000. * mapPreviousMeasures.get (&quot;DV01&quot;);</span>
+<span class="nc" id="L131">		double dblPreviousDV01 = 10000. * mapPreviousMeasures.get (&quot;DV01&quot;);</span>
 
-<span class="nc" id="L106">		double dblPreviousForwardRate = mapPreviousMeasures.get (&quot;ForwardRate&quot;);</span>
+<span class="nc" id="L133">		double dblPreviousForwardRate = mapPreviousMeasures.get (&quot;ForwardRate&quot;);</span>
 
-<span class="nc" id="L108">		if (!csqc.setFundingState</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtSpot,</span>
-<span class="nc" id="L110">				strCurrency, dblSpotQuote, cup.couponDC(), cup.freq())))</span>
-<span class="nc" id="L111">			return null;</span>
+<span class="nc" id="L135">		if (!csqc.setFundingState</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtSpot,</span>
+<span class="nc" id="L137">				strCurrency, dblSpotQuote, cup.couponDC(), cup.freq())))</span>
+<span class="nc" id="L138">			return null;</span>
 
-<span class="nc" id="L113">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapSpotMeasures = sscFutures.value</span>
-<span class="nc" id="L114">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
+<span class="nc" id="L140">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapSpotMeasures = sscFutures.value</span>
+<span class="nc" id="L141">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
 
-<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (null == mapSpotMeasures || !mapSpotMeasures.containsKey (&quot;DV01&quot;) || !mapSpotMeasures.containsKey</span>
-<span class="nc bnc" id="L117" title="All 4 branches missed.">			(&quot;ForwardRate&quot;) || !mapSpotMeasures.containsKey (&quot;PV&quot;))</span>
-<span class="nc" id="L118">			return null;</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (null == mapSpotMeasures || !mapSpotMeasures.containsKey (&quot;DV01&quot;) || !mapSpotMeasures.containsKey</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">			(&quot;ForwardRate&quot;) || !mapSpotMeasures.containsKey (&quot;PV&quot;))</span>
+<span class="nc" id="L145">			return null;</span>
 
-<span class="nc" id="L120">		double dblSpotDV01 = 10000. * mapSpotMeasures.get (&quot;DV01&quot;);</span>
+<span class="nc" id="L147">		double dblSpotDV01 = 10000. * mapSpotMeasures.get (&quot;DV01&quot;);</span>
 
-<span class="nc" id="L122">		double dblSpotForwardRate = mapSpotMeasures.get (&quot;ForwardRate&quot;);</span>
+<span class="nc" id="L149">		double dblSpotForwardRate = mapSpotMeasures.get (&quot;ForwardRate&quot;);</span>
 
 		try {
-<span class="nc" id="L125">			org.drip.historical.attribution.PositionMarketSnap pmsPrevious = new</span>
+<span class="nc" id="L152">			org.drip.historical.attribution.PositionMarketSnap pmsPrevious = new</span>
 				org.drip.historical.attribution.PositionMarketSnap (dtPrevious, mapPreviousMeasures.get
-<span class="nc" id="L127">					(&quot;PV&quot;));</span>
+<span class="nc" id="L154">					(&quot;PV&quot;));</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			if (!pmsPrevious.addManifestMeasureSnap (&quot;ForwardRate&quot;, dblPreviousForwardRate, dblPreviousDV01,</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">				dblPreviousForwardRate) || !pmsPrevious.setR1 (&quot;DV01&quot;, dblPreviousDV01) || !pmsPrevious.setR1</span>
-<span class="nc bnc" id="L131" title="All 4 branches missed.">					(&quot;ForwardRate&quot;, dblPreviousForwardRate) || !pmsPrevious.setC1 (&quot;FloaterLabel&quot;,</span>
-<span class="nc" id="L132">						sscFutures.forwardLabel().get (&quot;DERIVED&quot;).fullyQualifiedName()))</span>
-<span class="nc" id="L133">				return null;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			if (!pmsPrevious.addManifestMeasureSnap (&quot;ForwardRate&quot;, dblPreviousForwardRate, dblPreviousDV01,</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">				dblPreviousForwardRate) || !pmsPrevious.setR1 (&quot;DV01&quot;, dblPreviousDV01) || !pmsPrevious.setR1</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">					(&quot;ForwardRate&quot;, dblPreviousForwardRate) || !pmsPrevious.setC1 (&quot;FloaterLabel&quot;,</span>
+<span class="nc" id="L159">						sscFutures.forwardLabel().get (&quot;DERIVED&quot;).fullyQualifiedName()))</span>
+<span class="nc" id="L160">				return null;</span>
 
-<span class="nc" id="L135">			org.drip.historical.attribution.PositionMarketSnap pmsSpot = new</span>
-<span class="nc" id="L136">				org.drip.historical.attribution.PositionMarketSnap (dtSpot, mapSpotMeasures.get (&quot;PV&quot;));</span>
+<span class="nc" id="L162">			org.drip.historical.attribution.PositionMarketSnap pmsSpot = new</span>
+<span class="nc" id="L163">				org.drip.historical.attribution.PositionMarketSnap (dtSpot, mapSpotMeasures.get (&quot;PV&quot;));</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (!pmsSpot.addManifestMeasureSnap (&quot;ForwardRate&quot;, dblSpotForwardRate, dblSpotDV01,</span>
-<span class="nc bnc" id="L139" title="All 4 branches missed.">				dblSpotForwardRate) || !pmsSpot.setR1 (&quot;DV01&quot;, dblSpotDV01) || !pmsSpot.setR1 (&quot;ForwardRate&quot;,</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">					dblSpotForwardRate) || !pmsSpot.setC1 (&quot;FloaterLabel&quot;, sscFutures.forwardLabel().get</span>
-<span class="nc" id="L141">						(&quot;DERIVED&quot;).fullyQualifiedName()))</span>
-<span class="nc" id="L142">				return null;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			if (!pmsSpot.addManifestMeasureSnap (&quot;ForwardRate&quot;, dblSpotForwardRate, dblSpotDV01,</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">				dblSpotForwardRate) || !pmsSpot.setR1 (&quot;DV01&quot;, dblSpotDV01) || !pmsSpot.setR1 (&quot;ForwardRate&quot;,</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">					dblSpotForwardRate) || !pmsSpot.setC1 (&quot;FloaterLabel&quot;, sscFutures.forwardLabel().get</span>
+<span class="nc" id="L168">						(&quot;DERIVED&quot;).fullyQualifiedName()))</span>
+<span class="nc" id="L169">				return null;</span>
 
-<span class="nc" id="L144">			return new org.drip.historical.attribution.PositionChangeComponents (false, pmsPrevious, pmsSpot,</span>
+<span class="nc" id="L171">			return new org.drip.historical.attribution.PositionChangeComponents (false, pmsPrevious, pmsSpot,</span>
 				0., null);
-<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L147">			e.printStackTrace();</span>
+<span class="nc" id="L173">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L174">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L150">		return null;</span>
+<span class="nc" id="L177">		return null;</span>
 	}
 
 	/**
@@ -168,28 +195,28 @@ package org.drip.service.product;
 			final double[] adblFuturesQuote,
 			final java.lang.String strCurrency)
 	{
-<span class="nc bnc" id="L171" title="All 6 branches missed.">		if (null == adt || null == adtExpiry || null == adblFuturesQuote) return null;</span>
+<span class="nc bnc" id="L198" title="All 6 branches missed.">		if (null == adt || null == adtExpiry || null == adblFuturesQuote) return null;</span>
 
-<span class="nc" id="L173">		int iNumClose = adt.length;</span>
+<span class="nc" id="L200">		int iNumClose = adt.length;</span>
 
-<span class="nc bnc" id="L175" title="All 6 branches missed.">		if (0 == iNumClose || iNumClose != adtExpiry.length || iNumClose != adblFuturesQuote.length)</span>
-<span class="nc" id="L176">			return null;</span>
+<span class="nc bnc" id="L202" title="All 6 branches missed.">		if (0 == iNumClose || iNumClose != adtExpiry.length || iNumClose != adblFuturesQuote.length)</span>
+<span class="nc" id="L203">			return null;</span>
 
-<span class="nc" id="L178">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
+<span class="nc" id="L205">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
 			java.util.ArrayList&lt;org.drip.historical.attribution.PositionChangeComponents&gt;();
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (adtExpiry[i - 1].julian() != adtExpiry[i].julian()) continue;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">			if (adtExpiry[i - 1].julian() != adtExpiry[i].julian()) continue;</span>
 
-<span class="nc" id="L184">			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonMetrics (adt[i - 1],</span>
+<span class="nc" id="L211">			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonMetrics (adt[i - 1],</span>
 				adt[i], adtExpiry[i], adblFuturesQuote[i - 1], adblFuturesQuote[i], strCurrency);
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (null == pcc) continue;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			if (null == pcc) continue;</span>
 
-<span class="nc" id="L189">			lsPCC.add (pcc);</span>
+<span class="nc" id="L216">			lsPCC.add (pcc);</span>
 		}
 
-<span class="nc" id="L192">		return lsPCC;</span>
+<span class="nc" id="L219">		return lsPCC;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

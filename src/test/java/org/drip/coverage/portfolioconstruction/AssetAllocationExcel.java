@@ -1,10 +1,23 @@
 
-package org.drip.coverage.dynamics;
+package org.drip.coverage.portfolioconstruction;
 
-import org.drip.sample.hullwhite.EvolutionMetrics;
-import org.drip.sample.hullwhite.ShortRateDynamics;
-import org.drip.sample.hullwhite.TrinomialTreeCalibration;
-import org.drip.sample.hullwhite.TrinomialTreeEvolution;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler01;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler02;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler03;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler04;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler05;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler06;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler07;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler08;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler09;
+import org.drip.sample.assetallocationexcel.CMVMonthlyReconciler10;
+import org.drip.sample.assetallocationexcel.CMVReconciler1;
+import org.drip.sample.assetallocationexcel.CMVReconciler3;
+import org.drip.sample.assetallocationexcel.CMVReconciler4;
+import org.drip.sample.assetallocationexcel.CMVReconciler5;
+import org.drip.sample.assetallocationexcel.CMVReconciler6;
+import org.drip.sample.assetallocationexcel.CMVReconciler7;
+import org.drip.sample.assetallocationexcel.CMVReconciler8;
 
 import org.junit.Test;
 
@@ -55,21 +68,50 @@ import org.junit.Test;
  */
 
 /**
- * HullWhite holds the JUnit Code Coverage Tests for the Hull White Dynamics Module.
+ * AssetAllocationExcel holds the JUnit Code Coverage Tests for Excel Comparisons of Asset Allocation
+ *  Portfolio Construction Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HullWhite
+public class AssetAllocationExcel
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		EvolutionMetrics.main (null);
+		CMVMonthlyReconciler01.main (null);
 
-		ShortRateDynamics.main (null);
+		CMVMonthlyReconciler02.main (null);
 
-		TrinomialTreeCalibration.main (null);
+		CMVMonthlyReconciler03.main (null);
 
-		TrinomialTreeEvolution.main (null);
-    }
+		CMVMonthlyReconciler04.main (null);
+
+		CMVMonthlyReconciler05.main (null);
+
+		CMVMonthlyReconciler06.main (null);
+
+		CMVMonthlyReconciler07.main (null);
+
+		CMVMonthlyReconciler08.main (null);
+
+		CMVMonthlyReconciler09.main (null);
+
+		CMVMonthlyReconciler10.main (null);
+
+		CMVReconciler1.main (null);
+
+		// CMVReconciler2.main (null);
+
+		CMVReconciler3.main (null);
+
+		CMVReconciler4.main (null);
+
+		CMVReconciler5.main (null);
+
+		CMVReconciler6.main (null);
+
+		CMVReconciler7.main (null);
+
+		CMVReconciler8.main (null);
+	}
 }

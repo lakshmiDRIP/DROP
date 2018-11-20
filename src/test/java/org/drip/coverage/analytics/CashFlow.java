@@ -1,14 +1,22 @@
 
-package org.drip.coverage.dynamics;
+package org.drip.coverage.analytics;
 
-import org.drip.sample.lmm.ContinuousForwardRateVolatility;
-// import org.drip.sample.lmm.FixFloatMonteCarloEvolver;
-import org.drip.sample.lmm.MultiFactorCurveDynamics;
-import org.drip.sample.lmm.MultiFactorLIBORCurveEvolver;
-// import org.drip.sample.lmm.MultiFactorLIBORMonteCarlo;
-import org.drip.sample.lmm.PointAncillaryMetricsDynamics;
-import org.drip.sample.lmm.PointCoreMetricsDynamics;
-import org.drip.sample.lmm.TwoFactorLIBORVolatility;
+import org.drip.sample.cashflow.AmortizingBondPeriods;
+import org.drip.sample.cashflow.DepositPeriods;
+import org.drip.sample.cashflow.EOSBondPeriods;
+import org.drip.sample.cashflow.FRAMarketPeriods;
+import org.drip.sample.cashflow.FRAStandardPeriods;
+import org.drip.sample.cashflow.FixFloatInAdvanceIMMPeriods;
+import org.drip.sample.cashflow.FixFloatInAdvancePeriods;
+import org.drip.sample.cashflow.FixFloatInArrearsIMMPeriods;
+import org.drip.sample.cashflow.FixFloatInArrearsPeriods;
+import org.drip.sample.cashflow.FixedCouponBondPeriods;
+import org.drip.sample.cashflow.FloatingCouponBondPeriods;
+import org.drip.sample.cashflow.ForwardRateFuturePeriods;
+import org.drip.sample.cashflow.InAdvanceLongTenorPeriods;
+import org.drip.sample.cashflow.InAdvanceShortTenorPeriods;
+import org.drip.sample.cashflow.InArrearsLongTenorPeriods;
+import org.drip.sample.cashflow.InArrearsShortTenorPeriods;
 
 import org.junit.Test;
 
@@ -59,29 +67,45 @@ import org.junit.Test;
  */
 
 /**
- * LMM holds the JUnit Code Coverage Tests for the LMM Dynamics Module.
+ * CashFlow holds the JUnit Code Coverage Tests for the Cash Flow Analytics Module.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LMM
+public class CashFlow
 {
 	@Test public void codeCoverageTest() throws Exception
 	{
-		ContinuousForwardRateVolatility.main (null);
+		AmortizingBondPeriods.main (null);
 
-		// FixFloatMonteCarloEvolver.main (null);
+		DepositPeriods.main (null);
 
-		MultiFactorCurveDynamics.main (null);
+		EOSBondPeriods.main (null);
 
-		MultiFactorLIBORCurveEvolver.main (null);
+		FixedCouponBondPeriods.main (null);
 
-		// MultiFactorLIBORMonteCarlo.main (null);
+		FixFloatInAdvanceIMMPeriods.main (null);
 
-		PointAncillaryMetricsDynamics.main (null);
+		FixFloatInAdvancePeriods.main (null);
 
-		PointCoreMetricsDynamics.main (null);
+		FixFloatInArrearsIMMPeriods.main (null);
 
-		TwoFactorLIBORVolatility.main (null);
-    }
+		FixFloatInArrearsPeriods.main (null);
+
+		FloatingCouponBondPeriods.main (null);
+
+		ForwardRateFuturePeriods.main (null);
+
+		FRAMarketPeriods.main (null);
+
+		FRAStandardPeriods.main (null);
+
+		InAdvanceLongTenorPeriods.main (null);
+
+		InAdvanceShortTenorPeriods.main (null);
+
+		InArrearsLongTenorPeriods.main (null);
+
+		InArrearsShortTenorPeriods.main (null);
+	}
 }

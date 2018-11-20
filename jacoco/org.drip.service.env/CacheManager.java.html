@@ -6,34 +6,52 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,19 +68,27 @@ package org.drip.service.env;
  */
 
 /**
- * CacheManager implements the DRIP Cache Management Functionality, and contains the Functions to Add,
- *  Delete, Retrieve, and Time out a Key-Value Pair along the lines of memcached.
+ * &lt;i&gt;CacheManager&lt;/i&gt; implements the DRIP Cache Management Functionality, and contains the Functions to Add,
+ * Delete, Retrieve, and Time out a Key-Value Pair along the lines of memcached.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Env&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L59">public class CacheManager {</span>
+<span class="nc" id="L85">public class CacheManager {</span>
 	private static final boolean s_bLog = true;
-<span class="fc" id="L61">	private static java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt; s_mapCache =</span>
+<span class="fc" id="L87">	private static java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt; s_mapCache =</span>
 		null;
 
-<span class="fc" id="L64">	private static final java.util.concurrent.ScheduledExecutorService _ses =</span>
-<span class="fc" id="L65">		java.util.concurrent.Executors.newScheduledThreadPool (1);</span>
+<span class="fc" id="L90">	private static final java.util.concurrent.ScheduledExecutorService _ses =</span>
+<span class="fc" id="L91">		java.util.concurrent.Executors.newScheduledThreadPool (1);</span>
 
 	/**
 	 * Initialize the Cache Manager
@@ -72,11 +98,11 @@ package org.drip.service.env;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L75" title="All 2 branches covered.">		if (null != s_mapCache) return true;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		if (null != s_mapCache) return true;</span>
 
-<span class="fc" id="L77">		s_mapCache = new java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt;();</span>
+<span class="fc" id="L103">		s_mapCache = new java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt;();</span>
 
-<span class="fc" id="L79">		return true;</span>
+<span class="fc" id="L105">		return true;</span>
 	}
 
 	/**
@@ -94,23 +120,23 @@ package org.drip.service.env;
 		final java.lang.String strValue,
 		final long lSecondsToExpiry)
 	{
-<span class="nc bnc" id="L97" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;</span>
+<span class="nc bnc" id="L123" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;</span>
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (0 &lt; lSecondsToExpiry) {</span>
-<span class="nc" id="L100">			java.lang.Runnable timedTask = new java.lang.Runnable() {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (0 &lt; lSecondsToExpiry) {</span>
+<span class="nc" id="L126">			java.lang.Runnable timedTask = new java.lang.Runnable() {</span>
 				@Override public void run() {
 					if (s_bLog)
-<span class="nc" id="L103">						System.out.println (&quot;\t\t[&quot; + new java.util.Date() + &quot;] Removing &quot; + strKey +</span>
-<span class="nc" id="L104">							&quot; from Thread &quot; + java.lang.Thread.currentThread());</span>
+<span class="nc" id="L129">						System.out.println (&quot;\t\t[&quot; + new java.util.Date() + &quot;] Removing &quot; + strKey +</span>
+<span class="nc" id="L130">							&quot; from Thread &quot; + java.lang.Thread.currentThread());</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);</span>
-<span class="nc" id="L107">				}</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);</span>
+<span class="nc" id="L133">				}</span>
 			};
 
-<span class="nc" id="L110">			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);</span>
+<span class="nc" id="L136">			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);</span>
 		}
 
-<span class="nc" id="L113">		return s_mapCache.put (strKey, strValue);</span>
+<span class="nc" id="L139">		return s_mapCache.put (strKey, strValue);</span>
 	}
 
 	/**
@@ -124,9 +150,9 @@ package org.drip.service.env;
 	public static final boolean Contains (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return false;</span>
+<span class="nc bnc" id="L153" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return false;</span>
 
-<span class="nc" id="L129">		return s_mapCache.contains (strKey);</span>
+<span class="nc" id="L155">		return s_mapCache.contains (strKey);</span>
 	}
 
 	/**
@@ -140,9 +166,9 @@ package org.drip.service.env;
 	public static final java.lang.String Get (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return null;</span>
+<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return null;</span>
 
-<span class="nc" id="L145">		return s_mapCache.get (strKey);</span>
+<span class="nc" id="L171">		return s_mapCache.get (strKey);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

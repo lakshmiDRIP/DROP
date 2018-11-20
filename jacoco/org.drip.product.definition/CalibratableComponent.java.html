@@ -6,6 +6,7 @@ package org.drip.product.definition;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.product.definition;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,14 +72,22 @@ package org.drip.product.definition;
  */
 
 /**
- * CalibratableComponent abstract class provides implementation of Component's calibration interface. It
- *  exposes stubs for getting/setting the component’s calibration code, generate calibrated measure values
- *  from the market inputs, and compute micro-Jacobians (QuoteDF and PVDF micro-Jacks).
+ * &lt;i&gt;CalibratableComponent&lt;/i&gt; abstract class provides implementation of Component's calibration interface.
+ * It exposes stubs for getting/setting the component’s calibration code, generate calibrated measure values
+ * from the market inputs, and compute micro-Jacobians (QuoteDF and PVDF micro-Jacks).
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L64">public abstract class CalibratableComponent extends org.drip.product.definition.Component {</span>
+<span class="fc" id="L90">public abstract class CalibratableComponent extends org.drip.product.definition.Component {</span>
 
 	/**
 	 * Return the primary code
@@ -88,7 +114,7 @@ package org.drip.product.definition;
 
 	public java.lang.String[] secondaryCode()
 	{
-<span class="fc" id="L91">		return new java.lang.String[] {primaryCode()};</span>
+<span class="fc" id="L117">		return new java.lang.String[] {primaryCode()};</span>
 	}
 
 	/**
@@ -309,47 +335,47 @@ package org.drip.product.definition;
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L312" title="2 of 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
+<span class="pc bpc" id="L338" title="2 of 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
 
-<span class="fc" id="L314">		if (pqs.containsLatentStateType</span>
-<span class="fc bfc" id="L315" title="All 2 branches covered.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING) &amp;&amp;</span>
+<span class="fc" id="L340">		if (pqs.containsLatentStateType</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING) &amp;&amp;</span>
 				pqs.containsLatentStateQuantificationMetric
-<span class="pc bpc" id="L317" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR) &amp;&amp;</span>
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR) &amp;&amp;</span>
 						pqs.containsLatentStateType
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD) &amp;&amp;</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD) &amp;&amp;</span>
 								pqs.containsLatentStateQuantificationMetric
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">									(org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE))</span>
-<span class="fc" id="L322">			return fundingForwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">									(org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE))</span>
+<span class="fc" id="L348">			return fundingForwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="fc" id="L324">		if (pqs.containsLatentStateType</span>
-<span class="pc bpc" id="L325" title="1 of 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING) &amp;&amp;</span>
+<span class="fc" id="L350">		if (pqs.containsLatentStateType</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING) &amp;&amp;</span>
 				pqs.containsLatentStateQuantificationMetric
-<span class="nc bnc" id="L327" title="All 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR))</span>
-<span class="nc" id="L328">			return fundingPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR))</span>
+<span class="nc" id="L354">			return fundingPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="fc" id="L330">		if (pqs.containsLatentStateType</span>
-<span class="fc bfc" id="L331" title="All 2 branches covered.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD) &amp;&amp;</span>
+<span class="fc" id="L356">		if (pqs.containsLatentStateType</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD) &amp;&amp;</span>
 				pqs.containsLatentStateQuantificationMetric
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE))</span>
-<span class="fc" id="L334">			return forwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE))</span>
+<span class="fc" id="L360">			return forwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="fc" id="L336">		if (pqs.containsLatentStateType</span>
-<span class="fc bfc" id="L337" title="All 2 branches covered.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX) &amp;&amp;</span>
+<span class="fc" id="L362">		if (pqs.containsLatentStateType</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX) &amp;&amp;</span>
 				pqs.containsLatentStateQuantificationMetric
-<span class="pc bpc" id="L339" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.FX_QM_FORWARD_OUTRIGHT))</span>
-<span class="fc" id="L340">			return fxPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.FX_QM_FORWARD_OUTRIGHT))</span>
+<span class="fc" id="L366">			return fxPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="fc" id="L342">		if (pqs.containsLatentStateType</span>
-<span class="pc bpc" id="L343" title="1 of 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_GOVVIE) &amp;&amp;</span>
+<span class="fc" id="L368">		if (pqs.containsLatentStateType</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_GOVVIE) &amp;&amp;</span>
 				pqs.containsLatentStateQuantificationMetric
-<span class="pc bpc" id="L345" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.GOVVIE_QM_YIELD))</span>
-<span class="fc" id="L346">			return govviePRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">					(org.drip.analytics.definition.LatentStateStatic.GOVVIE_QM_YIELD))</span>
+<span class="fc" id="L372">			return govviePRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="nc" id="L348">		if (pqs.containsLatentStateType</span>
-<span class="nc bnc" id="L349" title="All 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_VOLATILITY))</span>
-<span class="nc" id="L350">			return volatilityPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="nc" id="L374">		if (pqs.containsLatentStateType</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">			(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_VOLATILITY))</span>
+<span class="nc" id="L376">			return volatilityPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="nc" id="L352">		return null;</span>
+<span class="nc" id="L378">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

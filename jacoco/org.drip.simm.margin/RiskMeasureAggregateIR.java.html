@@ -47,33 +47,51 @@ package org.drip.simm.margin;
  */
 
 /**
- * RiskMeasureAggregateIR holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk Measure.
- *  The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting .Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;RiskMeasureAggregateIR&lt;/i&gt; holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk
+ * Measure. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class RiskMeasureAggregateIR
 {
-<span class="nc" id="L74">	private double _coreSBAVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _residualSBAVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; _bucketAggregateMap =</span>
+<span class="nc" id="L92">	private double _coreSBAVariance = java.lang.Double.NaN;</span>
+<span class="nc" id="L93">	private double _residualSBAVariance = java.lang.Double.NaN;</span>
+<span class="nc" id="L94">	private java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; _bucketAggregateMap =</span>
 		null;
 
 	/**
@@ -91,14 +109,14 @@ public class RiskMeasureAggregateIR
 		final double coreSBAVariance,
 		final double residualSBAVariance)
 		throws java.lang.Exception
-<span class="nc" id="L94">	{</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == (_bucketAggregateMap = bucketAggregateMap) ||</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))</span>
+<span class="nc" id="L112">	{</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == (_bucketAggregateMap = bucketAggregateMap) ||</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))</span>
 		{
-<span class="nc" id="L99">			throw new java.lang.Exception (&quot;RiskMeasureAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;RiskMeasureAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L101">	}</span>
+<span class="nc" id="L119">	}</span>
 
 	/**
 	 * Retrieve the Core SBA Variance
@@ -108,7 +126,7 @@ public class RiskMeasureAggregateIR
 
 	public double coreSBAVariance()
 	{
-<span class="nc" id="L111">		return _coreSBAVariance;</span>
+<span class="nc" id="L129">		return _coreSBAVariance;</span>
 	}
 
 	/**
@@ -119,7 +137,7 @@ public class RiskMeasureAggregateIR
 
 	public double residualSBAVariance()
 	{
-<span class="nc" id="L122">		return _residualSBAVariance;</span>
+<span class="nc" id="L140">		return _residualSBAVariance;</span>
 	}
 
 	/**
@@ -130,7 +148,7 @@ public class RiskMeasureAggregateIR
 
 	public java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; bucketAggregateMap()
 	{
-<span class="nc" id="L133">		return _bucketAggregateMap;</span>
+<span class="nc" id="L151">		return _bucketAggregateMap;</span>
 	}
 
 	/**
@@ -141,7 +159,7 @@ public class RiskMeasureAggregateIR
 
 	public double sba()
 	{
-<span class="nc" id="L144">		return java.lang.Math.sqrt (_coreSBAVariance + _residualSBAVariance);</span>
+<span class="nc" id="L162">		return java.lang.Math.sqrt (_coreSBAVariance + _residualSBAVariance);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

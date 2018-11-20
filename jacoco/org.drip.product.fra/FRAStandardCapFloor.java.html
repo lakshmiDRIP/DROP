@@ -6,35 +6,53 @@ package org.drip.product.fra;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,21 +66,29 @@ package org.drip.product.fra;
  *  
  *  See the License for the specific language governing permissions and
  *  	limitations under the License.
-- */
+ */
 
 /**
- * FRAStandardCapFloor implements the Caps and Floors on the Standard FRA.
+ * &lt;i&gt;FRAStandardCapFloor&lt;/i&gt; implements the Caps and Floors on the Standard FRA.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fra&quot;&gt;FRA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 {
-<span class="fc" id="L61">	private boolean _bIsCap = false;</span>
-<span class="fc" id="L62">	private double _dblStrike = java.lang.Double.NaN;</span>
-<span class="fc" id="L63">	private org.drip.product.rates.Stream _stream = null;</span>
+<span class="fc" id="L87">	private boolean _bIsCap = false;</span>
+<span class="fc" id="L88">	private double _dblStrike = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private org.drip.product.rates.Stream _stream = null;</span>
 
-<span class="fc" id="L65">	private java.util.List&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt; _lsFRACapFloorlet = new</span>
+<span class="fc" id="L91">	private java.util.List&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt; _lsFRACapFloorlet = new</span>
 		java.util.ArrayList&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt;();
 
 	/**
@@ -91,30 +117,30 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final org.drip.pricer.option.FokkerPlanckGenerator fpg)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L94">		super (strName, org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard</span>
-<span class="fc" id="L95">			(stream.effective(), stream.forwardLabel(), dblStrike), strManifestMeasure, dblStrike,</span>
-<span class="fc" id="L96">				stream.initialNotional(), ltds, csp);</span>
+<span class="fc" id="L120">		super (strName, org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard</span>
+<span class="fc" id="L121">			(stream.effective(), stream.forwardLabel(), dblStrike), strManifestMeasure, dblStrike,</span>
+<span class="fc" id="L122">				stream.initialNotional(), ltds, csp);</span>
 
-<span class="pc bpc" id="L98" title="2 of 4 branches missed.">		if (null == (_stream = stream) || !org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike))</span>
-<span class="nc" id="L99">			throw new java.lang.Exception (&quot;FRAStandardCapFloor Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == (_stream = stream) || !org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike))</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;FRAStandardCapFloor Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L101">		_bIsCap = bIsCap;</span>
+<span class="fc" id="L127">		_bIsCap = bIsCap;</span>
 
-<span class="fc" id="L103">		org.drip.state.identifier.ForwardLabel fri = _stream.forwardLabel();</span>
+<span class="fc" id="L129">		org.drip.state.identifier.ForwardLabel fri = _stream.forwardLabel();</span>
 
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (null == fri)</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;FRAStandardCapFloor Constructor =&gt; Invalid Floater Index&quot;);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == fri)</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;FRAStandardCapFloor Constructor =&gt; Invalid Floater Index&quot;);</span>
 
-<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods()) {</span>
-<span class="fc" id="L109">			org.drip.product.fra.FRAStandardComponent fra =</span>
-<span class="fc" id="L110">				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new</span>
-<span class="fc" id="L111">					org.drip.analytics.date.JulianDate (period.startDate()), fri, _dblStrike);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods()) {</span>
+<span class="fc" id="L135">			org.drip.product.fra.FRAStandardComponent fra =</span>
+<span class="fc" id="L136">				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new</span>
+<span class="fc" id="L137">					org.drip.analytics.date.JulianDate (period.startDate()), fri, _dblStrike);</span>
 
-<span class="fc" id="L113">			_lsFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra.name() + &quot;::LET&quot;,</span>
-<span class="fc" id="L114">				fra, strManifestMeasure, _bIsCap, _dblStrike, _stream.notional (period.startDate()), ltds,</span>
+<span class="fc" id="L139">			_lsFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra.name() + &quot;::LET&quot;,</span>
+<span class="fc" id="L140">				fra, strManifestMeasure, _bIsCap, _dblStrike, _stream.notional (period.startDate()), ltds,</span>
 					fpg, csp));
-<span class="fc" id="L116">		}</span>
-<span class="fc" id="L117">	}</span>
+<span class="fc" id="L142">		}</span>
+<span class="fc" id="L143">	}</span>
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
 		final org.drip.param.valuation.ValuationParams valParams,
@@ -122,99 +148,99 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="fc" id="L125">		double dblPV = 0.;</span>
-<span class="fc" id="L126">		double dblPrice = 0.;</span>
-<span class="fc" id="L127">		double dblUpfront = 0.;</span>
-<span class="fc" id="L128">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = null;</span>
+<span class="fc" id="L151">		double dblPV = 0.;</span>
+<span class="fc" id="L152">		double dblPrice = 0.;</span>
+<span class="fc" id="L153">		double dblUpfront = 0.;</span>
+<span class="fc" id="L154">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = null;</span>
 
-<span class="fc" id="L130">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L156">		long lStart = System.nanoTime();</span>
 
-<span class="fc" id="L132">		final int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L158">		final int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L134">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapStreamResult = _stream.value</span>
-<span class="fc" id="L135">			(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L160">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapStreamResult = _stream.value</span>
+<span class="fc" id="L161">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
-<span class="fc" id="L138">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAResult = fracfl.value</span>
-<span class="fc" id="L139">				(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
+<span class="fc" id="L164">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAResult = fracfl.value</span>
+<span class="fc" id="L165">				(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">			if (null == mapFRAResult) continue;</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">			if (null == mapFRAResult) continue;</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			if (mapFRAResult.containsKey (&quot;Price&quot;)) dblPrice += mapFRAResult.get (&quot;Price&quot;);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (mapFRAResult.containsKey (&quot;Price&quot;)) dblPrice += mapFRAResult.get (&quot;Price&quot;);</span>
 
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			if (mapFRAResult.containsKey (&quot;PV&quot;)) dblPV += mapFRAResult.get (&quot;PV&quot;);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			if (mapFRAResult.containsKey (&quot;PV&quot;)) dblPV += mapFRAResult.get (&quot;PV&quot;);</span>
 
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			if (mapFRAResult.containsKey (&quot;Upfront&quot;)) dblUpfront += mapFRAResult.get (&quot;Upfront&quot;);</span>
-<span class="fc" id="L148">		}</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			if (mapFRAResult.containsKey (&quot;Upfront&quot;)) dblUpfront += mapFRAResult.get (&quot;Upfront&quot;);</span>
+<span class="fc" id="L174">		}</span>
 
-<span class="fc" id="L150">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L176">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L153">		mapResult.put (&quot;ATMFairPremium&quot;, mapStreamResult.get (&quot;FairPremium&quot;));</span>
+<span class="fc" id="L179">		mapResult.put (&quot;ATMFairPremium&quot;, mapStreamResult.get (&quot;FairPremium&quot;));</span>
 
-<span class="fc" id="L155">		mapResult.put (&quot;Price&quot;, dblPrice);</span>
+<span class="fc" id="L181">		mapResult.put (&quot;Price&quot;, dblPrice);</span>
 
-<span class="fc" id="L157">		mapResult.put (&quot;PV&quot;, dblPV);</span>
+<span class="fc" id="L183">		mapResult.put (&quot;PV&quot;, dblPV);</span>
 
-<span class="fc" id="L159">		mapResult.put (&quot;Upfront&quot;, dblUpfront);</span>
+<span class="fc" id="L185">		mapResult.put (&quot;Upfront&quot;, dblUpfront);</span>
 
-<span class="fc" id="L161">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L187">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVolatility)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L166">				double dblCapFloorletPrice = 0.;</span>
+<span class="fc" id="L192">				double dblCapFloorletPrice = 0.;</span>
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
-<span class="fc" id="L169">					int iExerciseDate = fracfl.exerciseDate().julian();</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
+<span class="fc" id="L195">					int iExerciseDate = fracfl.exerciseDate().julian();</span>
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">					if (iExerciseDate &lt;= iValueDate) continue;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">					if (iExerciseDate &lt;= iValueDate) continue;</span>
 
-<span class="fc" id="L173">					dblCapFloorletPrice += fracfl.price (valParams, pricerParams, csqs, vcp, dblVolatility);</span>
-<span class="fc" id="L174">				}</span>
+<span class="fc" id="L199">					dblCapFloorletPrice += fracfl.price (valParams, pricerParams, csqs, vcp, dblVolatility);</span>
+<span class="fc" id="L200">				}</span>
 
-<span class="fc" id="L176">				return dblCapFloorletPrice;</span>
+<span class="fc" id="L202">				return dblCapFloorletPrice;</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L181">			fpfo = (new org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblPrice, funcVolPricer,</span>
+<span class="fc" id="L207">			fpfo = (new org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblPrice, funcVolPricer,</span>
 				null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, false)).findRoot
-<span class="fc" id="L183">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
+<span class="fc" id="L209">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
 						5.));
-<span class="nc" id="L185">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L186">			e.printStackTrace();</span>
+<span class="nc" id="L211">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L212">			e.printStackTrace();</span>
 
-<span class="nc" id="L188">			return mapResult;</span>
-<span class="fc" id="L189">		}</span>
+<span class="nc" id="L214">			return mapResult;</span>
+<span class="fc" id="L215">		}</span>
 
-<span class="fc" id="L191">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L217">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="pc bpc" id="L193" title="2 of 4 branches missed.">		if (null != fpfo &amp;&amp; fpfo.containsRoot())</span>
-<span class="fc" id="L194">			mapResult.put (&quot;FlatVolatility&quot;, fpfo.getRoot());</span>
+<span class="pc bpc" id="L219" title="2 of 4 branches missed.">		if (null != fpfo &amp;&amp; fpfo.containsRoot())</span>
+<span class="fc" id="L220">			mapResult.put (&quot;FlatVolatility&quot;, fpfo.getRoot());</span>
 		else
-<span class="nc" id="L196">			mapResult.put (&quot;FlatVolatility&quot;, java.lang.Double.NaN);</span>
+<span class="nc" id="L222">			mapResult.put (&quot;FlatVolatility&quot;, java.lang.Double.NaN);</span>
 
-<span class="fc" id="L198">		return mapResult;</span>
+<span class="fc" id="L224">		return mapResult;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L203">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L229">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L205">		setstrMeasureNames.add (&quot;ATMFairPremium&quot;);</span>
+<span class="nc" id="L231">		setstrMeasureNames.add (&quot;ATMFairPremium&quot;);</span>
 
-<span class="nc" id="L207">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L233">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L209">		setstrMeasureNames.add (&quot;FlatVolatility&quot;);</span>
+<span class="nc" id="L235">		setstrMeasureNames.add (&quot;FlatVolatility&quot;);</span>
 
-<span class="nc" id="L211">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+<span class="nc" id="L237">		setstrMeasureNames.add (&quot;Price&quot;);</span>
 
-<span class="nc" id="L213">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+<span class="nc" id="L239">		setstrMeasureNames.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L215">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L241">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L217">		return setstrMeasureNames;</span>
+<span class="nc" id="L243">		return setstrMeasureNames;</span>
 	}
 
 	@Override public double pv (
@@ -224,12 +250,12 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L227">		double dblPV = 0.;</span>
+<span class="nc" id="L253">		double dblPV = 0.;</span>
 
-<span class="nc bnc" id="L229" title="All 2 branches missed.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet)</span>
-<span class="nc" id="L230">			dblPV += fracfl.pv (valParams, pricerParams, csqc, vcp);</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet)</span>
+<span class="nc" id="L256">			dblPV += fracfl.pv (valParams, pricerParams, csqc, vcp);</span>
 
-<span class="nc" id="L232">		return dblPV;</span>
+<span class="nc" id="L258">		return dblPV;</span>
 	}
 
 	/**
@@ -240,7 +266,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 
 	public org.drip.product.rates.Stream stream()
 	{
-<span class="fc" id="L243">		return _stream;</span>
+<span class="fc" id="L269">		return _stream;</span>
 	}
 
 	/**
@@ -251,7 +277,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 
 	public boolean isCap()
 	{
-<span class="nc" id="L254">		return _bIsCap;</span>
+<span class="nc" id="L280">		return _bIsCap;</span>
 	}
 
 	/**
@@ -262,7 +288,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 
 	public java.util.List&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt; capFloorlets()
 	{
-<span class="nc" id="L265">		return _lsFRACapFloorlet;</span>
+<span class="nc" id="L291">		return _lsFRACapFloorlet;</span>
 	}
 
 	/**
@@ -287,57 +313,57 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblFlatVolatility)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L290" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))</span>
-<span class="nc" id="L291">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::atmPriceFromVolatility =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L316" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))</span>
+<span class="nc" id="L317">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::atmPriceFromVolatility =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L293">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L319">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L295">		double dblPrice = 0.;</span>
+<span class="fc" id="L321">		double dblPrice = 0.;</span>
 
-<span class="fc" id="L297">		org.drip.product.fra.FRAStandardCapFloorlet fraLeading = _lsFRACapFloorlet.get (0);</span>
+<span class="fc" id="L323">		org.drip.product.fra.FRAStandardCapFloorlet fraLeading = _lsFRACapFloorlet.get (0);</span>
 
-<span class="fc" id="L299">		java.lang.String strManifestMeasure = fraLeading.manifestMeasure();</span>
+<span class="fc" id="L325">		java.lang.String strManifestMeasure = fraLeading.manifestMeasure();</span>
 
-<span class="fc" id="L301">		org.drip.pricer.option.FokkerPlanckGenerator fpg = fraLeading.pricer();</span>
+<span class="fc" id="L327">		org.drip.pricer.option.FokkerPlanckGenerator fpg = fraLeading.pricer();</span>
 
-<span class="fc" id="L303">		org.drip.product.params.LastTradingDateSetting ltds = fraLeading.lastTradingDateSetting();</span>
+<span class="fc" id="L329">		org.drip.product.params.LastTradingDateSetting ltds = fraLeading.lastTradingDateSetting();</span>
 
-<span class="fc" id="L305">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapStreamResult = _stream.value</span>
-<span class="fc" id="L306">			(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L331">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapStreamResult = _stream.value</span>
+<span class="fc" id="L332">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="pc bpc" id="L308" title="2 of 4 branches missed.">		if (null == mapStreamResult || !mapStreamResult.containsKey (&quot;FairPremium&quot;))</span>
-<span class="nc" id="L309">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L334" title="2 of 4 branches missed.">		if (null == mapStreamResult || !mapStreamResult.containsKey (&quot;FairPremium&quot;))</span>
+<span class="nc" id="L335">			throw new java.lang.Exception</span>
 				(&quot;FRAStandardCapFloor::atmPriceFromVolatility =&gt; Cannot calculate Fair Premium&quot;);
 
-<span class="fc" id="L312">		double dblCapATMFairPremium = mapStreamResult.get (&quot;FairPremium&quot;);</span>
+<span class="fc" id="L338">		double dblCapATMFairPremium = mapStreamResult.get (&quot;FairPremium&quot;);</span>
 
-<span class="fc" id="L314">		org.drip.state.identifier.ForwardLabel forwardLabel = _stream.forwardLabel();</span>
+<span class="fc" id="L340">		org.drip.state.identifier.ForwardLabel forwardLabel = _stream.forwardLabel();</span>
 
-<span class="fc" id="L316">		java.util.List&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt; lsATMFRACapFloorlet = new</span>
+<span class="fc" id="L342">		java.util.List&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt; lsATMFRACapFloorlet = new</span>
 			java.util.ArrayList&lt;org.drip.product.fra.FRAStandardCapFloorlet&gt;();
 
-<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods()) {</span>
-<span class="fc" id="L320">			org.drip.product.fra.FRAStandardComponent fra =</span>
-<span class="fc" id="L321">				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new</span>
-<span class="fc" id="L322">					org.drip.analytics.date.JulianDate (period.startDate()), forwardLabel,</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods()) {</span>
+<span class="fc" id="L346">			org.drip.product.fra.FRAStandardComponent fra =</span>
+<span class="fc" id="L347">				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new</span>
+<span class="fc" id="L348">					org.drip.analytics.date.JulianDate (period.startDate()), forwardLabel,</span>
 						dblCapATMFairPremium);
 
-<span class="fc" id="L325">			lsATMFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra.name() + &quot;::LET&quot;,</span>
+<span class="fc" id="L351">			lsATMFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra.name() + &quot;::LET&quot;,</span>
 				fra, strManifestMeasure, _bIsCap, dblCapATMFairPremium, _stream.notional
-<span class="fc" id="L327">					(period.startDate()), ltds, fpg, cashSettleParams()));</span>
-<span class="fc" id="L328">		}</span>
+<span class="fc" id="L353">					(period.startDate()), ltds, fpg, cashSettleParams()));</span>
+<span class="fc" id="L354">		}</span>
 
-<span class="fc bfc" id="L330" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : lsATMFRACapFloorlet) {</span>
-<span class="fc" id="L331">			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : lsATMFRACapFloorlet) {</span>
+<span class="fc" id="L357">			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();</span>
 
-<span class="fc" id="L333">			int iExerciseDate = dtExercise.julian();</span>
+<span class="fc" id="L359">			int iExerciseDate = dtExercise.julian();</span>
 
-<span class="fc bfc" id="L335" title="All 2 branches covered.">			if (iExerciseDate &lt;= iValueDate) continue;</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">			if (iExerciseDate &lt;= iValueDate) continue;</span>
 
-<span class="fc" id="L337">			dblPrice += fracfl.price (valParams, pricerParams, csqs, vcp, dblFlatVolatility);</span>
-<span class="fc" id="L338">		}</span>
+<span class="fc" id="L363">			dblPrice += fracfl.price (valParams, pricerParams, csqs, vcp, dblFlatVolatility);</span>
+<span class="fc" id="L364">		}</span>
 
-<span class="fc" id="L340">		return dblPrice;</span>
+<span class="fc" id="L366">		return dblPrice;</span>
 	}
 
 	/**
@@ -362,29 +388,29 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblCalibPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L365" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))</span>
-<span class="nc" id="L366">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::volatilityFromATMPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L391" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))</span>
+<span class="nc" id="L392">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::volatilityFromATMPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L368">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L394">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVolatility)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L373">				return atmPriceFromVolatility (valParams, pricerParams, csqs, vcp, dblVolatility);</span>
+<span class="fc" id="L399">				return atmPriceFromVolatility (valParams, pricerParams, csqs, vcp, dblVolatility);</span>
 			}
 		};
 
-<span class="fc" id="L377">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
+<span class="fc" id="L403">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblCalibPrice, funcVolPricer, null,
 				org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, false)).findRoot
-<span class="fc" id="L380">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
+<span class="fc" id="L406">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
 						5.));
 
-<span class="pc bpc" id="L383" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L384">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L409" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L410">			throw new java.lang.Exception</span>
 				(&quot;FRAStandardCapFloor::volatilityFromATMPrice =&gt; Cannot imply Flat Vol&quot;);
 
-<span class="fc" id="L387">		return fpfo.getRoot();</span>
+<span class="fc" id="L413">		return fpfo.getRoot();</span>
 	}
 
 	/**
@@ -409,24 +435,24 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblFlatVolatility)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L412" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))</span>
-<span class="nc" id="L413">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::priceFromFlatVolatility =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L438" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))</span>
+<span class="nc" id="L439">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::priceFromFlatVolatility =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L415">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L441">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L417">		double dblPrice = 0.;</span>
+<span class="fc" id="L443">		double dblPrice = 0.;</span>
 
-<span class="fc bfc" id="L419" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
-<span class="fc" id="L420">			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
+<span class="fc" id="L446">			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();</span>
 
-<span class="fc" id="L422">			int iExerciseDate = dtExercise.julian();</span>
+<span class="fc" id="L448">			int iExerciseDate = dtExercise.julian();</span>
 
-<span class="fc bfc" id="L424" title="All 2 branches covered.">			if (iExerciseDate &lt;= iValueDate) continue;</span>
+<span class="fc bfc" id="L450" title="All 2 branches covered.">			if (iExerciseDate &lt;= iValueDate) continue;</span>
 
-<span class="fc" id="L426">			dblPrice += fracfl.price (valParams, pricerParams, csqs, vcp, dblFlatVolatility);</span>
-<span class="fc" id="L427">		}</span>
+<span class="fc" id="L452">			dblPrice += fracfl.price (valParams, pricerParams, csqs, vcp, dblFlatVolatility);</span>
+<span class="fc" id="L453">		}</span>
 
-<span class="fc" id="L429">		return dblPrice;</span>
+<span class="fc" id="L455">		return dblPrice;</span>
 	}
 
 	/**
@@ -451,29 +477,29 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblCalibPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L454" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))</span>
-<span class="nc" id="L455">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::flatVolatilityFromPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L480" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))</span>
+<span class="nc" id="L481">			throw new java.lang.Exception (&quot;FRAStandardCapFloor::flatVolatilityFromPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L457">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L483">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVolatility)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L462">				return priceFromFlatVolatility (valParams, pricerParams, csqs, vcp, dblVolatility);</span>
+<span class="fc" id="L488">				return priceFromFlatVolatility (valParams, pricerParams, csqs, vcp, dblVolatility);</span>
 			}
 		};
 
-<span class="fc" id="L466">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
+<span class="fc" id="L492">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblCalibPrice, funcVolPricer, null,
 				org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, false)).findRoot
-<span class="fc" id="L469">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
+<span class="fc" id="L495">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
 						5.));
 
-<span class="pc bpc" id="L472" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L473">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L498" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L499">			throw new java.lang.Exception</span>
 				(&quot;FRAStandardCapFloor::flatVolatilityFromPrice =&gt; Cannot imply Flat Vol&quot;);
 
-<span class="fc" id="L476">		return fpfo.getRoot();</span>
+<span class="fc" id="L502">		return fpfo.getRoot();</span>
 	}
 
 	/**
@@ -499,106 +525,106 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblCapVolatility,
 		final java.util.Map&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt; mapDateVol)
 	{
-<span class="pc bpc" id="L502" title="2 of 4 branches missed.">		if (null == valParams || null == mapDateVol) return false;</span>
+<span class="pc bpc" id="L528" title="2 of 4 branches missed.">		if (null == valParams || null == mapDateVol) return false;</span>
 
-<span class="fc" id="L504">		int iIndex = 0;</span>
-<span class="fc" id="L505">		double dblPreceedingCapFloorletPV = 0.;</span>
-<span class="fc" id="L506">		double dblCapPrice = java.lang.Double.NaN;</span>
-<span class="fc" id="L507">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = null;</span>
+<span class="fc" id="L530">		int iIndex = 0;</span>
+<span class="fc" id="L531">		double dblPreceedingCapFloorletPV = 0.;</span>
+<span class="fc" id="L532">		double dblCapPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L533">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = null;</span>
 
 		try {
-<span class="fc" id="L510">			dblCapPrice = priceFromFlatVolatility (valParams, pricerParams, csqs, vcp, dblCapVolatility);</span>
-<span class="nc" id="L511">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L512">			e.printStackTrace();</span>
+<span class="fc" id="L536">			dblCapPrice = priceFromFlatVolatility (valParams, pricerParams, csqs, vcp, dblCapVolatility);</span>
+<span class="nc" id="L537">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L538">			e.printStackTrace();</span>
 
-<span class="nc" id="L514">			return false;</span>
-<span class="fc" id="L515">		}</span>
+<span class="nc" id="L540">			return false;</span>
+<span class="fc" id="L541">		}</span>
 
-<span class="fc" id="L517">		final int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L543">		final int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L519">		final java.util.List&lt;java.lang.Integer&gt; lsCalibCapFloorletIndex = new</span>
+<span class="fc" id="L545">		final java.util.List&lt;java.lang.Integer&gt; lsCalibCapFloorletIndex = new</span>
 			java.util.ArrayList&lt;java.lang.Integer&gt;();
 
-<span class="fc bfc" id="L522" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
-<span class="fc" id="L523">			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
+<span class="fc" id="L549">			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();</span>
 
-<span class="fc" id="L525">			int iExerciseDate = dtExercise.julian();</span>
+<span class="fc" id="L551">			int iExerciseDate = dtExercise.julian();</span>
 
-<span class="fc bfc" id="L527" title="All 2 branches covered.">			if (iExerciseDate &lt;= iValueDate) continue;</span>
+<span class="fc bfc" id="L553" title="All 2 branches covered.">			if (iExerciseDate &lt;= iValueDate) continue;</span>
 
-<span class="fc bfc" id="L529" title="All 2 branches covered.">			if (mapDateVol.containsKey (dtExercise)) {</span>
-<span class="fc" id="L530">				double dblExerciseVolatility = mapDateVol.get (dtExercise);</span>
+<span class="fc bfc" id="L555" title="All 2 branches covered.">			if (mapDateVol.containsKey (dtExercise)) {</span>
+<span class="fc" id="L556">				double dblExerciseVolatility = mapDateVol.get (dtExercise);</span>
 
-<span class="fc" id="L532">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCapFloorlet =</span>
-<span class="fc" id="L533">					fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
+<span class="fc" id="L558">				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCapFloorlet =</span>
+<span class="fc" id="L559">					fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
 						dblExerciseVolatility * dblExerciseVolatility * (iExerciseDate - iValueDate) /
 							365.25);
 
-<span class="pc bpc" id="L537" title="2 of 4 branches missed.">				if (null == mapCapFloorlet || !mapCapFloorlet.containsKey (&quot;Price&quot;)) return false;</span>
+<span class="pc bpc" id="L563" title="2 of 4 branches missed.">				if (null == mapCapFloorlet || !mapCapFloorlet.containsKey (&quot;Price&quot;)) return false;</span>
 
-<span class="fc" id="L539">				dblPreceedingCapFloorletPV += mapCapFloorlet.get (&quot;Price&quot;);</span>
-<span class="fc" id="L540">			} else</span>
-<span class="fc" id="L541">				lsCalibCapFloorletIndex.add (iIndex);</span>
+<span class="fc" id="L565">				dblPreceedingCapFloorletPV += mapCapFloorlet.get (&quot;Price&quot;);</span>
+<span class="fc" id="L566">			} else</span>
+<span class="fc" id="L567">				lsCalibCapFloorletIndex.add (iIndex);</span>
 
-<span class="fc" id="L543">			++iIndex;</span>
-<span class="fc" id="L544">		}</span>
+<span class="fc" id="L569">			++iIndex;</span>
+<span class="fc" id="L570">		}</span>
 
-<span class="fc" id="L546">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L572">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVolatility)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L551">				int iIndex = 0;</span>
-<span class="fc" id="L552">				double dblSucceedingCapFloorletPV = 0.;</span>
+<span class="fc" id="L577">				int iIndex = 0;</span>
+<span class="fc" id="L578">				double dblSucceedingCapFloorletPV = 0.;</span>
 
-<span class="fc bfc" id="L554" title="All 2 branches covered.">				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
-<span class="fc" id="L555">					int iExerciseDate = fracfl.exerciseDate().julian();</span>
+<span class="fc bfc" id="L580" title="All 2 branches covered.">				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
+<span class="fc" id="L581">					int iExerciseDate = fracfl.exerciseDate().julian();</span>
 
-<span class="fc bfc" id="L557" title="All 2 branches covered.">					if (iExerciseDate &lt;= iValueDate) continue;</span>
+<span class="fc bfc" id="L583" title="All 2 branches covered.">					if (iExerciseDate &lt;= iValueDate) continue;</span>
 
-<span class="fc bfc" id="L559" title="All 2 branches covered.">					if (lsCalibCapFloorletIndex.contains (iIndex)) {</span>
-<span class="fc" id="L560">						java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapOutput =</span>
-<span class="fc" id="L561">							fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
+<span class="fc bfc" id="L585" title="All 2 branches covered.">					if (lsCalibCapFloorletIndex.contains (iIndex)) {</span>
+<span class="fc" id="L586">						java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapOutput =</span>
+<span class="fc" id="L587">							fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
 								dblVolatility * dblVolatility * (iExerciseDate - iValueDate) / 365.25);
 	
-<span class="pc bpc" id="L564" title="2 of 4 branches missed.">						if (null == mapOutput || !mapOutput.containsKey (&quot;Price&quot;))</span>
-<span class="nc" id="L565">							throw new java.lang.Exception</span>
+<span class="pc bpc" id="L590" title="2 of 4 branches missed.">						if (null == mapOutput || !mapOutput.containsKey (&quot;Price&quot;))</span>
+<span class="nc" id="L591">							throw new java.lang.Exception</span>
 								(&quot;FRAStandardCapFloor::implyVolatility =&gt; Cannot generate Calibration Measure&quot;);
 	
-<span class="fc" id="L568">						dblSucceedingCapFloorletPV += mapOutput.get (&quot;Price&quot;);</span>
+<span class="fc" id="L594">						dblSucceedingCapFloorletPV += mapOutput.get (&quot;Price&quot;);</span>
 					}
 
-<span class="fc" id="L571">					++iIndex;</span>
-<span class="fc" id="L572">				}</span>
+<span class="fc" id="L597">					++iIndex;</span>
+<span class="fc" id="L598">				}</span>
 
-<span class="fc" id="L574">				return dblSucceedingCapFloorletPV;</span>
+<span class="fc" id="L600">				return dblSucceedingCapFloorletPV;</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L579">			fpfo = (new org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblCapPrice -</span>
+<span class="fc" id="L605">			fpfo = (new org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblCapPrice -</span>
 				dblPreceedingCapFloorletPV, funcVolPricer, null,
 					org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, false)).findRoot
-<span class="fc" id="L582">						(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
+<span class="fc" id="L608">						(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.0001,</span>
 							5.));
-<span class="nc" id="L584">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L585">			e.printStackTrace();</span>
-<span class="fc" id="L586">		}</span>
+<span class="nc" id="L610">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L611">			e.printStackTrace();</span>
+<span class="fc" id="L612">		}</span>
 
-<span class="pc bpc" id="L588" title="1 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot()) return false;</span>
+<span class="pc bpc" id="L614" title="1 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot()) return false;</span>
 
-<span class="fc" id="L590">		double dblVolatility = fpfo.getRoot();</span>
+<span class="fc" id="L616">		double dblVolatility = fpfo.getRoot();</span>
 
-<span class="fc" id="L592">		iIndex = 0;</span>
+<span class="fc" id="L618">		iIndex = 0;</span>
 
-<span class="fc bfc" id="L594" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
-<span class="fc bfc" id="L595" title="All 2 branches covered.">			if (lsCalibCapFloorletIndex.contains (iIndex))</span>
-<span class="fc" id="L596">				mapDateVol.put (fracfl.exerciseDate(), dblVolatility);</span>
+<span class="fc bfc" id="L620" title="All 2 branches covered.">		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {</span>
+<span class="fc bfc" id="L621" title="All 2 branches covered.">			if (lsCalibCapFloorletIndex.contains (iIndex))</span>
+<span class="fc" id="L622">				mapDateVol.put (fracfl.exerciseDate(), dblVolatility);</span>
 
-<span class="fc" id="L598">			++iIndex;</span>
-<span class="fc" id="L599">		}</span>
+<span class="fc" id="L624">			++iIndex;</span>
+<span class="fc" id="L625">		}</span>
 
-<span class="fc" id="L601">		return true;</span>
+<span class="fc" id="L627">		return true;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -608,37 +634,37 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L611" title="All 6 branches missed.">		if (null == pqs || null == valParams || !(pqs instanceof</span>
+<span class="nc bnc" id="L637" title="All 6 branches missed.">		if (null == pqs || null == valParams || !(pqs instanceof</span>
 			org.drip.product.calib.VolatilityProductQuoteSet))
-<span class="nc" id="L613">			return null;</span>
+<span class="nc" id="L639">			return null;</span>
 
-<span class="nc bnc" id="L615" title="All 2 branches missed.">		if (valParams.valueDate() &gt; maturityDate().julian()) return null;</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">		if (valParams.valueDate() &gt; maturityDate().julian()) return null;</span>
 
-<span class="nc" id="L617">		double dblOptionPV = 0.;</span>
-<span class="nc" id="L618">		org.drip.product.calib.VolatilityProductQuoteSet vpqs =</span>
+<span class="nc" id="L643">		double dblOptionPV = 0.;</span>
+<span class="nc" id="L644">		org.drip.product.calib.VolatilityProductQuoteSet vpqs =</span>
 			(org.drip.product.calib.VolatilityProductQuoteSet) pqs;
 
-<span class="nc bnc" id="L621" title="All 2 branches missed.">		if (!vpqs.containsOptionPV()) return null;</span>
+<span class="nc bnc" id="L647" title="All 2 branches missed.">		if (!vpqs.containsOptionPV()) return null;</span>
 
 		try {
-<span class="nc" id="L624">			dblOptionPV = vpqs.optionPV();</span>
-<span class="nc" id="L625">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L626">			e.printStackTrace();</span>
+<span class="nc" id="L650">			dblOptionPV = vpqs.optionPV();</span>
+<span class="nc" id="L651">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L652">			e.printStackTrace();</span>
 
-<span class="nc" id="L628">			return null;</span>
-<span class="nc" id="L629">		}</span>
+<span class="nc" id="L654">			return null;</span>
+<span class="nc" id="L655">		}</span>
 
-<span class="nc" id="L631">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L657">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc bnc" id="L634" title="All 2 branches missed.">		for (org.drip.product.fra.FRAStandardCapFloorlet frascf : _lsFRACapFloorlet) {</span>
-<span class="nc" id="L635">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcFRASCF = frascf.volatilityPRWC</span>
-<span class="nc" id="L636">				(valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="nc bnc" id="L660" title="All 2 branches missed.">		for (org.drip.product.fra.FRAStandardCapFloorlet frascf : _lsFRACapFloorlet) {</span>
+<span class="nc" id="L661">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcFRASCF = frascf.volatilityPRWC</span>
+<span class="nc" id="L662">				(valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="nc bnc" id="L638" title="All 4 branches missed.">			if (null == prwcFRASCF || !prwc.absorb (prwcFRASCF)) return null;</span>
-<span class="nc" id="L639">		}</span>
+<span class="nc bnc" id="L664" title="All 4 branches missed.">			if (null == prwcFRASCF || !prwc.absorb (prwcFRASCF)) return null;</span>
+<span class="nc" id="L665">		}</span>
 
-<span class="nc bnc" id="L641" title="All 4 branches missed.">		return !prwc.updateValue (dblOptionPV) || !prwc.updateDValueDManifestMeasure (&quot;OptionPV&quot;, 1.) ? null</span>
+<span class="nc bnc" id="L667" title="All 4 branches missed.">		return !prwc.updateValue (dblOptionPV) || !prwc.updateDValueDManifestMeasure (&quot;OptionPV&quot;, 1.) ? null</span>
 			: prwc;
 	}
 }

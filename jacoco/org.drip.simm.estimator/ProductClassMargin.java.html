@@ -6,31 +6,49 @@ package org.drip.simm.estimator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,37 +65,55 @@ package org.drip.simm.estimator;
  */
 
 /**
- * ProductClassMargin holds the Initial Margin Estimates for a Single Product Class across the Six Risk
- *  Factors - Interest Rate, Credit Qualifying, Credit Non-Qualifying, Equity, Commodity, and FX. The
- *  References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;ProductClassMargin&lt;/i&gt; holds the Initial Margin Estimates for a Single Product Class across the Six
+ * Risk Factors - Interest Rate, Credit Qualifying, Credit Non-Qualifying, Equity, Commodity, and FX. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ProductClassMargin
 {
-<span class="nc" id="L75">	private org.drip.simm.margin.RiskClassAggregate _fxRiskClassAggregate = null;</span>
-<span class="nc" id="L76">	private org.drip.simm.margin.RiskClassAggregateIR _irRiskClassAggregate = null;</span>
-<span class="nc" id="L77">	private org.drip.simm.margin.RiskClassAggregate _equityRiskClassAggregate = null;</span>
-<span class="nc" id="L78">	private org.drip.simm.margin.RiskClassAggregate _commodityRiskClassAggregate = null;</span>
-<span class="nc" id="L79">	private org.drip.simm.margin.RiskClassAggregateCR _creditQualifyingRiskClassAggregate = null;</span>
-<span class="nc" id="L80">	private org.drip.simm.margin.RiskClassAggregateCR _creditNonQualifyingRiskClassAggregate = null;</span>
+<span class="nc" id="L111">	private org.drip.simm.margin.RiskClassAggregate _fxRiskClassAggregate = null;</span>
+<span class="nc" id="L112">	private org.drip.simm.margin.RiskClassAggregateIR _irRiskClassAggregate = null;</span>
+<span class="nc" id="L113">	private org.drip.simm.margin.RiskClassAggregate _equityRiskClassAggregate = null;</span>
+<span class="nc" id="L114">	private org.drip.simm.margin.RiskClassAggregate _commodityRiskClassAggregate = null;</span>
+<span class="nc" id="L115">	private org.drip.simm.margin.RiskClassAggregateCR _creditQualifyingRiskClassAggregate = null;</span>
+<span class="nc" id="L116">	private org.drip.simm.margin.RiskClassAggregateCR _creditNonQualifyingRiskClassAggregate = null;</span>
 
 	/**
 	 * ProductClassMargin Constructor
@@ -100,24 +136,24 @@ public class ProductClassMargin
 		final org.drip.simm.margin.RiskClassAggregate fxRiskClassAggregate,
 		final org.drip.simm.margin.RiskClassAggregate commodityRiskClassAggregate)
 		throws java.lang.Exception
-<span class="nc" id="L103">	{</span>
-<span class="nc" id="L104">		_irRiskClassAggregate = irRiskClassAggregate;</span>
-<span class="nc" id="L105">		_fxRiskClassAggregate = fxRiskClassAggregate;</span>
-<span class="nc" id="L106">		_equityRiskClassAggregate = equityRiskClassAggregate;</span>
-<span class="nc" id="L107">		_commodityRiskClassAggregate = commodityRiskClassAggregate;</span>
-<span class="nc" id="L108">		_creditQualifyingRiskClassAggregate = creditQualifyingRiskClassAggregate;</span>
-<span class="nc" id="L109">		_creditNonQualifyingRiskClassAggregate = creditNonQualifyingRiskClassAggregate;</span>
+<span class="nc" id="L139">	{</span>
+<span class="nc" id="L140">		_irRiskClassAggregate = irRiskClassAggregate;</span>
+<span class="nc" id="L141">		_fxRiskClassAggregate = fxRiskClassAggregate;</span>
+<span class="nc" id="L142">		_equityRiskClassAggregate = equityRiskClassAggregate;</span>
+<span class="nc" id="L143">		_commodityRiskClassAggregate = commodityRiskClassAggregate;</span>
+<span class="nc" id="L144">		_creditQualifyingRiskClassAggregate = creditQualifyingRiskClassAggregate;</span>
+<span class="nc" id="L145">		_creditNonQualifyingRiskClassAggregate = creditNonQualifyingRiskClassAggregate;</span>
 
-<span class="nc bnc" id="L111" title="All 12 branches missed.">		if ((null == _equityRiskClassAggregate &amp;&amp;</span>
+<span class="nc bnc" id="L147" title="All 12 branches missed.">		if ((null == _equityRiskClassAggregate &amp;&amp;</span>
 			null == _commodityRiskClassAggregate &amp;&amp;
 			null == _fxRiskClassAggregate &amp;&amp;
 			null == _irRiskClassAggregate &amp;&amp;
 			null == _creditQualifyingRiskClassAggregate &amp;&amp;
 			null == _creditNonQualifyingRiskClassAggregate))
 		{
-<span class="nc" id="L118">			throw new java.lang.Exception (&quot;ProductClassMargin =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L154">			throw new java.lang.Exception (&quot;ProductClassMargin =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Interest Rate Risk Class Aggregate
@@ -127,7 +163,7 @@ public class ProductClassMargin
 
 	public org.drip.simm.margin.RiskClassAggregateIR irRiskClassAggregate()
 	{
-<span class="nc" id="L130">		return _irRiskClassAggregate;</span>
+<span class="nc" id="L166">		return _irRiskClassAggregate;</span>
 	}
 
 	/**
@@ -138,7 +174,7 @@ public class ProductClassMargin
 
 	public org.drip.simm.margin.RiskClassAggregateCR creditQualifyingRiskClassAggregate()
 	{
-<span class="nc" id="L141">		return _creditQualifyingRiskClassAggregate;</span>
+<span class="nc" id="L177">		return _creditQualifyingRiskClassAggregate;</span>
 	}
 
 	/**
@@ -149,7 +185,7 @@ public class ProductClassMargin
 
 	public org.drip.simm.margin.RiskClassAggregateCR creditNonQualifyingRiskClassAggregate()
 	{
-<span class="nc" id="L152">		return _creditNonQualifyingRiskClassAggregate;</span>
+<span class="nc" id="L188">		return _creditNonQualifyingRiskClassAggregate;</span>
 	}
 
 	/**
@@ -160,7 +196,7 @@ public class ProductClassMargin
 
 	public org.drip.simm.margin.RiskClassAggregate equityRiskClassAggregate()
 	{
-<span class="nc" id="L163">		return _equityRiskClassAggregate;</span>
+<span class="nc" id="L199">		return _equityRiskClassAggregate;</span>
 	}
 
 	/**
@@ -171,7 +207,7 @@ public class ProductClassMargin
 
 	public org.drip.simm.margin.RiskClassAggregate fxRiskClassAggregate()
 	{
-<span class="nc" id="L174">		return _fxRiskClassAggregate;</span>
+<span class="nc" id="L210">		return _fxRiskClassAggregate;</span>
 	}
 
 	/**
@@ -182,7 +218,7 @@ public class ProductClassMargin
 
 	public org.drip.simm.margin.RiskClassAggregate commodityRiskClassAggregate()
 	{
-<span class="nc" id="L185">		return _commodityRiskClassAggregate;</span>
+<span class="nc" id="L221">		return _commodityRiskClassAggregate;</span>
 	}
 
 	/**
@@ -199,110 +235,110 @@ public class ProductClassMargin
 		final org.drip.measure.stochastic.LabelCorrelation labelCorrelation)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == labelCorrelation)</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (null == labelCorrelation)</span>
 		{
-<span class="nc" id="L204">			throw new java.lang.Exception (&quot;ProductClassMargin::total =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L240">			throw new java.lang.Exception (&quot;ProductClassMargin::total =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		double irIM = null == _irRiskClassAggregate ? 0. : _irRiskClassAggregate.margin();</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		double irIM = null == _irRiskClassAggregate ? 0. : _irRiskClassAggregate.margin();</span>
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">		double fxIM = null == _fxRiskClassAggregate ? 0. : _fxRiskClassAggregate.margin();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		double fxIM = null == _fxRiskClassAggregate ? 0. : _fxRiskClassAggregate.margin();</span>
 
-<span class="nc bnc" id="L211" title="All 2 branches missed.">		double equityIM = null == _equityRiskClassAggregate ? 0. : _equityRiskClassAggregate.margin();</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		double equityIM = null == _equityRiskClassAggregate ? 0. : _equityRiskClassAggregate.margin();</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		double commodityIM = null == _commodityRiskClassAggregate ? 0. :</span>
-<span class="nc" id="L214">			_commodityRiskClassAggregate.margin();</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		double commodityIM = null == _commodityRiskClassAggregate ? 0. :</span>
+<span class="nc" id="L250">			_commodityRiskClassAggregate.margin();</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		double creditQualifyingIM = null == _creditQualifyingRiskClassAggregate ? 0. :</span>
-<span class="nc" id="L217">			_creditQualifyingRiskClassAggregate.margin();</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		double creditQualifyingIM = null == _creditQualifyingRiskClassAggregate ? 0. :</span>
+<span class="nc" id="L253">			_creditQualifyingRiskClassAggregate.margin();</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		double creditNonQualifyingIM = null == _creditNonQualifyingRiskClassAggregate ? 0. :</span>
-<span class="nc" id="L220">			_creditNonQualifyingRiskClassAggregate.margin();</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		double creditNonQualifyingIM = null == _creditNonQualifyingRiskClassAggregate ? 0. :</span>
+<span class="nc" id="L256">			_creditNonQualifyingRiskClassAggregate.margin();</span>
 
-<span class="nc" id="L222">		double totalIM = 0.;</span>
-<span class="nc" id="L223">		totalIM = totalIM + irIM *irIM;</span>
-<span class="nc" id="L224">		totalIM = totalIM + creditQualifyingIM * creditQualifyingIM;</span>
-<span class="nc" id="L225">		totalIM = totalIM + creditNonQualifyingIM * creditNonQualifyingIM;</span>
-<span class="nc" id="L226">		totalIM = totalIM + equityIM * equityIM;</span>
-<span class="nc" id="L227">		totalIM = totalIM + fxIM * fxIM;</span>
-<span class="nc" id="L228">		totalIM = totalIM + commodityIM * commodityIM;</span>
+<span class="nc" id="L258">		double totalIM = 0.;</span>
+<span class="nc" id="L259">		totalIM = totalIM + irIM *irIM;</span>
+<span class="nc" id="L260">		totalIM = totalIM + creditQualifyingIM * creditQualifyingIM;</span>
+<span class="nc" id="L261">		totalIM = totalIM + creditNonQualifyingIM * creditNonQualifyingIM;</span>
+<span class="nc" id="L262">		totalIM = totalIM + equityIM * equityIM;</span>
+<span class="nc" id="L263">		totalIM = totalIM + fxIM * fxIM;</span>
+<span class="nc" id="L264">		totalIM = totalIM + commodityIM * commodityIM;</span>
 
-<span class="nc" id="L230">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L266">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.IR,
 			org.drip.simm.common.Chargram.CRQ
 		) * irIM * creditQualifyingIM;
 
-<span class="nc" id="L235">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L271">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.IR,
 			org.drip.simm.common.Chargram.CRNQ
 		) * irIM * creditNonQualifyingIM;
 
-<span class="nc" id="L240">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L276">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.IR,
 			org.drip.simm.common.Chargram.EQ
 		) * irIM * equityIM;
 
-<span class="nc" id="L245">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L281">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.IR,
 			org.drip.simm.common.Chargram.FX
 		) * irIM * fxIM;
 
-<span class="nc" id="L250">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L286">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.IR,
 			org.drip.simm.common.Chargram.CT
 		) * irIM * commodityIM;
 
-<span class="nc" id="L255">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L291">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRQ,
 			org.drip.simm.common.Chargram.CRNQ
 		) * creditQualifyingIM * creditNonQualifyingIM;
 
-<span class="nc" id="L260">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L296">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRQ,
 			org.drip.simm.common.Chargram.EQ
 		) * creditQualifyingIM * equityIM;
 
-<span class="nc" id="L265">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L301">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRQ,
 			org.drip.simm.common.Chargram.FX
 		) * creditQualifyingIM * fxIM;
 
-<span class="nc" id="L270">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L306">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRQ,
 			org.drip.simm.common.Chargram.CT
 		) * creditQualifyingIM * commodityIM;
 
-<span class="nc" id="L275">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L311">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRNQ,
 			org.drip.simm.common.Chargram.EQ
 		) * creditNonQualifyingIM * equityIM;
 
-<span class="nc" id="L280">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L316">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRNQ,
 			org.drip.simm.common.Chargram.FX
 		) * creditNonQualifyingIM * fxIM;
 
-<span class="nc" id="L285">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L321">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.CRNQ,
 			org.drip.simm.common.Chargram.CT
 		) * creditNonQualifyingIM * commodityIM;
 
-<span class="nc" id="L290">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L326">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.EQ,
 			org.drip.simm.common.Chargram.FX
 		) * equityIM * fxIM;
 
-<span class="nc" id="L295">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L331">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.EQ,
 			org.drip.simm.common.Chargram.CT
 		) * equityIM * commodityIM;
 
-<span class="nc" id="L300">		totalIM = totalIM + labelCorrelation.entry (</span>
+<span class="nc" id="L336">		totalIM = totalIM + labelCorrelation.entry (</span>
 			org.drip.simm.common.Chargram.FX,
 			org.drip.simm.common.Chargram.CT
 		) * fxIM * commodityIM;
 
-<span class="nc" id="L305">		return java.lang.Math.sqrt (totalIM);</span>
+<span class="nc" id="L341">		return java.lang.Math.sqrt (totalIM);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

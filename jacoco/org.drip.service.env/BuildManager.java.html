@@ -6,32 +6,50 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,14 +66,22 @@ package org.drip.service.env;
  */
 
 /**
- * BuildManager maintains a Log of the Build Records.
+ * &lt;i&gt;BuildManager&lt;/i&gt; maintains a Log of the Build Records.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Env&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L56">public class BuildManager</span>
+<span class="nc" id="L82">public class BuildManager</span>
 {
-<span class="fc" id="L58">	private static org.drip.service.env.BuildRecord[] s_aBuildRecord = null;</span>
+<span class="fc" id="L84">	private static org.drip.service.env.BuildRecord[] s_aBuildRecord = null;</span>
 
 	/**
 	 * Initialize the Build Logs of the Build Manager
@@ -65,10 +91,15 @@ package org.drip.service.env;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L68" title="All 2 branches covered.">		if (null != s_aBuildRecord) return true;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">		if (null != s_aBuildRecord) return true;</span>
 
 		try {
-<span class="fc" id="L71">			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {</span>
+<span class="fc" id="L97">			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {</span>
+				new org.drip.service.env.BuildRecord (
+					&quot;3.84.0&quot;,
+					&quot;1.8.0_112&quot;,
+					&quot;Mon Nov 19 18:01:46 EST 2018&quot;
+				),
 				new org.drip.service.env.BuildRecord (
 					&quot;3.83.0&quot;,
 					&quot;1.8.0_112&quot;,
@@ -296,12 +327,12 @@ package org.drip.service.env;
 				)
 			};
 
-<span class="fc" id="L299">			return true;</span>
-<span class="nc" id="L300">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L301">			e.printStackTrace();</span>
+<span class="fc" id="L330">			return true;</span>
+<span class="nc" id="L331">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L332">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L304">		return false;</span>
+<span class="nc" id="L335">		return false;</span>
 	}
 
 	/**
@@ -312,7 +343,7 @@ package org.drip.service.env;
 
 	public static final org.drip.service.env.BuildRecord[] buildRecords()
 	{
-<span class="nc" id="L315">		return s_aBuildRecord;</span>
+<span class="nc" id="L346">		return s_aBuildRecord;</span>
 	}
 
 	/**
@@ -323,7 +354,7 @@ package org.drip.service.env;
 
 	public static final org.drip.service.env.BuildRecord latestBuildRecord()
 	{
-<span class="fc" id="L326">		return s_aBuildRecord[0];</span>
+<span class="fc" id="L357">		return s_aBuildRecord[0];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

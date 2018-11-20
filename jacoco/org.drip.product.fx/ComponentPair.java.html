@@ -6,35 +6,53 @@ package org.drip.product.fx;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,17 +69,25 @@ package org.drip.product.fx;
  */
 
 /**
- * ComponentPair contains the implementation of the dual cross currency components. It is composed of two
- *  different Rates Components - one each for each currency.
+ * &lt;i&gt;ComponentPair&lt;/i&gt; contains the implementation of the dual cross currency components. It is composed of
+ * two different Rates Components - one each for each currency.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fx&quot;&gt;FX&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ComponentPair extends org.drip.product.definition.BasketProduct {
-<span class="fc" id="L61">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L62">	private org.drip.param.period.FixingSetting _fxFixingSetting = null;</span>
-<span class="fc" id="L63">	private org.drip.product.definition.CalibratableComponent _rcDerived = null;</span>
-<span class="fc" id="L64">	private org.drip.product.definition.CalibratableComponent _rcReference = null;</span>
+<span class="fc" id="L87">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L88">	private org.drip.param.period.FixingSetting _fxFixingSetting = null;</span>
+<span class="fc" id="L89">	private org.drip.product.definition.CalibratableComponent _rcDerived = null;</span>
+<span class="fc" id="L90">	private org.drip.product.definition.CalibratableComponent _rcReference = null;</span>
 
 	/**
 	 * ComponentPair constructor
@@ -80,13 +106,13 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 		final org.drip.product.definition.CalibratableComponent rcDerived,
 		final org.drip.param.period.FixingSetting fxFixingSetting)
 		throws java.lang.Exception
-<span class="fc" id="L83">	{</span>
-<span class="pc bpc" id="L84" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_rcDerived = rcDerived) || null ==</span>
+<span class="fc" id="L109">	{</span>
+<span class="pc bpc" id="L110" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_rcDerived = rcDerived) || null ==</span>
 			(_rcReference = rcReference))
-<span class="nc" id="L86">			throw new java.lang.Exception (&quot;ComponentPair ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;ComponentPair ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L88">		_fxFixingSetting = fxFixingSetting;</span>
-<span class="fc" id="L89">	}</span>
+<span class="fc" id="L114">		_fxFixingSetting = fxFixingSetting;</span>
+<span class="fc" id="L115">	}</span>
 
 	/**
 	 * Retrieve the Reference Component
@@ -96,7 +122,7 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 
 	public org.drip.product.definition.CalibratableComponent referenceComponent()
 	{
-<span class="fc" id="L99">		return _rcReference;</span>
+<span class="fc" id="L125">		return _rcReference;</span>
 	}
 
 	/**
@@ -107,7 +133,7 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 
 	public org.drip.product.definition.CalibratableComponent derivedComponent()
 	{
-<span class="fc" id="L110">		return _rcDerived;</span>
+<span class="fc" id="L136">		return _rcDerived;</span>
 	}
 
 	/**
@@ -118,7 +144,7 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 
 	public org.drip.param.period.FixingSetting fxFixingSetting()
 	{
-<span class="nc" id="L121">		return _fxFixingSetting;</span>
+<span class="nc" id="L147">		return _fxFixingSetting;</span>
 	}
 
 	/**
@@ -129,11 +155,11 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 
 	public java.lang.String fxCode()
 	{
-<span class="nc" id="L132">		java.lang.String strDerivedComponentCouponCurrency = _rcDerived.payCurrency();</span>
+<span class="nc" id="L158">		java.lang.String strDerivedComponentCouponCurrency = _rcDerived.payCurrency();</span>
 
-<span class="nc" id="L134">		java.lang.String strReferenceComponentCouponCurrency = _rcReference.payCurrency();</span>
+<span class="nc" id="L160">		java.lang.String strReferenceComponentCouponCurrency = _rcReference.payCurrency();</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		return strDerivedComponentCouponCurrency.equalsIgnoreCase (strReferenceComponentCouponCurrency) ?</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		return strDerivedComponentCouponCurrency.equalsIgnoreCase (strReferenceComponentCouponCurrency) ?</span>
 			null : strReferenceComponentCouponCurrency + &quot;/&quot; + strDerivedComponentCouponCurrency;
 	}
 
@@ -156,86 +182,86 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 		final boolean bBasisOnDerivedComponent,
 		final boolean bBasisOnDerivedStream)
 	{
-<span class="fc" id="L159">		org.drip.product.calib.ProductQuoteSet pqs = null;</span>
-<span class="fc" id="L160">		org.drip.state.identifier.ForwardLabel forwardLabel = null;</span>
+<span class="fc" id="L185">		org.drip.product.calib.ProductQuoteSet pqs = null;</span>
+<span class="fc" id="L186">		org.drip.state.identifier.ForwardLabel forwardLabel = null;</span>
 
-<span class="fc" id="L162">		org.drip.product.definition.CalibratableComponent comp = derivedComponent();</span>
+<span class="fc" id="L188">		org.drip.product.definition.CalibratableComponent comp = derivedComponent();</span>
 
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (comp instanceof org.drip.product.rates.DualStreamComponent)</span>
-<span class="fc" id="L165">			forwardLabel = ((org.drip.product.rates.DualStreamComponent)</span>
-<span class="fc" id="L166">				comp).derivedStream().forwardLabel();</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (comp instanceof org.drip.product.rates.DualStreamComponent)</span>
+<span class="fc" id="L191">			forwardLabel = ((org.drip.product.rates.DualStreamComponent)</span>
+<span class="fc" id="L192">				comp).derivedStream().forwardLabel();</span>
 		else {
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
-<span class="nc" id="L169">				mapForwardLabel = comp.forwardLabel();</span>
+<span class="nc" id="L195">				mapForwardLabel = comp.forwardLabel();</span>
 
-<span class="nc bnc" id="L171" title="All 4 branches missed.">			if (null != mapForwardLabel &amp;&amp; 0 != mapForwardLabel.size())</span>
-<span class="nc" id="L172">				forwardLabel = mapForwardLabel.get (&quot;BASE&quot;);</span>
+<span class="nc bnc" id="L197" title="All 4 branches missed.">			if (null != mapForwardLabel &amp;&amp; 0 != mapForwardLabel.size())</span>
+<span class="nc" id="L198">				forwardLabel = mapForwardLabel.get (&quot;BASE&quot;);</span>
 		}
 
 		try { 
-<span class="fc" id="L176">			pqs = comp.calibQuoteSet (new org.drip.state.representation.LatentStateSpecification[] {new</span>
+<span class="fc" id="L202">			pqs = comp.calibQuoteSet (new org.drip.state.representation.LatentStateSpecification[] {new</span>
 				org.drip.state.representation.LatentStateSpecification
 					(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD,
 						org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
 							forwardLabel)});
-<span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L182">			e.printStackTrace();</span>
+<span class="nc" id="L207">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L208">			e.printStackTrace();</span>
 
-<span class="nc" id="L184">			return null;</span>
-<span class="fc" id="L185">		}</span>
+<span class="nc" id="L210">			return null;</span>
+<span class="fc" id="L211">		}</span>
 
-<span class="fc" id="L187">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOP = value (valParams, null,</span>
+<span class="fc" id="L213">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOP = value (valParams, null,</span>
 			mktParams, null);
 
-<span class="fc" id="L190">		org.drip.product.definition.CalibratableComponent rcReference = referenceComponent();</span>
+<span class="fc" id="L216">		org.drip.product.definition.CalibratableComponent rcReference = referenceComponent();</span>
 
-<span class="fc" id="L192">		java.lang.String strReferenceComponentName = rcReference.name();</span>
+<span class="fc" id="L218">		java.lang.String strReferenceComponentName = rcReference.name();</span>
 
-<span class="fc" id="L194">		org.drip.product.definition.CalibratableComponent rcDerived = derivedComponent();</span>
+<span class="fc" id="L220">		org.drip.product.definition.CalibratableComponent rcDerived = derivedComponent();</span>
 
-<span class="fc" id="L196">		java.lang.String strDerivedComponentName = rcDerived.name();</span>
+<span class="fc" id="L222">		java.lang.String strDerivedComponentName = rcDerived.name();</span>
 
-<span class="fc" id="L198">		java.lang.String strReferenceComponentPV = strReferenceComponentName + &quot;[PV]&quot;;</span>
+<span class="fc" id="L224">		java.lang.String strReferenceComponentPV = strReferenceComponentName + &quot;[PV]&quot;;</span>
 
-<span class="fc bfc" id="L200" title="All 2 branches covered.">		if (!bBasisOnDerivedComponent) {</span>
-<span class="fc" id="L201">			java.lang.String strReferenceComponentDerivedStreamCleanDV01 = strReferenceComponentName +</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		if (!bBasisOnDerivedComponent) {</span>
+<span class="fc" id="L227">			java.lang.String strReferenceComponentDerivedStreamCleanDV01 = strReferenceComponentName +</span>
 				&quot;[DerivedCleanDV01]&quot;;
-<span class="fc" id="L203">			java.lang.String strReferenceComponentReferenceStreamCleanDV01 = strReferenceComponentName +</span>
+<span class="fc" id="L229">			java.lang.String strReferenceComponentReferenceStreamCleanDV01 = strReferenceComponentName +</span>
 				&quot;[ReferenceCleanDV01]&quot;;
 
-<span class="pc bpc" id="L206" title="2 of 4 branches missed.">			if (null == mapOP || !mapOP.containsKey (strReferenceComponentPV) || !mapOP.containsKey</span>
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">				(strReferenceComponentReferenceStreamCleanDV01) || !mapOP.containsKey</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">					(strReferenceComponentDerivedStreamCleanDV01))</span>
-<span class="nc" id="L209">				return null;</span>
+<span class="pc bpc" id="L232" title="2 of 4 branches missed.">			if (null == mapOP || !mapOP.containsKey (strReferenceComponentPV) || !mapOP.containsKey</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">				(strReferenceComponentReferenceStreamCleanDV01) || !mapOP.containsKey</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">					(strReferenceComponentDerivedStreamCleanDV01))</span>
+<span class="nc" id="L235">				return null;</span>
 
-<span class="pc bpc" id="L211" title="1 of 4 branches missed.">			if (!pqs.set (&quot;PV&quot;, -1. * (mapOP.get (strReferenceComponentPV) + 10000. * (bBasisOnDerivedStream</span>
-<span class="fc" id="L212">				? mapOP.get (strReferenceComponentDerivedStreamCleanDV01) : mapOP.get</span>
-<span class="fc" id="L213">					(strReferenceComponentReferenceStreamCleanDV01)) * dblBasis)))</span>
-<span class="nc" id="L214">				return null;</span>
-<span class="fc" id="L215">		} else {</span>
-<span class="fc" id="L216">			java.lang.String strDerivedComponentReferenceStreamCleanDV01 = strDerivedComponentName +</span>
+<span class="pc bpc" id="L237" title="1 of 4 branches missed.">			if (!pqs.set (&quot;PV&quot;, -1. * (mapOP.get (strReferenceComponentPV) + 10000. * (bBasisOnDerivedStream</span>
+<span class="fc" id="L238">				? mapOP.get (strReferenceComponentDerivedStreamCleanDV01) : mapOP.get</span>
+<span class="fc" id="L239">					(strReferenceComponentReferenceStreamCleanDV01)) * dblBasis)))</span>
+<span class="nc" id="L240">				return null;</span>
+<span class="fc" id="L241">		} else {</span>
+<span class="fc" id="L242">			java.lang.String strDerivedComponentReferenceStreamCleanDV01 = strDerivedComponentName +</span>
 				&quot;[ReferenceCleanDV01]&quot;;
-<span class="fc" id="L218">			java.lang.String strDerivedComponentDerivedStreamCleanDV01 = strDerivedComponentName +</span>
+<span class="fc" id="L244">			java.lang.String strDerivedComponentDerivedStreamCleanDV01 = strDerivedComponentName +</span>
 				&quot;[DerivedCleanDV01]&quot;;
 
-<span class="pc bpc" id="L221" title="2 of 4 branches missed.">			if (null == mapOP || !mapOP.containsKey (strReferenceComponentPV) || !mapOP.containsKey</span>
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">				(strDerivedComponentReferenceStreamCleanDV01) || !mapOP.containsKey</span>
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">					(strDerivedComponentDerivedStreamCleanDV01))</span>
-<span class="nc" id="L224">				return null;</span>
+<span class="pc bpc" id="L247" title="2 of 4 branches missed.">			if (null == mapOP || !mapOP.containsKey (strReferenceComponentPV) || !mapOP.containsKey</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">				(strDerivedComponentReferenceStreamCleanDV01) || !mapOP.containsKey</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">					(strDerivedComponentDerivedStreamCleanDV01))</span>
+<span class="nc" id="L250">				return null;</span>
 
-<span class="pc bpc" id="L226" title="2 of 4 branches missed.">			if (!pqs.set (&quot;PV&quot;, -1. * (mapOP.get (strReferenceComponentPV) + 10000. * (bBasisOnDerivedStream</span>
-<span class="pc" id="L227">				? mapOP.get (strDerivedComponentDerivedStreamCleanDV01) : mapOP.get</span>
-<span class="fc" id="L228">					(strDerivedComponentReferenceStreamCleanDV01)) * dblBasis)))</span>
-<span class="nc" id="L229">				return null;</span>
+<span class="pc bpc" id="L252" title="2 of 4 branches missed.">			if (!pqs.set (&quot;PV&quot;, -1. * (mapOP.get (strReferenceComponentPV) + 10000. * (bBasisOnDerivedStream</span>
+<span class="pc" id="L253">				? mapOP.get (strDerivedComponentDerivedStreamCleanDV01) : mapOP.get</span>
+<span class="fc" id="L254">					(strDerivedComponentReferenceStreamCleanDV01)) * dblBasis)))</span>
+<span class="nc" id="L255">				return null;</span>
 		}
 
 		try {
-<span class="fc" id="L233">			return new org.drip.state.inference.LatentStateSegmentSpec (comp, pqs);</span>
-<span class="nc" id="L234">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L235">			e.printStackTrace();</span>
+<span class="fc" id="L259">			return new org.drip.state.inference.LatentStateSegmentSpec (comp, pqs);</span>
+<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L261">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L238">		return null;</span>
+<span class="nc" id="L264">		return null;</span>
 	}
 
 	/**
@@ -257,36 +283,36 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 		final boolean bBasisOnDerivedLeg,
 		final double dblSwapRate)
 	{
-<span class="fc" id="L260">		double dblFX = 1.;</span>
-<span class="fc" id="L261">		org.drip.product.calib.ProductQuoteSet pqs = null;</span>
-<span class="fc" id="L262">		org.drip.state.identifier.ForwardLabel forwardLabel = null;</span>
-<span class="fc" id="L263">		org.drip.state.identifier.FundingLabel fundingLabel = null;</span>
+<span class="fc" id="L286">		double dblFX = 1.;</span>
+<span class="fc" id="L287">		org.drip.product.calib.ProductQuoteSet pqs = null;</span>
+<span class="fc" id="L288">		org.drip.state.identifier.ForwardLabel forwardLabel = null;</span>
+<span class="fc" id="L289">		org.drip.state.identifier.FundingLabel fundingLabel = null;</span>
 
-<span class="fc" id="L265">		org.drip.product.definition.CalibratableComponent compDerived = derivedComponent();</span>
+<span class="fc" id="L291">		org.drip.product.definition.CalibratableComponent compDerived = derivedComponent();</span>
 
-<span class="fc" id="L267">		org.drip.product.definition.CalibratableComponent compReference = referenceComponent();</span>
+<span class="fc" id="L293">		org.drip.product.definition.CalibratableComponent compReference = referenceComponent();</span>
 
-<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (compDerived instanceof org.drip.product.rates.DualStreamComponent) {</span>
-<span class="fc" id="L270">			org.drip.product.rates.Stream streamDerived = ((org.drip.product.rates.DualStreamComponent)</span>
-<span class="fc" id="L271">				compDerived).derivedStream();</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">		if (compDerived instanceof org.drip.product.rates.DualStreamComponent) {</span>
+<span class="fc" id="L296">			org.drip.product.rates.Stream streamDerived = ((org.drip.product.rates.DualStreamComponent)</span>
+<span class="fc" id="L297">				compDerived).derivedStream();</span>
 
-<span class="fc" id="L273">			forwardLabel = streamDerived.forwardLabel();</span>
+<span class="fc" id="L299">			forwardLabel = streamDerived.forwardLabel();</span>
 
-<span class="fc" id="L275">			fundingLabel = streamDerived.fundingLabel();</span>
-<span class="fc" id="L276">		} else {</span>
+<span class="fc" id="L301">			fundingLabel = streamDerived.fundingLabel();</span>
+<span class="fc" id="L302">		} else {</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
-<span class="nc" id="L278">				mapForwardLabel = compDerived.forwardLabel();</span>
+<span class="nc" id="L304">				mapForwardLabel = compDerived.forwardLabel();</span>
 
-<span class="nc" id="L280">			org.drip.state.identifier.FundingLabel fundingLabelDerived = compDerived.fundingLabel();</span>
+<span class="nc" id="L306">			org.drip.state.identifier.FundingLabel fundingLabelDerived = compDerived.fundingLabel();</span>
 
-<span class="nc bnc" id="L282" title="All 4 branches missed.">			if (null != mapForwardLabel &amp;&amp; 0 != mapForwardLabel.size())</span>
-<span class="nc" id="L283">				forwardLabel = mapForwardLabel.get (&quot;DERIVED&quot;);</span>
+<span class="nc bnc" id="L308" title="All 4 branches missed.">			if (null != mapForwardLabel &amp;&amp; 0 != mapForwardLabel.size())</span>
+<span class="nc" id="L309">				forwardLabel = mapForwardLabel.get (&quot;DERIVED&quot;);</span>
 
-<span class="nc bnc" id="L285" title="All 2 branches missed.">			if (null != fundingLabelDerived) fundingLabel = fundingLabelDerived;</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">			if (null != fundingLabelDerived) fundingLabel = fundingLabelDerived;</span>
 		}
 
 		try { 
-<span class="fc" id="L289">			pqs = compDerived.calibQuoteSet (new org.drip.state.representation.LatentStateSpecification[]</span>
+<span class="fc" id="L315">			pqs = compDerived.calibQuoteSet (new org.drip.state.representation.LatentStateSpecification[]</span>
 				{new org.drip.state.representation.LatentStateSpecification
 					(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING,
 						org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
@@ -295,69 +321,69 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 									org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
 										forwardLabel)});
 
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">			if (null != _fxFixingSetting &amp;&amp; org.drip.param.period.FixingSetting.FIXING_PRESET_STATIC ==</span>
-<span class="nc bnc" id="L299" title="All 2 branches missed.">				_fxFixingSetting.type()) {</span>
-<span class="nc" id="L300">				org.drip.state.fx.FXCurve fxfc = mktParams.fxState (fxLabel()[0]);</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">			if (null != _fxFixingSetting &amp;&amp; org.drip.param.period.FixingSetting.FIXING_PRESET_STATIC ==</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">				_fxFixingSetting.type()) {</span>
+<span class="nc" id="L326">				org.drip.state.fx.FXCurve fxfc = mktParams.fxState (fxLabel()[0]);</span>
 
-<span class="nc bnc" id="L302" title="All 2 branches missed.">				if (null == fxfc) return null;</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">				if (null == fxfc) return null;</span>
 
-<span class="nc" id="L304">				dblFX = fxfc.fx (_fxFixingSetting.staticDate());</span>
+<span class="nc" id="L330">				dblFX = fxfc.fx (_fxFixingSetting.staticDate());</span>
 			}
-<span class="nc" id="L306">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L307">			e.printStackTrace();</span>
+<span class="nc" id="L332">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L333">			e.printStackTrace();</span>
 
-<span class="nc" id="L309">			return null;</span>
-<span class="fc" id="L310">		}</span>
+<span class="nc" id="L335">			return null;</span>
+<span class="fc" id="L336">		}</span>
 
-<span class="fc" id="L312">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOP = compReference.value</span>
-<span class="fc" id="L313">			(valParams, null, mktParams, null);</span>
+<span class="fc" id="L338">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOP = compReference.value</span>
+<span class="fc" id="L339">			(valParams, null, mktParams, null);</span>
 
-<span class="pc bpc" id="L315" title="3 of 6 branches missed.">		if (null == mapOP || !mapOP.containsKey (&quot;PV&quot;) || !pqs.set (&quot;SwapRate&quot;, dblSwapRate)) return null;</span>
+<span class="pc bpc" id="L341" title="3 of 6 branches missed.">		if (null == mapOP || !mapOP.containsKey (&quot;PV&quot;) || !pqs.set (&quot;SwapRate&quot;, dblSwapRate)) return null;</span>
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		if (bBasisOnDerivedLeg) {</span>
-<span class="pc bpc" id="L318" title="2 of 4 branches missed.">			if (!mapOP.containsKey (&quot;DerivedCleanDV01&quot;) || !pqs.set (&quot;PV&quot;, dblFX * (mapOP.get (&quot;PV&quot;) + 10000.</span>
-<span class="fc" id="L319">				* mapOP.get (&quot;DerivedCleanDV01&quot;) * dblReferenceComponentBasis)))</span>
-<span class="nc" id="L320">				return null;</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">		if (bBasisOnDerivedLeg) {</span>
+<span class="pc bpc" id="L344" title="2 of 4 branches missed.">			if (!mapOP.containsKey (&quot;DerivedCleanDV01&quot;) || !pqs.set (&quot;PV&quot;, dblFX * (mapOP.get (&quot;PV&quot;) + 10000.</span>
+<span class="fc" id="L345">				* mapOP.get (&quot;DerivedCleanDV01&quot;) * dblReferenceComponentBasis)))</span>
+<span class="nc" id="L346">				return null;</span>
 		} else {
-<span class="pc bpc" id="L322" title="2 of 4 branches missed.">			if (!mapOP.containsKey (&quot;ReferenceCleanDV01&quot;) || !pqs.set (&quot;PV&quot;, -1. * dblFX * (mapOP.get (&quot;PV&quot;)</span>
-<span class="fc" id="L323">				+ 10000. * mapOP.get (&quot;ReferenceCleanDV01&quot;) * dblReferenceComponentBasis)))</span>
-<span class="nc" id="L324">				return null;</span>
+<span class="pc bpc" id="L348" title="2 of 4 branches missed.">			if (!mapOP.containsKey (&quot;ReferenceCleanDV01&quot;) || !pqs.set (&quot;PV&quot;, -1. * dblFX * (mapOP.get (&quot;PV&quot;)</span>
+<span class="fc" id="L349">				+ 10000. * mapOP.get (&quot;ReferenceCleanDV01&quot;) * dblReferenceComponentBasis)))</span>
+<span class="nc" id="L350">				return null;</span>
 		}
 
 		try {
-<span class="fc" id="L328">			return new org.drip.state.inference.LatentStateSegmentSpec (compDerived, pqs);</span>
-<span class="nc" id="L329">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L330">			e.printStackTrace();</span>
+<span class="fc" id="L354">			return new org.drip.state.inference.LatentStateSegmentSpec (compDerived, pqs);</span>
+<span class="nc" id="L355">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L356">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L333">		return null;</span>
+<span class="nc" id="L359">		return null;</span>
 	}
 
 	@Override public java.lang.String name()
 	{
-<span class="nc" id="L338">		return _strName;</span>
+<span class="nc" id="L364">		return _strName;</span>
 	}
 
 	@Override public org.drip.state.identifier.FXLabel[] fxLabel()
 	{
-<span class="nc" id="L343">		java.lang.String strReferenceCurrency = _rcReference.payCurrency();</span>
+<span class="nc" id="L369">		java.lang.String strReferenceCurrency = _rcReference.payCurrency();</span>
 
-<span class="nc" id="L345">		java.lang.String strDerivedCurrency = _rcDerived.payCurrency();</span>
+<span class="nc" id="L371">		java.lang.String strDerivedCurrency = _rcDerived.payCurrency();</span>
 
-<span class="nc" id="L347">		return new org.drip.state.identifier.FXLabel[] {org.drip.state.identifier.FXLabel.Standard</span>
-<span class="nc" id="L348">			(strReferenceCurrency + &quot;/&quot; + strDerivedCurrency), org.drip.state.identifier.FXLabel.Standard</span>
-<span class="nc" id="L349">				(strDerivedCurrency + &quot;/&quot; + strReferenceCurrency)};</span>
+<span class="nc" id="L373">		return new org.drip.state.identifier.FXLabel[] {org.drip.state.identifier.FXLabel.Standard</span>
+<span class="nc" id="L374">			(strReferenceCurrency + &quot;/&quot; + strDerivedCurrency), org.drip.state.identifier.FXLabel.Standard</span>
+<span class="nc" id="L375">				(strDerivedCurrency + &quot;/&quot; + strReferenceCurrency)};</span>
 	}
 
 	@Override public org.drip.product.definition.Component[] components()
 	{
-<span class="fc" id="L354">		return new org.drip.product.definition.Component[] {_rcReference, _rcDerived};</span>
+<span class="fc" id="L380">		return new org.drip.product.definition.Component[] {_rcReference, _rcDerived};</span>
 	}
 
 	@Override public int measureAggregationType (
 		final java.lang.String strMeasureName)
 	{
-<span class="fc" id="L360">		return org.drip.product.definition.BasketProduct.MEASURE_AGGREGATION_TYPE_UNIT_ACCUMULATE;</span>
+<span class="fc" id="L386">		return org.drip.product.definition.BasketProduct.MEASURE_AGGREGATION_TYPE_UNIT_ACCUMULATE;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -366,104 +392,104 @@ public class ComponentPair extends org.drip.product.definition.BasketProduct {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="fc" id="L369">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L395">		long lStart = System.nanoTime();</span>
 
-<span class="fc" id="L371">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOutput = super.value</span>
-<span class="fc" id="L372">			(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L397">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOutput = super.value</span>
+<span class="fc" id="L398">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="pc bpc" id="L374" title="1 of 2 branches missed.">		if (null == mapOutput) return null;</span>
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">		if (null == mapOutput) return null;</span>
 
-<span class="fc" id="L376">		org.drip.product.definition.CalibratableComponent rcReference = referenceComponent();</span>
+<span class="fc" id="L402">		org.drip.product.definition.CalibratableComponent rcReference = referenceComponent();</span>
 
-<span class="fc" id="L378">		org.drip.product.definition.CalibratableComponent rcDerived = derivedComponent();</span>
+<span class="fc" id="L404">		org.drip.product.definition.CalibratableComponent rcDerived = derivedComponent();</span>
 
-<span class="fc" id="L380">		java.lang.String strReferenceCompName = rcReference.name();</span>
+<span class="fc" id="L406">		java.lang.String strReferenceCompName = rcReference.name();</span>
 
-<span class="fc" id="L382">		java.lang.String strDerivedCompName = rcDerived.name();</span>
+<span class="fc" id="L408">		java.lang.String strDerivedCompName = rcDerived.name();</span>
 
-<span class="fc" id="L384">		java.lang.String strDerivedCompPV = strDerivedCompName + &quot;[PV]&quot;;</span>
-<span class="fc" id="L385">		java.lang.String strReferenceCompPV = strReferenceCompName + &quot;[PV]&quot;;</span>
-<span class="fc" id="L386">		java.lang.String strDerivedCompDerivedDV01 = strDerivedCompName + &quot;[DerivedCleanDV01]&quot;;</span>
-<span class="fc" id="L387">		java.lang.String strReferenceCompDerivedDV01 = strReferenceCompName + &quot;[DerivedCleanDV01]&quot;;</span>
-<span class="fc" id="L388">		java.lang.String strDerivedCompReferenceDV01 = strDerivedCompName + &quot;[ReferenceCleanDV01]&quot;;</span>
-<span class="fc" id="L389">		java.lang.String strReferenceCompReferenceDV01 = strReferenceCompName + &quot;[ReferenceCleanDV01]&quot;;</span>
-<span class="fc" id="L390">		java.lang.String strDerivedCompCumulativeConvexityPremium = strDerivedCompName +</span>
+<span class="fc" id="L410">		java.lang.String strDerivedCompPV = strDerivedCompName + &quot;[PV]&quot;;</span>
+<span class="fc" id="L411">		java.lang.String strReferenceCompPV = strReferenceCompName + &quot;[PV]&quot;;</span>
+<span class="fc" id="L412">		java.lang.String strDerivedCompDerivedDV01 = strDerivedCompName + &quot;[DerivedCleanDV01]&quot;;</span>
+<span class="fc" id="L413">		java.lang.String strReferenceCompDerivedDV01 = strReferenceCompName + &quot;[DerivedCleanDV01]&quot;;</span>
+<span class="fc" id="L414">		java.lang.String strDerivedCompReferenceDV01 = strDerivedCompName + &quot;[ReferenceCleanDV01]&quot;;</span>
+<span class="fc" id="L415">		java.lang.String strReferenceCompReferenceDV01 = strReferenceCompName + &quot;[ReferenceCleanDV01]&quot;;</span>
+<span class="fc" id="L416">		java.lang.String strDerivedCompCumulativeConvexityPremium = strDerivedCompName +</span>
 			&quot;[CumulativeConvexityAdjustmentPremium]&quot;;
-<span class="fc" id="L392">		java.lang.String strDerivedCompCumulativeConvexityAdjustment = strDerivedCompName +</span>
+<span class="fc" id="L418">		java.lang.String strDerivedCompCumulativeConvexityAdjustment = strDerivedCompName +</span>
 			&quot;[CumulativeConvexityAdjustmentFactor]&quot;;
-<span class="fc" id="L394">		java.lang.String strReferenceCompCumulativeConvexityPremium = strReferenceCompName +</span>
+<span class="fc" id="L420">		java.lang.String strReferenceCompCumulativeConvexityPremium = strReferenceCompName +</span>
 			&quot;[CumulativeConvexityAdjustmentPremium]&quot;;
-<span class="fc" id="L396">		java.lang.String strReferenceCompCumulativeConvexityAdjustment = strReferenceCompName +</span>
+<span class="fc" id="L422">		java.lang.String strReferenceCompCumulativeConvexityAdjustment = strReferenceCompName +</span>
 			&quot;[QuantoAdjustmentFactor]&quot;;
 
-<span class="pc bpc" id="L399" title="2 of 4 branches missed.">		if (!mapOutput.containsKey (strDerivedCompPV) || !mapOutput.containsKey (strReferenceCompPV) ||</span>
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">			!mapOutput.containsKey (strReferenceCompReferenceDV01) || !mapOutput.containsKey</span>
-<span class="pc bpc" id="L401" title="2 of 4 branches missed.">				(strReferenceCompDerivedDV01) || !mapOutput.containsKey (strDerivedCompReferenceDV01) ||</span>
-<span class="pc bpc" id="L402" title="1 of 2 branches missed.">					!mapOutput.containsKey (strDerivedCompDerivedDV01) || !mapOutput.containsKey</span>
-<span class="pc bpc" id="L403" title="1 of 2 branches missed.">						(strDerivedCompCumulativeConvexityPremium) || !mapOutput.containsKey</span>
-<span class="pc bpc" id="L404" title="1 of 2 branches missed.">							(strReferenceCompCumulativeConvexityPremium)) {</span>
-<span class="nc" id="L405">			mapOutput.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="pc bpc" id="L425" title="2 of 4 branches missed.">		if (!mapOutput.containsKey (strDerivedCompPV) || !mapOutput.containsKey (strReferenceCompPV) ||</span>
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">			!mapOutput.containsKey (strReferenceCompReferenceDV01) || !mapOutput.containsKey</span>
+<span class="pc bpc" id="L427" title="2 of 4 branches missed.">				(strReferenceCompDerivedDV01) || !mapOutput.containsKey (strDerivedCompReferenceDV01) ||</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">					!mapOutput.containsKey (strDerivedCompDerivedDV01) || !mapOutput.containsKey</span>
+<span class="pc bpc" id="L429" title="1 of 2 branches missed.">						(strDerivedCompCumulativeConvexityPremium) || !mapOutput.containsKey</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">							(strReferenceCompCumulativeConvexityPremium)) {</span>
+<span class="nc" id="L431">			mapOutput.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="nc" id="L407">			return mapOutput;</span>
+<span class="nc" id="L433">			return mapOutput;</span>
 		}
 
-<span class="fc" id="L410">		double dblDerivedCompPV = mapOutput.get (strDerivedCompPV);</span>
+<span class="fc" id="L436">		double dblDerivedCompPV = mapOutput.get (strDerivedCompPV);</span>
 
-<span class="fc" id="L412">		double dblReferenceCompPV = mapOutput.get (strReferenceCompPV);</span>
+<span class="fc" id="L438">		double dblReferenceCompPV = mapOutput.get (strReferenceCompPV);</span>
 
-<span class="fc" id="L414">		double dblDerivedCompDerivedDV01 = mapOutput.get (strDerivedCompDerivedDV01);</span>
+<span class="fc" id="L440">		double dblDerivedCompDerivedDV01 = mapOutput.get (strDerivedCompDerivedDV01);</span>
 
-<span class="fc" id="L416">		double dblDerivedCompReferenceDV01 = mapOutput.get (strDerivedCompReferenceDV01);</span>
+<span class="fc" id="L442">		double dblDerivedCompReferenceDV01 = mapOutput.get (strDerivedCompReferenceDV01);</span>
 
-<span class="fc" id="L418">		double dblReferenceCompDerivedDV01 = mapOutput.get (strReferenceCompDerivedDV01);</span>
+<span class="fc" id="L444">		double dblReferenceCompDerivedDV01 = mapOutput.get (strReferenceCompDerivedDV01);</span>
 
-<span class="fc" id="L420">		double dblReferenceCompReferenceDV01 = mapOutput.get (strReferenceCompReferenceDV01);</span>
+<span class="fc" id="L446">		double dblReferenceCompReferenceDV01 = mapOutput.get (strReferenceCompReferenceDV01);</span>
 
-<span class="fc" id="L422">		mapOutput.put (&quot;ReferenceCompReferenceBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
+<span class="fc" id="L448">		mapOutput.put (&quot;ReferenceCompReferenceBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
 			dblReferenceCompReferenceDV01);
 
-<span class="fc" id="L425">		mapOutput.put (&quot;ReferenceCompDerivedBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
+<span class="fc" id="L451">		mapOutput.put (&quot;ReferenceCompDerivedBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
 			dblReferenceCompDerivedDV01);
 
-<span class="fc" id="L428">		mapOutput.put (&quot;DerivedCompReferenceBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
+<span class="fc" id="L454">		mapOutput.put (&quot;DerivedCompReferenceBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
 			dblDerivedCompReferenceDV01);
 
-<span class="fc" id="L431">		mapOutput.put (&quot;DerivedCompDerivedBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
+<span class="fc" id="L457">		mapOutput.put (&quot;DerivedCompDerivedBasis&quot;, -1. * (dblDerivedCompPV + dblReferenceCompPV) /</span>
 			dblDerivedCompDerivedDV01);
 
-<span class="pc bpc" id="L434" title="1 of 2 branches missed.">		if (mapOutput.containsKey (strReferenceCompCumulativeConvexityAdjustment))</span>
-<span class="nc" id="L435">			mapOutput.put (&quot;ReferenceCumulativeConvexityAdjustmentFactor&quot;, mapOutput.get</span>
-<span class="nc" id="L436">				(strReferenceCompCumulativeConvexityAdjustment));</span>
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">		if (mapOutput.containsKey (strReferenceCompCumulativeConvexityAdjustment))</span>
+<span class="nc" id="L461">			mapOutput.put (&quot;ReferenceCumulativeConvexityAdjustmentFactor&quot;, mapOutput.get</span>
+<span class="nc" id="L462">				(strReferenceCompCumulativeConvexityAdjustment));</span>
 
-<span class="fc" id="L438">		double dblReferenceCumulativeConvexityAdjustmentPremium = mapOutput.get</span>
-<span class="fc" id="L439">			(strReferenceCompCumulativeConvexityPremium);</span>
+<span class="fc" id="L464">		double dblReferenceCumulativeConvexityAdjustmentPremium = mapOutput.get</span>
+<span class="fc" id="L465">			(strReferenceCompCumulativeConvexityPremium);</span>
 
-<span class="fc" id="L441">		mapOutput.put (&quot;ReferenceCumulativeConvexityAdjustmentPremium&quot;,</span>
-<span class="fc" id="L442">			dblReferenceCumulativeConvexityAdjustmentPremium);</span>
+<span class="fc" id="L467">		mapOutput.put (&quot;ReferenceCumulativeConvexityAdjustmentPremium&quot;,</span>
+<span class="fc" id="L468">			dblReferenceCumulativeConvexityAdjustmentPremium);</span>
 
-<span class="pc bpc" id="L444" title="1 of 2 branches missed.">		if (mapOutput.containsKey (strDerivedCompCumulativeConvexityAdjustment))</span>
-<span class="nc" id="L445">			mapOutput.put (&quot;DerivedCumulativeConvexityAdjustmentFactor&quot;, mapOutput.get</span>
-<span class="nc" id="L446">				(strDerivedCompCumulativeConvexityAdjustment));</span>
+<span class="pc bpc" id="L470" title="1 of 2 branches missed.">		if (mapOutput.containsKey (strDerivedCompCumulativeConvexityAdjustment))</span>
+<span class="nc" id="L471">			mapOutput.put (&quot;DerivedCumulativeConvexityAdjustmentFactor&quot;, mapOutput.get</span>
+<span class="nc" id="L472">				(strDerivedCompCumulativeConvexityAdjustment));</span>
 
-<span class="fc" id="L448">		double dblDerivedCumulativeConvexityAdjustmentPremium = mapOutput.get</span>
-<span class="fc" id="L449">			(strDerivedCompCumulativeConvexityPremium);</span>
+<span class="fc" id="L474">		double dblDerivedCumulativeConvexityAdjustmentPremium = mapOutput.get</span>
+<span class="fc" id="L475">			(strDerivedCompCumulativeConvexityPremium);</span>
 
-<span class="fc" id="L451">		mapOutput.put (&quot;DerivedCumulativeConvexityAdjustmentPremium&quot;,</span>
-<span class="fc" id="L452">			dblDerivedCumulativeConvexityAdjustmentPremium);</span>
+<span class="fc" id="L477">		mapOutput.put (&quot;DerivedCumulativeConvexityAdjustmentPremium&quot;,</span>
+<span class="fc" id="L478">			dblDerivedCumulativeConvexityAdjustmentPremium);</span>
 
 		try {
-<span class="fc" id="L455">			mapOutput.put (&quot;CumulativeConvexityAdjustmentPremium&quot;, _rcReference.initialNotional() *</span>
-<span class="fc" id="L456">				dblReferenceCumulativeConvexityAdjustmentPremium + _rcDerived.initialNotional() *</span>
+<span class="fc" id="L481">			mapOutput.put (&quot;CumulativeConvexityAdjustmentPremium&quot;, _rcReference.initialNotional() *</span>
+<span class="fc" id="L482">				dblReferenceCumulativeConvexityAdjustmentPremium + _rcDerived.initialNotional() *</span>
 					dblDerivedCumulativeConvexityAdjustmentPremium);
-<span class="nc" id="L458">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L459">			e.printStackTrace();</span>
+<span class="nc" id="L484">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L485">			e.printStackTrace();</span>
 
-<span class="nc" id="L461">			return null;</span>
-<span class="fc" id="L462">		}</span>
+<span class="nc" id="L487">			return null;</span>
+<span class="fc" id="L488">		}</span>
 
-<span class="fc" id="L464">		mapOutput.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L490">		mapOutput.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L466">		return mapOutput;</span>
+<span class="fc" id="L492">		return mapOutput;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

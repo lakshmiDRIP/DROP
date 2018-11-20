@@ -6,35 +6,53 @@ package org.drip.product.rates;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,37 +69,45 @@ package org.drip.product.rates;
  */
 
 /**
- * Stream implements the fixed and the floating streams.
+ * &lt;i&gt;Stream&lt;/i&gt; implements the fixed and the floating streams.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class Stream {
-<span class="fc" id="L60">	private java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; _lsPeriod = null;</span>
+<span class="fc" id="L86">	private java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; _lsPeriod = null;</span>
 
 	private double fxAdjustedNotional (
 		final int iDate,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L67">		org.drip.analytics.cashflow.CompositePeriod cpLeft = _lsPeriod.get (0);</span>
+<span class="fc" id="L93">		org.drip.analytics.cashflow.CompositePeriod cpLeft = _lsPeriod.get (0);</span>
 
-<span class="fc" id="L69">		int iLeftStartDate = cpLeft.startDate();</span>
+<span class="fc" id="L95">		int iLeftStartDate = cpLeft.startDate();</span>
 
-<span class="fc bfc" id="L71" title="All 2 branches covered.">		if (iDate &lt;= iLeftStartDate)</span>
-<span class="fc" id="L72">			return cpLeft.notional (iLeftStartDate) * cpLeft.couponFactor (iLeftStartDate) * cpLeft.fx</span>
-<span class="fc" id="L73">				(csqs);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		if (iDate &lt;= iLeftStartDate)</span>
+<span class="fc" id="L98">			return cpLeft.notional (iLeftStartDate) * cpLeft.couponFactor (iLeftStartDate) * cpLeft.fx</span>
+<span class="fc" id="L99">				(csqs);</span>
 
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : _lsPeriod) {</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">			if (cp.contains (iDate))</span>
-<span class="fc" id="L77">				return cp.notional (iDate) * cp.couponFactor (iDate) * cp.fx (csqs);</span>
-<span class="fc" id="L78">		}</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cp : _lsPeriod) {</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">			if (cp.contains (iDate))</span>
+<span class="fc" id="L103">				return cp.notional (iDate) * cp.couponFactor (iDate) * cp.fx (csqs);</span>
+<span class="fc" id="L104">		}</span>
 
-<span class="nc" id="L80">		org.drip.analytics.cashflow.CompositePeriod cpRight = _lsPeriod.get (_lsPeriod.size() - 1);</span>
+<span class="nc" id="L106">		org.drip.analytics.cashflow.CompositePeriod cpRight = _lsPeriod.get (_lsPeriod.size() - 1);</span>
 
-<span class="nc" id="L82">		int iRightEndDate = cpRight.endDate();</span>
+<span class="nc" id="L108">		int iRightEndDate = cpRight.endDate();</span>
 
-<span class="nc" id="L84">		return cpRight.notional (iRightEndDate) * cpRight.couponFactor (iRightEndDate) * cpRight.fx (csqs);</span>
+<span class="nc" id="L110">		return cpRight.notional (iRightEndDate) * cpRight.couponFactor (iRightEndDate) * cpRight.fx (csqs);</span>
 	}
 
 	/**
@@ -95,10 +121,10 @@ public class Stream {
 	public Stream (
 		final java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsPeriod)
 		throws java.lang.Exception
-<span class="fc" id="L98">	{</span>
-<span class="pc bpc" id="L99" title="2 of 4 branches missed.">		if (null == (_lsPeriod = lsPeriod) || 0 == _lsPeriod.size())</span>
-<span class="nc" id="L100">			throw new java.lang.Exception (&quot;Stream ctr =&gt; Invalid Input params!&quot;);</span>
-<span class="fc" id="L101">	}</span>
+<span class="fc" id="L124">	{</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		if (null == (_lsPeriod = lsPeriod) || 0 == _lsPeriod.size())</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;Stream ctr =&gt; Invalid Input params!&quot;);</span>
+<span class="fc" id="L127">	}</span>
 
 	/**
 	 * Retrieve a list of the component's coupon periods
@@ -108,7 +134,7 @@ public class Stream {
 
 	public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; periods()
 	{
-<span class="fc" id="L111">		return _lsPeriod;</span>
+<span class="fc" id="L137">		return _lsPeriod;</span>
 	}
 
 	/**
@@ -119,7 +145,7 @@ public class Stream {
 
 	public int freq()
 	{
-<span class="fc" id="L122">		return _lsPeriod.get (0).freq();</span>
+<span class="fc" id="L148">		return _lsPeriod.get (0).freq();</span>
 	}
 
 	/**
@@ -130,7 +156,7 @@ public class Stream {
 
 	public java.lang.String couponDC()
 	{
-<span class="fc" id="L133">		return _lsPeriod.get (0).periods().get (0).couponDC();</span>
+<span class="fc" id="L159">		return _lsPeriod.get (0).periods().get (0).couponDC();</span>
 	}
 
 	/**
@@ -141,7 +167,7 @@ public class Stream {
 
 	public boolean couponEOMAdjustment()
 	{
-<span class="fc" id="L144">		return _lsPeriod.get (0).periods().get (0).couponEOMAdjustment();</span>
+<span class="fc" id="L170">		return _lsPeriod.get (0).periods().get (0).couponEOMAdjustment();</span>
 	}
 
 	/**
@@ -152,7 +178,7 @@ public class Stream {
 
 	public java.lang.String calendar()
 	{
-<span class="fc" id="L155">		return _lsPeriod.get (0).periods().get (0).calendar();</span>
+<span class="fc" id="L181">		return _lsPeriod.get (0).periods().get (0).calendar();</span>
 	}
 
 	/**
@@ -163,7 +189,7 @@ public class Stream {
 
 	public java.lang.String accrualDC()
 	{
-<span class="nc" id="L166">		return _lsPeriod.get (0).periods().get (0).accrualDC();</span>
+<span class="nc" id="L192">		return _lsPeriod.get (0).periods().get (0).accrualDC();</span>
 	}
 
 	/**
@@ -174,7 +200,7 @@ public class Stream {
 
 	public boolean accrualEOMAdjustment()
 	{
-<span class="nc" id="L177">		return _lsPeriod.get (0).periods().get (0).accrualEOMAdjustment();</span>
+<span class="nc" id="L203">		return _lsPeriod.get (0).periods().get (0).accrualEOMAdjustment();</span>
 	}
 
 	/**
@@ -185,7 +211,7 @@ public class Stream {
 
 	public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
-<span class="nc" id="L188">		return _lsPeriod.get (0).creditLabel();</span>
+<span class="nc" id="L214">		return _lsPeriod.get (0).creditLabel();</span>
 	}
 
 	/**
@@ -196,7 +222,7 @@ public class Stream {
 
 	public org.drip.state.identifier.FloaterLabel floaterLabel()
 	{
-<span class="fc" id="L199">		return _lsPeriod.get (0).floaterLabel();</span>
+<span class="fc" id="L225">		return _lsPeriod.get (0).floaterLabel();</span>
 	}
 
 	/**
@@ -207,9 +233,9 @@ public class Stream {
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-<span class="fc" id="L210">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+<span class="fc" id="L236">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
 
-<span class="pc bpc" id="L212" title="1 of 4 branches missed.">		return null != floaterLabel &amp;&amp; floaterLabel instanceof org.drip.state.identifier.ForwardLabel ?</span>
+<span class="pc bpc" id="L238" title="1 of 4 branches missed.">		return null != floaterLabel &amp;&amp; floaterLabel instanceof org.drip.state.identifier.ForwardLabel ?</span>
 			(org.drip.state.identifier.ForwardLabel) floaterLabel : null;
 	}
 
@@ -221,9 +247,9 @@ public class Stream {
 
 	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel()
 	{
-<span class="nc" id="L224">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+<span class="nc" id="L250">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
 
-<span class="nc bnc" id="L226" title="All 4 branches missed.">		return null != floaterLabel &amp;&amp; floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel ?</span>
+<span class="nc bnc" id="L252" title="All 4 branches missed.">		return null != floaterLabel &amp;&amp; floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel ?</span>
 			(org.drip.state.identifier.OTCFixFloatLabel) floaterLabel : null;
 	}
 
@@ -235,7 +261,7 @@ public class Stream {
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="fc" id="L238">		return _lsPeriod.get (0).fundingLabel();</span>
+<span class="fc" id="L264">		return _lsPeriod.get (0).fundingLabel();</span>
 	}
 
 	/**
@@ -246,7 +272,7 @@ public class Stream {
 
 	public org.drip.state.identifier.FXLabel fxLabel()
 	{
-<span class="nc" id="L249">		return _lsPeriod.get (0).fxLabel();</span>
+<span class="nc" id="L275">		return _lsPeriod.get (0).fxLabel();</span>
 	}
 
 	/**
@@ -257,7 +283,7 @@ public class Stream {
 
 	public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; cashFlowPeriod()
 	{
-<span class="fc" id="L260">		return _lsPeriod;</span>
+<span class="fc" id="L286">		return _lsPeriod;</span>
 	}
 
 	/**
@@ -272,14 +298,14 @@ public class Stream {
 		final int iDate)
 	{
 		try {
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod cp : _lsPeriod) {</span>
-<span class="fc bfc" id="L276" title="All 2 branches covered.">				if (cp.contains (iDate)) return cp;</span>
-<span class="fc" id="L277">			}</span>
-<span class="nc" id="L278">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L279">			e.printStackTrace();</span>
-<span class="nc" id="L280">		}</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod cp : _lsPeriod) {</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">				if (cp.contains (iDate)) return cp;</span>
+<span class="fc" id="L303">			}</span>
+<span class="nc" id="L304">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L305">			e.printStackTrace();</span>
+<span class="nc" id="L306">		}</span>
 
-<span class="nc" id="L282">		return null;</span>
+<span class="nc" id="L308">		return null;</span>
 	}
 
 	/**
@@ -290,7 +316,7 @@ public class Stream {
 
 	public double initialNotional()
 	{
-<span class="fc" id="L293">		return _lsPeriod.get (0).baseNotional();</span>
+<span class="fc" id="L319">		return _lsPeriod.get (0).baseNotional();</span>
 	}
 
 	/**
@@ -307,15 +333,15 @@ public class Stream {
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L310">		int iEffectiveDate = effective().julian();</span>
+<span class="fc" id="L336">		int iEffectiveDate = effective().julian();</span>
 
-<span class="fc bfc" id="L312" title="All 2 branches covered.">		int iAdjustedDate = iEffectiveDate &gt; iDate ? iEffectiveDate : iDate;</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">		int iAdjustedDate = iEffectiveDate &gt; iDate ? iEffectiveDate : iDate;</span>
 
-<span class="fc" id="L314">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iAdjustedDate);</span>
+<span class="fc" id="L340">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iAdjustedDate);</span>
 
-<span class="pc bpc" id="L316" title="1 of 2 branches missed.">		if (null == cp) throw new java.lang.Exception (&quot;Stream::notional =&gt; Invalid Input&quot;);</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">		if (null == cp) throw new java.lang.Exception (&quot;Stream::notional =&gt; Invalid Input&quot;);</span>
 
-<span class="fc" id="L318">		return cp.notional (iAdjustedDate);</span>
+<span class="fc" id="L344">		return cp.notional (iAdjustedDate);</span>
 	}
 
 	/**
@@ -334,14 +360,14 @@ public class Stream {
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L337">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iDate1);</span>
+<span class="nc" id="L363">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iDate1);</span>
 
-<span class="nc bnc" id="L339" title="All 4 branches missed.">		if (null == cp || !cp.contains (iDate2))</span>
-<span class="nc" id="L340">			throw new java.lang.Exception (&quot;Stream::notional =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L365" title="All 4 branches missed.">		if (null == cp || !cp.contains (iDate2))</span>
+<span class="nc" id="L366">			throw new java.lang.Exception (&quot;Stream::notional =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L342">		org.drip.quant.common.Array2D notlSchedule = cp.notionalSchedule();</span>
+<span class="nc" id="L368">		org.drip.quant.common.Array2D notlSchedule = cp.notionalSchedule();</span>
 
-<span class="nc bnc" id="L344" title="All 2 branches missed.">		return initialNotional() * (null == notlSchedule ? 1. : notlSchedule.y (iDate1, iDate2));</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">		return initialNotional() * (null == notlSchedule ? 1. : notlSchedule.y (iDate1, iDate2));</span>
 	}
 
 	/**
@@ -353,12 +379,12 @@ public class Stream {
 	public org.drip.analytics.date.JulianDate effective()
 	{
 		try {
-<span class="fc" id="L356">			return new org.drip.analytics.date.JulianDate (_lsPeriod.get (0).startDate());</span>
-<span class="nc" id="L357">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L358">			e.printStackTrace();</span>
+<span class="fc" id="L382">			return new org.drip.analytics.date.JulianDate (_lsPeriod.get (0).startDate());</span>
+<span class="nc" id="L383">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L384">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L361">		return null;</span>
+<span class="nc" id="L387">		return null;</span>
 	}
 
 	/**
@@ -370,12 +396,12 @@ public class Stream {
 	public org.drip.analytics.date.JulianDate maturity()
 	{
 		try {
-<span class="fc" id="L373">			return new org.drip.analytics.date.JulianDate (_lsPeriod.get (_lsPeriod.size() - 1).endDate());</span>
-<span class="nc" id="L374">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L375">			e.printStackTrace();</span>
+<span class="fc" id="L399">			return new org.drip.analytics.date.JulianDate (_lsPeriod.get (_lsPeriod.size() - 1).endDate());</span>
+<span class="nc" id="L400">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L401">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L378">		return null;</span>
+<span class="nc" id="L404">		return null;</span>
 	}
 
 	/**
@@ -387,12 +413,12 @@ public class Stream {
 	public org.drip.analytics.date.JulianDate firstCouponDate()
 	{
 		try {
-<span class="nc" id="L390">			return new org.drip.analytics.date.JulianDate (_lsPeriod.get (0).endDate());</span>
-<span class="nc" id="L391">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L392">			e.printStackTrace();</span>
+<span class="nc" id="L416">			return new org.drip.analytics.date.JulianDate (_lsPeriod.get (0).endDate());</span>
+<span class="nc" id="L417">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L418">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L395">		return null;</span>
+<span class="nc" id="L421">		return null;</span>
 	}
 
 	/**
@@ -403,7 +429,7 @@ public class Stream {
 
 	public java.lang.String couponCurrency()
 	{
-<span class="fc" id="L406">		return _lsPeriod.get (_lsPeriod.size() - 1).couponCurrency();</span>
+<span class="fc" id="L432">		return _lsPeriod.get (_lsPeriod.size() - 1).couponCurrency();</span>
 	}
 
 	/**
@@ -414,7 +440,7 @@ public class Stream {
 
 	public java.lang.String payCurrency()
 	{
-<span class="fc" id="L417">		return _lsPeriod.get (_lsPeriod.size() - 1).payCurrency();</span>
+<span class="fc" id="L443">		return _lsPeriod.get (_lsPeriod.size() - 1).payCurrency();</span>
 	}
 
 	/**
@@ -425,13 +451,13 @@ public class Stream {
 
 	public java.util.Set&lt;java.lang.String&gt; cashflowCurrencySet()
 	{
-<span class="nc" id="L428">		java.util.Set&lt;java.lang.String&gt; setCcy = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L454">		java.util.Set&lt;java.lang.String&gt; setCcy = new java.util.HashSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L430">		setCcy.add (payCurrency());</span>
+<span class="nc" id="L456">		setCcy.add (payCurrency());</span>
 
-<span class="nc" id="L432">		setCcy.add (couponCurrency());</span>
+<span class="nc" id="L458">		setCcy.add (couponCurrency());</span>
 
-<span class="nc" id="L434">		return setCcy;</span>
+<span class="nc" id="L460">		return setCcy;</span>
 	}
 
 	/**
@@ -442,14 +468,14 @@ public class Stream {
 
 	public java.lang.String name()
 	{
-<span class="fc" id="L445">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+<span class="fc" id="L471">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
 
-<span class="fc" id="L447">		java.lang.String strTrailer = &quot;::{&quot; + effective() + &quot;-&gt;&quot; + maturity() + &quot;}&quot;;</span>
+<span class="fc" id="L473">		java.lang.String strTrailer = &quot;::{&quot; + effective() + &quot;-&gt;&quot; + maturity() + &quot;}&quot;;</span>
 
-<span class="fc bfc" id="L449" title="All 2 branches covered.">		if (null != floaterLabel)</span>
-<span class="fc" id="L450">			return &quot;FLOATSTREAM::&quot; + payCurrency() + &quot;::&quot; + floaterLabel.fullyQualifiedName() + strTrailer;</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">		if (null != floaterLabel)</span>
+<span class="fc" id="L476">			return &quot;FLOATSTREAM::&quot; + payCurrency() + &quot;::&quot; + floaterLabel.fullyQualifiedName() + strTrailer;</span>
 
-<span class="fc" id="L452">		return &quot;FIXEDSTREAM::&quot; + payCurrency() + &quot;/&quot; + couponCurrency() + &quot;::&quot; + (12 / freq()) + strTrailer;</span>
+<span class="fc" id="L478">		return &quot;FIXEDSTREAM::&quot; + payCurrency() + &quot;/&quot; + couponCurrency() + &quot;::&quot; + (12 / freq()) + strTrailer;</span>
 	}
 
 	/**
@@ -467,11 +493,11 @@ public class Stream {
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="pc bpc" id="L470" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
 
-<span class="fc" id="L472">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iAccrualEndDate);</span>
+<span class="fc" id="L498">		org.drip.analytics.cashflow.CompositePeriod cp = containingPeriod (iAccrualEndDate);</span>
 
-<span class="pc bpc" id="L474" title="1 of 2 branches missed.">		return null == cp ? null : cp.couponMetrics (valParams.valueDate(), csqs);</span>
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">		return null == cp ? null : cp.couponMetrics (valParams.valueDate(), csqs);</span>
 	}
 
 	/**
@@ -486,13 +512,13 @@ public class Stream {
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="nc bnc" id="L489" title="All 2 branches missed.">			return null == floaterLabel() ? new org.drip.product.calib.FixedStreamQuoteSet (aLSS) : new</span>
+<span class="nc bnc" id="L515" title="All 2 branches missed.">			return null == floaterLabel() ? new org.drip.product.calib.FixedStreamQuoteSet (aLSS) : new</span>
 				org.drip.product.calib.FloatingStreamQuoteSet (aLSS);
-<span class="nc" id="L491">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L492">			e.printStackTrace();</span>
+<span class="nc" id="L517">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L518">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L495">		return null;</span>
+<span class="nc" id="L521">		return null;</span>
 	}
 
 	/**
@@ -503,7 +529,7 @@ public class Stream {
 
 	public double basis()
 	{
-<span class="fc" id="L506">		return _lsPeriod.get (0).basis();</span>
+<span class="fc" id="L532">		return _lsPeriod.get (0).basis();</span>
 	}
 
 	/**
@@ -523,636 +549,636 @@ public class Stream {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L526" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+<span class="pc bpc" id="L552" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
 
-<span class="fc" id="L528">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
+<span class="fc" id="L554">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
-<span class="pc bpc" id="L530" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L556" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="fc" id="L532">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L558">		long lStart = System.nanoTime();</span>
 
-<span class="fc" id="L534">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L560">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L536">		double dblAccrued01 = 0.;</span>
-<span class="fc" id="L537">		double dblTotalCoupon = 0.;</span>
-<span class="fc" id="L538">		double dblCumulativeCouponDCF = 0.;</span>
-<span class="fc" id="L539">		double dblCumulativeCouponAmount = 0.;</span>
-<span class="fc" id="L540">		double dblAccrualCoupon = java.lang.Double.NaN;</span>
-<span class="fc" id="L541">		double dblUnadjustedDirtyPV = 0.;</span>
-<span class="fc" id="L542">		double dblUnadjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L543">		double dblCompoundingAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L544">		double dblCompoundingAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L545">		double dblCashPayDF = java.lang.Double.NaN;</span>
-<span class="fc" id="L546">		int iResetDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L547">		double dblFXAdjustedValueNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L548">		double dblCreditForwardConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L549">		double dblCreditForwardConvexityAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L550">		double dblCreditFundingConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L551">		double dblCreditFundingConvexityAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L552">		double dblCreditFXConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L553">		double dblCreditFXConvexityAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L554">		double dblCumulativeConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L555">		double dblCumulativeConvexityAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L556">		double dblForwardFundingConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L557">		double dblForwardFundingConvexityAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L558">		double dblForwardFXConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L559">		double dblForwardFXConvexityAdjustedDirtyDV01 = 0.;</span>
-<span class="fc" id="L560">		double dblFundingFXConvexityAdjustedDirtyPV = 0.;</span>
-<span class="fc" id="L561">		double dblFundingFXConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L562">		double dblAccrued01 = 0.;</span>
+<span class="fc" id="L563">		double dblTotalCoupon = 0.;</span>
+<span class="fc" id="L564">		double dblCumulativeCouponDCF = 0.;</span>
+<span class="fc" id="L565">		double dblCumulativeCouponAmount = 0.;</span>
+<span class="fc" id="L566">		double dblAccrualCoupon = java.lang.Double.NaN;</span>
+<span class="fc" id="L567">		double dblUnadjustedDirtyPV = 0.;</span>
+<span class="fc" id="L568">		double dblUnadjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L569">		double dblCompoundingAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L570">		double dblCompoundingAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L571">		double dblCashPayDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L572">		int iResetDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L573">		double dblFXAdjustedValueNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L574">		double dblCreditForwardConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L575">		double dblCreditForwardConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L576">		double dblCreditFundingConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L577">		double dblCreditFundingConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L578">		double dblCreditFXConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L579">		double dblCreditFXConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L580">		double dblCumulativeConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L581">		double dblCumulativeConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L582">		double dblForwardFundingConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L583">		double dblForwardFundingConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L584">		double dblForwardFXConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L585">		double dblForwardFXConvexityAdjustedDirtyDV01 = 0.;</span>
+<span class="fc" id="L586">		double dblFundingFXConvexityAdjustedDirtyPV = 0.;</span>
+<span class="fc" id="L587">		double dblFundingFXConvexityAdjustedDirtyDV01 = 0.;</span>
 
-<span class="fc bfc" id="L563" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="fc" id="L564">			double dblPeriodFX = java.lang.Double.NaN;</span>
-<span class="fc" id="L565">			double dblPeriodNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L566">			double dblUnadjustedDirtyPeriodDV01 = java.lang.Double.NaN;</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="fc" id="L590">			double dblPeriodFX = java.lang.Double.NaN;</span>
+<span class="fc" id="L591">			double dblPeriodNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L592">			double dblUnadjustedDirtyPeriodDV01 = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L568">			int iPeriodPayDate = period.payDate();</span>
+<span class="fc" id="L594">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="fc" id="L570">			int iPeriodEndDate = period.endDate();</span>
+<span class="fc" id="L596">			int iPeriodEndDate = period.endDate();</span>
 
 			try {
-<span class="fc" id="L573">				dblPeriodNotional = period.notional (iPeriodEndDate) * period.couponFactor (iPeriodEndDate);</span>
+<span class="fc" id="L599">				dblPeriodNotional = period.notional (iPeriodEndDate) * period.couponFactor (iPeriodEndDate);</span>
 
-<span class="fc" id="L575">				dblPeriodFX = period.fx (csqs);</span>
-<span class="nc" id="L576">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L577">				e.printStackTrace();</span>
+<span class="fc" id="L601">				dblPeriodFX = period.fx (csqs);</span>
+<span class="nc" id="L602">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L603">				e.printStackTrace();</span>
 
-<span class="nc" id="L579">				return null;</span>
-<span class="fc" id="L580">			}</span>
+<span class="nc" id="L605">				return null;</span>
+<span class="fc" id="L606">			}</span>
 
-<span class="fc bfc" id="L582" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) {</span>
-<span class="fc" id="L583">				org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics</span>
-<span class="fc" id="L584">					(iPeriodEndDate, csqs);</span>
+<span class="fc bfc" id="L608" title="All 2 branches covered.">			if (iPeriodPayDate &lt; iValueDate) {</span>
+<span class="fc" id="L609">				org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics</span>
+<span class="fc" id="L610">					(iPeriodEndDate, csqs);</span>
 
-<span class="pc bpc" id="L586" title="1 of 2 branches missed.">				if (null == cpcm) return null;</span>
+<span class="pc bpc" id="L612" title="1 of 2 branches missed.">				if (null == cpcm) return null;</span>
 
-<span class="fc" id="L588">				double dblPeriodDCF = cpcm.dcf();</span>
+<span class="fc" id="L614">				double dblPeriodDCF = cpcm.dcf();</span>
 
-<span class="fc" id="L590">				dblCumulativeCouponDCF += dblPeriodDCF;</span>
+<span class="fc" id="L616">				dblCumulativeCouponDCF += dblPeriodDCF;</span>
 
-<span class="fc" id="L592">				dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * cpcm.rate() * dblPeriodDCF;</span>
+<span class="fc" id="L618">				dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * cpcm.rate() * dblPeriodDCF;</span>
 
-<span class="fc" id="L594">				continue;</span>
+<span class="fc" id="L620">				continue;</span>
 			}
 
-<span class="fc" id="L597">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics (iValueDate,</span>
+<span class="fc" id="L623">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics (iValueDate,</span>
 				csqs);
 
-<span class="pc bpc" id="L600" title="1 of 2 branches missed.">			if (null == cpcm) return null;</span>
+<span class="pc bpc" id="L626" title="1 of 2 branches missed.">			if (null == cpcm) return null;</span>
 
-<span class="fc" id="L602">			double dblPeriodDCF = cpcm.dcf();</span>
+<span class="fc" id="L628">			double dblPeriodDCF = cpcm.dcf();</span>
 
-<span class="fc" id="L604">			double dblPeriodFullRate = cpcm.rate();</span>
+<span class="fc" id="L630">			double dblPeriodFullRate = cpcm.rate();</span>
 
-<span class="fc" id="L606">			org.drip.analytics.output.CompositePeriodAccrualMetrics cpam = period.accrualMetrics (iValueDate,</span>
+<span class="fc" id="L632">			org.drip.analytics.output.CompositePeriodAccrualMetrics cpam = period.accrualMetrics (iValueDate,</span>
 				csqs);
 
 			try {
-<span class="fc bfc" id="L610" title="All 2 branches covered.">				if (null != cpam) {</span>
-<span class="fc" id="L611">					dblAccrualCoupon = cpam.rate();</span>
+<span class="fc bfc" id="L636" title="All 2 branches covered.">				if (null != cpam) {</span>
+<span class="fc" id="L637">					dblAccrualCoupon = cpam.rate();</span>
 
-<span class="fc" id="L613">					iResetDate = cpam.resetDate();</span>
+<span class="fc" id="L639">					iResetDate = cpam.resetDate();</span>
 
-<span class="fc" id="L615">					double dblPeriodAccrualDCF = cpam.dcf();</span>
+<span class="fc" id="L641">					double dblPeriodAccrualDCF = cpam.dcf();</span>
 
-<span class="fc" id="L617">					dblCumulativeCouponDCF += dblPeriodAccrualDCF;</span>
-<span class="fc" id="L618">					dblAccrued01 = 0.0001 * dblPeriodAccrualDCF * dblPeriodNotional * dblPeriodFX;</span>
+<span class="fc" id="L643">					dblCumulativeCouponDCF += dblPeriodAccrualDCF;</span>
+<span class="fc" id="L644">					dblAccrued01 = 0.0001 * dblPeriodAccrualDCF * dblPeriodNotional * dblPeriodFX;</span>
 
-<span class="fc" id="L620">					dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * dblAccrualCoupon *</span>
+<span class="fc" id="L646">					dblCumulativeCouponAmount += dblPeriodNotional * dblPeriodFX * dblAccrualCoupon *</span>
 						dblPeriodAccrualDCF;
 				}
 
-<span class="fc" id="L624">				dblUnadjustedDirtyPeriodDV01 = 0.0001 * dblPeriodDCF * dblPeriodNotional * dblPeriodFX *</span>
-<span class="fc" id="L625">					period.survival (csqs) * period.df (csqs);</span>
-<span class="nc" id="L626">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L627">				e.printStackTrace();</span>
+<span class="fc" id="L650">				dblUnadjustedDirtyPeriodDV01 = 0.0001 * dblPeriodDCF * dblPeriodNotional * dblPeriodFX *</span>
+<span class="fc" id="L651">					period.survival (csqs) * period.df (csqs);</span>
+<span class="nc" id="L652">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L653">				e.printStackTrace();</span>
 
-<span class="nc" id="L629">				return null;</span>
-<span class="fc" id="L630">			}</span>
+<span class="nc" id="L655">				return null;</span>
+<span class="fc" id="L656">			}</span>
 
-<span class="fc" id="L632">			double dblCompoundingAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 * cpcm.compounding();</span>
+<span class="fc" id="L658">			double dblCompoundingAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 * cpcm.compounding();</span>
 
-<span class="fc" id="L634">			double dblCreditForwardConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L635">				cpcm.creditForward();</span>
+<span class="fc" id="L660">			double dblCreditForwardConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L661">				cpcm.creditForward();</span>
 
-<span class="fc" id="L637">			double dblCreditFundingConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L638">				cpcm.creditFunding();</span>
+<span class="fc" id="L663">			double dblCreditFundingConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L664">				cpcm.creditFunding();</span>
 
-<span class="fc" id="L640">			double dblCreditFXConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L641">				cpcm.creditFX();</span>
+<span class="fc" id="L666">			double dblCreditFXConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L667">				cpcm.creditFX();</span>
 
-<span class="fc" id="L643">			double dblCumulativeConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L644">				cpcm.cumulative();</span>
+<span class="fc" id="L669">			double dblCumulativeConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L670">				cpcm.cumulative();</span>
 
-<span class="fc" id="L646">			double dblForwardFundingConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L647">				cpcm.forwardFunding();</span>
+<span class="fc" id="L672">			double dblForwardFundingConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L673">				cpcm.forwardFunding();</span>
 
-<span class="fc" id="L649">			double dblForwardFXConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L650">				cpcm.forwardFX();</span>
+<span class="fc" id="L675">			double dblForwardFXConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L676">				cpcm.forwardFX();</span>
 
-<span class="fc" id="L652">			double dblFundingFXConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
-<span class="fc" id="L653">				cpcm.fundingFX();</span>
+<span class="fc" id="L678">			double dblFundingFXConvexityAdjustedDirtyPeriodDV01 = dblUnadjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L679">				cpcm.fundingFX();</span>
 
-<span class="fc" id="L655">			dblTotalCoupon += dblPeriodFullRate;</span>
-<span class="fc" id="L656">			dblUnadjustedDirtyDV01 += dblUnadjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L657">			dblUnadjustedDirtyPV += dblUnadjustedDirtyPeriodDV01 * 10000. * dblPeriodFullRate;</span>
-<span class="fc" id="L658">			dblCompoundingAdjustedDirtyDV01 += dblCompoundingAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L659">			dblCompoundingAdjustedDirtyPV += dblCompoundingAdjustedDirtyPeriodDV01 * 10000. *</span>
+<span class="fc" id="L681">			dblTotalCoupon += dblPeriodFullRate;</span>
+<span class="fc" id="L682">			dblUnadjustedDirtyDV01 += dblUnadjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L683">			dblUnadjustedDirtyPV += dblUnadjustedDirtyPeriodDV01 * 10000. * dblPeriodFullRate;</span>
+<span class="fc" id="L684">			dblCompoundingAdjustedDirtyDV01 += dblCompoundingAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L685">			dblCompoundingAdjustedDirtyPV += dblCompoundingAdjustedDirtyPeriodDV01 * 10000. *</span>
 				dblPeriodFullRate;
-<span class="fc" id="L661">			dblCreditForwardConvexityAdjustedDirtyDV01 += dblCreditForwardConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L662">			dblCreditForwardConvexityAdjustedDirtyPV += dblCreditForwardConvexityAdjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L687">			dblCreditForwardConvexityAdjustedDirtyDV01 += dblCreditForwardConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L688">			dblCreditForwardConvexityAdjustedDirtyPV += dblCreditForwardConvexityAdjustedDirtyPeriodDV01 *</span>
 				10000. * dblPeriodFullRate;
-<span class="fc" id="L664">			dblCreditFundingConvexityAdjustedDirtyDV01 += dblCreditFundingConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L665">			dblCreditFundingConvexityAdjustedDirtyPV += dblCreditFundingConvexityAdjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L690">			dblCreditFundingConvexityAdjustedDirtyDV01 += dblCreditFundingConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L691">			dblCreditFundingConvexityAdjustedDirtyPV += dblCreditFundingConvexityAdjustedDirtyPeriodDV01 *</span>
 				10000. * dblPeriodFullRate;
-<span class="fc" id="L667">			dblCreditFXConvexityAdjustedDirtyDV01 += dblCreditFXConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L668">			dblCreditFXConvexityAdjustedDirtyPV += dblCreditFXConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
+<span class="fc" id="L693">			dblCreditFXConvexityAdjustedDirtyDV01 += dblCreditFXConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L694">			dblCreditFXConvexityAdjustedDirtyPV += dblCreditFXConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
 				dblPeriodFullRate;
-<span class="fc" id="L670">			dblCumulativeConvexityAdjustedDirtyDV01 += dblCumulativeConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L671">			dblCumulativeConvexityAdjustedDirtyPV += dblCumulativeConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
+<span class="fc" id="L696">			dblCumulativeConvexityAdjustedDirtyDV01 += dblCumulativeConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L697">			dblCumulativeConvexityAdjustedDirtyPV += dblCumulativeConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
 				dblPeriodFullRate;
-<span class="fc" id="L673">			dblForwardFundingConvexityAdjustedDirtyDV01 += dblForwardFundingConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L674">			dblForwardFundingConvexityAdjustedDirtyPV += dblForwardFundingConvexityAdjustedDirtyPeriodDV01 *</span>
+<span class="fc" id="L699">			dblForwardFundingConvexityAdjustedDirtyDV01 += dblForwardFundingConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L700">			dblForwardFundingConvexityAdjustedDirtyPV += dblForwardFundingConvexityAdjustedDirtyPeriodDV01 *</span>
 				10000. * dblPeriodFullRate;
-<span class="fc" id="L676">			dblForwardFXConvexityAdjustedDirtyDV01 += dblForwardFXConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L677">			dblForwardFXConvexityAdjustedDirtyPV += dblForwardFXConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
+<span class="fc" id="L702">			dblForwardFXConvexityAdjustedDirtyDV01 += dblForwardFXConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L703">			dblForwardFXConvexityAdjustedDirtyPV += dblForwardFXConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
 				dblPeriodFullRate;
-<span class="fc" id="L679">			dblFundingFXConvexityAdjustedDirtyDV01 += dblFundingFXConvexityAdjustedDirtyPeriodDV01;</span>
-<span class="fc" id="L680">			dblFundingFXConvexityAdjustedDirtyPV += dblFundingFXConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
+<span class="fc" id="L705">			dblFundingFXConvexityAdjustedDirtyDV01 += dblFundingFXConvexityAdjustedDirtyPeriodDV01;</span>
+<span class="fc" id="L706">			dblFundingFXConvexityAdjustedDirtyPV += dblFundingFXConvexityAdjustedDirtyPeriodDV01 * 10000. *</span>
 				dblPeriodFullRate;
-<span class="fc" id="L682">		}</span>
+<span class="fc" id="L708">		}</span>
 
 		try {
-<span class="fc" id="L685">			dblCashPayDF = dcFunding.df (iValueDate);</span>
+<span class="fc" id="L711">			dblCashPayDF = dcFunding.df (iValueDate);</span>
 
-<span class="fc" id="L687">			dblFXAdjustedValueNotional = fxAdjustedNotional (iValueDate, csqs);</span>
-<span class="nc" id="L688">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L689">			e.printStackTrace();</span>
+<span class="fc" id="L713">			dblFXAdjustedValueNotional = fxAdjustedNotional (iValueDate, csqs);</span>
+<span class="nc" id="L714">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L715">			e.printStackTrace();</span>
 
-<span class="nc" id="L691">			return null;</span>
-<span class="fc" id="L692">		}</span>
+<span class="nc" id="L717">			return null;</span>
+<span class="fc" id="L718">		}</span>
 
-<span class="fc" id="L694">		dblUnadjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L695">		dblUnadjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L696">		dblCompoundingAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L697">		dblCompoundingAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L698">		dblCreditForwardConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L699">		dblCreditForwardConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L700">		dblCreditFundingConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L701">		dblCreditFundingConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L702">		dblCreditFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L703">		dblCreditFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L704">		dblCumulativeConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L705">		dblCumulativeConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L706">		dblForwardFundingConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L707">		dblForwardFundingConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L708">		dblForwardFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L709">		dblForwardFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc" id="L710">		dblFundingFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
-<span class="fc" id="L711">		dblFundingFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
-<span class="fc bfc" id="L712" title="All 2 branches covered.">		double dblAccrued = 0. == dblAccrued01 ? 0. : dblAccrued01 * 10000. * dblAccrualCoupon;</span>
-<span class="fc" id="L713">		double dblUnadjustedCleanPV = dblUnadjustedDirtyPV - dblAccrued;</span>
-<span class="fc" id="L714">		double dblUnadjustedCleanDV01 = dblUnadjustedDirtyDV01 - dblAccrued01;</span>
-<span class="fc" id="L715">		double dblUnadjustedFairPremium = 0.0001 * dblUnadjustedCleanPV / dblUnadjustedCleanDV01;</span>
-<span class="fc" id="L716">		double dblCompoundingAdjustedCleanPV = dblCompoundingAdjustedDirtyPV - dblAccrued;</span>
-<span class="fc" id="L717">		double dblCompoundingAdjustedCleanDV01 = dblCompoundingAdjustedDirtyDV01 - dblAccrued01;</span>
-<span class="fc" id="L718">		double dblCompoundingAdjustedFairPremium = 0.0001 * dblCompoundingAdjustedCleanPV /</span>
+<span class="fc" id="L720">		dblUnadjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L721">		dblUnadjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L722">		dblCompoundingAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L723">		dblCompoundingAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L724">		dblCreditForwardConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L725">		dblCreditForwardConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L726">		dblCreditFundingConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L727">		dblCreditFundingConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L728">		dblCreditFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L729">		dblCreditFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L730">		dblCumulativeConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L731">		dblCumulativeConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L732">		dblForwardFundingConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L733">		dblForwardFundingConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L734">		dblForwardFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L735">		dblForwardFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc" id="L736">		dblFundingFXConvexityAdjustedDirtyPV /= dblCashPayDF;</span>
+<span class="fc" id="L737">		dblFundingFXConvexityAdjustedDirtyDV01 /= dblCashPayDF;</span>
+<span class="fc bfc" id="L738" title="All 2 branches covered.">		double dblAccrued = 0. == dblAccrued01 ? 0. : dblAccrued01 * 10000. * dblAccrualCoupon;</span>
+<span class="fc" id="L739">		double dblUnadjustedCleanPV = dblUnadjustedDirtyPV - dblAccrued;</span>
+<span class="fc" id="L740">		double dblUnadjustedCleanDV01 = dblUnadjustedDirtyDV01 - dblAccrued01;</span>
+<span class="fc" id="L741">		double dblUnadjustedFairPremium = 0.0001 * dblUnadjustedCleanPV / dblUnadjustedCleanDV01;</span>
+<span class="fc" id="L742">		double dblCompoundingAdjustedCleanPV = dblCompoundingAdjustedDirtyPV - dblAccrued;</span>
+<span class="fc" id="L743">		double dblCompoundingAdjustedCleanDV01 = dblCompoundingAdjustedDirtyDV01 - dblAccrued01;</span>
+<span class="fc" id="L744">		double dblCompoundingAdjustedFairPremium = 0.0001 * dblCompoundingAdjustedCleanPV /</span>
 			dblCompoundingAdjustedCleanDV01;
-<span class="fc" id="L720">		double dblCreditForwardConvexityAdjustedCleanPV = dblCreditForwardConvexityAdjustedDirtyPV -</span>
+<span class="fc" id="L746">		double dblCreditForwardConvexityAdjustedCleanPV = dblCreditForwardConvexityAdjustedDirtyPV -</span>
 			dblAccrued;
-<span class="fc" id="L722">		double dblCreditForwardConvexityAdjustedCleanDV01 = dblCreditForwardConvexityAdjustedDirtyDV01 -</span>
+<span class="fc" id="L748">		double dblCreditForwardConvexityAdjustedCleanDV01 = dblCreditForwardConvexityAdjustedDirtyDV01 -</span>
 			dblAccrued01;
-<span class="fc" id="L724">		double dblCreditForwardConvexityAdjustedFairPremium = 0.0001 *</span>
+<span class="fc" id="L750">		double dblCreditForwardConvexityAdjustedFairPremium = 0.0001 *</span>
 			dblCreditForwardConvexityAdjustedCleanPV / dblCreditForwardConvexityAdjustedCleanDV01;
-<span class="fc" id="L726">		double dblCreditFundingConvexityAdjustedCleanPV = dblCreditFundingConvexityAdjustedDirtyPV -</span>
+<span class="fc" id="L752">		double dblCreditFundingConvexityAdjustedCleanPV = dblCreditFundingConvexityAdjustedDirtyPV -</span>
 			dblAccrued;
-<span class="fc" id="L728">		double dblCreditFundingConvexityAdjustedCleanDV01 = dblCreditFundingConvexityAdjustedDirtyDV01 -</span>
+<span class="fc" id="L754">		double dblCreditFundingConvexityAdjustedCleanDV01 = dblCreditFundingConvexityAdjustedDirtyDV01 -</span>
 			dblAccrued01;
-<span class="fc" id="L730">		double dblCreditFundingConvexityAdjustedFairPremium = 0.0001 *</span>
+<span class="fc" id="L756">		double dblCreditFundingConvexityAdjustedFairPremium = 0.0001 *</span>
 			dblCreditFundingConvexityAdjustedCleanPV / dblCreditFundingConvexityAdjustedCleanDV01;
-<span class="fc" id="L732">		double dblCreditFXConvexityAdjustedCleanPV = dblCreditFXConvexityAdjustedDirtyPV - dblAccrued;</span>
-<span class="fc" id="L733">		double dblCreditFXConvexityAdjustedCleanDV01 = dblCreditFXConvexityAdjustedDirtyDV01 - dblAccrued01;</span>
-<span class="fc" id="L734">		double dblCreditFXConvexityAdjustedFairPremium = 0.0001 * dblCreditFXConvexityAdjustedCleanPV /</span>
+<span class="fc" id="L758">		double dblCreditFXConvexityAdjustedCleanPV = dblCreditFXConvexityAdjustedDirtyPV - dblAccrued;</span>
+<span class="fc" id="L759">		double dblCreditFXConvexityAdjustedCleanDV01 = dblCreditFXConvexityAdjustedDirtyDV01 - dblAccrued01;</span>
+<span class="fc" id="L760">		double dblCreditFXConvexityAdjustedFairPremium = 0.0001 * dblCreditFXConvexityAdjustedCleanPV /</span>
 			dblCreditFXConvexityAdjustedCleanDV01;
-<span class="fc" id="L736">		double dblCumulativeConvexityAdjustedCleanPV = dblCumulativeConvexityAdjustedDirtyPV - dblAccrued;</span>
-<span class="fc" id="L737">		double dblCumulativeConvexityAdjustedCleanDV01 = dblCumulativeConvexityAdjustedDirtyDV01 -</span>
+<span class="fc" id="L762">		double dblCumulativeConvexityAdjustedCleanPV = dblCumulativeConvexityAdjustedDirtyPV - dblAccrued;</span>
+<span class="fc" id="L763">		double dblCumulativeConvexityAdjustedCleanDV01 = dblCumulativeConvexityAdjustedDirtyDV01 -</span>
 			dblAccrued01;
-<span class="fc" id="L739">		double dblCumulativeConvexityAdjustedFairPremium = 0.0001 * dblCumulativeConvexityAdjustedCleanPV /</span>
+<span class="fc" id="L765">		double dblCumulativeConvexityAdjustedFairPremium = 0.0001 * dblCumulativeConvexityAdjustedCleanPV /</span>
 			dblCumulativeConvexityAdjustedCleanDV01;
-<span class="fc" id="L741">		double dblForwardFundingConvexityAdjustedCleanPV = dblForwardFundingConvexityAdjustedDirtyPV -</span>
+<span class="fc" id="L767">		double dblForwardFundingConvexityAdjustedCleanPV = dblForwardFundingConvexityAdjustedDirtyPV -</span>
 			dblAccrued;
-<span class="fc" id="L743">		double dblForwardFundingConvexityAdjustedCleanDV01 = dblForwardFundingConvexityAdjustedDirtyDV01 -</span>
+<span class="fc" id="L769">		double dblForwardFundingConvexityAdjustedCleanDV01 = dblForwardFundingConvexityAdjustedDirtyDV01 -</span>
 			dblAccrued01;
-<span class="fc" id="L745">		double dblForwardFundingConvexityAdjustedFairPremium = 0.0001 *</span>
+<span class="fc" id="L771">		double dblForwardFundingConvexityAdjustedFairPremium = 0.0001 *</span>
 			dblForwardFundingConvexityAdjustedCleanPV / dblForwardFundingConvexityAdjustedCleanDV01;
-<span class="fc" id="L747">		double dblForwardFXConvexityAdjustedCleanPV = dblForwardFXConvexityAdjustedDirtyPV - dblAccrued;</span>
-<span class="fc" id="L748">		double dblForwardFXConvexityAdjustedCleanDV01 = dblForwardFXConvexityAdjustedDirtyDV01 -</span>
+<span class="fc" id="L773">		double dblForwardFXConvexityAdjustedCleanPV = dblForwardFXConvexityAdjustedDirtyPV - dblAccrued;</span>
+<span class="fc" id="L774">		double dblForwardFXConvexityAdjustedCleanDV01 = dblForwardFXConvexityAdjustedDirtyDV01 -</span>
 			dblAccrued01;
-<span class="fc" id="L750">		double dblForwardFXConvexityAdjustedFairPremium = 0.0001 * dblForwardFXConvexityAdjustedCleanPV /</span>
+<span class="fc" id="L776">		double dblForwardFXConvexityAdjustedFairPremium = 0.0001 * dblForwardFXConvexityAdjustedCleanPV /</span>
 			dblForwardFXConvexityAdjustedCleanDV01;
-<span class="fc" id="L752">		double dblFundingFXConvexityAdjustedCleanPV = dblFundingFXConvexityAdjustedDirtyPV - dblAccrued;</span>
-<span class="fc" id="L753">		double dblFundingFXConvexityAdjustedCleanDV01 = dblFundingFXConvexityAdjustedDirtyDV01 -</span>
+<span class="fc" id="L778">		double dblFundingFXConvexityAdjustedCleanPV = dblFundingFXConvexityAdjustedDirtyPV - dblAccrued;</span>
+<span class="fc" id="L779">		double dblFundingFXConvexityAdjustedCleanDV01 = dblFundingFXConvexityAdjustedDirtyDV01 -</span>
 			dblAccrued01;
-<span class="fc" id="L755">		double dblFundingFXConvexityAdjustedFairPremium = 0.0001 * dblFundingFXConvexityAdjustedCleanPV /</span>
+<span class="fc" id="L781">		double dblFundingFXConvexityAdjustedFairPremium = 0.0001 * dblFundingFXConvexityAdjustedCleanPV /</span>
 			dblFundingFXConvexityAdjustedCleanDV01;
 
-<span class="fc" id="L758">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L784">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L761">		mapResult.put (&quot;AccrualCoupon&quot;, dblAccrualCoupon);</span>
+<span class="fc" id="L787">		mapResult.put (&quot;AccrualCoupon&quot;, dblAccrualCoupon);</span>
 
-<span class="fc" id="L763">		mapResult.put (&quot;Accrued&quot;, dblAccrued);</span>
+<span class="fc" id="L789">		mapResult.put (&quot;Accrued&quot;, dblAccrued);</span>
 
-<span class="fc" id="L765">		mapResult.put (&quot;Accrued01&quot;, dblAccrued01);</span>
+<span class="fc" id="L791">		mapResult.put (&quot;Accrued01&quot;, dblAccrued01);</span>
 
-<span class="fc" id="L767">		mapResult.put (&quot;CleanDV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L793">		mapResult.put (&quot;CleanDV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L769">		mapResult.put (&quot;CleanPV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L795">		mapResult.put (&quot;CleanPV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L771">		mapResult.put (&quot;CompoundingAdjustedCleanDV01&quot;, dblCompoundingAdjustedCleanDV01);</span>
+<span class="fc" id="L797">		mapResult.put (&quot;CompoundingAdjustedCleanDV01&quot;, dblCompoundingAdjustedCleanDV01);</span>
 
-<span class="fc" id="L773">		mapResult.put (&quot;CompoundingAdjustedCleanPV&quot;, dblCompoundingAdjustedCleanPV);</span>
+<span class="fc" id="L799">		mapResult.put (&quot;CompoundingAdjustedCleanPV&quot;, dblCompoundingAdjustedCleanPV);</span>
 
-<span class="fc" id="L775">		mapResult.put (&quot;CompoundingAdjustedDirtyPV&quot;, dblCompoundingAdjustedDirtyPV);</span>
+<span class="fc" id="L801">		mapResult.put (&quot;CompoundingAdjustedDirtyPV&quot;, dblCompoundingAdjustedDirtyPV);</span>
 
-<span class="fc" id="L777">		mapResult.put (&quot;CompoundingAdjustedDirtyDV01&quot;, dblCompoundingAdjustedDirtyDV01);</span>
+<span class="fc" id="L803">		mapResult.put (&quot;CompoundingAdjustedDirtyDV01&quot;, dblCompoundingAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L779">		mapResult.put (&quot;CompoundingAdjustedDirtyPV&quot;, dblCompoundingAdjustedDirtyPV);</span>
+<span class="fc" id="L805">		mapResult.put (&quot;CompoundingAdjustedDirtyPV&quot;, dblCompoundingAdjustedDirtyPV);</span>
 
-<span class="fc" id="L781">		mapResult.put (&quot;CompoundingAdjustedFairPremium&quot;, dblCompoundingAdjustedFairPremium);</span>
+<span class="fc" id="L807">		mapResult.put (&quot;CompoundingAdjustedFairPremium&quot;, dblCompoundingAdjustedFairPremium);</span>
 
-<span class="fc" id="L783">		mapResult.put (&quot;CompoundingAdjustedParRate&quot;, dblCompoundingAdjustedFairPremium);</span>
+<span class="fc" id="L809">		mapResult.put (&quot;CompoundingAdjustedParRate&quot;, dblCompoundingAdjustedFairPremium);</span>
 
-<span class="fc" id="L785">		mapResult.put (&quot;CompoundingAdjustedPV&quot;, dblCompoundingAdjustedCleanPV);</span>
+<span class="fc" id="L811">		mapResult.put (&quot;CompoundingAdjustedPV&quot;, dblCompoundingAdjustedCleanPV);</span>
 
-<span class="fc" id="L787">		mapResult.put (&quot;CompoundingAdjustedRate&quot;, dblCompoundingAdjustedFairPremium);</span>
+<span class="fc" id="L813">		mapResult.put (&quot;CompoundingAdjustedRate&quot;, dblCompoundingAdjustedFairPremium);</span>
 
-<span class="fc" id="L789">		mapResult.put (&quot;CompoundingAdjustedUpfront&quot;, dblCompoundingAdjustedCleanPV);</span>
+<span class="fc" id="L815">		mapResult.put (&quot;CompoundingAdjustedUpfront&quot;, dblCompoundingAdjustedCleanPV);</span>
 
-<span class="fc" id="L791">		mapResult.put (&quot;CompoundingAdjustmentFactor&quot;, dblCompoundingAdjustedDirtyDV01 /</span>
+<span class="fc" id="L817">		mapResult.put (&quot;CompoundingAdjustmentFactor&quot;, dblCompoundingAdjustedDirtyDV01 /</span>
 			dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L794">		mapResult.put (&quot;CompoundingAdjustmentPremium&quot;, dblCompoundingAdjustedCleanPV - dblUnadjustedCleanPV);</span>
+<span class="fc" id="L820">		mapResult.put (&quot;CompoundingAdjustmentPremium&quot;, dblCompoundingAdjustedCleanPV - dblUnadjustedCleanPV);</span>
 
-<span class="fc" id="L796">		mapResult.put (&quot;CompoundingAdjustmentPremiumUpfront&quot;, (dblCompoundingAdjustedCleanPV -</span>
+<span class="fc" id="L822">		mapResult.put (&quot;CompoundingAdjustmentPremiumUpfront&quot;, (dblCompoundingAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);
 
-<span class="fc" id="L799">		mapResult.put (&quot;CreditForwardConvexityAdjustedCleanDV01&quot;,</span>
-<span class="fc" id="L800">			dblCreditForwardConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L825">		mapResult.put (&quot;CreditForwardConvexityAdjustedCleanDV01&quot;,</span>
+<span class="fc" id="L826">			dblCreditForwardConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L802">		mapResult.put (&quot;CreditForwardConvexityAdjustedCleanPV&quot;, dblCreditForwardConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L828">		mapResult.put (&quot;CreditForwardConvexityAdjustedCleanPV&quot;, dblCreditForwardConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L804">		mapResult.put (&quot;CreditForwardConvexityAdjustedDirtyDV01&quot;,</span>
-<span class="fc" id="L805">			dblCreditForwardConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L830">		mapResult.put (&quot;CreditForwardConvexityAdjustedDirtyDV01&quot;,</span>
+<span class="fc" id="L831">			dblCreditForwardConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L807">		mapResult.put (&quot;CreditForwardConvexityAdjustedDirtyPV&quot;, dblCreditForwardConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L833">		mapResult.put (&quot;CreditForwardConvexityAdjustedDirtyPV&quot;, dblCreditForwardConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L809">		mapResult.put (&quot;CreditForwardConvexityAdjustedDV01&quot;, dblCreditForwardConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L835">		mapResult.put (&quot;CreditForwardConvexityAdjustedDV01&quot;, dblCreditForwardConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L811">		mapResult.put (&quot;CreditForwardConvexityAdjustedFairPremium&quot;,</span>
-<span class="fc" id="L812">			dblCreditForwardConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L837">		mapResult.put (&quot;CreditForwardConvexityAdjustedFairPremium&quot;,</span>
+<span class="fc" id="L838">			dblCreditForwardConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L814">		mapResult.put (&quot;CreditForwardConvexityAdjustedParRate&quot;,</span>
-<span class="fc" id="L815">			dblCreditForwardConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L840">		mapResult.put (&quot;CreditForwardConvexityAdjustedParRate&quot;,</span>
+<span class="fc" id="L841">			dblCreditForwardConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L817">		mapResult.put (&quot;CreditForwardConvexityAdjustedPV&quot;, dblCreditForwardConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L843">		mapResult.put (&quot;CreditForwardConvexityAdjustedPV&quot;, dblCreditForwardConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L819">		mapResult.put (&quot;CreditForwardConvexityAdjustedRate&quot;, dblCreditForwardConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L845">		mapResult.put (&quot;CreditForwardConvexityAdjustedRate&quot;, dblCreditForwardConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L821">		mapResult.put (&quot;CreditForwardConvexityAdjustedUpfront&quot;, dblCreditForwardConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L847">		mapResult.put (&quot;CreditForwardConvexityAdjustedUpfront&quot;, dblCreditForwardConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L823">		mapResult.put (&quot;CreditForwardConvexityAdjustmentFactor&quot;, dblCreditForwardConvexityAdjustedDirtyDV01</span>
+<span class="fc" id="L849">		mapResult.put (&quot;CreditForwardConvexityAdjustmentFactor&quot;, dblCreditForwardConvexityAdjustedDirtyDV01</span>
 			/ dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L826">		mapResult.put (&quot;CreditForwardConvexityAdjustmentPremium&quot;, dblCreditForwardConvexityAdjustedCleanPV</span>
+<span class="fc" id="L852">		mapResult.put (&quot;CreditForwardConvexityAdjustmentPremium&quot;, dblCreditForwardConvexityAdjustedCleanPV</span>
 			- dblUnadjustedCleanPV);
 
-<span class="fc" id="L829">		mapResult.put (&quot;CreditForwardConvexityAdjustmentPremiumUpfront&quot;,</span>
-<span class="fc" id="L830">			(dblCreditForwardConvexityAdjustedCleanPV - dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);</span>
+<span class="fc" id="L855">		mapResult.put (&quot;CreditForwardConvexityAdjustmentPremiumUpfront&quot;,</span>
+<span class="fc" id="L856">			(dblCreditForwardConvexityAdjustedCleanPV - dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);</span>
 
-<span class="fc" id="L832">		mapResult.put (&quot;CreditFundingConvexityAdjustedCleanDV01&quot;,</span>
-<span class="fc" id="L833">			dblCreditFundingConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L858">		mapResult.put (&quot;CreditFundingConvexityAdjustedCleanDV01&quot;,</span>
+<span class="fc" id="L859">			dblCreditFundingConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L835">		mapResult.put (&quot;CreditFundingConvexityAdjustedCleanPV&quot;, dblCreditFundingConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L861">		mapResult.put (&quot;CreditFundingConvexityAdjustedCleanPV&quot;, dblCreditFundingConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L837">		mapResult.put (&quot;CreditFundingConvexityAdjustedDirtyDV01&quot;,</span>
-<span class="fc" id="L838">			dblCreditFundingConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L863">		mapResult.put (&quot;CreditFundingConvexityAdjustedDirtyDV01&quot;,</span>
+<span class="fc" id="L864">			dblCreditFundingConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L840">		mapResult.put (&quot;CreditFundingConvexityAdjustedDirtyPV&quot;, dblCreditFundingConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L866">		mapResult.put (&quot;CreditFundingConvexityAdjustedDirtyPV&quot;, dblCreditFundingConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L842">		mapResult.put (&quot;CreditFundingConvexityAdjustedDV01&quot;, dblCreditFundingConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L868">		mapResult.put (&quot;CreditFundingConvexityAdjustedDV01&quot;, dblCreditFundingConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L844">		mapResult.put (&quot;CreditFundingConvexityAdjustedFairPremium&quot;,</span>
-<span class="fc" id="L845">			dblCreditFundingConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L870">		mapResult.put (&quot;CreditFundingConvexityAdjustedFairPremium&quot;,</span>
+<span class="fc" id="L871">			dblCreditFundingConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L847">		mapResult.put (&quot;CreditFundingConvexityAdjustedParRate&quot;,</span>
-<span class="fc" id="L848">			dblCreditFundingConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L873">		mapResult.put (&quot;CreditFundingConvexityAdjustedParRate&quot;,</span>
+<span class="fc" id="L874">			dblCreditFundingConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L850">		mapResult.put (&quot;CreditFundingConvexityAdjustedPV&quot;, dblCreditFundingConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L876">		mapResult.put (&quot;CreditFundingConvexityAdjustedPV&quot;, dblCreditFundingConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L852">		mapResult.put (&quot;CreditFundingConvexityAdjustedRate&quot;, dblCreditFundingConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L878">		mapResult.put (&quot;CreditFundingConvexityAdjustedRate&quot;, dblCreditFundingConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L854">		mapResult.put (&quot;CreditFundingConvexityAdjustedUpfront&quot;, dblCreditFundingConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L880">		mapResult.put (&quot;CreditFundingConvexityAdjustedUpfront&quot;, dblCreditFundingConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L856">		mapResult.put (&quot;CreditFundingConvexityAdjustmentFactor&quot;, dblCreditFundingConvexityAdjustedDirtyDV01</span>
+<span class="fc" id="L882">		mapResult.put (&quot;CreditFundingConvexityAdjustmentFactor&quot;, dblCreditFundingConvexityAdjustedDirtyDV01</span>
 			/ dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L859">		mapResult.put (&quot;CreditFundingConvexityAdjustmentPremium&quot;, dblCreditFundingConvexityAdjustedCleanPV</span>
+<span class="fc" id="L885">		mapResult.put (&quot;CreditFundingConvexityAdjustmentPremium&quot;, dblCreditFundingConvexityAdjustedCleanPV</span>
 			- dblUnadjustedCleanPV);
 
-<span class="fc" id="L862">		mapResult.put (&quot;CreditFundingConvexityAdjustmentPremiumUpfront&quot;,</span>
-<span class="fc" id="L863">			(dblCreditFundingConvexityAdjustedCleanPV - dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);</span>
+<span class="fc" id="L888">		mapResult.put (&quot;CreditFundingConvexityAdjustmentPremiumUpfront&quot;,</span>
+<span class="fc" id="L889">			(dblCreditFundingConvexityAdjustedCleanPV - dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);</span>
 
-<span class="fc" id="L865">		mapResult.put (&quot;CreditFXConvexityAdjustedCleanDV01&quot;, dblCreditFXConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L891">		mapResult.put (&quot;CreditFXConvexityAdjustedCleanDV01&quot;, dblCreditFXConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L867">		mapResult.put (&quot;CreditFXConvexityAdjustedCleanPV&quot;, dblCreditFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L893">		mapResult.put (&quot;CreditFXConvexityAdjustedCleanPV&quot;, dblCreditFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L869">		mapResult.put (&quot;CreditFXConvexityAdjustedDirtyDV01&quot;, dblCreditFXConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L895">		mapResult.put (&quot;CreditFXConvexityAdjustedDirtyDV01&quot;, dblCreditFXConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L871">		mapResult.put (&quot;CreditFXConvexityAdjustedDirtyPV&quot;, dblCreditFXConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L897">		mapResult.put (&quot;CreditFXConvexityAdjustedDirtyPV&quot;, dblCreditFXConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L873">		mapResult.put (&quot;CreditFXConvexityAdjustedDV01&quot;, dblCreditFXConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L899">		mapResult.put (&quot;CreditFXConvexityAdjustedDV01&quot;, dblCreditFXConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L875">		mapResult.put (&quot;CreditFXConvexityAdjustedFairPremium&quot;, dblCreditFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L901">		mapResult.put (&quot;CreditFXConvexityAdjustedFairPremium&quot;, dblCreditFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L877">		mapResult.put (&quot;CreditFXConvexityAdjustedParRate&quot;, dblCreditFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L903">		mapResult.put (&quot;CreditFXConvexityAdjustedParRate&quot;, dblCreditFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L879">		mapResult.put (&quot;CreditFXConvexityAdjustedPV&quot;, dblCreditFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L905">		mapResult.put (&quot;CreditFXConvexityAdjustedPV&quot;, dblCreditFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L881">		mapResult.put (&quot;CreditFXConvexityAdjustedRate&quot;, dblCreditFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L907">		mapResult.put (&quot;CreditFXConvexityAdjustedRate&quot;, dblCreditFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L883">		mapResult.put (&quot;CreditFXConvexityAdjustedUpfront&quot;, dblCreditFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L909">		mapResult.put (&quot;CreditFXConvexityAdjustedUpfront&quot;, dblCreditFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L885">		mapResult.put (&quot;CreditFXConvexityAdjustmentFactor&quot;, dblCreditFXConvexityAdjustedDirtyDV01 /</span>
+<span class="fc" id="L911">		mapResult.put (&quot;CreditFXConvexityAdjustmentFactor&quot;, dblCreditFXConvexityAdjustedDirtyDV01 /</span>
 			dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L888">		mapResult.put (&quot;CreditFXConvexityAdjustmentPremium&quot;, dblCreditFXConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L914">		mapResult.put (&quot;CreditFXConvexityAdjustmentPremium&quot;, dblCreditFXConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV);
 
-<span class="fc" id="L891">		mapResult.put (&quot;CreditFXConvexityAdjustmentPremiumUpfront&quot;, (dblCreditFXConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L917">		mapResult.put (&quot;CreditFXConvexityAdjustmentPremiumUpfront&quot;, (dblCreditFXConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);
 
-<span class="fc" id="L894">		mapResult.put (&quot;CumulativeConvexityAdjustedCleanDV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L920">		mapResult.put (&quot;CumulativeConvexityAdjustedCleanDV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L896">		mapResult.put (&quot;CumulativeConvexityAdjustedCleanPV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L922">		mapResult.put (&quot;CumulativeConvexityAdjustedCleanPV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L898">		mapResult.put (&quot;CumulativeConvexityAdjustedDirtyDV01&quot;, dblCumulativeConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L924">		mapResult.put (&quot;CumulativeConvexityAdjustedDirtyDV01&quot;, dblCumulativeConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L900">		mapResult.put (&quot;CumulativeConvexityAdjustedDirtyPV&quot;, dblCumulativeConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L926">		mapResult.put (&quot;CumulativeConvexityAdjustedDirtyPV&quot;, dblCumulativeConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L902">		mapResult.put (&quot;CumulativeConvexityAdjustedDV01&quot;, dblCumulativeConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L928">		mapResult.put (&quot;CumulativeConvexityAdjustedDV01&quot;, dblCumulativeConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L904">		mapResult.put (&quot;CumulativeConvexityAdjustedFairPremium&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L930">		mapResult.put (&quot;CumulativeConvexityAdjustedFairPremium&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L906">		mapResult.put (&quot;CumulativeConvexityAdjustedParRate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L932">		mapResult.put (&quot;CumulativeConvexityAdjustedParRate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L908">		mapResult.put (&quot;CumulativeConvexityAdjustedPV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L934">		mapResult.put (&quot;CumulativeConvexityAdjustedPV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L910">		mapResult.put (&quot;CumulativeConvexityAdjustedRate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L936">		mapResult.put (&quot;CumulativeConvexityAdjustedRate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L912">		mapResult.put (&quot;CumulativeConvexityAdjustedUpfront&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L938">		mapResult.put (&quot;CumulativeConvexityAdjustedUpfront&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L914">		mapResult.put (&quot;CumulativeConvexityAdjustmentFactor&quot;, dblCumulativeConvexityAdjustedDirtyDV01 /</span>
+<span class="fc" id="L940">		mapResult.put (&quot;CumulativeConvexityAdjustmentFactor&quot;, dblCumulativeConvexityAdjustedDirtyDV01 /</span>
 			dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L917">		mapResult.put (&quot;CumulativeConvexityAdjustmentPremium&quot;, dblCumulativeConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L943">		mapResult.put (&quot;CumulativeConvexityAdjustmentPremium&quot;, dblCumulativeConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV);
 
-<span class="fc" id="L920">		mapResult.put (&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;, (dblCumulativeConvexityAdjustedCleanPV</span>
+<span class="fc" id="L946">		mapResult.put (&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;, (dblCumulativeConvexityAdjustedCleanPV</span>
 			- dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);
 
-<span class="fc" id="L923">		mapResult.put (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponAmount);</span>
+<span class="fc" id="L949">		mapResult.put (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponAmount);</span>
 
-<span class="fc" id="L925">		mapResult.put (&quot;CumulativeCouponDCF&quot;, dblCumulativeCouponDCF);</span>
+<span class="fc" id="L951">		mapResult.put (&quot;CumulativeCouponDCF&quot;, dblCumulativeCouponDCF);</span>
 
-<span class="fc" id="L927">		mapResult.put (&quot;CV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L953">		mapResult.put (&quot;CV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L929">		mapResult.put (&quot;DirtyDV01&quot;, dblCumulativeConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L955">		mapResult.put (&quot;DirtyDV01&quot;, dblCumulativeConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L931">		mapResult.put (&quot;DirtyPV&quot;, dblCumulativeConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L957">		mapResult.put (&quot;DirtyPV&quot;, dblCumulativeConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L933">		mapResult.put (&quot;DV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L959">		mapResult.put (&quot;DV01&quot;, dblCumulativeConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L935">		mapResult.put (&quot;FairPremium&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L961">		mapResult.put (&quot;FairPremium&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L937">		mapResult.put (&quot;Fixing01&quot;, dblAccrued01);</span>
+<span class="fc" id="L963">		mapResult.put (&quot;Fixing01&quot;, dblAccrued01);</span>
 
-<span class="fc" id="L939">		mapResult.put (&quot;ForwardFundingConvexityAdjustedCleanDV01&quot;,</span>
-<span class="fc" id="L940">			dblForwardFundingConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L965">		mapResult.put (&quot;ForwardFundingConvexityAdjustedCleanDV01&quot;,</span>
+<span class="fc" id="L966">			dblForwardFundingConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L942">		mapResult.put (&quot;ForwardFundingConvexityAdjustedCleanPV&quot;, dblForwardFundingConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L968">		mapResult.put (&quot;ForwardFundingConvexityAdjustedCleanPV&quot;, dblForwardFundingConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L944">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDirtyDV01&quot;,</span>
-<span class="fc" id="L945">			dblForwardFundingConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L970">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDirtyDV01&quot;,</span>
+<span class="fc" id="L971">			dblForwardFundingConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L947">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDirtyPV&quot;, dblForwardFundingConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L973">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDirtyPV&quot;, dblForwardFundingConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L949">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDV01&quot;, dblForwardFundingConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L975">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDV01&quot;, dblForwardFundingConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L951">		mapResult.put (&quot;ForwardFundingConvexityAdjustedFairPremium&quot;,</span>
-<span class="fc" id="L952">			dblForwardFundingConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L977">		mapResult.put (&quot;ForwardFundingConvexityAdjustedFairPremium&quot;,</span>
+<span class="fc" id="L978">			dblForwardFundingConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L954">		mapResult.put (&quot;ForwardFundingConvexityAdjustedParRate&quot;,</span>
-<span class="fc" id="L955">			dblForwardFundingConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L980">		mapResult.put (&quot;ForwardFundingConvexityAdjustedParRate&quot;,</span>
+<span class="fc" id="L981">			dblForwardFundingConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L957">		mapResult.put (&quot;ForwardFundingConvexityAdjustedPV&quot;, dblForwardFundingConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L983">		mapResult.put (&quot;ForwardFundingConvexityAdjustedPV&quot;, dblForwardFundingConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L959">		mapResult.put (&quot;ForwardFundingConvexityAdjustedRate&quot;, dblForwardFundingConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L985">		mapResult.put (&quot;ForwardFundingConvexityAdjustedRate&quot;, dblForwardFundingConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L961">		mapResult.put (&quot;ForwardFundingConvexityAdjustedUpfront&quot;, dblForwardFundingConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L987">		mapResult.put (&quot;ForwardFundingConvexityAdjustedUpfront&quot;, dblForwardFundingConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L963">		mapResult.put (&quot;ForwardFundingConvexityAdjustmentFactor&quot;, dblForwardFundingConvexityAdjustedDirtyDV01</span>
+<span class="fc" id="L989">		mapResult.put (&quot;ForwardFundingConvexityAdjustmentFactor&quot;, dblForwardFundingConvexityAdjustedDirtyDV01</span>
 			/ dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L966">		mapResult.put (&quot;ForwardFundingConvexityAdjustmentPremium&quot;, dblForwardFundingConvexityAdjustedCleanPV</span>
+<span class="fc" id="L992">		mapResult.put (&quot;ForwardFundingConvexityAdjustmentPremium&quot;, dblForwardFundingConvexityAdjustedCleanPV</span>
 			- dblUnadjustedCleanPV);
 
-<span class="fc" id="L969">		mapResult.put (&quot;ForwardFundingConvexityAdjustmentPremiumUpfront&quot;,</span>
-<span class="fc" id="L970">			(dblForwardFundingConvexityAdjustedCleanPV - dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);</span>
+<span class="fc" id="L995">		mapResult.put (&quot;ForwardFundingConvexityAdjustmentPremiumUpfront&quot;,</span>
+<span class="fc" id="L996">			(dblForwardFundingConvexityAdjustedCleanPV - dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);</span>
 
-<span class="fc" id="L972">		mapResult.put (&quot;ForwardFXConvexityAdjustedCleanDV01&quot;, dblForwardFXConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L998">		mapResult.put (&quot;ForwardFXConvexityAdjustedCleanDV01&quot;, dblForwardFXConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L974">		mapResult.put (&quot;ForwardFXConvexityAdjustedCleanPV&quot;, dblForwardFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1000">		mapResult.put (&quot;ForwardFXConvexityAdjustedCleanPV&quot;, dblForwardFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L976">		mapResult.put (&quot;ForwardFXConvexityAdjustedDirtyDV01&quot;, dblForwardFXConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L1002">		mapResult.put (&quot;ForwardFXConvexityAdjustedDirtyDV01&quot;, dblForwardFXConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L978">		mapResult.put (&quot;ForwardFXConvexityAdjustedDirtyPV&quot;, dblForwardFXConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L1004">		mapResult.put (&quot;ForwardFXConvexityAdjustedDirtyPV&quot;, dblForwardFXConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L980">		mapResult.put (&quot;ForwardFXConvexityAdjustedDV01&quot;, dblForwardFXConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L1006">		mapResult.put (&quot;ForwardFXConvexityAdjustedDV01&quot;, dblForwardFXConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L982">		mapResult.put (&quot;ForwardFXConvexityAdjustedFairPremium&quot;, dblForwardFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1008">		mapResult.put (&quot;ForwardFXConvexityAdjustedFairPremium&quot;, dblForwardFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L984">		mapResult.put (&quot;ForwardFXConvexityAdjustedParRate&quot;, dblForwardFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1010">		mapResult.put (&quot;ForwardFXConvexityAdjustedParRate&quot;, dblForwardFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L986">		mapResult.put (&quot;ForwardFXConvexityAdjustedPV&quot;, dblForwardFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1012">		mapResult.put (&quot;ForwardFXConvexityAdjustedPV&quot;, dblForwardFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L988">		mapResult.put (&quot;ForwardFXConvexityAdjustedRate&quot;, dblForwardFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1014">		mapResult.put (&quot;ForwardFXConvexityAdjustedRate&quot;, dblForwardFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L990">		mapResult.put (&quot;ForwardFXConvexityAdjustedUpfront&quot;, dblForwardFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1016">		mapResult.put (&quot;ForwardFXConvexityAdjustedUpfront&quot;, dblForwardFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L992">		mapResult.put (&quot;ForwardFXConvexityAdjustmentFactor&quot;, dblForwardFXConvexityAdjustedDirtyDV01 /</span>
+<span class="fc" id="L1018">		mapResult.put (&quot;ForwardFXConvexityAdjustmentFactor&quot;, dblForwardFXConvexityAdjustedDirtyDV01 /</span>
 			dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L995">		mapResult.put (&quot;ForwardFXConvexityAdjustmentPremium&quot;, dblForwardFXConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L1021">		mapResult.put (&quot;ForwardFXConvexityAdjustmentPremium&quot;, dblForwardFXConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV);
 
-<span class="fc" id="L998">		mapResult.put (&quot;ForwardFXConvexityAdjustmentPremiumUpfront&quot;, (dblForwardFXConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L1024">		mapResult.put (&quot;ForwardFXConvexityAdjustmentPremiumUpfront&quot;, (dblForwardFXConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);
 
-<span class="fc" id="L1001">		mapResult.put (&quot;FundingFXConvexityAdjustedCleanDV01&quot;, dblFundingFXConvexityAdjustedCleanDV01);</span>
+<span class="fc" id="L1027">		mapResult.put (&quot;FundingFXConvexityAdjustedCleanDV01&quot;, dblFundingFXConvexityAdjustedCleanDV01);</span>
 
-<span class="fc" id="L1003">		mapResult.put (&quot;FundingFXConvexityAdjustedCleanPV&quot;, dblFundingFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1029">		mapResult.put (&quot;FundingFXConvexityAdjustedCleanPV&quot;, dblFundingFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L1005">		mapResult.put (&quot;FundingFXConvexityAdjustedDirtyDV01&quot;, dblFundingFXConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L1031">		mapResult.put (&quot;FundingFXConvexityAdjustedDirtyDV01&quot;, dblFundingFXConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L1007">		mapResult.put (&quot;FundingFXConvexityAdjustedDirtyPV&quot;, dblFundingFXConvexityAdjustedDirtyPV);</span>
+<span class="fc" id="L1033">		mapResult.put (&quot;FundingFXConvexityAdjustedDirtyPV&quot;, dblFundingFXConvexityAdjustedDirtyPV);</span>
 
-<span class="fc" id="L1009">		mapResult.put (&quot;FundingFXConvexityAdjustedDV01&quot;, dblFundingFXConvexityAdjustedDirtyDV01);</span>
+<span class="fc" id="L1035">		mapResult.put (&quot;FundingFXConvexityAdjustedDV01&quot;, dblFundingFXConvexityAdjustedDirtyDV01);</span>
 
-<span class="fc" id="L1011">		mapResult.put (&quot;FundingFXConvexityAdjustedFairPremium&quot;, dblFundingFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1037">		mapResult.put (&quot;FundingFXConvexityAdjustedFairPremium&quot;, dblFundingFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L1013">		mapResult.put (&quot;FundingFXConvexityAdjustedParRate&quot;, dblFundingFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1039">		mapResult.put (&quot;FundingFXConvexityAdjustedParRate&quot;, dblFundingFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L1015">		mapResult.put (&quot;FundingFXConvexityAdjustedPV&quot;, dblFundingFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1041">		mapResult.put (&quot;FundingFXConvexityAdjustedPV&quot;, dblFundingFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L1017">		mapResult.put (&quot;FundingFXConvexityAdjustedRate&quot;, dblFundingFXConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1043">		mapResult.put (&quot;FundingFXConvexityAdjustedRate&quot;, dblFundingFXConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L1019">		mapResult.put (&quot;FundingFXConvexityAdjustedUpfront&quot;, dblFundingFXConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1045">		mapResult.put (&quot;FundingFXConvexityAdjustedUpfront&quot;, dblFundingFXConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L1021">		mapResult.put (&quot;FundingFXConvexityAdjustmentFactor&quot;, dblFundingFXConvexityAdjustedDirtyDV01 /</span>
+<span class="fc" id="L1047">		mapResult.put (&quot;FundingFXConvexityAdjustmentFactor&quot;, dblFundingFXConvexityAdjustedDirtyDV01 /</span>
 			dblUnadjustedDirtyDV01);
 
-<span class="fc" id="L1024">		mapResult.put (&quot;FundingFXConvexityAdjustmentPremium&quot;, dblFundingFXConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L1050">		mapResult.put (&quot;FundingFXConvexityAdjustmentPremium&quot;, dblFundingFXConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV);
 
-<span class="fc" id="L1027">		mapResult.put (&quot;FundingFXConvexityAdjustmentPremiumUpfront&quot;, (dblFundingFXConvexityAdjustedCleanPV -</span>
+<span class="fc" id="L1053">		mapResult.put (&quot;FundingFXConvexityAdjustmentPremiumUpfront&quot;, (dblFundingFXConvexityAdjustedCleanPV -</span>
 			dblUnadjustedCleanPV) / dblFXAdjustedValueNotional);
 
-<span class="fc" id="L1030">		mapResult.put (&quot;ParRate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1056">		mapResult.put (&quot;ParRate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L1032">		mapResult.put (&quot;PV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1058">		mapResult.put (&quot;PV&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L1034">		mapResult.put (&quot;Rate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
+<span class="fc" id="L1060">		mapResult.put (&quot;Rate&quot;, dblCumulativeConvexityAdjustedFairPremium);</span>
 
-<span class="fc" id="L1036">		mapResult.put (&quot;ResetDate&quot;, (double) iResetDate);</span>
+<span class="fc" id="L1062">		mapResult.put (&quot;ResetDate&quot;, (double) iResetDate);</span>
 
-<span class="fc" id="L1038">		mapResult.put (&quot;ResetRate&quot;, dblAccrualCoupon - basis());</span>
+<span class="fc" id="L1064">		mapResult.put (&quot;ResetRate&quot;, dblAccrualCoupon - basis());</span>
 
-<span class="fc" id="L1040">		mapResult.put (&quot;TotalCoupon&quot;, dblTotalCoupon);</span>
+<span class="fc" id="L1066">		mapResult.put (&quot;TotalCoupon&quot;, dblTotalCoupon);</span>
 
-<span class="fc" id="L1042">		mapResult.put (&quot;UnadjustedCleanDV01&quot;, dblUnadjustedCleanDV01);</span>
+<span class="fc" id="L1068">		mapResult.put (&quot;UnadjustedCleanDV01&quot;, dblUnadjustedCleanDV01);</span>
 
-<span class="fc" id="L1044">		mapResult.put (&quot;UnadjustedCleanPV&quot;, dblUnadjustedCleanPV);</span>
+<span class="fc" id="L1070">		mapResult.put (&quot;UnadjustedCleanPV&quot;, dblUnadjustedCleanPV);</span>
 
-<span class="fc" id="L1046">		mapResult.put (&quot;UnadjustedDirtyDV01&quot;, dblUnadjustedDirtyDV01);</span>
+<span class="fc" id="L1072">		mapResult.put (&quot;UnadjustedDirtyDV01&quot;, dblUnadjustedDirtyDV01);</span>
 
-<span class="fc" id="L1048">		mapResult.put (&quot;UnadjustedDirtyPV&quot;, dblUnadjustedDirtyPV);</span>
+<span class="fc" id="L1074">		mapResult.put (&quot;UnadjustedDirtyPV&quot;, dblUnadjustedDirtyPV);</span>
 
-<span class="fc" id="L1050">		mapResult.put (&quot;UnadjustedFairPremium&quot;, dblUnadjustedFairPremium);</span>
+<span class="fc" id="L1076">		mapResult.put (&quot;UnadjustedFairPremium&quot;, dblUnadjustedFairPremium);</span>
 
-<span class="fc" id="L1052">		mapResult.put (&quot;UnadjustedParRate&quot;, dblUnadjustedFairPremium);</span>
+<span class="fc" id="L1078">		mapResult.put (&quot;UnadjustedParRate&quot;, dblUnadjustedFairPremium);</span>
 
-<span class="fc" id="L1054">		mapResult.put (&quot;UnadjustedPV&quot;, dblUnadjustedCleanPV);</span>
+<span class="fc" id="L1080">		mapResult.put (&quot;UnadjustedPV&quot;, dblUnadjustedCleanPV);</span>
 
-<span class="fc" id="L1056">		mapResult.put (&quot;UnadjustedRate&quot;, dblUnadjustedFairPremium);</span>
+<span class="fc" id="L1082">		mapResult.put (&quot;UnadjustedRate&quot;, dblUnadjustedFairPremium);</span>
 
-<span class="fc" id="L1058">		mapResult.put (&quot;UnadjustedUpfront&quot;, dblUnadjustedCleanPV);</span>
+<span class="fc" id="L1084">		mapResult.put (&quot;UnadjustedUpfront&quot;, dblUnadjustedCleanPV);</span>
 
-<span class="fc" id="L1060">		mapResult.put (&quot;Upfront&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
+<span class="fc" id="L1086">		mapResult.put (&quot;Upfront&quot;, dblCumulativeConvexityAdjustedCleanPV);</span>
 
-<span class="fc" id="L1062">		double dblCompoundingAdjustedCleanPrice = 100. * (1. + (dblCompoundingAdjustedCleanPV /</span>
+<span class="fc" id="L1088">		double dblCompoundingAdjustedCleanPrice = 100. * (1. + (dblCompoundingAdjustedCleanPV /</span>
 			dblFXAdjustedValueNotional));
-<span class="fc" id="L1064">		double dblCreditForwardConvexityAdjustedCleanPrice = 100. * (1. +</span>
+<span class="fc" id="L1090">		double dblCreditForwardConvexityAdjustedCleanPrice = 100. * (1. +</span>
 			(dblCreditForwardConvexityAdjustedCleanPV / dblFXAdjustedValueNotional));
-<span class="fc" id="L1066">		double dblCreditFundingConvexityAdjustedCleanPrice = 100. * (1. +</span>
+<span class="fc" id="L1092">		double dblCreditFundingConvexityAdjustedCleanPrice = 100. * (1. +</span>
 			(dblCreditFundingConvexityAdjustedCleanPV / dblFXAdjustedValueNotional));
-<span class="fc" id="L1068">		double dblCreditFXConvexityAdjustedCleanPrice = 100. * (1. + (dblCreditFXConvexityAdjustedCleanPV</span>
+<span class="fc" id="L1094">		double dblCreditFXConvexityAdjustedCleanPrice = 100. * (1. + (dblCreditFXConvexityAdjustedCleanPV</span>
 			/ dblFXAdjustedValueNotional));
-<span class="fc" id="L1070">		double dblCumulativeConvexityAdjustedCleanPrice = 100. * (1. + (dblCumulativeConvexityAdjustedCleanPV</span>
+<span class="fc" id="L1096">		double dblCumulativeConvexityAdjustedCleanPrice = 100. * (1. + (dblCumulativeConvexityAdjustedCleanPV</span>
 			/ dblFXAdjustedValueNotional));
-<span class="fc" id="L1072">		double dblForwardFundingConvexityAdjustedCleanPrice = 100. * (1. +</span>
+<span class="fc" id="L1098">		double dblForwardFundingConvexityAdjustedCleanPrice = 100. * (1. +</span>
 			(dblForwardFundingConvexityAdjustedCleanPV / dblFXAdjustedValueNotional));
-<span class="fc" id="L1074">		double dblForwardFXConvexityAdjustedCleanPrice = 100. * (1. + (dblForwardFXConvexityAdjustedCleanPV /</span>
+<span class="fc" id="L1100">		double dblForwardFXConvexityAdjustedCleanPrice = 100. * (1. + (dblForwardFXConvexityAdjustedCleanPV /</span>
 			dblFXAdjustedValueNotional));
-<span class="fc" id="L1076">		double dblFundingFXConvexityAdjustedCleanPrice = 100. * (1. + (dblFundingFXConvexityAdjustedCleanPV /</span>
+<span class="fc" id="L1102">		double dblFundingFXConvexityAdjustedCleanPrice = 100. * (1. + (dblFundingFXConvexityAdjustedCleanPV /</span>
 			dblFXAdjustedValueNotional));
-<span class="fc" id="L1078">		double dblUnadjustedCleanPrice = 100. * (1. + (dblUnadjustedCleanPV / dblFXAdjustedValueNotional));</span>
+<span class="fc" id="L1104">		double dblUnadjustedCleanPrice = 100. * (1. + (dblUnadjustedCleanPV / dblFXAdjustedValueNotional));</span>
 
-<span class="fc" id="L1080">		mapResult.put (&quot;CleanPrice&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1106">		mapResult.put (&quot;CleanPrice&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1082">		mapResult.put (&quot;CompoundingAdjustedCleanPrice&quot;, dblCompoundingAdjustedCleanPrice);</span>
+<span class="fc" id="L1108">		mapResult.put (&quot;CompoundingAdjustedCleanPrice&quot;, dblCompoundingAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1084">		mapResult.put (&quot;CompoundingAdjustedDirtyPrice&quot;, 100. * (1. + (dblCompoundingAdjustedDirtyPV /</span>
+<span class="fc" id="L1110">		mapResult.put (&quot;CompoundingAdjustedDirtyPrice&quot;, 100. * (1. + (dblCompoundingAdjustedDirtyPV /</span>
 			dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1087">		mapResult.put (&quot;CompoundingAdjustedPrice&quot;, dblCompoundingAdjustedCleanPrice);</span>
+<span class="fc" id="L1113">		mapResult.put (&quot;CompoundingAdjustedPrice&quot;, dblCompoundingAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1089">		mapResult.put (&quot;CreditForwardConvexityAdjustedCleanPrice&quot;,</span>
-<span class="fc" id="L1090">			dblCreditForwardConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1115">		mapResult.put (&quot;CreditForwardConvexityAdjustedCleanPrice&quot;,</span>
+<span class="fc" id="L1116">			dblCreditForwardConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1092">		mapResult.put (&quot;CreditForwardConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1118">		mapResult.put (&quot;CreditForwardConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblCreditForwardConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1095">		mapResult.put (&quot;CreditForwardConvexityAdjustedPrice&quot;, dblCreditForwardConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1121">		mapResult.put (&quot;CreditForwardConvexityAdjustedPrice&quot;, dblCreditForwardConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1097">		mapResult.put (&quot;CreditFundingConvexityAdjustedCleanPrice&quot;,</span>
-<span class="fc" id="L1098">			dblCreditFundingConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1123">		mapResult.put (&quot;CreditFundingConvexityAdjustedCleanPrice&quot;,</span>
+<span class="fc" id="L1124">			dblCreditFundingConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1100">		mapResult.put (&quot;CreditFundingConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1126">		mapResult.put (&quot;CreditFundingConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblCreditFundingConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1103">		mapResult.put (&quot;CreditFundingConvexityAdjustedPrice&quot;, dblCreditFundingConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1129">		mapResult.put (&quot;CreditFundingConvexityAdjustedPrice&quot;, dblCreditFundingConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1105">		mapResult.put (&quot;CreditFXConvexityAdjustedCleanPrice&quot;, dblCreditFXConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1131">		mapResult.put (&quot;CreditFXConvexityAdjustedCleanPrice&quot;, dblCreditFXConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1107">		mapResult.put (&quot;CreditFXConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1133">		mapResult.put (&quot;CreditFXConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblCreditFXConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1110">		mapResult.put (&quot;CreditFXConvexityAdjustedPrice&quot;, dblCreditFXConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1136">		mapResult.put (&quot;CreditFXConvexityAdjustedPrice&quot;, dblCreditFXConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1112">		mapResult.put (&quot;CumulativeConvexityAdjustedCleanPrice&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1138">		mapResult.put (&quot;CumulativeConvexityAdjustedCleanPrice&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1114">		mapResult.put (&quot;CumulativeConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1140">		mapResult.put (&quot;CumulativeConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblCumulativeConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1117">		mapResult.put (&quot;CumulativeConvexityAdjustedPrice&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1143">		mapResult.put (&quot;CumulativeConvexityAdjustedPrice&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1119">		mapResult.put (&quot;DirtyPrice&quot;, 100. * (1. + (dblCumulativeConvexityAdjustedDirtyPV /</span>
+<span class="fc" id="L1145">		mapResult.put (&quot;DirtyPrice&quot;, 100. * (1. + (dblCumulativeConvexityAdjustedDirtyPV /</span>
 			dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1122">		mapResult.put (&quot;ForwardFundingConvexityAdjustedCleanPrice&quot;,</span>
-<span class="fc" id="L1123">			dblForwardFundingConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1148">		mapResult.put (&quot;ForwardFundingConvexityAdjustedCleanPrice&quot;,</span>
+<span class="fc" id="L1149">			dblForwardFundingConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1125">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1151">		mapResult.put (&quot;ForwardFundingConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblForwardFundingConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1128">		mapResult.put (&quot;ForwardFundingConvexityAdjustedPrice&quot;, dblForwardFundingConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1154">		mapResult.put (&quot;ForwardFundingConvexityAdjustedPrice&quot;, dblForwardFundingConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1130">		mapResult.put (&quot;ForwardFXConvexityAdjustedCleanPrice&quot;, dblForwardFXConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1156">		mapResult.put (&quot;ForwardFXConvexityAdjustedCleanPrice&quot;, dblForwardFXConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1132">		mapResult.put (&quot;ForwardFXConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1158">		mapResult.put (&quot;ForwardFXConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblForwardFXConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1135">		mapResult.put (&quot;ForwardFXConvexityAdjustedPrice&quot;, dblForwardFXConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1161">		mapResult.put (&quot;ForwardFXConvexityAdjustedPrice&quot;, dblForwardFXConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1137">		mapResult.put (&quot;FundingFXConvexityAdjustedCleanPrice&quot;, dblFundingFXConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1163">		mapResult.put (&quot;FundingFXConvexityAdjustedCleanPrice&quot;, dblFundingFXConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1139">		mapResult.put (&quot;FundingFXConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
+<span class="fc" id="L1165">		mapResult.put (&quot;FundingFXConvexityAdjustedDirtyPrice&quot;, 100. * (1. +</span>
 			(dblFundingFXConvexityAdjustedDirtyPV / dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1142">		mapResult.put (&quot;FundingFXConvexityAdjustedPrice&quot;, dblFundingFXConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1168">		mapResult.put (&quot;FundingFXConvexityAdjustedPrice&quot;, dblFundingFXConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1144">		mapResult.put (&quot;Price&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
+<span class="fc" id="L1170">		mapResult.put (&quot;Price&quot;, dblCumulativeConvexityAdjustedCleanPrice);</span>
 
-<span class="fc" id="L1146">		mapResult.put (&quot;UnadjustedCleanPrice&quot;, dblUnadjustedCleanPrice);</span>
+<span class="fc" id="L1172">		mapResult.put (&quot;UnadjustedCleanPrice&quot;, dblUnadjustedCleanPrice);</span>
 
-<span class="fc" id="L1148">		mapResult.put (&quot;UnadjustedDirtyPrice&quot;, 100. * (1. + (dblUnadjustedDirtyPV /</span>
+<span class="fc" id="L1174">		mapResult.put (&quot;UnadjustedDirtyPrice&quot;, 100. * (1. + (dblUnadjustedDirtyPV /</span>
 			dblFXAdjustedValueNotional)));
 
-<span class="fc" id="L1151">		mapResult.put (&quot;UnadjustedPrice&quot;, dblUnadjustedCleanPrice);</span>
+<span class="fc" id="L1177">		mapResult.put (&quot;UnadjustedPrice&quot;, dblUnadjustedCleanPrice);</span>
 
-<span class="fc" id="L1153">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L1179">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L1155">		return mapResult;</span>
+<span class="fc" id="L1181">		return mapResult;</span>
 	}
 
 	/**
@@ -1163,271 +1189,271 @@ public class Stream {
 
 	public java.util.Set&lt;java.lang.String&gt; availableMeasures()
 	{
-<span class="nc" id="L1166">		java.util.Set&lt;java.lang.String&gt; setstrMeasures = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L1192">		java.util.Set&lt;java.lang.String&gt; setstrMeasures = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L1168">		setstrMeasures.add (&quot;AccrualCoupon&quot;);</span>
+<span class="nc" id="L1194">		setstrMeasures.add (&quot;AccrualCoupon&quot;);</span>
 
-<span class="nc" id="L1170">		setstrMeasures.add (&quot;Accrued&quot;);</span>
+<span class="nc" id="L1196">		setstrMeasures.add (&quot;Accrued&quot;);</span>
 
-<span class="nc" id="L1172">		setstrMeasures.add (&quot;Accrued01&quot;);</span>
+<span class="nc" id="L1198">		setstrMeasures.add (&quot;Accrued01&quot;);</span>
 
-<span class="nc" id="L1174">		setstrMeasures.add (&quot;CleanDV01&quot;);</span>
+<span class="nc" id="L1200">		setstrMeasures.add (&quot;CleanDV01&quot;);</span>
 
-<span class="nc" id="L1176">		setstrMeasures.add (&quot;CleanPV&quot;);</span>
+<span class="nc" id="L1202">		setstrMeasures.add (&quot;CleanPV&quot;);</span>
 
-<span class="nc" id="L1178">		setstrMeasures.add (&quot;CompoundingAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1204">		setstrMeasures.add (&quot;CompoundingAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1180">		setstrMeasures.add (&quot;CompoundingAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1206">		setstrMeasures.add (&quot;CompoundingAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1182">		setstrMeasures.add (&quot;CompoundingAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1208">		setstrMeasures.add (&quot;CompoundingAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1184">		setstrMeasures.add (&quot;CompoundingAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1210">		setstrMeasures.add (&quot;CompoundingAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1186">		setstrMeasures.add (&quot;CompoundingAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1212">		setstrMeasures.add (&quot;CompoundingAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1188">		setstrMeasures.add (&quot;CompoundingAdjustedParRate&quot;);</span>
+<span class="nc" id="L1214">		setstrMeasures.add (&quot;CompoundingAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1190">		setstrMeasures.add (&quot;CompoundingAdjustedPV&quot;);</span>
+<span class="nc" id="L1216">		setstrMeasures.add (&quot;CompoundingAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1192">		setstrMeasures.add (&quot;CompoundingAdjustedRate&quot;);</span>
+<span class="nc" id="L1218">		setstrMeasures.add (&quot;CompoundingAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1194">		setstrMeasures.add (&quot;CompoundingAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1220">		setstrMeasures.add (&quot;CompoundingAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1196">		setstrMeasures.add (&quot;CompoundingAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1222">		setstrMeasures.add (&quot;CompoundingAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1198">		setstrMeasures.add (&quot;CompoundingAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1224">		setstrMeasures.add (&quot;CompoundingAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1200">		setstrMeasures.add (&quot;CompoundingAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1226">		setstrMeasures.add (&quot;CompoundingAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1202">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1228">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1204">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1230">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1206">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1232">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1208">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1234">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1210">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1236">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1212">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1238">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1214">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1240">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1216">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1242">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1218">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1244">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1220">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1246">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1222">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1248">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1224">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1250">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1226">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1252">		setstrMeasures.add (&quot;CreditForwardConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1228">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1254">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1230">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1256">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1232">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1258">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1234">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1260">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1236">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1262">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1238">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1264">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1240">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1266">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1242">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1268">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1244">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1270">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1246">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1272">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1248">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1274">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1250">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1276">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1252">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1278">		setstrMeasures.add (&quot;CreditFundingConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1254">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1280">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1256">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1282">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1258">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1284">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1260">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1286">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1262">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1288">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1264">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1290">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1266">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1292">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1268">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1294">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1270">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1296">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1272">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1298">		setstrMeasures.add (&quot;CreditFXConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1274">		setstrMeasures.add (&quot;CreditFXConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1300">		setstrMeasures.add (&quot;CreditFXConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1276">		setstrMeasures.add (&quot;CreditFXConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1302">		setstrMeasures.add (&quot;CreditFXConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1278">		setstrMeasures.add (&quot;CreditFXConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1304">		setstrMeasures.add (&quot;CreditFXConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1280">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1306">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1282">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1308">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1284">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1310">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1286">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1312">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1288">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1314">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1290">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1316">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1292">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1318">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1294">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1320">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1296">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1322">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1298">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1324">		setstrMeasures.add (&quot;CumulativeConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1300">		setstrMeasures.add (&quot;CumulativeConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1326">		setstrMeasures.add (&quot;CumulativeConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1302">		setstrMeasures.add (&quot;CumulativeConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1328">		setstrMeasures.add (&quot;CumulativeConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1304">		setstrMeasures.add (&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1330">		setstrMeasures.add (&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1306">		setstrMeasures.add (&quot;CumulativeCouponAmount&quot;);</span>
+<span class="nc" id="L1332">		setstrMeasures.add (&quot;CumulativeCouponAmount&quot;);</span>
 
-<span class="nc" id="L1308">		setstrMeasures.add (&quot;CV01&quot;);</span>
+<span class="nc" id="L1334">		setstrMeasures.add (&quot;CV01&quot;);</span>
 
-<span class="nc" id="L1310">		setstrMeasures.add (&quot;DirtyDV01&quot;);</span>
+<span class="nc" id="L1336">		setstrMeasures.add (&quot;DirtyDV01&quot;);</span>
 
-<span class="nc" id="L1312">		setstrMeasures.add (&quot;DirtyPV&quot;);</span>
+<span class="nc" id="L1338">		setstrMeasures.add (&quot;DirtyPV&quot;);</span>
 
-<span class="nc" id="L1314">		setstrMeasures.add (&quot;DV01&quot;);</span>
+<span class="nc" id="L1340">		setstrMeasures.add (&quot;DV01&quot;);</span>
 
-<span class="nc" id="L1316">		setstrMeasures.add (&quot;FairPremium&quot;);</span>
+<span class="nc" id="L1342">		setstrMeasures.add (&quot;FairPremium&quot;);</span>
 
-<span class="nc" id="L1318">		setstrMeasures.add (&quot;Fixing01&quot;);</span>
+<span class="nc" id="L1344">		setstrMeasures.add (&quot;Fixing01&quot;);</span>
 
-<span class="nc" id="L1320">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1346">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1322">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1348">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1324">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1350">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1326">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1352">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1328">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1354">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1330">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1356">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1332">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1358">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1334">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1360">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1336">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1362">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1338">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1364">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1340">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1366">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1342">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1368">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1344">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1370">		setstrMeasures.add (&quot;ForwardFundingConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1346">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1372">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1348">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1374">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1350">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1376">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1352">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1378">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1354">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1380">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1356">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1382">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1358">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1384">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1360">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1386">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1362">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1388">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1364">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1390">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1366">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1392">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1368">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1394">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1370">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1396">		setstrMeasures.add (&quot;ForwardFXConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1372">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1398">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1374">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedCleanPV&quot;);</span>
+<span class="nc" id="L1400">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1376">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1402">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1378">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1404">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1380">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedDV01&quot;);</span>
+<span class="nc" id="L1406">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedDV01&quot;);</span>
 
-<span class="nc" id="L1382">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedFairPremium&quot;);</span>
+<span class="nc" id="L1408">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1384">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedParRate&quot;);</span>
+<span class="nc" id="L1410">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedParRate&quot;);</span>
 
-<span class="nc" id="L1386">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedPV&quot;);</span>
+<span class="nc" id="L1412">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedPV&quot;);</span>
 
-<span class="nc" id="L1388">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedRate&quot;);</span>
+<span class="nc" id="L1414">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedRate&quot;);</span>
 
-<span class="nc" id="L1390">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedUpfront&quot;);</span>
+<span class="nc" id="L1416">		setstrMeasures.add (&quot;FundingFXConvexityAdjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1392">		setstrMeasures.add (&quot;FundingFXConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L1418">		setstrMeasures.add (&quot;FundingFXConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L1394">		setstrMeasures.add (&quot;FundingFXConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L1420">		setstrMeasures.add (&quot;FundingFXConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L1396">		setstrMeasures.add (&quot;FundingFXConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="nc" id="L1422">		setstrMeasures.add (&quot;FundingFXConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="nc" id="L1398">		setstrMeasures.add (&quot;ParRate&quot;);</span>
+<span class="nc" id="L1424">		setstrMeasures.add (&quot;ParRate&quot;);</span>
 
-<span class="nc" id="L1400">		setstrMeasures.add (&quot;PV&quot;);</span>
+<span class="nc" id="L1426">		setstrMeasures.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L1402">		setstrMeasures.add (&quot;Rate&quot;);</span>
+<span class="nc" id="L1428">		setstrMeasures.add (&quot;Rate&quot;);</span>
 
-<span class="nc" id="L1404">		setstrMeasures.add (&quot;ResetDate&quot;);</span>
+<span class="nc" id="L1430">		setstrMeasures.add (&quot;ResetDate&quot;);</span>
 
-<span class="nc" id="L1406">		setstrMeasures.add (&quot;ResetRate&quot;);</span>
+<span class="nc" id="L1432">		setstrMeasures.add (&quot;ResetRate&quot;);</span>
 
-<span class="nc" id="L1408">		setstrMeasures.add (&quot;TotalCoupon&quot;);</span>
+<span class="nc" id="L1434">		setstrMeasures.add (&quot;TotalCoupon&quot;);</span>
 
-<span class="nc" id="L1410">		setstrMeasures.add (&quot;UnadjustedCleanDV01&quot;);</span>
+<span class="nc" id="L1436">		setstrMeasures.add (&quot;UnadjustedCleanDV01&quot;);</span>
 
-<span class="nc" id="L1412">		setstrMeasures.add (&quot;UnadjustedCleanPV&quot;);</span>
+<span class="nc" id="L1438">		setstrMeasures.add (&quot;UnadjustedCleanPV&quot;);</span>
 
-<span class="nc" id="L1414">		setstrMeasures.add (&quot;UnadjustedDirtyDV01&quot;);</span>
+<span class="nc" id="L1440">		setstrMeasures.add (&quot;UnadjustedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L1416">		setstrMeasures.add (&quot;UnadjustedDirtyPV&quot;);</span>
+<span class="nc" id="L1442">		setstrMeasures.add (&quot;UnadjustedDirtyPV&quot;);</span>
 
-<span class="nc" id="L1418">		setstrMeasures.add (&quot;UnadjustedFairPremium&quot;);</span>
+<span class="nc" id="L1444">		setstrMeasures.add (&quot;UnadjustedFairPremium&quot;);</span>
 
-<span class="nc" id="L1420">		setstrMeasures.add (&quot;UnadjustedParRate&quot;);</span>
+<span class="nc" id="L1446">		setstrMeasures.add (&quot;UnadjustedParRate&quot;);</span>
 
-<span class="nc" id="L1422">		setstrMeasures.add (&quot;UnadjustedPV&quot;);</span>
+<span class="nc" id="L1448">		setstrMeasures.add (&quot;UnadjustedPV&quot;);</span>
 
-<span class="nc" id="L1424">		setstrMeasures.add (&quot;UnadjustedRate&quot;);</span>
+<span class="nc" id="L1450">		setstrMeasures.add (&quot;UnadjustedRate&quot;);</span>
 
-<span class="nc" id="L1426">		setstrMeasures.add (&quot;UnadjustedUpfront&quot;);</span>
+<span class="nc" id="L1452">		setstrMeasures.add (&quot;UnadjustedUpfront&quot;);</span>
 
-<span class="nc" id="L1428">		setstrMeasures.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L1454">		setstrMeasures.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L1430">		return setstrMeasures;</span>
+<span class="nc" id="L1456">		return setstrMeasures;</span>
 	}
 
 	/**
@@ -1450,35 +1476,35 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L1453" title="All 4 branches missed.">		if (null == valParams || null == csqc)</span>
-<span class="nc" id="L1454">			throw new java.lang.Exception (&quot;Stream::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L1479" title="All 4 branches missed.">		if (null == valParams || null == csqc)</span>
+<span class="nc" id="L1480">			throw new java.lang.Exception (&quot;Stream::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L1456">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
+<span class="nc" id="L1482">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
 
-<span class="nc bnc" id="L1458" title="All 2 branches missed.">		if (null == dcFunding) throw new java.lang.Exception (&quot;Stream::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L1484" title="All 2 branches missed.">		if (null == dcFunding) throw new java.lang.Exception (&quot;Stream::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L1460">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L1486">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L1462">		double dblCumulativeConvexityAdjustedDirtyPV = 0.;</span>
+<span class="nc" id="L1488">		double dblCumulativeConvexityAdjustedDirtyPV = 0.;</span>
 
-<span class="nc bnc" id="L1464" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="nc" id="L1465">			int iPeriodPayDate = period.payDate();</span>
+<span class="nc bnc" id="L1490" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="nc" id="L1491">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L1467" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
+<span class="nc bnc" id="L1493" title="All 2 branches missed.">			if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L1469">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics (iValueDate,</span>
+<span class="nc" id="L1495">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = period.couponMetrics (iValueDate,</span>
 				csqc);
 
-<span class="nc bnc" id="L1472" title="All 2 branches missed.">			if (null == cpcm) throw new java.lang.Exception (&quot;Stream::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L1498" title="All 2 branches missed.">			if (null == cpcm) throw new java.lang.Exception (&quot;Stream::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L1474">			int iPeriodEndDate = period.endDate();</span>
+<span class="nc" id="L1500">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc" id="L1476">			dblCumulativeConvexityAdjustedDirtyPV += cpcm.dcf() * period.notional (iPeriodEndDate) *</span>
-<span class="nc" id="L1477">				period.couponFactor (iPeriodEndDate) * period.fx (csqc) * period.survival (csqc) *</span>
-<span class="nc" id="L1478">					period.df (csqc) * cpcm.cumulative() * cpcm.rate();</span>
-<span class="nc" id="L1479">		}</span>
+<span class="nc" id="L1502">			dblCumulativeConvexityAdjustedDirtyPV += cpcm.dcf() * period.notional (iPeriodEndDate) *</span>
+<span class="nc" id="L1503">				period.couponFactor (iPeriodEndDate) * period.fx (csqc) * period.survival (csqc) *</span>
+<span class="nc" id="L1504">					period.df (csqc) * cpcm.cumulative() * cpcm.rate();</span>
+<span class="nc" id="L1505">		}</span>
 
-<span class="nc" id="L1481">		return dblCumulativeConvexityAdjustedDirtyPV / dcFunding.df (iValueDate);</span>
+<span class="nc" id="L1507">		return dblCumulativeConvexityAdjustedDirtyPV / dcFunding.df (iValueDate);</span>
 	}
 
 	/**
@@ -1500,61 +1526,61 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L1503" title="2 of 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
+<span class="pc bpc" id="L1529" title="2 of 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
 
-<span class="fc" id="L1505">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
+<span class="fc" id="L1531">		org.drip.state.identifier.FloaterLabel floaterLabel = floaterLabel();</span>
 
-<span class="pc bpc" id="L1507" title="1 of 4 branches missed.">		org.drip.state.identifier.ForwardLabel forwardLabel = null != floaterLabel &amp;&amp; floaterLabel instanceof</span>
+<span class="pc bpc" id="L1533" title="1 of 4 branches missed.">		org.drip.state.identifier.ForwardLabel forwardLabel = null != floaterLabel &amp;&amp; floaterLabel instanceof</span>
 			org.drip.state.identifier.ForwardLabel ? (org.drip.state.identifier.ForwardLabel) floaterLabel :
 				null;
 
-<span class="pc bpc" id="L1511" title="2 of 8 branches missed.">		if ((null != forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||</span>
+<span class="pc bpc" id="L1537" title="2 of 8 branches missed.">		if ((null != forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||</span>
 			(null == forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)))
-<span class="nc" id="L1513">			return null;</span>
+<span class="nc" id="L1539">			return null;</span>
 
-<span class="fc" id="L1515">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L1541">		int iValueDate = valParams.valueDate();</span>
 
-<span class="pc bpc" id="L1517" title="1 of 2 branches missed.">		if (iValueDate &gt;= maturity().julian()) return null;</span>
+<span class="pc bpc" id="L1543" title="1 of 2 branches missed.">		if (iValueDate &gt;= maturity().julian()) return null;</span>
 
-<span class="fc" id="L1519">		double dblCleanPV = 0.;</span>
+<span class="fc" id="L1545">		double dblCleanPV = 0.;</span>
 
 		try {
-<span class="fc bfc" id="L1522" title="All 2 branches covered.">			if (pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet) {</span>
-<span class="fc" id="L1523">				org.drip.product.calib.FloatingStreamQuoteSet fsqs =</span>
+<span class="fc bfc" id="L1548" title="All 2 branches covered.">			if (pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet) {</span>
+<span class="fc" id="L1549">				org.drip.product.calib.FloatingStreamQuoteSet fsqs =</span>
 					(org.drip.product.calib.FloatingStreamQuoteSet) pqs;
 
-<span class="pc bpc" id="L1526" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
-<span class="pc bpc" id="L1527" title="1 of 2 branches missed.">			} else if (pqs instanceof org.drip.product.calib.FixedStreamQuoteSet) {</span>
-<span class="fc" id="L1528">				org.drip.product.calib.FixedStreamQuoteSet fsqs =</span>
+<span class="pc bpc" id="L1552" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
+<span class="pc bpc" id="L1553" title="1 of 2 branches missed.">			} else if (pqs instanceof org.drip.product.calib.FixedStreamQuoteSet) {</span>
+<span class="fc" id="L1554">				org.drip.product.calib.FixedStreamQuoteSet fsqs =</span>
 					(org.drip.product.calib.FixedStreamQuoteSet) pqs;
 
-<span class="pc bpc" id="L1531" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
+<span class="pc bpc" id="L1557" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
 			}
-<span class="nc" id="L1533">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1534">			e.printStackTrace();</span>
+<span class="nc" id="L1559">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1560">			e.printStackTrace();</span>
 
-<span class="nc" id="L1536">			return null;</span>
-<span class="fc" id="L1537">		}</span>
+<span class="nc" id="L1562">			return null;</span>
+<span class="fc" id="L1563">		}</span>
 
-<span class="fc" id="L1539">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="fc" id="L1565">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="fc bfc" id="L1542" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="fc" id="L1543">			int iPeriodEndDate = period.endDate();</span>
+<span class="fc bfc" id="L1568" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="fc" id="L1569">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="pc bpc" id="L1545" title="1 of 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
+<span class="pc bpc" id="L1571" title="1 of 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
 
-<span class="fc" id="L1547">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.forwardPRWC</span>
-<span class="fc" id="L1548">				(iValueDate, csqs, pqs);</span>
+<span class="fc" id="L1573">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.forwardPRWC</span>
+<span class="fc" id="L1574">				(iValueDate, csqs, pqs);</span>
 
-<span class="pc bpc" id="L1550" title="2 of 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
-<span class="fc" id="L1551">		}</span>
+<span class="pc bpc" id="L1576" title="2 of 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
+<span class="fc" id="L1577">		}</span>
 
-<span class="pc bpc" id="L1553" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblCleanPV)) return null;</span>
+<span class="pc bpc" id="L1579" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblCleanPV)) return null;</span>
 
-<span class="pc bpc" id="L1555" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;PV&quot;, 1.)) return null;</span>
+<span class="pc bpc" id="L1581" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;PV&quot;, 1.)) return null;</span>
 
-<span class="fc" id="L1557">		return prwc;</span>
+<span class="fc" id="L1583">		return prwc;</span>
 	}
 
 	/**
@@ -1576,57 +1602,57 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L1579" title="All 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
+<span class="nc bnc" id="L1605" title="All 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
 
-<span class="nc" id="L1581">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();</span>
+<span class="nc" id="L1607">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();</span>
 
-<span class="nc bnc" id="L1583" title="All 8 branches missed.">		if ((null != forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||</span>
+<span class="nc bnc" id="L1609" title="All 8 branches missed.">		if ((null != forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||</span>
 			(null == forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)))
-<span class="nc" id="L1585">			return null;</span>
+<span class="nc" id="L1611">			return null;</span>
 
-<span class="nc" id="L1587">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L1613">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc bnc" id="L1589" title="All 2 branches missed.">		if (iValueDate &gt;= maturity().julian()) return null;</span>
+<span class="nc bnc" id="L1615" title="All 2 branches missed.">		if (iValueDate &gt;= maturity().julian()) return null;</span>
 
-<span class="nc" id="L1591">		double dblCleanPV = 0.;</span>
+<span class="nc" id="L1617">		double dblCleanPV = 0.;</span>
 
 		try {
-<span class="nc bnc" id="L1594" title="All 2 branches missed.">			if (pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet) {</span>
-<span class="nc" id="L1595">				org.drip.product.calib.FloatingStreamQuoteSet fsqs =</span>
+<span class="nc bnc" id="L1620" title="All 2 branches missed.">			if (pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet) {</span>
+<span class="nc" id="L1621">				org.drip.product.calib.FloatingStreamQuoteSet fsqs =</span>
 					(org.drip.product.calib.FloatingStreamQuoteSet) pqs;
 
-<span class="nc bnc" id="L1598" title="All 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
-<span class="nc bnc" id="L1599" title="All 2 branches missed.">			} else if (pqs instanceof org.drip.product.calib.FixedStreamQuoteSet) {</span>
-<span class="nc" id="L1600">				org.drip.product.calib.FixedStreamQuoteSet fsqs =</span>
+<span class="nc bnc" id="L1624" title="All 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
+<span class="nc bnc" id="L1625" title="All 2 branches missed.">			} else if (pqs instanceof org.drip.product.calib.FixedStreamQuoteSet) {</span>
+<span class="nc" id="L1626">				org.drip.product.calib.FixedStreamQuoteSet fsqs =</span>
 					(org.drip.product.calib.FixedStreamQuoteSet) pqs;
 
-<span class="nc bnc" id="L1603" title="All 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
+<span class="nc bnc" id="L1629" title="All 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
 			}
-<span class="nc" id="L1605">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1606">			e.printStackTrace();</span>
+<span class="nc" id="L1631">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1632">			e.printStackTrace();</span>
 
-<span class="nc" id="L1608">			return null;</span>
-<span class="nc" id="L1609">		}</span>
+<span class="nc" id="L1634">			return null;</span>
+<span class="nc" id="L1635">		}</span>
 
-<span class="nc" id="L1611">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L1637">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc bnc" id="L1614" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="nc" id="L1615">			int iPeriodEndDate = period.endDate();</span>
+<span class="nc bnc" id="L1640" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="nc" id="L1641">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc bnc" id="L1617" title="All 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
+<span class="nc bnc" id="L1643" title="All 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L1619">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.fundingPRWC</span>
-<span class="nc" id="L1620">				(iValueDate, csqs, pqs);</span>
+<span class="nc" id="L1645">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.fundingPRWC</span>
+<span class="nc" id="L1646">				(iValueDate, csqs, pqs);</span>
 
-<span class="nc bnc" id="L1622" title="All 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
-<span class="nc" id="L1623">		}</span>
+<span class="nc bnc" id="L1648" title="All 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
+<span class="nc" id="L1649">		}</span>
 
-<span class="nc bnc" id="L1625" title="All 2 branches missed.">		if (!prwc.updateValue (dblCleanPV)) return null;</span>
+<span class="nc bnc" id="L1651" title="All 2 branches missed.">		if (!prwc.updateValue (dblCleanPV)) return null;</span>
 
-<span class="nc bnc" id="L1627" title="All 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;PV&quot;, 1.)) return null;</span>
+<span class="nc bnc" id="L1653" title="All 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;PV&quot;, 1.)) return null;</span>
 
-<span class="nc" id="L1629">		return prwc;</span>
+<span class="nc" id="L1655">		return prwc;</span>
 	}
 
 	/**
@@ -1648,57 +1674,57 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L1651" title="2 of 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
+<span class="pc bpc" id="L1677" title="2 of 4 branches missed.">		if (null == valParams || null == pqs) return null;</span>
 
-<span class="fc" id="L1653">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();</span>
+<span class="fc" id="L1679">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel();</span>
 
-<span class="pc bpc" id="L1655" title="2 of 8 branches missed.">		if ((null != forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||</span>
+<span class="pc bpc" id="L1681" title="2 of 8 branches missed.">		if ((null != forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet)) ||</span>
 			(null == forwardLabel &amp;&amp; !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)))
-<span class="nc" id="L1657">			return null;</span>
+<span class="nc" id="L1683">			return null;</span>
 
-<span class="fc" id="L1659">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L1685">		int iValueDate = valParams.valueDate();</span>
 
-<span class="pc bpc" id="L1661" title="1 of 2 branches missed.">		if (iValueDate &gt;= maturity().julian()) return null;</span>
+<span class="pc bpc" id="L1687" title="1 of 2 branches missed.">		if (iValueDate &gt;= maturity().julian()) return null;</span>
 
-<span class="fc" id="L1663">		double dblCleanPV = 0.;</span>
+<span class="fc" id="L1689">		double dblCleanPV = 0.;</span>
 
 		try {
-<span class="fc bfc" id="L1666" title="All 2 branches covered.">			if (pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet) {</span>
-<span class="fc" id="L1667">				org.drip.product.calib.FloatingStreamQuoteSet fsqs =</span>
+<span class="fc bfc" id="L1692" title="All 2 branches covered.">			if (pqs instanceof org.drip.product.calib.FloatingStreamQuoteSet) {</span>
+<span class="fc" id="L1693">				org.drip.product.calib.FloatingStreamQuoteSet fsqs =</span>
 					(org.drip.product.calib.FloatingStreamQuoteSet) pqs;
 
-<span class="pc bpc" id="L1670" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
-<span class="pc bpc" id="L1671" title="1 of 2 branches missed.">			} else if (pqs instanceof org.drip.product.calib.FixedStreamQuoteSet) {</span>
-<span class="fc" id="L1672">				org.drip.product.calib.FixedStreamQuoteSet fsqs =</span>
+<span class="pc bpc" id="L1696" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
+<span class="pc bpc" id="L1697" title="1 of 2 branches missed.">			} else if (pqs instanceof org.drip.product.calib.FixedStreamQuoteSet) {</span>
+<span class="fc" id="L1698">				org.drip.product.calib.FixedStreamQuoteSet fsqs =</span>
 					(org.drip.product.calib.FixedStreamQuoteSet) pqs;
 
-<span class="pc bpc" id="L1675" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
+<span class="pc bpc" id="L1701" title="1 of 2 branches missed.">				if (fsqs.containsPV()) dblCleanPV = fsqs.pv();</span>
 			}
-<span class="nc" id="L1677">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1678">			e.printStackTrace();</span>
+<span class="nc" id="L1703">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1704">			e.printStackTrace();</span>
 
-<span class="nc" id="L1680">			return null;</span>
-<span class="fc" id="L1681">		}</span>
+<span class="nc" id="L1706">			return null;</span>
+<span class="fc" id="L1707">		}</span>
 
-<span class="fc" id="L1683">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="fc" id="L1709">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="fc bfc" id="L1686" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="fc" id="L1687">			int iPeriodEndDate = period.endDate();</span>
+<span class="fc bfc" id="L1712" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="fc" id="L1713">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="pc bpc" id="L1689" title="1 of 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
+<span class="pc bpc" id="L1715" title="1 of 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
 
-<span class="fc" id="L1691">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.forwardFundingPRWC</span>
-<span class="fc" id="L1692">				(iValueDate, csqs, pqs);</span>
+<span class="fc" id="L1717">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.forwardFundingPRWC</span>
+<span class="fc" id="L1718">				(iValueDate, csqs, pqs);</span>
 
-<span class="pc bpc" id="L1694" title="2 of 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
-<span class="fc" id="L1695">		}</span>
+<span class="pc bpc" id="L1720" title="2 of 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
+<span class="fc" id="L1721">		}</span>
 
-<span class="pc bpc" id="L1697" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblCleanPV)) return null;</span>
+<span class="pc bpc" id="L1723" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblCleanPV)) return null;</span>
 
-<span class="pc bpc" id="L1699" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;PV&quot;, 1.)) return null;</span>
+<span class="pc bpc" id="L1725" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;PV&quot;, 1.)) return null;</span>
 
-<span class="fc" id="L1701">		return prwc;</span>
+<span class="fc" id="L1727">		return prwc;</span>
 	}
 
 	/**
@@ -1723,25 +1749,25 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L1726" title="All 2 branches missed.">		if (null == valParams) return null;</span>
+<span class="nc bnc" id="L1752" title="All 2 branches missed.">		if (null == valParams) return null;</span>
 
-<span class="nc" id="L1728">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L1754">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L1730">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L1756">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc bnc" id="L1733" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="nc" id="L1734">			int iPeriodEndDate = period.endDate();</span>
+<span class="nc bnc" id="L1759" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="nc" id="L1760">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc bnc" id="L1736" title="All 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
+<span class="nc bnc" id="L1762" title="All 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L1738">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.fxPRWC</span>
-<span class="nc" id="L1739">				(iValueDate, csqs, pqs);</span>
+<span class="nc" id="L1764">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.fxPRWC</span>
+<span class="nc" id="L1765">				(iValueDate, csqs, pqs);</span>
 
-<span class="nc bnc" id="L1741" title="All 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
-<span class="nc" id="L1742">		}</span>
+<span class="nc bnc" id="L1767" title="All 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
+<span class="nc" id="L1768">		}</span>
 
-<span class="nc" id="L1744">		return prwc;</span>
+<span class="nc" id="L1770">		return prwc;</span>
 	}
 
 	/**
@@ -1766,7 +1792,7 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L1769">		return null;</span>
+<span class="nc" id="L1795">		return null;</span>
 	}
 
 	/**
@@ -1791,25 +1817,25 @@ public class Stream {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L1794" title="All 2 branches missed.">		if (null == valParams) return null;</span>
+<span class="nc bnc" id="L1820" title="All 2 branches missed.">		if (null == valParams) return null;</span>
 
-<span class="nc" id="L1796">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L1822">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L1798">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L1824">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc bnc" id="L1801" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
-<span class="nc" id="L1802">			int iPeriodEndDate = period.endDate();</span>
+<span class="nc bnc" id="L1827" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {</span>
+<span class="nc" id="L1828">			int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc bnc" id="L1804" title="All 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
+<span class="nc bnc" id="L1830" title="All 2 branches missed.">			if (iPeriodEndDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L1806">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.volatilityPRWC</span>
-<span class="nc" id="L1807">				(iValueDate, csqs, pqs);</span>
+<span class="nc" id="L1832">			org.drip.state.estimator.PredictorResponseWeightConstraint prwcPeriod = period.volatilityPRWC</span>
+<span class="nc" id="L1833">				(iValueDate, csqs, pqs);</span>
 
-<span class="nc bnc" id="L1809" title="All 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
-<span class="nc" id="L1810">		}</span>
+<span class="nc bnc" id="L1835" title="All 4 branches missed.">			if (null == prwcPeriod || !prwc.absorb (prwcPeriod)) return null;</span>
+<span class="nc" id="L1836">		}</span>
 
-<span class="nc" id="L1812">		return prwc;</span>
+<span class="nc" id="L1838">		return prwc;</span>
 	}
 
 	/**
@@ -1829,50 +1855,50 @@ public class Stream {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L1832" title="3 of 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= maturity().julian() || null == csqs) return null;</span>
+<span class="pc bpc" id="L1858" title="3 of 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= maturity().julian() || null == csqs) return null;</span>
 
-<span class="fc" id="L1834">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
+<span class="fc" id="L1860">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
-<span class="pc bpc" id="L1836" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L1862" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
 		try {
-<span class="fc" id="L1839">			org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure = null;</span>
+<span class="fc" id="L1865">			org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure = null;</span>
 
-<span class="fc bfc" id="L1841" title="All 2 branches covered.">			for (org.drip.analytics.cashflow.CompositePeriod p : _lsPeriod) {</span>
-<span class="fc" id="L1842">				int iPeriodPayDate = p.payDate();</span>
+<span class="fc bfc" id="L1867" title="All 2 branches covered.">			for (org.drip.analytics.cashflow.CompositePeriod p : _lsPeriod) {</span>
+<span class="fc" id="L1868">				int iPeriodPayDate = p.payDate();</span>
 
-<span class="pc bpc" id="L1844" title="1 of 2 branches missed.">				if (p.startDate() &lt; valParams.valueDate()) continue;</span>
+<span class="pc bpc" id="L1870" title="1 of 2 branches missed.">				if (p.startDate() &lt; valParams.valueDate()) continue;</span>
 
-<span class="fc" id="L1846">				org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure =</span>
-<span class="fc" id="L1847">					dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, &quot;PV&quot;);</span>
+<span class="fc" id="L1872">				org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure =</span>
+<span class="fc" id="L1873">					dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, &quot;PV&quot;);</span>
 
-<span class="pc bpc" id="L1849" title="1 of 2 branches missed.">				if (null == jackDDFDManifestMeasure) continue;</span>
+<span class="pc bpc" id="L1875" title="1 of 2 branches missed.">				if (null == jackDDFDManifestMeasure) continue;</span>
 
-<span class="fc" id="L1851">				int iNumQuote = jackDDFDManifestMeasure.numParameters();</span>
+<span class="fc" id="L1877">				int iNumQuote = jackDDFDManifestMeasure.numParameters();</span>
 
-<span class="pc bpc" id="L1853" title="1 of 2 branches missed.">				if (0 == iNumQuote) continue;</span>
+<span class="pc bpc" id="L1879" title="1 of 2 branches missed.">				if (0 == iNumQuote) continue;</span>
 
-<span class="fc bfc" id="L1855" title="All 2 branches covered.">				if (null == jackDDirtyPVDManifestMeasure)</span>
-<span class="fc" id="L1856">					jackDDirtyPVDManifestMeasure = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="fc bfc" id="L1881" title="All 2 branches covered.">				if (null == jackDDirtyPVDManifestMeasure)</span>
+<span class="fc" id="L1882">					jackDDirtyPVDManifestMeasure = new org.drip.quant.calculus.WengertJacobian (1,</span>
 						iNumQuote);
 
-<span class="fc" id="L1859">				double dblPeriodNotional = p.notional (p.startDate(), p.endDate()) * p.fx (csqs);</span>
+<span class="fc" id="L1885">				double dblPeriodNotional = p.notional (p.startDate(), p.endDate()) * p.fx (csqs);</span>
 
-<span class="fc" id="L1861">				double dblPeriodDCF = p.couponMetrics (valParams.valueDate(), csqs).dcf();</span>
+<span class="fc" id="L1887">				double dblPeriodDCF = p.couponMetrics (valParams.valueDate(), csqs).dcf();</span>
 
-<span class="fc bfc" id="L1863" title="All 2 branches covered.">				for (int k = 0; k &lt; iNumQuote; ++k) {</span>
-<span class="pc bpc" id="L1864" title="1 of 2 branches missed.">					if (!jackDDirtyPVDManifestMeasure.accumulatePartialFirstDerivative (0, k,</span>
-<span class="fc" id="L1865">						dblPeriodNotional * dblPeriodDCF * jackDDFDManifestMeasure.firstDerivative (0, k)))</span>
-<span class="nc" id="L1866">						return null;</span>
+<span class="fc bfc" id="L1889" title="All 2 branches covered.">				for (int k = 0; k &lt; iNumQuote; ++k) {</span>
+<span class="pc bpc" id="L1890" title="1 of 2 branches missed.">					if (!jackDDirtyPVDManifestMeasure.accumulatePartialFirstDerivative (0, k,</span>
+<span class="fc" id="L1891">						dblPeriodNotional * dblPeriodDCF * jackDDFDManifestMeasure.firstDerivative (0, k)))</span>
+<span class="nc" id="L1892">						return null;</span>
 				}
-<span class="fc" id="L1868">			}</span>
+<span class="fc" id="L1894">			}</span>
 
-<span class="fc" id="L1870">			return jackDDirtyPVDManifestMeasure;</span>
-<span class="nc" id="L1871">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1872">			e.printStackTrace();</span>
+<span class="fc" id="L1896">			return jackDDirtyPVDManifestMeasure;</span>
+<span class="nc" id="L1897">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1898">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1875">		return null;</span>
+<span class="nc" id="L1901">		return null;</span>
 	}
 
 	/**
@@ -1894,73 +1920,73 @@ public class Stream {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L1897" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= _lsPeriod.get (_lsPeriod.size() - 1).endDate() ||</span>
+<span class="nc bnc" id="L1923" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= _lsPeriod.get (_lsPeriod.size() - 1).endDate() ||</span>
 			null == strManifestMeasure)
-<span class="nc" id="L1899">			return null;</span>
+<span class="nc" id="L1925">			return null;</span>
 
-<span class="nc" id="L1901">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="nc" id="L1902">			(org.drip.state.identifier.FundingLabel.Standard (payCurrency()));</span>
+<span class="nc" id="L1927">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="nc" id="L1928">			(org.drip.state.identifier.FundingLabel.Standard (payCurrency()));</span>
 
-<span class="nc bnc" id="L1904" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="nc bnc" id="L1930" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc bnc" id="L1906" title="All 4 branches missed.">		if (&quot;Rate&quot;.equalsIgnoreCase (strManifestMeasure) || &quot;SwapRate&quot;.equalsIgnoreCase (strManifestMeasure))</span>
+<span class="nc bnc" id="L1932" title="All 4 branches missed.">		if (&quot;Rate&quot;.equalsIgnoreCase (strManifestMeasure) || &quot;SwapRate&quot;.equalsIgnoreCase (strManifestMeasure))</span>
 		{
-<span class="nc" id="L1908">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = value</span>
-<span class="nc" id="L1909">				(valParams, pricerParams, csqs, vcp);</span>
+<span class="nc" id="L1934">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = value</span>
+<span class="nc" id="L1935">				(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="nc bnc" id="L1911" title="All 2 branches missed.">			if (null == mapMeasures) return null;</span>
+<span class="nc bnc" id="L1937" title="All 2 branches missed.">			if (null == mapMeasures) return null;</span>
 
-<span class="nc" id="L1913">			double dblDirtyDV01 = mapMeasures.get (&quot;DirtyDV01&quot;);</span>
+<span class="nc" id="L1939">			double dblDirtyDV01 = mapMeasures.get (&quot;DirtyDV01&quot;);</span>
 
-<span class="nc" id="L1915">			double dblParSwapRate = mapMeasures.get (&quot;SwapRate&quot;);</span>
+<span class="nc" id="L1941">			double dblParSwapRate = mapMeasures.get (&quot;SwapRate&quot;);</span>
 
 			try {
-<span class="nc" id="L1918">				org.drip.quant.calculus.WengertJacobian wjSwapRateDFMicroJack = null;</span>
+<span class="nc" id="L1944">				org.drip.quant.calculus.WengertJacobian wjSwapRateDFMicroJack = null;</span>
 
-<span class="nc bnc" id="L1920" title="All 2 branches missed.">				for (org.drip.analytics.cashflow.CompositePeriod p : _lsPeriod) {</span>
-<span class="nc" id="L1921">					int iPeriodPayDate = p.payDate();</span>
+<span class="nc bnc" id="L1946" title="All 2 branches missed.">				for (org.drip.analytics.cashflow.CompositePeriod p : _lsPeriod) {</span>
+<span class="nc" id="L1947">					int iPeriodPayDate = p.payDate();</span>
 
-<span class="nc bnc" id="L1923" title="All 2 branches missed.">					if (iPeriodPayDate &lt; valParams.valueDate()) continue;</span>
+<span class="nc bnc" id="L1949" title="All 2 branches missed.">					if (iPeriodPayDate &lt; valParams.valueDate()) continue;</span>
 
-<span class="nc" id="L1925">					double dblPeriodDCF = p.couponMetrics (valParams.valueDate(), csqs).dcf();</span>
+<span class="nc" id="L1951">					double dblPeriodDCF = p.couponMetrics (valParams.valueDate(), csqs).dcf();</span>
 
-<span class="nc" id="L1927">					org.drip.quant.calculus.WengertJacobian wjPeriodFwdRateDF =</span>
-<span class="nc" id="L1928">						dcFunding.jackDForwardDManifestMeasure (p.startDate(), p.endDate(), &quot;Rate&quot;,</span>
+<span class="nc" id="L1953">					org.drip.quant.calculus.WengertJacobian wjPeriodFwdRateDF =</span>
+<span class="nc" id="L1954">						dcFunding.jackDForwardDManifestMeasure (p.startDate(), p.endDate(), &quot;Rate&quot;,</span>
 							dblPeriodDCF);
 
-<span class="nc" id="L1931">					org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF =</span>
-<span class="nc" id="L1932">						dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, &quot;Rate&quot;);</span>
+<span class="nc" id="L1957">					org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF =</span>
+<span class="nc" id="L1958">						dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, &quot;Rate&quot;);</span>
 
-<span class="nc bnc" id="L1934" title="All 4 branches missed.">					if (null == wjPeriodFwdRateDF || null == wjPeriodPayDFDF) continue;</span>
+<span class="nc bnc" id="L1960" title="All 4 branches missed.">					if (null == wjPeriodFwdRateDF || null == wjPeriodPayDFDF) continue;</span>
 
-<span class="nc" id="L1936">					double dblForwardRate = dcFunding.libor (p.startDate(), p.endDate());</span>
+<span class="nc" id="L1962">					double dblForwardRate = dcFunding.libor (p.startDate(), p.endDate());</span>
 
-<span class="nc" id="L1938">					double dblPeriodPayDF = dcFunding.df (iPeriodPayDate);</span>
+<span class="nc" id="L1964">					double dblPeriodPayDF = dcFunding.df (iPeriodPayDate);</span>
 
-<span class="nc bnc" id="L1940" title="All 2 branches missed.">					if (null == wjSwapRateDFMicroJack)</span>
-<span class="nc" id="L1941">						wjSwapRateDFMicroJack = new org.drip.quant.calculus.WengertJacobian (1,</span>
-<span class="nc" id="L1942">							wjPeriodFwdRateDF.numParameters());</span>
+<span class="nc bnc" id="L1966" title="All 2 branches missed.">					if (null == wjSwapRateDFMicroJack)</span>
+<span class="nc" id="L1967">						wjSwapRateDFMicroJack = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="nc" id="L1968">							wjPeriodFwdRateDF.numParameters());</span>
 
-<span class="nc" id="L1944">					double dblPeriodNotional = notional (p.startDate(), p.endDate());</span>
+<span class="nc" id="L1970">					double dblPeriodNotional = notional (p.startDate(), p.endDate());</span>
 
-<span class="nc bnc" id="L1946" title="All 2 branches missed.">					for (int k = 0; k &lt; wjPeriodFwdRateDF.numParameters(); ++k) {</span>
-<span class="nc" id="L1947">						double dblPeriodMicroJack = (dblForwardRate - dblParSwapRate) *</span>
-<span class="nc" id="L1948">							wjPeriodPayDFDF.firstDerivative (0, k) + dblPeriodPayDF *</span>
-<span class="nc" id="L1949">								wjPeriodFwdRateDF.firstDerivative (0, k);</span>
+<span class="nc bnc" id="L1972" title="All 2 branches missed.">					for (int k = 0; k &lt; wjPeriodFwdRateDF.numParameters(); ++k) {</span>
+<span class="nc" id="L1973">						double dblPeriodMicroJack = (dblForwardRate - dblParSwapRate) *</span>
+<span class="nc" id="L1974">							wjPeriodPayDFDF.firstDerivative (0, k) + dblPeriodPayDF *</span>
+<span class="nc" id="L1975">								wjPeriodFwdRateDF.firstDerivative (0, k);</span>
 
-<span class="nc bnc" id="L1951" title="All 2 branches missed.">						if (!wjSwapRateDFMicroJack.accumulatePartialFirstDerivative (0, k, dblPeriodNotional</span>
+<span class="nc bnc" id="L1977" title="All 2 branches missed.">						if (!wjSwapRateDFMicroJack.accumulatePartialFirstDerivative (0, k, dblPeriodNotional</span>
 							* dblPeriodDCF * dblPeriodMicroJack / dblDirtyDV01))
-<span class="nc" id="L1953">							return null;</span>
+<span class="nc" id="L1979">							return null;</span>
 					}
-<span class="nc" id="L1955">				}</span>
+<span class="nc" id="L1981">				}</span>
 
-<span class="nc" id="L1957">				return wjSwapRateDFMicroJack;</span>
-<span class="nc" id="L1958">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1959">				e.printStackTrace();</span>
+<span class="nc" id="L1983">				return wjSwapRateDFMicroJack;</span>
+<span class="nc" id="L1984">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1985">				e.printStackTrace();</span>
 			}
 		}
 
-<span class="nc" id="L1963">		return null;</span>
+<span class="nc" id="L1989">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

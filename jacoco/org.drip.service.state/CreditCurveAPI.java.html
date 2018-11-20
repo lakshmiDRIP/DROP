@@ -6,33 +6,51 @@ package org.drip.service.state;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,12 +67,20 @@ package org.drip.service.state;
  */
 
 /**
- * CreditCurveAPI computes the Metrics associated the Credit Curve State.
+ * &lt;i&gt;CreditCurveAPI&lt;/i&gt; computes the Metrics associated the Credit Curve State.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L57">public class CreditCurveAPI {</span>
+<span class="nc" id="L83">public class CreditCurveAPI {</span>
 
 	/**
 	 * Generate the Horizon Metrics for the Specified Inputs
@@ -77,55 +103,55 @@ package org.drip.service.state;
 		final double dblCreditIndexQuotedSpread,
 		final java.lang.String[] astrForTenor)
 	{
-<span class="nc bnc" id="L80" title="All 8 branches missed.">		if (null == dtSpot || null == astrFundingFixingMaturityTenor || null == adblFundingFixingQuote ||</span>
+<span class="nc bnc" id="L106" title="All 8 branches missed.">		if (null == dtSpot || null == astrFundingFixingMaturityTenor || null == adblFundingFixingQuote ||</span>
 			null == astrForTenor)
-<span class="nc" id="L82">			return null;</span>
+<span class="nc" id="L108">			return null;</span>
 
-<span class="nc" id="L84">		int iNumForTenor = astrForTenor.length;</span>
-<span class="nc" id="L85">		int iNumFundingFixingInstrument = astrFundingFixingMaturityTenor.length;</span>
+<span class="nc" id="L110">		int iNumForTenor = astrForTenor.length;</span>
+<span class="nc" id="L111">		int iNumFundingFixingInstrument = astrFundingFixingMaturityTenor.length;</span>
 
-<span class="nc bnc" id="L87" title="All 6 branches missed.">		if (0 == iNumFundingFixingInstrument || iNumFundingFixingInstrument != adblFundingFixingQuote.length</span>
+<span class="nc bnc" id="L113" title="All 6 branches missed.">		if (0 == iNumFundingFixingInstrument || iNumFundingFixingInstrument != adblFundingFixingQuote.length</span>
 			|| 0 == iNumForTenor)
-<span class="nc" id="L89">			return null;</span>
+<span class="nc" id="L115">			return null;</span>
 
-<span class="nc" id="L91">		org.drip.market.otc.CreditIndexConvention cic =</span>
+<span class="nc" id="L117">		org.drip.market.otc.CreditIndexConvention cic =</span>
 			org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-<span class="nc" id="L93">				(strFullCreditIndexName);</span>
+<span class="nc" id="L119">				(strFullCreditIndexName);</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == cic) return null;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == cic) return null;</span>
 
-<span class="nc" id="L97">		org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixing =</span>
-<span class="nc" id="L98">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, cic.currency(), null,</span>
+<span class="nc" id="L123">		org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixing =</span>
+<span class="nc" id="L124">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, cic.currency(), null,</span>
 				null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;, astrFundingFixingMaturityTenor,
 					adblFundingFixingQuote, &quot;SwapRate&quot;,
 						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (null == dcFundingFixing) return null;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (null == dcFundingFixing) return null;</span>
 
-<span class="nc" id="L105">		org.drip.state.credit.CreditCurve cc = org.drip.service.template.LatentMarketStateBuilder.CreditCurve</span>
-<span class="nc" id="L106">			(dtSpot, new org.drip.product.definition.CreditDefaultSwap[] {cic.indexCDS()}, new double[]</span>
+<span class="nc" id="L131">		org.drip.state.credit.CreditCurve cc = org.drip.service.template.LatentMarketStateBuilder.CreditCurve</span>
+<span class="nc" id="L132">			(dtSpot, new org.drip.product.definition.CreditDefaultSwap[] {cic.indexCDS()}, new double[]</span>
 				{dblCreditIndexQuotedSpread}, &quot;FairPremium&quot;, dcFundingFixing);
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (null == cc) return null;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (null == cc) return null;</span>
 
 		try {
-<span class="nc" id="L112">			org.drip.historical.state.CreditCurveMetrics ccm = new</span>
+<span class="nc" id="L138">			org.drip.historical.state.CreditCurveMetrics ccm = new</span>
 				org.drip.historical.state.CreditCurveMetrics (dtSpot);
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
-<span class="nc" id="L116">				org.drip.analytics.date.JulianDate dtFor = dtSpot.addTenor (astrForTenor[j]);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
+<span class="nc" id="L142">				org.drip.analytics.date.JulianDate dtFor = dtSpot.addTenor (astrForTenor[j]);</span>
 
-<span class="nc bnc" id="L118" title="All 4 branches missed.">				if (null == dtFor || !ccm.addSurvivalProbability (dtFor, cc.survival (dtFor)) ||</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">					!ccm.addRecoveryRate (dtFor, cc.recovery (dtFor)))</span>
-<span class="nc" id="L120">					continue;</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">				if (null == dtFor || !ccm.addSurvivalProbability (dtFor, cc.survival (dtFor)) ||</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">					!ccm.addRecoveryRate (dtFor, cc.recovery (dtFor)))</span>
+<span class="nc" id="L146">					continue;</span>
 			}
 
-<span class="nc" id="L123">			return ccm;</span>
-<span class="nc" id="L124">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L125">			e.printStackTrace();</span>
+<span class="nc" id="L149">			return ccm;</span>
+<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L151">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L128">		return null;</span>
+<span class="nc" id="L154">		return null;</span>
 	}
 
 	/**
@@ -150,68 +176,68 @@ package org.drip.service.state;
 			final double[] adblCreditIndexQuotedSpread,
 			final java.lang.String[] astrForTenor)
 	{
-<span class="nc bnc" id="L153" title="All 12 branches missed.">		if (null == adtSpot || null == astrFundingFixingMaturityTenor || null == aadblFundingFixingQuote ||</span>
+<span class="nc bnc" id="L179" title="All 12 branches missed.">		if (null == adtSpot || null == astrFundingFixingMaturityTenor || null == aadblFundingFixingQuote ||</span>
 			null == astrFullCreditIndexName || null == adblCreditIndexQuotedSpread || null == astrForTenor)
-<span class="nc" id="L155">			return null;</span>
+<span class="nc" id="L181">			return null;</span>
 
-<span class="nc" id="L157">		int iNumSpot = adtSpot.length;</span>
-<span class="nc" id="L158">		int iNumForTenor = astrForTenor.length;</span>
-<span class="nc" id="L159">		int iNumFundingFixingInstrument = astrFundingFixingMaturityTenor.length;</span>
+<span class="nc" id="L183">		int iNumSpot = adtSpot.length;</span>
+<span class="nc" id="L184">		int iNumForTenor = astrForTenor.length;</span>
+<span class="nc" id="L185">		int iNumFundingFixingInstrument = astrFundingFixingMaturityTenor.length;</span>
 
-<span class="nc bnc" id="L161" title="All 12 branches missed.">		if (0 == iNumSpot || iNumSpot != aadblFundingFixingQuote.length || iNumSpot !=</span>
+<span class="nc bnc" id="L187" title="All 12 branches missed.">		if (0 == iNumSpot || iNumSpot != aadblFundingFixingQuote.length || iNumSpot !=</span>
 			astrFullCreditIndexName.length || iNumSpot != adblCreditIndexQuotedSpread.length || 0 ==
 				iNumFundingFixingInstrument || 0 == iNumForTenor)
-<span class="nc" id="L164">			return null;</span>
+<span class="nc" id="L190">			return null;</span>
 
 		java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, org.drip.historical.state.CreditCurveMetrics&gt;
-<span class="nc" id="L167">			mapCCM = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
+<span class="nc" id="L193">			mapCCM = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
 				org.drip.historical.state.CreditCurveMetrics&gt;();
 
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSpot; ++i) {</span>
-<span class="nc" id="L171">			org.drip.market.otc.CreditIndexConvention cic =</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSpot; ++i) {</span>
+<span class="nc" id="L197">			org.drip.market.otc.CreditIndexConvention cic =</span>
 				org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-<span class="nc" id="L173">					(astrFullCreditIndexName[i]);</span>
+<span class="nc" id="L199">					(astrFullCreditIndexName[i]);</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (null == cic) continue;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (null == cic) continue;</span>
 
-<span class="nc" id="L177">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixing =</span>
-<span class="nc" id="L178">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], cic.currency(),</span>
+<span class="nc" id="L203">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixing =</span>
+<span class="nc" id="L204">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], cic.currency(),</span>
 					null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;, astrFundingFixingMaturityTenor,
 						aadblFundingFixingQuote[i], &quot;SwapRate&quot;,
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">			if (null == dcFundingFixing) continue;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">			if (null == dcFundingFixing) continue;</span>
 
-<span class="nc" id="L185">			org.drip.state.credit.CreditCurve cc =</span>
-<span class="nc" id="L186">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new</span>
-<span class="nc" id="L187">					org.drip.product.definition.CreditDefaultSwap[] {cic.indexCDS()}, new double[]</span>
+<span class="nc" id="L211">			org.drip.state.credit.CreditCurve cc =</span>
+<span class="nc" id="L212">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new</span>
+<span class="nc" id="L213">					org.drip.product.definition.CreditDefaultSwap[] {cic.indexCDS()}, new double[]</span>
 						{adblCreditIndexQuotedSpread[i]}, &quot;FairPremium&quot;, dcFundingFixing);
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (null == cc) continue;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (null == cc) continue;</span>
 
 			try {
-<span class="nc" id="L193">				org.drip.historical.state.CreditCurveMetrics ccm = new</span>
+<span class="nc" id="L219">				org.drip.historical.state.CreditCurveMetrics ccm = new</span>
 					org.drip.historical.state.CreditCurveMetrics (adtSpot[i]);
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
-<span class="nc" id="L197">					org.drip.analytics.date.JulianDate dtFor = adtSpot[i].addTenor (astrForTenor[j]);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
+<span class="nc" id="L223">					org.drip.analytics.date.JulianDate dtFor = adtSpot[i].addTenor (astrForTenor[j]);</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">					if (null == dtFor) continue;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">					if (null == dtFor) continue;</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">					if (!ccm.addSurvivalProbability (dtFor, cc.survival (dtFor)) || !ccm.addRecoveryRate</span>
-<span class="nc bnc" id="L202" title="All 2 branches missed.">						(dtFor, cc.recovery (dtFor)))</span>
-<span class="nc" id="L203">						continue;</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">					if (!ccm.addSurvivalProbability (dtFor, cc.survival (dtFor)) || !ccm.addRecoveryRate</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">						(dtFor, cc.recovery (dtFor)))</span>
+<span class="nc" id="L229">						continue;</span>
 				}
 
-<span class="nc" id="L206">				mapCCM.put (adtSpot[i], ccm);</span>
-<span class="nc" id="L207">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L208">				e.printStackTrace();</span>
+<span class="nc" id="L232">				mapCCM.put (adtSpot[i], ccm);</span>
+<span class="nc" id="L233">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L234">				e.printStackTrace();</span>
 
-<span class="nc" id="L210">				continue;</span>
-<span class="nc" id="L211">			}</span>
+<span class="nc" id="L236">				continue;</span>
+<span class="nc" id="L237">			}</span>
 		}
 
-<span class="nc" id="L214">		return mapCCM;</span>
+<span class="nc" id="L240">		return mapCCM;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

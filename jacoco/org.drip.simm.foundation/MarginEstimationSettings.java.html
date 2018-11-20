@@ -6,31 +6,49 @@ package org.drip.simm.foundation;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,24 +65,42 @@ package org.drip.simm.foundation;
  */
 
 /**
- * MarginEstimationSettings exposes the Customization Settings used in the Margin Estimation. The References
- *  are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;MarginEstimationSettings&lt;/i&gt; exposes the Customization Settings used in the Margin Estimation. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -84,8 +120,8 @@ public class MarginEstimationSettings
 
 	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = &quot;ISDA&quot;;
 
-<span class="nc" id="L87">	private java.lang.String _positionPrincipalComponentScheme = &quot;&quot;;</span>
-<span class="nc" id="L88">	private org.drip.simm.foundation.CurvatureEstimator _curvatureEstimator = null;</span>
+<span class="nc" id="L123">	private java.lang.String _positionPrincipalComponentScheme = &quot;&quot;;</span>
+<span class="nc" id="L124">	private org.drip.simm.foundation.CurvatureEstimator _curvatureEstimator = null;</span>
 
 	/**
 	 * Generate a Cornish-Fischer Instance of MarginEstimationSettings
@@ -100,17 +136,17 @@ public class MarginEstimationSettings
 	{
 		try
 		{
-<span class="nc" id="L103">			return new MarginEstimationSettings (</span>
+<span class="nc" id="L139">			return new MarginEstimationSettings (</span>
 				positionPrincipalComponentScheme,
-<span class="nc" id="L105">				org.drip.simm.foundation.CurvatureEstimatorResponseFunction.CornishFischer()</span>
+<span class="nc" id="L141">				org.drip.simm.foundation.CurvatureEstimatorResponseFunction.CornishFischer()</span>
 			);
 		}
-<span class="nc" id="L108">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L144">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L110">			e.printStackTrace();</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L113">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -126,17 +162,17 @@ public class MarginEstimationSettings
 	{
 		try
 		{
-<span class="nc" id="L129">			return new MarginEstimationSettings (</span>
+<span class="nc" id="L165">			return new MarginEstimationSettings (</span>
 				positionPrincipalComponentScheme,
-<span class="nc" id="L131">				org.drip.simm.foundation.CurvatureEstimatorISDADelta.Standard()</span>
+<span class="nc" id="L167">				org.drip.simm.foundation.CurvatureEstimatorISDADelta.Standard()</span>
 			);
 		}
-<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L170">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L136">			e.printStackTrace();</span>
+<span class="nc" id="L172">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L175">		return null;</span>
 	}
 
 	/**
@@ -152,17 +188,17 @@ public class MarginEstimationSettings
 	{
 		try
 		{
-<span class="nc" id="L155">			return new MarginEstimationSettings (</span>
+<span class="nc" id="L191">			return new MarginEstimationSettings (</span>
 				positionPrincipalComponentScheme,
-<span class="nc" id="L157">				org.drip.simm.foundation.CurvatureEstimatorFRTB.Standard()</span>
+<span class="nc" id="L193">				org.drip.simm.foundation.CurvatureEstimatorFRTB.Standard()</span>
 			);
 		}
-<span class="nc" id="L160">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L196">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L198">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L201">		return null;</span>
 	}
 
 	/**
@@ -178,14 +214,14 @@ public class MarginEstimationSettings
 		final java.lang.String positionPrincipalComponentScheme,
 		final org.drip.simm.foundation.CurvatureEstimator curvatureEstimator)
 		throws java.lang.Exception
-<span class="nc" id="L181">	{</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||</span>
-<span class="nc bnc" id="L183" title="All 4 branches missed.">			_positionPrincipalComponentScheme.isEmpty() ||</span>
+<span class="nc" id="L217">	{</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">			_positionPrincipalComponentScheme.isEmpty() ||</span>
 			null == (_curvatureEstimator = curvatureEstimator))
 		{
-<span class="nc" id="L186">			throw new java.lang.Exception (&quot;MarginEstimationSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L222">			throw new java.lang.Exception (&quot;MarginEstimationSettings Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L188">	}</span>
+<span class="nc" id="L224">	}</span>
 
 	/**
 	 * Retrieve the Position Principal Component Scheme
@@ -195,7 +231,7 @@ public class MarginEstimationSettings
 
 	public java.lang.String positionPrincipalComponentScheme()
 	{
-<span class="nc" id="L198">		return _positionPrincipalComponentScheme;</span>
+<span class="nc" id="L234">		return _positionPrincipalComponentScheme;</span>
 	}
 
 	/**
@@ -206,7 +242,7 @@ public class MarginEstimationSettings
 
 	public org.drip.simm.foundation.CurvatureEstimator curvatureEstimator()
 	{
-<span class="nc" id="L209">		return _curvatureEstimator;</span>
+<span class="nc" id="L245">		return _curvatureEstimator;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

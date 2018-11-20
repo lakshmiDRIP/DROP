@@ -6,32 +6,50 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,30 +66,38 @@ package org.drip.service.env;
  */
 
 /**
- * InvocationRecord implements the Invocation Start/Finish Times of a given Invocation.
+ * &lt;i&gt;InvocationRecord&lt;/i&gt; implements the Invocation Start/Finish Times of a given Invocation.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Env&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class InvocationRecord
 {
-<span class="fc" id="L58">	private long _lBeginNanos = -1L;</span>
-<span class="fc" id="L59">	private long _lSetupNanos = -1L;</span>
-<span class="fc" id="L60">	private long _lFinishNanos = -1L;</span>
-<span class="fc" id="L61">	private java.util.Date _dtBegin = null;</span>
-<span class="fc" id="L62">	private java.util.Date _dtSetup = null;</span>
-<span class="fc" id="L63">	private java.util.Date _dtFinish = null;</span>
+<span class="fc" id="L84">	private long _lBeginNanos = -1L;</span>
+<span class="fc" id="L85">	private long _lSetupNanos = -1L;</span>
+<span class="fc" id="L86">	private long _lFinishNanos = -1L;</span>
+<span class="fc" id="L87">	private java.util.Date _dtBegin = null;</span>
+<span class="fc" id="L88">	private java.util.Date _dtSetup = null;</span>
+<span class="fc" id="L89">	private java.util.Date _dtFinish = null;</span>
 
 	/**
 	 * InvocationTimes Constructor
 	 */
 
 	public InvocationRecord()
-<span class="fc" id="L70">	{</span>
-<span class="fc" id="L71">		_dtBegin = new java.util.Date();</span>
+<span class="fc" id="L96">	{</span>
+<span class="fc" id="L97">		_dtBegin = new java.util.Date();</span>
 
-<span class="fc" id="L73">		_lBeginNanos = System.nanoTime();</span>
-<span class="fc" id="L74">	}</span>
+<span class="fc" id="L99">		_lBeginNanos = System.nanoTime();</span>
+<span class="fc" id="L100">	}</span>
 
 	/**
 	 * Record the Setup of the Invocation Record
@@ -81,11 +107,11 @@ public class InvocationRecord
 
 	public boolean recordSetup()
 	{
-<span class="fc" id="L84">		_lSetupNanos = System.nanoTime();</span>
+<span class="fc" id="L110">		_lSetupNanos = System.nanoTime();</span>
 
-<span class="fc" id="L86">		_dtSetup = new java.util.Date();</span>
+<span class="fc" id="L112">		_dtSetup = new java.util.Date();</span>
 
-<span class="fc" id="L88">		return true;</span>
+<span class="fc" id="L114">		return true;</span>
 	}
 
 	/**
@@ -99,9 +125,9 @@ public class InvocationRecord
 	public java.lang.String setup (
 		final boolean bHMS)
 	{
-<span class="fc" id="L102">		long lElapsedNanos = _lSetupNanos - _lBeginNanos;</span>
+<span class="fc" id="L128">		long lElapsedNanos = _lSetupNanos - _lBeginNanos;</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : &quot;&quot; + lElapsedNanos;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : &quot;&quot; + lElapsedNanos;</span>
 	}
 
 	/**
@@ -112,11 +138,11 @@ public class InvocationRecord
 
 	public boolean recordFinish()
 	{
-<span class="fc" id="L115">		_lFinishNanos = System.nanoTime();</span>
+<span class="fc" id="L141">		_lFinishNanos = System.nanoTime();</span>
 
-<span class="fc" id="L117">		_dtFinish = new java.util.Date();</span>
+<span class="fc" id="L143">		_dtFinish = new java.util.Date();</span>
 
-<span class="fc" id="L119">		return true;</span>
+<span class="fc" id="L145">		return true;</span>
 	}
 
 	/**
@@ -130,9 +156,9 @@ public class InvocationRecord
 	public java.lang.String elapsed (
 		final boolean bHMS)
 	{
-<span class="fc" id="L133">		long lElapsedNanos = _lFinishNanos - _lSetupNanos;</span>
+<span class="fc" id="L159">		long lElapsedNanos = _lFinishNanos - _lSetupNanos;</span>
 
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : &quot;&quot; + lElapsedNanos;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : &quot;&quot; + lElapsedNanos;</span>
 	}
 
 	/**
@@ -143,7 +169,7 @@ public class InvocationRecord
 
 	public java.util.Date startSnap()
 	{
-<span class="fc" id="L146">		return _dtBegin;</span>
+<span class="fc" id="L172">		return _dtBegin;</span>
 	}
 
 	/**
@@ -154,7 +180,7 @@ public class InvocationRecord
 
 	public java.util.Date setupSnap()
 	{
-<span class="fc" id="L157">		return _dtSetup;</span>
+<span class="fc" id="L183">		return _dtSetup;</span>
 	}
 
 	/**
@@ -165,7 +191,7 @@ public class InvocationRecord
 
 	public java.util.Date finishSnap()
 	{
-<span class="fc" id="L168">		return _dtFinish;</span>
+<span class="fc" id="L194">		return _dtFinish;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,31 +6,49 @@ package org.drip.simm.credit;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,35 +65,54 @@ package org.drip.simm.credit;
  */
 
 /**
- * SectorSystemics contains the Systemic Settings that hold Sector-related Information. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;SectorSystemics&lt;/i&gt; contains the Systemic Settings that hold Sector-related Information. The References
+ * are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L71">public class SectorSystemics</span>
+<span class="nc" id="L108">public class SectorSystemics</span>
 {
 
 	/**
 	 * The Sovereigns Sector
 	 */
 
-<span class="fc" id="L78">	public static final java.lang.String[] SOVEREIGNS = new java.lang.String[]</span>
+<span class="fc" id="L115">	public static final java.lang.String[] SOVEREIGNS = new java.lang.String[]</span>
 	{
 		&quot;SOVEREIGN&quot;,
 		&quot;CENTRAL_BANK&quot;
@@ -85,7 +122,7 @@ package org.drip.simm.credit;
 	 * The Financials Sector
 	 */
 
-<span class="fc" id="L88">	public static final java.lang.String[] FINANCIALS = new java.lang.String[]</span>
+<span class="fc" id="L125">	public static final java.lang.String[] FINANCIALS = new java.lang.String[]</span>
 	{
 		&quot;FINANCIAL&quot;,
 		&quot;GOVERNMENT_BACKED_FINANCIAL&quot;
@@ -95,7 +132,7 @@ package org.drip.simm.credit;
 	 * The Basic Materials Sector
 	 */
 
-<span class="fc" id="L98">	public static final java.lang.String[] BASIC_MATERIALS = new java.lang.String[]</span>
+<span class="fc" id="L135">	public static final java.lang.String[] BASIC_MATERIALS = new java.lang.String[]</span>
 	{
 		&quot;BASIC_MATERIALS&quot;,
 		&quot;ENERGY&quot;,
@@ -106,7 +143,7 @@ package org.drip.simm.credit;
 	 * The Consumer Sector
 	 */
 
-<span class="fc" id="L109">	public static final java.lang.String[] CONSUMER = new java.lang.String[]</span>
+<span class="fc" id="L146">	public static final java.lang.String[] CONSUMER = new java.lang.String[]</span>
 	{
 		&quot;CONSUMER&quot;
 	};
@@ -115,7 +152,7 @@ package org.drip.simm.credit;
 	 * The Technology/Media/Telecommunications Sector
 	 */
 
-<span class="fc" id="L118">	public static final java.lang.String[] TMT = new java.lang.String[]</span>
+<span class="fc" id="L155">	public static final java.lang.String[] TMT = new java.lang.String[]</span>
 	{
 		&quot;TECHNOLOGY&quot;,
 		&quot;MEDIA&quot;,
@@ -126,7 +163,7 @@ package org.drip.simm.credit;
 	 * The Local Services Sector
 	 */
 
-<span class="fc" id="L129">	public static final java.lang.String[] LOCAL_SERVICES = new java.lang.String[]</span>
+<span class="fc" id="L166">	public static final java.lang.String[] LOCAL_SERVICES = new java.lang.String[]</span>
 	{
 		&quot;NON_FINANCIAL&quot;,
 		&quot;HEALTH_CARE&quot;,
@@ -140,7 +177,7 @@ package org.drip.simm.credit;
 	 * The RMBS/CMBS Sector
 	 */
 
-<span class="fc" id="L143">	public static final java.lang.String[] RMBS_CMBS = new java.lang.String[]</span>
+<span class="fc" id="L180">	public static final java.lang.String[] RMBS_CMBS = new java.lang.String[]</span>
 	{
 		&quot;RMBS&quot;,
 		&quot;CMBS&quot;
@@ -150,7 +187,7 @@ package org.drip.simm.credit;
 	 * The &quot;Residual&quot; Sector
 	 */
 
-<span class="fc" id="L153">	public static final java.lang.String[] RESIDUAL = new java.lang.String[]</span>
+<span class="fc" id="L190">	public static final java.lang.String[] RESIDUAL = new java.lang.String[]</span>
 	{
 		&quot;RESIDUAL&quot;
 	};
@@ -159,7 +196,7 @@ package org.drip.simm.credit;
 	 * The Consumer Services Sector
 	 */
 
-<span class="fc" id="L162">	public static final java.lang.String[] CONSUMER_SERVICES = new java.lang.String[]</span>
+<span class="fc" id="L199">	public static final java.lang.String[] CONSUMER_SERVICES = new java.lang.String[]</span>
 	{
 		&quot;CONSUMER_GOODS&quot;,
 		&quot;CONSUMER_SERVICES&quot;,
@@ -172,7 +209,7 @@ package org.drip.simm.credit;
 	 * The Telecommunications/Industrials Sector
 	 */
 
-<span class="fc" id="L175">	public static final java.lang.String[] TELECOMMUNICATIONS_INDUSTRIALS = new java.lang.String[]</span>
+<span class="fc" id="L212">	public static final java.lang.String[] TELECOMMUNICATIONS_INDUSTRIALS = new java.lang.String[]</span>
 	{
 		&quot;TELECOMMUNICATIONS&quot;,
 		&quot;INDUSTRIALS&quot;
@@ -182,7 +219,7 @@ package org.drip.simm.credit;
 	 * The Heavy Industrials Sector
 	 */
 
-<span class="fc" id="L185">	public static final java.lang.String[] HEAVY_INDUSTRIALS = new java.lang.String[]</span>
+<span class="fc" id="L222">	public static final java.lang.String[] HEAVY_INDUSTRIALS = new java.lang.String[]</span>
 	{
 		&quot;BASIC_MATERIALS&quot;,
 		&quot;ENERGY&quot;,
@@ -196,7 +233,7 @@ package org.drip.simm.credit;
 	 * The Investment Sector
 	 */
 
-<span class="fc" id="L199">	public static final java.lang.String[] INVESTMENT = new java.lang.String[]</span>
+<span class="fc" id="L236">	public static final java.lang.String[] INVESTMENT = new java.lang.String[]</span>
 	{
 		&quot;FINANCIAL&quot;,
 		&quot;GOVERNMENT_BACKED_FINANCIAL&quot;,
@@ -208,7 +245,7 @@ package org.drip.simm.credit;
 	 * The &quot;All&quot; Sector
 	 */
 
-<span class="fc" id="L211">	public static final java.lang.String[] ALL = new java.lang.String[]</span>
+<span class="fc" id="L248">	public static final java.lang.String[] ALL = new java.lang.String[]</span>
 	{
 		&quot;ALL&quot;
 	};
@@ -217,7 +254,7 @@ package org.drip.simm.credit;
 	 * The Indexes/Funds/ETF's Sector
 	 */
 
-<span class="fc" id="L220">	public static final java.lang.String[] INDEX_FUND_ETF = new java.lang.String[]</span>
+<span class="fc" id="L257">	public static final java.lang.String[] INDEX_FUND_ETF = new java.lang.String[]</span>
 	{
 		&quot;INDEX&quot;,
 		&quot;FUND&quot;,
@@ -228,7 +265,7 @@ package org.drip.simm.credit;
 	 * The Volatility Index Sector
 	 */
 
-<span class="fc" id="L231">	public static final java.lang.String[] VOLATILITY_INDEX = new java.lang.String[]</span>
+<span class="fc" id="L268">	public static final java.lang.String[] VOLATILITY_INDEX = new java.lang.String[]</span>
 	{
 		&quot;VOLATILITY_INDEX&quot;
 	};

@@ -47,32 +47,50 @@ package org.drip.simm.margin;
  */
 
 /**
- * RiskFactorAggregate holds the Weighted and Normalized Bucket Risk Factor Sensitivity along with the
- *  Normalization Factors. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;RiskFactorAggregate&lt;/i&gt; holds the Weighted and Normalized Bucket Risk Factor Sensitivity along with the
+ * Normalization Factors. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class RiskFactorAggregate
 {
-<span class="nc" id="L74">	private double _sensitivityMargin = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _concentrationRiskFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L92">	private double _sensitivityMargin = java.lang.Double.NaN;</span>
+<span class="nc" id="L93">	private double _concentrationRiskFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * RiskFactorAggregate Constructor
@@ -87,13 +105,13 @@ public class RiskFactorAggregate
 		final double sensitivityMargin,
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
-<span class="nc" id="L90">	{</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))</span>
+<span class="nc" id="L108">	{</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))</span>
 		{
-<span class="nc" id="L94">			throw new java.lang.Exception (&quot;RiskFactorAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;RiskFactorAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L96">	}</span>
+<span class="nc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Bucket Sensitivity Margin
@@ -103,7 +121,7 @@ public class RiskFactorAggregate
 
 	public double sensitivityMargin()
 	{
-<span class="nc" id="L106">		return _sensitivityMargin;</span>
+<span class="nc" id="L124">		return _sensitivityMargin;</span>
 	}
 
 	/**
@@ -114,7 +132,7 @@ public class RiskFactorAggregate
 
 	public double concentrationRiskFactor()
 	{
-<span class="nc" id="L117">		return _concentrationRiskFactor;</span>
+<span class="nc" id="L135">		return _concentrationRiskFactor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

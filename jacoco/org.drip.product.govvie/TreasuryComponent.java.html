@@ -6,33 +6,51 @@ package org.drip.product.govvie;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,13 +67,21 @@ package org.drip.product.govvie;
  */
 
 /**
- * TreasuryComponent implements the Functionality behind a Sovereign/Treasury Bond/Bill/Note.
+ * &lt;i&gt;TreasuryComponent&lt;/i&gt; implements the Functionality behind a Sovereign/Treasury Bond/Bill/Note.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/govvie&quot;&gt;Govvie&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class TreasuryComponent extends org.drip.product.credit.BondComponent {
-<span class="fc" id="L58">	private java.lang.String _strTreasuryCode = &quot;&quot;;</span>
+<span class="fc" id="L84">	private java.lang.String _strTreasuryCode = &quot;&quot;;</span>
 
 	/**
 	 * TreasuryComponent Constructor
@@ -69,11 +95,11 @@ public class TreasuryComponent extends org.drip.product.credit.BondComponent {
 		final java.lang.String strTreasuryCode)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L72">		super();</span>
+<span class="fc" id="L98">		super();</span>
 
-<span class="pc bpc" id="L74" title="2 of 4 branches missed.">		if (null == (_strTreasuryCode = strTreasuryCode) || _strTreasuryCode.isEmpty())</span>
-<span class="nc" id="L75">			throw new java.lang.Exception (&quot;TreasuryComponent ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L76">	}</span>
+<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (null == (_strTreasuryCode = strTreasuryCode) || _strTreasuryCode.isEmpty())</span>
+<span class="nc" id="L101">			throw new java.lang.Exception (&quot;TreasuryComponent ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L102">	}</span>
 
 	/**
 	 * Retrieve the Treasury Code
@@ -83,19 +109,19 @@ public class TreasuryComponent extends org.drip.product.credit.BondComponent {
 
 	public java.lang.String code()
 	{
-<span class="nc" id="L86">		return _strTreasuryCode;</span>
+<span class="nc" id="L112">		return _strTreasuryCode;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="fc" id="L93">			return new org.drip.product.calib.TreasuryBondQuoteSet (aLSS);</span>
-<span class="nc" id="L94">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L95">			e.printStackTrace();</span>
+<span class="fc" id="L119">			return new org.drip.product.calib.TreasuryBondQuoteSet (aLSS);</span>
+<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L121">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L98">		return null;</span>
+<span class="nc" id="L124">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint govviePRWC (
@@ -105,39 +131,39 @@ public class TreasuryComponent extends org.drip.product.credit.BondComponent {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L108" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof</span>
+<span class="pc bpc" id="L134" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof</span>
 			org.drip.product.calib.TreasuryBondQuoteSet))
-<span class="nc" id="L110">			return null;</span>
+<span class="nc" id="L136">			return null;</span>
 
-<span class="fc" id="L112">		int iMaturityDate = maturityDate().julian();</span>
+<span class="fc" id="L138">		int iMaturityDate = maturityDate().julian();</span>
 
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; iMaturityDate) return null;</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; iMaturityDate) return null;</span>
 
-<span class="fc" id="L116">		double dblYield = java.lang.Double.NaN;</span>
-<span class="fc" id="L117">		org.drip.product.calib.TreasuryBondQuoteSet tbqs = (org.drip.product.calib.TreasuryBondQuoteSet) pqs;</span>
+<span class="fc" id="L142">		double dblYield = java.lang.Double.NaN;</span>
+<span class="fc" id="L143">		org.drip.product.calib.TreasuryBondQuoteSet tbqs = (org.drip.product.calib.TreasuryBondQuoteSet) pqs;</span>
 
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!tbqs.containsYield()) return null;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (!tbqs.containsYield()) return null;</span>
 
 		try {
-<span class="fc" id="L122">			dblYield = tbqs.yield();</span>
-<span class="nc" id="L123">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L124">			e.printStackTrace();</span>
+<span class="fc" id="L148">			dblYield = tbqs.yield();</span>
+<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L150">			e.printStackTrace();</span>
 
-<span class="nc" id="L126">			return null;</span>
-<span class="fc" id="L127">		}</span>
+<span class="nc" id="L152">			return null;</span>
+<span class="fc" id="L153">		}</span>
 
-<span class="fc" id="L129">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="fc" id="L155">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (iMaturityDate, 1.)) return null;</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (iMaturityDate, 1.)) return null;</span>
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Yield&quot;, iMaturityDate, 1.)) return null;</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Yield&quot;, iMaturityDate, 1.)) return null;</span>
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblYield)) return null;</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblYield)) return null;</span>
 
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Yield&quot;, 1.)) return null;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Yield&quot;, 1.)) return null;</span>
 
-<span class="fc" id="L140">		return prwc;</span>
+<span class="fc" id="L166">		return prwc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.product.params;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.product.params;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,10 +72,18 @@ package org.drip.product.params;
  */
 
 /**
- * NotionalSetting contains the product's notional schedule and the amount. It also incorporates hints on how
- * 	the notional factors are to be interpreted - off of the original or the current notional. Further flags
- * 	tell whether the notional factor is to be applied at the start/end/average of the coupon period. It
- *  exports serialization into and de-serialization out of byte arrays.
+ * &lt;i&gt;NotionalSetting&lt;/i&gt; contains the product's notional schedule and the amount. It also incorporates hints
+ * on how the notional factors are to be interpreted - off of the original or the current notional. Further
+ * flags tell whether the notional factor is to be applied at the start/end/average of the coupon period. It
+ * exports serialization into and de-serialization out of byte arrays.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -82,11 +108,11 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	public static final int PERIOD_AMORT_EFFECTIVE = 3;
 
-<span class="fc" id="L85">	private boolean _bPriceOffOriginalNotional = false;</span>
-<span class="fc" id="L86">	private java.lang.String _strDenominationCurrency = &quot;&quot;;</span>
-<span class="fc" id="L87">	private double _dblNotionalAmount = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private int _iPeriodAmortizationMode = PERIOD_AMORT_AT_START;</span>
-<span class="fc" id="L89">	private org.drip.quant.common.Array2D _fsOutstanding = null;</span>
+<span class="fc" id="L111">	private boolean _bPriceOffOriginalNotional = false;</span>
+<span class="fc" id="L112">	private java.lang.String _strDenominationCurrency = &quot;&quot;;</span>
+<span class="fc" id="L113">	private double _dblNotionalAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private int _iPeriodAmortizationMode = PERIOD_AMORT_AT_START;</span>
+<span class="fc" id="L115">	private org.drip.quant.common.Array2D _fsOutstanding = null;</span>
 
 	/**
 	 * Construct the NotionalSetting from the notional schedule and the amount.
@@ -104,23 +130,23 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 		final org.drip.quant.common.Array2D fsOutstanding,
 		final int iPeriodAmortizationMode,
 		final boolean bPriceOffOriginalNotional)
-<span class="fc" id="L107">	{</span>
-<span class="fc" id="L108">		_fsOutstanding = fsOutstanding;</span>
-<span class="fc" id="L109">		_dblNotionalAmount = dblNotionalAmount;</span>
-<span class="fc" id="L110">		_iPeriodAmortizationMode = iPeriodAmortizationMode;</span>
-<span class="fc" id="L111">		_strDenominationCurrency = strDenominationCurrency;</span>
-<span class="fc" id="L112">		_bPriceOffOriginalNotional = bPriceOffOriginalNotional;</span>
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L133">	{</span>
+<span class="fc" id="L134">		_fsOutstanding = fsOutstanding;</span>
+<span class="fc" id="L135">		_dblNotionalAmount = dblNotionalAmount;</span>
+<span class="fc" id="L136">		_iPeriodAmortizationMode = iPeriodAmortizationMode;</span>
+<span class="fc" id="L137">		_strDenominationCurrency = strDenominationCurrency;</span>
+<span class="fc" id="L138">		_bPriceOffOriginalNotional = bPriceOffOriginalNotional;</span>
+<span class="fc" id="L139">	}</span>
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotionalAmount) || null ==</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			_strDenominationCurrency || _strDenominationCurrency.isEmpty())</span>
-<span class="nc" id="L119">			return false;</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotionalAmount) || null ==</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			_strDenominationCurrency || _strDenominationCurrency.isEmpty())</span>
+<span class="nc" id="L145">			return false;</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (null == _fsOutstanding) _fsOutstanding = org.drip.quant.common.Array2D.BulletSchedule();</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		if (null == _fsOutstanding) _fsOutstanding = org.drip.quant.common.Array2D.BulletSchedule();</span>
 
-<span class="fc" id="L123">		return true;</span>
+<span class="fc" id="L149">		return true;</span>
 	}
 
 	/**
@@ -131,7 +157,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	public double notionalAmount()
 	{
-<span class="fc" id="L134">		return _dblNotionalAmount;</span>
+<span class="fc" id="L160">		return _dblNotionalAmount;</span>
 	}
 
 	/**
@@ -142,7 +168,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	public boolean priceOffOfOriginalNotional()
 	{
-<span class="fc" id="L145">		return _bPriceOffOriginalNotional;</span>
+<span class="fc" id="L171">		return _bPriceOffOriginalNotional;</span>
 	}
 
 	/**
@@ -153,7 +179,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	public int periodAmortizationMode()
 	{
-<span class="fc" id="L156">		return _iPeriodAmortizationMode;</span>
+<span class="fc" id="L182">		return _iPeriodAmortizationMode;</span>
 	}
 
 	/**
@@ -164,7 +190,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	public org.drip.quant.common.Array2D outstandingFactorSchedule()
 	{
-<span class="fc" id="L167">		return _fsOutstanding;</span>
+<span class="fc" id="L193">		return _fsOutstanding;</span>
 	}
 
 	/**
@@ -175,7 +201,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	public java.lang.String denominationCurrency()
 	{
-<span class="nc" id="L178">		return _strDenominationCurrency;</span>
+<span class="nc" id="L204">		return _strDenominationCurrency;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

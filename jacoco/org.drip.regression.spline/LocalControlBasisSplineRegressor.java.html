@@ -6,6 +6,7 @@ package org.drip.regression.spline;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.regression.spline;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,51 +71,71 @@ package org.drip.regression.spline;
  */
 
 /**
- * LocalControlBasisSplineRegressor implements the local control basis spline regressor for the given basis
- *  spline. As part of the regression run, it executes the following:
- *  - Calibrate and compute the left and the right Jacobian.
- *  - Insert the Local Control Hermite, Cardinal, and Catmull-Rom knots.
- *  - Run Regressor for the C1 Local Control C1 Slope Insertion Bessel/Hermite Spline.
- *  - Compute an intermediate value Jacobian.
+ * &lt;i&gt;LocalControlBasisSplineRegressor&lt;/i&gt; implements the local control basis spline regressor for the given
+ * basis spline. As part of the regression run, it executes the following:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Calibrate and compute the left and the right Jacobian.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Insert the Local Control Hermite, Cardinal, and Catmull-Rom knots.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Run Regressor for the C1 Local Control C1 Slope Insertion Bessel/Hermite Spline.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Compute an intermediate value Jacobian.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LocalControlBasisSplineRegressor extends org.drip.regression.core.UnitRegressionExecutor {
-<span class="fc" id="L67">	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;</span>
-<span class="fc" id="L68">	private org.drip.spline.stretch.MultiSegmentSequence _mssBesselHermite = null;</span>
-<span class="fc" id="L69">	private org.drip.spline.stretch.MultiSegmentSequence _mssHermiteInsert = null;</span>
-<span class="fc" id="L70">	private org.drip.spline.stretch.MultiSegmentSequence _mssCardinalInsert = null;</span>
-<span class="fc" id="L71">	private org.drip.spline.stretch.MultiSegmentSequence _mssCatmullRomInsert = null;</span>
+<span class="fc" id="L105">	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;</span>
+<span class="fc" id="L106">	private org.drip.spline.stretch.MultiSegmentSequence _mssBesselHermite = null;</span>
+<span class="fc" id="L107">	private org.drip.spline.stretch.MultiSegmentSequence _mssHermiteInsert = null;</span>
+<span class="fc" id="L108">	private org.drip.spline.stretch.MultiSegmentSequence _mssCardinalInsert = null;</span>
+<span class="fc" id="L109">	private org.drip.spline.stretch.MultiSegmentSequence _mssCatmullRomInsert = null;</span>
 
 	private final boolean DumpRNVD (
 		final java.lang.String strStretchName,
 		final org.drip.spline.stretch.MultiSegmentSequence mss,
 		final org.drip.regression.core.RegressionRunDetail rrd)
 	{
-<span class="fc" id="L78">		double dblX = 0.;</span>
-<span class="fc" id="L79">		double dblXMax = 4.;</span>
+<span class="fc" id="L116">		double dblX = 0.;</span>
+<span class="fc" id="L117">		double dblXMax = 4.;</span>
 
-<span class="fc bfc" id="L81" title="All 2 branches covered.">		while (dblX &lt;= dblXMax) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		while (dblX &lt;= dblXMax) {</span>
 			try {
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				if (!rrd.set (getName() + &quot;_&quot; + strStretchName + &quot;_&quot; + dblX,</span>
-<span class="fc" id="L84">					org.drip.quant.common.FormatUtil.FormatDouble (mss.responseValue (dblX), 1, 2, 1.) +</span>
-<span class="fc" id="L85">						&quot; | &quot; + mss.monotoneType (dblX)))</span>
-<span class="nc" id="L86">					return false;</span>
-<span class="nc" id="L87">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L88">				e.printStackTrace();</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">				if (!rrd.set (getName() + &quot;_&quot; + strStretchName + &quot;_&quot; + dblX,</span>
+<span class="fc" id="L122">					org.drip.quant.common.FormatUtil.FormatDouble (mss.responseValue (dblX), 1, 2, 1.) +</span>
+<span class="fc" id="L123">						&quot; | &quot; + mss.monotoneType (dblX)))</span>
+<span class="nc" id="L124">					return false;</span>
+<span class="nc" id="L125">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L126">				e.printStackTrace();</span>
 
-<span class="nc" id="L90">				return false;</span>
-<span class="fc" id="L91">			}</span>
+<span class="nc" id="L128">				return false;</span>
+<span class="fc" id="L129">			}</span>
 
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">			if (!rrd.set (getName() + &quot;_&quot; + strStretchName + &quot;_&quot; + dblX + &quot;_Jack&quot;,</span>
-<span class="fc" id="L94">				mss.jackDResponseDCalibrationInput (dblX, 1).displayString()))</span>
-<span class="nc" id="L95">				return false;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			if (!rrd.set (getName() + &quot;_&quot; + strStretchName + &quot;_&quot; + dblX + &quot;_Jack&quot;,</span>
+<span class="fc" id="L132">				mss.jackDResponseDCalibrationInput (dblX, 1).displayString()))</span>
+<span class="nc" id="L133">				return false;</span>
 
-<span class="fc" id="L97">			dblX += 0.5;</span>
+<span class="fc" id="L135">			dblX += 0.5;</span>
 		}
 
-<span class="fc" id="L100">		return true;</span>
+<span class="fc" id="L138">		return true;</span>
 	}
 
 	/**
@@ -120,108 +158,108 @@ public class LocalControlBasisSplineRegressor extends org.drip.regression.core.U
 		final int iCk)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L123">		super (strName, strScenarioName);</span>
+<span class="fc" id="L161">		super (strName, strScenarioName);</span>
 
-<span class="fc" id="L125">		double[] adblX = new double[] {0.00, 1.00,  2.00,  3.00,  4.00};</span>
-<span class="fc" id="L126">		int iNumSegment = adblX.length - 1;</span>
-<span class="fc" id="L127">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L163">		double[] adblX = new double[] {0.00, 1.00,  2.00,  3.00,  4.00};</span>
+<span class="fc" id="L164">		int iNumSegment = adblX.length - 1;</span>
+<span class="fc" id="L165">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegment];
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
-<span class="fc" id="L131">			aSCBC[i] = new org.drip.spline.params.SegmentCustomBuilderControl (strBasisSpline, fsbp,</span>
-<span class="fc" id="L132">				org.drip.spline.params.SegmentInelasticDesignControl.Create (iCk, 1), new</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
+<span class="fc" id="L169">			aSCBC[i] = new org.drip.spline.params.SegmentCustomBuilderControl (strBasisSpline, fsbp,</span>
+<span class="fc" id="L170">				org.drip.spline.params.SegmentInelasticDesignControl.Create (iCk, 1), new</span>
 					org.drip.spline.params.ResponseScalingShapeControl (true, new
 						org.drip.function.r1tor1.QuadraticRationalShapeControl (1.)), null);
 
-<span class="fc" id="L136">		if (null == (_mss =</span>
+<span class="fc" id="L174">		if (null == (_mss =</span>
 			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">				(&quot;SPLINE_STRETCH&quot;, adblX, aSCBC)))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">				(&quot;SPLINE_STRETCH&quot;, adblX, aSCBC)))</span>
+<span class="nc" id="L177">			throw new java.lang.Exception</span>
 				(&quot;LocalControlBasisSplineRegressor ctr: Cannot Construct Stretch!&quot;);
-<span class="fc" id="L141">	}</span>
+<span class="fc" id="L179">	}</span>
 
 	@Override public boolean preRegression()
 	{
-<span class="fc" id="L145">		double[] adblY = new double[] {1.00, 4.00, 15.00, 40.00, 85.00};</span>
-<span class="fc" id="L146">		double[] adblDYDX = new double[] {1.00, 6.00, 17.00, 34.00, 57.00};</span>
+<span class="fc" id="L183">		double[] adblY = new double[] {1.00, 4.00, 15.00, 40.00, 85.00};</span>
+<span class="fc" id="L184">		double[] adblDYDX = new double[] {1.00, 6.00, 17.00, 34.00, 57.00};</span>
 
-<span class="fc" id="L148">		org.drip.spline.params.SegmentCustomBuilderControl scbc = null;</span>
-<span class="fc" id="L149">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft = new</span>
+<span class="fc" id="L186">		org.drip.spline.params.SegmentCustomBuilderControl scbc = null;</span>
+<span class="fc" id="L187">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft = new</span>
 			org.drip.spline.params.SegmentPredictorResponseDerivative[adblY.length - 1];
-<span class="fc" id="L151">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight = new</span>
+<span class="fc" id="L189">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight = new</span>
 			org.drip.spline.params.SegmentPredictorResponseDerivative[adblY.length - 1];
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int i = 0; i &lt; adblY.length - 1; ++i) {</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; adblY.length - 1; ++i) {</span>
 			try {
-<span class="fc" id="L156">				aSPRDLeft[i] = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblY[i], new</span>
+<span class="fc" id="L194">				aSPRDLeft[i] = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblY[i], new</span>
 					double[] {adblDYDX[i]});
 
-<span class="fc" id="L159">				aSPRDRight[i] = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblY[i + 1],</span>
+<span class="fc" id="L197">				aSPRDRight[i] = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblY[i + 1],</span>
 					new double[] {adblDYDX[i + 1]});
-<span class="nc" id="L161">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L162">				e.printStackTrace();</span>
+<span class="nc" id="L199">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L200">				e.printStackTrace();</span>
 
-<span class="nc" id="L164">				return false;</span>
-<span class="fc" id="L165">			}</span>
+<span class="nc" id="L202">				return false;</span>
+<span class="fc" id="L203">			}</span>
 		}
 
 		try {
-<span class="fc" id="L169">			scbc = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L207">			scbc = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="fc" id="L172">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+<span class="fc" id="L210">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
 							org.drip.spline.params.ResponseScalingShapeControl (true, new
 								org.drip.function.r1tor1.QuadraticRationalShapeControl (1.)), null);
-<span class="nc" id="L175">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L176">			e.printStackTrace();</span>
+<span class="nc" id="L213">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L214">			e.printStackTrace();</span>
 
-<span class="nc" id="L178">			return false;</span>
-<span class="fc" id="L179">		}</span>
+<span class="nc" id="L216">			return false;</span>
+<span class="fc" id="L217">		}</span>
 
-<span class="fc" id="L181">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L219">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[adblY.length - 1]; 
 
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; adblY.length - 1; ++i)</span>
-<span class="fc" id="L185">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; adblY.length - 1; ++i)</span>
+<span class="fc" id="L223">			aSCBC[i] = scbc;</span>
 
-<span class="fc" id="L187">		if (null == (_mssBesselHermite =</span>
+<span class="fc" id="L225">		if (null == (_mssBesselHermite =</span>
 			org.drip.spline.pchip.LocalControlStretchBuilder.CreateBesselCubicSplineStretch
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">				(&quot;BESSEL_STRETCH&quot;, new double[] {0.00, 1.00,  2.00,  3.00,  4.00}, adblY, aSCBC, null,</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">				(&quot;BESSEL_STRETCH&quot;, new double[] {0.00, 1.00,  2.00,  3.00,  4.00}, adblY, aSCBC, null,</span>
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, true, true)))
-<span class="nc" id="L191">			return false;</span>
+<span class="nc" id="L229">			return false;</span>
 
-<span class="fc" id="L193">		return _mss.setupHermite (aSPRDLeft, aSPRDRight, null, null,</span>
+<span class="fc" id="L231">		return _mss.setupHermite (aSPRDLeft, aSPRDRight, null, null,</span>
 			org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN);
 	}
 
 	@Override public boolean execRegression()
 	{
 		try {
-<span class="fc" id="L200">			if (null == (_mssHermiteInsert = org.drip.spline.stretch.MultiSegmentSequenceModifier.InsertKnot</span>
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">				(_mss, 2.5, new org.drip.spline.params.SegmentPredictorResponseDerivative (27.5, new double[]</span>
+<span class="fc" id="L238">			if (null == (_mssHermiteInsert = org.drip.spline.stretch.MultiSegmentSequenceModifier.InsertKnot</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">				(_mss, 2.5, new org.drip.spline.params.SegmentPredictorResponseDerivative (27.5, new double[]</span>
 					{25.5}), new org.drip.spline.params.SegmentPredictorResponseDerivative (27.5, new
 						double[] {25.5}))))
-<span class="nc" id="L204">				return false;</span>
-<span class="nc" id="L205">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L206">			e.printStackTrace();</span>
+<span class="nc" id="L242">				return false;</span>
+<span class="nc" id="L243">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L244">			e.printStackTrace();</span>
 
-<span class="nc" id="L208">			return false;</span>
-<span class="fc" id="L209">		}</span>
+<span class="nc" id="L246">			return false;</span>
+<span class="fc" id="L247">		}</span>
 
-<span class="fc" id="L211">		if (null == (_mssCardinalInsert =</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">			org.drip.spline.stretch.MultiSegmentSequenceModifier.InsertCardinalKnot (_mss, 2.5, 0.)))</span>
-<span class="nc" id="L213">			return false;</span>
+<span class="fc" id="L249">		if (null == (_mssCardinalInsert =</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">			org.drip.spline.stretch.MultiSegmentSequenceModifier.InsertCardinalKnot (_mss, 2.5, 0.)))</span>
+<span class="nc" id="L251">			return false;</span>
 
-<span class="fc" id="L215">		return null != (_mssCatmullRomInsert =</span>
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">			org.drip.spline.stretch.MultiSegmentSequenceModifier.InsertCatmullRomKnot (_mss, 2.5));</span>
+<span class="fc" id="L253">		return null != (_mssCatmullRomInsert =</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">			org.drip.spline.stretch.MultiSegmentSequenceModifier.InsertCatmullRomKnot (_mss, 2.5));</span>
 	}
 
 	@Override public boolean postRegression (
 		final org.drip.regression.core.RegressionRunDetail rrd)
 	{
-<span class="pc bpc" id="L222" title="2 of 4 branches missed.">		return DumpRNVD (&quot;LOCAL_NO_KNOT&quot;, _mss, rrd) &amp;&amp; DumpRNVD (&quot;LOCAL_HERMITE_KNOT&quot;, _mssHermiteInsert,</span>
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">			rrd) &amp;&amp; DumpRNVD (&quot;LOCAL_CARDINAL_KNOT&quot;, _mssCardinalInsert, rrd) &amp;&amp; DumpRNVD</span>
-<span class="pc bpc" id="L224" title="2 of 4 branches missed.">				(&quot;LOCAL_CATMULL_ROM_KNOT&quot;, _mssCatmullRomInsert, rrd) &amp;&amp; DumpRNVD (&quot;LOCAL_C1_BESSEL_HERMITE&quot;,</span>
+<span class="pc bpc" id="L260" title="2 of 4 branches missed.">		return DumpRNVD (&quot;LOCAL_NO_KNOT&quot;, _mss, rrd) &amp;&amp; DumpRNVD (&quot;LOCAL_HERMITE_KNOT&quot;, _mssHermiteInsert,</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">			rrd) &amp;&amp; DumpRNVD (&quot;LOCAL_CARDINAL_KNOT&quot;, _mssCardinalInsert, rrd) &amp;&amp; DumpRNVD</span>
+<span class="pc bpc" id="L262" title="2 of 4 branches missed.">				(&quot;LOCAL_CATMULL_ROM_KNOT&quot;, _mssCatmullRomInsert, rrd) &amp;&amp; DumpRNVD (&quot;LOCAL_C1_BESSEL_HERMITE&quot;,</span>
 					_mssBesselHermite, rrd);
 	}
 }

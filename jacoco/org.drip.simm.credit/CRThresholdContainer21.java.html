@@ -6,31 +6,49 @@ package org.drip.simm.credit;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,36 +65,54 @@ package org.drip.simm.credit;
  */
 
 /**
- * CRThresholdContainer21 holds the ISDA SIMM 2.1 Credit Risk Thresholds - the Credit Risk Buckets and the
- *  Delta/Vega Limits defined for the Concentration Thresholds. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;CRThresholdContainer21&lt;/i&gt; holds the ISDA SIMM 2.1 Credit Risk Thresholds - the Credit Risk Buckets and
+ * the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L72">public class CRThresholdContainer21</span>
+<span class="nc" id="L108">public class CRThresholdContainer21</span>
 {
 	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold&gt;
-<span class="fc" id="L75">		s_CRQThresholdMap = new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="fc" id="L111">		s_CRQThresholdMap = new java.util.TreeMap&lt;java.lang.Integer,</span>
 			org.drip.simm.common.DeltaVegaThreshold&gt;();
 
 	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold&gt;
-<span class="fc" id="L79">		s_CRNQThresholdMap = new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="fc" id="L115">		s_CRNQThresholdMap = new java.util.TreeMap&lt;java.lang.Integer,</span>
 			org.drip.simm.common.DeltaVegaThreshold&gt;();
 
 	/**
@@ -89,142 +125,142 @@ package org.drip.simm.credit;
 	{
 		try
 		{
-<span class="fc" id="L92">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L93">				-1,</span>
+<span class="fc" id="L128">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L129">				-1,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L100">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L101">				1,</span>
+<span class="fc" id="L136">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L137">				1,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					1.00,
 					250.
 				)
 			);
 
-<span class="fc" id="L108">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L109">				2,</span>
+<span class="fc" id="L144">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L145">				2,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L116">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L117">				3,</span>
+<span class="fc" id="L152">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L153">				3,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L124">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L125">				4,</span>
+<span class="fc" id="L160">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L161">				4,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L132">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L133">				5,</span>
+<span class="fc" id="L168">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L169">				5,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L140">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L141">				6,</span>
+<span class="fc" id="L176">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L177">				6,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L148">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L149">				7,</span>
+<span class="fc" id="L184">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L185">				7,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					1.00,
 					250.
 				)
 			);
 
-<span class="fc" id="L156">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L157">				8,</span>
+<span class="fc" id="L192">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L193">				8,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L164">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L165">				9,</span>
+<span class="fc" id="L200">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L201">				9,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L172">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L173">				10,</span>
+<span class="fc" id="L208">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L209">				10,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L180">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L181">				11,</span>
+<span class="fc" id="L216">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L217">				11,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L188">			s_CRQThresholdMap.put (</span>
-<span class="fc" id="L189">				12,</span>
+<span class="fc" id="L224">			s_CRQThresholdMap.put (</span>
+<span class="fc" id="L225">				12,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.24,
 					250.
 				)
 			);
 
-<span class="fc" id="L196">			s_CRNQThresholdMap.put (</span>
-<span class="fc" id="L197">				-1,</span>
+<span class="fc" id="L232">			s_CRNQThresholdMap.put (</span>
+<span class="fc" id="L233">				-1,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.5,
 					54.
 				)
 			);
 
-<span class="fc" id="L204">			s_CRNQThresholdMap.put (</span>
-<span class="fc" id="L205">				1,</span>
+<span class="fc" id="L240">			s_CRNQThresholdMap.put (</span>
+<span class="fc" id="L241">				1,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					9.5,
 					54.
 				)
 			);
 
-<span class="fc" id="L212">			s_CRNQThresholdMap.put (</span>
-<span class="fc" id="L213">				2,</span>
+<span class="fc" id="L248">			s_CRNQThresholdMap.put (</span>
+<span class="fc" id="L249">				2,</span>
 				new org.drip.simm.common.DeltaVegaThreshold (
 					0.5,
 					54.
 				)
 			);
 		}
-<span class="nc" id="L220">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L256">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L222">			e.printStackTrace();</span>
+<span class="nc" id="L258">			e.printStackTrace();</span>
 
-<span class="nc" id="L224">			return false;</span>
-<span class="fc" id="L225">		}</span>
+<span class="nc" id="L260">			return false;</span>
+<span class="fc" id="L261">		}</span>
 
-<span class="fc" id="L227">		return true;</span>
+<span class="fc" id="L263">		return true;</span>
 	}
 
 	/**
@@ -235,7 +271,7 @@ package org.drip.simm.credit;
 
 	public static final java.util.Set&lt;java.lang.Integer&gt; QualifyingBucketSet()
 	{
-<span class="nc" id="L238">		return s_CRQThresholdMap.keySet();</span>
+<span class="nc" id="L274">		return s_CRQThresholdMap.keySet();</span>
 	}
 
 	/**
@@ -246,7 +282,7 @@ package org.drip.simm.credit;
 
 	public static final java.util.Set&lt;java.lang.Integer&gt; NonQualifyingBucketSet()
 	{
-<span class="nc" id="L249">		return s_CRNQThresholdMap.keySet();</span>
+<span class="nc" id="L285">		return s_CRNQThresholdMap.keySet();</span>
 	}
 
 	/**
@@ -260,7 +296,7 @@ package org.drip.simm.credit;
 	public static final boolean ContainsQualifyingBucket (
 		final int bucketNumber)
 	{
-<span class="nc" id="L263">		return s_CRQThresholdMap.containsKey (bucketNumber);</span>
+<span class="nc" id="L299">		return s_CRQThresholdMap.containsKey (bucketNumber);</span>
 	}
 
 	/**
@@ -274,7 +310,7 @@ package org.drip.simm.credit;
 	public static final boolean ContainsNonQualifyingBucket (
 		final int bucketNumber)
 	{
-<span class="nc" id="L277">		return s_CRNQThresholdMap.containsKey (bucketNumber);</span>
+<span class="nc" id="L313">		return s_CRNQThresholdMap.containsKey (bucketNumber);</span>
 	}
 
 	/**
@@ -288,7 +324,7 @@ package org.drip.simm.credit;
 	public static final org.drip.simm.common.DeltaVegaThreshold QualifyingThreshold (
 		final int bucketNumber)
 	{
-<span class="nc bnc" id="L291" title="All 2 branches missed.">		return ContainsQualifyingBucket (bucketNumber) ? s_CRQThresholdMap.get (bucketNumber) : null;</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		return ContainsQualifyingBucket (bucketNumber) ? s_CRQThresholdMap.get (bucketNumber) : null;</span>
 	}
 
 	/**
@@ -302,7 +338,7 @@ package org.drip.simm.credit;
 	public static final org.drip.simm.common.DeltaVegaThreshold NonQualifyingThreshold (
 		final int bucketNumber)
 	{
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		return ContainsNonQualifyingBucket (bucketNumber) ? s_CRNQThresholdMap.get (bucketNumber) : null;</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">		return ContainsNonQualifyingBucket (bucketNumber) ? s_CRNQThresholdMap.get (bucketNumber) : null;</span>
 	}
 
 	/**
@@ -314,7 +350,7 @@ package org.drip.simm.credit;
 	public static final java.util.Map&lt;java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold&gt;
 		CreditRiskQualifyingThresholdMap()
 	{
-<span class="nc" id="L317">		return s_CRQThresholdMap;</span>
+<span class="nc" id="L353">		return s_CRQThresholdMap;</span>
 	}
 
 	/**
@@ -326,7 +362,7 @@ package org.drip.simm.credit;
 	public static final java.util.Map&lt;java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold&gt;
 		CreditRiskNonQualifyingThresholdMap()
 	{
-<span class="nc" id="L329">		return s_CRNQThresholdMap;</span>
+<span class="nc" id="L365">		return s_CRNQThresholdMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

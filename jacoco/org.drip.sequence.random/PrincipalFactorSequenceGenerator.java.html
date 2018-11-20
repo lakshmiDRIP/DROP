@@ -6,34 +6,52 @@ package org.drip.sequence.random;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,16 +68,24 @@ package org.drip.sequence.random;
  */
 
 /**
- * PrincipalFactorSequenceGenerator implements the Principal Factors Based Multivariate Random Sequence
- *  Generator Functionality.
+ * &lt;i&gt;PrincipalFactorSequenceGenerator&lt;/i&gt; implements the Principal Factors Based Multivariate Random
+ * Sequence Generator Functionality.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.MultivariateSequenceGenerator
 {
-<span class="fc" id="L61">	private double[][] _aadblFactor = null;</span>
-<span class="fc" id="L62">	private double[] _adblFactorWeight = null;</span>
+<span class="fc" id="L87">	private double[][] _aadblFactor = null;</span>
+<span class="fc" id="L88">	private double[] _adblFactorWeight = null;</span>
 
 	/**
 	 * PrincipalFactorSequenceGenerator Constructor
@@ -77,39 +103,39 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 		final int iNumFactor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L80">		super (aUSG, aadblCorrelation);</span>
+<span class="fc" id="L106">		super (aUSG, aadblCorrelation);</span>
 
-<span class="fc" id="L82">		int iNumVariate = aUSG.length;</span>
+<span class="fc" id="L108">		int iNumVariate = aUSG.length;</span>
 
-<span class="pc bpc" id="L84" title="2 of 4 branches missed.">		if (0 &gt;= iNumFactor || iNumFactor &gt; iNumVariate)</span>
-<span class="nc" id="L85">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (0 &gt;= iNumFactor || iNumFactor &gt; iNumVariate)</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L87">		org.drip.quant.eigen.QREigenComponentExtractor qrece = new</span>
+<span class="fc" id="L113">		org.drip.quant.eigen.QREigenComponentExtractor qrece = new</span>
 			org.drip.quant.eigen.QREigenComponentExtractor (80, 0.00001);
 
-<span class="fc" id="L90">		org.drip.quant.eigen.EigenComponent[] aEC = qrece.orderedComponents (aadblCorrelation);</span>
+<span class="fc" id="L116">		org.drip.quant.eigen.EigenComponent[] aEC = qrece.orderedComponents (aadblCorrelation);</span>
 
-<span class="pc bpc" id="L92" title="2 of 4 branches missed.">		if (null == aEC || 0 == aEC.length)</span>
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (null == aEC || 0 == aEC.length)</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L95">		double dblNormalizer = 0.;</span>
-<span class="fc" id="L96">		_adblFactorWeight = new double[iNumFactor];</span>
-<span class="fc" id="L97">		_aadblFactor = new double[iNumFactor][iNumVariate];</span>
+<span class="fc" id="L121">		double dblNormalizer = 0.;</span>
+<span class="fc" id="L122">		_adblFactorWeight = new double[iNumFactor];</span>
+<span class="fc" id="L123">		_aadblFactor = new double[iNumFactor][iNumVariate];</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="fc" id="L101">				_aadblFactor[i] = aEC[i].eigenvector();</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L127">				_aadblFactor[i] = aEC[i].eigenvector();</span>
 
-<span class="fc" id="L103">			_adblFactorWeight[i] = aEC[i].eigenvalue();</span>
+<span class="fc" id="L129">			_adblFactorWeight[i] = aEC[i].eigenvalue();</span>
 
-<span class="fc" id="L105">			dblNormalizer += _adblFactorWeight[i] * _adblFactorWeight[i];</span>
+<span class="fc" id="L131">			dblNormalizer += _adblFactorWeight[i] * _adblFactorWeight[i];</span>
 		}
 
-<span class="fc" id="L108">		dblNormalizer = java.lang.Math.sqrt (dblNormalizer);</span>
+<span class="fc" id="L134">		dblNormalizer = java.lang.Math.sqrt (dblNormalizer);</span>
 
-<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="fc" id="L111">			_adblFactorWeight[i] /= dblNormalizer;</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L137">			_adblFactorWeight[i] /= dblNormalizer;</span>
+<span class="fc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Number of Factors
@@ -119,7 +145,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 	public int numFactor()
 	{
-<span class="fc" id="L122">		return _adblFactorWeight.length;</span>
+<span class="fc" id="L148">		return _adblFactorWeight.length;</span>
 	}
 
 	/**
@@ -130,7 +156,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 	public double[][] factors()
 	{
-<span class="fc" id="L133">		return _aadblFactor;</span>
+<span class="fc" id="L159">		return _aadblFactor;</span>
 	}
 
 	/**
@@ -141,27 +167,27 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 	public double[] factorWeight()
 	{
-<span class="fc" id="L144">		return _adblFactorWeight;</span>
+<span class="fc" id="L170">		return _adblFactorWeight;</span>
 	}
 
 	@Override public double[] random()
 	{
-<span class="fc" id="L149">		double[] adblBaseRandom = super.random();</span>
+<span class="fc" id="L175">		double[] adblBaseRandom = super.random();</span>
 
-<span class="fc" id="L151">		int iNumVariate = _aadblFactor[0].length;</span>
-<span class="fc" id="L152">		int iNumFactor = _adblFactorWeight.length;</span>
-<span class="fc" id="L153">		double[] adblRandom = new double[iNumFactor];</span>
+<span class="fc" id="L177">		int iNumVariate = _aadblFactor[0].length;</span>
+<span class="fc" id="L178">		int iNumFactor = _adblFactorWeight.length;</span>
+<span class="fc" id="L179">		double[] adblRandom = new double[iNumFactor];</span>
 
-<span class="fc bfc" id="L155" title="All 2 branches covered.">		if (iNumFactor == iNumVariate) return adblBaseRandom;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		if (iNumFactor == iNumVariate) return adblBaseRandom;</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L158">			adblRandom[i] = 0.;</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L184">			adblRandom[i] = 0.;</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="fc" id="L161">				adblRandom[i] += _aadblFactor[i][j] * adblBaseRandom[j];</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L187">				adblRandom[i] += _aadblFactor[i][j] * adblBaseRandom[j];</span>
 		}
 
-<span class="fc" id="L164">		return adblRandom;</span>
+<span class="fc" id="L190">		return adblRandom;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

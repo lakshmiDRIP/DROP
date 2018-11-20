@@ -6,6 +6,7 @@ package org.drip.regression.core;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.regression.core;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,30 +71,46 @@ package org.drip.regression.core;
  */
 
 /**
- * UnitRegressionStat creates the statistical details for the Unit Regressor. It holds the following:
- * 	- Execution Initialization Delay
- * 	- Execution time mean, variance, maximum, and minimum
- * 	- The full list of individual execution times
+ * &lt;i&gt;UnitRegressionStat&lt;/i&gt; creates the statistical details for the Unit Regressor. It holds the following:
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Execution Initialization Delay
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Execution time mean, variance, maximum, and minimum
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The full list of individual execution times
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class UnitRegressionStat {
-<span class="fc" id="L65">	private long _lExecTimeMean = 0L;</span>
-<span class="fc" id="L66">	private long _lExecTimeMaximum = 0L;</span>
-<span class="fc" id="L67">	private long _lExecTimeMinimum = 0L;</span>
-<span class="fc" id="L68">	private long _lExecTimeVariance = 0L;</span>
-<span class="fc" id="L69">	private long _lInitializationDelay = 0L;</span>
-<span class="fc" id="L70">	private java.util.List&lt;java.lang.Long&gt; _llExecTime = null;</span>
+<span class="fc" id="L99">	private long _lExecTimeMean = 0L;</span>
+<span class="fc" id="L100">	private long _lExecTimeMaximum = 0L;</span>
+<span class="fc" id="L101">	private long _lExecTimeMinimum = 0L;</span>
+<span class="fc" id="L102">	private long _lExecTimeVariance = 0L;</span>
+<span class="fc" id="L103">	private long _lInitializationDelay = 0L;</span>
+<span class="fc" id="L104">	private java.util.List&lt;java.lang.Long&gt; _llExecTime = null;</span>
 
 	/**
 	 * Empty Constructor
 	 */
 
 	public UnitRegressionStat()
-<span class="fc" id="L77">	{</span>
-<span class="fc" id="L78">		_llExecTime = new java.util.ArrayList&lt;java.lang.Long&gt;();</span>
-<span class="fc" id="L79">	}</span>
+<span class="fc" id="L111">	{</span>
+<span class="fc" id="L112">		_llExecTime = new java.util.ArrayList&lt;java.lang.Long&gt;();</span>
+<span class="fc" id="L113">	}</span>
 
 	/**
 	 * Add another run execution time
@@ -89,9 +123,9 @@ public class UnitRegressionStat {
 	public boolean addExecTime (
 		final long lExecTime)
 	{
-<span class="fc" id="L92">		_llExecTime.add (lExecTime);</span>
+<span class="fc" id="L126">		_llExecTime.add (lExecTime);</span>
 
-<span class="fc" id="L94">		return true;</span>
+<span class="fc" id="L128">		return true;</span>
 	}
 
 	/**
@@ -102,42 +136,42 @@ public class UnitRegressionStat {
 
 	public boolean generateStat()
 	{
-<span class="fc" id="L105">		boolean bFirstRun = true;</span>
+<span class="fc" id="L139">		boolean bFirstRun = true;</span>
 
-<span class="fc" id="L107">		int iNumRuns = _llExecTime.size();</span>
+<span class="fc" id="L141">		int iNumRuns = _llExecTime.size();</span>
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (0 == iNumRuns) return false;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (0 == iNumRuns) return false;</span>
 
-<span class="fc bfc" id="L111" title="All 2 branches covered.">		for (long lExecTime : _llExecTime) {</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">			if (bFirstRun) {</span>
-<span class="fc" id="L113">				_lExecTimeMaximum = lExecTime;</span>
-<span class="fc" id="L114">				_lExecTimeMinimum = lExecTime;</span>
-<span class="fc" id="L115">				_lInitializationDelay = lExecTime;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (long lExecTime : _llExecTime) {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">			if (bFirstRun) {</span>
+<span class="fc" id="L147">				_lExecTimeMaximum = lExecTime;</span>
+<span class="fc" id="L148">				_lExecTimeMinimum = lExecTime;</span>
+<span class="fc" id="L149">				_lInitializationDelay = lExecTime;</span>
 			} else {
-<span class="fc" id="L117">				_lExecTimeMean += lExecTime;</span>
+<span class="fc" id="L151">				_lExecTimeMean += lExecTime;</span>
 
-<span class="fc bfc" id="L119" title="All 2 branches covered.">				if (_lExecTimeMaximum &lt; lExecTime) _lExecTimeMaximum = lExecTime;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">				if (_lExecTimeMaximum &lt; lExecTime) _lExecTimeMaximum = lExecTime;</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">				if (_lExecTimeMinimum &gt; lExecTime) _lExecTimeMinimum = lExecTime;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">				if (_lExecTimeMinimum &gt; lExecTime) _lExecTimeMinimum = lExecTime;</span>
 			}
 
-<span class="fc" id="L124">			bFirstRun = false;</span>
-<span class="fc" id="L125">		}</span>
+<span class="fc" id="L158">			bFirstRun = false;</span>
+<span class="fc" id="L159">		}</span>
 
-<span class="fc" id="L127">		_lExecTimeMean /= (iNumRuns - 1);</span>
-<span class="fc" id="L128">		bFirstRun = true;</span>
+<span class="fc" id="L161">		_lExecTimeMean /= (iNumRuns - 1);</span>
+<span class="fc" id="L162">		bFirstRun = true;</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (long lExecTime : _llExecTime) {</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">			if (!bFirstRun)</span>
-<span class="fc" id="L132">				_lExecTimeVariance += (lExecTime - _lExecTimeMean) * (lExecTime - _lExecTimeMean);</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (long lExecTime : _llExecTime) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">			if (!bFirstRun)</span>
+<span class="fc" id="L166">				_lExecTimeVariance += (lExecTime - _lExecTimeMean) * (lExecTime - _lExecTimeMean);</span>
 
-<span class="fc" id="L134">			bFirstRun = false;</span>
-<span class="fc" id="L135">		}</span>
+<span class="fc" id="L168">			bFirstRun = false;</span>
+<span class="fc" id="L169">		}</span>
 
-<span class="fc" id="L137">		_lExecTimeVariance = (long) java.lang.Math.sqrt (_lExecTimeVariance / (iNumRuns - 1));</span>
+<span class="fc" id="L171">		_lExecTimeVariance = (long) java.lang.Math.sqrt (_lExecTimeVariance / (iNumRuns - 1));</span>
 
-<span class="fc" id="L139">		_lInitializationDelay -= _lExecTimeMean;</span>
-<span class="fc" id="L140">		return true;</span>
+<span class="fc" id="L173">		_lInitializationDelay -= _lExecTimeMean;</span>
+<span class="fc" id="L174">		return true;</span>
 	}
 
 	/**
@@ -148,7 +182,7 @@ public class UnitRegressionStat {
 
 	public int getRuns()
 	{
-<span class="nc" id="L151">		return _llExecTime.size();</span>
+<span class="nc" id="L185">		return _llExecTime.size();</span>
 	}
 
 	/**
@@ -159,7 +193,7 @@ public class UnitRegressionStat {
 
 	public long getMean()
 	{
-<span class="nc" id="L162">		return _lExecTimeMean;</span>
+<span class="nc" id="L196">		return _lExecTimeMean;</span>
 	}
 
 	/**
@@ -170,7 +204,7 @@ public class UnitRegressionStat {
 
 	public long getMin()
 	{
-<span class="nc" id="L173">		return _lExecTimeMinimum;</span>
+<span class="nc" id="L207">		return _lExecTimeMinimum;</span>
 	}
 
 	/**
@@ -181,7 +215,7 @@ public class UnitRegressionStat {
 
 	public long getMax()
 	{
-<span class="nc" id="L184">		return _lExecTimeMaximum;</span>
+<span class="nc" id="L218">		return _lExecTimeMaximum;</span>
 	}
 
 	/**
@@ -192,7 +226,7 @@ public class UnitRegressionStat {
 
 	public long getVariance()
 	{
-<span class="nc" id="L195">		return _lExecTimeVariance;</span>
+<span class="nc" id="L229">		return _lExecTimeVariance;</span>
 	}
 
 	/**
@@ -203,7 +237,7 @@ public class UnitRegressionStat {
 
 	public long getInitializationDelay()
 	{
-<span class="nc" id="L206">		return _lInitializationDelay;</span>
+<span class="nc" id="L240">		return _lInitializationDelay;</span>
 	}
 
 	/**
@@ -217,25 +251,25 @@ public class UnitRegressionStat {
 	public java.lang.String displayString (
 		final java.lang.String strRegressionUnit)
 	{
-<span class="pc bpc" id="L220" title="2 of 4 branches missed.">		if (null == strRegressionUnit || strRegressionUnit.isEmpty()) return null;</span>
+<span class="pc bpc" id="L254" title="2 of 4 branches missed.">		if (null == strRegressionUnit || strRegressionUnit.isEmpty()) return null;</span>
 
-<span class="fc" id="L222">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L256">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L224">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.NumRuns=&quot; + _llExecTime.size() + &quot;\n&quot;);</span>
+<span class="fc" id="L258">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.NumRuns=&quot; + _llExecTime.size() + &quot;\n&quot;);</span>
 
-<span class="fc" id="L226">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMean=&quot; + _lExecTimeMean + &quot;\n&quot;);</span>
+<span class="fc" id="L260">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMean=&quot; + _lExecTimeMean + &quot;\n&quot;);</span>
 
-<span class="fc" id="L228">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMaximum=&quot; + _lExecTimeMaximum + &quot;\n&quot;);</span>
+<span class="fc" id="L262">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMaximum=&quot; + _lExecTimeMaximum + &quot;\n&quot;);</span>
 
-<span class="fc" id="L230">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMinimum=&quot; + _lExecTimeMinimum + &quot;\n&quot;);</span>
+<span class="fc" id="L264">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeMinimum=&quot; + _lExecTimeMinimum + &quot;\n&quot;);</span>
 
-<span class="fc" id="L232">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeVariance=&quot; + _lExecTimeVariance + &quot;\n&quot;);</span>
+<span class="fc" id="L266">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeVariance=&quot; + _lExecTimeVariance + &quot;\n&quot;);</span>
 
-<span class="fc" id="L234">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.InitializationDelay=&quot; + _lInitializationDelay + &quot;\n&quot;);</span>
+<span class="fc" id="L268">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.InitializationDelay=&quot; + _lInitializationDelay + &quot;\n&quot;);</span>
 
-<span class="fc" id="L236">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeList=&quot; + _llExecTime.toString() + &quot;\n&quot;);</span>
+<span class="fc" id="L270">		sb.append (&quot;\t&quot; + strRegressionUnit + &quot;.Stat.ExecTimeList=&quot; + _llExecTime.toString() + &quot;\n&quot;);</span>
 
-<span class="fc" id="L238">		return sb.toString();</span>
+<span class="fc" id="L272">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

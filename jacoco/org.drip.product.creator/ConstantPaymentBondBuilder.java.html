@@ -6,34 +6,52 @@ package org.drip.product.creator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,13 +68,21 @@ package org.drip.product.creator;
  */
 
 /**
- * ConstantPaymentBondBuilder contains the Suite of Helper Functions for creating Constant Payments Based
- * 	Bonds.
+ * &lt;i&gt;ConstantPaymentBondBuilder&lt;/i&gt; contains the Suite of Helper Functions for creating Constant Payments
+ * Based Bonds.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L59">public class ConstantPaymentBondBuilder {</span>
+<span class="nc" id="L85">public class ConstantPaymentBondBuilder {</span>
 
 	/**
 	 * Construct an Instance of the Constant Payment Bond
@@ -87,72 +113,72 @@ package org.drip.product.creator;
 		final double dblConstantAmount,
 		final double dblInitialNotional)
 	{
-<span class="pc bpc" id="L90" title="2 of 4 branches missed.">		if (null == dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||</span>
-<span class="pc bpc" id="L91" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate &gt; dblCouponRate ||</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblConstantAmount) ||</span>
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional))</span>
-<span class="nc" id="L94">			return null;</span>
+<span class="pc bpc" id="L116" title="2 of 4 branches missed.">		if (null == dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate &gt; dblCouponRate ||</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblConstantAmount) ||</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional))</span>
+<span class="nc" id="L120">			return null;</span>
 
-<span class="fc" id="L96">		double dblOutstandingPrincipal = dblInitialNotional;</span>
+<span class="fc" id="L122">		double dblOutstandingPrincipal = dblInitialNotional;</span>
 
-<span class="fc" id="L98">		java.util.List&lt;java.lang.Double&gt; lsCouponPayment = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L124">		java.util.List&lt;java.lang.Double&gt; lsCouponPayment = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L100">		java.util.List&lt;java.lang.Double&gt; lsOutstandingPrincipal = new</span>
+<span class="fc" id="L126">		java.util.List&lt;java.lang.Double&gt; lsOutstandingPrincipal = new</span>
 			java.util.ArrayList&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L103">		java.util.List&lt;org.drip.analytics.date.JulianDate&gt; lsPaymentDate = new</span>
+<span class="fc" id="L129">		java.util.List&lt;org.drip.analytics.date.JulianDate&gt; lsPaymentDate = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.date.JulianDate&gt;();
 
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumPayment; ++i) {</span>
-<span class="fc" id="L107">			double dblCouponPayment = java.lang.Double.NaN;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumPayment; ++i) {</span>
+<span class="fc" id="L133">			double dblCouponPayment = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L109">			org.drip.analytics.date.JulianDate dtPayment = dtEffective.addMonths (i + 1);</span>
+<span class="fc" id="L135">			org.drip.analytics.date.JulianDate dtPayment = dtEffective.addMonths (i + 1);</span>
 
-<span class="fc bfc" id="L111" title="All 2 branches covered.">			org.drip.analytics.date.JulianDate dtPrev = 0 == i ? dtEffective : lsPaymentDate.get (i - 1);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">			org.drip.analytics.date.JulianDate dtPrev = 0 == i ? dtEffective : lsPaymentDate.get (i - 1);</span>
 
 			try {
-<span class="fc" id="L114">				dblCouponPayment = dblOutstandingPrincipal * (dblCouponRate - dblFeeRate) *</span>
-<span class="fc" id="L115">					org.drip.analytics.daycount.Convention.YearFraction (dtPrev.julian(), dtPayment.julian(),</span>
+<span class="fc" id="L140">				dblCouponPayment = dblOutstandingPrincipal * (dblCouponRate - dblFeeRate) *</span>
+<span class="fc" id="L141">					org.drip.analytics.daycount.Convention.YearFraction (dtPrev.julian(), dtPayment.julian(),</span>
 						strDayCount, false, null, &quot;&quot;);
-<span class="nc" id="L117">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L118">				e.printStackTrace();</span>
+<span class="nc" id="L143">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">				e.printStackTrace();</span>
 
-<span class="nc" id="L120">				return null;</span>
-<span class="fc" id="L121">			}</span>
+<span class="nc" id="L146">				return null;</span>
+<span class="fc" id="L147">			}</span>
 
-<span class="fc" id="L123">			lsPaymentDate.add (dtPayment);</span>
+<span class="fc" id="L149">			lsPaymentDate.add (dtPayment);</span>
 
-<span class="fc" id="L125">			lsCouponPayment.add (dblCouponPayment);</span>
+<span class="fc" id="L151">			lsCouponPayment.add (dblCouponPayment);</span>
 
-<span class="fc" id="L127">			double dblPrincipalPayment = dblConstantAmount - dblCouponPayment;</span>
+<span class="fc" id="L153">			double dblPrincipalPayment = dblConstantAmount - dblCouponPayment;</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">			if (dblPrincipalPayment &gt; dblOutstandingPrincipal) {</span>
-<span class="fc" id="L130">				lsOutstandingPrincipal.add (0.);</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			if (dblPrincipalPayment &gt; dblOutstandingPrincipal) {</span>
+<span class="fc" id="L156">				lsOutstandingPrincipal.add (0.);</span>
 
-<span class="fc" id="L132">				break;</span>
+<span class="fc" id="L158">				break;</span>
 			}
 
-<span class="fc" id="L135">			dblOutstandingPrincipal -= dblPrincipalPayment;</span>
+<span class="fc" id="L161">			dblOutstandingPrincipal -= dblPrincipalPayment;</span>
 
-<span class="fc" id="L137">			lsOutstandingPrincipal.add (dblOutstandingPrincipal);</span>
+<span class="fc" id="L163">			lsOutstandingPrincipal.add (dblOutstandingPrincipal);</span>
 		}
 
-<span class="fc" id="L140">		int iNumValidPayment = lsOutstandingPrincipal.size();</span>
+<span class="fc" id="L166">		int iNumValidPayment = lsOutstandingPrincipal.size();</span>
 
-<span class="fc" id="L142">		double[] adblCouponPayment = new double[iNumValidPayment];</span>
-<span class="fc" id="L143">		double[] adblOutstandingPrincipal = new double[iNumValidPayment];</span>
-<span class="fc" id="L144">		org.drip.analytics.date.JulianDate[] adtPayment = new</span>
+<span class="fc" id="L168">		double[] adblCouponPayment = new double[iNumValidPayment];</span>
+<span class="fc" id="L169">		double[] adblOutstandingPrincipal = new double[iNumValidPayment];</span>
+<span class="fc" id="L170">		org.drip.analytics.date.JulianDate[] adtPayment = new</span>
 			org.drip.analytics.date.JulianDate[iNumValidPayment];
 
-<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumValidPayment; ++i) {</span>
-<span class="fc" id="L148">			adtPayment[i] = lsPaymentDate.get (i);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumValidPayment; ++i) {</span>
+<span class="fc" id="L174">			adtPayment[i] = lsPaymentDate.get (i);</span>
 
-<span class="fc" id="L150">			adblCouponPayment[i] = lsCouponPayment.get (i);</span>
+<span class="fc" id="L176">			adblCouponPayment[i] = lsCouponPayment.get (i);</span>
 
-<span class="fc" id="L152">			adblOutstandingPrincipal[i] = lsOutstandingPrincipal.get (i);</span>
+<span class="fc" id="L178">			adblOutstandingPrincipal[i] = lsOutstandingPrincipal.get (i);</span>
 		}
 
-<span class="fc" id="L155">		return org.drip.product.creator.BondBuilder.CreateBondFromCF (strName, dtEffective, strCurrency, &quot;&quot;,</span>
+<span class="fc" id="L181">		return org.drip.product.creator.BondBuilder.CreateBondFromCF (strName, dtEffective, strCurrency, &quot;&quot;,</span>
 			strDayCount, dblInitialNotional, dblCouponRate - dblFeeRate, iPayFrequency, adtPayment,
 				adblCouponPayment, adblOutstandingPrincipal, false);
 	}
@@ -188,74 +214,74 @@ package org.drip.product.creator;
 		final double dblConstantAmount,
 		final double dblInitialNotional)
 	{
-<span class="pc bpc" id="L191" title="2 of 4 branches missed.">		if (null == dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||</span>
-<span class="pc bpc" id="L192" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate &gt; dblCouponRate ||</span>
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblCPR) ||</span>
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblConstantAmount) ||</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional))</span>
-<span class="nc" id="L196">			return null;</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||</span>
+<span class="pc bpc" id="L218" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate &gt; dblCouponRate ||</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblCPR) ||</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblConstantAmount) ||</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional))</span>
+<span class="nc" id="L222">			return null;</span>
 
-<span class="fc" id="L198">		double dblOutstandingPrincipal = dblInitialNotional;</span>
+<span class="fc" id="L224">		double dblOutstandingPrincipal = dblInitialNotional;</span>
 
-<span class="fc" id="L200">		java.util.List&lt;java.lang.Double&gt; lsCouponPayment = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L226">		java.util.List&lt;java.lang.Double&gt; lsCouponPayment = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L202">		java.util.List&lt;java.lang.Double&gt; lsOutstandingPrincipal = new</span>
+<span class="fc" id="L228">		java.util.List&lt;java.lang.Double&gt; lsOutstandingPrincipal = new</span>
 			java.util.ArrayList&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L205">		java.util.List&lt;org.drip.analytics.date.JulianDate&gt; lsPaymentDate = new</span>
+<span class="fc" id="L231">		java.util.List&lt;org.drip.analytics.date.JulianDate&gt; lsPaymentDate = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.date.JulianDate&gt;();
 
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumPayment; ++i) {</span>
-<span class="fc" id="L209">			double dblCouponPayment = java.lang.Double.NaN;</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iNumPayment; ++i) {</span>
+<span class="fc" id="L235">			double dblCouponPayment = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L211">			org.drip.analytics.date.JulianDate dtPayment = dtEffective.addMonths (i + 1);</span>
+<span class="fc" id="L237">			org.drip.analytics.date.JulianDate dtPayment = dtEffective.addMonths (i + 1);</span>
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">			org.drip.analytics.date.JulianDate dtPrev = 0 == i ? dtEffective : lsPaymentDate.get (i - 1);</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">			org.drip.analytics.date.JulianDate dtPrev = 0 == i ? dtEffective : lsPaymentDate.get (i - 1);</span>
 
 			try {
-<span class="fc" id="L216">				dblCouponPayment = dblOutstandingPrincipal * (dblCouponRate - dblFeeRate) *</span>
-<span class="fc" id="L217">					org.drip.analytics.daycount.Convention.YearFraction (dtPrev.julian(), dtPayment.julian(),</span>
+<span class="fc" id="L242">				dblCouponPayment = dblOutstandingPrincipal * (dblCouponRate - dblFeeRate) *</span>
+<span class="fc" id="L243">					org.drip.analytics.daycount.Convention.YearFraction (dtPrev.julian(), dtPayment.julian(),</span>
 						strDayCount, false, null, &quot;&quot;);
-<span class="nc" id="L219">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L220">				e.printStackTrace();</span>
+<span class="nc" id="L245">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L246">				e.printStackTrace();</span>
 
-<span class="nc" id="L222">				return null;</span>
-<span class="fc" id="L223">			}</span>
+<span class="nc" id="L248">				return null;</span>
+<span class="fc" id="L249">			}</span>
 
-<span class="fc" id="L225">			lsPaymentDate.add (dtPayment);</span>
+<span class="fc" id="L251">			lsPaymentDate.add (dtPayment);</span>
 
-<span class="fc" id="L227">			lsCouponPayment.add (dblCouponPayment);</span>
+<span class="fc" id="L253">			lsCouponPayment.add (dblCouponPayment);</span>
 
-<span class="fc" id="L229">			double dblPrincipalPayment = dblConstantAmount - dblCouponPayment + dblCPR *</span>
+<span class="fc" id="L255">			double dblPrincipalPayment = dblConstantAmount - dblCouponPayment + dblCPR *</span>
 				dblOutstandingPrincipal;
 
-<span class="fc bfc" id="L232" title="All 2 branches covered.">			if (dblPrincipalPayment &gt; dblOutstandingPrincipal) {</span>
-<span class="fc" id="L233">				lsOutstandingPrincipal.add (0.);</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">			if (dblPrincipalPayment &gt; dblOutstandingPrincipal) {</span>
+<span class="fc" id="L259">				lsOutstandingPrincipal.add (0.);</span>
 
-<span class="fc" id="L235">				break;</span>
+<span class="fc" id="L261">				break;</span>
 			}
 
-<span class="fc" id="L238">			dblOutstandingPrincipal -= dblPrincipalPayment;</span>
+<span class="fc" id="L264">			dblOutstandingPrincipal -= dblPrincipalPayment;</span>
 
-<span class="fc" id="L240">			lsOutstandingPrincipal.add (dblOutstandingPrincipal);</span>
+<span class="fc" id="L266">			lsOutstandingPrincipal.add (dblOutstandingPrincipal);</span>
 		}
 
-<span class="fc" id="L243">		int iNumValidPayment = lsOutstandingPrincipal.size();</span>
+<span class="fc" id="L269">		int iNumValidPayment = lsOutstandingPrincipal.size();</span>
 
-<span class="fc" id="L245">		double[] adblCouponPayment = new double[iNumValidPayment];</span>
-<span class="fc" id="L246">		double[] adblOutstandingPrincipal = new double[iNumValidPayment];</span>
-<span class="fc" id="L247">		org.drip.analytics.date.JulianDate[] adtPayment = new</span>
+<span class="fc" id="L271">		double[] adblCouponPayment = new double[iNumValidPayment];</span>
+<span class="fc" id="L272">		double[] adblOutstandingPrincipal = new double[iNumValidPayment];</span>
+<span class="fc" id="L273">		org.drip.analytics.date.JulianDate[] adtPayment = new</span>
 			org.drip.analytics.date.JulianDate[iNumValidPayment];
 
-<span class="fc bfc" id="L250" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumValidPayment; ++i) {</span>
-<span class="fc" id="L251">			adtPayment[i] = lsPaymentDate.get (i);</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumValidPayment; ++i) {</span>
+<span class="fc" id="L277">			adtPayment[i] = lsPaymentDate.get (i);</span>
 
-<span class="fc" id="L253">			adblCouponPayment[i] = lsCouponPayment.get (i);</span>
+<span class="fc" id="L279">			adblCouponPayment[i] = lsCouponPayment.get (i);</span>
 
-<span class="fc" id="L255">			adblOutstandingPrincipal[i] = lsOutstandingPrincipal.get (i);</span>
+<span class="fc" id="L281">			adblOutstandingPrincipal[i] = lsOutstandingPrincipal.get (i);</span>
 		}
 
-<span class="fc" id="L258">		return org.drip.product.creator.BondBuilder.CreateBondFromCF (strName, dtEffective, strCurrency, &quot;&quot;,</span>
+<span class="fc" id="L284">		return org.drip.product.creator.BondBuilder.CreateBondFromCF (strName, dtEffective, strCurrency, &quot;&quot;,</span>
 			strDayCount, dblInitialNotional, dblCouponRate - dblFeeRate, iPayFrequency, adtPayment,
 				adblCouponPayment, adblOutstandingPrincipal, false);
 	}
@@ -278,16 +304,16 @@ package org.drip.product.creator;
 		final int iTenorInYears)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBondNotional) ||</span>
-<span class="pc bpc" id="L282" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate))</span>
-<span class="nc" id="L283">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBondNotional) ||</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate))</span>
+<span class="nc" id="L309">				throw new java.lang.Exception</span>
 					(&quot;ConstantPaymentBondBuilder::ConstantUniformPaymentAmount =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L286">		int iNumPeriod = iTenorInYears * 12;</span>
-<span class="fc" id="L287">		double dblPeriodRate = dblCouponRate / 12.;</span>
+<span class="fc" id="L312">		int iNumPeriod = iTenorInYears * 12;</span>
+<span class="fc" id="L313">		double dblPeriodRate = dblCouponRate / 12.;</span>
 
-<span class="fc" id="L289">		return dblPeriodRate * dblBondNotional * java.lang.Math.pow (1. + dblPeriodRate, iNumPeriod - 1) /</span>
-<span class="fc" id="L290">			(java.lang.Math.pow (1. + dblPeriodRate, iNumPeriod) - 1.);</span>
+<span class="fc" id="L315">		return dblPeriodRate * dblBondNotional * java.lang.Math.pow (1. + dblPeriodRate, iNumPeriod - 1) /</span>
+<span class="fc" id="L316">			(java.lang.Math.pow (1. + dblPeriodRate, iNumPeriod) - 1.);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

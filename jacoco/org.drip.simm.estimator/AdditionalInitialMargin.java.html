@@ -6,31 +6,49 @@ package org.drip.simm.estimator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,36 +65,54 @@ package org.drip.simm.estimator;
  */
 
 /**
- * AdditionalInitialMargin holds the Additional Initial Margin along with the Product Specific Add-On
- *  Components. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;AdditionalInitialMargin&lt;/i&gt; holds the Additional Initial Margin along with the Product Specific Add-On
+ * Components. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AdditionalInitialMargin
 {
-<span class="nc" id="L74">	private double _addOnFixed = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _creditMultiplicativeScale = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private double _equityMultiplicativeScale = java.lang.Double.NaN;</span>
-<span class="nc" id="L77">	private double _ratesFXMultiplicativeScale = java.lang.Double.NaN;</span>
-<span class="nc" id="L78">	private double _commodityMultiplicativeScale = java.lang.Double.NaN;</span>
-<span class="nc" id="L79">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _productAddOnFactorMap = null;</span>
+<span class="nc" id="L110">	private double _addOnFixed = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _creditMultiplicativeScale = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _equityMultiplicativeScale = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _ratesFXMultiplicativeScale = java.lang.Double.NaN;</span>
+<span class="nc" id="L114">	private double _commodityMultiplicativeScale = java.lang.Double.NaN;</span>
+<span class="nc" id="L115">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _productAddOnFactorMap = null;</span>
 
 	/**
 	 * Construct a Standard Instance of AdditionalInitialMargin
@@ -93,7 +129,7 @@ public class AdditionalInitialMargin
 	{
 		try
 		{
-<span class="nc" id="L96">			return new AdditionalInitialMargin (</span>
+<span class="nc" id="L132">			return new AdditionalInitialMargin (</span>
 				org.drip.simm.common.ProductClassMultiplicativeScale.MS_RATESFX_DEFAULT,
 				org.drip.simm.common.ProductClassMultiplicativeScale.MS_CREDIT_QUALIFYING_DEFAULT,
 				org.drip.simm.common.ProductClassMultiplicativeScale.MS_EQUITY_DEFAULT,
@@ -102,12 +138,12 @@ public class AdditionalInitialMargin
 				productAddOnFactorMap
 			);
 		}
-<span class="nc" id="L105">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L141">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L107">			e.printStackTrace();</span>
+<span class="nc" id="L143">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L110">		return null;</span>
+<span class="nc" id="L146">		return null;</span>
 	}
 
 	/**
@@ -131,22 +167,22 @@ public class AdditionalInitialMargin
 		final double addOnFixed,
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; productAddOnFactorMap)
 		throws java.lang.Exception
-<span class="nc" id="L134">	{</span>
-<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFXMultiplicativeScale =</span>
+<span class="nc" id="L170">	{</span>
+<span class="nc bnc" id="L171" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFXMultiplicativeScale =</span>
 				ratesFXMultiplicativeScale) || 1. &gt; _ratesFXMultiplicativeScale ||
-<span class="nc bnc" id="L137" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_creditMultiplicativeScale =</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_creditMultiplicativeScale =</span>
 				creditMultiplicativeScale) || 1. &gt; _creditMultiplicativeScale ||
-<span class="nc bnc" id="L139" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_equityMultiplicativeScale =</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_equityMultiplicativeScale =</span>
 				equityMultiplicativeScale) || 1. &gt; _equityMultiplicativeScale ||
-<span class="nc bnc" id="L141" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_commodityMultiplicativeScale =</span>
+<span class="nc bnc" id="L177" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_commodityMultiplicativeScale =</span>
 				commodityMultiplicativeScale) || 1. &gt; _commodityMultiplicativeScale ||
-<span class="nc bnc" id="L143" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_addOnFixed = addOnFixed) || 0. &gt; _addOnFixed)</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_addOnFixed = addOnFixed) || 0. &gt; _addOnFixed)</span>
 		{
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;AdditionalInitialMargin Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L181">			throw new java.lang.Exception (&quot;AdditionalInitialMargin Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L148">		_productAddOnFactorMap = productAddOnFactorMap;</span>
-<span class="nc" id="L149">	}</span>
+<span class="nc" id="L184">		_productAddOnFactorMap = productAddOnFactorMap;</span>
+<span class="nc" id="L185">	}</span>
 
 	/**
 	 * Retrieve the RatesFX Multiplicative Scale
@@ -156,7 +192,7 @@ public class AdditionalInitialMargin
 
 	public double ratesFXMultiplicativeScale()
 	{
-<span class="nc" id="L159">		return _ratesFXMultiplicativeScale;</span>
+<span class="nc" id="L195">		return _ratesFXMultiplicativeScale;</span>
 	}
 
 	/**
@@ -167,7 +203,7 @@ public class AdditionalInitialMargin
 
 	public double creditMultiplicativeScale()
 	{
-<span class="nc" id="L170">		return _creditMultiplicativeScale;</span>
+<span class="nc" id="L206">		return _creditMultiplicativeScale;</span>
 	}
 
 	/**
@@ -178,7 +214,7 @@ public class AdditionalInitialMargin
 
 	public double equityMultiplicativeScale()
 	{
-<span class="nc" id="L181">		return _equityMultiplicativeScale;</span>
+<span class="nc" id="L217">		return _equityMultiplicativeScale;</span>
 	}
 
 	/**
@@ -189,7 +225,7 @@ public class AdditionalInitialMargin
 
 	public double commodityMultiplicativeScale()
 	{
-<span class="nc" id="L192">		return _commodityMultiplicativeScale;</span>
+<span class="nc" id="L228">		return _commodityMultiplicativeScale;</span>
 	}
 
 	/**
@@ -200,7 +236,7 @@ public class AdditionalInitialMargin
 
 	public double addOnFixed()
 	{
-<span class="nc" id="L203">		return _addOnFixed;</span>
+<span class="nc" id="L239">		return _addOnFixed;</span>
 	}
 
 	/**
@@ -211,7 +247,7 @@ public class AdditionalInitialMargin
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; productAddOnFactorMap()
 	{
-<span class="nc" id="L214">		return _productAddOnFactorMap;</span>
+<span class="nc" id="L250">		return _productAddOnFactorMap;</span>
 	}
 
 	/**
@@ -225,27 +261,27 @@ public class AdditionalInitialMargin
 	public double productAddOn (
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; productNotionalMap)
 	{
-<span class="nc bnc" id="L228" title="All 6 branches missed.">		if (null == productNotionalMap || 0 == productNotionalMap.size() ||</span>
-<span class="nc bnc" id="L229" title="All 2 branches missed.">			null == _productAddOnFactorMap || 0 == _productAddOnFactorMap.size())</span>
+<span class="nc bnc" id="L264" title="All 6 branches missed.">		if (null == productNotionalMap || 0 == productNotionalMap.size() ||</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">			null == _productAddOnFactorMap || 0 == _productAddOnFactorMap.size())</span>
 		{
-<span class="nc" id="L231">			return 0.;</span>
+<span class="nc" id="L267">			return 0.;</span>
 		}
 
-<span class="nc" id="L234">		double productAddOn = 0.;</span>
+<span class="nc" id="L270">		double productAddOn = 0.;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; productAddOnFactorEntry :
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			_productAddOnFactorMap.entrySet())</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">			_productAddOnFactorMap.entrySet())</span>
 		{
-<span class="nc" id="L239">			java.lang.String productID = productAddOnFactorEntry.getKey();</span>
+<span class="nc" id="L275">			java.lang.String productID = productAddOnFactorEntry.getKey();</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">			if (productNotionalMap.containsKey (productID))</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			if (productNotionalMap.containsKey (productID))</span>
 			{
-<span class="nc" id="L243">				productAddOn = productAddOn + productAddOnFactorEntry.getValue() * productNotionalMap.get</span>
-<span class="nc" id="L244">					(productID);</span>
+<span class="nc" id="L279">				productAddOn = productAddOn + productAddOnFactorEntry.getValue() * productNotionalMap.get</span>
+<span class="nc" id="L280">					(productID);</span>
 			}
-<span class="nc" id="L246">		}</span>
+<span class="nc" id="L282">		}</span>
 
-<span class="nc" id="L248">		return productAddOn;</span>
+<span class="nc" id="L284">		return productAddOn;</span>
 	}
 
 	/**
@@ -259,7 +295,7 @@ public class AdditionalInitialMargin
 	public double total (
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; productNotionalMap)
 	{
-<span class="nc" id="L262">		return _addOnFixed + productAddOn (productNotionalMap);</span>
+<span class="nc" id="L298">		return _addOnFixed + productAddOn (productNotionalMap);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

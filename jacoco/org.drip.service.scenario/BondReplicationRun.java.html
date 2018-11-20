@@ -6,32 +6,50 @@ package org.drip.service.scenario;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,16 +66,24 @@ package org.drip.service.scenario;
  */
 
 /**
- * BondReplicationRun holds the Results of a Full Bond Replication Run,
+ * &lt;i&gt;BondReplicationRun&lt;/i&gt; holds the Results of a Full Bond Replication Run.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario&quot;&gt;Scenario&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class BondReplicationRun {
-<span class="fc" id="L57">	private java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; _mapNF = new</span>
+<span class="fc" id="L83">	private java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; _mapNF = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.service.scenario.NamedField&gt;();
 
-<span class="fc" id="L60">	private java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; _mapNFM = new</span>
+<span class="fc" id="L86">	private java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; _mapNFM = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.service.scenario.NamedFieldMap&gt;();
 
 	/**
@@ -65,8 +91,8 @@ public class BondReplicationRun {
 	 */
 
 	public BondReplicationRun()
-<span class="fc" id="L68">	{</span>
-<span class="fc" id="L69">	}</span>
+<span class="fc" id="L94">	{</span>
+<span class="fc" id="L95">	}</span>
 
 	/**
 	 * Add a Named Field
@@ -79,11 +105,11 @@ public class BondReplicationRun {
 	public boolean addNamedField (
 		final org.drip.service.scenario.NamedField nf)
 	{
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">		if (null == nf) return false;</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == nf) return false;</span>
 
-<span class="fc" id="L84">		_mapNF.put (nf.name(), nf);</span>
+<span class="fc" id="L110">		_mapNF.put (nf.name(), nf);</span>
 
-<span class="fc" id="L86">		return true;</span>
+<span class="fc" id="L112">		return true;</span>
 	}
 
 	/**
@@ -97,11 +123,11 @@ public class BondReplicationRun {
 	public boolean addNamedFieldMap (
 		final org.drip.service.scenario.NamedFieldMap nfm)
 	{
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (null == nfm) return false;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == nfm) return false;</span>
 
-<span class="fc" id="L102">		_mapNFM.put (nfm.name(), nfm);</span>
+<span class="fc" id="L128">		_mapNFM.put (nfm.name(), nfm);</span>
 
-<span class="fc" id="L104">		return true;</span>
+<span class="fc" id="L130">		return true;</span>
 	}
 
 	/**
@@ -112,7 +138,7 @@ public class BondReplicationRun {
 
 	public java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; namedField()
 	{
-<span class="nc" id="L115">		return _mapNF;</span>
+<span class="nc" id="L141">		return _mapNF;</span>
 	}
 
 	/**
@@ -123,7 +149,7 @@ public class BondReplicationRun {
 
 	public java.util.Map&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; namedFieldMap()
 	{
-<span class="nc" id="L126">		return _mapNFM;</span>
+<span class="nc" id="L152">		return _mapNFM;</span>
 	}
 
 	/**
@@ -134,23 +160,23 @@ public class BondReplicationRun {
 
 	public java.lang.String header()
 	{
-<span class="nc" id="L137">		java.lang.String strHeader = &quot;&quot;;</span>
+<span class="nc" id="L163">		java.lang.String strHeader = &quot;&quot;;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; meNF :
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			_mapNF.entrySet())</span>
-<span class="nc" id="L141">			strHeader = strHeader + meNF.getKey() + &quot;,&quot;;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			_mapNF.entrySet())</span>
+<span class="nc" id="L167">			strHeader = strHeader + meNF.getKey() + &quot;,&quot;;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; meNFM :
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
-<span class="nc" id="L145">			java.lang.String strNFMKey = meNFM.getKey() + &quot;,&quot;;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
+<span class="nc" id="L171">			java.lang.String strNFMKey = meNFM.getKey() + &quot;,&quot;;</span>
 
-<span class="nc" id="L147">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
+<span class="nc" id="L173">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
-<span class="nc" id="L150">				strHeader = strHeader + strNFMKey + &quot;::&quot; + meNFMEntry.getKey() + &quot;,&quot;;</span>
-<span class="nc" id="L151">		}</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
+<span class="nc" id="L176">				strHeader = strHeader + strNFMKey + &quot;::&quot; + meNFMEntry.getKey() + &quot;,&quot;;</span>
+<span class="nc" id="L177">		}</span>
 
-<span class="nc" id="L153">		return strHeader;</span>
+<span class="nc" id="L179">		return strHeader;</span>
 	}
 
 	/**
@@ -161,21 +187,21 @@ public class BondReplicationRun {
 
 	public java.lang.String value()
 	{
-<span class="nc" id="L164">		java.lang.String strValue = &quot;&quot;;</span>
+<span class="nc" id="L190">		java.lang.String strValue = &quot;&quot;;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; meNF :
-<span class="nc bnc" id="L167" title="All 2 branches missed.">			_mapNF.entrySet())</span>
-<span class="nc" id="L168">			strValue = strValue + meNF.getValue().value() + &quot;,&quot;;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">			_mapNF.entrySet())</span>
+<span class="nc" id="L194">			strValue = strValue + meNF.getValue().value() + &quot;,&quot;;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; meNFM :
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
-<span class="nc" id="L172">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">			_mapNFM.entrySet()) {</span>
+<span class="nc" id="L198">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
-<span class="nc" id="L175">				strValue = strValue + meNFMEntry.getValue() + &quot;,&quot;;</span>
-<span class="nc" id="L176">		}</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
+<span class="nc" id="L201">				strValue = strValue + meNFMEntry.getValue() + &quot;,&quot;;</span>
+<span class="nc" id="L202">		}</span>
 
-<span class="nc" id="L178">		return strValue;</span>
+<span class="nc" id="L204">		return strValue;</span>
 	}
 
 	/**
@@ -186,24 +212,24 @@ public class BondReplicationRun {
 
 	public java.lang.String display()
 	{
-<span class="fc" id="L189">		java.lang.String strValue = &quot;&quot;;</span>
+<span class="fc" id="L215">		java.lang.String strValue = &quot;&quot;;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedField&gt; meNF :
-<span class="fc bfc" id="L192" title="All 2 branches covered.">			_mapNF.entrySet())</span>
-<span class="fc" id="L193">			strValue = strValue + meNF.getKey() + &quot; =&gt; &quot; + meNF.getValue().value() + &quot;\n&quot;;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">			_mapNF.entrySet())</span>
+<span class="fc" id="L219">			strValue = strValue + meNF.getKey() + &quot; =&gt; &quot; + meNF.getValue().value() + &quot;\n&quot;;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.service.scenario.NamedFieldMap&gt; meNFM :
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			_mapNFM.entrySet()) {</span>
-<span class="fc" id="L197">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">			_mapNFM.entrySet()) {</span>
+<span class="fc" id="L223">			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();</span>
 
-<span class="fc" id="L199">			java.lang.String strNFMKey = meNFM.getKey();</span>
+<span class="fc" id="L225">			java.lang.String strNFMKey = meNFM.getKey();</span>
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
-<span class="fc" id="L202">				strValue = strValue + strNFMKey + &quot;::&quot; + meNFMEntry.getKey() + &quot; =&gt; &quot; + meNFMEntry.getValue()</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meNFMEntry : nfm.value().entrySet())</span>
+<span class="fc" id="L228">				strValue = strValue + strNFMKey + &quot;::&quot; + meNFMEntry.getKey() + &quot; =&gt; &quot; + meNFMEntry.getValue()</span>
 					+ &quot;\n&quot;;
-<span class="fc" id="L204">		}</span>
+<span class="fc" id="L230">		}</span>
 
-<span class="fc" id="L206">		return strValue;</span>
+<span class="fc" id="L232">		return strValue;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

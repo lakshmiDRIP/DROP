@@ -6,34 +6,52 @@ package org.drip.product.fx;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,9 +68,17 @@ package org.drip.product.fx;
  */
 
 /**
- * FXForwardComponent contains the Standard FX forward Component contract details - the effective date, the
- *  maturity date, the currency pair and the product code. It also exports a calibrator that computes the
- *  forward points from the discount curve.
+ * &lt;i&gt;FXForwardComponent&lt;/i&gt; contains the Standard FX forward Component contract details - the effective
+ * date, the maturity date, the currency pair and the product code. It also exports a calibrator that
+ * computes the forward points from the discount curve.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fx&quot;&gt;FX&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  
  * @author Lakshmi Krishnamurthy
  */
@@ -67,13 +93,13 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 	 */
 
 	public class FXBasisCalibrator {
-<span class="fc" id="L70">		private FXForwardComponent _fxfwd = null;</span>
+<span class="fc" id="L96">		private FXForwardComponent _fxfwd = null;</span>
 
 		// DC Basis Calibration Stochastic Control
 
-<span class="fc" id="L74">		private int _iNumIterations = 100;</span>
-<span class="fc" id="L75">		private double _dblBasisIncr = 0.0001;</span>
-<span class="fc" id="L76">		private double _dblBasisDiffTol = 0.0001;</span>
+<span class="fc" id="L100">		private int _iNumIterations = 100;</span>
+<span class="fc" id="L101">		private double _dblBasisIncr = 0.0001;</span>
+<span class="fc" id="L102">		private double _dblBasisDiffTol = 0.0001;</span>
 
 		private final double calcFXFwd (
 			final org.drip.param.valuation.ValuationParams valParams,
@@ -83,12 +109,12 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 			final double dblBump,
 			final boolean bBasisOnDenom)
 			throws java.lang.Exception {
-<span class="fc bfc" id="L86" title="All 2 branches covered.">			if (bBasisOnDenom)</span>
-<span class="fc" id="L87">				return _fxfwd.fxForward (valParams, dcNum, (org.drip.state.discount.MergedDiscountForwardCurve)</span>
-<span class="fc" id="L88">					dcDenom.parallelShiftQuantificationMetric (dblBump), dblFXSpot, false);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			if (bBasisOnDenom)</span>
+<span class="fc" id="L113">				return _fxfwd.fxForward (valParams, dcNum, (org.drip.state.discount.MergedDiscountForwardCurve)</span>
+<span class="fc" id="L114">					dcDenom.parallelShiftQuantificationMetric (dblBump), dblFXSpot, false);</span>
 
-<span class="fc" id="L90">			return _fxfwd.fxForward (valParams, (org.drip.state.discount.MergedDiscountForwardCurve)</span>
-<span class="fc" id="L91">				dcNum.parallelShiftQuantificationMetric (dblBump), dcDenom, dblFXSpot, false);</span>
+<span class="fc" id="L116">			return _fxfwd.fxForward (valParams, (org.drip.state.discount.MergedDiscountForwardCurve)</span>
+<span class="fc" id="L117">				dcNum.parallelShiftQuantificationMetric (dblBump), dcDenom, dblFXSpot, false);</span>
 		}
 
 		/**
@@ -102,10 +128,10 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		public FXBasisCalibrator (
 			final FXForwardComponent fxfwd)
 			throws java.lang.Exception
-<span class="fc" id="L105">		{</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			if (null == (_fxfwd = fxfwd))</span>
-<span class="nc" id="L107">				throw new java.lang.Exception (&quot;FXForwardComponent::FXBasisCalibrator ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L108">		}</span>
+<span class="fc" id="L131">		{</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			if (null == (_fxfwd = fxfwd))</span>
+<span class="nc" id="L133">				throw new java.lang.Exception (&quot;FXForwardComponent::FXBasisCalibrator ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L134">		}</span>
 
 		/**
 		 * Calibrate the discount curve basis from FXForward using Newton-Raphson methodology
@@ -131,82 +157,82 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 			final boolean bBasisOnDenom)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L134" title="3 of 6 branches missed.">			if (null == valParams || null == dcNum || null == dcDenom ||</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))</span>
-<span class="nc" id="L137">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L160" title="3 of 6 branches missed.">			if (null == valParams || null == dcNum || null == dcDenom ||</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))</span>
+<span class="nc" id="L163">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; bad inputs&quot;);
 
-<span class="fc" id="L140">			double dblFXFwdBase = _fxfwd.fxForward (valParams, dcNum, dcDenom, dblFXSpot, false);</span>
+<span class="fc" id="L166">			double dblFXFwdBase = _fxfwd.fxForward (valParams, dcNum, dcDenom, dblFXSpot, false);</span>
 
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase))</span>
-<span class="nc" id="L143">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase))</span>
+<span class="nc" id="L169">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd Base!&quot;);
 
-<span class="fc" id="L146">			double dblFXFwdBumped = calcFXFwd (valParams, dcNum, dcDenom, dblFXSpot, _dblBasisIncr,</span>
+<span class="fc" id="L172">			double dblFXFwdBumped = calcFXFwd (valParams, dcNum, dcDenom, dblFXSpot, _dblBasisIncr,</span>
 				bBasisOnDenom);
 
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped))</span>
-<span class="nc" id="L150">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped))</span>
+<span class="nc" id="L176">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd for &quot; +
 						_dblBasisIncr + &quot; shift!&quot;);
 
-<span class="fc" id="L154">			double dblDBasisDFXFwd = _dblBasisIncr / (dblFXFwdBumped - dblFXFwdBase);</span>
+<span class="fc" id="L180">			double dblDBasisDFXFwd = _dblBasisIncr / (dblFXFwdBumped - dblFXFwdBase);</span>
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd))</span>
-<span class="nc" id="L157">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd))</span>
+<span class="nc" id="L183">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot calculate Fwd/Basis Slope for 0 basis!&quot;);
 
-<span class="fc" id="L160">			double dblBasisPrev = 0.;</span>
-<span class="fc" id="L161">			double dblBasis = dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);</span>
+<span class="fc" id="L186">			double dblBasisPrev = 0.;</span>
+<span class="fc" id="L187">			double dblBasis = dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);</span>
 
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))</span>
-<span class="nc" id="L164">				throw new java.lang.Exception (&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Got &quot; +</span>
-<span class="nc" id="L165">					dblBasis + &quot; for FlatSpread for &quot; + _fxfwd.primaryCode() + &quot; and price &quot; + dblFXFwdBase);</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))</span>
+<span class="nc" id="L190">				throw new java.lang.Exception (&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Got &quot; +</span>
+<span class="nc" id="L191">					dblBasis + &quot; for FlatSpread for &quot; + _fxfwd.primaryCode() + &quot; and price &quot; + dblFXFwdBase);</span>
 
-<span class="fc bfc" id="L167" title="All 2 branches covered.">			while (_dblBasisDiffTol &lt; java.lang.Math.abs (dblBasis - dblBasisPrev)) {</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">				if (0 == --_iNumIterations)</span>
-<span class="nc" id="L169">					throw new java.lang.Exception</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">			while (_dblBasisDiffTol &lt; java.lang.Math.abs (dblBasis - dblBasisPrev)) {</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">				if (0 == --_iNumIterations)</span>
+<span class="nc" id="L195">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot calib Basis for &quot; +
-<span class="nc" id="L171">							_fxfwd.primaryCode() + &quot; and price &quot; + dblMarketFXFwdPrice + &quot; within limit!&quot;);</span>
+<span class="nc" id="L197">							_fxfwd.primaryCode() + &quot; and price &quot; + dblMarketFXFwdPrice + &quot; within limit!&quot;);</span>
 
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,</span>
 					dcDenom, dblFXSpot, dblBasisPrev = dblBasis, bBasisOnDenom)))
-<span class="nc" id="L175">					throw new java.lang.Exception</span>
+<span class="nc" id="L201">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd for &quot; +
 							dblBasis + &quot; shift!&quot;);
 
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,</span>
 					dcDenom, dblFXSpot, dblBasis + _dblBasisIncr, bBasisOnDenom)))
-<span class="nc" id="L181">					throw new java.lang.Exception</span>
+<span class="nc" id="L207">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd for &quot; +
 							(dblBasis + _dblBasisIncr) + &quot; shift!&quot;);
 
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /</span>
 					(dblFXFwdBumped - dblFXFwdBase)))
-<span class="nc" id="L187">					throw new java.lang.Exception</span>
+<span class="nc" id="L213">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot calculate Fwd/Basis Slope for &quot;
 							+ (dblBasis + _dblBasisIncr) + &quot; basis!&quot;);
 
-<span class="fc" id="L191">				dblBasis = dblBasisPrev + dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);</span>
+<span class="fc" id="L217">				dblBasis = dblBasisPrev + dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);</span>
 
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))</span>
-<span class="nc" id="L194">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))</span>
+<span class="nc" id="L220">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Got &quot; + dblBasis +
-<span class="nc" id="L196">							&quot; for FlatSpread for &quot; + _fxfwd.primaryCode() + &quot; and price &quot; + dblFXFwdBase);</span>
+<span class="nc" id="L222">							&quot; for FlatSpread for &quot; + _fxfwd.primaryCode() + &quot; and price &quot; + dblFXFwdBase);</span>
 			}
 
-<span class="fc" id="L199">			return dblBasis;</span>
+<span class="fc" id="L225">			return dblBasis;</span>
 		}
 	}
 
-<span class="fc" id="L203">	private java.lang.String _strCode = &quot;&quot;;</span>
-<span class="fc" id="L204">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L205">	private double _dblNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L206">	private int _iMaturityDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L207">	private int _iEffectiveDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L208">	private org.drip.product.params.CurrencyPair _ccyPair = null;</span>
-<span class="fc" id="L209">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
+<span class="fc" id="L229">	private java.lang.String _strCode = &quot;&quot;;</span>
+<span class="fc" id="L230">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L231">	private double _dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L232">	private int _iMaturityDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L233">	private int _iEffectiveDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L234">	private org.drip.product.params.CurrencyPair _ccyPair = null;</span>
+<span class="fc" id="L235">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
 
 	/**
 	 * Create an FXForwardComponent from the currency pair, the effective and the maturity dates
@@ -229,14 +255,14 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final double dblNotional,
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
-<span class="fc" id="L232">	{</span>
-<span class="pc bpc" id="L233" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_ccyPair = ccyPair) ||</span>
+<span class="fc" id="L258">	{</span>
+<span class="pc bpc" id="L259" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_ccyPair = ccyPair) ||</span>
 			(_iEffectiveDate = iEffectiveDate) &gt;= (_iMaturityDate = iMaturityDate) ||
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))</span>
-<span class="nc" id="L236">			throw new java.lang.Exception (&quot;FXForwardComponent ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))</span>
+<span class="nc" id="L262">			throw new java.lang.Exception (&quot;FXForwardComponent ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L238">		_csp = csp;</span>
-<span class="fc" id="L239">	}</span>
+<span class="fc" id="L264">		_csp = csp;</span>
+<span class="fc" id="L265">	}</span>
 
 	/**
 	 * Get the Currency Pair
@@ -246,7 +272,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 
 	public org.drip.product.params.CurrencyPair currencyPair()
 	{
-<span class="nc" id="L249">		return _ccyPair;</span>
+<span class="nc" id="L275">		return _ccyPair;</span>
 	}
 
 	/**
@@ -271,16 +297,16 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final boolean bFwdAsPIP)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L274" title="3 of 6 branches missed.">		if (null == valParams || null == dcNum || null == dcDenom ||</span>
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))</span>
-<span class="nc" id="L276">			throw new java.lang.Exception (&quot;FXForwardComponent::fxForward =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L300" title="3 of 6 branches missed.">		if (null == valParams || null == dcNum || null == dcDenom ||</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))</span>
+<span class="nc" id="L302">			throw new java.lang.Exception (&quot;FXForwardComponent::fxForward =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L278">		int iCashPayDate = valParams.cashPayDate();</span>
+<span class="fc" id="L304">		int iCashPayDate = valParams.cashPayDate();</span>
 
-<span class="fc" id="L280">		double dblFXFwd = dblFXSpot * dcDenom.df (_iMaturityDate) * dcNum.df (iCashPayDate) / dcNum.df</span>
-<span class="fc" id="L281">			(_iMaturityDate) / dcDenom.df (iCashPayDate);</span>
+<span class="fc" id="L306">		double dblFXFwd = dblFXSpot * dcDenom.df (_iMaturityDate) * dcNum.df (iCashPayDate) / dcNum.df</span>
+<span class="fc" id="L307">			(_iMaturityDate) / dcDenom.df (iCashPayDate);</span>
 
-<span class="pc bpc" id="L283" title="1 of 2 branches missed.">		return bFwdAsPIP ? (dblFXFwd - dblFXSpot) * _ccyPair.pipFactor() : dblFXFwd;</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		return bFwdAsPIP ? (dblFXFwd - dblFXSpot) * _ccyPair.pipFactor() : dblFXFwd;</span>
 	}
 
 	/**
@@ -308,61 +334,61 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final boolean bBasisOnDenom)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L311">		return new FXBasisCalibrator (this).calibrateDCBasisFromFwdPriceNR (valParams, dcNum, dcDenom,</span>
+<span class="fc" id="L337">		return new FXBasisCalibrator (this).calibrateDCBasisFromFwdPriceNR (valParams, dcNum, dcDenom,</span>
 			dblFXSpot, dblMarketFXFwdPrice, bBasisOnDenom);
 	}
 
 	@Override public java.lang.String name()
 	{
-<span class="nc" id="L317">		return _strName;</span>
+<span class="nc" id="L343">		return _strName;</span>
 	}
 
 	@Override public java.lang.String primaryCode()
 	{
-<span class="nc" id="L322">		return _strCode;</span>
+<span class="nc" id="L348">		return _strCode;</span>
 	}
 
 	@Override public void setPrimaryCode (
 		final java.lang.String strCode)
 	{
-<span class="nc" id="L328">		_strCode = strCode;</span>
-<span class="nc" id="L329">	}</span>
+<span class="nc" id="L354">		_strCode = strCode;</span>
+<span class="nc" id="L355">	}</span>
 
 	@Override public org.drip.analytics.date.JulianDate effectiveDate()
 	{
 		try {
-<span class="nc" id="L334">			return new org.drip.analytics.date.JulianDate (_iEffectiveDate);</span>
-<span class="nc" id="L335">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L336">			e.printStackTrace();</span>
+<span class="nc" id="L360">			return new org.drip.analytics.date.JulianDate (_iEffectiveDate);</span>
+<span class="nc" id="L361">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L362">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L339">		return null;</span>
+<span class="nc" id="L365">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate maturityDate()
 	{
 		try {
-<span class="fc" id="L345">			return new org.drip.analytics.date.JulianDate (_iMaturityDate);</span>
-<span class="nc" id="L346">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L347">			e.printStackTrace();</span>
+<span class="fc" id="L371">			return new org.drip.analytics.date.JulianDate (_iMaturityDate);</span>
+<span class="nc" id="L372">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L373">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L350">		return null;</span>
+<span class="nc" id="L376">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
 	{
-<span class="nc" id="L355">		return maturityDate();</span>
+<span class="nc" id="L381">		return maturityDate();</span>
 	}
 
 	@Override public int freq()
 	{
-<span class="nc" id="L360">		return 1;</span>
+<span class="nc" id="L386">		return 1;</span>
 	}
 
 	@Override public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriods()
 	{
-<span class="nc" id="L365">		return null;</span>
+<span class="nc" id="L391">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
@@ -370,87 +396,87 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc" id="L373">		return null;</span>
+<span class="nc" id="L399">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; couponCurrency()
 	{
-<span class="nc" id="L378">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCouponCurrency = new</span>
+<span class="nc" id="L404">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCouponCurrency = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
-<span class="nc" id="L381">		mapCouponCurrency.put (_strName, _ccyPair.denomCcy());</span>
+<span class="nc" id="L407">		mapCouponCurrency.put (_strName, _ccyPair.denomCcy());</span>
 
-<span class="nc" id="L383">		return mapCouponCurrency;</span>
+<span class="nc" id="L409">		return mapCouponCurrency;</span>
 	}
 
 	@Override public java.lang.String payCurrency()
 	{
-<span class="nc" id="L388">		return _ccyPair.denomCcy();</span>
+<span class="nc" id="L414">		return _ccyPair.denomCcy();</span>
 	}
 
 	@Override public java.lang.String principalCurrency()
 	{
-<span class="nc" id="L393">		return _ccyPair.denomCcy();</span>
+<span class="nc" id="L419">		return _ccyPair.denomCcy();</span>
 	}
 
 	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
-<span class="nc" id="L398">		return null;</span>
+<span class="nc" id="L424">		return null;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
 			forwardLabel()
 	{
-<span class="nc" id="L405">		return null;</span>
+<span class="nc" id="L431">		return null;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.OTCFixFloatLabel&gt;
 			otcFixFloatLabel()
 	{
-<span class="nc" id="L412">		return null;</span>
+<span class="nc" id="L438">		return null;</span>
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L417">		return org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
+<span class="nc" id="L443">		return org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
 	}
 
 	@Override public org.drip.state.identifier.GovvieLabel govvieLabel()
 	{
-<span class="nc" id="L422">		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());</span>
+<span class="nc" id="L448">		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;
 		fxLabel()
 	{
-<span class="fc" id="L428">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; mapFXLabel = new</span>
+<span class="fc" id="L454">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; mapFXLabel = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;();
 
-<span class="fc" id="L431">		mapFXLabel.put (&quot;DERIVED&quot;, org.drip.state.identifier.FXLabel.Standard (_ccyPair));</span>
+<span class="fc" id="L457">		mapFXLabel.put (&quot;DERIVED&quot;, org.drip.state.identifier.FXLabel.Standard (_ccyPair));</span>
 
-<span class="fc" id="L433">		return mapFXLabel;</span>
+<span class="fc" id="L459">		return mapFXLabel;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.VolatilityLabel&gt;
 			volatilityLabel()
 	{
-<span class="nc" id="L440">		return null;</span>
+<span class="nc" id="L466">		return null;</span>
 	}
 
 	@Override public double initialNotional()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L446">		return _dblNotional;</span>
+<span class="nc" id="L472">		return _dblNotional;</span>
 	}
 
 	@Override public double notional (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L453">		return _dblNotional;</span>
+<span class="nc" id="L479">		return _dblNotional;</span>
 	}
 
 	@Override public double notional (
@@ -458,12 +484,12 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L461">		return _dblNotional;</span>
+<span class="nc" id="L487">		return _dblNotional;</span>
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
 	{
-<span class="nc" id="L466">		return _csp;</span>
+<span class="nc" id="L492">		return _csp;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -472,96 +498,96 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L475" title="3 of 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt; _iMaturityDate || null == csqs) return null;</span>
+<span class="pc bpc" id="L501" title="3 of 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt; _iMaturityDate || null == csqs) return null;</span>
 
-<span class="fc" id="L477">		org.drip.state.identifier.FXLabel fxLabel = org.drip.state.identifier.FXLabel.Standard (_ccyPair);</span>
+<span class="fc" id="L503">		org.drip.state.identifier.FXLabel fxLabel = org.drip.state.identifier.FXLabel.Standard (_ccyPair);</span>
 
-<span class="fc" id="L479">		org.drip.state.fx.FXCurve fxCurve = csqs.fxState (fxLabel);</span>
+<span class="fc" id="L505">		org.drip.state.fx.FXCurve fxCurve = csqs.fxState (fxLabel);</span>
 
-<span class="pc bpc" id="L481" title="1 of 2 branches missed.">		if (null == fxCurve) return null;</span>
+<span class="pc bpc" id="L507" title="1 of 2 branches missed.">		if (null == fxCurve) return null;</span>
 
-<span class="fc" id="L483">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapRes = new</span>
+<span class="fc" id="L509">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapRes = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L486">		double dblFXSpot = java.lang.Double.NaN;</span>
-<span class="fc" id="L487">		double dblFXForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L512">		double dblFXSpot = java.lang.Double.NaN;</span>
+<span class="fc" id="L513">		double dblFXForward = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L490">			dblFXSpot = fxCurve.fx (_iEffectiveDate);</span>
+<span class="fc" id="L516">			dblFXSpot = fxCurve.fx (_iEffectiveDate);</span>
 
-<span class="fc" id="L492">			dblFXForward = fxCurve.fx (_iMaturityDate);</span>
-<span class="nc" id="L493">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L494">			e.printStackTrace();</span>
+<span class="fc" id="L518">			dblFXForward = fxCurve.fx (_iMaturityDate);</span>
+<span class="nc" id="L519">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L520">			e.printStackTrace();</span>
 
-<span class="nc" id="L496">			return null;</span>
-<span class="fc" id="L497">		}</span>
+<span class="nc" id="L522">			return null;</span>
+<span class="fc" id="L523">		}</span>
 
-<span class="fc" id="L499">		double dblPIP = (dblFXForward - dblFXSpot) * _ccyPair.pipFactor();</span>
+<span class="fc" id="L525">		double dblPIP = (dblFXForward - dblFXSpot) * _ccyPair.pipFactor();</span>
 
-<span class="fc" id="L501">		mapRes.put (&quot;FXForward&quot;, dblFXForward);</span>
+<span class="fc" id="L527">		mapRes.put (&quot;FXForward&quot;, dblFXForward);</span>
 
-<span class="fc" id="L503">		mapRes.put (&quot;FXForwardOutright&quot;, dblFXForward);</span>
+<span class="fc" id="L529">		mapRes.put (&quot;FXForwardOutright&quot;, dblFXForward);</span>
 
-<span class="fc" id="L505">		mapRes.put (&quot;FXForwardPIP&quot;, dblPIP);</span>
+<span class="fc" id="L531">		mapRes.put (&quot;FXForwardPIP&quot;, dblPIP);</span>
 
-<span class="fc" id="L507">		mapRes.put (&quot;FXSpot&quot;, dblFXSpot);</span>
+<span class="fc" id="L533">		mapRes.put (&quot;FXSpot&quot;, dblFXSpot);</span>
 
-<span class="fc" id="L509">		mapRes.put (&quot;Outright&quot;, dblFXForward);</span>
+<span class="fc" id="L535">		mapRes.put (&quot;Outright&quot;, dblFXForward);</span>
 
-<span class="fc" id="L511">		mapRes.put (&quot;PIP&quot;, dblPIP);</span>
+<span class="fc" id="L537">		mapRes.put (&quot;PIP&quot;, dblPIP);</span>
 
-<span class="fc" id="L513">		mapRes.put (&quot;PV&quot;, dblFXForward);</span>
+<span class="fc" id="L539">		mapRes.put (&quot;PV&quot;, dblFXForward);</span>
 
-<span class="fc" id="L515">		org.drip.state.discount.MergedDiscountForwardCurve dcNum = csqs.fundingState</span>
-<span class="fc" id="L516">			(org.drip.state.identifier.FundingLabel.Standard (_ccyPair.numCcy()));</span>
+<span class="fc" id="L541">		org.drip.state.discount.MergedDiscountForwardCurve dcNum = csqs.fundingState</span>
+<span class="fc" id="L542">			(org.drip.state.identifier.FundingLabel.Standard (_ccyPair.numCcy()));</span>
 
-<span class="fc" id="L518">		org.drip.state.discount.MergedDiscountForwardCurve dcDenom = csqs.fundingState</span>
-<span class="fc" id="L519">			(org.drip.state.identifier.FundingLabel.Standard (_ccyPair.denomCcy()));</span>
+<span class="fc" id="L544">		org.drip.state.discount.MergedDiscountForwardCurve dcDenom = csqs.fundingState</span>
+<span class="fc" id="L545">			(org.drip.state.identifier.FundingLabel.Standard (_ccyPair.denomCcy()));</span>
 
-<span class="pc bpc" id="L521" title="3 of 4 branches missed.">		if (null != dcNum &amp;&amp; null != dcDenom) {</span>
+<span class="pc bpc" id="L547" title="3 of 4 branches missed.">		if (null != dcNum &amp;&amp; null != dcDenom) {</span>
 			try {
-<span class="nc" id="L523">				double dblFXForwardOutright = fxForward (valParams, dcNum, dcDenom, dblFXSpot, false);</span>
+<span class="nc" id="L549">				double dblFXForwardOutright = fxForward (valParams, dcNum, dcDenom, dblFXSpot, false);</span>
 
-<span class="nc" id="L525">				double dblFXForwardPIP = fxForward (valParams, dcNum, dcDenom, dblFXSpot, true);</span>
+<span class="nc" id="L551">				double dblFXForwardPIP = fxForward (valParams, dcNum, dcDenom, dblFXSpot, true);</span>
 
-<span class="nc" id="L527">				mapRes.put (&quot;DiscountCurveFXForward&quot;, dblFXForwardOutright);</span>
+<span class="nc" id="L553">				mapRes.put (&quot;DiscountCurveFXForward&quot;, dblFXForwardOutright);</span>
 
-<span class="nc" id="L529">				mapRes.put (&quot;DiscountCurveFXForwardOutright&quot;, dblFXForwardOutright);</span>
+<span class="nc" id="L555">				mapRes.put (&quot;DiscountCurveFXForwardOutright&quot;, dblFXForwardOutright);</span>
 
-<span class="nc" id="L531">				mapRes.put (&quot;DiscountCurveFXForwardPIP&quot;, dblFXForwardPIP);</span>
-<span class="nc" id="L532">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L533">				e.printStackTrace();</span>
-<span class="nc" id="L534">			}</span>
+<span class="nc" id="L557">				mapRes.put (&quot;DiscountCurveFXForwardPIP&quot;, dblFXForwardPIP);</span>
+<span class="nc" id="L558">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L559">				e.printStackTrace();</span>
+<span class="nc" id="L560">			}</span>
 		}
 
-<span class="fc" id="L537">		return mapRes;</span>
+<span class="fc" id="L563">		return mapRes;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L542">		java.util.Set&lt;java.lang.String&gt; setstrMeasures = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L568">		java.util.Set&lt;java.lang.String&gt; setstrMeasures = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L544">		setstrMeasures.add (&quot;DiscountCurveFXForward&quot;);</span>
+<span class="nc" id="L570">		setstrMeasures.add (&quot;DiscountCurveFXForward&quot;);</span>
 
-<span class="nc" id="L546">		setstrMeasures.add (&quot;DiscountCurveFXForwardOutright&quot;);</span>
+<span class="nc" id="L572">		setstrMeasures.add (&quot;DiscountCurveFXForwardOutright&quot;);</span>
 
-<span class="nc" id="L548">		setstrMeasures.add (&quot;DiscountCurveFXForwardPIP&quot;);</span>
+<span class="nc" id="L574">		setstrMeasures.add (&quot;DiscountCurveFXForwardPIP&quot;);</span>
 
-<span class="nc" id="L550">		setstrMeasures.add (&quot;FXForward&quot;);</span>
+<span class="nc" id="L576">		setstrMeasures.add (&quot;FXForward&quot;);</span>
 
-<span class="nc" id="L552">		setstrMeasures.add (&quot;FXForwardOutright&quot;);</span>
+<span class="nc" id="L578">		setstrMeasures.add (&quot;FXForwardOutright&quot;);</span>
 
-<span class="nc" id="L554">		setstrMeasures.add (&quot;FXForwardPIP&quot;);</span>
+<span class="nc" id="L580">		setstrMeasures.add (&quot;FXForwardPIP&quot;);</span>
 
-<span class="nc" id="L556">		setstrMeasures.add (&quot;FXSpot&quot;);</span>
+<span class="nc" id="L582">		setstrMeasures.add (&quot;FXSpot&quot;);</span>
 
-<span class="nc" id="L558">		setstrMeasures.add (&quot;Outright&quot;);</span>
+<span class="nc" id="L584">		setstrMeasures.add (&quot;Outright&quot;);</span>
 
-<span class="nc" id="L560">		setstrMeasures.add (&quot;PIP&quot;);</span>
+<span class="nc" id="L586">		setstrMeasures.add (&quot;PIP&quot;);</span>
 
-<span class="nc" id="L562">		setstrMeasures.add (&quot;PV&quot;);</span>
+<span class="nc" id="L588">		setstrMeasures.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L564">		return setstrMeasures;</span>
+<span class="nc" id="L590">		return setstrMeasures;</span>
 	}
 
 	@Override public double pv (
@@ -571,12 +597,12 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L574">		org.drip.state.fx.FXCurve fxCurve = csqs.fxState (org.drip.state.identifier.FXLabel.Standard</span>
-<span class="nc" id="L575">			(_ccyPair));</span>
+<span class="nc" id="L600">		org.drip.state.fx.FXCurve fxCurve = csqs.fxState (org.drip.state.identifier.FXLabel.Standard</span>
+<span class="nc" id="L601">			(_ccyPair));</span>
 
-<span class="nc bnc" id="L577" title="All 2 branches missed.">		if (null == fxCurve) throw new java.lang.Exception (&quot;FXForwardComponent::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">		if (null == fxCurve) throw new java.lang.Exception (&quot;FXForwardComponent::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L579">		return fxCurve.fx (_iMaturityDate);</span>
+<span class="nc" id="L605">		return fxCurve.fx (_iMaturityDate);</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; calibMeasures (
@@ -585,19 +611,19 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc" id="L588">		return null;</span>
+<span class="nc" id="L614">		return null;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="fc" id="L595">			return new org.drip.product.calib.FXForwardQuoteSet (aLSS);</span>
-<span class="nc" id="L596">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L597">			e.printStackTrace();</span>
+<span class="fc" id="L621">			return new org.drip.product.calib.FXForwardQuoteSet (aLSS);</span>
+<span class="nc" id="L622">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L623">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L600">		return null;</span>
+<span class="nc" id="L626">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
@@ -607,7 +633,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L610">		return null;</span>
+<span class="nc" id="L636">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
@@ -617,7 +643,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L620">		return null;</span>
+<span class="nc" id="L646">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
@@ -627,7 +653,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L630">		return null;</span>
+<span class="nc" id="L656">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fxPRWC (
@@ -637,38 +663,38 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L640" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FXForwardQuoteSet))</span>
-<span class="nc" id="L641">			return null;</span>
+<span class="pc bpc" id="L666" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FXForwardQuoteSet))</span>
+<span class="nc" id="L667">			return null;</span>
 
-<span class="fc" id="L643">		int iMaturityDate = maturityDate().julian();</span>
+<span class="fc" id="L669">		int iMaturityDate = maturityDate().julian();</span>
 
-<span class="pc bpc" id="L645" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; iMaturityDate) return null;</span>
+<span class="pc bpc" id="L671" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; iMaturityDate) return null;</span>
 
-<span class="fc" id="L647">		double dblOutright = java.lang.Double.NaN;</span>
-<span class="fc" id="L648">		org.drip.product.calib.FXForwardQuoteSet fxqs = (org.drip.product.calib.FXForwardQuoteSet) pqs;</span>
+<span class="fc" id="L673">		double dblOutright = java.lang.Double.NaN;</span>
+<span class="fc" id="L674">		org.drip.product.calib.FXForwardQuoteSet fxqs = (org.drip.product.calib.FXForwardQuoteSet) pqs;</span>
 
-<span class="pc bpc" id="L650" title="1 of 2 branches missed.">		if (!fxqs.containsOutright()) return null;</span>
+<span class="pc bpc" id="L676" title="1 of 2 branches missed.">		if (!fxqs.containsOutright()) return null;</span>
 
 		try {
-<span class="fc" id="L653">			dblOutright = fxqs.outright();</span>
-<span class="nc" id="L654">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L655">			e.printStackTrace();</span>
+<span class="fc" id="L679">			dblOutright = fxqs.outright();</span>
+<span class="nc" id="L680">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L681">			e.printStackTrace();</span>
 
-<span class="nc" id="L657">			return null;</span>
-<span class="fc" id="L658">		}</span>
+<span class="nc" id="L683">			return null;</span>
+<span class="fc" id="L684">		}</span>
 
-<span class="fc" id="L660">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="fc" id="L686">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="pc bpc" id="L663" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (iMaturityDate, 1.)) return null;</span>
+<span class="pc bpc" id="L689" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (iMaturityDate, 1.)) return null;</span>
 
-<span class="pc bpc" id="L665" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Outright&quot;, iMaturityDate, 1.)) return null;</span>
+<span class="pc bpc" id="L691" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Outright&quot;, iMaturityDate, 1.)) return null;</span>
 
-<span class="pc bpc" id="L667" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblOutright)) return null;</span>
+<span class="pc bpc" id="L693" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblOutright)) return null;</span>
 
-<span class="pc bpc" id="L669" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Outright&quot;, 1.)) return null;</span>
+<span class="pc bpc" id="L695" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Outright&quot;, 1.)) return null;</span>
 
-<span class="fc" id="L671">		return prwc;</span>
+<span class="fc" id="L697">		return prwc;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint govviePRWC (
@@ -678,7 +704,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L681">		return null;</span>
+<span class="nc" id="L707">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -688,7 +714,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L691">		return null;</span>
+<span class="nc" id="L717">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
@@ -697,7 +723,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L700">		return null;</span>
+<span class="nc" id="L726">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
@@ -707,7 +733,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L710">		return null;</span>
+<span class="nc" id="L736">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.regression.core;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.regression.core;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,14 +71,37 @@ package org.drip.regression.core;
  */
 
 /**
- * RegressionRunOutput contains the output of a single regression activity. It holds the following:
- * 	- The execution time
- * 	- The Success/failure status of the run
- * 	- The regression scenario that was executed
- * 	- The Completion time for the regression module
- * 	- The Regression Run Detail for the regression run
+ * &lt;i&gt;RegressionRunOutput&lt;/i&gt; contains the output of a single regression activity. It holds the following:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			The execution time
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The Success/failure status of the run
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The regression scenario that was executed
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The Completion time for the regression module
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The Regression Run Detail for the regression run
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * Another function displays the contents of this RegressionRunOutput instance.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -71,27 +112,27 @@ public class RegressionRunOutput {
 	 * Execution time for the Regression Module
 	 */
 
-<span class="fc" id="L74">	public long _lExecTime = 0L;</span>
+<span class="fc" id="L115">	public long _lExecTime = 0L;</span>
 
 	/**
 	 * Completion Status for the Regression Module
 	 */
 
-<span class="fc" id="L80">	public boolean _bStatus = false;</span>
+<span class="fc" id="L121">	public boolean _bStatus = false;</span>
 
 	/**
 	 * Completion Status for the Regression Module
 	 */
 
-<span class="fc" id="L86">	public java.lang.String _strRegressionScenarioName = &quot;&quot;;</span>
+<span class="fc" id="L127">	public java.lang.String _strRegressionScenarioName = &quot;&quot;;</span>
 
 	/**
 	 * Completion Time for the Regression Module
 	 */
 
-<span class="fc" id="L92">	public java.util.Date _dtCompletion = null;</span>
+<span class="fc" id="L133">	public java.util.Date _dtCompletion = null;</span>
 
-<span class="fc" id="L94">	private org.drip.regression.core.RegressionRunDetail _rnvd = new</span>
+<span class="fc" id="L135">	private org.drip.regression.core.RegressionRunDetail _rnvd = new</span>
 		org.drip.regression.core.RegressionRunDetail();
 
 	/**
@@ -105,11 +146,11 @@ public class RegressionRunOutput {
 	public RegressionRunOutput (
 		final java.lang.String strRegressionScenarioName)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == (_strRegressionScenarioName = strRegressionScenarioName) ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			_strRegressionScenarioName.isEmpty())</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;RegressionRunOutput ctr: Invalid Regression Scenario Name!&quot;);</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L149">	{</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == (_strRegressionScenarioName = strRegressionScenarioName) ||</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">			_strRegressionScenarioName.isEmpty())</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;RegressionRunOutput ctr: Invalid Regression Scenario Name!&quot;);</span>
+<span class="fc" id="L153">	}</span>
 
 	/**
 	 * Set the termination status for the regression output
@@ -122,10 +163,10 @@ public class RegressionRunOutput {
 	public boolean setTerminationStatus (
 		final boolean bSuccess)
 	{
-<span class="fc" id="L125">		_dtCompletion = new java.util.Date();</span>
+<span class="fc" id="L166">		_dtCompletion = new java.util.Date();</span>
 
-<span class="fc" id="L127">		_bStatus = bSuccess;</span>
-<span class="fc" id="L128">		return true;</span>
+<span class="fc" id="L168">		_bStatus = bSuccess;</span>
+<span class="fc" id="L169">		return true;</span>
 	}
 
 	/**
@@ -136,7 +177,7 @@ public class RegressionRunOutput {
 
 	public org.drip.regression.core.RegressionRunDetail getRegressionDetail()
 	{
-<span class="fc" id="L139">		return _rnvd;</span>
+<span class="fc" id="L180">		return _rnvd;</span>
 	}
 
 	/**
@@ -150,29 +191,29 @@ public class RegressionRunOutput {
 	public java.lang.String displayString (
 		final boolean bDetailed)
 	{
-<span class="fc" id="L153">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L194">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L155">		sb.append (&quot;\n&quot;);</span>
+<span class="fc" id="L196">		sb.append (&quot;\n&quot;);</span>
 
-<span class="fc" id="L157">		sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.Success=&quot;).append (_bStatus).append (&quot;\n&quot;);</span>
+<span class="fc" id="L198">		sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.Success=&quot;).append (_bStatus).append (&quot;\n&quot;);</span>
 
-<span class="fc" id="L159">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapDetails = _rnvd.getFieldMap();</span>
+<span class="fc" id="L200">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapDetails = _rnvd.getFieldMap();</span>
 
-<span class="pc bpc" id="L161" title="2 of 6 branches missed.">		if (null != mapDetails &amp;&amp; 0 != mapDetails.size() &amp;&amp; null != mapDetails.entrySet()) {</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.String&gt; me : mapDetails.entrySet()) {</span>
-<span class="pc bpc" id="L163" title="4 of 8 branches missed.">				if (null != me &amp;&amp; null != me.getKey() &amp;&amp; !me.getKey().isEmpty() &amp;&amp; null != me.getValue() &amp;&amp;</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">					!me.getValue().isEmpty())</span>
-<span class="fc" id="L165">					sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.&quot; + me.getKey() + &quot;=&quot;).append</span>
-<span class="fc" id="L166">						(me.getValue()).append (&quot;\n&quot;);</span>
-<span class="fc" id="L167">			}</span>
+<span class="pc bpc" id="L202" title="2 of 6 branches missed.">		if (null != mapDetails &amp;&amp; 0 != mapDetails.size() &amp;&amp; null != mapDetails.entrySet()) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.String&gt; me : mapDetails.entrySet()) {</span>
+<span class="pc bpc" id="L204" title="4 of 8 branches missed.">				if (null != me &amp;&amp; null != me.getKey() &amp;&amp; !me.getKey().isEmpty() &amp;&amp; null != me.getValue() &amp;&amp;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">					!me.getValue().isEmpty())</span>
+<span class="fc" id="L206">					sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.&quot; + me.getKey() + &quot;=&quot;).append</span>
+<span class="fc" id="L207">						(me.getValue()).append (&quot;\n&quot;);</span>
+<span class="fc" id="L208">			}</span>
 		}
 
-<span class="fc" id="L170">		sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.FinishTime=&quot;).append (_dtCompletion).append</span>
-<span class="fc" id="L171">			(&quot;\n&quot;);</span>
+<span class="fc" id="L211">		sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.FinishTime=&quot;).append (_dtCompletion).append</span>
+<span class="fc" id="L212">			(&quot;\n&quot;);</span>
 
-<span class="fc" id="L173">		sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.ExecTime=&quot;).append (_lExecTime);</span>
+<span class="fc" id="L214">		sb.append (&quot;\t\t&quot; + _strRegressionScenarioName + &quot;.ExecTime=&quot;).append (_lExecTime);</span>
 
-<span class="fc" id="L175">		return sb.toString();</span>
+<span class="fc" id="L216">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

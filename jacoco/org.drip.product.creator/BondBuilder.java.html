@@ -6,6 +6,7 @@ package org.drip.product.creator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.product.creator;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,14 +72,22 @@ package org.drip.product.creator;
  */
 
 /**
- * BondBuilder contains the suite of helper functions for creating simple fixed/floater bonds, user defined
- * 	bonds, optionally with custom cash flows and embedded option schedules (European or American). It also
- * 	constructs bonds by de-serializing the byte stream.
+ * &lt;i&gt;BondBuilder&lt;/i&gt; contains the suite of helper functions for creating simple fixed/floater bonds, user
+ * defined bonds, optionally with custom cash flows and embedded option schedules (European or American). It
+ * also constructs bonds by de-serializing the byte stream.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L64">public class BondBuilder {</span>
+<span class="nc" id="L90">public class BondBuilder {</span>
 
 	/**
 	 * Custom Bond Type Simple Fixed
@@ -108,33 +134,33 @@ package org.drip.product.creator;
 		final org.drip.product.params.BondStream periodParams,
 		final org.drip.product.params.NotionalSetting notlParams)
 	{
-<span class="pc bpc" id="L111" title="4 of 10 branches missed.">		if (null == idParams || !idParams.validate() || null == cpnParams || !cpnParams.validate() || (null</span>
-<span class="pc bpc" id="L112" title="4 of 8 branches missed.">			!= fltParams &amp;&amp; !fltParams.validate()) || null == mktConv || !mktConv.validate() || null ==</span>
-<span class="pc bpc" id="L113" title="5 of 10 branches missed.">				crValParams || !crValParams.validate() || null == cfteParams || !cfteParams.validate() ||</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">					null == periodParams || null == notlParams || !notlParams.validate())</span>
-<span class="nc" id="L115">			return null;</span>
+<span class="pc bpc" id="L137" title="4 of 10 branches missed.">		if (null == idParams || !idParams.validate() || null == cpnParams || !cpnParams.validate() || (null</span>
+<span class="pc bpc" id="L138" title="4 of 8 branches missed.">			!= fltParams &amp;&amp; !fltParams.validate()) || null == mktConv || !mktConv.validate() || null ==</span>
+<span class="pc bpc" id="L139" title="5 of 10 branches missed.">				crValParams || !crValParams.validate() || null == cfteParams || !cfteParams.validate() ||</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">					null == periodParams || null == notlParams || !notlParams.validate())</span>
+<span class="nc" id="L141">			return null;</span>
 
-<span class="fc" id="L117">		org.drip.product.credit.BondComponent bond = new org.drip.product.credit.BondComponent();</span>
+<span class="fc" id="L143">		org.drip.product.credit.BondComponent bond = new org.drip.product.credit.BondComponent();</span>
 
-<span class="fc" id="L119">		bond.setTreasuryBenchmark (tsyParams);</span>
+<span class="fc" id="L145">		bond.setTreasuryBenchmark (tsyParams);</span>
 
-<span class="fc" id="L121">		bond.setIdentifierSet (idParams);</span>
+<span class="fc" id="L147">		bond.setIdentifierSet (idParams);</span>
 
-<span class="fc" id="L123">		bond.setCouponSetting (cpnParams);</span>
+<span class="fc" id="L149">		bond.setCouponSetting (cpnParams);</span>
 
-<span class="fc" id="L125">		bond.setFloaterSetting (fltParams);</span>
+<span class="fc" id="L151">		bond.setFloaterSetting (fltParams);</span>
 
-<span class="fc" id="L127">		bond.setMarketConvention (mktConv);</span>
+<span class="fc" id="L153">		bond.setMarketConvention (mktConv);</span>
 
-<span class="fc" id="L129">		bond.setCreditSetting (crValParams);</span>
+<span class="fc" id="L155">		bond.setCreditSetting (crValParams);</span>
 
-<span class="fc" id="L131">		bond.setTerminationSetting (cfteParams);</span>
+<span class="fc" id="L157">		bond.setTerminationSetting (cfteParams);</span>
 
-<span class="fc" id="L133">		bond.setStream (periodParams);</span>
+<span class="fc" id="L159">		bond.setStream (periodParams);</span>
 
-<span class="fc" id="L135">		bond.setNotionalSetting (notlParams);</span>
+<span class="fc" id="L161">		bond.setNotionalSetting (notlParams);</span>
 
-<span class="fc" id="L137">		return bond;</span>
+<span class="fc" id="L163">		return bond;</span>
 	}
 
 	/**
@@ -166,11 +192,11 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="pc bpc" id="L169" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
-<span class="nc" id="L171">			return null;</span>
+<span class="pc bpc" id="L195" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L197">			return null;</span>
 
-<span class="fc" id="L173">		return CreateBondFromParams (</span>
+<span class="fc" id="L199">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -189,7 +215,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="fc" id="L192">				dtEffective.julian(),</span>
+<span class="fc" id="L218">				dtEffective.julian(),</span>
 				100.,
 				0,
 				strCurrency,
@@ -208,12 +234,12 @@ package org.drip.product.creator;
 				false,
 				null
 			),
-<span class="fc" id="L211">			org.drip.product.params.BondStream.Create (</span>
-<span class="fc" id="L212">				dtMaturity.julian(),</span>
-<span class="fc" id="L213">				dtEffective.julian(),</span>
+<span class="fc" id="L237">			org.drip.product.params.BondStream.Create (</span>
+<span class="fc" id="L238">				dtMaturity.julian(),</span>
+<span class="fc" id="L239">				dtEffective.julian(),</span>
 				java.lang.Integer.MIN_VALUE,
 				java.lang.Integer.MIN_VALUE,
-<span class="fc" id="L216">				dtEffective.julian(),</span>
+<span class="fc" id="L242">				dtEffective.julian(),</span>
 				iFreq,
 				dblCoupon,
 				strDayCount,
@@ -231,8 +257,8 @@ package org.drip.product.creator;
 				strCurrency,
 				strCurrency,
 				null,
-<span class="fc bfc" id="L234" title="All 2 branches covered.">				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?</span>
-<span class="fc" id="L235">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?</span>
+<span class="fc" id="L261">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 						strCreditCurveName,
 						strCurrency
 					) : null
@@ -295,11 +321,11 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="pc bpc" id="L298" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
-<span class="nc" id="L300">			return null;</span>
+<span class="pc bpc" id="L324" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L326">			return null;</span>
 
-<span class="fc" id="L302">		return CreateBondFromParams (</span>
+<span class="fc" id="L328">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -318,7 +344,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="fc" id="L321">				dtEffective.julian(),</span>
+<span class="fc" id="L347">				dtEffective.julian(),</span>
 				100.,
 				0,
 				strCurrency,
@@ -337,10 +363,10 @@ package org.drip.product.creator;
 				false,
 				dapMaturity
 			),
-<span class="fc" id="L340">			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (</span>
-<span class="fc" id="L341">				dtMaturity.julian(),</span>
-<span class="fc" id="L342">				dtEffective.julian(),</span>
-<span class="fc" id="L343">				dtMaturity.julian(),</span>
+<span class="fc" id="L366">			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (</span>
+<span class="fc" id="L367">				dtMaturity.julian(),</span>
+<span class="fc" id="L368">				dtEffective.julian(),</span>
+<span class="fc" id="L369">				dtMaturity.julian(),</span>
 				iFirstCouponDate,
 				iPenultimateCouponDate,
 				iFreq,
@@ -360,8 +386,8 @@ package org.drip.product.creator;
 				strCurrency,
 				strCurrency,
 				null,
-<span class="pc bpc" id="L363" title="1 of 2 branches missed.">				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?</span>
-<span class="pc" id="L364">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?</span>
+<span class="pc" id="L390">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 						strCreditCurveName,
 						strCurrency
 					) : null
@@ -422,7 +448,7 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc" id="L425">		return CreateSimpleFixedFP (</span>
+<span class="nc" id="L451">		return CreateSimpleFixedFP (</span>
 			strName,
 			strCurrency,
 			strCreditCurveName,
@@ -432,7 +458,7 @@ package org.drip.product.creator;
 			dtEffective,
 			dtMaturity,
 			iFirstCouponDate,
-<span class="nc" id="L435">			dtMaturity.subtractTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
+<span class="nc" id="L461">			dtMaturity.subtractTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
 			dapPay,
 			dapReset,
 			dapMaturity,
@@ -493,7 +519,7 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc" id="L496">		return CreateSimpleFixedFP (</span>
+<span class="nc" id="L522">		return CreateSimpleFixedFP (</span>
 			strName,
 			strCurrency,
 			strCreditCurveName,
@@ -502,7 +528,7 @@ package org.drip.product.creator;
 			strDayCount,
 			dtEffective,
 			dtMaturity,
-<span class="nc" id="L505">			dtEffective.addTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
+<span class="nc" id="L531">			dtEffective.addTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
 			iPenultimateCouponDate,
 			dapPay,
 			dapReset,
@@ -548,11 +574,11 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="pc bpc" id="L551" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
-<span class="pc bpc" id="L552" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
-<span class="nc" id="L553">			return null;</span>
+<span class="pc bpc" id="L577" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
+<span class="pc bpc" id="L578" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
+<span class="nc" id="L579">			return null;</span>
 
-<span class="fc" id="L555">		return CreateBondFromParams (</span>
+<span class="fc" id="L581">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -568,7 +594,7 @@ package org.drip.product.creator;
 				java.lang.Double.NaN
 			),
 			new org.drip.product.params.FloaterSetting (
-<span class="fc" id="L571">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
+<span class="fc" id="L597">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
 				&quot;&quot;,
 				dblSpread,
 				java.lang.Double.NaN
@@ -576,7 +602,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="fc" id="L579">				dtEffective.julian(),</span>
+<span class="fc" id="L605">				dtEffective.julian(),</span>
 				100.,
 				0,
 				strCurrency,
@@ -595,12 +621,12 @@ package org.drip.product.creator;
 				false,
 				null
 			),
-<span class="fc" id="L598">			org.drip.product.params.BondStream.Create (</span>
-<span class="fc" id="L599">				dtMaturity.julian(),</span>
-<span class="fc" id="L600">				dtEffective.julian(),</span>
+<span class="fc" id="L624">			org.drip.product.params.BondStream.Create (</span>
+<span class="fc" id="L625">				dtMaturity.julian(),</span>
+<span class="fc" id="L626">				dtEffective.julian(),</span>
 				java.lang.Integer.MIN_VALUE,
 				java.lang.Integer.MIN_VALUE,
-<span class="fc" id="L603">				dtEffective.julian(),</span>
+<span class="fc" id="L629">				dtEffective.julian(),</span>
 				iFreq,
 				dblSpread,
 				strDayCount,
@@ -617,9 +643,9 @@ package org.drip.product.creator;
 				false,
 				strCurrency,
 				strCurrency,
-<span class="pc bpc" id="L620" title="1 of 2 branches missed.">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
-<span class="fc bfc" id="L621" title="All 2 branches covered.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
-<span class="fc" id="L622">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="pc bpc" id="L646" title="1 of 2 branches missed.">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
+<span class="fc bfc" id="L647" title="All 2 branches covered.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
+<span class="fc" id="L648">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 						strCreditCurveName,
 						strCurrency
 					)
@@ -685,11 +711,11 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="pc bpc" id="L688" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
-<span class="pc bpc" id="L689" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
-<span class="nc" id="L690">			return null;</span>
+<span class="pc bpc" id="L714" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
+<span class="pc bpc" id="L715" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
+<span class="nc" id="L716">			return null;</span>
 
-<span class="fc" id="L692">		return CreateBondFromParams (</span>
+<span class="fc" id="L718">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -705,7 +731,7 @@ package org.drip.product.creator;
 				java.lang.Double.NaN
 			),
 			new org.drip.product.params.FloaterSetting (
-<span class="fc" id="L708">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
+<span class="fc" id="L734">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
 				&quot;&quot;,
 				dblSpread,
 				java.lang.Double.NaN
@@ -713,7 +739,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="fc" id="L716">				dtEffective.julian(),</span>
+<span class="fc" id="L742">				dtEffective.julian(),</span>
 				100.,
 				0,
 				strCurrency,
@@ -732,10 +758,10 @@ package org.drip.product.creator;
 				false,
 				dapMaturity
 			),
-<span class="fc" id="L735">			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (</span>
-<span class="fc" id="L736">				dtMaturity.julian(),</span>
-<span class="fc" id="L737">				dtEffective.julian(),</span>
-<span class="fc" id="L738">				dtMaturity.julian(),</span>
+<span class="fc" id="L761">			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (</span>
+<span class="fc" id="L762">				dtMaturity.julian(),</span>
+<span class="fc" id="L763">				dtEffective.julian(),</span>
+<span class="fc" id="L764">				dtMaturity.julian(),</span>
 				iFirstCouponDate,
 				iPenultimateCouponDate,
 				iFreq,
@@ -754,9 +780,9 @@ package org.drip.product.creator;
 				false,
 				strCurrency,
 				strCurrency,
-<span class="pc bpc" id="L757" title="1 of 2 branches missed.">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
-<span class="fc bfc" id="L758" title="All 2 branches covered.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
-<span class="fc" id="L759">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="pc bpc" id="L783" title="1 of 2 branches missed.">				org.drip.state.identifier.ForwardLabel.Standard (strRateIndex),</span>
+<span class="fc bfc" id="L784" title="All 2 branches covered.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
+<span class="fc" id="L785">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 						strCreditCurveName,
 						strCurrency
 					)
@@ -820,7 +846,7 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc" id="L823">		return CreateSimpleFloaterFP (</span>
+<span class="nc" id="L849">		return CreateSimpleFloaterFP (</span>
 			strName,
 			strCurrency,
 			strRateIndex,
@@ -831,7 +857,7 @@ package org.drip.product.creator;
 			dtEffective,
 			dtMaturity,
 			iFirstCouponDate,
-<span class="nc" id="L834">			dtMaturity.subtractTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
+<span class="nc" id="L860">			dtMaturity.subtractTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
 			dapPay,
 			dapReset,
 			dapMaturity,
@@ -894,7 +920,7 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc" id="L897">		return CreateSimpleFloaterFP (</span>
+<span class="nc" id="L923">		return CreateSimpleFloaterFP (</span>
 			strName,
 			strCurrency,
 			strRateIndex,
@@ -904,7 +930,7 @@ package org.drip.product.creator;
 			strDayCount,
 			dtEffective,
 			dtMaturity,
-<span class="nc" id="L907">			dtEffective.addTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
+<span class="nc" id="L933">			dtEffective.addTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
 			iPenultimateCouponDate,
 			dapPay,
 			dapReset,
@@ -952,53 +978,53 @@ package org.drip.product.creator;
 		final double[] adblPrincipalAmount,
 		final boolean bIsPrincipalPayDown)
 	{
-<span class="pc bpc" id="L955" title="4 of 8 branches missed.">		if (null == adtPeriodEnd || null == adblCouponAmount || null == adblPrincipalAmount || null ==</span>
-<span class="pc bpc" id="L956" title="1 of 2 branches missed.">			dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional) ||</span>
-<span class="pc bpc" id="L957" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) || 0 == iCouponFrequency)</span>
-<span class="nc" id="L958">			return null;</span>
+<span class="pc bpc" id="L981" title="4 of 8 branches missed.">		if (null == adtPeriodEnd || null == adblCouponAmount || null == adblPrincipalAmount || null ==</span>
+<span class="pc bpc" id="L982" title="1 of 2 branches missed.">			dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional) ||</span>
+<span class="pc bpc" id="L983" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) || 0 == iCouponFrequency)</span>
+<span class="nc" id="L984">			return null;</span>
 
-<span class="fc" id="L960">		int iEffectiveDate = dtEffective.julian();</span>
+<span class="fc" id="L986">		int iEffectiveDate = dtEffective.julian();</span>
 
-<span class="fc" id="L962">		int iNumPeriod = adtPeriodEnd.length;</span>
-<span class="fc" id="L963">		int iPeriodStartDate = iEffectiveDate;</span>
-<span class="fc" id="L964">		int[] aiPeriodEndDate = new int[iNumPeriod];</span>
-<span class="fc" id="L965">		int[] aiPrincipalDate = new int[iNumPeriod + 1];</span>
-<span class="fc" id="L966">		org.drip.product.params.BondStream stream = null;</span>
-<span class="fc" id="L967">		double[] adblCouponFactor = new double[iNumPeriod];</span>
-<span class="fc" id="L968">		double[] adblPeriodEndPrincipal = new double[iNumPeriod];</span>
-<span class="fc" id="L969">		double[] adblPrincipalFactor = new double[iNumPeriod + 1];</span>
-<span class="fc" id="L970">		double[] adblPeriodEndPrincipalFactor = new double[iNumPeriod];</span>
+<span class="fc" id="L988">		int iNumPeriod = adtPeriodEnd.length;</span>
+<span class="fc" id="L989">		int iPeriodStartDate = iEffectiveDate;</span>
+<span class="fc" id="L990">		int[] aiPeriodEndDate = new int[iNumPeriod];</span>
+<span class="fc" id="L991">		int[] aiPrincipalDate = new int[iNumPeriod + 1];</span>
+<span class="fc" id="L992">		org.drip.product.params.BondStream stream = null;</span>
+<span class="fc" id="L993">		double[] adblCouponFactor = new double[iNumPeriod];</span>
+<span class="fc" id="L994">		double[] adblPeriodEndPrincipal = new double[iNumPeriod];</span>
+<span class="fc" id="L995">		double[] adblPrincipalFactor = new double[iNumPeriod + 1];</span>
+<span class="fc" id="L996">		double[] adblPeriodEndPrincipalFactor = new double[iNumPeriod];</span>
 
-<span class="pc bpc" id="L972" title="3 of 6 branches missed.">		if (0 == iNumPeriod || iNumPeriod != adblCouponAmount.length || iNumPeriod !=</span>
+<span class="pc bpc" id="L998" title="3 of 6 branches missed.">		if (0 == iNumPeriod || iNumPeriod != adblCouponAmount.length || iNumPeriod !=</span>
 			adblPrincipalAmount.length)
-<span class="nc" id="L974">			return null;</span>
+<span class="nc" id="L1000">			return null;</span>
 
-<span class="fc bfc" id="L976" title="All 2 branches covered.">		if (bIsPrincipalPayDown) {</span>
-<span class="fc bfc" id="L977" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumPeriod; ++i)</span>
-<span class="fc bfc" id="L978" title="All 2 branches covered.">				adblPeriodEndPrincipal[i] = (0 == i ? dblInitialNotional : adblPeriodEndPrincipal[i - 1]) -</span>
+<span class="fc bfc" id="L1002" title="All 2 branches covered.">		if (bIsPrincipalPayDown) {</span>
+<span class="fc bfc" id="L1003" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumPeriod; ++i)</span>
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">				adblPeriodEndPrincipal[i] = (0 == i ? dblInitialNotional : adblPeriodEndPrincipal[i - 1]) -</span>
 					adblPrincipalAmount[i];
 		} else
-<span class="fc" id="L981">			adblPeriodEndPrincipal = adblPrincipalAmount;</span>
+<span class="fc" id="L1007">			adblPeriodEndPrincipal = adblPrincipalAmount;</span>
 
-<span class="fc" id="L983">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = new</span>
+<span class="fc" id="L1009">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="fc bfc" id="L986" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriod; ++i) {</span>
-<span class="pc bpc" id="L987" title="1 of 2 branches missed.">			if (null == adtPeriodEnd[i]) return null;</span>
+<span class="fc bfc" id="L1012" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriod; ++i) {</span>
+<span class="pc bpc" id="L1013" title="1 of 2 branches missed.">			if (null == adtPeriodEnd[i]) return null;</span>
 
-<span class="fc" id="L989">			aiPeriodEndDate[i] = adtPeriodEnd[i].julian();</span>
+<span class="fc" id="L1015">			aiPeriodEndDate[i] = adtPeriodEnd[i].julian();</span>
 
-<span class="fc" id="L991">			adblPeriodEndPrincipalFactor[i] = adblPeriodEndPrincipal[i] / dblInitialNotional;</span>
+<span class="fc" id="L1017">			adblPeriodEndPrincipalFactor[i] = adblPeriodEndPrincipal[i] / dblInitialNotional;</span>
 
 			try {
-<span class="fc bfc" id="L994" title="All 2 branches covered.">				adblCouponFactor[i] = adblCouponAmount[i] / (0 == i ? dblInitialNotional :</span>
+<span class="fc bfc" id="L1020" title="All 2 branches covered.">				adblCouponFactor[i] = adblCouponAmount[i] / (0 == i ? dblInitialNotional :</span>
 					adblPeriodEndPrincipal[i - 1]) / org.drip.analytics.daycount.Convention.YearFraction
-<span class="fc" id="L996">						(iPeriodStartDate, aiPeriodEndDate[i], strDayCount, false, null, &quot;&quot;) / dblCouponRate;</span>
+<span class="fc" id="L1022">						(iPeriodStartDate, aiPeriodEndDate[i], strDayCount, false, null, &quot;&quot;) / dblCouponRate;</span>
 
-<span class="fc" id="L998">				java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
+<span class="fc" id="L1024">				java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
 					java.util.ArrayList&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt;();
 
-<span class="fc" id="L1001">				lsCUP.add (</span>
+<span class="fc" id="L1027">				lsCUP.add (</span>
 					new org.drip.analytics.cashflow.ComposableUnitFixedPeriod (
 						iPeriodStartDate,
 						aiPeriodEndDate[i],
@@ -1023,7 +1049,7 @@ package org.drip.product.creator;
 					)
 				);
 
-<span class="fc" id="L1026">				lsCouponPeriod.add (</span>
+<span class="fc" id="L1052">				lsCouponPeriod.add (</span>
 					new org.drip.analytics.cashflow.CompositeFixedPeriod (
 						new org.drip.param.period.CompositePeriodSetting (
 							iCouponFrequency,
@@ -1039,33 +1065,33 @@ package org.drip.product.creator;
 						lsCUP
 					)
 				);
-<span class="nc" id="L1042">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1043">				e.printStackTrace();</span>
+<span class="nc" id="L1068">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1069">				e.printStackTrace();</span>
 
-<span class="nc" id="L1045">				return null;</span>
-<span class="fc" id="L1046">			}</span>
+<span class="nc" id="L1071">				return null;</span>
+<span class="fc" id="L1072">			}</span>
 
-<span class="fc" id="L1048">			iPeriodStartDate = aiPeriodEndDate[i];</span>
+<span class="fc" id="L1074">			iPeriodStartDate = aiPeriodEndDate[i];</span>
 		}
 
-<span class="fc bfc" id="L1051" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumPeriod; ++i) {</span>
-<span class="fc bfc" id="L1052" title="All 2 branches covered.">			aiPrincipalDate[i] = 0 == i ? iEffectiveDate : aiPeriodEndDate[i - 1];</span>
-<span class="fc bfc" id="L1053" title="All 2 branches covered.">			adblPrincipalFactor[i] = 0 == i ? 1. : adblPeriodEndPrincipalFactor[i - 1];</span>
+<span class="fc bfc" id="L1077" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumPeriod; ++i) {</span>
+<span class="fc bfc" id="L1078" title="All 2 branches covered.">			aiPrincipalDate[i] = 0 == i ? iEffectiveDate : aiPeriodEndDate[i - 1];</span>
+<span class="fc bfc" id="L1079" title="All 2 branches covered.">			adblPrincipalFactor[i] = 0 == i ? 1. : adblPeriodEndPrincipalFactor[i - 1];</span>
 		}
 
 		try {
-<span class="fc" id="L1057">			stream = new org.drip.product.params.BondStream (</span>
+<span class="fc" id="L1083">			stream = new org.drip.product.params.BondStream (</span>
 				lsCouponPeriod,
 				java.lang.Integer.MIN_VALUE,
 				&quot;MATURITY_TYPE_REGULAR&quot;
 			);
-<span class="nc" id="L1062">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1063">			e.printStackTrace();</span>
+<span class="nc" id="L1088">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1089">			e.printStackTrace();</span>
 
-<span class="nc" id="L1065">			return null;</span>
-<span class="fc" id="L1066">		}</span>
+<span class="nc" id="L1091">			return null;</span>
+<span class="fc" id="L1092">		}</span>
 
-<span class="fc" id="L1068">		return CreateBondFromParams (</span>
+<span class="fc" id="L1094">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -1074,7 +1100,7 @@ package org.drip.product.creator;
 				strCurrency
 			),
 			new org.drip.product.params.CouponSetting (
-<span class="fc" id="L1077">				org.drip.quant.common.Array2D.FromArray (</span>
+<span class="fc" id="L1103">				org.drip.quant.common.Array2D.FromArray (</span>
 					aiPeriodEndDate,
 					adblCouponFactor
 				),
@@ -1087,7 +1113,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="fc" id="L1090">				dtEffective.julian(),</span>
+<span class="fc" id="L1116">				dtEffective.julian(),</span>
 				1.,
 				0,
 				strCurrency,
@@ -1110,7 +1136,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.NotionalSetting (
 				1.,
 				strCurrency,
-<span class="fc" id="L1113">				org.drip.quant.common.Array2D.FromArray (</span>
+<span class="fc" id="L1139">				org.drip.quant.common.Array2D.FromArray (</span>
 					aiPrincipalDate,
 					adblPrincipalFactor
 				),
@@ -1143,22 +1169,22 @@ package org.drip.product.creator;
 		final int iFreq,
 		final java.lang.String strDayCount)
 	{
-<span class="pc bpc" id="L1146" title="2 of 4 branches missed.">		if (null == strTreasuryCode || strTreasuryCode.isEmpty()) return null;</span>
+<span class="pc bpc" id="L1172" title="2 of 4 branches missed.">		if (null == strTreasuryCode || strTreasuryCode.isEmpty()) return null;</span>
 
-<span class="fc" id="L1148">		org.drip.product.govvie.TreasuryComponent tsyBond = null;</span>
+<span class="fc" id="L1174">		org.drip.product.govvie.TreasuryComponent tsyBond = null;</span>
 
 		try {
-<span class="fc" id="L1151">			tsyBond = new org.drip.product.govvie.TreasuryComponent (strTreasuryCode);</span>
-<span class="nc" id="L1152">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1153">			e.printStackTrace();</span>
+<span class="fc" id="L1177">			tsyBond = new org.drip.product.govvie.TreasuryComponent (strTreasuryCode);</span>
+<span class="nc" id="L1178">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1179">			e.printStackTrace();</span>
 
-<span class="nc" id="L1155">			return null;</span>
-<span class="fc" id="L1156">		}</span>
+<span class="nc" id="L1181">			return null;</span>
+<span class="fc" id="L1182">		}</span>
 
-<span class="fc" id="L1158">		java.lang.String strName = strTreasuryCode + &quot; &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="fc" id="L1159">			(dblCoupon, 1, 2, 100.) + &quot; &quot; + dtMaturity;</span>
+<span class="fc" id="L1184">		java.lang.String strName = strTreasuryCode + &quot; &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L1185">			(dblCoupon, 1, 2, 100.) + &quot; &quot; + dtMaturity;</span>
 
-<span class="fc" id="L1161">		tsyBond.setIdentifierSet (</span>
+<span class="fc" id="L1187">		tsyBond.setIdentifierSet (</span>
 			new org.drip.product.params.IdentifierSet (
 				strName,
 				strName,
@@ -1167,17 +1193,17 @@ package org.drip.product.creator;
 			)
 		);
 
-<span class="fc" id="L1170">		tsyBond.setNotionalSetting (</span>
+<span class="fc" id="L1196">		tsyBond.setNotionalSetting (</span>
 			new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
-<span class="fc" id="L1174">				org.drip.quant.common.Array2D.BulletSchedule(),</span>
+<span class="fc" id="L1200">				org.drip.quant.common.Array2D.BulletSchedule(),</span>
 				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
 				false
 			)
 		);
 
-<span class="fc" id="L1180">		tsyBond.setCouponSetting (</span>
+<span class="fc" id="L1206">		tsyBond.setCouponSetting (</span>
 			new org.drip.product.params.CouponSetting (
 				null,
 				&quot;&quot;,
@@ -1187,13 +1213,13 @@ package org.drip.product.creator;
 			)
 		);
 
-<span class="fc" id="L1190">		tsyBond.setStream (</span>
-<span class="fc" id="L1191">			org.drip.product.params.BondStream.Create (</span>
-<span class="fc" id="L1192">				dtMaturity.julian(),</span>
-<span class="fc" id="L1193">				dtEffective.julian(),</span>
+<span class="fc" id="L1216">		tsyBond.setStream (</span>
+<span class="fc" id="L1217">			org.drip.product.params.BondStream.Create (</span>
+<span class="fc" id="L1218">				dtMaturity.julian(),</span>
+<span class="fc" id="L1219">				dtEffective.julian(),</span>
 				java.lang.Integer.MIN_VALUE,
 				java.lang.Integer.MIN_VALUE,
-<span class="fc" id="L1196">				dtEffective.julian(),</span>
+<span class="fc" id="L1222">				dtEffective.julian(),</span>
 				iFreq,
 				dblCoupon,
 				strDayCount,
@@ -1215,7 +1241,7 @@ package org.drip.product.creator;
 			)
 		);
 
-<span class="fc" id="L1218">		return tsyBond;</span>
+<span class="fc" id="L1244">		return tsyBond;</span>
 	}
 
 	/**
@@ -1276,14 +1302,14 @@ package org.drip.product.creator;
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart)
 	{
 		try {
-<span class="fc" id="L1279">			org.drip.state.identifier.ForwardLabel forwardLabel =</span>
-<span class="fc" id="L1280">				org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex);</span>
+<span class="fc" id="L1305">			org.drip.state.identifier.ForwardLabel forwardLabel =</span>
+<span class="fc" id="L1306">				org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex);</span>
 
-<span class="pc bpc" id="L1282" title="1 of 2 branches missed.">			if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L1308" title="1 of 2 branches missed.">			if (null == forwardLabel) return null;</span>
 
-<span class="fc" id="L1284">			java.lang.String strCurrency = forwardLabel.currency();</span>
+<span class="fc" id="L1310">			java.lang.String strCurrency = forwardLabel.currency();</span>
 
-<span class="fc" id="L1286">			return CreateBondFromParams (</span>
+<span class="fc" id="L1312">			return CreateBondFromParams (</span>
 				null,
 				new org.drip.product.params.IdentifierSet (
 					strName,
@@ -1299,7 +1325,7 @@ package org.drip.product.creator;
 					java.lang.Double.NaN
 				),
 				new org.drip.product.params.FloaterSetting (
-<span class="fc" id="L1302">					org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),</span>
+<span class="fc" id="L1328">					org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),</span>
 					&quot;&quot;,
 					dblFloatSpread,
 					java.lang.Double.NaN
@@ -1327,7 +1353,7 @@ package org.drip.product.creator;
 					null
 				),
 				new org.drip.product.params.BondStream (
-<span class="fc" id="L1330">					org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedFloat (</span>
+<span class="fc" id="L1356">					org.drip.product.creator.StreamBuilder.FirstPenultimateDateFixedFloat (</span>
 						iEffectiveDate,
 						iFixedStreamEndDate,
 						iFixedFirstCouponDate,
@@ -1344,9 +1370,9 @@ package org.drip.product.creator;
 						dapPay,
 						dapPeriodEnd,
 						dapAccrualEnd,
-<span class="fc" id="L1347">						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),</span>
-<span class="pc bpc" id="L1348" title="1 of 2 branches missed.">						!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?</span>
-<span class="pc" id="L1349">							org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="fc" id="L1373">						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),</span>
+<span class="pc bpc" id="L1374" title="1 of 2 branches missed.">						!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?</span>
+<span class="pc" id="L1375">							org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 								strCreditCurveName,
 								strCurrency
 							) : null
@@ -1362,11 +1388,11 @@ package org.drip.product.creator;
 					false
 				)
 			);
-<span class="nc" id="L1365">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1366">			e.printStackTrace();</span>
+<span class="nc" id="L1391">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1392">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1369">		return null;</span>
+<span class="nc" id="L1395">		return null;</span>
 	}
 
 	/**
@@ -1422,23 +1448,23 @@ package org.drip.product.creator;
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart)
 	{
-<span class="nc" id="L1425">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
+<span class="nc" id="L1451">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
 
-<span class="nc" id="L1427">		return FixedFPToFloatFP (</span>
+<span class="nc" id="L1453">		return FixedFPToFloatFP (</span>
 			strName,
 			strCreditCurveName,
 			iEffectiveDate,
 			iFixedStreamEndDate,
 			iFixedFirstCouponDate,
 			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).subtractTenor
-<span class="nc" id="L1434">				(strPeriodTenor).julian(),</span>
+<span class="nc" id="L1460">				(strPeriodTenor).julian(),</span>
 			iFixedFreq,
 			dblFixedCoupon,
 			strFixedCouponDC,
 			strFixedAccrualDC,
 			iMaturityDate,
 			iFloatFirstCouponDate,
-<span class="nc" id="L1441">			new org.drip.analytics.date.JulianDate (iMaturityDate).subtractTenor (strPeriodTenor).julian(),</span>
+<span class="nc" id="L1467">			new org.drip.analytics.date.JulianDate (iMaturityDate).subtractTenor (strPeriodTenor).julian(),</span>
 			iFloatFreq,
 			dblFloatSpread,
 			strFloatIndex,
@@ -1506,22 +1532,22 @@ package org.drip.product.creator;
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart)
 	{
-<span class="fc" id="L1509">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
+<span class="fc" id="L1535">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
 
-<span class="fc" id="L1511">		return FixedFPToFloatFP (</span>
+<span class="fc" id="L1537">		return FixedFPToFloatFP (</span>
 			strName,
 			strCreditCurveName,
 			iEffectiveDate,
 			iFixedStreamEndDate,
 			iFixedFirstCouponDate,
 			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).subtractTenor
-<span class="fc" id="L1518">				(strPeriodTenor).julian(),</span>
+<span class="fc" id="L1544">				(strPeriodTenor).julian(),</span>
 			iFixedFreq,
 			dblFixedCoupon,
 			strFixedCouponDC,
 			strFixedAccrualDC,
 			iMaturityDate,
-<span class="fc" id="L1524">			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).addTenor (strPeriodTenor).julian(),</span>
+<span class="fc" id="L1550">			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).addTenor (strPeriodTenor).julian(),</span>
 			iFloatPenultimateCouponDate,
 			iFloatFreq,
 			dblFloatSpread,
@@ -1590,14 +1616,14 @@ package org.drip.product.creator;
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart)
 	{
-<span class="nc" id="L1593">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
+<span class="nc" id="L1619">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
 
-<span class="nc" id="L1595">		return FixedFPToFloatFP (</span>
+<span class="nc" id="L1621">		return FixedFPToFloatFP (</span>
 			strName,
 			strCreditCurveName,
 			iEffectiveDate,
 			iFixedStreamEndDate,
-<span class="nc" id="L1600">			new org.drip.analytics.date.JulianDate (iEffectiveDate).addTenor (strPeriodTenor).julian(),</span>
+<span class="nc" id="L1626">			new org.drip.analytics.date.JulianDate (iEffectiveDate).addTenor (strPeriodTenor).julian(),</span>
 			iFixedPenultimateCouponDate,
 			iFixedFreq,
 			dblFixedCoupon,
@@ -1605,7 +1631,7 @@ package org.drip.product.creator;
 			strFixedAccrualDC,
 			iMaturityDate,
 			iFloatFirstCouponDate,
-<span class="nc" id="L1608">			new org.drip.analytics.date.JulianDate (iMaturityDate).subtractTenor (strPeriodTenor).julian(),</span>
+<span class="nc" id="L1634">			new org.drip.analytics.date.JulianDate (iMaturityDate).subtractTenor (strPeriodTenor).julian(),</span>
 			iFloatFreq,
 			dblFloatSpread,
 			strFloatIndex,
@@ -1673,21 +1699,21 @@ package org.drip.product.creator;
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart)
 	{
-<span class="nc" id="L1676">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
+<span class="nc" id="L1702">		java.lang.String strPeriodTenor = (12 / iFixedFreq) + &quot;M&quot;;</span>
 
-<span class="nc" id="L1678">		return FixedFPToFloatFP (</span>
+<span class="nc" id="L1704">		return FixedFPToFloatFP (</span>
 			strName,
 			strCreditCurveName,
 			iEffectiveDate,
 			iFixedStreamEndDate,
-<span class="nc" id="L1683">			new org.drip.analytics.date.JulianDate (iEffectiveDate).addTenor (strPeriodTenor).julian(),</span>
+<span class="nc" id="L1709">			new org.drip.analytics.date.JulianDate (iEffectiveDate).addTenor (strPeriodTenor).julian(),</span>
 			iFixedPenultimateCouponDate,
 			iFixedFreq,
 			dblFixedCoupon,
 			strFixedCouponDC,
 			strFixedAccrualDC,
 			iMaturityDate,
-<span class="nc" id="L1690">			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).addTenor (strPeriodTenor).julian(),</span>
+<span class="nc" id="L1716">			new org.drip.analytics.date.JulianDate (iFixedStreamEndDate).addTenor (strPeriodTenor).julian(),</span>
 			iFloatPenultimateCouponDate,
 			iFloatFreq,
 			dblFloatSpread,
@@ -1734,11 +1760,11 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="pc bpc" id="L1737" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
-<span class="pc bpc" id="L1738" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
-<span class="nc" id="L1739">			return null;</span>
+<span class="pc bpc" id="L1763" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
+<span class="pc bpc" id="L1764" title="1 of 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
+<span class="nc" id="L1765">			return null;</span>
 
-<span class="fc" id="L1741">		return CreateBondFromParams (</span>
+<span class="fc" id="L1767">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -1754,7 +1780,7 @@ package org.drip.product.creator;
 				java.lang.Double.NaN
 			),
 			new org.drip.product.params.FloaterSetting (
-<span class="fc" id="L1757">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
+<span class="fc" id="L1783">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
 				&quot;&quot;,
 				dblSpread,
 				java.lang.Double.NaN
@@ -1762,7 +1788,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="fc" id="L1765">				dtEffective.julian(),</span>
+<span class="fc" id="L1791">				dtEffective.julian(),</span>
 				100.,
 				0,
 				strCurrency,
@@ -1781,12 +1807,12 @@ package org.drip.product.creator;
 				false,
 				null
 			),
-<span class="fc" id="L1784">			org.drip.product.params.BondStream.Create (</span>
-<span class="fc" id="L1785">				dtMaturity.julian(),</span>
-<span class="fc" id="L1786">				dtEffective.julian(),</span>
+<span class="fc" id="L1810">			org.drip.product.params.BondStream.Create (</span>
+<span class="fc" id="L1811">				dtMaturity.julian(),</span>
+<span class="fc" id="L1812">				dtEffective.julian(),</span>
 				java.lang.Integer.MIN_VALUE,
 				java.lang.Integer.MIN_VALUE,
-<span class="fc" id="L1789">				dtEffective.julian(),</span>
+<span class="fc" id="L1815">				dtEffective.julian(),</span>
 				iFreq,
 				dblSpread,
 				strDayCount,
@@ -1803,9 +1829,9 @@ package org.drip.product.creator;
 				false,
 				strCurrency,
 				strCurrency,
-<span class="pc bpc" id="L1806" title="1 of 2 branches missed.">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
-<span class="pc bpc" id="L1807" title="1 of 2 branches missed.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
-<span class="fc" id="L1808">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="pc bpc" id="L1832" title="1 of 2 branches missed.">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
+<span class="pc bpc" id="L1833" title="1 of 2 branches missed.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
+<span class="fc" id="L1834">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 						strCreditCurveName,
 						strCurrency
 					)
@@ -1872,11 +1898,11 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc bnc" id="L1875" title="All 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
-<span class="nc bnc" id="L1876" title="All 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
-<span class="nc" id="L1877">			return null;</span>
+<span class="nc bnc" id="L1901" title="All 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==</span>
+<span class="nc bnc" id="L1902" title="All 2 branches missed.">			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))</span>
+<span class="nc" id="L1903">			return null;</span>
 
-<span class="nc" id="L1879">		return CreateBondFromParams (</span>
+<span class="nc" id="L1905">		return CreateBondFromParams (</span>
 			null,
 			new org.drip.product.params.IdentifierSet (
 				strName,
@@ -1892,7 +1918,7 @@ package org.drip.product.creator;
 				java.lang.Double.NaN
 			),
 			new org.drip.product.params.FloaterSetting (
-<span class="nc" id="L1895">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
+<span class="nc" id="L1921">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
 				&quot;&quot;,
 				dblSpread,
 				java.lang.Double.NaN
@@ -1900,7 +1926,7 @@ package org.drip.product.creator;
 			new org.drip.product.params.QuoteConvention (
 				null,
 				&quot;&quot;,
-<span class="nc" id="L1903">				dtEffective.julian(),</span>
+<span class="nc" id="L1929">				dtEffective.julian(),</span>
 				100.,
 				0,
 				strCurrency,
@@ -1919,10 +1945,10 @@ package org.drip.product.creator;
 				false,
 				dapMaturity
 			),
-<span class="nc" id="L1922">			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (</span>
-<span class="nc" id="L1923">				dtMaturity.julian(),</span>
-<span class="nc" id="L1924">				dtEffective.julian(),</span>
-<span class="nc" id="L1925">				dtMaturity.julian(),</span>
+<span class="nc" id="L1948">			org.drip.product.params.BondStream.FromFirstPenultimateCouponDate (</span>
+<span class="nc" id="L1949">				dtMaturity.julian(),</span>
+<span class="nc" id="L1950">				dtEffective.julian(),</span>
+<span class="nc" id="L1951">				dtMaturity.julian(),</span>
 				iFirstCouponDate,
 				iPenultimateCouponDate,
 				iFreq,
@@ -1941,9 +1967,9 @@ package org.drip.product.creator;
 				false,
 				strCurrency,
 				strCurrency,
-<span class="nc bnc" id="L1944" title="All 2 branches missed.">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
-<span class="nc bnc" id="L1945" title="All 2 branches missed.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
-<span class="nc" id="L1946">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
+<span class="nc bnc" id="L1970" title="All 2 branches missed.">				org.drip.state.identifier.OTCFixFloatLabel.Standard (strRateIndex),</span>
+<span class="nc bnc" id="L1971" title="All 2 branches missed.">				null == strCreditCurveName || strCreditCurveName.isEmpty() ? null :</span>
+<span class="nc" id="L1972">					org.drip.state.identifier.EntityCDSLabel.Standard (</span>
 						strCreditCurveName,
 						strCurrency
 					)
@@ -2008,7 +2034,7 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc" id="L2011">		return CreateSimpleFloaterFP (</span>
+<span class="nc" id="L2037">		return CreateSimpleFloaterFP (</span>
 			strName,
 			strCurrency,
 			strRateIndex,
@@ -2019,7 +2045,7 @@ package org.drip.product.creator;
 			dtEffective,
 			dtMaturity,
 			iFirstCouponDate,
-<span class="nc" id="L2022">			dtMaturity.subtractTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
+<span class="nc" id="L2048">			dtMaturity.subtractTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
 			dapPay,
 			dapReset,
 			dapMaturity,
@@ -2083,7 +2109,7 @@ package org.drip.product.creator;
 		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
 		final org.drip.quant.common.Array2D fsCoupon)
 	{
-<span class="nc" id="L2086">		return CreateSimpleFloaterFP (</span>
+<span class="nc" id="L2112">		return CreateSimpleFloaterFP (</span>
 			strName,
 			strCurrency,
 			strRateIndex,
@@ -2093,7 +2119,7 @@ package org.drip.product.creator;
 			strDayCount,
 			dtEffective,
 			dtMaturity,
-<span class="nc" id="L2096">			dtEffective.addTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
+<span class="nc" id="L2122">			dtEffective.addTenor ((12 / iFreq) + &quot;M&quot;).julian(),</span>
 			iPenultimateCouponDate,
 			dapPay,
 			dapReset,

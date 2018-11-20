@@ -47,33 +47,51 @@ package org.drip.simm.margin;
  */
 
 /**
- * RiskClassAggregateIR holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk Class. The
- *  References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting .Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;RiskClassAggregateIR&lt;/i&gt; holds the Bucket Aggregate and the Computed SIMM Margin for the IR Risk Class.
+ * The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class RiskClassAggregateIR
 {
-<span class="nc" id="L74">	private org.drip.simm.margin.RiskMeasureAggregateIR _vegaMargin = null;</span>
-<span class="nc" id="L75">	private org.drip.simm.margin.RiskMeasureAggregateIR _deltaMargin = null;</span>
-<span class="nc" id="L76">	private org.drip.simm.margin.RiskMeasureAggregateIR _curvatureMargin = null;</span>
+<span class="nc" id="L92">	private org.drip.simm.margin.RiskMeasureAggregateIR _vegaMargin = null;</span>
+<span class="nc" id="L93">	private org.drip.simm.margin.RiskMeasureAggregateIR _deltaMargin = null;</span>
+<span class="nc" id="L94">	private org.drip.simm.margin.RiskMeasureAggregateIR _curvatureMargin = null;</span>
 
 	/**
 	 * RiskClassAggregateIR Constructor
@@ -90,14 +108,14 @@ public class RiskClassAggregateIR
 		final org.drip.simm.margin.RiskMeasureAggregateIR vegaMargin,
 		final org.drip.simm.margin.RiskMeasureAggregateIR curvatureMargin)
 		throws java.lang.Exception
-<span class="nc" id="L93">	{</span>
-<span class="nc bnc" id="L94" title="All 6 branches missed.">		if (null == (_deltaMargin = deltaMargin) ||</span>
+<span class="nc" id="L111">	{</span>
+<span class="nc bnc" id="L112" title="All 6 branches missed.">		if (null == (_deltaMargin = deltaMargin) ||</span>
 			null == (_vegaMargin = vegaMargin) ||
 			null == (_curvatureMargin = curvatureMargin))
 		{
-<span class="nc" id="L98">			throw new java.lang.Exception (&quot;RiskClassAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;RiskClassAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L100">	}</span>
+<span class="nc" id="L118">	}</span>
 
 	/**
 	 * Retrieve the Delta Margin
@@ -107,7 +125,7 @@ public class RiskClassAggregateIR
 
 	public org.drip.simm.margin.RiskMeasureAggregateIR deltaMargin()
 	{
-<span class="nc" id="L110">		return _deltaMargin;</span>
+<span class="nc" id="L128">		return _deltaMargin;</span>
 	}
 
 	/**
@@ -118,7 +136,7 @@ public class RiskClassAggregateIR
 
 	public org.drip.simm.margin.RiskMeasureAggregateIR vegaMargin()
 	{
-<span class="nc" id="L121">		return _vegaMargin;</span>
+<span class="nc" id="L139">		return _vegaMargin;</span>
 	}
 
 	/**
@@ -129,7 +147,7 @@ public class RiskClassAggregateIR
 
 	public org.drip.simm.margin.RiskMeasureAggregateIR curvatureMargin()
 	{
-<span class="nc" id="L132">		return _curvatureMargin;</span>
+<span class="nc" id="L150">		return _curvatureMargin;</span>
 	}
 
 	/**
@@ -140,7 +158,7 @@ public class RiskClassAggregateIR
 
 	public double margin()
 	{
-<span class="nc" id="L143">		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();</span>
+<span class="nc" id="L161">		return _deltaMargin.sba() + _vegaMargin.sba() + _curvatureMargin.sba();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
