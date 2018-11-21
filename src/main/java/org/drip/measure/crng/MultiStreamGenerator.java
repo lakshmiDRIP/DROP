@@ -67,7 +67,7 @@ package org.drip.measure.crng;
 
 /**
  * <i>MultiStreamGenerator</i> helps generate Multiple Independent (i.e., Non-Overlapping) Streams of Random
- *  Numbers.
+ * Numbers.
  * 
  * <br><br>
  *  <ul>

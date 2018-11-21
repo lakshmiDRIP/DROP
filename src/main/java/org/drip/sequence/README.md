@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Sequence computes Bounds Metics for Random, Custom, and Functional Sequences.
+DROP Sequence computes Bounds Metrics for Random, Custom, and Functional Sequences.
 
 
 ## Component Packages
