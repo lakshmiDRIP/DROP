@@ -69,33 +69,34 @@
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspaces) }
  * ***Numerical Optimizer Library***
-	* *Function* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Afunction) }  
-			Implementation and Solvers for a Suite of R<sup>x</sup> To R<sup>1</sup> Functions.
-	* *Measure* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Ameasure) }  
-			Continuous and Discrete Measure Distributions and Variate Evolutions.
-	* *Optimization* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aoptimization) }  
-			Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup.
-	* *Quant* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aquant) }  
-			Suite of DROP Linear Algebra Utilities.
+	* *Function* => Implementation and Solvers for a Suite of R<sup>x</sup> To R<sup>1</sup> Functions.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Afunction) }
+	* *Measure* => Continuous and Discrete Measure Distributions and Variate Evolutions.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Ameasure) }
+	* *Optimization* => Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aoptimization) }
+	* *Quant* => Suite of DROP Linear Algebra Utilities.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aquant) }
  * ***Algorithm Support Library***
-	* *Coverage* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/coverage) | 
+	* *Coverage* => 
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/coverage) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Acoverage) }
-	* *Feed* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Afeed) }  
-			Functionality to load, transform, and compute target metrics across feeds.
-	* *Historical* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Ahistorical) }  
-			Historical State Processing Utilities.
-	* *JSON* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Ajson) }  
-			Implementation of the RFC-4627 Compliant JSON Encoder/Decoder (Parser).
-	* *Regression* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aregression) }  
-			Regression Test Runs for Fixed Income, Numerical Analysis, and Spline Libraries.
-	* *Service* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aservice) }  
-			Environment, Product/Definition Containers, and hosts the Scenario/State Manipulation APIs.
+	* *Feed* => Functionality to load, transform, and compute target metrics across feeds.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Afeed) }
+	* *Historical* => Historical State Processing Utilities.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Ahistorical) }
+	* *JSON* => Implementation of the RFC-4627 Compliant JSON Encoder/Decoder (Parser).
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Ajson) }
+	* *Regression* => Regression Test Runs for Fixed Income, Numerical Analysis, and Spline Libraries.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aregression) }
+	* *Service* => Environment, Product/Definition Containers, and hosts the Scenario/State Manipulation APIs.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aservice) }
