@@ -12,7 +12,7 @@ DROP Product Definition Package implements the Fixed Income Components/Baskets D
  TSY curve, and needed to value the component.
 
  * [***BasketProduct***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/BasketProduct.java)
- <i>BasketProduct</i> abstract class extends MarketParamRef. It provides methods for getting the basket’s
+ <i>BasketProduct</i> abstract class extends MarketParamRef. It provides methods for getting the basket
  components, notional, coupon, effective date, maturity date, coupon amount, and list of coupon periods.
 
  * [***Bond***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/Bond.java)
@@ -28,19 +28,19 @@ DROP Product Definition Package implements the Fixed Income Components/Baskets D
  Each of these parameter sets can be set separately.
 
  * [***CalibratableComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/CalibratableComponent.java)
- <i>CalibratableComponent</i> abstract class provides implementation of Component's calibration interface. It
- exposes stubs for getting/setting the component’s calibration code, generate calibrated measure values from
+ <i>CalibratableComponent</i> abstract class provides implementation of Components calibration interface. It
+ exposes stubs for getting/setting the component calibration code, generate calibrated measure values from
  the market inputs, and compute micro-Jacobians (QuoteDF and PVDF micro-Jacks).
 
  * [***Component***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/Component.java)
  <i>Component</i> abstract class extends the ComponentMarketParamRef and provides the following methods:
- 	* Get the product's initial notional, notional, and coupon.
+ 	* Get the products initial notional, notional, and coupon.
  	* Get the Effective date, Maturity date, First Coupon Date.
  	* List the coupon periods.
  	* Set the market curves - discount, TSY, forward, and Credit curves.
- 	* Retrieve the product's settlement parameters.
- 	* Value the product's using standard/custom market parameters.
- 	* Retrieve the product's named measures and named measure values.
+ 	* Retrieve the product settlement parameters.
+ 	* Value the product using standard/custom market parameters.
+ 	* Retrieve the product named measures and named measure values.
 
  * [***ComponentMarketParamRef***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/ComponentMarketParamRef.java)
  <i>ComponentMarketParamRef</i> interface provides stubs for name, IR curve, forward curve, credit curve, TSY
