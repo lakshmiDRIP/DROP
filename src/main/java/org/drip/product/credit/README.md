@@ -25,6 +25,16 @@ DROP Product Credit Package implements the Credit Products - Components and Bask
  and optionally the outstanding notional schedule and the flat basket recovery. It also contains methods to
  serialize out of and de serialize into byte arrays.
 
+ * [***CDSComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/credit/CDSComponent.java)
+ <i>CDSComponent</i> implements the credit default swap product contract details. It exposes the following
+ functionality:
+ 	* Methods to extract effective date, maturity date, coupon, coupon day count, coupon frequency,
+ 	contingent credit, currency, basket notional, credit valuation parameters, and optionally the outstanding
+ 	notional schedule.
+ 	* Methods to compute the Jacobians to/from quote to latent state/manifest measures
+ 	* Serialization into and de serialization out of byte arrays
+ 	* CDS specific methods such as such loss metric/Jacobian estimation, quote flat spread calibration etc:
+
 
 ## DROP Specifications
 

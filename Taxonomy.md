@@ -36,35 +36,37 @@
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Axva) }
  * ***Exposure and Margin Analytics Library***
-	* *Exposure* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexposure) }  
-			Exposure Group Level Collateralized/Uncollateralized Exposure.
-	* *SIMM* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asimm) }  
-			Initial Margin Analytics based on ISDA SIMM and its Variants.
+	* *Exposure* => Exposure Group Level Collateralized/Uncollateralized Exposure.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexposure) }
+	* *SIMM* => Initial Margin Analytics based on ISDA SIMM and its Variants.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asimm) }
 
 ## Portfolio Core Module
  * ***Asset Allocation Analytics Library***
-	* *Portfolio Construction* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aportfolioconstruction) }  
-			Optimal and Constrained Portfolio Construction Functionality.
+	* *Portfolio Construction* => Optimal and Constrained Portfolio Construction Functionality.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aportfolioconstruction) }
  * ***Transaction Cost Analytics Library***
-	* *Execution* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution) }  
-			Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic.
+	* *Execution* => Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution) }
 
 ## Numerical Core Module
  * ***Spline Builder Library***
-	* *Spline* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
+	* *Spline* => 
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) }
  * ***Statistical Learning Library***
-	* *Learning* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Alearning) }  
-			Agnostic Learning Bounds under Empirical Loss Minimization Schemes.
-	* *Sequence* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asequence) }  
-			Bounds Metrics for Random, Custom, and Functional Sequences.
-	* *Spaces* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces) | 
+	* *Learning* => Agnostic Learning Bounds under Empirical Loss Minimization Schemes.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Alearning) }
+	* *Sequence* => Bounds Metrics for Random, Custom, and Functional Sequences.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asequence) }
+	* *Spaces* => 
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspaces) }
  * ***Numerical Optimizer Library***
 	* *Function* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function) | 
