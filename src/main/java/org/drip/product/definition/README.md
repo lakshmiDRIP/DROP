@@ -19,6 +19,21 @@ DROP Product Definition Package implements the Fixed Income Components/Baskets D
  <i>Bond</i> abstract class implements the pricing, the valuation, and the RV analytics functionality for the
  bond product.
 
+ * [***CalibratableComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/CalibratableComponent.java)
+ <i>CalibratableComponent</i> abstract class provides implementation of Components calibration interface. It
+ exposes stubs for getting/setting the component calibration code, generate calibrated measure values from
+ the market inputs, and compute micro Jacobians (QuoteDF and PVDF micro Jacks).
+
+ * [***Component***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/Component.java)
+ <i>Component</i> abstract class extends the ComponentMarketParamRef and provides the following methods.
+ 	* Get the products initial notional, notional, and coupon.
+ 	* Get the Effective date, Maturity date, First Coupon Date.
+ 	* List the coupon periods.
+ 	* Set the market curves; discount, TSY, forward, and Credit curves.
+ 	* Retrieve the product settlement parameters.
+ 	* Value the product using standard/custom market parameters.
+ 	* Retrieve the product named measures and named measure values.
+
  * [***ComponentMarketParamRef***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/ComponentMarketParamRef.java)
  <i>ComponentMarketParamRef</i> interface provides stubs for name, IR curve, forward curve, credit curve, TSY
  curve, and needed to value the component.

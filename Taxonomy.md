@@ -1,7 +1,7 @@
 
-#DROP Taxonomy
+# DROP Taxonomy
 
-##Analytics Core Module
+## Analytics Core Module
  * ***Fixed Income Analytics Library***
 	* *Analytics* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aanalytics) }  
@@ -40,7 +40,7 @@
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asimm) }  
 			Initial Margin Analytics based on ISDA SIMM and its Variants.
 
-##Portfolio Core Module
+## Portfolio Core Module
  * ***Asset Allocation Analytics Library***
 	* *Portfolio Construction* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aportfolioconstruction) }  
@@ -50,7 +50,7 @@
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution) }  
 			Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic.
 
-##Numerical Core Module
+## Numerical Core Module
  * ***Spline Builder Library***
 	* *Spline* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) }
