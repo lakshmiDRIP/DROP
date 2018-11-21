@@ -19,6 +19,14 @@ DROP Product Definition Package implements the Fixed Income Components/Baskets D
  <i>Bond</i> abstract class implements the pricing, the valuation, and the RV analytics functionality for the
  bond product.
 
+ * [***BondProduct***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/BondProduct.java)
+ <i>BondProduct</i> interface implements the product static data behind bonds of all kinds. Bond static data
+ is captured in a set of 11 container classes; BondTSYParams, BondCouponParams, BondNotionalParams,
+ BondFloaterParams, BondCurrencyParams, BondIdentifierParams, ComponentValuationParams,
+ ComponentRatesValuationParams, ComponentCreditValuationParams, ComponentTerminationEvent,
+ BondFixedPeriodParams, and one EmbeddedOptionSchedule object instance each for the call and the put objects.
+ Each of these parameter sets can be set separately.
+
  * [***CalibratableComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition/CalibratableComponent.java)
  <i>CalibratableComponent</i> abstract class provides implementation of Components calibration interface. It
  exposes stubs for getting/setting the component calibration code, generate calibrated measure values from

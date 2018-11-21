@@ -3,27 +3,29 @@
 
 ## Analytics Core Module
  * ***Fixed Income Analytics Library***
-	* *Analytics* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics) | 
+	* *Analytics* => Date, Cash Flow, and Cash Flow Period Measure Generation Utilities.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aanalytics) }  
-			Date, Cash Flow, and Cash Flow Period Measure Generation Utilities.
-	* *Dynamics* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Adynamics) }  
-			HJM, Hull-White, LMM, and SABR Dynamic Evolution Models.
-	* *Market* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Amarket) }  
-			Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and the Treasury Settings.
-	* *Param* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aparam) }  
-			Core Suite of Parameters - Product Cash Flow, Valuation, Market, Pricing, and Quoting Parameters.
-	* *Pricer* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Apricer) }  
-			Custom Pricing Algorithms and the Derivative Fokker Planck Trajectory Generators.
-	* *Product* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product) | 
-		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aproduct) }  
-			Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option Asset Classes.
-	* *State* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state) | 
+	* *Dynamics* => HJM, Hull-White, LMM, and SABR Dynamic Evolution Models.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Adynamics) }
+	* *Market* => Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and the Treasury Settings.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Amarket) }
+	* *Param* => Core Suite of Parameters - Product Cash Flow, Valuation, Market, Pricing, and Quoting Parameters.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aparam) }
+	* *Pricer* => Custom Pricing Algorithms and the Derivative Fokker Planck Trajectory Generators.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Apricer) }
+	* *Product* => Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option Asset Classes.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aproduct) }
+	* *State* =>
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Astate) }
-	* *Template* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template) | 
+	* *Template* =>
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Atemplate) }
  * ***Asset Backed Analytics Library***
 	* *Asset Backed* => { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked) | 
