@@ -151,6 +151,7 @@ package org.drip.spline.segment;
  *  		Clip the part of the Segment to the Left of the specified Predictor Ordinate. Retain all other
  *  			constraints the same
  *  	</li>
+ *  	<li>
  *  		Display the string representation for diagnostic purposes
  *  	</li>
  *  </ul>

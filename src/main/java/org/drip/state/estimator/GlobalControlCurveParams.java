@@ -52,11 +52,17 @@ package org.drip.state.estimator;
  */
 
 /**
- * GlobalControlCurveParams enhances the SmoothingCurveStretchParams to produce globally customized curve
- *  smoothing.
- * 
- * Currently, GlobalControlCurveParams uses custom boundary setting and spline details to implement the
- * 	global smoothing pass.
+ * <i>GlobalControlCurveParams</i> enhances the SmoothingCurveStretchParams to produce globally customized
+ * curve smoothing. Currently, GlobalControlCurveParams uses custom boundary setting and spline details to
+ * implement the global smoothing pass.
+ *
+ *  <br><br>
+ *  <ul>
+ *		<li><b>Project</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state">State</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator">Estimator</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income Analytics Library</a></li>
+ *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */

@@ -69,7 +69,7 @@ package org.drip.spaces.iterator;
 
 /**
  * <i>RdExhaustiveStateSpaceScan</i> contains the Functionality to iterate exhaustively through the
- * R<sup>/sup> Space.
+ * R<sup>d</sup> Space.
  *
  * <br><br>
  *  <ul>

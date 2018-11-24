@@ -75,8 +75,8 @@ package org.drip.spaces.cover;
  *  <ul>
  *  	<li>
  * 			Absolutely Bounded
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Have Bounded Variation
  *  	</li>
  *  </ul>

@@ -1,6 +1,6 @@
 
 /**
- * Govvie Latent State Estimator Curve
+ * Govvie Latent State Curve Estimator
  *
  * @author Lakshmi Krishnamurthy
  */

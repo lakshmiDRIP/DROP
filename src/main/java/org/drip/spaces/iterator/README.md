@@ -12,8 +12,8 @@ DROP Spaces Iterator Package implements the Iterative/Exhaustive Vector Space Sc
  Scans.
 
  * [***RdExhaustiveStateSpaceScan***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/RdExhaustiveStateSpaceScan.java)
- <i>RdExhaustiveStateSpaceScan</i> contains the Functionality to iterate exhaustively through the R<sup>/sup>
- Space.
+ <i>RdExhaustiveStateSpaceScan</i> contains the Functionality to iterate exhaustively through the
+ R<sup>d</sup> Space.
 
  * [***RdReceedingStateSpaceScan***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/RdReceedingStateSpaceScan.java)
  <i>RdReceedingStateSpaceScan</i> is the Abstract Iterator Class that contains the Functionality to conduct a

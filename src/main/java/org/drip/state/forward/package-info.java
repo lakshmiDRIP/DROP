@@ -1,6 +1,6 @@
 
 /**
- * Forward Latent State Estimator Curve
+ * Forward Latent State Curve Estimator
  *
  * @author Lakshmi Krishnamurthy
  */

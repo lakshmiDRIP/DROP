@@ -77,17 +77,17 @@ package org.drip.spline.pchip;
  *  <ul>
  *  	<li>
  * 			Static Method to Create an instance of MonotoneConvexHaganWest
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Ensure that the estimated regime is monotone an convex
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			If need be, enforce positivity and/or apply amelioration
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Apply segment-by-segment range bounds as needed
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Retrieve predictor ordinates/response values
  *  	</li>
  *  </ul>

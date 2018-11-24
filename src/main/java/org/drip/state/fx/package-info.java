@@ -1,6 +1,6 @@
 
 /**
- * FX Latent State Estimator Curve
+ * FX Latent State Curve Estimator
  *
  * @author Lakshmi Krishnamurthy
  */

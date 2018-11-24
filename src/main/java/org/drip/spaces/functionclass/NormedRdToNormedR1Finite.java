@@ -72,6 +72,7 @@ package org.drip.spaces.functionclass;
  * Spaces of Finite Functions. The Reference we've used is:
  *
  * <br><br>
+ * 	<ul>
  *  	<li>
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 

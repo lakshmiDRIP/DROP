@@ -55,7 +55,7 @@
 
 ## Numerical Core Module
  * ***Spline Builder Library***
-	* *Spline* => 
+	* *Spline* => Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) }
  * ***Statistical Learning Library***
@@ -65,7 +65,7 @@
 	* *Sequence* => Bounds Metrics for Random, Custom, and Functional Sequences.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asequence) }
-	* *Spaces* => 
+	* *Spaces* => R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes off of them.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspaces) }
  * ***Numerical Optimizer Library***
@@ -82,7 +82,7 @@
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aquant) }
  * ***Algorithm Support Library***
-	* *Coverage* => 
+	* *Coverage* => JUnit Test Suite for Jacoco Code Coverage Estimations.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/coverage) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Acoverage) }
 	* *Feed* => Functionality to load, transform, and compute target metrics across feeds.

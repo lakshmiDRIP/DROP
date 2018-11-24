@@ -77,8 +77,8 @@ package org.drip.spline.params;
  *  <ul>
  *  	<li>
  * 			Retrieve the Response Value as well as the DResponseDPredictorOrdinate Array.
- *  	<li>
  *  	</li>
+ *  	<li>
  * 			Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight.
  *  	</li>
  *  </ul>
