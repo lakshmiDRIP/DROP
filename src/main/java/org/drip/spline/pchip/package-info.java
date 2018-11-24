@@ -1,6 +1,6 @@
 
 /**
- * Akima Monotone Convex PCHIP Splines
+ * Monotone Convex Themed PCHIP Splines
  *
  * @author Lakshmi Krishnamurthy
  */

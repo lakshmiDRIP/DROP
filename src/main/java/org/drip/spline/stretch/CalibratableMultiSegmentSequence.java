@@ -52,10 +52,18 @@ package org.drip.spline.stretch;
  */
 
 /**
- * CalibratableMultiSegmentSequence implements the MultiSegmentSequence span that spans multiple segments. It
- *  holds the ordered segment sequence, segment sequence builder, the segment control parameters, and, if
- *  available, the spanning Jacobian. It provides a variety of customization for the segment construction and
- *  state r4epresentation control.
+ * <i>CalibratableMultiSegmentSequence</i> implements the MultiSegmentSequence span that spans multiple
+ * segments. It holds the ordered segment sequence, segment sequence builder, the segment control parameters,
+ * and, if available, the spanning Jacobian. It provides a variety of customization for the segment
+ * construction and state representation control.
+ *
+ * <br><br>
+ *  <ul>
+ *		<li><b>Project</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline">Spaces</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch">Stretch</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder">Spline Builder Library</a></li>
+ *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
