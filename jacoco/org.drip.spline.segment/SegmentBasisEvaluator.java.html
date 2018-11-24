@@ -6,6 +6,7 @@ package org.drip.spline.segment;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.segment;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,16 +70,24 @@ package org.drip.spline.segment;
  */
 
 /**
- * This Class implements the BasisEvaluator interface for the given set of the Segment Basis Evaluator
- * 	Functions.
+ * &lt;i&gt;SegmentBasisEvaluator&lt;/i&gt; implements the BasisEvaluator interface for the given set of the Segment
+ * Basis Evaluator Functions.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvaluator {
-<span class="fc" id="L62">	private org.drip.spline.basis.FunctionSet _fs = null;</span>
-<span class="fc" id="L63">	private org.drip.spline.segment.LatentStateInelastic _ics = null;</span>
-<span class="fc" id="L64">	private org.drip.spline.params.ResponseScalingShapeControl _rssc = null;</span>
+<span class="fc" id="L88">	private org.drip.spline.basis.FunctionSet _fs = null;</span>
+<span class="fc" id="L89">	private org.drip.spline.segment.LatentStateInelastic _ics = null;</span>
+<span class="fc" id="L90">	private org.drip.spline.params.ResponseScalingShapeControl _rssc = null;</span>
 
 	/**
 	 * SegmentBasisEvaluator constructor
@@ -76,33 +102,33 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final org.drip.spline.basis.FunctionSet fs,
 		final org.drip.spline.params.ResponseScalingShapeControl rssc)
 		throws java.lang.Exception
-<span class="fc" id="L79">	{</span>
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (null == (_fs = fs)) throw new java.lang.Exception (&quot;SegmentBasisEvaluator ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L105">	{</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (null == (_fs = fs)) throw new java.lang.Exception (&quot;SegmentBasisEvaluator ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L82">		_rssc = rssc;</span>
-<span class="fc" id="L83">	}</span>
+<span class="fc" id="L108">		_rssc = rssc;</span>
+<span class="fc" id="L109">	}</span>
 
 	@Override public int numBasis()
 	{
-<span class="fc" id="L87">		return _fs.numBasis();</span>
+<span class="fc" id="L113">		return _fs.numBasis();</span>
 	}
 
 	@Override public boolean setContainingInelastics (
 		final org.drip.spline.segment.LatentStateInelastic ics)
 	{
-<span class="fc" id="L93">		_ics = ics;</span>
-<span class="fc" id="L94">		return true;</span>
+<span class="fc" id="L119">		_ics = ics;</span>
+<span class="fc" id="L120">		return true;</span>
 	}
 
 	@Override public org.drip.spline.segment.BasisEvaluator replicate()
 	{
 		try {
-<span class="fc" id="L100">			return new SegmentBasisEvaluator (_fs, _rssc);</span>
-<span class="nc" id="L101">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L102">			e.printStackTrace();</span>
+<span class="fc" id="L126">			return new SegmentBasisEvaluator (_fs, _rssc);</span>
+<span class="nc" id="L127">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L128">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L105">		return null;</span>
+<span class="nc" id="L131">		return null;</span>
 	}
 
 	@Override public double shapedBasisFunctionResponse (
@@ -110,12 +136,12 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final int iBasisFunctionIndex)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);</span>
 
-<span class="fc" id="L115">		double dblResponseValue = _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate (dblX);</span>
+<span class="fc" id="L141">		double dblResponseValue = _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate (dblX);</span>
 
-<span class="pc bpc" id="L117" title="1 of 6 branches missed.">		return dblResponseValue * (null == _rssc ? 1. : _rssc.shapeController().evaluate (_rssc.isLocal() &amp;&amp;</span>
-<span class="fc" id="L118">			null != _ics ? _ics.localize (dblPredictorOrdinate) : dblPredictorOrdinate));</span>
+<span class="pc bpc" id="L143" title="1 of 6 branches missed.">		return dblResponseValue * (null == _rssc ? 1. : _rssc.shapeController().evaluate (_rssc.isLocal() &amp;&amp;</span>
+<span class="fc" id="L144">			null != _ics ? _ics.localize (dblPredictorOrdinate) : dblPredictorOrdinate));</span>
 	}
 
 	@Override public double unshapedResponseValue (
@@ -123,16 +149,16 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L126">		double dblResponse = 0.;</span>
+<span class="fc" id="L152">		double dblResponse = 0.;</span>
 
-<span class="fc" id="L128">		int iNumBasis = numBasis();</span>
+<span class="fc" id="L154">		int iNumBasis = numBasis();</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			dblResponse += adblResponseBasisCoeff[i] * _fs.indexedBasisFunction (i).evaluate (null == _ics ?</span>
-<span class="fc" id="L132">				dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate));</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			dblResponse += adblResponseBasisCoeff[i] * _fs.indexedBasisFunction (i).evaluate (null == _ics ?</span>
+<span class="fc" id="L158">				dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate));</span>
 		}
 
-<span class="fc" id="L135">		return dblResponse;</span>
+<span class="fc" id="L161">		return dblResponse;</span>
 	}
 
 	@Override public double responseValue (
@@ -140,11 +166,11 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L143" title="All 2 branches covered.">		if (null == _rssc) return unshapedResponseValue (adblResponseBasisCoeff, dblPredictorOrdinate);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		if (null == _rssc) return unshapedResponseValue (adblResponseBasisCoeff, dblPredictorOrdinate);</span>
 
-<span class="fc" id="L145">		return unshapedResponseValue (adblResponseBasisCoeff, dblPredictorOrdinate) *</span>
-<span class="pc bpc" id="L146" title="1 of 4 branches missed.">			_rssc.shapeController().evaluate (_rssc.isLocal() &amp;&amp; null != _ics ? _ics.localize</span>
-<span class="fc" id="L147">				(dblPredictorOrdinate) : dblPredictorOrdinate);</span>
+<span class="fc" id="L171">		return unshapedResponseValue (adblResponseBasisCoeff, dblPredictorOrdinate) *</span>
+<span class="pc bpc" id="L172" title="1 of 4 branches missed.">			_rssc.shapeController().evaluate (_rssc.isLocal() &amp;&amp; null != _ics ? _ics.localize</span>
+<span class="fc" id="L173">				(dblPredictorOrdinate) : dblPredictorOrdinate);</span>
 	}
 
 	@Override public double shapedBasisFunctionDerivative (
@@ -153,50 +179,50 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final int iBasisFunctionIndex)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);</span>
 
-<span class="fc bfc" id="L158" title="All 2 branches covered.">		if (null == _rssc) return _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, iOrder);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		if (null == _rssc) return _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, iOrder);</span>
 
-<span class="pc bpc" id="L160" title="1 of 4 branches missed.">		double dblShapeControllerPredictorOrdinate = _rssc.isLocal() &amp;&amp; null != _ics ? dblX :</span>
+<span class="pc bpc" id="L186" title="1 of 4 branches missed.">		double dblShapeControllerPredictorOrdinate = _rssc.isLocal() &amp;&amp; null != _ics ? dblX :</span>
 			dblPredictorOrdinate;
 
-<span class="fc" id="L163">		double dblResponseDerivative = 0.;</span>
+<span class="fc" id="L189">		double dblResponseDerivative = 0.;</span>
 
-<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">			double dblBasisFunctionDeriv = 0 == i ? _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate</span>
-<span class="fc" id="L167">				(dblX) : _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, i);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">			double dblBasisFunctionDeriv = 0 == i ? _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate</span>
+<span class="fc" id="L193">				(dblX) : _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, i);</span>
 
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
-<span class="nc" id="L170">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
+<span class="nc" id="L196">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::shapedBasisFunctionDerivative =&gt; Cannot compute Basis Function Derivative&quot;);
 
-<span class="fc bfc" id="L173" title="All 2 branches covered.">			double dblShapeControlDeriv = iOrder == i ? _rssc.shapeController().evaluate</span>
-<span class="fc" id="L174">				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative</span>
-<span class="fc" id="L175">					(dblShapeControllerPredictorOrdinate, iOrder - i);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">			double dblShapeControlDeriv = iOrder == i ? _rssc.shapeController().evaluate</span>
+<span class="fc" id="L200">				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative</span>
+<span class="fc" id="L201">					(dblShapeControllerPredictorOrdinate, iOrder - i);</span>
 
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
-<span class="nc" id="L178">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
+<span class="nc" id="L204">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::shapedBasisFunctionDerivative =&gt; Cannot compute Shape Control Derivative&quot;);
 
-<span class="fc" id="L181">			double dblBasisFunctionDerivScale = 1.;</span>
-<span class="fc" id="L182">			double dblShapeControllerDerivScale = 1.;</span>
+<span class="fc" id="L207">			double dblBasisFunctionDerivScale = 1.;</span>
+<span class="fc" id="L208">			double dblShapeControllerDerivScale = 1.;</span>
 
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">			if (null != _ics) {</span>
-<span class="fc bfc" id="L185" title="All 2 branches covered.">				for (int j = 0; j &lt; i; ++j)</span>
-<span class="fc" id="L186">					dblBasisFunctionDerivScale /= _ics.width();</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">			if (null != _ics) {</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">				for (int j = 0; j &lt; i; ++j)</span>
+<span class="fc" id="L212">					dblBasisFunctionDerivScale /= _ics.width();</span>
 			}
 
-<span class="pc bpc" id="L189" title="1 of 4 branches missed.">			if (_rssc.isLocal() &amp;&amp; null != _ics) {</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">				for (int j = 0; j &lt; iOrder - i; ++j)</span>
-<span class="fc" id="L191">					dblShapeControllerDerivScale /= _ics.width();</span>
+<span class="pc bpc" id="L215" title="1 of 4 branches missed.">			if (_rssc.isLocal() &amp;&amp; null != _ics) {</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">				for (int j = 0; j &lt; iOrder - i; ++j)</span>
+<span class="fc" id="L217">					dblShapeControllerDerivScale /= _ics.width();</span>
 			}
 
-<span class="fc" id="L194">			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="fc" id="L220">			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
 				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
 					dblShapeControlDeriv);
 		}
 
-<span class="fc" id="L199">		return dblResponseDerivative;</span>
+<span class="fc" id="L225">		return dblResponseDerivative;</span>
 	}
 
 	@Override public double unshapedBasisFunctionDerivative (
@@ -205,17 +231,17 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L208">		double dblDerivative = 0.;</span>
+<span class="fc" id="L234">		double dblDerivative = 0.;</span>
 
-<span class="fc" id="L210">		int iNumBasis = numBasis();</span>
+<span class="fc" id="L236">		int iNumBasis = numBasis();</span>
 
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);</span>
 
-<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i)</span>
-<span class="fc" id="L215">			dblDerivative += adblResponseBasisCoeff[i] * _fs.indexedBasisFunction (i).derivative (dblX,</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i)</span>
+<span class="fc" id="L241">			dblDerivative += adblResponseBasisCoeff[i] * _fs.indexedBasisFunction (i).derivative (dblX,</span>
 				iOrder);
 
-<span class="fc" id="L218">		return dblDerivative;</span>
+<span class="fc" id="L244">		return dblDerivative;</span>
 	}
 
 	@Override public double responseValueDerivative (
@@ -224,50 +250,50 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L227" title="All 2 branches covered.">		if (null == _rssc)</span>
-<span class="fc" id="L228">			return unshapedBasisFunctionDerivative (adblResponseBasisCoeff, dblPredictorOrdinate, iOrder);</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">		if (null == _rssc)</span>
+<span class="fc" id="L254">			return unshapedBasisFunctionDerivative (adblResponseBasisCoeff, dblPredictorOrdinate, iOrder);</span>
 
-<span class="pc bpc" id="L230" title="1 of 4 branches missed.">		double dblShapeControllerPredictorOrdinate = _rssc.isLocal() &amp;&amp; null != _ics ? _ics.localize</span>
-<span class="fc" id="L231">			(dblPredictorOrdinate) : dblPredictorOrdinate;</span>
+<span class="pc bpc" id="L256" title="1 of 4 branches missed.">		double dblShapeControllerPredictorOrdinate = _rssc.isLocal() &amp;&amp; null != _ics ? _ics.localize</span>
+<span class="fc" id="L257">			(dblPredictorOrdinate) : dblPredictorOrdinate;</span>
 
-<span class="fc" id="L233">		double dblResponseDerivative = 0.;</span>
+<span class="fc" id="L259">		double dblResponseDerivative = 0.;</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
-<span class="fc bfc" id="L236" title="All 2 branches covered.">			double dblBasisFunctionDeriv = 0 == i ? unshapedResponseValue (adblResponseBasisCoeff,</span>
-<span class="fc" id="L237">				dblPredictorOrdinate) : unshapedBasisFunctionDerivative (adblResponseBasisCoeff,</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			double dblBasisFunctionDeriv = 0 == i ? unshapedResponseValue (adblResponseBasisCoeff,</span>
+<span class="fc" id="L263">				dblPredictorOrdinate) : unshapedBasisFunctionDerivative (adblResponseBasisCoeff,</span>
 					dblPredictorOrdinate, i);
 
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
-<span class="nc" id="L241">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
+<span class="nc" id="L267">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::responseValueDerivative =&gt; Cannot compute Basis Function Derivative&quot;);
 
-<span class="fc bfc" id="L244" title="All 2 branches covered.">			double dblShapeControlDeriv = iOrder == i ? _rssc.shapeController().evaluate</span>
-<span class="fc" id="L245">				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative</span>
-<span class="fc" id="L246">					(dblShapeControllerPredictorOrdinate, iOrder - i);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">			double dblShapeControlDeriv = iOrder == i ? _rssc.shapeController().evaluate</span>
+<span class="fc" id="L271">				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative</span>
+<span class="fc" id="L272">					(dblShapeControllerPredictorOrdinate, iOrder - i);</span>
 
-<span class="pc bpc" id="L248" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
-<span class="nc" id="L249">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
+<span class="nc" id="L275">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::responseValueDerivative =&gt; Cannot compute Shape Control Derivative&quot;);
 
-<span class="fc" id="L252">			double dblBasisFunctionDerivScale = 1.;</span>
-<span class="fc" id="L253">			double dblShapeControllerDerivScale = 1.;</span>
+<span class="fc" id="L278">			double dblBasisFunctionDerivScale = 1.;</span>
+<span class="fc" id="L279">			double dblShapeControllerDerivScale = 1.;</span>
 
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">			if (null != _ics) {</span>
-<span class="fc bfc" id="L256" title="All 2 branches covered.">				for (int j = 0; j &lt; i; ++j)</span>
-<span class="fc" id="L257">					dblBasisFunctionDerivScale /= _ics.width();</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">			if (null != _ics) {</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">				for (int j = 0; j &lt; i; ++j)</span>
+<span class="fc" id="L283">					dblBasisFunctionDerivScale /= _ics.width();</span>
 			}
 
-<span class="pc bpc" id="L260" title="1 of 4 branches missed.">			if (_rssc.isLocal() &amp;&amp; null != _ics) {</span>
-<span class="fc bfc" id="L261" title="All 2 branches covered.">				for (int j = 0; j &lt; iOrder - i; ++j)</span>
-<span class="fc" id="L262">					dblShapeControllerDerivScale /= _ics.width();</span>
+<span class="pc bpc" id="L286" title="1 of 4 branches missed.">			if (_rssc.isLocal() &amp;&amp; null != _ics) {</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">				for (int j = 0; j &lt; iOrder - i; ++j)</span>
+<span class="fc" id="L288">					dblShapeControllerDerivScale /= _ics.width();</span>
 			}
 
-<span class="fc" id="L265">			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="fc" id="L291">			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
 				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
 					dblShapeControlDeriv);
 		}
 
-<span class="fc" id="L270">		return dblResponseDerivative;</span>
+<span class="fc" id="L296">		return dblResponseDerivative;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

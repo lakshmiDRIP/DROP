@@ -6,6 +6,7 @@ package org.drip.spline.pchip;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.pchip;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,24 +70,54 @@ package org.drip.spline.pchip;
  */
 
 /**
- * LocalControlStretchBuilder exports Stretch creation/calibration methods to generate customized basis
- *  splines, with customized segment behavior using the segment control. It provides the following
- *  local-control functionality:
- *  - Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response
- *  	Values, the Custom Slopes, and the Segment Builder Parameters.
- *  - Create Hermite/Bessel C1 Cubic Spline Stretch.
- *  - Create Hyman (1983) Monotone Preserving Stretch.
- *  - Create Hyman (1989) enhancement to the Hyman (1983) Monotone Preserving Stretch.
- *  - Create the Harmonic Monotone Preserving Stretch.
- *  - Create the Van Leer Limiter Stretch.
- *  - Create the Huynh Le Floch Limiter Stretch.
- *  - Generate the local control C1 Slope using the Akima Cubic Algorithm.
- *  - Generate the local control C1 Slope using the Hagan-West Monotone Convex Algorithm.
+ * &lt;i&gt;LocalControlStretchBuilder&lt;/i&gt; exports Stretch creation/calibration methods to generate customized
+ * basis splines, with customized segment behavior using the segment control. It provides the following
+ * local-control functionality:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response
+ *  			Values, the Custom Slopes, and the Segment Builder Parameters
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create Hermite/Bessel C1 Cubic Spline Stretch
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create Hyman (1983) Monotone Preserving Stretch
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create Hyman (1989) enhancement to the Hyman (1983) Monotone Preserving Stretch
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create the Harmonic Monotone Preserving Stretch
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create the Van Leer Limiter Stretch
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create the Huynh Le Floch Limiter Stretch
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Generate the local control C1 Slope using the Akima Cubic Algorithm
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Generate the local control C1 Slope using the Hagan-West Monotone Convex Algorithm
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L72">public class LocalControlStretchBuilder {</span>
+<span class="nc" id="L120">public class LocalControlStretchBuilder {</span>
 
 	/**
 	 * Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response
@@ -95,45 +143,45 @@ package org.drip.spline.pchip;
 		final org.drip.spline.params.StretchBestFitResponse sbfr,
 		final int iSetupMode)
 	{
-<span class="fc" id="L98">		org.drip.spline.stretch.MultiSegmentSequence msr =</span>
-<span class="fc" id="L99">			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L146">		org.drip.spline.stretch.MultiSegmentSequence msr =</span>
+<span class="fc" id="L147">			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (strName,</span>
 				adblPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L102" title="3 of 6 branches missed.">		if (null == msr || null == adblResponseValue || null == adblCustomSlope) return null;</span>
+<span class="pc bpc" id="L150" title="3 of 6 branches missed.">		if (null == msr || null == adblResponseValue || null == adblCustomSlope) return null;</span>
 
-<span class="fc" id="L104">		int iNumResponseValue = adblResponseValue.length;</span>
-<span class="fc" id="L105">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft = new</span>
+<span class="fc" id="L152">		int iNumResponseValue = adblResponseValue.length;</span>
+<span class="fc" id="L153">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft = new</span>
 			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumResponseValue - 1];
-<span class="fc" id="L107">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight = new</span>
+<span class="fc" id="L155">		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight = new</span>
 			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumResponseValue - 1];
 
-<span class="pc bpc" id="L110" title="3 of 6 branches missed.">		if (1 &gt;= iNumResponseValue || adblPredictorOrdinate.length != iNumResponseValue ||</span>
+<span class="pc bpc" id="L158" title="3 of 6 branches missed.">		if (1 &gt;= iNumResponseValue || adblPredictorOrdinate.length != iNumResponseValue ||</span>
 			adblCustomSlope.length != iNumResponseValue)
-<span class="nc" id="L112">			return null;</span>
+<span class="nc" id="L160">			return null;</span>
 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseValue; ++i) {</span>
-<span class="fc" id="L115">			org.drip.spline.params.SegmentPredictorResponseDerivative sprd = null;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseValue; ++i) {</span>
+<span class="fc" id="L163">			org.drip.spline.params.SegmentPredictorResponseDerivative sprd = null;</span>
 
 			try {
-<span class="fc" id="L118">				sprd = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblResponseValue[i],</span>
+<span class="fc" id="L166">				sprd = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblResponseValue[i],</span>
 					new double[] {adblCustomSlope[i]});
-<span class="nc" id="L120">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L121">				e.printStackTrace();</span>
+<span class="nc" id="L168">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L169">				e.printStackTrace();</span>
 
-<span class="nc" id="L123">				return null;</span>
-<span class="fc" id="L124">			}</span>
+<span class="nc" id="L171">				return null;</span>
+<span class="fc" id="L172">			}</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">			if (0 == i)</span>
-<span class="fc" id="L127">				aSPRDLeft[i] = sprd;</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">			else if (iNumResponseValue - 1 == i)</span>
-<span class="fc" id="L129">				aSPRDRight[i - 1] = sprd;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L175">				aSPRDLeft[i] = sprd;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">			else if (iNumResponseValue - 1 == i)</span>
+<span class="fc" id="L177">				aSPRDRight[i - 1] = sprd;</span>
 			else {
-<span class="fc" id="L131">				aSPRDLeft[i] = sprd;</span>
-<span class="fc" id="L132">				aSPRDRight[i - 1] = sprd;</span>
+<span class="fc" id="L179">				aSPRDLeft[i] = sprd;</span>
+<span class="fc" id="L180">				aSPRDRight[i - 1] = sprd;</span>
 			}
 		}
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		return msr.setupHermite (aSPRDLeft, aSPRDRight, null, sbfr, iSetupMode) ? msr : null;</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		return msr.setupHermite (aSPRDLeft, aSPRDRight, null, sbfr, iSetupMode) ? msr : null;</span>
 	}
 
 	/**
@@ -160,17 +208,17 @@ package org.drip.spline.pchip;
 		final org.drip.spline.params.StretchBestFitResponse sbfr,
 		final int iSetupMode)
 	{
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
 
-<span class="fc" id="L165">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
-<span class="fc" id="L166">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L213">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
+<span class="fc" id="L214">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
 
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
-<span class="fc" id="L171">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
+<span class="fc" id="L219">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
 
-<span class="fc" id="L173">		return CustomSlopeHermiteSpline (strName, adblPredictorOrdinate, adblResponseValue, adblCustomSlope,</span>
+<span class="fc" id="L221">		return CustomSlopeHermiteSpline (strName, adblPredictorOrdinate, adblResponseValue, adblCustomSlope,</span>
 			aSCBC, sbfr, iSetupMode);
 	}
 
@@ -199,13 +247,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="fc" id="L202">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="fc" id="L203">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="fc" id="L250">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="fc" id="L251">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_BESSEL, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="fc" id="L208">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="fc" id="L256">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -236,13 +284,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L239">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L240">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L287">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L288">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN83, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L245">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L293">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -273,13 +321,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L276">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L277">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L324">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L325">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN89, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L281" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L282">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L330">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -310,13 +358,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L313">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L314">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L361">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L362">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HARMONIC, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L318" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L319">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L367">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -347,13 +395,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L350">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L351">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L398">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L399">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_VAN_LEER, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L355" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L356">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L404">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -384,13 +432,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L387">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L388">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L435">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L436">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_KRUGER, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L392" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L393">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L441">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -420,13 +468,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L423">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L424">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L471">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L472">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_KRUGER, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L428" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L429">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L477">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -457,13 +505,13 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="nc" id="L460">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="nc" id="L461">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
+<span class="nc" id="L508">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="nc" id="L509">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,</span>
 				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_AKIMA, bEliminateSpuriousExtrema,
 					bApplyMonotoneFilter);
 
-<span class="nc bnc" id="L465" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
-<span class="nc" id="L466">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="nc bnc" id="L513" title="All 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,</span>
+<span class="nc" id="L514">			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 
 	/**
@@ -499,19 +547,19 @@ package org.drip.spline.pchip;
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="fc" id="L502">		org.drip.spline.pchip.MonotoneConvexHaganWest mchw =</span>
-<span class="fc" id="L503">			org.drip.spline.pchip.MonotoneConvexHaganWest.Create (adblPredictorOrdinate, adblObservation,</span>
+<span class="fc" id="L550">		org.drip.spline.pchip.MonotoneConvexHaganWest mchw =</span>
+<span class="fc" id="L551">			org.drip.spline.pchip.MonotoneConvexHaganWest.Create (adblPredictorOrdinate, adblObservation,</span>
 				bLinearNodeInference);
 
-<span class="pc bpc" id="L506" title="1 of 2 branches missed.">		if (null == mchw) return null;</span>
+<span class="pc bpc" id="L554" title="1 of 2 branches missed.">		if (null == mchw) return null;</span>
 
-<span class="fc" id="L508">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
-<span class="fc" id="L509">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (mchw.predictorOrdinates(),</span>
-<span class="fc" id="L510">				mchw.responseValues(), org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_MONOTONE_CONVEX,</span>
+<span class="fc" id="L556">		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =</span>
+<span class="fc" id="L557">			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (mchw.predictorOrdinates(),</span>
+<span class="fc" id="L558">				mchw.responseValues(), org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_MONOTONE_CONVEX,</span>
 					bEliminateSpuriousExtrema, bApplyMonotoneFilter);
 
-<span class="pc bpc" id="L513" title="1 of 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, mchw.predictorOrdinates(),</span>
-<span class="fc" id="L514">			mchw.responseValues(), lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, mchw.predictorOrdinates(),</span>
+<span class="fc" id="L562">			mchw.responseValues(), lmcg.C1(), aSCBC, sbfr, iSetupMode);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

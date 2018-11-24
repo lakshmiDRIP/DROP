@@ -6,34 +6,52 @@ package org.drip.spaces.big;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,13 +68,21 @@ package org.drip.spaces.big;
  */
 
 /**
- * SubStringSetExtractor contains the Functionality to extract the Full Suite of the Sub-strings contained
- * 	inside of the given String.
+ * &lt;i&gt;SubStringSetExtractor&lt;/i&gt; contains the Functionality to extract the Full Suite of the Sub-strings
+ * contained inside of the given String.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L59">public class SubStringSetExtractor {</span>
+<span class="nc" id="L85">public class SubStringSetExtractor {</span>
 
 	/**
 	 * Locate the String Set of the Target Size using a Receeding Permutation Scan
@@ -71,31 +97,31 @@ package org.drip.spaces.big;
 		final java.lang.String strMaster,
 		final int iTargetStringSize)
 	{
-<span class="nc" id="L74">		int[] aiMax = new int[iTargetStringSize];</span>
-<span class="nc" id="L75">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
+<span class="nc" id="L100">		int[] aiMax = new int[iTargetStringSize];</span>
+<span class="nc" id="L101">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
 
-<span class="nc" id="L77">		int iMasterStringSize = strMaster.length();</span>
+<span class="nc" id="L103">		int iMasterStringSize = strMaster.length();</span>
 
-<span class="nc bnc" id="L79" title="All 2 branches missed.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
-<span class="nc" id="L80">			aiMax[i] = iMasterStringSize;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
+<span class="nc" id="L106">			aiMax[i] = iMasterStringSize;</span>
 
 		try {
-<span class="nc" id="L83">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
-<span class="nc" id="L84">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L85">			e.printStackTrace();</span>
-<span class="nc" id="L86">		}</span>
+<span class="nc" id="L109">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
+<span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L111">			e.printStackTrace();</span>
+<span class="nc" id="L112">		}</span>
 
-<span class="nc" id="L88">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L114">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L90">		int[] aiIndex = mdIter.stateIndexCursor();</span>
+<span class="nc" id="L116">		int[] aiIndex = mdIter.stateIndexCursor();</span>
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		while (null != aiIndex) {</span>
-<span class="nc" id="L93">			lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster, aiIndex));</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		while (null != aiIndex) {</span>
+<span class="nc" id="L119">			lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster, aiIndex));</span>
 
-<span class="nc" id="L95">			aiIndex = mdIter.nextStateIndexCursor();</span>
+<span class="nc" id="L121">			aiIndex = mdIter.nextStateIndexCursor();</span>
 		}
 
-<span class="nc" id="L98">		return lsTarget;</span>
+<span class="nc" id="L124">		return lsTarget;</span>
 	}
 
 	/**
@@ -111,33 +137,33 @@ package org.drip.spaces.big;
 		final java.lang.String strMaster,
 		final int iTargetStringSize)
 	{
-<span class="fc" id="L114">		int[] aiMax = new int[iTargetStringSize];</span>
-<span class="fc" id="L115">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
+<span class="fc" id="L140">		int[] aiMax = new int[iTargetStringSize];</span>
+<span class="fc" id="L141">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
 
-<span class="fc" id="L117">		int iMasterStringSize = strMaster.length();</span>
+<span class="fc" id="L143">		int iMasterStringSize = strMaster.length();</span>
 
-<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
-<span class="fc" id="L120">			aiMax[i] = iMasterStringSize;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
+<span class="fc" id="L146">			aiMax[i] = iMasterStringSize;</span>
 
 		try {
-<span class="fc" id="L123">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
-<span class="nc" id="L124">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L125">			e.printStackTrace();</span>
-<span class="fc" id="L126">		}</span>
+<span class="fc" id="L149">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
+<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L151">			e.printStackTrace();</span>
+<span class="fc" id="L152">		}</span>
 
-<span class="fc" id="L128">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L154">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="fc" id="L130">		int[] aiIndex = mdIter.stateIndexCursor();</span>
+<span class="fc" id="L156">		int[] aiIndex = mdIter.stateIndexCursor();</span>
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		while (null != aiIndex) {</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">			if (!org.drip.spaces.iterator.IterationHelper.CheckForRepeatingIndex (aiIndex))</span>
-<span class="fc" id="L134">				lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster,</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		while (null != aiIndex) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">			if (!org.drip.spaces.iterator.IterationHelper.CheckForRepeatingIndex (aiIndex))</span>
+<span class="fc" id="L160">				lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster,</span>
 					aiIndex));
 
-<span class="fc" id="L137">			aiIndex = mdIter.nextStateIndexCursor();</span>
+<span class="fc" id="L163">			aiIndex = mdIter.nextStateIndexCursor();</span>
 		}
 
-<span class="fc" id="L140">		return lsTarget;</span>
+<span class="fc" id="L166">		return lsTarget;</span>
 	}
 
 	/**
@@ -151,20 +177,20 @@ package org.drip.spaces.big;
 	public static final java.util.List&lt;java.lang.String&gt; Contiguous (
 		final java.lang.String strMaster)
 	{
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == strMaster) return null;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (null == strMaster) return null;</span>
 
-<span class="fc" id="L156">		int iMasterStringLength = strMaster.length();</span>
+<span class="fc" id="L182">		int iMasterStringLength = strMaster.length();</span>
 
-<span class="fc" id="L158">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L184">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (0 == iMasterStringLength) return lsTarget;</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (0 == iMasterStringLength) return lsTarget;</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int iStartIndex = 0; iStartIndex &lt; iMasterStringLength; ++iStartIndex) {</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">			for (int iFinishIndex = iStartIndex + 1; iFinishIndex &lt;= iMasterStringLength; ++iFinishIndex)</span>
-<span class="fc" id="L164">				lsTarget.add (strMaster.substring (iStartIndex, iFinishIndex));</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (int iStartIndex = 0; iStartIndex &lt; iMasterStringLength; ++iStartIndex) {</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">			for (int iFinishIndex = iStartIndex + 1; iFinishIndex &lt;= iMasterStringLength; ++iFinishIndex)</span>
+<span class="fc" id="L190">				lsTarget.add (strMaster.substring (iStartIndex, iFinishIndex));</span>
 		}
 
-<span class="fc" id="L167">		return lsTarget;</span>
+<span class="fc" id="L193">		return lsTarget;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

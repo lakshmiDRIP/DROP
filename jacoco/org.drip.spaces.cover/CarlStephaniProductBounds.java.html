@@ -6,34 +6,52 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,26 +68,40 @@ package org.drip.spaces.cover;
  */
 
 /**
- * CarlStephaniProductBounds implements the Bounds that result from the Convolution Product Product of 2
- *  Normed R^x To Normed R^x Function Spaces.
- * 
- *  The References are:
- *  
- *  1) Carl, B. (1985): Inequalities of the Bernstein-Jackson type and the Degree of Compactness of Operators
- *  	in Banach Spaces, Annals of the Fourier Institute 35 (3) 79-118.
- *  
- *  2) Carl, B., and I. Stephani (1990): Entropy, Compactness, and the Approximation of Operators, Cambridge
- *  	University Press, Cambridge UK. 
- *  
- *  3) Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function Classes,
- *  	in: Proceedings of the 13th Annual Conference on Computational Learning Theory, ACM New York.
+ * &lt;i&gt;CarlStephaniProductBounds&lt;/i&gt; implements the Bounds that result from the Convolution Product Product of
+ * 2 Normed R&lt;sup&gt;x&lt;/sup&gt; To Normed R&lt;sup&gt;x&lt;/sup&gt; Function Spaces. The References are:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B. (1985): Inequalities of the Bernstein-Jackson type and the Degree of Compactness of
+ *  			Operators in Banach Spaces &lt;i&gt;Annals of the Fourier Institute&lt;/i&gt; &lt;b&gt;35 (3)&lt;/b&gt; 79-118
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B., and I. Stephani (1990): &lt;i&gt;Entropy, Compactness, and the Approximation of Operators&lt;/i&gt;
+ *  			&lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge UK 
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function
+ *  			Classes, in: &lt;i&gt;Proceedings of the 13th Annual Conference on Computational Learning
+ *  				Theory&lt;/i&gt; &lt;b&gt;ACM&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Covering Number&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CarlStephaniProductBounds {
-<span class="nc" id="L71">	private org.drip.spaces.functionclass.NormedRxToNormedRxFinite _funcClassRxRxA = null;</span>
-<span class="nc" id="L72">	private org.drip.spaces.functionclass.NormedRxToNormedRxFinite _funcClassRxRxB = null;</span>
+<span class="nc" id="L103">	private org.drip.spaces.functionclass.NormedRxToNormedRxFinite _funcClassRxRxA = null;</span>
+<span class="nc" id="L104">	private org.drip.spaces.functionclass.NormedRxToNormedRxFinite _funcClassRxRxB = null;</span>
 
 	/**
 	 * CarlStephaniProductBounds Constructor
@@ -84,10 +116,10 @@ public class CarlStephaniProductBounds {
 		final org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassRxRxA,
 		final org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassRxRxB)
 		throws java.lang.Exception
-<span class="nc" id="L87">	{</span>
-<span class="nc bnc" id="L88" title="All 4 branches missed.">		if (null == (_funcClassRxRxA = funcClassRxRxA) || null == (_funcClassRxRxB = funcClassRxRxB))</span>
-<span class="nc" id="L89">			throw new java.lang.Exception (&quot;CarlStephaniProductBounds ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L119">	{</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">		if (null == (_funcClassRxRxA = funcClassRxRxA) || null == (_funcClassRxRxB = funcClassRxRxB))</span>
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;CarlStephaniProductBounds ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L122">	}</span>
 
 	/**
 	 * Retrieve the Function Class A
@@ -97,7 +129,7 @@ public class CarlStephaniProductBounds {
 
 	public org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassA()
 	{
-<span class="nc" id="L100">		return _funcClassRxRxA;</span>
+<span class="nc" id="L132">		return _funcClassRxRxA;</span>
 	}
 
 	/**
@@ -108,7 +140,7 @@ public class CarlStephaniProductBounds {
 
 	public org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassB()
 	{
-<span class="nc" id="L111">		return _funcClassRxRxB;</span>
+<span class="nc" id="L143">		return _funcClassRxRxB;</span>
 	}
 
 	/**
@@ -130,9 +162,9 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndexB)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L133">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
-<span class="nc" id="L134">			(_funcClassRxRxA.populationMetricCoveringBounds(),</span>
-<span class="nc" id="L135">				_funcClassRxRxB.populationMetricCoveringBounds(), iEntropyNumberIndexA,</span>
+<span class="nc" id="L165">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
+<span class="nc" id="L166">			(_funcClassRxRxA.populationMetricCoveringBounds(),</span>
+<span class="nc" id="L167">				_funcClassRxRxB.populationMetricCoveringBounds(), iEntropyNumberIndexA,</span>
 					iEntropyNumberIndexB);
 	}
 
@@ -155,9 +187,9 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndexB)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L158">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
-<span class="nc" id="L159">			(_funcClassRxRxA.populationSupremumCoveringBounds(),</span>
-<span class="nc" id="L160">				_funcClassRxRxB.populationSupremumCoveringBounds(), iEntropyNumberIndexA,</span>
+<span class="nc" id="L190">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
+<span class="nc" id="L191">			(_funcClassRxRxA.populationSupremumCoveringBounds(),</span>
+<span class="nc" id="L192">				_funcClassRxRxB.populationSupremumCoveringBounds(), iEntropyNumberIndexA,</span>
 					iEntropyNumberIndexB);
 	}
 
@@ -184,9 +216,9 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndexB)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L187">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
-<span class="nc" id="L188">			(_funcClassRxRxA.sampleMetricCoveringBounds (gvviA),</span>
-<span class="nc" id="L189">				_funcClassRxRxB.sampleMetricCoveringBounds (gvviB), iEntropyNumberIndexA,</span>
+<span class="nc" id="L219">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
+<span class="nc" id="L220">			(_funcClassRxRxA.sampleMetricCoveringBounds (gvviA),</span>
+<span class="nc" id="L221">				_funcClassRxRxB.sampleMetricCoveringBounds (gvviB), iEntropyNumberIndexA,</span>
 					iEntropyNumberIndexB);
 	}
 
@@ -213,9 +245,9 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndexB)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L216">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
-<span class="nc" id="L217">			(_funcClassRxRxA.sampleSupremumCoveringBounds (gvviA),</span>
-<span class="nc" id="L218">				_funcClassRxRxB.sampleSupremumCoveringBounds (gvviB), iEntropyNumberIndexA,</span>
+<span class="nc" id="L248">		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound</span>
+<span class="nc" id="L249">			(_funcClassRxRxA.sampleSupremumCoveringBounds (gvviA),</span>
+<span class="nc" id="L250">				_funcClassRxRxB.sampleSupremumCoveringBounds (gvviB), iEntropyNumberIndexA,</span>
 					iEntropyNumberIndexB);
 	}
 
@@ -237,16 +269,16 @@ public class CarlStephaniProductBounds {
 		final boolean bUseSupremumNorm)
 	{
 		try {
-<span class="nc bnc" id="L240" title="All 2 branches missed.">			return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductNorm (mocbA, mocbB,</span>
-<span class="nc" id="L241">				bUseSupremumNorm ? _funcClassRxRxA.operatorPopulationSupremumNorm() :</span>
-<span class="nc bnc" id="L242" title="All 2 branches missed.">					_funcClassRxRxA.operatorPopulationMetricNorm(), bUseSupremumNorm ?</span>
-<span class="nc" id="L243">						_funcClassRxRxB.operatorPopulationSupremumNorm() :</span>
-<span class="nc" id="L244">							_funcClassRxRxB.operatorPopulationMetricNorm(), iEntropyNumberIndex);</span>
-<span class="nc" id="L245">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L246">			e.printStackTrace();</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">			return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductNorm (mocbA, mocbB,</span>
+<span class="nc" id="L273">				bUseSupremumNorm ? _funcClassRxRxA.operatorPopulationSupremumNorm() :</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">					_funcClassRxRxA.operatorPopulationMetricNorm(), bUseSupremumNorm ?</span>
+<span class="nc" id="L275">						_funcClassRxRxB.operatorPopulationSupremumNorm() :</span>
+<span class="nc" id="L276">							_funcClassRxRxB.operatorPopulationMetricNorm(), iEntropyNumberIndex);</span>
+<span class="nc" id="L277">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L278">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L249">		return null;</span>
+<span class="nc" id="L281">		return null;</span>
 	}
 
 	/**
@@ -264,8 +296,8 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndex,
 		final boolean bUseSupremumNorm)
 	{
-<span class="nc" id="L267">		return normedEntropyUpperBound (_funcClassRxRxA.populationSupremumCoveringBounds(),</span>
-<span class="nc" id="L268">			_funcClassRxRxB.populationSupremumCoveringBounds(), iEntropyNumberIndex, bUseSupremumNorm);</span>
+<span class="nc" id="L299">		return normedEntropyUpperBound (_funcClassRxRxA.populationSupremumCoveringBounds(),</span>
+<span class="nc" id="L300">			_funcClassRxRxB.populationSupremumCoveringBounds(), iEntropyNumberIndex, bUseSupremumNorm);</span>
 	}
 
 	/**
@@ -283,8 +315,8 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndex,
 		final boolean bUseSupremumNorm)
 	{
-<span class="nc" id="L286">		return normedEntropyUpperBound (_funcClassRxRxA.populationMetricCoveringBounds(),</span>
-<span class="nc" id="L287">			_funcClassRxRxB.populationMetricCoveringBounds(), iEntropyNumberIndex, bUseSupremumNorm);</span>
+<span class="nc" id="L318">		return normedEntropyUpperBound (_funcClassRxRxA.populationMetricCoveringBounds(),</span>
+<span class="nc" id="L319">			_funcClassRxRxB.populationMetricCoveringBounds(), iEntropyNumberIndex, bUseSupremumNorm);</span>
 	}
 
 	/**
@@ -306,8 +338,8 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndex,
 		final boolean bUseSupremumNorm)
 	{
-<span class="nc" id="L309">		return normedEntropyUpperBound (_funcClassRxRxA.sampleSupremumCoveringBounds (gvviA),</span>
-<span class="nc" id="L310">			_funcClassRxRxB.sampleSupremumCoveringBounds (gvviB), iEntropyNumberIndex, bUseSupremumNorm);</span>
+<span class="nc" id="L341">		return normedEntropyUpperBound (_funcClassRxRxA.sampleSupremumCoveringBounds (gvviA),</span>
+<span class="nc" id="L342">			_funcClassRxRxB.sampleSupremumCoveringBounds (gvviB), iEntropyNumberIndex, bUseSupremumNorm);</span>
 	}
 
 	/**
@@ -329,8 +361,8 @@ public class CarlStephaniProductBounds {
 		final int iEntropyNumberIndex,
 		final boolean bUseSupremumNorm)
 	{
-<span class="nc" id="L332">		return normedEntropyUpperBound (_funcClassRxRxA.sampleMetricCoveringBounds (gvviA),</span>
-<span class="nc" id="L333">			_funcClassRxRxB.sampleMetricCoveringBounds (gvviB), iEntropyNumberIndex, bUseSupremumNorm);</span>
+<span class="nc" id="L364">		return normedEntropyUpperBound (_funcClassRxRxA.sampleMetricCoveringBounds (gvviA),</span>
+<span class="nc" id="L365">			_funcClassRxRxB.sampleMetricCoveringBounds (gvviB), iEntropyNumberIndex, bUseSupremumNorm);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

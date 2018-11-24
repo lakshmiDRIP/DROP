@@ -6,31 +6,49 @@ package org.drip.state.csa;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,7 +65,15 @@ package org.drip.state.csa;
  */
 
 /**
- * MultilateralFlatForwardCurve implements the CSA Cash Rate Curve using a Flat Forward CSA Rate.
+ * &lt;i&gt;MultilateralFlatForwardCurve&lt;/i&gt; implements the CSA Cash Rate Curve using a Flat Forward CSA Rate.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa&quot;&gt;CSA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -80,7 +106,7 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final int iCompoundingFreq)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L83">		super (</span>
+<span class="nc" id="L109">		super (</span>
 			dtEpoch,
 			strCurrency,
 			aiDate,
@@ -89,24 +115,24 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 			strCompoundingDayCount,
 			iCompoundingFreq
 		);
-<span class="nc" id="L92">	}</span>
+<span class="nc" id="L118">	}</span>
 
 	@Override public double rate (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L124">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFract (</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFract (</span>
 			iEpochDate,
 			iDate
-<span class="nc" id="L106">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
-<span class="nc" id="L107">			compoundingFrequency(),</span>
-<span class="nc" id="L108">			df (iDate),</span>
-<span class="nc" id="L109">			yearFract (</span>
+<span class="nc" id="L132">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
+<span class="nc" id="L133">			compoundingFrequency(),</span>
+<span class="nc" id="L134">			df (iDate),</span>
+<span class="nc" id="L135">			yearFract (</span>
 				iEpochDate,
 				iDate
 			)
@@ -117,17 +143,17 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == dt)</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == dt)</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L123">		return rate (dt.julian());</span>
+<span class="nc" id="L149">		return rate (dt.julian());</span>
 	}
 
 	@Override public double rate (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L130">		return rate (epoch().addTenor (strTenor));</span>
+<span class="nc" id="L156">		return rate (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public double rate (
@@ -135,18 +161,18 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L138">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L164">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
-<span class="nc" id="L141">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
+<span class="nc" id="L167">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFract (</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFract (</span>
 			iDate1,
 			iDate2
-<span class="nc" id="L146">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
-<span class="nc" id="L147">			compoundingFrequency(),</span>
-<span class="nc" id="L148">			df (iDate1) / df (iDate2),</span>
-<span class="nc" id="L149">			yearFract (</span>
+<span class="nc" id="L172">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
+<span class="nc" id="L173">			compoundingFrequency(),</span>
+<span class="nc" id="L174">			df (iDate1) / df (iDate2),</span>
+<span class="nc" id="L175">			yearFract (</span>
 				iDate1,
 				iDate2
 			)
@@ -158,12 +184,12 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L161" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L162">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L187" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L188">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L164">		return rate (</span>
-<span class="nc" id="L165">			dt1.julian(),</span>
-<span class="nc" id="L166">			dt2.julian()</span>
+<span class="nc" id="L190">		return rate (</span>
+<span class="nc" id="L191">			dt1.julian(),</span>
+<span class="nc" id="L192">			dt2.julian()</span>
 		);
 	}
 
@@ -172,11 +198,11 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L175">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+<span class="nc" id="L201">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
 
-<span class="nc" id="L177">		return rate (</span>
-<span class="nc" id="L178">			dtEpoch.addTenor (strTenor1),</span>
-<span class="nc" id="L179">			dtEpoch.addTenor (strTenor2)</span>
+<span class="nc" id="L203">		return rate (</span>
+<span class="nc" id="L204">			dtEpoch.addTenor (strTenor1),</span>
+<span class="nc" id="L205">			dtEpoch.addTenor (strTenor2)</span>
 		);
 	}
 }

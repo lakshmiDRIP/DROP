@@ -6,34 +6,52 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,26 +68,48 @@ package org.drip.spaces.cover;
  */
 
 /**
- * L1R1CoveringBounds implements the Lower/Upper Bounds for the Class of Non-decreasing R^1 To L1 R^1
- * 	Functions that are:
- * 	- Absolutely Bounded
- * 	- Have Bounded Variation.
+ * &lt;i&gt;L1R1CoveringBounds&lt;/i&gt; implements the Lower/Upper Bounds for the Class of Non-decreasing R&lt;sup&gt;1&lt;/sup&gt;
+ * To L&lt;sub&gt;1&lt;/sub&gt; R&lt;sup&gt;1&lt;/sup&gt; for Functions that are:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Absolutely Bounded
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Have Bounded Variation
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * The References are:
- * 
- * 	1) L. Birge (1987): Estimating a Density Under Order Restrictions: Non-asymptotic Minimax Risk, Annals of
- * 		Statistics 15 995-1012.
- * 
- * 	2) P. L. Bartlett, S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued Function
- * 		Classes, IEEE Transactions on Information Theory 43 (5) 1721-1724.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		P. L. Bartlett, S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued
+ *  			Function Classes &lt;i&gt;IEEE Transactions on Information Theory&lt;/i&gt; &lt;b&gt;45 (5)&lt;/b&gt; 1721-1724
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		L. Birge (1987): Estimating a Density Under Order Restrictions: Non-asymptotic Minimax Risk
+ *  			&lt;i&gt;Annals of Statistics&lt;/i&gt; &lt;b&gt;15&lt;/b&gt; 995-1012 
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Covering Number&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
-<span class="fc" id="L70">	private double _dblBound = java.lang.Double.NaN;</span>
-<span class="fc" id="L71">	private double _dblSupport = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private double _dblVariation = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblBound = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblSupport = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _dblVariation = java.lang.Double.NaN;</span>
 
 	/**
 	 * L1R1CoveringBounds Constructor
@@ -86,15 +126,15 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblVariation,
 		final double dblBound)
 		throws java.lang.Exception
-<span class="fc" id="L89">	{</span>
-<span class="pc bpc" id="L90" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport ||</span>
-<span class="pc bpc" id="L91" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. &gt;= _dblVariation)</span>
-<span class="nc" id="L92">			throw new java.lang.Exception (&quot;L1R1CoveringBounds ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L129">	{</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport ||</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. &gt;= _dblVariation)</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;L1R1CoveringBounds ctr: Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L94" title="1 of 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblBound = dblBound) &amp;&amp; _dblBound &lt;= 0.5 *</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblBound = dblBound) &amp;&amp; _dblBound &lt;= 0.5 *</span>
 			_dblVariation)
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;L1R1CoveringBounds ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L97">	}</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;L1R1CoveringBounds ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the Ordinate Support
@@ -104,7 +144,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 
 	public double support()
 	{
-<span class="nc" id="L107">		return _dblSupport;</span>
+<span class="nc" id="L147">		return _dblSupport;</span>
 	}
 
 	/**
@@ -115,7 +155,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 
 	public double variation()
 	{
-<span class="nc" id="L118">		return _dblVariation;</span>
+<span class="nc" id="L158">		return _dblVariation;</span>
 	}
 
 	/**
@@ -126,24 +166,24 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 
 	public double bound()
 	{
-<span class="nc" id="L129">		return _dblBound;</span>
+<span class="nc" id="L169">		return _dblBound;</span>
 	}
 
 	@Override public double logLowerBound (
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logLowerBound =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L176" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L177">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logLowerBound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L139">		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);</span>
-<span class="fc" id="L140">		double dblVariationLogLowerBound = 1. / (54. * dblVariationCoverScale);</span>
+<span class="fc" id="L179">		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);</span>
+<span class="fc" id="L180">		double dblVariationLogLowerBound = 1. / (54. * dblVariationCoverScale);</span>
 
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (1. &lt; 12. * dblVariationCoverScale)</span>
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logLowerBound =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (1. &lt; 12. * dblVariationCoverScale)</span>
+<span class="nc" id="L183">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logLowerBound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">		return !org.drip.quant.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +</span>
-<span class="fc" id="L146">			dblVariationLogLowerBound * java.lang.Math.log (2.) + java.lang.Math.log (_dblSupport * _dblBound</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		return !org.drip.quant.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +</span>
+<span class="fc" id="L186">			dblVariationLogLowerBound * java.lang.Math.log (2.) + java.lang.Math.log (_dblSupport * _dblBound</span>
 				/ (6. * dblCover));
 	}
 
@@ -151,18 +191,18 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover))</span>
-<span class="nc" id="L155">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logUpperBound =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover))</span>
+<span class="nc" id="L195">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logUpperBound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L157">		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);</span>
+<span class="fc" id="L197">		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);</span>
 
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (1. &lt; 12. * dblVariationCoverScale)</span>
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logUpperBound =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		if (1. &lt; 12. * dblVariationCoverScale)</span>
+<span class="nc" id="L200">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logUpperBound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBound))</span>
-<span class="fc" id="L163">			return java.lang.Math.log (2.) * 12. / dblVariationCoverScale;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBound))</span>
+<span class="fc" id="L203">			return java.lang.Math.log (2.) * 12. / dblVariationCoverScale;</span>
 
-<span class="fc" id="L165">		return java.lang.Math.log (2.) * 18. / dblVariationCoverScale + 3. * _dblSupport * (2. * _dblBound -</span>
+<span class="fc" id="L205">		return java.lang.Math.log (2.) * 18. / dblVariationCoverScale + 3. * _dblSupport * (2. * _dblBound -</span>
 			_dblVariation) / (8. * dblCover);
 	}
 }

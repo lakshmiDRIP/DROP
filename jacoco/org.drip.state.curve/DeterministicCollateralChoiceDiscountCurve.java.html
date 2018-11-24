@@ -6,6 +6,7 @@ package org.drip.state.curve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.state.curve;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,16 +70,24 @@ package org.drip.state.curve;
  */
 
 /**
- * DeterministicCollateralChoiceDiscountCurve implements the Dynamically Switchable Collateral Choice
- * 	Discount Curve among the choice of provided &quot;deterministic&quot; collateral curves.
+ * &lt;i&gt;DeterministicCollateralChoiceDiscountCurve&lt;/i&gt; implements the Dynamically Switchable Collateral Choice
+ * Discount Curve among the choice of provided &quot;deterministic&quot; collateral curves.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-<span class="fc" id="L62">	private int _iDiscreteCollateralizationIncrement = -1;</span>
-<span class="fc" id="L63">	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;</span>
-<span class="fc" id="L64">	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;</span>
+<span class="fc" id="L88">	private int _iDiscreteCollateralizationIncrement = -1;</span>
+<span class="fc" id="L89">	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;</span>
+<span class="fc" id="L90">	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;</span>
 
 	/**
 	 * DeterministicCollateralChoiceDiscountCurve constructor
@@ -79,64 +105,64 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDiscreteCollateralizationIncrement)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L82">		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);</span>
+<span class="fc" id="L108">		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);</span>
 
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (0 &gt;= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))</span>
-<span class="nc" id="L85">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (0 &gt;= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))</span>
+<span class="nc" id="L111">			throw new java.lang.Exception</span>
 				(&quot;DeterministicCollateralChoiceDiscountCurve ctr: Invalid Collateralization Increment!&quot;);
 
-<span class="fc" id="L88">		_aFCDC = aFCDC;</span>
-<span class="fc" id="L89">		_dcDomesticCollateralized = dcDomesticCollateralized;</span>
-<span class="fc" id="L90">	}</span>
+<span class="fc" id="L114">		_aFCDC = aFCDC;</span>
+<span class="fc" id="L115">		_dcDomesticCollateralized = dcDomesticCollateralized;</span>
+<span class="fc" id="L116">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);</span>
 
-<span class="fc" id="L98">		int iNumCollateralizer = _aFCDC.length;</span>
+<span class="fc" id="L124">		int iNumCollateralizer = _aFCDC.length;</span>
 
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);</span>
 
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
 
-<span class="fc" id="L104">		double dblDF = 1.;</span>
-<span class="fc" id="L105">		int iWorkoutDate = _iEpochDate;</span>
+<span class="fc" id="L130">		double dblDF = 1.;</span>
+<span class="fc" id="L131">		int iWorkoutDate = _iEpochDate;</span>
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		while (java.lang.Math.abs (iDate - iWorkoutDate) &gt; _iDiscreteCollateralizationIncrement) {</span>
-<span class="fc" id="L108">			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		while (java.lang.Math.abs (iDate - iWorkoutDate) &gt; _iDiscreteCollateralizationIncrement) {</span>
+<span class="fc" id="L134">			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;</span>
 
-<span class="fc" id="L110">			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /</span>
-<span class="fc" id="L111">				_dcDomesticCollateralized.df (iWorkoutDate);</span>
+<span class="fc" id="L136">			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /</span>
+<span class="fc" id="L137">				_dcDomesticCollateralized.df (iWorkoutDate);</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
-<span class="fc" id="L114">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df</span>
-<span class="fc" id="L115">					(iWorkoutDate);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
+<span class="fc" id="L140">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df</span>
+<span class="fc" id="L141">					(iWorkoutDate);</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
-<span class="nc" id="L118">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
+<span class="nc" id="L144">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
 			}
 
-<span class="fc" id="L121">			dblDF *= dblDFIncrement;</span>
-<span class="fc" id="L122">			iWorkoutDate = iWorkoutEndDate;</span>
-<span class="fc" id="L123">		}</span>
+<span class="fc" id="L147">			dblDF *= dblDFIncrement;</span>
+<span class="fc" id="L148">			iWorkoutDate = iWorkoutEndDate;</span>
+<span class="fc" id="L149">		}</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (iDate &gt; iWorkoutDate) {</span>
-<span class="fc" id="L126">			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df</span>
-<span class="fc" id="L127">				(iWorkoutDate);</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (iDate &gt; iWorkoutDate) {</span>
+<span class="fc" id="L152">			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df</span>
+<span class="fc" id="L153">				(iWorkoutDate);</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
-<span class="fc" id="L130">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
+<span class="fc" id="L156">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
-<span class="nc" id="L133">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
+<span class="nc" id="L159">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
 			}
 
-<span class="fc" id="L136">			dblDF *= dblDFIncrement;</span>
+<span class="fc" id="L162">			dblDF *= dblDFIncrement;</span>
 		}
 
-<span class="fc" id="L139">		return dblDF;</span>
+<span class="fc" id="L165">		return dblDF;</span>
 	}
 
 	@Override public double forward (
@@ -144,37 +170,37 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (iDate1 &lt; _iEpochDate || iDate2 &lt; _iEpochDate) return 0.;</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (iDate1 &lt; _iEpochDate || iDate2 &lt; _iEpochDate) return 0.;</span>
 
-<span class="nc" id="L149">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="nc" id="L175">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (iDate &lt; _iEpochDate) return 0.;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (iDate &lt; _iEpochDate) return 0.;</span>
 
-<span class="nc" id="L158">		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));</span>
+<span class="nc" id="L184">		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L191">		return null;</span>
 	}
 
 	@Override public java.lang.String latentStateQuantificationMetric()
 	{
-<span class="nc" id="L170">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L177">		return null;</span>
+<span class="nc" id="L203">		return null;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve shiftManifestMeasure (
@@ -182,50 +208,50 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L185">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 
 	@Override public org.drip.state.discount.MergedDiscountForwardCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L192">		return null;</span>
+<span class="nc" id="L218">		return null;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L198">		return null;</span>
+<span class="nc" id="L224">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L204">		return null;</span>
+<span class="nc" id="L230">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="nc" id="L211">		return null;</span>
+<span class="nc" id="L237">		return null;</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L217">		return false;</span>
+<span class="nc" id="L243">		return false;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L222">		return null;</span>
+<span class="nc" id="L248">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L228">		return null;</span>
+<span class="nc" id="L254">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

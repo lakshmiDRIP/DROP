@@ -6,33 +6,51 @@ package org.drip.state.govvie;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,7 +67,15 @@ package org.drip.state.govvie;
  */
 
 /**
- * FXCurve is the Stub for the FX Curve for the specified Currency Pair.
+ * &lt;i&gt;GovvieCurve&lt;/i&gt; is the Stub for the Govvie Curve for the specified Govvie/Treasury.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie&quot;&gt;Govvie&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -58,56 +84,56 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 	org.drip.state.govvie.YieldEstimator {
 	private static final int NUM_DF_QUADRATURES = 5;
 
-<span class="fc" id="L61">	private int _iFreq = 2;</span>
-<span class="fc" id="L62">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L63">	private java.lang.String _strTreasuryCode = &quot;&quot;;</span>
-<span class="fc" id="L64">	private java.lang.String _strDayCount = &quot;DCAct_Act_UST&quot;;</span>
+<span class="fc" id="L87">	private int _iFreq = 2;</span>
+<span class="fc" id="L88">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L89">	private java.lang.String _strTreasuryCode = &quot;&quot;;</span>
+<span class="fc" id="L90">	private java.lang.String _strDayCount = &quot;DCAct_Act_UST&quot;;</span>
 
-<span class="fc" id="L66">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L67">	protected org.drip.analytics.input.CurveConstructionInputSet _ccis = null;</span>
+<span class="fc" id="L92">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L93">	protected org.drip.analytics.input.CurveConstructionInputSet _ccis = null;</span>
 
 	protected GovvieCurve (
 		final int iEpochDate,
 		final java.lang.String strTreasuryCode,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
-<span class="fc" id="L74">	{</span>
-<span class="pc bpc" id="L75" title="3 of 6 branches missed.">		if (null == (_strTreasuryCode = strTreasuryCode) || _strTreasuryCode.isEmpty() || null ==</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">			(_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
-<span class="nc" id="L77">			throw new java.lang.Exception (&quot;GovvieCurve ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L100">	{</span>
+<span class="pc bpc" id="L101" title="3 of 6 branches missed.">		if (null == (_strTreasuryCode = strTreasuryCode) || _strTreasuryCode.isEmpty() || null ==</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">			(_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
+<span class="nc" id="L103">			throw new java.lang.Exception (&quot;GovvieCurve ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L79">		_iEpochDate = iEpochDate;</span>
-<span class="fc" id="L80">	}</span>
+<span class="fc" id="L105">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L106">	}</span>
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
-<span class="fc" id="L84">		return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="fc" id="L110">		return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="fc" id="L89">		return _strCurrency;</span>
+<span class="fc" id="L115">		return _strCurrency;</span>
 	}
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="fc" id="L94">		return org.drip.state.identifier.GovvieLabel.Standard (_strTreasuryCode);</span>
+<span class="fc" id="L120">		return org.drip.state.identifier.GovvieLabel.Standard (_strTreasuryCode);</span>
 	}
 
 	@Override public double yield (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;GovvieCurve::yield =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;GovvieCurve::yield =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L103">		return yield (dt.julian());</span>
+<span class="fc" id="L129">		return yield (dt.julian());</span>
 	}
 
 	@Override public double yield (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		return yield (epoch().addTenor (strTenor));</span>
+<span class="fc" id="L136">		return yield (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public double forwardYield (
@@ -115,23 +141,23 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (iDate1 &gt;= iDate2) throw new java.lang.Exception (&quot;GovvieCurve::forwardYield =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (iDate1 &gt;= iDate2) throw new java.lang.Exception (&quot;GovvieCurve::forwardYield =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L120">		org.drip.analytics.daycount.ActActDCParams aadp =</span>
-<span class="fc" id="L121">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq);</span>
+<span class="fc" id="L146">		org.drip.analytics.daycount.ActActDCParams aadp =</span>
+<span class="fc" id="L147">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq);</span>
 
-<span class="fc" id="L123">		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (iDate1, iDate2,</span>
+<span class="fc" id="L149">		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (iDate1, iDate2,</span>
 			_strDayCount, false, aadp, _strCurrency);
 
-<span class="fc" id="L126">		double dblDF1 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate1),</span>
-<span class="fc" id="L127">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate1, _strDayCount, false,</span>
+<span class="fc" id="L152">		double dblDF1 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate1),</span>
+<span class="fc" id="L153">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate1, _strDayCount, false,</span>
 				aadp, _strCurrency));
 
-<span class="fc" id="L130">		double dblDF2 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate2),</span>
-<span class="fc" id="L131">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate2, _strDayCount, false,</span>
+<span class="fc" id="L156">		double dblDF2 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate2),</span>
+<span class="fc" id="L157">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate2, _strDayCount, false,</span>
 				aadp, _strCurrency));
 
-<span class="fc" id="L134">		return org.drip.analytics.support.Helper.DF2Yield (</span>
+<span class="fc" id="L160">		return org.drip.analytics.support.Helper.DF2Yield (</span>
 			_iFreq,
 			dblDF2 / dblDF1,
 			dblYearFraction
@@ -142,25 +168,25 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L145">		return org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate),</span>
-<span class="fc" id="L146">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate, _strDayCount, false,</span>
-<span class="fc" id="L147">				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq), _strCurrency));</span>
+<span class="fc" id="L171">		return org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yield (iDate),</span>
+<span class="fc" id="L172">			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate, _strDayCount, false,</span>
+<span class="fc" id="L173">				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq), _strCurrency));</span>
 	}
 
 	@Override public double df (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;GovvieCurve::df =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;GovvieCurve::df =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L156">		return df (dt.julian());</span>
+<span class="fc" id="L182">		return df (dt.julian());</span>
 	}
 
 	@Override public double df (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L163">		return df (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
+<span class="nc" id="L189">		return df (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
 	}
 
 	@Override public double effectiveDF (
@@ -168,21 +194,21 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (iDate1 == iDate2) return df (iDate1);</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (iDate1 == iDate2) return df (iDate1);</span>
 
-<span class="nc" id="L173">		int iNumQuadratures = 0;</span>
-<span class="nc" id="L174">		double dblEffectiveDF = 0.;</span>
-<span class="nc" id="L175">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
+<span class="nc" id="L199">		int iNumQuadratures = 0;</span>
+<span class="nc" id="L200">		double dblEffectiveDF = 0.;</span>
+<span class="nc" id="L201">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
-<span class="nc" id="L180">			++iNumQuadratures;</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
+<span class="nc" id="L206">			++iNumQuadratures;</span>
 
-<span class="nc" id="L182">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
+<span class="nc" id="L208">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
 		}
 
-<span class="nc" id="L185">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
+<span class="nc" id="L211">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
 	}
 
 	@Override public double effectiveDF (
@@ -190,10 +216,10 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L193" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L194">			throw new java.lang.Exception (&quot;GovvieCurve::effectiveDF =&gt; Got null for date&quot;);</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L220">			throw new java.lang.Exception (&quot;GovvieCurve::effectiveDF =&gt; Got null for date&quot;);</span>
 
-<span class="nc" id="L196">		return effectiveDF (dt1.julian(), dt2.julian());</span>
+<span class="nc" id="L222">		return effectiveDF (dt1.julian(), dt2.julian());</span>
 	}
 
 	@Override public double effectiveDF (
@@ -201,12 +227,12 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L204" title="All 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
-<span class="nc" id="L205">			throw new java.lang.Exception (&quot;GovvieCurve::effectiveDF =&gt; Got bad tenor&quot;);</span>
+<span class="nc bnc" id="L230" title="All 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
+<span class="nc" id="L231">			throw new java.lang.Exception (&quot;GovvieCurve::effectiveDF =&gt; Got bad tenor&quot;);</span>
 
-<span class="nc" id="L207">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
+<span class="nc" id="L233">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
 
-<span class="nc" id="L209">		return effectiveDF (dtStart.addTenor (strTenor1), dtStart.addTenor (strTenor2));</span>
+<span class="nc" id="L235">		return effectiveDF (dtStart.addTenor (strTenor1), dtStart.addTenor (strTenor2));</span>
 	}
 
 	@Override public double yieldDF (
@@ -214,32 +240,32 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final double dblDCF)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L217">		return org.drip.analytics.support.Helper.Yield2DF (_iFreq, yield (iDate), dblDCF);</span>
+<span class="nc" id="L243">		return org.drip.analytics.support.Helper.Yield2DF (_iFreq, yield (iDate), dblDCF);</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="fc" id="L223">		_ccis = ccis;</span>
-<span class="fc" id="L224">		return true;</span>
+<span class="fc" id="L249">		_ccis = ccis;</span>
+<span class="fc" id="L250">		return true;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L229">		return null;</span>
+<span class="nc" id="L255">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L235">		return null;</span>
+<span class="nc" id="L261">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L242">		return null;</span>
+<span class="nc" id="L268">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
@@ -247,26 +273,26 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L250">		return null;</span>
+<span class="nc" id="L276">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L257">		return null;</span>
+<span class="nc" id="L283">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L263">		return null;</span>
+<span class="nc" id="L289">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L269">		return null;</span>
+<span class="nc" id="L295">		return null;</span>
 	}
 
 	/**
@@ -277,7 +303,7 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 
 	public int freq()
 	{
-<span class="fc" id="L280">		return _iFreq;</span>
+<span class="fc" id="L306">		return _iFreq;</span>
 	}
 
 	/**
@@ -288,7 +314,7 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 
 	public java.lang.String dayCount()
 	{
-<span class="fc" id="L291">		return _strDayCount;</span>
+<span class="fc" id="L317">		return _strDayCount;</span>
 	}
 
 	/**
@@ -317,9 +343,9 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final java.lang.String strManifestMeasure,
 		final org.drip.analytics.date.JulianDate dt)
 	{
-<span class="nc bnc" id="L320" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="nc" id="L322">		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());</span>
+<span class="nc" id="L348">		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());</span>
 	}
 
 	/**
@@ -335,15 +361,15 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final java.lang.String strManifestMeasure,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L338" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L364" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty()) return null;</span>
 
 		try {
-<span class="nc" id="L341">			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));</span>
-<span class="nc" id="L342">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L343">			e.printStackTrace();</span>
+<span class="nc" id="L367">			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));</span>
+<span class="nc" id="L368">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L369">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L346">		return null;</span>
+<span class="nc" id="L372">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,34 +6,52 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,16 +68,24 @@ package org.drip.spaces.iterator;
  */
 
 /**
- * SequenceIndexIterator contains the Functionality to iterate through a List of Sequence Indexes.
+ * &lt;i&gt;SequenceIndexIterator&lt;/i&gt; contains the Functionality to iterate through a List of Sequence Indexes.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator&quot;&gt;Iterator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class SequenceIndexIterator {
-<span class="fc" id="L59">	private int[] _aiMax = null;</span>
-<span class="fc" id="L60">	private int _iIndexCursor = -1;</span>
-<span class="fc" id="L61">	private boolean _bCycle = false;</span>
-<span class="fc" id="L62">	private int _iSequenceCursor = -1;</span>
+<span class="fc" id="L85">	private int[] _aiMax = null;</span>
+<span class="fc" id="L86">	private int _iIndexCursor = -1;</span>
+<span class="fc" id="L87">	private boolean _bCycle = false;</span>
+<span class="fc" id="L88">	private int _iSequenceCursor = -1;</span>
 
 	/**
 	 * Create a Standard Sequence/Index Iterator
@@ -74,37 +100,37 @@ public class SequenceIndexIterator {
 		final int iNumSequence,
 		final int iNumIndex)
 	{
-<span class="pc bpc" id="L77" title="2 of 4 branches missed.">		if (0 &gt;= iNumSequence || 0 &gt;= iNumIndex) return null;</span>
+<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (0 &gt;= iNumSequence || 0 &gt;= iNumIndex) return null;</span>
 
-<span class="fc" id="L79">		int[] aiMax = new int[iNumSequence];</span>
+<span class="fc" id="L105">		int[] aiMax = new int[iNumSequence];</span>
 
-<span class="fc bfc" id="L81" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
-<span class="fc" id="L82">			aiMax[i] = iNumIndex - 1;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
+<span class="fc" id="L108">			aiMax[i] = iNumIndex - 1;</span>
 
 		try {
-<span class="fc" id="L85">			return new SequenceIndexIterator (aiMax, false);</span>
-<span class="nc" id="L86">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L87">			e.printStackTrace();</span>
+<span class="fc" id="L111">			return new SequenceIndexIterator (aiMax, false);</span>
+<span class="nc" id="L112">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L113">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L90">		return null;</span>
+<span class="nc" id="L116">		return null;</span>
 	}
 
 	private int[] setFromCursor()
 	{
-<span class="fc" id="L95">		int iNumSequence = _aiMax.length;</span>
-<span class="fc" id="L96">		int[] aiCurrent = new int[iNumSequence];</span>
+<span class="fc" id="L121">		int iNumSequence = _aiMax.length;</span>
+<span class="fc" id="L122">		int[] aiCurrent = new int[iNumSequence];</span>
 
-<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">			if (i &lt; _iSequenceCursor)</span>
-<span class="fc" id="L100">				aiCurrent[i] = _aiMax[i];</span>
-<span class="fc bfc" id="L101" title="All 2 branches covered.">			else if (i &gt; _iSequenceCursor)</span>
-<span class="fc" id="L102">				aiCurrent[i] = 0;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">			if (i &lt; _iSequenceCursor)</span>
+<span class="fc" id="L126">				aiCurrent[i] = _aiMax[i];</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			else if (i &gt; _iSequenceCursor)</span>
+<span class="fc" id="L128">				aiCurrent[i] = 0;</span>
 			else
-<span class="fc" id="L104">				aiCurrent[i] = _iIndexCursor;</span>
+<span class="fc" id="L130">				aiCurrent[i] = _iIndexCursor;</span>
 		}
 
-<span class="fc" id="L107">		return aiCurrent;</span>
+<span class="fc" id="L133">		return aiCurrent;</span>
 	}
 
 	/**
@@ -120,21 +146,21 @@ public class SequenceIndexIterator {
 		final int[] aiMax,
 		final boolean bCycle)
 		throws java.lang.Exception
-<span class="fc" id="L123">	{</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == (_aiMax = aiMax))</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L149">	{</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == (_aiMax = aiMax))</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L127">		_bCycle = bCycle;</span>
-<span class="fc" id="L128">		_iIndexCursor = 0;</span>
-<span class="fc" id="L129">		_iSequenceCursor = 0;</span>
-<span class="fc" id="L130">		int iNumSequence = _aiMax.length;</span>
+<span class="fc" id="L153">		_bCycle = bCycle;</span>
+<span class="fc" id="L154">		_iIndexCursor = 0;</span>
+<span class="fc" id="L155">		_iSequenceCursor = 0;</span>
+<span class="fc" id="L156">		int iNumSequence = _aiMax.length;</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (0 == iNumSequence) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (0 == iNumSequence) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			if (0 &gt; _aiMax[i]) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i) {</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			if (0 &gt; _aiMax[i]) throw new java.lang.Exception (&quot;SequenceIndexIterator ctr =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L137">	}</span>
+<span class="fc" id="L163">	}</span>
 
 	/**
 	 * Retrieve the First Cursor
@@ -144,10 +170,10 @@ public class SequenceIndexIterator {
 
 	public int[] first()
 	{
-<span class="fc" id="L147">		_iIndexCursor = 0;</span>
-<span class="fc" id="L148">		_iSequenceCursor = 0;</span>
+<span class="fc" id="L173">		_iIndexCursor = 0;</span>
+<span class="fc" id="L174">		_iSequenceCursor = 0;</span>
 
-<span class="fc" id="L150">		return setFromCursor();</span>
+<span class="fc" id="L176">		return setFromCursor();</span>
 	}
 
 	/**
@@ -158,13 +184,13 @@ public class SequenceIndexIterator {
 
 	public int[] next()
 	{
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (++_iIndexCursor &lt;= _aiMax[_iSequenceCursor]) return setFromCursor();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		if (++_iIndexCursor &lt;= _aiMax[_iSequenceCursor]) return setFromCursor();</span>
 
-<span class="fc" id="L163">		_iIndexCursor = 0;</span>
+<span class="fc" id="L189">		_iIndexCursor = 0;</span>
 
-<span class="fc bfc" id="L165" title="All 2 branches covered.">		if (++_iSequenceCursor &lt; _aiMax.length) return setFromCursor();</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		if (++_iSequenceCursor &lt; _aiMax.length) return setFromCursor();</span>
 
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		return _bCycle ? first() : null;</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		return _bCycle ? first() : null;</span>
 	}
 
 	/**
@@ -175,13 +201,13 @@ public class SequenceIndexIterator {
 
 	public int size()
 	{
-<span class="fc" id="L178">		int iSize = 0;</span>
-<span class="fc" id="L179">		int iNumSequence = _aiMax.length;</span>
+<span class="fc" id="L204">		int iSize = 0;</span>
+<span class="fc" id="L205">		int iNumSequence = _aiMax.length;</span>
 
-<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
-<span class="fc" id="L182">			iSize += _aiMax[i] + 1;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSequence; ++i)</span>
+<span class="fc" id="L208">			iSize += _aiMax[i] + 1;</span>
 
-<span class="fc" id="L184">		return iSize;</span>
+<span class="fc" id="L210">		return iSize;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

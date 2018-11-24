@@ -6,34 +6,52 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,26 +68,39 @@ package org.drip.spaces.cover;
  */
 
 /**
- * ScaleSensitiveCoveringBounds implements the Lower/Upper Bounds for the General Class of Functions in terms
- * 	of their scale-sensitive dimensions (i.e., the fat shattering coefficients).
- * 
- * The References are:
- * 
- * 	1) D. Pollard (1984): Convergence of Stochastic Processes, Springer, New York.
- * 
- * 	2) N. Alon, S. Ben-David, N. Cesa-Bianchi, and D. Haussler (1993): Scale-sensitive Dimensions, Uniform-
- * 		Convergence, and Learnability, Proceedings of the ACM Symposium on the Foundations of Computer
- * 		Science.
- * 
- * 	3) P. L. Bartlett, S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued Function
- * 		Classes, IEEE Transactions on Information Theory 43 (5) 1721-1724.
+ * &lt;i&gt;ScaleSensitiveCoveringBounds&lt;/i&gt; implements the Lower/Upper Bounds for the General Class of Functions
+ * in terms of their scale-sensitive dimensions (i.e., the fat shattering coefficients). The References are:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		N. Alon, S. Ben-David, N. Cesa-Bianchi, and D. Haussler (1993): Scale-sensitive Dimensions,
+ *  			Uniform-Convergence, and Learnability &lt;i&gt;Proceedings of the ACM Symposium on the Foundations
+ *  				of Computer Science&lt;/i&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		P. L. Bartlett, S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued
+ *  			Function Classes &lt;i&gt;IEEE Transactions on Information Theory&lt;/i&gt; &lt;b&gt;43 (5)&lt;/b&gt; 1721-1724 
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		D. Pollard (1984): &lt;i&gt;Convergence of Stochastic Processes&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Covering Number&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
-<span class="fc" id="L71">	private int _iSampleSize = -1;</span>
-<span class="fc" id="L72">	private org.drip.function.definition.R1ToR1 _r1r1FatShatter = null;</span>
+<span class="fc" id="L102">	private int _iSampleSize = -1;</span>
+<span class="fc" id="L103">	private org.drip.function.definition.R1ToR1 _r1r1FatShatter = null;</span>
 
 	/**
 	 * ScaleSensitiveCoveringBounds Constructor
@@ -84,10 +115,10 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final org.drip.function.definition.R1ToR1 r1r1FatShatter,
 		final int iSampleSize)
 		throws java.lang.Exception
-<span class="fc" id="L87">	{</span>
-<span class="pc bpc" id="L88" title="2 of 4 branches missed.">		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 &gt;= (_iSampleSize = iSampleSize))</span>
-<span class="nc" id="L89">			throw new java.lang.Exception (&quot;ScaleSensitiveCoveringBounds ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L90">	}</span>
+<span class="fc" id="L118">	{</span>
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 &gt;= (_iSampleSize = iSampleSize))</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;ScaleSensitiveCoveringBounds ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L121">	}</span>
 
 	/**
 	 * Retrieve the Fat Shattering Coefficient Function
@@ -97,7 +128,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 
 	public org.drip.function.definition.R1ToR1 fatShatteringFunction()
 	{
-<span class="nc" id="L100">		return _r1r1FatShatter;</span>
+<span class="nc" id="L131">		return _r1r1FatShatter;</span>
 	}
 
 	/**
@@ -108,7 +139,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 
 	public int sampleSize()
 	{
-<span class="nc" id="L111">		return _iSampleSize;</span>
+<span class="nc" id="L142">		return _iSampleSize;</span>
 	}
 
 	/**
@@ -126,13 +157,13 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L130">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L160" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L161">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::sampleSizeLowerBound =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L133">		double dblLog2 = java.lang.Math.log (2.);</span>
+<span class="fc" id="L164">		double dblLog2 = java.lang.Math.log (2.);</span>
 
-<span class="fc" id="L135">		return 2. * _r1r1FatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *</span>
+<span class="fc" id="L166">		return 2. * _r1r1FatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *</span>
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2;
 	}
 
@@ -151,21 +182,21 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L154" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L155">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L185" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L186">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::restrictedSubsetCardinality =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L158">		double dblLog2 = java.lang.Math.log (2.);</span>
+<span class="fc" id="L189">		double dblLog2 = java.lang.Math.log (2.);</span>
 
-<span class="fc" id="L160">		double dblFatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * dblCover);</span>
+<span class="fc" id="L191">		double dblFatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * dblCover);</span>
 
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (_iSampleSize &lt; 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		if (_iSampleSize &lt; 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *</span>
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2)
-<span class="nc" id="L164">			throw new java.lang.Exception</span>
+<span class="nc" id="L195">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::restrictedSubsetCardinality =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L167">		return 6. * dblFatShatteringCoefficient * java.lang.Math.log (16. / dblCover) * java.lang.Math.log</span>
-<span class="fc" id="L168">			(32. * java.lang.Math.E * _iSampleSize / (dblFatShatteringCoefficient * dblCover)) / dblLog2 +</span>
+<span class="fc" id="L198">		return 6. * dblFatShatteringCoefficient * java.lang.Math.log (16. / dblCover) * java.lang.Math.log</span>
+<span class="fc" id="L199">			(32. * java.lang.Math.E * _iSampleSize / (dblFatShatteringCoefficient * dblCover)) / dblLog2 +</span>
 				dblLog2;
 	}
 
@@ -191,25 +222,25 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L195">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L225" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L226">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::upperProbabilityBoundWeight =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L198">		return java.lang.Math.log (4.) - (dblCover * dblCover * _iSampleSize / 128.);</span>
+<span class="fc" id="L229">		return java.lang.Math.log (4.) - (dblCover * dblCover * _iSampleSize / 128.);</span>
 	}
 
 	@Override public double logLowerBound (
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L205">		return restrictedSubsetCardinality (dblCover);</span>
+<span class="fc" id="L236">		return restrictedSubsetCardinality (dblCover);</span>
 	}
 
 	@Override public double logUpperBound (
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L212">		return _r1r1FatShatter.evaluate (4. * dblCover) / 32.;</span>
+<span class="fc" id="L243">		return _r1r1FatShatter.evaluate (4. * dblCover) / 32.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

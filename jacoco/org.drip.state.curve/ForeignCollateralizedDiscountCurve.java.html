@@ -6,35 +6,53 @@ package org.drip.state.curve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,19 +69,27 @@ package org.drip.state.curve;
  */
 
 /**
- * ForeignCollateralizedDiscountCurve computes the discount factor corresponding to one unit of domestic
- * 	currency collateralized by a foreign collateral.
+ * &lt;i&gt;ForeignCollateralizedDiscountCurve&lt;/i&gt; computes the discount factor corresponding to one unit of
+ * domestic currency collateralized by a foreign collateral.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.ExplicitBootDiscountCurve {
-<span class="fc" id="L61">	private java.lang.String _strCurrency = null;</span>
-<span class="fc" id="L62">	private org.drip.state.fx.FXCurve _fxForward = null;</span>
-<span class="fc" id="L63">	private org.drip.state.volatility.VolatilityCurve _vcFX = null;</span>
-<span class="fc" id="L64">	private org.drip.state.discount.MergedDiscountForwardCurve _dcCollateralForeign = null;</span>
-<span class="fc" id="L65">	private org.drip.state.volatility.VolatilityCurve _vcCollateralForeign = null;</span>
-<span class="fc" id="L66">	private org.drip.function.definition.R1ToR1 _r1r1CollateralForeignFXCorrelation = null;</span>
+<span class="fc" id="L87">	private java.lang.String _strCurrency = null;</span>
+<span class="fc" id="L88">	private org.drip.state.fx.FXCurve _fxForward = null;</span>
+<span class="fc" id="L89">	private org.drip.state.volatility.VolatilityCurve _vcFX = null;</span>
+<span class="fc" id="L90">	private org.drip.state.discount.MergedDiscountForwardCurve _dcCollateralForeign = null;</span>
+<span class="fc" id="L91">	private org.drip.state.volatility.VolatilityCurve _vcCollateralForeign = null;</span>
+<span class="fc" id="L92">	private org.drip.function.definition.R1ToR1 _r1r1CollateralForeignFXCorrelation = null;</span>
 
 	/**
 	 * ForeignCollateralizedDiscountCurve constructor
@@ -87,22 +113,22 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final org.drip.function.definition.R1ToR1 r1r1CollateralForeignFXCorrelation)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L90">		super (dcCollateralForeign.epoch().julian(), strCurrency);</span>
+<span class="fc" id="L116">		super (dcCollateralForeign.epoch().julian(), strCurrency);</span>
 
-<span class="pc bpc" id="L92" title="7 of 14 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_vcCollateralForeign =</span>
+<span class="pc bpc" id="L118" title="7 of 14 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_vcCollateralForeign =</span>
 			vcCollateralForeign) || null == (_vcFX = vcFX) || null == (_r1r1CollateralForeignFXCorrelation =
 				r1r1CollateralForeignFXCorrelation) || null == (_dcCollateralForeign = dcCollateralForeign)
 					|| null == (_fxForward = fxForward))
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;ForeignCollateralizedDiscountCurve ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L97">	}</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;ForeignCollateralizedDiscountCurve ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L123">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L103" title="All 2 branches covered.">		return iDate &lt;= _iEpochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *</span>
-<span class="fc" id="L104">			java.lang.Math.exp (-1. * org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto</span>
-<span class="fc" id="L105">				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _iEpochDate, iDate));</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		return iDate &lt;= _iEpochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *</span>
+<span class="fc" id="L130">			java.lang.Math.exp (-1. * org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto</span>
+<span class="fc" id="L131">				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _iEpochDate, iDate));</span>
 	}
 
 	@Override public double forward (
@@ -110,38 +136,38 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L113" title="All 4 branches missed.">		if (iDate1 &lt; _iEpochDate || iDate2 &lt; _iEpochDate) return 0.;</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (iDate1 &lt; _iEpochDate || iDate2 &lt; _iEpochDate) return 0.;</span>
 
-<span class="nc" id="L115">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="nc" id="L141">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (iDate &lt; _iEpochDate) return 0.;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (iDate &lt; _iEpochDate) return 0.;</span>
 
-<span class="nc" id="L124">		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));</span>
+<span class="nc" id="L150">		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc" id="L131">		return null;</span>
+<span class="nc" id="L157">		return null;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; canonicalTruthness (
 		final java.lang.String strLatentQuantificationMetric)
 	{
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L163">		return null;</span>
 	}
 
 	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L144">		return null;</span>
+<span class="nc" id="L170">		return null;</span>
 	}
 
 	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve shiftManifestMeasure (
@@ -149,65 +175,65 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L152">		return null;</span>
+<span class="nc" id="L178">		return null;</span>
 	}
 
 	@Override public org.drip.state.discount.ExplicitBootDiscountCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L159">		return null;</span>
+<span class="nc" id="L185">		return null;</span>
 	}
 
 	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L191">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L197">		return null;</span>
 	}
 
 	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve createBasisRateShiftedCurve (
 		final int[] aiDate,
 		final double[] adblBasis)
 	{
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L204">		return null;</span>
 	}
 
 	@Override public java.lang.String latentStateQuantificationMetric()
 	{
-<span class="nc" id="L183">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
+<span class="nc" id="L209">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="nc" id="L190">		return null;</span>
+<span class="nc" id="L216">		return null;</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc" id="L197">		return true;</span>
+<span class="nc" id="L223">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc" id="L204">		return true;</span>
+<span class="nc" id="L230">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc" id="L210">		return true;</span>
+<span class="nc" id="L236">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

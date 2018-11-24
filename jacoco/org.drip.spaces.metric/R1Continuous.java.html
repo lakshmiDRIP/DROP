@@ -6,34 +6,52 @@ package org.drip.spaces.metric;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,20 +68,32 @@ package org.drip.spaces.metric;
  */
 
 /**
- * R1Continuous implements the Normed, Bounded/Unbounded Continuous l^p R^1 Spaces.
- * 
- * The Reference we've used is:
- * 
- * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ * &lt;i&gt;R1Continuous&lt;/i&gt; implements the Normed, Bounded/Unbounded Continuous l&lt;sub&gt;p&lt;/sub&gt; R&lt;sup&gt;1&lt;/sup&gt;
+ * Spaces. The Reference we've used is:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B., and I. Stephani (1990): &lt;i&gt;Entropy, Compactness, and the Approximation of Operators&lt;/i&gt;
+ *  			&lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge UK 
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector implements
 	org.drip.spaces.metric.R1Normed {
-<span class="nc" id="L65">	private int _iPNorm = -1;</span>
-<span class="nc" id="L66">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
+<span class="nc" id="L95">	private int _iPNorm = -1;</span>
+<span class="nc" id="L96">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
 
 	/**
 	 * Construct the Standard l^p R^1 Continuous Space Instance
@@ -83,12 +113,12 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final int iPNorm)
 	{
 		try {
-<span class="nc" id="L86">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);</span>
-<span class="nc" id="L87">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L88">			e.printStackTrace();</span>
+<span class="nc" id="L116">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);</span>
+<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L118">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L91">		return null;</span>
+<span class="nc" id="L121">		return null;</span>
 	}
 
 	/**
@@ -107,12 +137,12 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final org.drip.measure.continuous.R1 distR1)
 	{
 		try {
-<span class="nc" id="L110">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);</span>
-<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="nc" id="L140">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);</span>
+<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L142">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L115">		return null;</span>
+<span class="nc" id="L145">		return null;</span>
 	}
 
 	/**
@@ -133,93 +163,93 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final int iPNorm)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L136">		super (dblLeftEdge, dblRightEdge);</span>
+<span class="nc" id="L166">		super (dblLeftEdge, dblRightEdge);</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;R1Continuous Constructor: Invalid p-norm&quot;);</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
+<span class="nc" id="L169">			throw new java.lang.Exception (&quot;R1Continuous Constructor: Invalid p-norm&quot;);</span>
 
-<span class="nc" id="L141">		_distR1 = distR1;</span>
-<span class="nc" id="L142">	}</span>
+<span class="nc" id="L171">		_distR1 = distR1;</span>
+<span class="nc" id="L172">	}</span>
 
 	@Override public int pNorm()
 	{
-<span class="nc" id="L146">		return _iPNorm;</span>
+<span class="nc" id="L176">		return _iPNorm;</span>
 	}
 
 	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
-<span class="nc" id="L151">		return _distR1;</span>
+<span class="nc" id="L181">		return _distR1;</span>
 	}
 
 	@Override public double sampleMetricNorm (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;R1Continuous::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
+<span class="nc" id="L189">			throw new java.lang.Exception (&quot;R1Continuous::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L161">		return java.lang.Math.abs (dblX);</span>
+<span class="nc" id="L191">		return java.lang.Math.abs (dblX);</span>
 	}
 
 	@Override public double populationMode()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L168">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L198">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L170">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L200">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L175">				return _distR1.density (dblX);</span>
+<span class="nc" id="L205">				return _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L179">		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());</span>
+<span class="nc" id="L209">		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null == vopMode)</span>
-<span class="nc" id="L182">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Cannot compute VOP Mode&quot;);</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (null == vopMode)</span>
+<span class="nc" id="L212">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Cannot compute VOP Mode&quot;);</span>
 
-<span class="nc" id="L184">		return vopMode.variates()[0];</span>
+<span class="nc" id="L214">		return vopMode.variates()[0];</span>
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L191">			throw new java.lang.Exception (&quot;R1Continuous::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L221">			throw new java.lang.Exception (&quot;R1Continuous::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L193">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L223">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L198">				return sampleMetricNorm (dblX) * _distR1.density (dblX);</span>
+<span class="nc" id="L228">				return sampleMetricNorm (dblX) * _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L202">		return funcR1ToR1.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L232">		return funcR1ToR1.integrate (leftEdge(), rightEdge());</span>
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L209" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
-<span class="nc" id="L210">			throw new java.lang.Exception (&quot;R1Continuous::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
+<span class="nc" id="L240">			throw new java.lang.Exception (&quot;R1Continuous::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L212">		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L213">			(null) {</span>
+<span class="nc" id="L242">		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L243">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L218">				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);</span>
+<span class="nc" id="L248">				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L222">		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L252">		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

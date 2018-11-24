@@ -6,6 +6,7 @@ package org.drip.spline.pchip;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.pchip;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,57 +70,79 @@ package org.drip.spline.pchip;
  */
 
 /**
- * This class implements the regime using the Hagan and West (2006) Estimator. It provides the following
- * 	functionality:
- * 	- Static Method to Create an instance of MonotoneConvexHaganWest.
- * 	- Ensure that the estimated regime is monotone an convex.
- * 	- If need be, enforce positivity and/or apply amelioration.
- * 	- Apply segment-by-segment range bounds as needed.
- * 	- Retrieve predictor ordinates/response values.
+ * &lt;i&gt;MonotoneConvexHaganWest&lt;/i&gt; implements the regime using the Hagan and West (2006) Estimator. It
+ * provides the following functionality:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Static Method to Create an instance of MonotoneConvexHaganWest
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Ensure that the estimated regime is monotone an convex
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			If need be, enforce positivity and/or apply amelioration
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Apply segment-by-segment range bounds as needed
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Retrieve predictor ordinates/response values
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L67">	private double[] _adblObservation = null;</span>
-<span class="fc" id="L68">	private double[] _adblResponseValue = null;</span>
-<span class="fc" id="L69">	private boolean _bLinearNodeInference = true;</span>
-<span class="fc" id="L70">	private double[] _adblPredictorOrdinate = null;</span>
-<span class="fc" id="L71">	private double[] _adblResponseZScoreLeft = null;</span>
-<span class="fc" id="L72">	private double[] _adblResponseZScoreRight = null;</span>
-<span class="fc" id="L73">	private org.drip.function.definition.R1ToR1[] _aAU = null;</span>
+<span class="fc" id="L107">	private double[] _adblObservation = null;</span>
+<span class="fc" id="L108">	private double[] _adblResponseValue = null;</span>
+<span class="fc" id="L109">	private boolean _bLinearNodeInference = true;</span>
+<span class="fc" id="L110">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L111">	private double[] _adblResponseZScoreLeft = null;</span>
+<span class="fc" id="L112">	private double[] _adblResponseZScoreRight = null;</span>
+<span class="fc" id="L113">	private org.drip.function.definition.R1ToR1[] _aAU = null;</span>
 
 	class Case1Univariate extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L76">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L79">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L118">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L119">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
 
 		Case1Univariate (
 			final double dblPredictorOrdinateLeft,
 			final double dblPredictorOrdinateRight,
 			final double dblResponseZScoreLeft,
 			final double dblResponseZScoreRight)
-<span class="fc" id="L86">		{</span>
-<span class="fc" id="L87">			super (null);</span>
+<span class="fc" id="L126">		{</span>
+<span class="fc" id="L127">			super (null);</span>
 
-<span class="fc" id="L89">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
-<span class="fc" id="L90">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
-<span class="fc" id="L91">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
-<span class="fc" id="L92">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
-<span class="fc" id="L93">		}</span>
+<span class="fc" id="L129">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
+<span class="fc" id="L130">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
+<span class="fc" id="L131">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
+<span class="fc" id="L132">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
+<span class="fc" id="L133">		}</span>
 
 		@Override public double evaluate (
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L99" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
+<span class="pc bpc" id="L139" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate &gt; _dblPredictorOrdinateRight)
-<span class="nc" id="L101">				throw new java.lang.Exception (&quot;Case1Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L141">				throw new java.lang.Exception (&quot;Case1Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L103">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
+<span class="fc" id="L143">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
 				_dblPredictorOrdinateLeft);
-<span class="fc" id="L105">			return _dblResponseZScoreLeft * (1. - 4. * dblX + 3. * dblX * dblX) + _dblResponseZScoreRight *</span>
+<span class="fc" id="L145">			return _dblResponseZScoreLeft * (1. - 4. * dblX + 3. * dblX * dblX) + _dblResponseZScoreRight *</span>
 				(-2. * dblX + 3. * dblX * dblX);
 		}
 
@@ -111,46 +151,46 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-<span class="nc" id="L114">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L154">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 		}
 	}
 
 	class Case2Univariate extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L119">		private double _dblEta = java.lang.Double.NaN;</span>
-<span class="fc" id="L120">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L121">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L122">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L123">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L159">		private double _dblEta = java.lang.Double.NaN;</span>
+<span class="fc" id="L160">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L161">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L162">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L163">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
 
 		Case2Univariate (
 			final double dblPredictorOrdinateLeft,
 			final double dblPredictorOrdinateRight,
 			final double dblResponseZScoreLeft,
 			final double dblResponseZScoreRight)
-<span class="fc" id="L130">		{</span>
-<span class="fc" id="L131">			super (null);</span>
+<span class="fc" id="L170">		{</span>
+<span class="fc" id="L171">			super (null);</span>
 
-<span class="fc" id="L133">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
-<span class="fc" id="L134">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
-<span class="fc" id="L135">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
-<span class="fc" id="L136">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			_dblEta = _dblResponseZScoreLeft != _dblResponseZScoreRight ? (_dblResponseZScoreRight + 2. *</span>
+<span class="fc" id="L173">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
+<span class="fc" id="L174">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
+<span class="fc" id="L175">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
+<span class="fc" id="L176">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">			_dblEta = _dblResponseZScoreLeft != _dblResponseZScoreRight ? (_dblResponseZScoreRight + 2. *</span>
 				_dblResponseZScoreLeft) / (_dblResponseZScoreRight - _dblResponseZScoreLeft) : 0.;
-<span class="fc" id="L139">		}</span>
+<span class="fc" id="L179">		}</span>
 
 		@Override public double evaluate (
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L145" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
+<span class="pc bpc" id="L185" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate &gt; _dblPredictorOrdinateRight)
-<span class="nc" id="L147">				throw new java.lang.Exception (&quot;Case2Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L187">				throw new java.lang.Exception (&quot;Case2Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;</span>
 
-<span class="fc" id="L151">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
+<span class="fc" id="L191">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
 				_dblPredictorOrdinateLeft);
-<span class="fc bfc" id="L153" title="All 2 branches covered.">			return dblX &lt;= _dblEta ? _dblResponseZScoreLeft : _dblResponseZScoreLeft +</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">			return dblX &lt;= _dblEta ? _dblResponseZScoreLeft : _dblResponseZScoreLeft +</span>
 				(_dblResponseZScoreRight - _dblResponseZScoreLeft) * (dblX - _dblEta) * (dblX - _dblEta) /
 					(1. - _dblEta) / (1. - _dblEta);
 		}
@@ -160,46 +200,46 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-<span class="nc" id="L163">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L203">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 		}
 	}
 
 	class Case3Univariate extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L168">		private double _dblEta = java.lang.Double.NaN;</span>
-<span class="fc" id="L169">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L170">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L171">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L172">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L208">		private double _dblEta = java.lang.Double.NaN;</span>
+<span class="fc" id="L209">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L210">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L211">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L212">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
 
 		Case3Univariate (
 			final double dblPredictorOrdinateLeft,
 			final double dblPredictorOrdinateRight,
 			final double dblResponseZScoreLeft,
 			final double dblResponseZScoreRight)
-<span class="fc" id="L179">		{</span>
-<span class="fc" id="L180">			super (null);</span>
+<span class="fc" id="L219">		{</span>
+<span class="fc" id="L220">			super (null);</span>
 
-<span class="fc" id="L182">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
-<span class="fc" id="L183">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
-<span class="fc" id="L184">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
-<span class="fc" id="L185">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">			_dblEta = _dblResponseZScoreLeft != _dblResponseZScoreRight ? 3. * _dblResponseZScoreRight /</span>
+<span class="fc" id="L222">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
+<span class="fc" id="L223">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
+<span class="fc" id="L224">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
+<span class="fc" id="L225">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">			_dblEta = _dblResponseZScoreLeft != _dblResponseZScoreRight ? 3. * _dblResponseZScoreRight /</span>
 				(_dblResponseZScoreRight - _dblResponseZScoreLeft) : 0.;
-<span class="fc" id="L188">		}</span>
+<span class="fc" id="L228">		}</span>
 
 		@Override public double evaluate (
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L194" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
+<span class="pc bpc" id="L234" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate &gt; _dblPredictorOrdinateRight)
-<span class="nc" id="L196">				throw new java.lang.Exception (&quot;Case3Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L236">				throw new java.lang.Exception (&quot;Case3Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;</span>
 
-<span class="fc" id="L200">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
+<span class="fc" id="L240">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
 				_dblPredictorOrdinateLeft);
-<span class="fc bfc" id="L202" title="All 2 branches covered.">			return dblX &lt; _dblEta ? _dblResponseZScoreLeft + (_dblResponseZScoreLeft -</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">			return dblX &lt; _dblEta ? _dblResponseZScoreLeft + (_dblResponseZScoreLeft -</span>
 				_dblResponseZScoreRight) * (_dblEta - dblX) * (_dblEta - dblX) / _dblEta / _dblEta :
 					_dblResponseZScoreRight;
 		}
@@ -209,54 +249,54 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-<span class="nc" id="L212">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L252">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 		}
 	}
 
 	class Case4Univariate extends org.drip.function.definition.R1ToR1 {
-<span class="nc" id="L217">		private double _dblA = java.lang.Double.NaN;</span>
-<span class="nc" id="L218">		private double _dblEta = java.lang.Double.NaN;</span>
-<span class="nc" id="L219">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
-<span class="nc" id="L220">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
-<span class="nc" id="L221">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
-<span class="nc" id="L222">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
+<span class="nc" id="L257">		private double _dblA = java.lang.Double.NaN;</span>
+<span class="nc" id="L258">		private double _dblEta = java.lang.Double.NaN;</span>
+<span class="nc" id="L259">		private double _dblResponseZScoreLeft = java.lang.Double.NaN;</span>
+<span class="nc" id="L260">		private double _dblResponseZScoreRight = java.lang.Double.NaN;</span>
+<span class="nc" id="L261">		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
+<span class="nc" id="L262">		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
 
 		Case4Univariate (
 			final double dblPredictorOrdinateLeft,
 			final double dblPredictorOrdinateRight,
 			final double dblResponseZScoreLeft,
 			final double dblResponseZScoreRight)
-<span class="nc" id="L229">		{</span>
-<span class="nc" id="L230">			super (null);</span>
+<span class="nc" id="L269">		{</span>
+<span class="nc" id="L270">			super (null);</span>
 
-<span class="nc" id="L232">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
-<span class="nc" id="L233">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
-<span class="nc" id="L234">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
-<span class="nc" id="L235">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
+<span class="nc" id="L272">			_dblResponseZScoreLeft = dblResponseZScoreLeft;</span>
+<span class="nc" id="L273">			_dblResponseZScoreRight = dblResponseZScoreRight;</span>
+<span class="nc" id="L274">			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;</span>
+<span class="nc" id="L275">			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;</span>
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			if (_dblResponseZScoreLeft != _dblResponseZScoreRight) {</span>
-<span class="nc" id="L238">				_dblEta = _dblResponseZScoreRight / (_dblResponseZScoreRight - _dblResponseZScoreLeft);</span>
-<span class="nc" id="L239">				_dblA = -1. * _dblResponseZScoreLeft * _dblResponseZScoreRight / (_dblResponseZScoreRight -</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			if (_dblResponseZScoreLeft != _dblResponseZScoreRight) {</span>
+<span class="nc" id="L278">				_dblEta = _dblResponseZScoreRight / (_dblResponseZScoreRight - _dblResponseZScoreLeft);</span>
+<span class="nc" id="L279">				_dblA = -1. * _dblResponseZScoreLeft * _dblResponseZScoreRight / (_dblResponseZScoreRight -</span>
 					_dblResponseZScoreLeft);
 			} else {
-<span class="nc" id="L242">				_dblA = 0.;</span>
-<span class="nc" id="L243">				_dblEta = 0.;</span>
+<span class="nc" id="L282">				_dblA = 0.;</span>
+<span class="nc" id="L283">				_dblEta = 0.;</span>
 			}
-<span class="nc" id="L245">		}</span>
+<span class="nc" id="L285">		}</span>
 
 		@Override public double evaluate (
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-<span class="nc bnc" id="L251" title="All 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
+<span class="nc bnc" id="L291" title="All 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate &lt;</span>
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate &gt; _dblPredictorOrdinateRight)
-<span class="nc" id="L253">				throw new java.lang.Exception (&quot;Case4Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L293">				throw new java.lang.Exception (&quot;Case4Univariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;</span>
 
-<span class="nc" id="L257">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
+<span class="nc" id="L297">			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
 				_dblPredictorOrdinateLeft);
-<span class="nc bnc" id="L259" title="All 2 branches missed.">			return dblX &lt; _dblEta ? _dblA + (_dblResponseZScoreLeft - _dblA) * (_dblEta - dblX) * (_dblEta -</span>
+<span class="nc bnc" id="L299" title="All 2 branches missed.">			return dblX &lt; _dblEta ? _dblA + (_dblResponseZScoreLeft - _dblA) * (_dblEta - dblX) * (_dblEta -</span>
 				dblX) / _dblEta / _dblEta : _dblA + (_dblResponseZScoreRight - _dblA) * (dblX - _dblEta) *
 					(dblX - _dblEta) / (1. - _dblEta) / (1. - _dblEta);
 		}
@@ -266,7 +306,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-<span class="nc" id="L269">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L309">			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 		}
 	}
 
@@ -285,18 +325,18 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 		final double[] adblObservation,
 		final boolean bLinearNodeInference)
 	{
-<span class="fc" id="L288">		MonotoneConvexHaganWest mchw = null;</span>
+<span class="fc" id="L328">		MonotoneConvexHaganWest mchw = null;</span>
 
 		try {
-<span class="fc" id="L291">			mchw = new MonotoneConvexHaganWest (adblPredictorOrdinate, adblObservation,</span>
+<span class="fc" id="L331">			mchw = new MonotoneConvexHaganWest (adblPredictorOrdinate, adblObservation,</span>
 				bLinearNodeInference);
-<span class="nc" id="L293">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L294">			e.printStackTrace();</span>
+<span class="nc" id="L333">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L334">			e.printStackTrace();</span>
 
-<span class="nc" id="L296">			return null;</span>
-<span class="fc" id="L297">		}</span>
+<span class="nc" id="L336">			return null;</span>
+<span class="fc" id="L337">		}</span>
 
-<span class="pc bpc" id="L299" title="3 of 6 branches missed.">		return mchw.inferResponseValues() &amp;&amp; mchw.inferResponseZScores() &amp;&amp; mchw.generateUnivariate() ? mchw</span>
+<span class="pc bpc" id="L339" title="3 of 6 branches missed.">		return mchw.inferResponseValues() &amp;&amp; mchw.inferResponseZScores() &amp;&amp; mchw.generateUnivariate() ? mchw</span>
 			: null;
 	}
 
@@ -306,98 +346,98 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 		final boolean bLinearNodeInference)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L309">		super (null);</span>
+<span class="fc" id="L349">		super (null);</span>
 
-<span class="pc bpc" id="L311" title="2 of 4 branches missed.">		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =</span>
+<span class="pc bpc" id="L351" title="2 of 4 branches missed.">		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =</span>
 			adblPredictorOrdinate))
-<span class="nc" id="L313">			throw new java.lang.Exception (&quot;MonotoneConvexHaganWest ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L353">			throw new java.lang.Exception (&quot;MonotoneConvexHaganWest ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L315">		_bLinearNodeInference = bLinearNodeInference;</span>
-<span class="fc" id="L316">		int iNumObservation = _adblObservation.length;</span>
+<span class="fc" id="L355">		_bLinearNodeInference = bLinearNodeInference;</span>
+<span class="fc" id="L356">		int iNumObservation = _adblObservation.length;</span>
 
-<span class="pc bpc" id="L318" title="2 of 4 branches missed.">		if (1 &gt;= iNumObservation || iNumObservation + 1 != _adblPredictorOrdinate.length)</span>
-<span class="nc" id="L319">			throw new java.lang.Exception (&quot;MonotoneConvexHaganWest ctr: Invalid Inputs!&quot;);</span>
-<span class="fc" id="L320">	}</span>
+<span class="pc bpc" id="L358" title="2 of 4 branches missed.">		if (1 &gt;= iNumObservation || iNumObservation + 1 != _adblPredictorOrdinate.length)</span>
+<span class="nc" id="L359">			throw new java.lang.Exception (&quot;MonotoneConvexHaganWest ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L360">	}</span>
 
 	private boolean inferResponseValues()
 	{
-<span class="fc" id="L324">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
-<span class="fc" id="L325">		_adblResponseValue = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L364">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L365">		_adblResponseValue = new double[iNumPredictorOrdinate];</span>
 
-<span class="fc bfc" id="L327" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumPredictorOrdinate - 1; ++i) {</span>
-<span class="fc bfc" id="L328" title="All 2 branches covered.">			if (_bLinearNodeInference)</span>
-<span class="fc" id="L329">				_adblResponseValue[i] = (_adblPredictorOrdinate[i] - _adblPredictorOrdinate[i - 1]) /</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumPredictorOrdinate - 1; ++i) {</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">			if (_bLinearNodeInference)</span>
+<span class="fc" id="L369">				_adblResponseValue[i] = (_adblPredictorOrdinate[i] - _adblPredictorOrdinate[i - 1]) /</span>
 					(_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i - 1]) * _adblObservation[i] +
 						(_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i]) /
 							(_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i - 1]) *
 								_adblObservation[i - 1];
 			else {
-<span class="fc" id="L335">				_adblResponseValue[i] = 0.;</span>
+<span class="fc" id="L375">				_adblResponseValue[i] = 0.;</span>
 
-<span class="pc bpc" id="L337" title="1 of 2 branches missed.">				if (_adblObservation[i - 1] * _adblObservation[i] &gt; 0.) {</span>
-<span class="fc" id="L338">					_adblResponseValue[i] = (_adblPredictorOrdinate[i] - _adblPredictorOrdinate[i - 1] + 2. *</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">				if (_adblObservation[i - 1] * _adblObservation[i] &gt; 0.) {</span>
+<span class="fc" id="L378">					_adblResponseValue[i] = (_adblPredictorOrdinate[i] - _adblPredictorOrdinate[i - 1] + 2. *</span>
 						(_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i])) / (3. *
 							(_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i])) /
 								_adblObservation[i - 1];
-<span class="fc" id="L342">					_adblResponseValue[i] += (_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i] + 2.</span>
+<span class="fc" id="L382">					_adblResponseValue[i] += (_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i] + 2.</span>
 						* (_adblPredictorOrdinate[i] - _adblPredictorOrdinate[i - 1])) / (3. *
 							(_adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i])) /
 								_adblObservation[i];
-<span class="fc" id="L346">					_adblResponseValue[i] = 1. / _adblResponseValue[i];</span>
+<span class="fc" id="L386">					_adblResponseValue[i] = 1. / _adblResponseValue[i];</span>
 				}
 			}
 		}
 
-<span class="fc" id="L351">		_adblResponseValue[0] = _adblObservation[0] - 0.5 * (_adblResponseValue[1] - _adblObservation[0]);</span>
-<span class="fc" id="L352">		_adblResponseValue[iNumPredictorOrdinate - 1] = _adblObservation[iNumPredictorOrdinate - 2] - 0.5 *</span>
+<span class="fc" id="L391">		_adblResponseValue[0] = _adblObservation[0] - 0.5 * (_adblResponseValue[1] - _adblObservation[0]);</span>
+<span class="fc" id="L392">		_adblResponseValue[iNumPredictorOrdinate - 1] = _adblObservation[iNumPredictorOrdinate - 2] - 0.5 *</span>
 			(_adblResponseValue[iNumPredictorOrdinate - 2] - _adblObservation[iNumPredictorOrdinate - 2]);
-<span class="fc" id="L354">		return true;</span>
+<span class="fc" id="L394">		return true;</span>
 	}
 
 	private boolean inferResponseZScores()
 	{
-<span class="fc" id="L359">		int iNumSegment = _adblPredictorOrdinate.length - 1;</span>
-<span class="fc" id="L360">		_adblResponseZScoreLeft = new double[iNumSegment];</span>
-<span class="fc" id="L361">		_adblResponseZScoreRight = new double[iNumSegment];</span>
+<span class="fc" id="L399">		int iNumSegment = _adblPredictorOrdinate.length - 1;</span>
+<span class="fc" id="L400">		_adblResponseZScoreLeft = new double[iNumSegment];</span>
+<span class="fc" id="L401">		_adblResponseZScoreRight = new double[iNumSegment];</span>
 
-<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="fc" id="L364">			_adblResponseZScoreLeft[i] = _adblResponseValue[i] - _adblObservation[i];</span>
-<span class="fc" id="L365">			_adblResponseZScoreRight[i] = _adblResponseValue[i + 1] - _adblObservation[i];</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="fc" id="L404">			_adblResponseZScoreLeft[i] = _adblResponseValue[i] - _adblObservation[i];</span>
+<span class="fc" id="L405">			_adblResponseZScoreRight[i] = _adblResponseValue[i + 1] - _adblObservation[i];</span>
 		}
 
-<span class="fc" id="L368">		return true;</span>
+<span class="fc" id="L408">		return true;</span>
 	}
 
 	private boolean generateUnivariate()
 	{
-<span class="fc" id="L373">		int iNumSegment = _adblPredictorOrdinate.length - 1;</span>
-<span class="fc" id="L374">		_aAU = new org.drip.function.definition.R1ToR1[iNumSegment];</span>
+<span class="fc" id="L413">		int iNumSegment = _adblPredictorOrdinate.length - 1;</span>
+<span class="fc" id="L414">		_aAU = new org.drip.function.definition.R1ToR1[iNumSegment];</span>
 
-<span class="fc bfc" id="L376" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="pc bpc" id="L377" title="2 of 12 branches missed.">			if ((_adblResponseZScoreLeft[i] &gt; 0. &amp;&amp; -0.5 * _adblResponseZScoreLeft[i] &gt;=</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="pc bpc" id="L417" title="2 of 12 branches missed.">			if ((_adblResponseZScoreLeft[i] &gt; 0. &amp;&amp; -0.5 * _adblResponseZScoreLeft[i] &gt;=</span>
 				_adblResponseZScoreRight[i] &amp;&amp; _adblResponseZScoreRight[i] &gt;= -2. *
 					_adblResponseZScoreLeft[i]) || (_adblResponseZScoreLeft[i] &lt; 0. &amp;&amp; -0.5 *
 						_adblResponseZScoreLeft[i] &lt;= _adblResponseZScoreRight[i] &amp;&amp;
 							_adblResponseZScoreRight[i] &lt;= -2. * _adblResponseZScoreLeft[i]))
-<span class="fc" id="L382">				_aAU[i] = new Case1Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L422">				_aAU[i] = new Case1Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
 					_adblResponseZScoreLeft[i], _adblResponseZScoreRight[i]);
-<span class="pc bpc" id="L384" title="1 of 8 branches missed.">			else if ((_adblResponseZScoreLeft[i] &lt; 0. &amp;&amp; _adblResponseZScoreRight[i] &gt; -2. *</span>
+<span class="pc bpc" id="L424" title="1 of 8 branches missed.">			else if ((_adblResponseZScoreLeft[i] &lt; 0. &amp;&amp; _adblResponseZScoreRight[i] &gt; -2. *</span>
 				_adblResponseZScoreLeft[i]) || (_adblResponseZScoreLeft[i] &gt; 0. &amp;&amp;
 					_adblResponseZScoreRight[i] &lt; -2. * _adblResponseZScoreLeft[i]))
-<span class="fc" id="L387">				_aAU[i] = new Case2Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L427">				_aAU[i] = new Case2Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
 					_adblResponseZScoreLeft[i], _adblResponseZScoreRight[i]);
-<span class="pc bpc" id="L389" title="5 of 8 branches missed.">			else if ((_adblResponseZScoreLeft[i] &gt; 0. &amp;&amp; _adblResponseZScoreRight[i] &gt; -0.5 *</span>
+<span class="pc bpc" id="L429" title="5 of 8 branches missed.">			else if ((_adblResponseZScoreLeft[i] &gt; 0. &amp;&amp; _adblResponseZScoreRight[i] &gt; -0.5 *</span>
 				_adblResponseZScoreLeft[i]) || (_adblResponseZScoreLeft[i] &lt; 0. &amp;&amp;
 					_adblResponseZScoreRight[i] &lt; -0.5 * _adblResponseZScoreLeft[i]))
-<span class="fc" id="L392">				_aAU[i] = new Case3Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L432">				_aAU[i] = new Case3Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
 					_adblResponseZScoreLeft[i], _adblResponseZScoreRight[i]);
-<span class="nc bnc" id="L394" title="All 8 branches missed.">			else if ((_adblResponseZScoreLeft[i] &gt;= 0. &amp;&amp; _adblResponseZScoreRight[i] &gt;= 0.) ||</span>
+<span class="nc bnc" id="L434" title="All 8 branches missed.">			else if ((_adblResponseZScoreLeft[i] &gt;= 0. &amp;&amp; _adblResponseZScoreRight[i] &gt;= 0.) ||</span>
 				(_adblResponseZScoreLeft[i] &lt;= 0. &amp;&amp; _adblResponseZScoreRight[i] &lt;= 0.))
-<span class="nc" id="L396">				_aAU[i] = new Case4Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
+<span class="nc" id="L436">				_aAU[i] = new Case4Univariate (_adblPredictorOrdinate[i], _adblPredictorOrdinate[i + 1],</span>
 					_adblResponseZScoreLeft[i], _adblResponseZScoreRight[i]);
 		}
 
-<span class="fc" id="L400">		return true;</span>
+<span class="fc" id="L440">		return true;</span>
 	}
 
 	private boolean ameliorate (
@@ -406,48 +446,48 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 		final double[] adblResponseRightMin,
 		final double[] adblResponseRightMax)
 	{
-<span class="nc" id="L409">		int iNumObservation = _adblObservation.length;</span>
+<span class="nc" id="L449">		int iNumObservation = _adblObservation.length;</span>
 
-<span class="nc bnc" id="L411" title="All 8 branches missed.">		if (iNumObservation != adblResponseLeftMin.length || iNumObservation != adblResponseLeftMax.length ||</span>
+<span class="nc bnc" id="L451" title="All 8 branches missed.">		if (iNumObservation != adblResponseLeftMin.length || iNumObservation != adblResponseLeftMax.length ||</span>
 			iNumObservation != adblResponseRightMin.length || iNumObservation != adblResponseRightMax.length)
-<span class="nc" id="L413">			return false;</span>
+<span class="nc" id="L453">			return false;</span>
 
-<span class="nc bnc" id="L415" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObservation; ++i) {</span>
-<span class="nc bnc" id="L416" title="All 2 branches missed.">			if (_adblResponseValue[i] &lt; java.lang.Math.max (adblResponseLeftMin[i], adblResponseRightMin[i])</span>
-<span class="nc bnc" id="L417" title="All 2 branches missed.">				|| _adblResponseValue[i] &gt; java.lang.Math.min (adblResponseLeftMax[i],</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObservation; ++i) {</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">			if (_adblResponseValue[i] &lt; java.lang.Math.max (adblResponseLeftMin[i], adblResponseRightMin[i])</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">				|| _adblResponseValue[i] &gt; java.lang.Math.min (adblResponseLeftMax[i],</span>
 					adblResponseRightMax[i])) {
-<span class="nc bnc" id="L419" title="All 2 branches missed.">				if (_adblResponseValue[i] &lt; java.lang.Math.max (adblResponseLeftMin[i],</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">				if (_adblResponseValue[i] &lt; java.lang.Math.max (adblResponseLeftMin[i],</span>
 					adblResponseRightMin[i]))
-<span class="nc" id="L421">					_adblResponseValue[i] = java.lang.Math.max (adblResponseLeftMin[i],</span>
+<span class="nc" id="L461">					_adblResponseValue[i] = java.lang.Math.max (adblResponseLeftMin[i],</span>
 						adblResponseRightMin[i]);
-<span class="nc bnc" id="L423" title="All 2 branches missed.">				else if (_adblResponseValue[i] &gt; java.lang.Math.min (adblResponseLeftMax[i],</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">				else if (_adblResponseValue[i] &gt; java.lang.Math.min (adblResponseLeftMax[i],</span>
 					adblResponseRightMax[i]))
-<span class="nc" id="L425">					_adblResponseValue[i] = java.lang.Math.min (adblResponseLeftMax[i],</span>
+<span class="nc" id="L465">					_adblResponseValue[i] = java.lang.Math.min (adblResponseLeftMax[i],</span>
 						adblResponseRightMax[i]);
 			} else {
-<span class="nc bnc" id="L428" title="All 2 branches missed.">				if (_adblResponseValue[i] &lt; java.lang.Math.min (adblResponseLeftMax[i],</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">				if (_adblResponseValue[i] &lt; java.lang.Math.min (adblResponseLeftMax[i],</span>
 					adblResponseRightMax[i]))
-<span class="nc" id="L430">					_adblResponseValue[i] = java.lang.Math.min (adblResponseLeftMax[i],</span>
+<span class="nc" id="L470">					_adblResponseValue[i] = java.lang.Math.min (adblResponseLeftMax[i],</span>
 						adblResponseRightMax[i]);
-<span class="nc bnc" id="L432" title="All 2 branches missed.">				else if (_adblResponseValue[i] &gt; java.lang.Math.max (adblResponseLeftMin[i],</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">				else if (_adblResponseValue[i] &gt; java.lang.Math.max (adblResponseLeftMin[i],</span>
 					adblResponseRightMin[i]))
-<span class="nc" id="L434">					_adblResponseValue[i] = java.lang.Math.max (adblResponseLeftMin[i],</span>
+<span class="nc" id="L474">					_adblResponseValue[i] = java.lang.Math.max (adblResponseLeftMin[i],</span>
 						adblResponseRightMin[i]);
 			}
 		}
 
-<span class="nc" id="L439">		if (java.lang.Math.abs (_adblResponseValue[0] - _adblObservation[0]) &gt; 0.5 * java.lang.Math.abs</span>
-<span class="nc bnc" id="L440" title="All 2 branches missed.">			(_adblResponseValue[1] - _adblObservation[0]))</span>
-<span class="nc" id="L441">			_adblResponseValue[0] = _adblObservation[1] - 0.5 * (_adblResponseValue[1] -</span>
+<span class="nc" id="L479">		if (java.lang.Math.abs (_adblResponseValue[0] - _adblObservation[0]) &gt; 0.5 * java.lang.Math.abs</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">			(_adblResponseValue[1] - _adblObservation[0]))</span>
+<span class="nc" id="L481">			_adblResponseValue[0] = _adblObservation[1] - 0.5 * (_adblResponseValue[1] -</span>
 				_adblObservation[0]);
 
-<span class="nc" id="L444">		if (java.lang.Math.abs (_adblResponseValue[iNumObservation] - _adblObservation[iNumObservation - 1])</span>
-<span class="nc bnc" id="L445" title="All 2 branches missed.">			&gt; 0.5 * java.lang.Math.abs (_adblResponseValue[iNumObservation - 1] -</span>
+<span class="nc" id="L484">		if (java.lang.Math.abs (_adblResponseValue[iNumObservation] - _adblObservation[iNumObservation - 1])</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">			&gt; 0.5 * java.lang.Math.abs (_adblResponseValue[iNumObservation - 1] -</span>
 				_adblObservation[iNumObservation - 1]))
-<span class="nc" id="L447">			_adblResponseValue[iNumObservation] = _adblObservation[iNumObservation - 1] - 0.5 *</span>
+<span class="nc" id="L487">			_adblResponseValue[iNumObservation] = _adblObservation[iNumObservation - 1] - 0.5 *</span>
 				(_adblObservation[iNumObservation - 1] - _adblResponseValue[iNumObservation - 1]);
 
-<span class="nc bnc" id="L450" title="All 4 branches missed.">		return inferResponseZScores() &amp;&amp; generateUnivariate();</span>
+<span class="nc bnc" id="L490" title="All 4 branches missed.">		return inferResponseZScores() &amp;&amp; generateUnivariate();</span>
 	}
 
 	private int containingIndex (
@@ -456,19 +496,19 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 		final boolean bIncludeRight)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L459">		int iNumSegment = _aAU.length;</span>
+<span class="fc" id="L499">		int iNumSegment = _aAU.length;</span>
 
-<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		for (int i = 0 ; i &lt; iNumSegment; ++i) {</span>
-<span class="pc bpc" id="L462" title="4 of 6 branches missed.">			boolean bLeftValid = bIncludeLeft ? _adblPredictorOrdinate[i] &lt;= dblPredictorOrdinate :</span>
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">		for (int i = 0 ; i &lt; iNumSegment; ++i) {</span>
+<span class="pc bpc" id="L502" title="4 of 6 branches missed.">			boolean bLeftValid = bIncludeLeft ? _adblPredictorOrdinate[i] &lt;= dblPredictorOrdinate :</span>
 				_adblPredictorOrdinate[i] &lt; dblPredictorOrdinate;
 
-<span class="pc bpc" id="L465" title="3 of 6 branches missed.">			boolean bRightValid = bIncludeRight ? _adblPredictorOrdinate[i + 1] &gt;= dblPredictorOrdinate :</span>
+<span class="pc bpc" id="L505" title="3 of 6 branches missed.">			boolean bRightValid = bIncludeRight ? _adblPredictorOrdinate[i + 1] &gt;= dblPredictorOrdinate :</span>
 				_adblPredictorOrdinate[i + 1] &gt; dblPredictorOrdinate;
 
-<span class="pc bpc" id="L468" title="1 of 4 branches missed.">			if (bLeftValid &amp;&amp; bRightValid) return i;</span>
+<span class="pc bpc" id="L508" title="1 of 4 branches missed.">			if (bLeftValid &amp;&amp; bRightValid) return i;</span>
 		}
 
-<span class="nc" id="L471">		throw new java.lang.Exception</span>
+<span class="nc" id="L511">		throw new java.lang.Exception</span>
 			(&quot;MonotoneConvexHaganWest::containingIndex =&gt; Cannot locate Containing Index&quot;);
 	}
 
@@ -476,9 +516,9 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L479">		int iContainingIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="fc" id="L519">		int iContainingIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
 
-<span class="fc" id="L481">		return _aAU[iContainingIndex].evaluate (dblPredictorOrdinate) + _adblObservation[iContainingIndex];</span>
+<span class="fc" id="L521">		return _aAU[iContainingIndex].evaluate (dblPredictorOrdinate) + _adblObservation[iContainingIndex];</span>
 	}
 
 	/**
@@ -490,24 +530,24 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 	public boolean enforcePositivity()
 	{
 		try {
-<span class="fc" id="L493">			_adblResponseValue[0] = org.drip.quant.common.NumberUtil.Bound (_adblResponseValue[0], 0., 2. *</span>
+<span class="fc" id="L533">			_adblResponseValue[0] = org.drip.quant.common.NumberUtil.Bound (_adblResponseValue[0], 0., 2. *</span>
 				_adblObservation[0]);
 
-<span class="fc" id="L496">			int iNumObservation = _adblObservation.length;</span>
+<span class="fc" id="L536">			int iNumObservation = _adblObservation.length;</span>
 
-<span class="fc bfc" id="L498" title="All 2 branches covered.">			for (int i = 1; i &lt; iNumObservation; ++i)</span>
-<span class="fc" id="L499">				_adblResponseValue[i] = org.drip.quant.common.NumberUtil.Bound (_adblResponseValue[i], 0., 2.</span>
-<span class="fc" id="L500">					* java.lang.Math.min (_adblObservation[i - 1], _adblObservation[i]));</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">			for (int i = 1; i &lt; iNumObservation; ++i)</span>
+<span class="fc" id="L539">				_adblResponseValue[i] = org.drip.quant.common.NumberUtil.Bound (_adblResponseValue[i], 0., 2.</span>
+<span class="fc" id="L540">					* java.lang.Math.min (_adblObservation[i - 1], _adblObservation[i]));</span>
 
-<span class="fc" id="L502">			_adblResponseValue[iNumObservation] = org.drip.quant.common.NumberUtil.Bound</span>
-<span class="fc" id="L503">				(_adblResponseValue[iNumObservation], 0., 2. * _adblObservation[iNumObservation - 1]);</span>
+<span class="fc" id="L542">			_adblResponseValue[iNumObservation] = org.drip.quant.common.NumberUtil.Bound</span>
+<span class="fc" id="L543">				(_adblResponseValue[iNumObservation], 0., 2. * _adblObservation[iNumObservation - 1]);</span>
 
-<span class="pc bpc" id="L505" title="2 of 4 branches missed.">			return inferResponseZScores() &amp;&amp; generateUnivariate();</span>
-<span class="nc" id="L506">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L507">			e.printStackTrace();</span>
+<span class="pc bpc" id="L545" title="2 of 4 branches missed.">			return inferResponseZScores() &amp;&amp; generateUnivariate();</span>
+<span class="nc" id="L546">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L547">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L510">		return false;</span>
+<span class="nc" id="L550">		return false;</span>
 	}
 
 	/**
@@ -529,50 +569,50 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 		final double[] adblResponseRightMax,
 		final boolean bEnforcePositivity)
 	{
-<span class="nc bnc" id="L532" title="All 10 branches missed.">		if (null == adblResponseLeftMin || null == adblResponseLeftMax | null == adblResponseRightMin || null</span>
+<span class="nc bnc" id="L572" title="All 10 branches missed.">		if (null == adblResponseLeftMin || null == adblResponseLeftMax | null == adblResponseRightMin || null</span>
 			== adblResponseRightMax)
-<span class="nc" id="L534">			return null;</span>
+<span class="nc" id="L574">			return null;</span>
 
-<span class="nc" id="L536">		int iNumAmelioratedObservation = _adblObservation.length + 2;</span>
-<span class="nc" id="L537">		int iNumAmelioratedPredicatorOrdinate = _adblPredictorOrdinate.length + 2;</span>
-<span class="nc" id="L538">		double[] adblAmelioratedObservation = new double[iNumAmelioratedObservation];</span>
-<span class="nc" id="L539">		double[] adblAmelioratedPredictorOrdinate = new double[iNumAmelioratedPredicatorOrdinate];</span>
+<span class="nc" id="L576">		int iNumAmelioratedObservation = _adblObservation.length + 2;</span>
+<span class="nc" id="L577">		int iNumAmelioratedPredicatorOrdinate = _adblPredictorOrdinate.length + 2;</span>
+<span class="nc" id="L578">		double[] adblAmelioratedObservation = new double[iNumAmelioratedObservation];</span>
+<span class="nc" id="L579">		double[] adblAmelioratedPredictorOrdinate = new double[iNumAmelioratedPredicatorOrdinate];</span>
 
-<span class="nc bnc" id="L541" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAmelioratedPredicatorOrdinate; ++i) {</span>
-<span class="nc bnc" id="L542" title="All 2 branches missed.">			if (0 == i)</span>
-<span class="nc" id="L543">				adblAmelioratedPredictorOrdinate[0] = -1. * _adblPredictorOrdinate[1];</span>
-<span class="nc bnc" id="L544" title="All 2 branches missed.">			else if (iNumAmelioratedPredicatorOrdinate - 1 == i)</span>
-<span class="nc" id="L545">				adblAmelioratedPredictorOrdinate[i] = 2. * _adblPredictorOrdinate[i - 1] -</span>
+<span class="nc bnc" id="L581" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAmelioratedPredicatorOrdinate; ++i) {</span>
+<span class="nc bnc" id="L582" title="All 2 branches missed.">			if (0 == i)</span>
+<span class="nc" id="L583">				adblAmelioratedPredictorOrdinate[0] = -1. * _adblPredictorOrdinate[1];</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">			else if (iNumAmelioratedPredicatorOrdinate - 1 == i)</span>
+<span class="nc" id="L585">				adblAmelioratedPredictorOrdinate[i] = 2. * _adblPredictorOrdinate[i - 1] -</span>
 					_adblPredictorOrdinate[i - 2];
 			else
-<span class="nc" id="L548">				adblAmelioratedPredictorOrdinate[i] = _adblPredictorOrdinate[i - 1];</span>
+<span class="nc" id="L588">				adblAmelioratedPredictorOrdinate[i] = _adblPredictorOrdinate[i - 1];</span>
 		}
 
-<span class="nc bnc" id="L551" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAmelioratedObservation; ++i) {</span>
-<span class="nc bnc" id="L552" title="All 2 branches missed.">			if (0 == i)</span>
-<span class="nc" id="L553">				adblAmelioratedObservation[0] = _adblObservation[0] - (_adblPredictorOrdinate[1] -</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAmelioratedObservation; ++i) {</span>
+<span class="nc bnc" id="L592" title="All 2 branches missed.">			if (0 == i)</span>
+<span class="nc" id="L593">				adblAmelioratedObservation[0] = _adblObservation[0] - (_adblPredictorOrdinate[1] -</span>
 					_adblPredictorOrdinate[0]) * (_adblObservation[1] - _adblObservation[0]) /
 						(_adblPredictorOrdinate[2] - _adblPredictorOrdinate[0]);
-<span class="nc bnc" id="L556" title="All 2 branches missed.">			else if (iNumAmelioratedPredicatorOrdinate - 1 == i)</span>
-<span class="nc" id="L557">				adblAmelioratedObservation[i] = _adblObservation[i - 1] - (_adblPredictorOrdinate[i - 1] -</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">			else if (iNumAmelioratedPredicatorOrdinate - 1 == i)</span>
+<span class="nc" id="L597">				adblAmelioratedObservation[i] = _adblObservation[i - 1] - (_adblPredictorOrdinate[i - 1] -</span>
 					_adblPredictorOrdinate[i - 2]) * (_adblObservation[i - 1] - _adblObservation[i - 2]) /
 						(_adblPredictorOrdinate[i - 1] - _adblPredictorOrdinate[i - 3]);
 			else
-<span class="nc" id="L561">				adblAmelioratedObservation[i] = _adblObservation[i - 1];</span>
+<span class="nc" id="L601">				adblAmelioratedObservation[i] = _adblObservation[i - 1];</span>
 		}
 
-<span class="nc" id="L564">		MonotoneConvexHaganWest mchwAmeliorated = Create (adblAmelioratedPredictorOrdinate,</span>
+<span class="nc" id="L604">		MonotoneConvexHaganWest mchwAmeliorated = Create (adblAmelioratedPredictorOrdinate,</span>
 			adblAmelioratedObservation, _bLinearNodeInference);
 
-<span class="nc bnc" id="L567" title="All 4 branches missed.">		if (null == mchwAmeliorated || mchwAmeliorated.ameliorate (adblResponseLeftMin, adblResponseLeftMax,</span>
+<span class="nc bnc" id="L607" title="All 4 branches missed.">		if (null == mchwAmeliorated || mchwAmeliorated.ameliorate (adblResponseLeftMin, adblResponseLeftMax,</span>
 			adblResponseRightMin, adblResponseRightMax))
-<span class="nc" id="L569">			return null;</span>
+<span class="nc" id="L609">			return null;</span>
 
-<span class="nc bnc" id="L571" title="All 2 branches missed.">		if (bEnforcePositivity) {</span>
-<span class="nc bnc" id="L572" title="All 2 branches missed.">			if (!mchwAmeliorated.enforcePositivity()) return null;</span>
+<span class="nc bnc" id="L611" title="All 2 branches missed.">		if (bEnforcePositivity) {</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">			if (!mchwAmeliorated.enforcePositivity()) return null;</span>
 		}
 
-<span class="nc" id="L575">		return mchwAmeliorated;</span>
+<span class="nc" id="L615">		return mchwAmeliorated;</span>
 	}
 
 	/**
@@ -583,7 +623,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 
 	public double[] predictorOrdinates()
 	{
-<span class="fc" id="L586">		return _adblPredictorOrdinate;</span>
+<span class="fc" id="L626">		return _adblPredictorOrdinate;</span>
 	}
 
 	/**
@@ -594,7 +634,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 
 	public double[] responseValues()
 	{
-<span class="fc" id="L597">		return _adblResponseValue;</span>
+<span class="fc" id="L637">		return _adblResponseValue;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

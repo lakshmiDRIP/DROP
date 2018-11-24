@@ -6,6 +6,7 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.bspline;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,16 +70,24 @@ package org.drip.spline.bspline;
  */
 
 /**
- * SegmentMonicBasisFunction implements the local monic B Spline that envelopes the predictor ordinates, and
- * 	the corresponding set of ordinates/basis functions. SegmentMonicBasisFunction uses the left/right
- *  TensionBasisHat instances to achieve its implementation goals.
+ * &lt;i&gt;SegmentMonicBasisFunction&lt;/i&gt; implements the local monic B Spline that envelopes the predictor
+ * ordinates, and the corresponding set of ordinates/basis functions. SegmentMonicBasisFunction uses the
+ * left/right TensionBasisHat instances to achieve its implementation goals.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBasisFunction {
-<span class="fc" id="L63">	private org.drip.spline.bspline.TensionBasisHat _tbhLeft = null;</span>
-<span class="fc" id="L64">	private org.drip.spline.bspline.TensionBasisHat _tbhRight = null;</span>
+<span class="fc" id="L89">	private org.drip.spline.bspline.TensionBasisHat _tbhLeft = null;</span>
+<span class="fc" id="L90">	private org.drip.spline.bspline.TensionBasisHat _tbhRight = null;</span>
 
 	/**
 	 * SegmentMonicBasisFunction constructor
@@ -77,23 +103,23 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 		final org.drip.spline.bspline.TensionBasisHat tbhRight)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L80">		super (2, tbhLeft.left(), tbhRight.left(), tbhRight.right());</span>
+<span class="fc" id="L106">		super (2, tbhLeft.left(), tbhRight.left(), tbhRight.right());</span>
 
-<span class="pc bpc" id="L82" title="2 of 4 branches missed.">		if (null == (_tbhLeft = tbhLeft) || null == (_tbhRight = tbhRight))</span>
-<span class="nc" id="L83">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L84">	}</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (null == (_tbhLeft = tbhLeft) || null == (_tbhRight = tbhRight))</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L110">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L91">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L93" title="All 4 branches covered.">		if (dblPredictorOrdinate &lt; leading() || dblPredictorOrdinate &gt; trailing()) return 0.;</span>
+<span class="fc bfc" id="L119" title="All 4 branches covered.">		if (dblPredictorOrdinate &lt; leading() || dblPredictorOrdinate &gt; trailing()) return 0.;</span>
 
-<span class="fc bfc" id="L95" title="All 2 branches covered.">		return dblPredictorOrdinate &lt; following() ? _tbhLeft.evaluate (dblPredictorOrdinate) :</span>
-<span class="fc" id="L96">			_tbhRight.evaluate (dblPredictorOrdinate);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		return dblPredictorOrdinate &lt; following() ? _tbhLeft.evaluate (dblPredictorOrdinate) :</span>
+<span class="fc" id="L122">			_tbhRight.evaluate (dblPredictorOrdinate);</span>
 	}
 
 	@Override public double derivative (
@@ -101,13 +127,13 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L107" title="All 4 branches covered.">		if (dblPredictorOrdinate &lt; leading() || dblPredictorOrdinate &gt; trailing()) return 0.;</span>
+<span class="fc bfc" id="L133" title="All 4 branches covered.">		if (dblPredictorOrdinate &lt; leading() || dblPredictorOrdinate &gt; trailing()) return 0.;</span>
 
-<span class="fc bfc" id="L109" title="All 2 branches covered.">		return dblPredictorOrdinate &lt; following() ? _tbhLeft.derivative (dblPredictorOrdinate, iOrder) :</span>
-<span class="fc" id="L110">			_tbhRight.derivative (dblPredictorOrdinate, iOrder);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		return dblPredictorOrdinate &lt; following() ? _tbhLeft.derivative (dblPredictorOrdinate, iOrder) :</span>
+<span class="fc" id="L136">			_tbhRight.derivative (dblPredictorOrdinate, iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -115,68 +141,68 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;SegmentMonicBasisFunction::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (dblBegin &gt;= dblEnd) return 0.;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (dblBegin &gt;= dblEnd) return 0.;</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (dblBegin &lt;= leading()) {</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			if (dblEnd &lt;= leading()) return 0.;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (dblBegin &lt;= leading()) {</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			if (dblEnd &lt;= leading()) return 0.;</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			if (dblEnd &lt;= following()) return _tbhLeft.integrate (leading(), dblEnd);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (dblEnd &lt;= following()) return _tbhLeft.integrate (leading(), dblEnd);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			if (dblEnd &lt;= trailing())</span>
-<span class="nc" id="L130">				return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (dblEnd &lt;= trailing())</span>
+<span class="nc" id="L156">				return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),</span>
 					dblEnd);
 
-<span class="nc" id="L133">			return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),</span>
-<span class="nc" id="L134">				trailing());</span>
+<span class="nc" id="L159">			return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),</span>
+<span class="nc" id="L160">				trailing());</span>
 		}
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (dblBegin &lt;= following()) {</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (dblEnd &lt;= following()) return _tbhLeft.integrate (dblBegin, dblEnd);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (dblBegin &lt;= following()) {</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">			if (dblEnd &lt;= following()) return _tbhLeft.integrate (dblBegin, dblEnd);</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (dblEnd &lt;= trailing())</span>
-<span class="nc" id="L141">				return _tbhLeft.integrate (dblBegin, following()) + _tbhRight.integrate (following(),</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			if (dblEnd &lt;= trailing())</span>
+<span class="nc" id="L167">				return _tbhLeft.integrate (dblBegin, following()) + _tbhRight.integrate (following(),</span>
 					dblEnd);
 
-<span class="nc" id="L144">			return _tbhLeft.integrate (dblBegin, following()) + _tbhRight.integrate (following(),</span>
-<span class="nc" id="L145">				trailing());</span>
+<span class="nc" id="L170">			return _tbhLeft.integrate (dblBegin, following()) + _tbhRight.integrate (following(),</span>
+<span class="nc" id="L171">				trailing());</span>
 		}
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (dblBegin &lt;= trailing()) {</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">			if (dblEnd &lt;= trailing()) return _tbhRight.integrate (following(), dblEnd);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (dblBegin &lt;= trailing()) {</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (dblEnd &lt;= trailing()) return _tbhRight.integrate (following(), dblEnd);</span>
 
-<span class="nc" id="L151">			return _tbhRight.integrate (following(), trailing());</span>
+<span class="nc" id="L177">			return _tbhRight.integrate (following(), trailing());</span>
 		}
 
-<span class="nc" id="L154">		return 0.;</span>
+<span class="nc" id="L180">		return 0.;</span>
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L160">		return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(), trailing());</span>
+<span class="fc" id="L186">		return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(), trailing());</span>
 	}
 
 	@Override public double normalizedCumulative (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L168">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L194">			throw new java.lang.Exception</span>
 				(&quot;SegmentMonicBasisFunction::normalizedCumulative =&gt; Invalid Inputs&quot;);
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (dblPredictorOrdinate &lt;= leading()) return 0.;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		if (dblPredictorOrdinate &lt;= leading()) return 0.;</span>
 
-<span class="fc bfc" id="L173" title="All 2 branches covered.">		if (dblPredictorOrdinate &gt;= trailing()) return 1.;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		if (dblPredictorOrdinate &gt;= trailing()) return 1.;</span>
 
-<span class="fc bfc" id="L175" title="All 2 branches covered.">		if (dblPredictorOrdinate &lt;= following())</span>
-<span class="fc" id="L176">			return _tbhLeft.integrate (leading(), dblPredictorOrdinate) / normalizer();</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		if (dblPredictorOrdinate &lt;= following())</span>
+<span class="fc" id="L202">			return _tbhLeft.integrate (leading(), dblPredictorOrdinate) / normalizer();</span>
 
-<span class="fc" id="L178">		return (_tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),</span>
-<span class="fc" id="L179">			dblPredictorOrdinate)) / normalizer();</span>
+<span class="fc" id="L204">		return (_tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),</span>
+<span class="fc" id="L205">			dblPredictorOrdinate)) / normalizer();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

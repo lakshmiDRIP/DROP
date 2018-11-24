@@ -6,6 +6,7 @@ package org.drip.state.curve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.state.curve;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,29 +70,57 @@ package org.drip.state.curve;
  */
 
 /**
- * ZeroRateDiscountCurve manages the Discounting Latent State, using the Zero Rate as the State
- *  Response Representation. It exports the following functionality:
- *  - Compute the discount factor, forward rate, or the zero rate from the Zero Rate Latent State
- *  - Create a ForwardRateEstimator instance for the given Index
- *  - Retrieve Array of the Calibration Components
- *  - Retrieve the Curve Construction Input Set
- *  - Compute the Jacobian of the Discount Factor Latent State to the input Quote
- *  - Synthesize scenario Latent State by parallel shifting/custom tweaking the quantification metric
- *  - Synthesize scenario Latent State by parallel/custom shifting/custom tweaking the manifest measure
- *  - Serialize into and de-serialize out of byte array
+ * &lt;i&gt;ZeroRateDiscountCurve&lt;/i&gt; manages the Discounting Latent State, using the Zero Rate as the State
+ * Response Representation. It exports the following functionality:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Compute the discount factor, forward rate, or the zero rate from the Zero Rate Latent State
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Create a ForwardRateEstimator instance for the given Index
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve Array of the Calibration Components
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Curve Construction Input Set
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Compute the Jacobian of the Discount Factor Latent State to the input Quote
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Synthesize scenario Latent State by parallel shifting/custom tweaking the quantification metric
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Synthesize scenario Latent State by parallel/custom shifting/custom tweaking the manifest measure
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Serialize into and de-serialize out of byte array
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-<span class="fc" id="L70">	private org.drip.spline.grid.Span _span = null;</span>
-<span class="fc" id="L71">	private double _dblRightFlatForwardRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">	private org.drip.analytics.input.CurveConstructionInputSet _ccis = null;</span>
+<span class="fc" id="L116">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L117">	private double _dblRightFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L118">	private org.drip.analytics.input.CurveConstructionInputSet _ccis = null;</span>
 
 	private ZeroRateDiscountCurve shiftManifestMeasure (
 		final double[] adblShiftedManifestMeasure)
 	{
-<span class="nc" id="L77">		return null;</span>
+<span class="nc" id="L123">		return null;</span>
 	}
 
 	/**
@@ -91,21 +137,21 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final org.drip.spline.grid.Span span)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L94">		super ((int) span.left(), strCurrency, null);</span>
+<span class="fc" id="L140">		super ((int) span.left(), strCurrency, null);</span>
 
-<span class="fc" id="L96">		_dblRightFlatForwardRate = (_span = span).calcResponseValue (_span.right());</span>
-<span class="fc" id="L97">	}</span>
+<span class="fc" id="L142">		_dblRightFlatForwardRate = (_span = span).calcResponseValue (_span.right());</span>
+<span class="fc" id="L143">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L103">		int iStartDate = epoch().julian();</span>
+<span class="fc" id="L149">		int iStartDate = epoch().julian();</span>
 
-<span class="fc bfc" id="L105" title="All 2 branches covered.">		if (iDate &lt;= iStartDate) return 1.;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (iDate &lt;= iStartDate) return 1.;</span>
 
-<span class="fc" id="L107">		return (java.lang.Math.exp (-1. * zero (iDate) * (iDate - iStartDate) / 365.25)) * turnAdjust</span>
-<span class="fc" id="L108">			(iStartDate, iDate);</span>
+<span class="fc" id="L153">		return (java.lang.Math.exp (-1. * zero (iDate) * (iDate - iStartDate) / 365.25)) * turnAdjust</span>
+<span class="fc" id="L154">			(iStartDate, iDate);</span>
 	}
 
 	public double forward (
@@ -113,51 +159,51 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L116">		int iStartDate = epoch().julian();</span>
+<span class="fc" id="L162">		int iStartDate = epoch().julian();</span>
 
-<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (iDate1 &lt; iStartDate || iDate2 &lt; iStartDate) return 0.;</span>
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">		if (iDate1 &lt; iStartDate || iDate2 &lt; iStartDate) return 0.;</span>
 
-<span class="fc" id="L120">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="fc" id="L166">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (iDate &lt;= _span.left()) return 1.;</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if (iDate &lt;= _span.left()) return 1.;</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		return iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : _dblRightFlatForwardRate;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		return iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : _dblRightFlatForwardRate;</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc" id="L136">		return null;</span>
+<span class="nc" id="L182">		return null;</span>
 	}
 
 	@Override public java.lang.String latentStateQuantificationMetric()
 	{
-<span class="nc" id="L141">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
+<span class="nc" id="L187">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
 	}
 
 	@Override public ZeroRateDiscountCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="nc" id="L150">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="nc" id="L196">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (null == aCC) return null;</span>
 
-<span class="nc" id="L154">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L155">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
+<span class="nc" id="L200">		int iNumComp = aCC.length;</span>
+<span class="nc" id="L201">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc" id="L158">			adblShiftedManifestMeasure[i] += dblShift;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L204">			adblShiftedManifestMeasure[i] += dblShift;</span>
 
-<span class="nc" id="L160">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
+<span class="nc" id="L206">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
 	}
 
 	@Override public ZeroRateDiscountCurve shiftManifestMeasure (
@@ -165,78 +211,78 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="nc" id="L170">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="nc" id="L216">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (null == aCC) return null;</span>
 
-<span class="nc" id="L174">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L175">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
+<span class="nc" id="L220">		int iNumComp = aCC.length;</span>
+<span class="nc" id="L221">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (iSpanIndex &gt;= iNumComp) return null;</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (iSpanIndex &gt;= iNumComp) return null;</span>
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">			adblShiftedManifestMeasure[i] += (i == iSpanIndex ? dblShift : 0.);</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			adblShiftedManifestMeasure[i] += (i == iSpanIndex ? dblShift : 0.);</span>
 
-<span class="nc" id="L182">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
+<span class="nc" id="L228">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
 	}
 
 	@Override public org.drip.state.discount.MergedDiscountForwardCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc bnc" id="L189" title="All 2 branches missed.">		if (null == rvtp) return null;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (null == rvtp) return null;</span>
 
-<span class="nc" id="L191">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="nc" id="L237">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (null == aCC) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="nc" id="L196">			mapQuote = _ccis.quoteMap();</span>
+<span class="nc" id="L242">			mapQuote = _ccis.quoteMap();</span>
 
-<span class="nc bnc" id="L198" title="All 4 branches missed.">		if (null == mapQuote || 0 == mapQuote.size()) return null;</span>
+<span class="nc bnc" id="L244" title="All 4 branches missed.">		if (null == mapQuote || 0 == mapQuote.size()) return null;</span>
 
-<span class="nc" id="L200">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L201">		double[] adblQuote = new double[iNumComp];</span>
+<span class="nc" id="L246">		int iNumComp = aCC.length;</span>
+<span class="nc" id="L247">		double[] adblQuote = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc" id="L204">			adblQuote[i] = mapQuote.get (aCC[i].primaryCode()).get (strManifestMeasure);</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L250">			adblQuote[i] = mapQuote.get (aCC[i].primaryCode()).get (strManifestMeasure);</span>
 
-<span class="nc" id="L206">		double[] adblShiftedManifestMeasure = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
-<span class="nc" id="L207">			(adblQuote, rvtp);</span>
+<span class="nc" id="L252">		double[] adblShiftedManifestMeasure = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L253">			(adblQuote, rvtp);</span>
 
-<span class="nc" id="L209">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
+<span class="nc" id="L255">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
 	}
 
 	@Override public ZeroRateDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L215">		return null;</span>
+<span class="nc" id="L261">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L221">		return null;</span>
+<span class="nc" id="L267">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="nc" id="L228">		return null;</span>
+<span class="nc" id="L274">		return null;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		return null == _ccis ? null : _ccis.components();</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		return null == _ccis ? null : _ccis.components();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstrumentCode)
 	{
-<span class="nc" id="L239">		return null;</span>
+<span class="nc" id="L285">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

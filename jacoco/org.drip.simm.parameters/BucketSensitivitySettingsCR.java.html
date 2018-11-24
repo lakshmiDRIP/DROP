@@ -6,31 +6,49 @@ package org.drip.simm.parameters;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,66 +65,84 @@ package org.drip.simm.parameters;
  */
 
 /**
- * BucketSensitivitySettingsCR holds the Delta Risk Weights, Concentration Thresholds, and Cross-Tenor
- *  Correlations for each Credit Curve and its Tenor. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;BucketSensitivitySettingsCR&lt;/i&gt; holds the Delta Risk Weights, Concentration Thresholds, and Cross-Tenor
+ * Correlations for each Credit Curve and its Tenor. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.LiquiditySettings
 {
-<span class="nc" id="L74">	private double _extraFamilyCrossTenorCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _intraFamilyCrossTenorCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorRiskWeight = null;</span>
+<span class="nc" id="L110">	private double _extraFamilyCrossTenorCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _intraFamilyCrossTenorCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorRiskWeight = null;</span>
 
 	protected static final java.util.Map&lt;java.lang.String, java.lang.Double&gt; TenorRiskWeightMap (
 		final double riskWeight)
 	{
-<span class="nc" id="L81">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight = new</span>
+<span class="nc" id="L117">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L84">		tenorRiskWeight.put (</span>
+<span class="nc" id="L120">		tenorRiskWeight.put (</span>
 			&quot;1Y&quot;,
-<span class="nc" id="L86">			riskWeight</span>
+<span class="nc" id="L122">			riskWeight</span>
 		);
 
-<span class="nc" id="L89">		tenorRiskWeight.put (</span>
+<span class="nc" id="L125">		tenorRiskWeight.put (</span>
 			&quot;2Y&quot;,
-<span class="nc" id="L91">			riskWeight</span>
+<span class="nc" id="L127">			riskWeight</span>
 		);
 
-<span class="nc" id="L94">		tenorRiskWeight.put (</span>
+<span class="nc" id="L130">		tenorRiskWeight.put (</span>
 			&quot;3Y&quot;,
-<span class="nc" id="L96">			riskWeight</span>
+<span class="nc" id="L132">			riskWeight</span>
 		);
 
-<span class="nc" id="L99">		tenorRiskWeight.put (</span>
+<span class="nc" id="L135">		tenorRiskWeight.put (</span>
 			&quot;5Y&quot;,
-<span class="nc" id="L101">			riskWeight</span>
+<span class="nc" id="L137">			riskWeight</span>
 		);
 
-<span class="nc" id="L104">		tenorRiskWeight.put (</span>
+<span class="nc" id="L140">		tenorRiskWeight.put (</span>
 			&quot;10Y&quot;,
-<span class="nc" id="L106">			riskWeight</span>
+<span class="nc" id="L142">			riskWeight</span>
 		);
 
-<span class="nc" id="L109">		return tenorRiskWeight;</span>
+<span class="nc" id="L145">		return tenorRiskWeight;</span>
 	}
 
 	/**
@@ -120,34 +156,34 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_20 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L123">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRQSettingsContainer20.Bucket</span>
-<span class="nc" id="L124">			(bucketNumber);</span>
+<span class="nc" id="L159">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRQSettingsContainer20.Bucket</span>
+<span class="nc" id="L160">			(bucketNumber);</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == creditBucket)</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (null == creditBucket)</span>
 		{
-<span class="nc" id="L128">			return null;</span>
+<span class="nc" id="L164">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
-<span class="nc" id="L134">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
+<span class="nc" id="L170">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_RESIDUAL,
 				org.drip.simm.credit.CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-<span class="nc" id="L137">				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L173">				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()</span>
 			) : new BucketSensitivitySettingsCR (
-<span class="nc" id="L139">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc" id="L175">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
 				org.drip.simm.credit.CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-<span class="nc" id="L142">				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L178">				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()</span>
 			);
 		}
-<span class="nc" id="L145">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L181">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L147">			e.printStackTrace();</span>
+<span class="nc" id="L183">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L150">		return null;</span>
+<span class="nc" id="L186">		return null;</span>
 	}
 
 	/**
@@ -161,34 +197,34 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_20 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L164">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRNQSettingsContainer20.Bucket</span>
-<span class="nc" id="L165">			(bucketNumber);</span>
+<span class="nc" id="L200">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRNQSettingsContainer20.Bucket</span>
+<span class="nc" id="L201">			(bucketNumber);</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == creditBucket)</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (null == creditBucket)</span>
 		{
-<span class="nc" id="L169">			return null;</span>
+<span class="nc" id="L205">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc bnc" id="L174" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
-<span class="nc" id="L175">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
+<span class="nc" id="L211">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRNQBucketCorrelation20.GT_80PC_OVERLAP_RESIDUAL,
 				org.drip.simm.credit.CRNQBucketCorrelation20.LT_80PC_OVERLAP_RESIDUAL,
-<span class="nc" id="L178">				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L214">				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()</span>
 			) : new BucketSensitivitySettingsCR (
-<span class="nc" id="L180">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc" id="L216">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRNQBucketCorrelation20.GT_80PC_OVERLAP_NON_RESIDUAL,
 				org.drip.simm.credit.CRNQBucketCorrelation20.LT_80PC_OVERLAP_NON_RESIDUAL,
-<span class="nc" id="L183">				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L219">				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()</span>
 			);
 		}
-<span class="nc" id="L186">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L222">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L188">			e.printStackTrace();</span>
+<span class="nc" id="L224">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L191">		return null;</span>
+<span class="nc" id="L227">		return null;</span>
 	}
 
 	/**
@@ -202,34 +238,34 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_21 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L205">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRQSettingsContainer21.Bucket</span>
-<span class="nc" id="L206">			(bucketNumber);</span>
+<span class="nc" id="L241">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRQSettingsContainer21.Bucket</span>
+<span class="nc" id="L242">			(bucketNumber);</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (null == creditBucket)</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (null == creditBucket)</span>
 		{
-<span class="nc" id="L210">			return null;</span>
+<span class="nc" id="L246">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc bnc" id="L215" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
-<span class="nc" id="L216">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
+<span class="nc" id="L252">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_RESIDUAL,
 				org.drip.simm.credit.CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-<span class="nc" id="L219">				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L255">				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()</span>
 			) : new BucketSensitivitySettingsCR (
-<span class="nc" id="L221">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc" id="L257">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
 				org.drip.simm.credit.CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-<span class="nc" id="L224">				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L260">				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()</span>
 			);
 		}
-<span class="nc" id="L227">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L263">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L229">			e.printStackTrace();</span>
+<span class="nc" id="L265">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L232">		return null;</span>
+<span class="nc" id="L268">		return null;</span>
 	}
 
 	/**
@@ -243,34 +279,34 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_21 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L246">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRNQSettingsContainer21.Bucket</span>
-<span class="nc" id="L247">			(bucketNumber);</span>
+<span class="nc" id="L282">		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRNQSettingsContainer21.Bucket</span>
+<span class="nc" id="L283">			(bucketNumber);</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null == creditBucket)</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (null == creditBucket)</span>
 		{
-<span class="nc" id="L251">			return null;</span>
+<span class="nc" id="L287">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc bnc" id="L256" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
-<span class="nc" id="L257">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (</span>
+<span class="nc" id="L293">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRNQBucketCorrelation21.GT_80PC_OVERLAP_RESIDUAL,
 				org.drip.simm.credit.CRNQBucketCorrelation21.LT_80PC_OVERLAP_RESIDUAL,
-<span class="nc" id="L260">				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L296">				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()</span>
 			) : new BucketSensitivitySettingsCR (
-<span class="nc" id="L262">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
+<span class="nc" id="L298">				TenorRiskWeightMap (creditBucket.riskWeight()),</span>
 				org.drip.simm.credit.CRNQBucketCorrelation21.GT_80PC_OVERLAP_NON_RESIDUAL,
 				org.drip.simm.credit.CRNQBucketCorrelation21.LT_80PC_OVERLAP_NON_RESIDUAL,
-<span class="nc" id="L265">				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()</span>
+<span class="nc" id="L301">				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()</span>
 			);
 		}
-<span class="nc" id="L268">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L304">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L270">			e.printStackTrace();</span>
+<span class="nc" id="L306">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L273">		return null;</span>
+<span class="nc" id="L309">		return null;</span>
 	}
 
 	/**
@@ -291,19 +327,19 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L294">		super (concentrationThreshold);</span>
+<span class="nc" id="L330">		super (concentrationThreshold);</span>
 
-<span class="nc bnc" id="L296" title="All 4 branches missed.">		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||</span>
-<span class="nc bnc" id="L297" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||</span>
+<span class="nc bnc" id="L333" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =</span>
 				intraFamilyCrossTenorCorrelation) ||
 				1. &lt;= _intraFamilyCrossTenorCorrelation || -1. &gt;= _intraFamilyCrossTenorCorrelation ||
-<span class="nc bnc" id="L300" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =</span>
+<span class="nc bnc" id="L336" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =</span>
 				extraFamilyCrossTenorCorrelation) ||
 				1. &lt;= _extraFamilyCrossTenorCorrelation || -1. &gt;= _extraFamilyCrossTenorCorrelation)
 		{
-<span class="nc" id="L304">			throw new java.lang.Exception (&quot;BucketSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L340">			throw new java.lang.Exception (&quot;BucketSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L306">	}</span>
+<span class="nc" id="L342">	}</span>
 
 	/**
 	 * Retrieve the Tenor Risk Weight Map
@@ -313,7 +349,7 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight()
 	{
-<span class="nc" id="L316">		return _tenorRiskWeight;</span>
+<span class="nc" id="L352">		return _tenorRiskWeight;</span>
 	}
 
 	/**
@@ -324,7 +360,7 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 
 	public double intraFamilyCrossTenorCorrelation()
 	{
-<span class="nc" id="L327">		return _intraFamilyCrossTenorCorrelation;</span>
+<span class="nc" id="L363">		return _intraFamilyCrossTenorCorrelation;</span>
 	}
 
 	/**
@@ -335,7 +371,7 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 
 	public double extraFamilyCrossTenorCorrelation()
 	{
-<span class="nc" id="L338">		return _extraFamilyCrossTenorCorrelation;</span>
+<span class="nc" id="L374">		return _extraFamilyCrossTenorCorrelation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

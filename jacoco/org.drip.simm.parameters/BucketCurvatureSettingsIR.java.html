@@ -6,31 +6,49 @@ package org.drip.simm.parameters;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,31 +65,49 @@ package org.drip.simm.parameters;
  */
 
 /**
- * BucketCurvatureSettingsIR holds the Curvature Risk Weights, Concentration Thresholds, and
- *  Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;BucketCurvatureSettingsIR&lt;/i&gt; holds the Curvature Risk Weights, Concentration Thresholds, and
+ * Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVegaSettingsIR
 {
-<span class="nc" id="L74">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorScalingFactorMap = null;</span>
+<span class="nc" id="L110">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorScalingFactorMap = null;</span>
 
 	/**
 	 * Generate the ISDA 2.0 Standard BucketCurvatureSettingsIR
@@ -84,111 +120,111 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsIR ISDA_20 (
 		final java.lang.String currency)
 	{
-<span class="nc" id="L87">		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =</span>
-<span class="nc" id="L88">			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_20 (currency);</span>
+<span class="nc" id="L123">		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =</span>
+<span class="nc" id="L124">			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_20 (currency);</span>
 
-<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (null == bucketVegaSettingsIR)</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == bucketVegaSettingsIR)</span>
 		{
-<span class="nc" id="L92">			return null;</span>
+<span class="nc" id="L128">			return null;</span>
 		}
 
 		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
-<span class="nc" id="L96">			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();</span>
+<span class="nc" id="L132">			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();</span>
 
-<span class="nc" id="L98">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap = new</span>
+<span class="nc" id="L134">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 		try
 		{
-<span class="nc" id="L103">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L139">			tenorScalingFactorMap.put (</span>
 				&quot;2W&quot;,
-<span class="nc" id="L105">				r1ToR1CurvatureTenorScaler.evaluate (14.)</span>
+<span class="nc" id="L141">				r1ToR1CurvatureTenorScaler.evaluate (14.)</span>
 			);
 
-<span class="nc" id="L108">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L144">			tenorScalingFactorMap.put (</span>
 				&quot;1M&quot;,
-<span class="nc" id="L110">				r1ToR1CurvatureTenorScaler.evaluate (30.)</span>
+<span class="nc" id="L146">				r1ToR1CurvatureTenorScaler.evaluate (30.)</span>
 			);
 
-<span class="nc" id="L113">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L149">			tenorScalingFactorMap.put (</span>
 				&quot;3M&quot;,
-<span class="nc" id="L115">				r1ToR1CurvatureTenorScaler.evaluate (91.)</span>
+<span class="nc" id="L151">				r1ToR1CurvatureTenorScaler.evaluate (91.)</span>
 			);
 
-<span class="nc" id="L118">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L154">			tenorScalingFactorMap.put (</span>
 				&quot;6M&quot;,
-<span class="nc" id="L120">				r1ToR1CurvatureTenorScaler.evaluate (183.)</span>
+<span class="nc" id="L156">				r1ToR1CurvatureTenorScaler.evaluate (183.)</span>
 			);
 
-<span class="nc" id="L123">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L159">			tenorScalingFactorMap.put (</span>
 				&quot;1Y&quot;,
-<span class="nc" id="L125">				r1ToR1CurvatureTenorScaler.evaluate (365.)</span>
+<span class="nc" id="L161">				r1ToR1CurvatureTenorScaler.evaluate (365.)</span>
 			);
 
-<span class="nc" id="L128">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L164">			tenorScalingFactorMap.put (</span>
 				&quot;2Y&quot;,
-<span class="nc" id="L130">				r1ToR1CurvatureTenorScaler.evaluate (731.)</span>
+<span class="nc" id="L166">				r1ToR1CurvatureTenorScaler.evaluate (731.)</span>
 			);
 
-<span class="nc" id="L133">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L169">			tenorScalingFactorMap.put (</span>
 				&quot;3Y&quot;,
-<span class="nc" id="L135">				r1ToR1CurvatureTenorScaler.evaluate (1096.)</span>
+<span class="nc" id="L171">				r1ToR1CurvatureTenorScaler.evaluate (1096.)</span>
 			);
 
-<span class="nc" id="L138">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L174">			tenorScalingFactorMap.put (</span>
 				&quot;5Y&quot;,
-<span class="nc" id="L140">				r1ToR1CurvatureTenorScaler.evaluate (1826.)</span>
+<span class="nc" id="L176">				r1ToR1CurvatureTenorScaler.evaluate (1826.)</span>
 			);
 
-<span class="nc" id="L143">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L179">			tenorScalingFactorMap.put (</span>
 				&quot;10Y&quot;,
-<span class="nc" id="L145">				r1ToR1CurvatureTenorScaler.evaluate (3652.)</span>
+<span class="nc" id="L181">				r1ToR1CurvatureTenorScaler.evaluate (3652.)</span>
 			);
 
-<span class="nc" id="L148">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L184">			tenorScalingFactorMap.put (</span>
 				&quot;15Y&quot;,
-<span class="nc" id="L150">				r1ToR1CurvatureTenorScaler.evaluate (5479.)</span>
+<span class="nc" id="L186">				r1ToR1CurvatureTenorScaler.evaluate (5479.)</span>
 			);
 
-<span class="nc" id="L153">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L189">			tenorScalingFactorMap.put (</span>
 				&quot;20Y&quot;,
-<span class="nc" id="L155">				r1ToR1CurvatureTenorScaler.evaluate (7305.)</span>
+<span class="nc" id="L191">				r1ToR1CurvatureTenorScaler.evaluate (7305.)</span>
 			);
 
-<span class="nc" id="L158">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L194">			tenorScalingFactorMap.put (</span>
 				&quot;30Y&quot;,
-<span class="nc" id="L160">				r1ToR1CurvatureTenorScaler.evaluate (10957.)</span>
+<span class="nc" id="L196">				r1ToR1CurvatureTenorScaler.evaluate (10957.)</span>
 			);
 
-<span class="nc" id="L163">			return new BucketCurvatureSettingsIR (</span>
-<span class="nc" id="L164">				bucketVegaSettingsIR.oisTenorVegaRiskWeight(),</span>
-<span class="nc" id="L165">				bucketVegaSettingsIR.libor1MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L166">				bucketVegaSettingsIR.libor3MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L167">				bucketVegaSettingsIR.libor6MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L168">				bucketVegaSettingsIR.libor12MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L169">				bucketVegaSettingsIR.primeTenorVegaRiskWeight(),</span>
-<span class="nc" id="L170">				bucketVegaSettingsIR.municipalTenorVegaRiskWeight(),</span>
-<span class="nc" id="L171">				bucketVegaSettingsIR.crossTenorCorrelation(),</span>
-<span class="nc" id="L172">				bucketVegaSettingsIR.crossCurveCorrelation(),</span>
-<span class="nc" id="L173">				bucketVegaSettingsIR.concentrationThreshold(),</span>
-<span class="nc" id="L174">				bucketVegaSettingsIR.vegaScaler(),</span>
-<span class="nc" id="L175">				bucketVegaSettingsIR.historicalVolatilityRatio(),</span>
-<span class="nc" id="L176">				bucketVegaSettingsIR.oisTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L177">				bucketVegaSettingsIR.libor1MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L178">				bucketVegaSettingsIR.libor3MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L179">				bucketVegaSettingsIR.libor6MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L180">				bucketVegaSettingsIR.libor12MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L181">				bucketVegaSettingsIR.primeTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L182">				bucketVegaSettingsIR.municipalTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L199">			return new BucketCurvatureSettingsIR (</span>
+<span class="nc" id="L200">				bucketVegaSettingsIR.oisTenorVegaRiskWeight(),</span>
+<span class="nc" id="L201">				bucketVegaSettingsIR.libor1MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L202">				bucketVegaSettingsIR.libor3MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L203">				bucketVegaSettingsIR.libor6MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L204">				bucketVegaSettingsIR.libor12MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L205">				bucketVegaSettingsIR.primeTenorVegaRiskWeight(),</span>
+<span class="nc" id="L206">				bucketVegaSettingsIR.municipalTenorVegaRiskWeight(),</span>
+<span class="nc" id="L207">				bucketVegaSettingsIR.crossTenorCorrelation(),</span>
+<span class="nc" id="L208">				bucketVegaSettingsIR.crossCurveCorrelation(),</span>
+<span class="nc" id="L209">				bucketVegaSettingsIR.concentrationThreshold(),</span>
+<span class="nc" id="L210">				bucketVegaSettingsIR.vegaScaler(),</span>
+<span class="nc" id="L211">				bucketVegaSettingsIR.historicalVolatilityRatio(),</span>
+<span class="nc" id="L212">				bucketVegaSettingsIR.oisTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L213">				bucketVegaSettingsIR.libor1MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L214">				bucketVegaSettingsIR.libor3MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L215">				bucketVegaSettingsIR.libor6MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L216">				bucketVegaSettingsIR.libor12MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L217">				bucketVegaSettingsIR.primeTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L218">				bucketVegaSettingsIR.municipalTenorDeltaRiskWeight(),</span>
 				tenorScalingFactorMap
 			);
 		}
-<span class="nc" id="L186">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L222">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L188">			e.printStackTrace();</span>
+<span class="nc" id="L224">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L191">		return null;</span>
+<span class="nc" id="L227">		return null;</span>
 	}
 
 	/**
@@ -202,111 +238,111 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsIR ISDA_21 (
 		final java.lang.String currency)
 	{
-<span class="nc" id="L205">		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =</span>
-<span class="nc" id="L206">			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency);</span>
+<span class="nc" id="L241">		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =</span>
+<span class="nc" id="L242">			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency);</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (null == bucketVegaSettingsIR)</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (null == bucketVegaSettingsIR)</span>
 		{
-<span class="nc" id="L210">			return null;</span>
+<span class="nc" id="L246">			return null;</span>
 		}
 
 		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
-<span class="nc" id="L214">			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();</span>
+<span class="nc" id="L250">			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();</span>
 
-<span class="nc" id="L216">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap = new</span>
+<span class="nc" id="L252">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 		try
 		{
-<span class="nc" id="L221">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L257">			tenorScalingFactorMap.put (</span>
 				&quot;2W&quot;,
-<span class="nc" id="L223">				r1ToR1CurvatureTenorScaler.evaluate (14.)</span>
+<span class="nc" id="L259">				r1ToR1CurvatureTenorScaler.evaluate (14.)</span>
 			);
 
-<span class="nc" id="L226">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L262">			tenorScalingFactorMap.put (</span>
 				&quot;1M&quot;,
-<span class="nc" id="L228">				r1ToR1CurvatureTenorScaler.evaluate (30.)</span>
+<span class="nc" id="L264">				r1ToR1CurvatureTenorScaler.evaluate (30.)</span>
 			);
 
-<span class="nc" id="L231">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L267">			tenorScalingFactorMap.put (</span>
 				&quot;3M&quot;,
-<span class="nc" id="L233">				r1ToR1CurvatureTenorScaler.evaluate (91.)</span>
+<span class="nc" id="L269">				r1ToR1CurvatureTenorScaler.evaluate (91.)</span>
 			);
 
-<span class="nc" id="L236">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L272">			tenorScalingFactorMap.put (</span>
 				&quot;6M&quot;,
-<span class="nc" id="L238">				r1ToR1CurvatureTenorScaler.evaluate (183.)</span>
+<span class="nc" id="L274">				r1ToR1CurvatureTenorScaler.evaluate (183.)</span>
 			);
 
-<span class="nc" id="L241">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L277">			tenorScalingFactorMap.put (</span>
 				&quot;1Y&quot;,
-<span class="nc" id="L243">				r1ToR1CurvatureTenorScaler.evaluate (365.)</span>
+<span class="nc" id="L279">				r1ToR1CurvatureTenorScaler.evaluate (365.)</span>
 			);
 
-<span class="nc" id="L246">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L282">			tenorScalingFactorMap.put (</span>
 				&quot;2Y&quot;,
-<span class="nc" id="L248">				r1ToR1CurvatureTenorScaler.evaluate (731.)</span>
+<span class="nc" id="L284">				r1ToR1CurvatureTenorScaler.evaluate (731.)</span>
 			);
 
-<span class="nc" id="L251">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L287">			tenorScalingFactorMap.put (</span>
 				&quot;3Y&quot;,
-<span class="nc" id="L253">				r1ToR1CurvatureTenorScaler.evaluate (1096.)</span>
+<span class="nc" id="L289">				r1ToR1CurvatureTenorScaler.evaluate (1096.)</span>
 			);
 
-<span class="nc" id="L256">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L292">			tenorScalingFactorMap.put (</span>
 				&quot;5Y&quot;,
-<span class="nc" id="L258">				r1ToR1CurvatureTenorScaler.evaluate (1826.)</span>
+<span class="nc" id="L294">				r1ToR1CurvatureTenorScaler.evaluate (1826.)</span>
 			);
 
-<span class="nc" id="L261">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L297">			tenorScalingFactorMap.put (</span>
 				&quot;10Y&quot;,
-<span class="nc" id="L263">				r1ToR1CurvatureTenorScaler.evaluate (3652.)</span>
+<span class="nc" id="L299">				r1ToR1CurvatureTenorScaler.evaluate (3652.)</span>
 			);
 
-<span class="nc" id="L266">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L302">			tenorScalingFactorMap.put (</span>
 				&quot;15Y&quot;,
-<span class="nc" id="L268">				r1ToR1CurvatureTenorScaler.evaluate (5479.)</span>
+<span class="nc" id="L304">				r1ToR1CurvatureTenorScaler.evaluate (5479.)</span>
 			);
 
-<span class="nc" id="L271">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L307">			tenorScalingFactorMap.put (</span>
 				&quot;20Y&quot;,
-<span class="nc" id="L273">				r1ToR1CurvatureTenorScaler.evaluate (7305.)</span>
+<span class="nc" id="L309">				r1ToR1CurvatureTenorScaler.evaluate (7305.)</span>
 			);
 
-<span class="nc" id="L276">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L312">			tenorScalingFactorMap.put (</span>
 				&quot;30Y&quot;,
-<span class="nc" id="L278">				r1ToR1CurvatureTenorScaler.evaluate (10957.)</span>
+<span class="nc" id="L314">				r1ToR1CurvatureTenorScaler.evaluate (10957.)</span>
 			);
 
-<span class="nc" id="L281">			return new BucketCurvatureSettingsIR (</span>
-<span class="nc" id="L282">				bucketVegaSettingsIR.oisTenorVegaRiskWeight(),</span>
-<span class="nc" id="L283">				bucketVegaSettingsIR.libor1MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L284">				bucketVegaSettingsIR.libor3MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L285">				bucketVegaSettingsIR.libor6MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L286">				bucketVegaSettingsIR.libor12MTenorVegaRiskWeight(),</span>
-<span class="nc" id="L287">				bucketVegaSettingsIR.primeTenorVegaRiskWeight(),</span>
-<span class="nc" id="L288">				bucketVegaSettingsIR.municipalTenorVegaRiskWeight(),</span>
-<span class="nc" id="L289">				bucketVegaSettingsIR.crossTenorCorrelation(),</span>
-<span class="nc" id="L290">				bucketVegaSettingsIR.crossCurveCorrelation(),</span>
-<span class="nc" id="L291">				bucketVegaSettingsIR.concentrationThreshold(),</span>
-<span class="nc" id="L292">				bucketVegaSettingsIR.vegaScaler(),</span>
-<span class="nc" id="L293">				bucketVegaSettingsIR.historicalVolatilityRatio(),</span>
-<span class="nc" id="L294">				bucketVegaSettingsIR.oisTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L295">				bucketVegaSettingsIR.libor1MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L296">				bucketVegaSettingsIR.libor3MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L297">				bucketVegaSettingsIR.libor6MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L298">				bucketVegaSettingsIR.libor12MTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L299">				bucketVegaSettingsIR.primeTenorDeltaRiskWeight(),</span>
-<span class="nc" id="L300">				bucketVegaSettingsIR.municipalTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L317">			return new BucketCurvatureSettingsIR (</span>
+<span class="nc" id="L318">				bucketVegaSettingsIR.oisTenorVegaRiskWeight(),</span>
+<span class="nc" id="L319">				bucketVegaSettingsIR.libor1MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L320">				bucketVegaSettingsIR.libor3MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L321">				bucketVegaSettingsIR.libor6MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L322">				bucketVegaSettingsIR.libor12MTenorVegaRiskWeight(),</span>
+<span class="nc" id="L323">				bucketVegaSettingsIR.primeTenorVegaRiskWeight(),</span>
+<span class="nc" id="L324">				bucketVegaSettingsIR.municipalTenorVegaRiskWeight(),</span>
+<span class="nc" id="L325">				bucketVegaSettingsIR.crossTenorCorrelation(),</span>
+<span class="nc" id="L326">				bucketVegaSettingsIR.crossCurveCorrelation(),</span>
+<span class="nc" id="L327">				bucketVegaSettingsIR.concentrationThreshold(),</span>
+<span class="nc" id="L328">				bucketVegaSettingsIR.vegaScaler(),</span>
+<span class="nc" id="L329">				bucketVegaSettingsIR.historicalVolatilityRatio(),</span>
+<span class="nc" id="L330">				bucketVegaSettingsIR.oisTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L331">				bucketVegaSettingsIR.libor1MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L332">				bucketVegaSettingsIR.libor3MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L333">				bucketVegaSettingsIR.libor6MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L334">				bucketVegaSettingsIR.libor12MTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L335">				bucketVegaSettingsIR.primeTenorDeltaRiskWeight(),</span>
+<span class="nc" id="L336">				bucketVegaSettingsIR.municipalTenorDeltaRiskWeight(),</span>
 				tenorScalingFactorMap
 			);
 		}
-<span class="nc" id="L304">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L340">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L306">			e.printStackTrace();</span>
+<span class="nc" id="L342">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L309">		return null;</span>
+<span class="nc" id="L345">		return null;</span>
 	}
 
 	/**
@@ -359,7 +395,7 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L362">		super (</span>
+<span class="nc" id="L398">		super (</span>
 			oisTenorVegaRiskWeight,
 			libor1MTenorVegaRiskWeight,
 			libor3MTenorVegaRiskWeight,
@@ -381,11 +417,11 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 			municipalTenorDeltaRiskWeight
 		);
 
-<span class="nc bnc" id="L384" title="All 4 branches missed.">		if (null == (_tenorScalingFactorMap = tenorScalingFactorMap) || 0 == _tenorScalingFactorMap.size())</span>
+<span class="nc bnc" id="L420" title="All 4 branches missed.">		if (null == (_tenorScalingFactorMap = tenorScalingFactorMap) || 0 == _tenorScalingFactorMap.size())</span>
 		{
-<span class="nc" id="L386">			throw new java.lang.Exception (&quot;BucketVegaSettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L422">			throw new java.lang.Exception (&quot;BucketVegaSettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L388">	}</span>
+<span class="nc" id="L424">	}</span>
 
 	/**
 	 * Retrieve the Tenor Scaling Factor Map
@@ -395,196 +431,196 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap()
 	{
-<span class="nc" id="L398">		return _tenorScalingFactorMap;</span>
+<span class="nc" id="L434">		return _tenorScalingFactorMap;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisTenorRiskWeight()
 	{
-<span class="nc" id="L403">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisTenorVegaRiskWeight =</span>
-<span class="nc" id="L404">			super.oisTenorRiskWeight();</span>
+<span class="nc" id="L439">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisTenorVegaRiskWeight =</span>
+<span class="nc" id="L440">			super.oisTenorRiskWeight();</span>
 
-<span class="nc" id="L406">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisTenorRiskWeight = new</span>
+<span class="nc" id="L442">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; oisTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L410" title="All 2 branches missed.">			oisTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">			oisTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L412">			java.lang.String tenor = oisTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L448">			java.lang.String tenor = oisTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L414" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L416">				return null;</span>
+<span class="nc" id="L452">				return null;</span>
 			}
 
-<span class="nc" id="L419">			oisTenorRiskWeight.put (</span>
+<span class="nc" id="L455">			oisTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L421">				oisTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L457">				oisTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L423">		}</span>
+<span class="nc" id="L459">		}</span>
 
-<span class="nc" id="L425">		return oisTenorRiskWeight;</span>
+<span class="nc" id="L461">		return oisTenorRiskWeight;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MTenorRiskWeight()
 	{
-<span class="nc" id="L430">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MTenorVegaRiskWeight =</span>
-<span class="nc" id="L431">			super.libor1MTenorRiskWeight();</span>
+<span class="nc" id="L466">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MTenorVegaRiskWeight =</span>
+<span class="nc" id="L467">			super.libor1MTenorRiskWeight();</span>
 
-<span class="nc" id="L433">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MTenorRiskWeight = new</span>
+<span class="nc" id="L469">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor1MTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L437" title="All 2 branches missed.">			libor1MTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">			libor1MTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L439">			java.lang.String tenor = libor1MTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L475">			java.lang.String tenor = libor1MTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L441" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L443">				return null;</span>
+<span class="nc" id="L479">				return null;</span>
 			}
 
-<span class="nc" id="L446">			libor1MTenorRiskWeight.put (</span>
+<span class="nc" id="L482">			libor1MTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L448">				libor1MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L484">				libor1MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L450">		}</span>
+<span class="nc" id="L486">		}</span>
 
-<span class="nc" id="L452">		return libor1MTenorRiskWeight;</span>
+<span class="nc" id="L488">		return libor1MTenorRiskWeight;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MTenorRiskWeight()
 	{
-<span class="nc" id="L457">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MTenorVegaRiskWeight =</span>
-<span class="nc" id="L458">			super.libor3MTenorRiskWeight();</span>
+<span class="nc" id="L493">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MTenorVegaRiskWeight =</span>
+<span class="nc" id="L494">			super.libor3MTenorRiskWeight();</span>
 
-<span class="nc" id="L460">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MTenorRiskWeight = new</span>
+<span class="nc" id="L496">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor3MTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L464" title="All 2 branches missed.">			libor3MTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L500" title="All 2 branches missed.">			libor3MTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L466">			java.lang.String tenor = libor3MTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L502">			java.lang.String tenor = libor3MTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L468" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L470">				return null;</span>
+<span class="nc" id="L506">				return null;</span>
 			}
 
-<span class="nc" id="L473">			libor3MTenorRiskWeight.put (</span>
+<span class="nc" id="L509">			libor3MTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L475">				libor3MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L511">				libor3MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L477">		}</span>
+<span class="nc" id="L513">		}</span>
 
-<span class="nc" id="L479">		return libor3MTenorRiskWeight;</span>
+<span class="nc" id="L515">		return libor3MTenorRiskWeight;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MTenorRiskWeight()
 	{
-<span class="nc" id="L484">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MTenorVegaRiskWeight =</span>
-<span class="nc" id="L485">			super.libor6MTenorRiskWeight();</span>
+<span class="nc" id="L520">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MTenorVegaRiskWeight =</span>
+<span class="nc" id="L521">			super.libor6MTenorRiskWeight();</span>
 
-<span class="nc" id="L487">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MTenorRiskWeight = new</span>
+<span class="nc" id="L523">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor6MTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L491" title="All 2 branches missed.">			libor6MTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">			libor6MTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L493">			java.lang.String tenor = libor6MTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L529">			java.lang.String tenor = libor6MTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L495" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L531" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L497">				return null;</span>
+<span class="nc" id="L533">				return null;</span>
 			}
 
-<span class="nc" id="L500">			libor6MTenorRiskWeight.put (</span>
+<span class="nc" id="L536">			libor6MTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L502">				libor6MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L538">				libor6MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L504">		}</span>
+<span class="nc" id="L540">		}</span>
 
-<span class="nc" id="L506">		return libor6MTenorRiskWeight;</span>
+<span class="nc" id="L542">		return libor6MTenorRiskWeight;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MTenorRiskWeight()
 	{
-<span class="nc" id="L511">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MTenorVegaRiskWeight =</span>
-<span class="nc" id="L512">			super.libor12MTenorRiskWeight();</span>
+<span class="nc" id="L547">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MTenorVegaRiskWeight =</span>
+<span class="nc" id="L548">			super.libor12MTenorRiskWeight();</span>
 
-<span class="nc" id="L514">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MTenorRiskWeight = new</span>
+<span class="nc" id="L550">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; libor12MTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L518" title="All 2 branches missed.">			libor12MTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">			libor12MTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L520">			java.lang.String tenor = libor12MTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L556">			java.lang.String tenor = libor12MTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L522" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L524">				return null;</span>
+<span class="nc" id="L560">				return null;</span>
 			}
 
-<span class="nc" id="L527">			libor12MTenorRiskWeight.put (</span>
+<span class="nc" id="L563">			libor12MTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L529">				libor12MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L565">				libor12MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L531">		}</span>
+<span class="nc" id="L567">		}</span>
 
-<span class="nc" id="L533">		return libor12MTenorRiskWeight;</span>
+<span class="nc" id="L569">		return libor12MTenorRiskWeight;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeTenorRiskWeight()
 	{
-<span class="nc" id="L538">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeTenorVegaRiskWeight =</span>
-<span class="nc" id="L539">			super.primeTenorRiskWeight();</span>
+<span class="nc" id="L574">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeTenorVegaRiskWeight =</span>
+<span class="nc" id="L575">			super.primeTenorRiskWeight();</span>
 
-<span class="nc" id="L541">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeTenorRiskWeight = new</span>
+<span class="nc" id="L577">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; primeTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L545" title="All 2 branches missed.">			primeTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L581" title="All 2 branches missed.">			primeTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L547">			java.lang.String tenor = primeTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L583">			java.lang.String tenor = primeTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L549" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L551">				return null;</span>
+<span class="nc" id="L587">				return null;</span>
 			}
 
-<span class="nc" id="L554">			primeTenorRiskWeight.put (</span>
+<span class="nc" id="L590">			primeTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L556">				primeTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L592">				primeTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L558">		}</span>
+<span class="nc" id="L594">		}</span>
 
-<span class="nc" id="L560">		return primeTenorRiskWeight;</span>
+<span class="nc" id="L596">		return primeTenorRiskWeight;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalTenorRiskWeight()
 	{
-<span class="nc" id="L565">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalTenorVegaRiskWeight =</span>
-<span class="nc" id="L566">			super.municipalTenorRiskWeight();</span>
+<span class="nc" id="L601">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalTenorVegaRiskWeight =</span>
+<span class="nc" id="L602">			super.municipalTenorRiskWeight();</span>
 
-<span class="nc" id="L568">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalTenorRiskWeight = new</span>
+<span class="nc" id="L604">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalTenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; municipalTenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L572" title="All 2 branches missed.">			municipalTenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L608" title="All 2 branches missed.">			municipalTenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L574">			java.lang.String tenor = municipalTenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L610">			java.lang.String tenor = municipalTenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L576" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L578">				return null;</span>
+<span class="nc" id="L614">				return null;</span>
 			}
 
-<span class="nc" id="L581">			municipalTenorRiskWeight.put (</span>
+<span class="nc" id="L617">			municipalTenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L583">				municipalTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L619">				municipalTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L585">		}</span>
+<span class="nc" id="L621">		}</span>
 
-<span class="nc" id="L587">		return municipalTenorRiskWeight;</span>
+<span class="nc" id="L623">		return municipalTenorRiskWeight;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
