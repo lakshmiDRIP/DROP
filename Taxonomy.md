@@ -1,6 +1,11 @@
 
 # DROP Taxonomy
 
+
+<p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
+
+
+
 ## Analytics Core Module
  * ***Fixed Income Analytics Library***
 	* *Analytics* => Date, Cash Flow, and Cash Flow Period Measure Generation Utilities.
@@ -24,7 +29,7 @@
 	* *State* => Latent State Inference and Creation Utilities.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Astate) }
-	* *Template* =>
+	* *Template* => Pricing/Risk Templates for Fixed Income Products.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Atemplate) }
  * ***Asset Backed Analytics Library***
