@@ -6,6 +6,7 @@ package org.drip.spline.stretch;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.stretch;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,20 +70,36 @@ package org.drip.spline.stretch;
  */
 
 /**
- * CkSegmentSequenceBuilder implements the SegmentSequenceBuilder interface to customize segment sequence
- *  construction. Customization is applied at several levels:
- * 	- Segment Calibration Boundary Setting/Segment Best Fit Response Settings
- * 	- Segment Response Value Constraints for the starting and the subsequent Segments
+ * &lt;i&gt;CkSegmentSequenceBuilder&lt;/i&gt; implements the SegmentSequenceBuilder interface to customize segment
+ * sequence construction. Customization is applied at several levels:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Segment Calibration Boundary Setting/Segment Best Fit Response Settings
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Segment Response Value Constraints for the starting and the subsequent Segments
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch&quot;&gt;Stretch&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CkSegmentSequenceBuilder implements org.drip.spline.stretch.SegmentSequenceBuilder {
-<span class="fc" id="L64">	private org.drip.spline.stretch.BoundarySettings _bs = null;</span>
-<span class="fc" id="L65">	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;</span>
-<span class="fc" id="L66">	private org.drip.spline.params.StretchBestFitResponse _rbfr = null;</span>
-<span class="fc" id="L67">	private org.drip.spline.params.SegmentResponseValueConstraint[] _aSRVC = null;</span>
-<span class="fc" id="L68">	private org.drip.spline.params.SegmentResponseValueConstraint _srvcLeading = null;</span>
+<span class="fc" id="L98">	private org.drip.spline.stretch.BoundarySettings _bs = null;</span>
+<span class="fc" id="L99">	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;</span>
+<span class="fc" id="L100">	private org.drip.spline.params.StretchBestFitResponse _rbfr = null;</span>
+<span class="fc" id="L101">	private org.drip.spline.params.SegmentResponseValueConstraint[] _aSRVC = null;</span>
+<span class="fc" id="L102">	private org.drip.spline.params.SegmentResponseValueConstraint _srvcLeading = null;</span>
 
 	/**
 	 * CkSegmentSequenceBuilder constructor
@@ -84,65 +118,65 @@ public class CkSegmentSequenceBuilder implements org.drip.spline.stretch.Segment
 		final org.drip.spline.params.StretchBestFitResponse rbfr,
 		final org.drip.spline.stretch.BoundarySettings bs)
 		throws java.lang.Exception
-<span class="fc" id="L87">	{</span>
-<span class="fc" id="L88">		_rbfr = rbfr;</span>
-<span class="fc" id="L89">		_aSRVC = aSRVC;</span>
-<span class="fc" id="L90">		_srvcLeading = srvcLeading;</span>
+<span class="fc" id="L121">	{</span>
+<span class="fc" id="L122">		_rbfr = rbfr;</span>
+<span class="fc" id="L123">		_aSRVC = aSRVC;</span>
+<span class="fc" id="L124">		_srvcLeading = srvcLeading;</span>
 
-<span class="pc bpc" id="L92" title="4 of 8 branches missed.">		if (null == _srvcLeading &amp;&amp; (null == _aSRVC || 0 == _aSRVC.length) &amp;&amp; null == _rbfr)</span>
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L126" title="4 of 8 branches missed.">		if (null == _srvcLeading &amp;&amp; (null == _aSRVC || 0 == _aSRVC.length) &amp;&amp; null == _rbfr)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
 
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (null == (_bs = bs))</span>
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
-<span class="fc" id="L97">	}</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (null == (_bs = bs))</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
+<span class="fc" id="L131">	}</span>
 
 	@Override public boolean setStretch (
 		final org.drip.spline.stretch.MultiSegmentSequence mss)
 	{
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == mss) return false;</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == mss) return false;</span>
 
-<span class="fc" id="L104">		_mss = mss;</span>
-<span class="fc" id="L105">		return true;</span>
+<span class="fc" id="L138">		_mss = mss;</span>
+<span class="fc" id="L139">		return true;</span>
 	}
 
 	@Override public org.drip.spline.stretch.BoundarySettings getCalibrationBoundaryCondition()
 	{
-<span class="fc" id="L110">		return _bs;</span>
+<span class="fc" id="L144">		return _bs;</span>
 	}
 
 	@Override public boolean calibStartingSegment (
 		final double dblLeftSlope)
 	{
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
 
-<span class="fc" id="L118">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
+<span class="fc" id="L152">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
 
-<span class="pc bpc" id="L120" title="3 of 10 branches missed.">		return null != aCS &amp;&amp; 0 &lt; aCS.length &amp;&amp; aCS[0].calibrate (_srvcLeading, dblLeftSlope, null == _aSRVC</span>
-<span class="fc" id="L121">			? null : _aSRVC[0], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[0]));</span>
+<span class="pc bpc" id="L154" title="3 of 10 branches missed.">		return null != aCS &amp;&amp; 0 &lt; aCS.length &amp;&amp; aCS[0].calibrate (_srvcLeading, dblLeftSlope, null == _aSRVC</span>
+<span class="fc" id="L155">			? null : _aSRVC[0], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[0]));</span>
 	}
 
 	@Override public boolean calibSegmentSequence (
 		final int iStartingSegment)
 	{
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
 
-<span class="fc" id="L129">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
+<span class="fc" id="L163">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
 
-<span class="fc" id="L131">		int iNumSegment = aCS.length;</span>
+<span class="fc" id="L165">		int iNumSegment = aCS.length;</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int iSegment = iStartingSegment; iSegment &lt; iNumSegment; ++iSegment) {</span>
-<span class="pc bpc" id="L134" title="2 of 8 branches missed.">			if (!aCS[iSegment].calibrate (0 == iSegment ? null : aCS[iSegment - 1], null == _aSRVC ? null :</span>
-<span class="fc" id="L135">				_aSRVC[iSegment], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[iSegment])))</span>
-<span class="nc" id="L136">				return false;</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (int iSegment = iStartingSegment; iSegment &lt; iNumSegment; ++iSegment) {</span>
+<span class="pc bpc" id="L168" title="2 of 8 branches missed.">			if (!aCS[iSegment].calibrate (0 == iSegment ? null : aCS[iSegment - 1], null == _aSRVC ? null :</span>
+<span class="fc" id="L169">				_aSRVC[iSegment], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[iSegment])))</span>
+<span class="nc" id="L170">				return false;</span>
 		}
 
-<span class="fc" id="L139">		return true;</span>
+<span class="fc" id="L173">		return true;</span>
 	}
 
 	@Override public boolean manifestMeasureSensitivity (
 		final double dblLeftSlopeSensitivity)
 	{
-<span class="fc" id="L145">		return true;</span>
+<span class="fc" id="L179">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

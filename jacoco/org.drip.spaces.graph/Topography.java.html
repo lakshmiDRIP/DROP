@@ -6,31 +6,49 @@ package org.drip.spaces.graph;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,30 +65,47 @@ package org.drip.spaces.graph;
  */
 
 /**
- * Topography holds Vertexes and the Edges between them. The References are:
- *  
- *  1) Wikipedia (2018a): Graph (Abstract Data Type)
- *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
- *  
- *  2) Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory.
- *  
- *  3) Wikipedia (2018c): Graph (Discrete Mathematics)
- *  	https://en.wikipedia.org/wiki/Graph_(discrete_mathematics).
- *  
- *  4) Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
- *  
- *  5) Wikipedia (2018e): Bellman-Ford Algorithm
- *  	https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm.
+ * &lt;i&gt;Topography&lt;/i&gt; holds Vertexes and the Edges between them. The References are:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018a): Graph (Abstract Data Type)
+ *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018c): Graph (Discrete Mathematics)
+ *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018e): Bellman-Ford Algorithm
+ *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Topography
 {
-<span class="nc" id="L70">	private org.drip.spaces.graph.TopographyEdgeMap _topographyEdgeMap = new</span>
+<span class="nc" id="L105">	private org.drip.spaces.graph.TopographyEdgeMap _topographyEdgeMap = new</span>
 		org.drip.spaces.graph.TopographyEdgeMap();
 
-<span class="nc" id="L73">	private java.util.Map&lt;java.lang.String, org.drip.spaces.graph.Vertex&gt; _vertexMap = new</span>
+<span class="nc" id="L108">	private java.util.Map&lt;java.lang.String, org.drip.spaces.graph.Vertex&gt; _vertexMap = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spaces.graph.Vertex&gt;();
 
 	/**
@@ -78,8 +113,8 @@ public class Topography
 	 */
 
 	public Topography()
-<span class="nc" id="L81">	{</span>
-<span class="nc" id="L82">	}</span>
+<span class="nc" id="L116">	{</span>
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Retrieve The Vertex Name Set
@@ -89,7 +124,7 @@ public class Topography
 
 	public java.util.Set&lt;java.lang.String&gt; vertexNameSet()
 	{
-<span class="nc" id="L92">		return _vertexMap.keySet();</span>
+<span class="nc" id="L127">		return _vertexMap.keySet();</span>
 	}
 
 	/**
@@ -103,24 +138,24 @@ public class Topography
 	public boolean addVertex (
 		final java.lang.String vertexName)
 	{
-<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (null == vertexName || vertexName.isEmpty())</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (null == vertexName || vertexName.isEmpty())</span>
 		{
-<span class="nc" id="L108">			return false;</span>
+<span class="nc" id="L143">			return false;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L113">			_vertexMap.put (</span>
+<span class="nc" id="L148">			_vertexMap.put (</span>
 				vertexName,
 				new org.drip.spaces.graph.Vertex (vertexName)
 			);
 		}
-<span class="nc" id="L118">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L153">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L120">			e.printStackTrace();</span>
-<span class="nc" id="L121">		}</span>
+<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="nc" id="L156">		}</span>
 
-<span class="nc" id="L123">		return false;</span>
+<span class="nc" id="L158">		return false;</span>
 	}
 
 	/**
@@ -134,7 +169,7 @@ public class Topography
 	public boolean vertexExists (
 		final java.lang.String vertexName)
 	{
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		return null != vertexName &amp;&amp; _vertexMap.containsKey (vertexName);</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">		return null != vertexName &amp;&amp; _vertexMap.containsKey (vertexName);</span>
 	}
 
 	/**
@@ -148,7 +183,7 @@ public class Topography
 	public org.drip.spaces.graph.Vertex vertex (
 		final java.lang.String vertexName)
 	{
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		return vertexExists (vertexName) ? _vertexMap.get (vertexName) : null;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		return vertexExists (vertexName) ? _vertexMap.get (vertexName) : null;</span>
 	}
 
 	/**
@@ -162,25 +197,25 @@ public class Topography
 	public boolean addEdge (
 		final org.drip.spaces.graph.Edge edge)
 	{
-<span class="nc bnc" id="L165" title="All 4 branches missed.">		if (null == edge || !_topographyEdgeMap.addEdge (edge))</span>
+<span class="nc bnc" id="L200" title="All 4 branches missed.">		if (null == edge || !_topographyEdgeMap.addEdge (edge))</span>
 		{
-<span class="nc" id="L167">			return false;</span>
+<span class="nc" id="L202">			return false;</span>
 		}
 
-<span class="nc" id="L170">		double weight = edge.weight();</span>
+<span class="nc" id="L205">		double weight = edge.weight();</span>
 
-<span class="nc" id="L172">		java.lang.String source = edge.source();</span>
+<span class="nc" id="L207">		java.lang.String source = edge.source();</span>
 
-<span class="nc" id="L174">		java.lang.String destination = edge.destination();</span>
+<span class="nc" id="L209">		java.lang.String destination = edge.destination();</span>
 
-<span class="nc" id="L176">		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);</span>
+<span class="nc" id="L211">		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);</span>
 
-<span class="nc" id="L178">		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);</span>
+<span class="nc" id="L213">		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);</span>
 
-<span class="nc bnc" id="L180" title="All 6 branches missed.">		return null != sourceVertex &amp;&amp; null != destinationVertex &amp;&amp; sourceVertex.addEgress (</span>
+<span class="nc bnc" id="L215" title="All 6 branches missed.">		return null != sourceVertex &amp;&amp; null != destinationVertex &amp;&amp; sourceVertex.addEgress (</span>
 			destination,
 			weight
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		) &amp;&amp; destinationVertex.addEgress (</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		) &amp;&amp; destinationVertex.addEgress (</span>
 			source,
 			weight
 		);
@@ -194,7 +229,7 @@ public class Topography
 
 	public java.util.Map&lt;java.lang.String, org.drip.spaces.graph.Vertex&gt; vertexMap()
 	{
-<span class="nc" id="L197">		return _vertexMap;</span>
+<span class="nc" id="L232">		return _vertexMap;</span>
 	}
 
 	/**
@@ -205,7 +240,7 @@ public class Topography
 
 	public org.drip.spaces.graph.TopographyEdgeMap topographyEdgeMap()
 	{
-<span class="nc" id="L208">		return _topographyEdgeMap;</span>
+<span class="nc" id="L243">		return _topographyEdgeMap;</span>
 	}
 
 	/**
@@ -221,16 +256,16 @@ public class Topography
 		final java.lang.String source,
 		final java.lang.String destination)
 	{
-<span class="nc" id="L224">		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);</span>
+<span class="nc" id="L259">		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);</span>
 
-<span class="nc" id="L226">		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);</span>
+<span class="nc" id="L261">		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);</span>
 
-<span class="nc bnc" id="L228" title="All 4 branches missed.">		if (null == sourceVertex || null == destinationVertex)</span>
+<span class="nc bnc" id="L263" title="All 4 branches missed.">		if (null == sourceVertex || null == destinationVertex)</span>
 		{
-<span class="nc" id="L230">			return false;</span>
+<span class="nc" id="L265">			return false;</span>
 		}
 
-<span class="nc" id="L233">		return sourceVertex.egressMap().containsKey (destination);</span>
+<span class="nc" id="L268">		return sourceVertex.egressMap().containsKey (destination);</span>
 	}
 
 	/**
@@ -249,15 +284,15 @@ public class Topography
 		final java.lang.String destination)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (!adjacent (</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		if (!adjacent (</span>
 			source,
 			destination
 		))
 		{
-<span class="nc" id="L257">			throw new java.lang.Exception (&quot;Topography::adjacentDistance =&gt; Invalid Adjacency Check&quot;);</span>
+<span class="nc" id="L292">			throw new java.lang.Exception (&quot;Topography::adjacentDistance =&gt; Invalid Adjacency Check&quot;);</span>
 		}
 
-<span class="nc" id="L260">		return vertex (source).egressMap().get (destination);</span>
+<span class="nc" id="L295">		return vertex (source).egressMap().get (destination);</span>
 	}
 
 	/**
@@ -268,49 +303,49 @@ public class Topography
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap()
 	{
-<span class="nc" id="L271">		java.util.Set&lt;java.lang.String&gt; vertexNameSet = _vertexMap.keySet();</span>
+<span class="nc" id="L306">		java.util.Set&lt;java.lang.String&gt; vertexNameSet = _vertexMap.keySet();</span>
 
-<span class="nc" id="L273">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap = new</span>
+<span class="nc" id="L308">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc bnc" id="L276" title="All 2 branches missed.">		for (String source : vertexNameSet)</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		for (String source : vertexNameSet)</span>
 		{
-<span class="nc bnc" id="L278" title="All 2 branches missed.">			for (String destination : vertexNameSet)</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">			for (String destination : vertexNameSet)</span>
 			{
 				try
 				{
-<span class="nc bnc" id="L282" title="All 2 branches missed.">					if (adjacent (</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">					if (adjacent (</span>
 						source,
 						destination
 					))
 					{
-<span class="nc bnc" id="L287" title="All 2 branches missed.">						double adjacentWeight = adjacent (</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">						double adjacentWeight = adjacent (</span>
 							source,
 							destination
-<span class="nc" id="L290">						) ? adjacentWeight (</span>
+<span class="nc" id="L325">						) ? adjacentWeight (</span>
 							source,
 							destination
 						) : 0.;
 
-<span class="nc" id="L295">						connectionMap.put (</span>
+<span class="nc" id="L330">						connectionMap.put (</span>
 							source + &quot;_&quot; + destination,
-<span class="nc" id="L297">							adjacentWeight</span>
+<span class="nc" id="L332">							adjacentWeight</span>
 						);
 
-<span class="nc" id="L300">						connectionMap.put (</span>
+<span class="nc" id="L335">						connectionMap.put (</span>
 							destination + &quot;_&quot; + source,
-<span class="nc" id="L302">							adjacentWeight</span>
+<span class="nc" id="L337">							adjacentWeight</span>
 						);
 					}
 				}
-<span class="nc" id="L306">				catch (java.lang.Exception e)</span>
+<span class="nc" id="L341">				catch (java.lang.Exception e)</span>
 				{
-<span class="nc" id="L308">					e.printStackTrace();</span>
-<span class="nc" id="L309">				}</span>
-<span class="nc" id="L310">			}</span>
-<span class="nc" id="L311">		}</span>
+<span class="nc" id="L343">					e.printStackTrace();</span>
+<span class="nc" id="L344">				}</span>
+<span class="nc" id="L345">			}</span>
+<span class="nc" id="L346">		}</span>
 
-<span class="nc" id="L313">		return connectionMap;</span>
+<span class="nc" id="L348">		return connectionMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

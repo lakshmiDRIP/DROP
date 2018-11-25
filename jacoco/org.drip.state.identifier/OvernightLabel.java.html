@@ -6,34 +6,52 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,14 +68,22 @@ package org.drip.state.identifier;
  */
 
 /**
- * OvernightLabel contains the Index Parameters referencing an Overnight Index. It provides the functionality
- *  to Retrieve Index, Tenor, Currency, and Fully Qualified Name.
+ * &lt;i&gt;OvernightLabel&lt;/i&gt; contains the Index Parameters referencing an Overnight Index. It provides the
+ * functionality to Retrieve Index, Tenor, Currency, and Fully Qualified Name.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  
  * @author Lakshmi Krishnamurthy
  */
 
 public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
-<span class="fc" id="L60">	private org.drip.market.definition.OvernightIndex _overnightIndex = null;</span>
+<span class="fc" id="L86">	private org.drip.market.definition.OvernightIndex _overnightIndex = null;</span>
 
 	/**
 	 * Construct an OvernightLabel from the Jurisdiction
@@ -71,13 +97,13 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 		final java.lang.String strCurrency)
 	{
 		try {
-<span class="fc" id="L74">			return new OvernightLabel</span>
-<span class="fc" id="L75">				(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency));</span>
-<span class="nc" id="L76">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L77">			e.printStackTrace();</span>
+<span class="fc" id="L100">			return new OvernightLabel</span>
+<span class="fc" id="L101">				(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency));</span>
+<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L103">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L80">		return null;</span>
+<span class="nc" id="L106">		return null;</span>
 	}
 
 	/**
@@ -92,12 +118,12 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 		final org.drip.market.definition.OvernightIndex overnightIndex)
 	{
 		try {
-<span class="nc" id="L95">			return new OvernightLabel (overnightIndex);</span>
-<span class="nc" id="L96">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L97">			e.printStackTrace();</span>
+<span class="nc" id="L121">			return new OvernightLabel (overnightIndex);</span>
+<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L123">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L100">		return null;</span>
+<span class="nc" id="L126">		return null;</span>
 	}
 
 	/**
@@ -112,11 +138,11 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 		final org.drip.market.definition.OvernightIndex overnightIndex)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L115">		super (overnightIndex, &quot;ON&quot;);</span>
+<span class="fc" id="L141">		super (overnightIndex, &quot;ON&quot;);</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (null == (_overnightIndex = overnightIndex))</span>
-<span class="nc" id="L118">			throw new java.lang.Exception (&quot;OvernightLabel ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L119">	}</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (null == (_overnightIndex = overnightIndex))</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;OvernightLabel ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Currency
@@ -126,7 +152,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 
 	public java.lang.String currency()
 	{
-<span class="fc" id="L129">		return _overnightIndex.currency();</span>
+<span class="fc" id="L155">		return _overnightIndex.currency();</span>
 	}
 
 	/**
@@ -137,7 +163,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 
 	public java.lang.String family()
 	{
-<span class="nc" id="L140">		return _overnightIndex.family();</span>
+<span class="nc" id="L166">		return _overnightIndex.family();</span>
 	}
 
 	/**
@@ -148,7 +174,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 
 	public java.lang.String tenor()
 	{
-<span class="fc" id="L151">		return &quot;ON&quot;;</span>
+<span class="fc" id="L177">		return &quot;ON&quot;;</span>
 	}
 
 	/**
@@ -159,7 +185,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 
 	public boolean overnight()
 	{
-<span class="nc" id="L162">		return true;</span>
+<span class="nc" id="L188">		return true;</span>
 	}
 
 	/**
@@ -170,7 +196,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 
 	public org.drip.market.definition.OvernightIndex overnightIndex()
 	{
-<span class="nc" id="L173">		return _overnightIndex;</span>
+<span class="nc" id="L199">		return _overnightIndex;</span>
 	}
 
 	/**
@@ -181,28 +207,28 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 
 	public org.drip.param.period.UnitCouponAccrualSetting ucas()
 	{
-<span class="fc" id="L184">		java.lang.String strDayCount = _overnightIndex.dayCount();</span>
+<span class="fc" id="L210">		java.lang.String strDayCount = _overnightIndex.dayCount();</span>
 
 		try {
-<span class="fc" id="L187">			return new org.drip.param.period.UnitCouponAccrualSetting (360, strDayCount, false, strDayCount,</span>
-<span class="fc" id="L188">				false, _overnightIndex.currency(), false, _overnightIndex.accrualCompoundingRule());</span>
-<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L190">			e.printStackTrace();</span>
+<span class="fc" id="L213">			return new org.drip.param.period.UnitCouponAccrualSetting (360, strDayCount, false, strDayCount,</span>
+<span class="fc" id="L214">				false, _overnightIndex.currency(), false, _overnightIndex.accrualCompoundingRule());</span>
+<span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L216">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L193">		return null;</span>
+<span class="nc" id="L219">		return null;</span>
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-<span class="fc" id="L198">		return _overnightIndex.currency() + &quot;-&quot; + _overnightIndex.family() + &quot;-ON&quot;;</span>
+<span class="fc" id="L224">		return _overnightIndex.currency() + &quot;-&quot; + _overnightIndex.family() + &quot;-ON&quot;;</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-<span class="nc bnc" id="L204" title="All 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.OvernightLabel) ? false :</span>
-<span class="nc" id="L205">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
+<span class="nc bnc" id="L230" title="All 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.OvernightLabel) ? false :</span>
+<span class="nc" id="L231">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

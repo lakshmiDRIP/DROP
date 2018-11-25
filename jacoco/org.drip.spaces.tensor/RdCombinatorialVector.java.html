@@ -6,34 +6,52 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,8 +68,16 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * RdCombinatorialVector exposes the Normed/Non-normed Discrete Spaces with R^d Combinatorial Vector
- *  Elements.
+ * &lt;i&gt;RdCombinatorialVector&lt;/i&gt; exposes the Normed/Non-normed Discrete Spaces with R&lt;sup&gt;d&lt;/sup&gt;
+ * Combinatorial Vector Elements.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor&quot;&gt;Tensor&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -70,21 +96,21 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L73">		super (aR1CV);</span>
-<span class="nc" id="L74">	}</span>
+<span class="nc" id="L99">		super (aR1CV);</span>
+<span class="nc" id="L100">	}</span>
 
 	@Override public org.drip.spaces.tensor.Cardinality cardinality()
 	{
-<span class="nc" id="L78">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
+<span class="nc" id="L104">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
 
-<span class="nc" id="L80">		int iDimension = aR1GV.length;</span>
-<span class="nc" id="L81">		double dblCardinalNumber = 1.;</span>
+<span class="nc" id="L106">		int iDimension = aR1GV.length;</span>
+<span class="nc" id="L107">		double dblCardinalNumber = 1.;</span>
 
-<span class="nc bnc" id="L83" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L84">			dblCardinalNumber *= ((org.drip.spaces.tensor.R1CombinatorialVector)</span>
-<span class="nc" id="L85">				aR1GV[i]).cardinality().number();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L110">			dblCardinalNumber *= ((org.drip.spaces.tensor.R1CombinatorialVector)</span>
+<span class="nc" id="L111">				aR1GV[i]).cardinality().number();</span>
 
-<span class="nc" id="L87">		return org.drip.spaces.tensor.Cardinality.CountablyFinite (dblCardinalNumber);</span>
+<span class="nc" id="L113">		return org.drip.spaces.tensor.Cardinality.CountablyFinite (dblCardinalNumber);</span>
 	}
 
 	/**
@@ -95,89 +121,89 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 
 	public org.drip.spaces.iterator.RdSpanningCombinatorialIterator iterator()
 	{
-<span class="nc" id="L98">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
+<span class="nc" id="L124">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
 
-<span class="nc" id="L100">		int iDimension = aR1GV.length;</span>
-<span class="nc" id="L101">		org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV = new</span>
+<span class="nc" id="L126">		int iDimension = aR1GV.length;</span>
+<span class="nc" id="L127">		org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV = new</span>
 			org.drip.spaces.tensor.R1CombinatorialVector[iDimension];
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L105">			aR1CV[i] = (org.drip.spaces.tensor.R1CombinatorialVector) aR1GV[i];</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L131">			aR1CV[i] = (org.drip.spaces.tensor.R1CombinatorialVector) aR1GV[i];</span>
 
-<span class="nc" id="L107">		return org.drip.spaces.iterator.RdSpanningCombinatorialIterator.Standard (aR1CV);</span>
+<span class="nc" id="L133">		return org.drip.spaces.iterator.RdSpanningCombinatorialIterator.Standard (aR1CV);</span>
 	}
 
 	@Override public double[] leftDimensionEdge()
 	{
-<span class="nc" id="L112">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
+<span class="nc" id="L138">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
 
-<span class="nc" id="L114">		int iDimension = aR1GV.length;</span>
-<span class="nc" id="L115">		double[] adblLeftEdge = new double[iDimension];</span>
+<span class="nc" id="L140">		int iDimension = aR1GV.length;</span>
+<span class="nc" id="L141">		double[] adblLeftEdge = new double[iDimension];</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L118">			adblLeftEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).leftEdge();</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L144">			adblLeftEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).leftEdge();</span>
 
-<span class="nc" id="L120">		return adblLeftEdge;</span>
+<span class="nc" id="L146">		return adblLeftEdge;</span>
 	}
 
 	@Override public double[] rightDimensionEdge()
 	{
-<span class="nc" id="L125">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
+<span class="nc" id="L151">		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();</span>
 
-<span class="nc" id="L127">		int iDimension = aR1GV.length;</span>
-<span class="nc" id="L128">		double[] adblRightEdge = new double[iDimension];</span>
+<span class="nc" id="L153">		int iDimension = aR1GV.length;</span>
+<span class="nc" id="L154">		double[] adblRightEdge = new double[iDimension];</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L131">			adblRightEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).rightEdge();</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L157">			adblRightEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).rightEdge();</span>
 
-<span class="nc" id="L133">		return adblRightEdge;</span>
+<span class="nc" id="L159">		return adblRightEdge;</span>
 	}
 
 	@Override public double leftEdge()
 	{
-<span class="nc" id="L138">		double[] adblLeftEdge = leftDimensionEdge();</span>
+<span class="nc" id="L164">		double[] adblLeftEdge = leftDimensionEdge();</span>
 
-<span class="nc" id="L140">		int iDimension = adblLeftEdge.length;</span>
-<span class="nc" id="L141">		double dblLeftEdge = adblLeftEdge[0];</span>
+<span class="nc" id="L166">		int iDimension = adblLeftEdge.length;</span>
+<span class="nc" id="L167">		double dblLeftEdge = adblLeftEdge[0];</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 1; i &lt; iDimension; ++i) {</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (dblLeftEdge &gt; adblLeftEdge[i]) dblLeftEdge = adblLeftEdge[i];</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int i = 1; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			if (dblLeftEdge &gt; adblLeftEdge[i]) dblLeftEdge = adblLeftEdge[i];</span>
 		}
 
-<span class="nc" id="L147">		return dblLeftEdge;</span>
+<span class="nc" id="L173">		return dblLeftEdge;</span>
 	}
 
 	@Override public double rightEdge()
 	{
-<span class="nc" id="L152">		double[] adblRightEdge = rightDimensionEdge();</span>
+<span class="nc" id="L178">		double[] adblRightEdge = rightDimensionEdge();</span>
 
-<span class="nc" id="L154">		int iDimension = adblRightEdge.length;</span>
-<span class="nc" id="L155">		double dblRightEdge = adblRightEdge[0];</span>
+<span class="nc" id="L180">		int iDimension = adblRightEdge.length;</span>
+<span class="nc" id="L181">		double dblRightEdge = adblRightEdge[0];</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 1; i &lt; iDimension; ++i) {</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			if (dblRightEdge &lt; adblRightEdge[i]) dblRightEdge = adblRightEdge[i];</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		for (int i = 1; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			if (dblRightEdge &lt; adblRightEdge[i]) dblRightEdge = adblRightEdge[i];</span>
 		}
 
-<span class="nc" id="L161">		return dblRightEdge;</span>
+<span class="nc" id="L187">		return dblRightEdge;</span>
 	}
 
 	@Override public double hyperVolume()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!isPredictorBounded())</span>
-<span class="nc" id="L168">			throw new java.lang.Exception (&quot;RdCombinatorialVector::hyperVolume =&gt; Space not Bounded&quot;);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (!isPredictorBounded())</span>
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;RdCombinatorialVector::hyperVolume =&gt; Space not Bounded&quot;);</span>
 
-<span class="nc" id="L170">		double[] adblLeftEdge = leftDimensionEdge();</span>
+<span class="nc" id="L196">		double[] adblLeftEdge = leftDimensionEdge();</span>
 
-<span class="nc" id="L172">		double dblHyperVolume = 1.;</span>
-<span class="nc" id="L173">		int iDimension = adblLeftEdge.length;</span>
+<span class="nc" id="L198">		double dblHyperVolume = 1.;</span>
+<span class="nc" id="L199">		int iDimension = adblLeftEdge.length;</span>
 
-<span class="nc" id="L175">		double[] adblRightEdge = rightDimensionEdge();</span>
+<span class="nc" id="L201">		double[] adblRightEdge = rightDimensionEdge();</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L178">			dblHyperVolume *= (adblRightEdge[i] - adblLeftEdge[i]);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L204">			dblHyperVolume *= (adblRightEdge[i] - adblLeftEdge[i]);</span>
 
-<span class="nc" id="L180">		return dblHyperVolume;</span>
+<span class="nc" id="L206">		return dblHyperVolume;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

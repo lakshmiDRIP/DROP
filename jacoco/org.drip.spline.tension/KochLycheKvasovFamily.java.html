@@ -6,6 +6,7 @@ package org.drip.spline.tension;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.tension;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,19 +70,38 @@ package org.drip.spline.tension;
  */
 
 /**
- * This class implements the basic framework and the family of C2 Tension Splines outlined in Koch and Lyche
- * 	(1989), Koch and Lyche (1993), and Kvasov (2000) Papers.
- * 
- * Functions exposed here implement the Basis Function Set from:
- * 	- Hyperbolic Hat Primitive Set
- * 	- Cubic Polynomial Numerator and Linear Rational Denominator
- * 	- Cubic Polynomial Numerator and Quadratic Rational Denominator
- * 	- Cubic Polynomial Numerator and Exponential Denominator
+ * &lt;i&gt;KochLycheKvasovFamily&lt;/i&gt; implements the basic framework and the family of C2 Tension Splines outlined
+ * in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers. Functions exposed here
+ * implement the Basis Function Set from:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Hyperbolic Hat Primitive Set
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Cubic Polynomial Numerator and Linear Rational Denominator
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Cubic Polynomial Numerator and Quadratic Rational Denominator
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Cubic Polynomial Numerator and Exponential Denominator
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension&quot;&gt;Tension&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L67">public class KochLycheKvasovFamily {</span>
+<span class="nc" id="L104">public class KochLycheKvasovFamily {</span>
 
 	/**
 	 * Implement the Basis Function Set from the Hyperbolic Hat Primitive Set
@@ -77,22 +114,22 @@ package org.drip.spline.tension;
 	public static final org.drip.spline.basis.FunctionSet FromHyperbolicPrimitive (
 		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
 	{
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
 
-<span class="fc" id="L82">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L83">			(null) {</span>
+<span class="fc" id="L119">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L120">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L89">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L126">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromHyperbolicPrimitive.Phy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L92">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L129">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L94">				return (java.lang.Math.sinh (dblTension * dblX) - dblTension * dblX) / (dblTension *</span>
-<span class="fc" id="L95">					dblTension * java.lang.Math.sinh (dblTension));</span>
+<span class="fc" id="L131">				return (java.lang.Math.sinh (dblTension * dblX) - dblTension * dblX) / (dblTension *</span>
+<span class="fc" id="L132">					dblTension * java.lang.Math.sinh (dblTension));</span>
 			}
 
 			@Override public double derivative (
@@ -100,20 +137,20 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L104">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L141">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromHyperbolicPrimitive.Phy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L107">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L144">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L109" title="All 2 branches covered.">				if (1 == iOrder)</span>
-<span class="fc" id="L110">					return (java.lang.Math.cosh (dblTension * dblX) - 1.) / (dblTension * java.lang.Math.sinh</span>
-<span class="fc" id="L111">						(dblTension));</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">				if (1 == iOrder)</span>
+<span class="fc" id="L147">					return (java.lang.Math.cosh (dblTension * dblX) - 1.) / (dblTension * java.lang.Math.sinh</span>
+<span class="fc" id="L148">						(dblTension));</span>
 
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
-<span class="fc" id="L114">					return java.lang.Math.sinh (dblTension * dblX) / java.lang.Math.sinh (dblTension);</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
+<span class="fc" id="L151">					return java.lang.Math.sinh (dblTension * dblX) / java.lang.Math.sinh (dblTension);</span>
 
-<span class="nc" id="L116">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L153">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -121,33 +158,33 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L124" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblEnd))</span>
-<span class="nc" id="L126">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) ||</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblEnd))</span>
+<span class="nc" id="L163">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromHyperbolicPrimitive.Phy::integrate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L129">				double dblTension = etsp.tension();</span>
+<span class="nc" id="L166">				double dblTension = etsp.tension();</span>
 
-<span class="nc" id="L131">				return (java.lang.Math.cosh (dblTension * dblEnd) - java.lang.Math.cosh (dblTension *</span>
+<span class="nc" id="L168">				return (java.lang.Math.cosh (dblTension * dblEnd) - java.lang.Math.cosh (dblTension *</span>
 					dblBegin) - 0.5 * dblTension * (dblEnd * dblEnd - dblBegin * dblBegin)) / (dblTension *
-<span class="nc" id="L133">						dblTension * dblTension * java.lang.Math.sinh (dblTension));</span>
+<span class="nc" id="L170">						dblTension * dblTension * java.lang.Math.sinh (dblTension));</span>
 			}
 		};
 
-<span class="fc" id="L137">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L138">			(null) {</span>
+<span class="fc" id="L174">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L175">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L144">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L181">					throw new java.lang.Exception</span>
 						(&quot;KLKF.Psy::FromHyperbolicPrimitive::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L147">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L184">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L149">				return (java.lang.Math.sinh (dblTension * (1. - dblX)) - dblTension * (1. - dblX)) /</span>
-<span class="fc" id="L150">					(dblTension * dblTension * java.lang.Math.sinh (dblTension));</span>
+<span class="fc" id="L186">				return (java.lang.Math.sinh (dblTension * (1. - dblX)) - dblTension * (1. - dblX)) /</span>
+<span class="fc" id="L187">					(dblTension * dblTension * java.lang.Math.sinh (dblTension));</span>
 			}
 
 			@Override public double derivative (
@@ -155,20 +192,20 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L159">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L196">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromHyperbolicPrimitive.Psy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L162">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L199">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">				if (1 == iOrder)</span>
-<span class="fc" id="L165">					return (1. - java.lang.Math.cosh (dblTension * (1. - dblX))) / (dblTension *</span>
-<span class="fc" id="L166">						java.lang.Math.cosh (dblTension));</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">				if (1 == iOrder)</span>
+<span class="fc" id="L202">					return (1. - java.lang.Math.cosh (dblTension * (1. - dblX))) / (dblTension *</span>
+<span class="fc" id="L203">						java.lang.Math.cosh (dblTension));</span>
 
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
-<span class="fc" id="L169">					return java.lang.Math.sinh (dblTension * (1. - dblX)) / java.lang.Math.sinh (dblTension);</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
+<span class="fc" id="L206">					return java.lang.Math.sinh (dblTension * (1. - dblX)) / java.lang.Math.sinh (dblTension);</span>
 
-<span class="nc" id="L171">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L208">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -176,28 +213,28 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L179" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) ||</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblEnd))</span>
-<span class="nc" id="L181">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) ||</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblEnd))</span>
+<span class="nc" id="L218">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromHyperbolicPrimitive.Psy::integrate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L184">				double dblTension = etsp.tension();</span>
+<span class="nc" id="L221">				double dblTension = etsp.tension();</span>
 
-<span class="nc" id="L186">				return -1. * (java.lang.Math.sinh (dblTension * (1. - dblEnd)) - java.lang.Math.sinh </span>
-<span class="nc" id="L187">					(dblTension * (1. - dblBegin)) - 0.5 * dblTension * ((1. - dblEnd) * (1. - dblEnd) - (1.</span>
+<span class="nc" id="L223">				return -1. * (java.lang.Math.sinh (dblTension * (1. - dblEnd)) - java.lang.Math.sinh </span>
+<span class="nc" id="L224">					(dblTension * (1. - dblBegin)) - 0.5 * dblTension * ((1. - dblEnd) * (1. - dblEnd) - (1.</span>
 						- dblBegin) * (1. - dblBegin))) / (dblTension * dblTension * dblTension *
-<span class="nc" id="L189">							java.lang.Math.sinh (dblTension));</span>
+<span class="nc" id="L226">							java.lang.Math.sinh (dblTension));</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L194">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
+<span class="fc" id="L231">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
 				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-<span class="nc" id="L196">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="nc" id="L233">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L234">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L200">		return null;</span>
+<span class="nc" id="L237">		return null;</span>
 	}
 
 	/**
@@ -211,21 +248,21 @@ package org.drip.spline.tension;
 	public static final org.drip.spline.basis.FunctionSet FromRationalLinearPrimitive (
 		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
 	{
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
 
-<span class="fc" id="L216">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L217">			(null) {</span>
+<span class="fc" id="L253">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L254">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L223">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L260">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalLinearPrimitive.Phy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L226">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L263">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L228">				return dblX * dblX * dblX / (1. + dblTension * (1. - dblX)) / (6. + 8. * dblTension);</span>
+<span class="fc" id="L265">				return dblX * dblX * dblX / (1. + dblTension * (1. - dblX)) / (6. + 8. * dblTension);</span>
 			}
 
 			@Override public double derivative (
@@ -233,31 +270,31 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L237">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L274">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalLinearPrimitive.Phy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L240">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L277">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L242" title="All 2 branches covered.">				if (1 == iOrder) {</span>
-<span class="fc" id="L243">					double dblDLDX = -1. * dblTension;</span>
-<span class="fc" id="L244">					double dblL = 1. + dblTension * (1. - dblX);</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">				if (1 == iOrder) {</span>
+<span class="fc" id="L280">					double dblDLDX = -1. * dblTension;</span>
+<span class="fc" id="L281">					double dblL = 1. + dblTension * (1. - dblX);</span>
 
-<span class="fc" id="L246">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * dblX * dblX - dblDLDX *</span>
+<span class="fc" id="L283">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * dblX * dblX - dblDLDX *</span>
 						dblX * dblX * dblX);
 				}
 
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
-<span class="fc" id="L251">					double dblD2LDX2 = 0.;</span>
-<span class="fc" id="L252">					double dblDLDX = -1. * dblTension;</span>
-<span class="fc" id="L253">					double dblL = 1. + dblTension * (1. - dblX);</span>
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
+<span class="fc" id="L288">					double dblD2LDX2 = 0.;</span>
+<span class="fc" id="L289">					double dblDLDX = -1. * dblTension;</span>
+<span class="fc" id="L290">					double dblL = 1. + dblTension * (1. - dblX);</span>
 
-<span class="fc" id="L255">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * dblX - dblD2LDX2 * dblX</span>
+<span class="fc" id="L292">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * dblX - dblD2LDX2 * dblX</span>
 						* dblX * dblX) - 2. / (dblL * dblL * dblL * (6. + 8. * dblTension)) *
 							(3. * dblL * dblX * dblX - dblDLDX * dblX * dblX * dblX);
 				}
 
-<span class="nc" id="L260">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L297">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -265,23 +302,23 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L268">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L305">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
-<span class="fc" id="L272">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L273">			(null) {</span>
+<span class="fc" id="L309">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L310">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L279">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L316">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalLinearPrimitive.Psy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L282">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L319">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L284">				return (1. - dblX) * (1. - dblX) * (1. - dblX) / (1. + dblTension * dblX) / (6. + 8. *</span>
+<span class="fc" id="L321">				return (1. - dblX) * (1. - dblX) * (1. - dblX) / (1. + dblTension * dblX) / (6. + 8. *</span>
 					dblTension);
 			}
 
@@ -290,32 +327,32 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L293" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L294">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L331">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalLinearPrimitive.Psy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L297">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L334">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L299" title="All 2 branches covered.">				if (1 == iOrder) {</span>
-<span class="fc" id="L300">					double dblDLDX = dblTension;</span>
-<span class="fc" id="L301">					double dblL = 1. + dblTension * dblX;</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">				if (1 == iOrder) {</span>
+<span class="fc" id="L337">					double dblDLDX = dblTension;</span>
+<span class="fc" id="L338">					double dblL = 1. + dblTension * dblX;</span>
 
-<span class="fc" id="L303">					return -1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) *</span>
+<span class="fc" id="L340">					return -1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) *</span>
 						(1. - dblX) + dblDLDX * (1. - dblX) * (1. - dblX) * (1. - dblX));
 				}
 
-<span class="pc bpc" id="L307" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
-<span class="fc" id="L308">					double dblD2LDX2 = 0.;</span>
-<span class="fc" id="L309">					double dblDLDX = dblTension;</span>
-<span class="fc" id="L310">					double dblL = 1. + dblTension * dblX;</span>
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
+<span class="fc" id="L345">					double dblD2LDX2 = 0.;</span>
+<span class="fc" id="L346">					double dblDLDX = dblTension;</span>
+<span class="fc" id="L347">					double dblL = 1. + dblTension * dblX;</span>
 
-<span class="fc" id="L312">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * (1. - dblX) - dblD2LDX2</span>
+<span class="fc" id="L349">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * (1. - dblX) - dblD2LDX2</span>
 						* (1. - dblX) * (1. - dblX) * (1. - dblX)) - 2. / (dblL * dblL * dblL *
 							(6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) * (1. - dblX) + dblDLDX *
 								(1. - dblX) * (1. - dblX) * (1. - dblX));
 				}
 
-<span class="nc" id="L318">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L355">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -323,18 +360,18 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L326">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L363">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L331">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
+<span class="fc" id="L368">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
 				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-<span class="nc" id="L333">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L334">			e.printStackTrace();</span>
+<span class="nc" id="L370">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L371">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L337">		return null;</span>
+<span class="nc" id="L374">		return null;</span>
 	}
 
 	/**
@@ -349,21 +386,21 @@ package org.drip.spline.tension;
 	public static final org.drip.spline.basis.FunctionSet FromRationalQuadraticPrimitive (
 		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
 	{
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
 
-<span class="fc" id="L354">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L355">			(null) {</span>
+<span class="fc" id="L391">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L392">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L360" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L361">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L398">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalQuadraticPrimitive.Phy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L364">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L401">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L366">				return dblX * dblX * dblX / (1. + dblTension * dblX * (1. - dblX)) / (6. + 8. * dblTension);</span>
+<span class="fc" id="L403">				return dblX * dblX * dblX / (1. + dblTension * dblX * (1. - dblX)) / (6. + 8. * dblTension);</span>
 			}
 
 			@Override public double derivative (
@@ -371,31 +408,31 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L374" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L375">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L412">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalQuadraticPrimitive.Phy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L378">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L415">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L380" title="All 2 branches covered.">				if (1 == iOrder) {</span>
-<span class="fc" id="L381">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
-<span class="fc" id="L382">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">				if (1 == iOrder) {</span>
+<span class="fc" id="L418">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
+<span class="fc" id="L419">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
 
-<span class="fc" id="L384">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * dblX * dblX - dblDLDX *</span>
+<span class="fc" id="L421">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * dblX * dblX - dblDLDX *</span>
 						dblX * dblX * dblX);
 				}
 
-<span class="pc bpc" id="L388" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
-<span class="fc" id="L389">					double dblD2LDX2 = -2. * dblTension;</span>
-<span class="fc" id="L390">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
-<span class="fc" id="L391">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
+<span class="fc" id="L426">					double dblD2LDX2 = -2. * dblTension;</span>
+<span class="fc" id="L427">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
+<span class="fc" id="L428">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
 
-<span class="fc" id="L393">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * dblX - dblD2LDX2 * dblX</span>
+<span class="fc" id="L430">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * dblX - dblD2LDX2 * dblX</span>
 						* dblX * dblX) - 2. / (dblL * dblL * dblL * (6. + 8. * dblTension)) *
 							(3. * dblL * dblX * dblX - dblDLDX * dblX * dblX * dblX);
 				}
 
-<span class="nc" id="L398">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L435">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -403,23 +440,23 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L406">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L443">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
-<span class="fc" id="L410">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L411">			(null) {</span>
+<span class="fc" id="L447">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L448">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L416" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L417">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L453" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L454">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalQuadraticPrimitive.Psy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L420">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L457">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L422">				return (1. - dblX) * (1. - dblX) * (1. - dblX) / (1. + dblTension * dblX * (1. - dblX)) / (6.</span>
+<span class="fc" id="L459">				return (1. - dblX) * (1. - dblX) * (1. - dblX) / (1. + dblTension * dblX * (1. - dblX)) / (6.</span>
 					+ 8. * dblTension);
 			}
 
@@ -428,32 +465,32 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L431" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L432">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L469">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromRationalQuadraticPrimitive.Psy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L435">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L472">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L437" title="All 2 branches covered.">				if (1 == iOrder) {</span>
-<span class="fc" id="L438">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
-<span class="fc" id="L439">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
+<span class="fc bfc" id="L474" title="All 2 branches covered.">				if (1 == iOrder) {</span>
+<span class="fc" id="L475">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
+<span class="fc" id="L476">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
 
-<span class="fc" id="L441">					return -1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) *</span>
+<span class="fc" id="L478">					return -1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) *</span>
 						(1. - dblX) + dblDLDX * (1. - dblX) * (1. - dblX) * (1. - dblX));
 				}
 
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
-<span class="fc" id="L446">					double dblD2LDX2 = -2. * dblTension * dblX;</span>
-<span class="fc" id="L447">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
-<span class="fc" id="L448">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
+<span class="pc bpc" id="L482" title="1 of 2 branches missed.">				if (2 == iOrder) {</span>
+<span class="fc" id="L483">					double dblD2LDX2 = -2. * dblTension * dblX;</span>
+<span class="fc" id="L484">					double dblDLDX = dblTension * (1. - 2. * dblX);</span>
+<span class="fc" id="L485">					double dblL = 1. + dblTension * dblX * (1. - dblX);</span>
 
-<span class="fc" id="L450">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * (1. - dblX) - dblD2LDX2</span>
+<span class="fc" id="L487">					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * (1. - dblX) - dblD2LDX2</span>
 						* (1. - dblX) * (1. - dblX) * (1. - dblX)) - 2. / (dblL * dblL * dblL *
 							(6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) * (1. - dblX) + dblDLDX *
 								(1. - dblX) * (1. - dblX) * (1. - dblX));
 				}
 
-<span class="nc" id="L456">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L493">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -461,18 +498,18 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L464">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L501">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L469">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
+<span class="fc" id="L506">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
 				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-<span class="nc" id="L471">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L472">			e.printStackTrace();</span>
+<span class="nc" id="L508">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L509">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L475">		return null;</span>
+<span class="nc" id="L512">		return null;</span>
 	}
 
 	/**
@@ -486,21 +523,21 @@ package org.drip.spline.tension;
 	public static final org.drip.spline.basis.FunctionSet FromExponentialPrimitive (
 		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
 	{
-<span class="pc bpc" id="L489" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
 
-<span class="fc" id="L491">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L492">			(null) {</span>
+<span class="fc" id="L528">		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L529">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L497" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L498">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L534" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L535">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromExponentialPrimitive.Phy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L501">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L538">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L503">				return dblX * dblX * dblX * java.lang.Math.exp (-1. * dblTension * (1. - dblX)) / (6. + 7. *</span>
+<span class="fc" id="L540">				return dblX * dblX * dblX * java.lang.Math.exp (-1. * dblTension * (1. - dblX)) / (6. + 7. *</span>
 					dblTension);
 			}
 
@@ -509,21 +546,21 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L512" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L513">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L550">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromExponentialPrimitive.Phy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L516">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L553">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L518" title="All 2 branches covered.">				if (1 == iOrder)</span>
-<span class="fc" id="L519">					return (3. + dblTension * dblX) / (6. + 7. * dblTension) * dblX * dblX *</span>
-<span class="fc" id="L520">						java.lang.Math.exp (-1. * dblTension * (1. - dblX));</span>
+<span class="fc bfc" id="L555" title="All 2 branches covered.">				if (1 == iOrder)</span>
+<span class="fc" id="L556">					return (3. + dblTension * dblX) / (6. + 7. * dblTension) * dblX * dblX *</span>
+<span class="fc" id="L557">						java.lang.Math.exp (-1. * dblTension * (1. - dblX));</span>
 
-<span class="pc bpc" id="L522" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
-<span class="fc" id="L523">					return (dblTension * dblTension * dblX * dblX + 6. * dblTension * dblX + 6.) / (6. + 7. *</span>
-<span class="fc" id="L524">						dblTension) * dblX * java.lang.Math.exp (-1. * dblTension * (1. - dblX));</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
+<span class="fc" id="L560">					return (dblTension * dblTension * dblX * dblX + 6. * dblTension * dblX + 6.) / (6. + 7. *</span>
+<span class="fc" id="L561">						dblTension) * dblX * java.lang.Math.exp (-1. * dblTension * (1. - dblX));</span>
 
-<span class="nc" id="L526">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L563">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -531,23 +568,23 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L534">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L571">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
-<span class="fc" id="L538">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L539">			(null) {</span>
+<span class="fc" id="L575">		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L576">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L544" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L545">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L581" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L582">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromExponentialPrimitive.Psy::evaluate =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L548">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L585">				double dblTension = etsp.tension();</span>
 
-<span class="fc" id="L550">				return (1. - dblX) * (1. - dblX) * (1. - dblX) * java.lang.Math.exp (-1. * dblTension * dblX)</span>
+<span class="fc" id="L587">				return (1. - dblX) * (1. - dblX) * (1. - dblX) * java.lang.Math.exp (-1. * dblTension * dblX)</span>
 					/ (6. + 7. * dblTension);
 			}
 
@@ -556,22 +593,22 @@ package org.drip.spline.tension;
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L559" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L560">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L596" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L597">					throw new java.lang.Exception</span>
 						(&quot;KLKF::FromExponentialPrimitive.Psy::derivative =&gt; Invalid Inputs!&quot;);
 
-<span class="fc" id="L563">				double dblTension = etsp.tension();</span>
+<span class="fc" id="L600">				double dblTension = etsp.tension();</span>
 
-<span class="fc bfc" id="L565" title="All 2 branches covered.">				if (1 == iOrder)</span>
-<span class="fc" id="L566">					return -1. * (3. + dblTension * (1. - dblX)) / (6. + 7. * dblTension) * (1. - dblX) *</span>
-<span class="fc" id="L567">						(1. - dblX) * java.lang.Math.exp (-1. * dblTension * dblX);</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">				if (1 == iOrder)</span>
+<span class="fc" id="L603">					return -1. * (3. + dblTension * (1. - dblX)) / (6. + 7. * dblTension) * (1. - dblX) *</span>
+<span class="fc" id="L604">						(1. - dblX) * java.lang.Math.exp (-1. * dblTension * dblX);</span>
 
-<span class="pc bpc" id="L569" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
-<span class="fc" id="L570">					return (dblTension * dblTension * (1. - dblX) * (1. - dblX) + 6. * dblTension *</span>
-<span class="fc" id="L571">						(1. - dblX) + 6.) / (6. + 7. * dblTension) * (1. - dblX) * java.lang.Math.exp (-1. *</span>
+<span class="pc bpc" id="L606" title="1 of 2 branches missed.">				if (2 == iOrder)</span>
+<span class="fc" id="L607">					return (dblTension * dblTension * (1. - dblX) * (1. - dblX) + 6. * dblTension *</span>
+<span class="fc" id="L608">						(1. - dblX) + 6.) / (6. + 7. * dblTension) * (1. - dblX) * java.lang.Math.exp (-1. *</span>
 							dblTension * dblX);
 
-<span class="nc" id="L574">				return derivative (dblX, iOrder);</span>
+<span class="nc" id="L611">				return derivative (dblX, iOrder);</span>
 			}
 
 			@Override public double integrate (
@@ -579,18 +616,18 @@ package org.drip.spline.tension;
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L582">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L619">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L587">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
+<span class="fc" id="L624">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new</span>
 				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-<span class="nc" id="L589">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L590">			e.printStackTrace();</span>
+<span class="nc" id="L626">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L627">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L593">		return null;</span>
+<span class="nc" id="L630">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

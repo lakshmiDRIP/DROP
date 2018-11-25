@@ -6,6 +6,7 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.params;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,30 +70,60 @@ package org.drip.spline.params;
  */
 
 /**
- * StretchBestFitResponse implements basis per-Stretch Fitness Penalty Parameter Set. Currently it contains
- *  the Best Fit Penalty Weight Grid Matrix and the corresponding Local Predictor Ordinate/Response Match
- *  Pair.
- *  
- *  StretchBestFitResponse exports the following methods:
- *  - Retrieve the Array of the Fitness Weights.
- *  - Retrieve the Indexed Fitness Weight Element.
- *  - Retrieve the Array of Predictor Ordinates.
- *  - Retrieve the Indexed Predictor Ordinate Element.
- *  - Retrieve the Array of Responses.
- *  - Retrieve the Indexed Response Element.
- *  - Retrieve the Number of Fitness Points.
- *  - Generate the Segment Local Best Fit Weighted Response contained within the specified Segment.
- *  - Construct the StretchBestFitResponse Instance from the given Inputs.
- *  - Construct the StretchBestFitResponse Instance from the given Predictor Ordinate/Response Pairs, using
- *  	Uniform Weightings.
+ * &lt;i&gt;StretchBestFitResponse&lt;/i&gt; implements basis per-Stretch Fitness Penalty Parameter Set. Currently it
+ * contains the Best Fit Penalty Weight Grid Matrix and the corresponding Local Predictor Ordinate/Response
+ * Match Pair. StretchBestFitResponse exports the following methods:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Array of the Fitness Weights.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Indexed Fitness Weight Element.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Array of Predictor Ordinates.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Indexed Predictor Ordinate Element.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Array of Responses.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Indexed Response Element.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieve the Number of Fitness Points.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Generate the Segment Local Best Fit Weighted Response contained within the specified Segment.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Construct the StretchBestFitResponse Instance from the given Inputs.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Construct the StretchBestFitResponse Instance from the given Predictor Ordinate/Response Pairs,
+ *  			using Uniform Weightings.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class StretchBestFitResponse {
-<span class="fc" id="L76">	private double[] _adblWeight = null;</span>
-<span class="fc" id="L77">	private double[] _adblResponse = null;</span>
-<span class="fc" id="L78">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L124">	private double[] _adblWeight = null;</span>
+<span class="fc" id="L125">	private double[] _adblResponse = null;</span>
+<span class="fc" id="L126">	private double[] _adblPredictorOrdinate = null;</span>
 
 	/**
 	 * Construct the StretchBestFitResponse Instance from the given Inputs
@@ -92,17 +140,17 @@ public class StretchBestFitResponse {
 		final double[] adblResponseValue,
 		final double[] adblWeight)
 	{
-<span class="fc" id="L95">		StretchBestFitResponse frp = null;</span>
+<span class="fc" id="L143">		StretchBestFitResponse frp = null;</span>
 
 		try {
-<span class="fc" id="L98">			frp = new StretchBestFitResponse (adblWeight, adblResponseValue, adblPredictorOrdinate);</span>
-<span class="nc" id="L99">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L100">			e.printStackTrace();</span>
+<span class="fc" id="L146">			frp = new StretchBestFitResponse (adblWeight, adblResponseValue, adblPredictorOrdinate);</span>
+<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L148">			e.printStackTrace();</span>
 
-<span class="nc" id="L102">			return null;</span>
-<span class="fc" id="L103">		}</span>
+<span class="nc" id="L150">			return null;</span>
+<span class="fc" id="L151">		}</span>
 
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		return frp.normalizeWeights() ? frp : null;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		return frp.normalizeWeights() ? frp : null;</span>
 	}
 
 	/**
@@ -120,17 +168,17 @@ public class StretchBestFitResponse {
 		final double[] adblResponseValue,
 		final double[] adblWeight)
 	{
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
 
-<span class="fc" id="L125">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
-<span class="fc" id="L126">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L173">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
+<span class="fc" id="L174">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
-<span class="fc" id="L131">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
+<span class="fc" id="L179">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
 
-<span class="fc" id="L133">		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);</span>
+<span class="fc" id="L181">		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);</span>
 	}
 
 	/**
@@ -147,15 +195,15 @@ public class StretchBestFitResponse {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPredictorOrdinate)) return null;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPredictorOrdinate)) return null;</span>
 
-<span class="nc" id="L152">		int iNumWeight = adblPredictorOrdinate.length;</span>
-<span class="nc" id="L153">		double[] adblWeight = new double[iNumWeight];</span>
+<span class="nc" id="L200">		int iNumWeight = adblPredictorOrdinate.length;</span>
+<span class="nc" id="L201">		double[] adblWeight = new double[iNumWeight];</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumWeight; ++i)</span>
-<span class="nc" id="L156">			adblWeight[i] = 1.;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumWeight; ++i)</span>
+<span class="nc" id="L204">			adblWeight[i] = 1.;</span>
 
-<span class="nc" id="L158">		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);</span>
+<span class="nc" id="L206">		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);</span>
 	}
 
 	private StretchBestFitResponse (
@@ -163,36 +211,36 @@ public class StretchBestFitResponse {
 		final double[] adblResponse,
 		final double[] adblPredictorOrdinate)
 		throws java.lang.Exception
-<span class="fc" id="L166">	{</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_adblWeight = adblWeight) ||</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_adblResponse = adblResponse) ||</span>
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblPredictorOrdinate = adblPredictorOrdinate))</span>
-<span class="nc" id="L170">			throw new java.lang.Exception (&quot;StretchBestFitResponse ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L214">	{</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_adblWeight = adblWeight) ||</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_adblResponse = adblResponse) ||</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblPredictorOrdinate = adblPredictorOrdinate))</span>
+<span class="nc" id="L218">			throw new java.lang.Exception (&quot;StretchBestFitResponse ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L172">		int iNumPointsToFit = _adblWeight.length;</span>
+<span class="fc" id="L220">		int iNumPointsToFit = _adblWeight.length;</span>
 
-<span class="pc bpc" id="L174" title="3 of 6 branches missed.">		if (0 == iNumPointsToFit || _adblResponse.length != iNumPointsToFit || _adblPredictorOrdinate.length</span>
+<span class="pc bpc" id="L222" title="3 of 6 branches missed.">		if (0 == iNumPointsToFit || _adblResponse.length != iNumPointsToFit || _adblPredictorOrdinate.length</span>
 			!= iNumPointsToFit)
-<span class="nc" id="L176">			throw new java.lang.Exception (&quot;StretchBestFitResponse ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L177">	}</span>
+<span class="nc" id="L224">			throw new java.lang.Exception (&quot;StretchBestFitResponse ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L225">	}</span>
 
 	private boolean normalizeWeights()
 	{
-<span class="fc" id="L181">		double dblCumulativeWeight = 0.;</span>
-<span class="fc" id="L182">		int iNumPointsToFit = _adblWeight.length;</span>
+<span class="fc" id="L229">		double dblCumulativeWeight = 0.;</span>
+<span class="fc" id="L230">		int iNumPointsToFit = _adblWeight.length;</span>
 
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPointsToFit; ++i) {</span>
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">			if (_adblWeight[i] &lt; 0.) return false;</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPointsToFit; ++i) {</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">			if (_adblWeight[i] &lt; 0.) return false;</span>
 
-<span class="fc" id="L187">			dblCumulativeWeight += _adblWeight[i];</span>
+<span class="fc" id="L235">			dblCumulativeWeight += _adblWeight[i];</span>
 		}
 
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (0. &gt;= dblCumulativeWeight) return false;</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">		if (0. &gt;= dblCumulativeWeight) return false;</span>
 
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPointsToFit; ++i)</span>
-<span class="fc" id="L193">			_adblWeight[i] /= dblCumulativeWeight;</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPointsToFit; ++i)</span>
+<span class="fc" id="L241">			_adblWeight[i] /= dblCumulativeWeight;</span>
 
-<span class="fc" id="L195">		return true;</span>
+<span class="fc" id="L243">		return true;</span>
 	}
 
 	/**
@@ -203,7 +251,7 @@ public class StretchBestFitResponse {
 
 	public double[] weight()
 	{
-<span class="nc" id="L206">		return _adblWeight;</span>
+<span class="nc" id="L254">		return _adblWeight;</span>
 	}
 
 	/**
@@ -220,10 +268,10 @@ public class StretchBestFitResponse {
 		final int iIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (iIndex &gt;= numPoint())</span>
-<span class="nc" id="L224">			throw new java.lang.Exception (&quot;StretchBestFitResponse::weight =&gt; Invalid Index&quot;);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (iIndex &gt;= numPoint())</span>
+<span class="nc" id="L272">			throw new java.lang.Exception (&quot;StretchBestFitResponse::weight =&gt; Invalid Index&quot;);</span>
 
-<span class="nc" id="L226">		return _adblWeight[iIndex];</span>
+<span class="nc" id="L274">		return _adblWeight[iIndex];</span>
 	}
 
 	/**
@@ -234,7 +282,7 @@ public class StretchBestFitResponse {
 
 	public double[] predictorOrdinate()
 	{
-<span class="nc" id="L237">		return _adblPredictorOrdinate;</span>
+<span class="nc" id="L285">		return _adblPredictorOrdinate;</span>
 	}
 
 	/**
@@ -251,10 +299,10 @@ public class StretchBestFitResponse {
 		final int iIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (iIndex &gt;= numPoint())</span>
-<span class="nc" id="L255">			throw new java.lang.Exception (&quot;StretchBestFitResponse::predictorOrdinate =&gt; Invalid Index&quot;);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (iIndex &gt;= numPoint())</span>
+<span class="nc" id="L303">			throw new java.lang.Exception (&quot;StretchBestFitResponse::predictorOrdinate =&gt; Invalid Index&quot;);</span>
 
-<span class="nc" id="L257">		return _adblPredictorOrdinate[iIndex];</span>
+<span class="nc" id="L305">		return _adblPredictorOrdinate[iIndex];</span>
 	}
 
 	/**
@@ -265,7 +313,7 @@ public class StretchBestFitResponse {
 
 	public double[] response()
 	{
-<span class="nc" id="L268">		return _adblResponse;</span>
+<span class="nc" id="L316">		return _adblResponse;</span>
 	}
 
 	/**
@@ -282,10 +330,10 @@ public class StretchBestFitResponse {
 		final int iIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (iIndex &gt;= numPoint())</span>
-<span class="nc" id="L286">			throw new java.lang.Exception (&quot;StretchBestFitResponse::response =&gt; Invalid Index&quot;);</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">		if (iIndex &gt;= numPoint())</span>
+<span class="nc" id="L334">			throw new java.lang.Exception (&quot;StretchBestFitResponse::response =&gt; Invalid Index&quot;);</span>
 
-<span class="nc" id="L288">		return _adblResponse[iIndex];</span>
+<span class="nc" id="L336">		return _adblResponse[iIndex];</span>
 	}
 
 	/**
@@ -296,7 +344,7 @@ public class StretchBestFitResponse {
 
 	public int numPoint()
 	{
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		return null == _adblResponse ? 0 : _adblResponse.length;</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">		return null == _adblResponse ? 0 : _adblResponse.length;</span>
 	}
 
 	/**
@@ -310,38 +358,38 @@ public class StretchBestFitResponse {
 	public SegmentBestFitResponse sizeToSegment (
 		final org.drip.spline.segment.LatentStateInelastic ics)
 	{
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (null == ics) return null;</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">		if (null == ics) return null;</span>
 
-<span class="fc" id="L315">		int iNumPoint = numPoint();</span>
+<span class="fc" id="L363">		int iNumPoint = numPoint();</span>
 
-<span class="fc" id="L317">		java.util.List&lt;java.lang.Integer&gt; lsIndex = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L365">		java.util.List&lt;java.lang.Integer&gt; lsIndex = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
 			try {
-<span class="fc bfc" id="L321" title="All 2 branches covered.">				if (ics.in (_adblPredictorOrdinate[i])) lsIndex.add (i);</span>
-<span class="nc" id="L322">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L323">				e.printStackTrace();</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">				if (ics.in (_adblPredictorOrdinate[i])) lsIndex.add (i);</span>
+<span class="nc" id="L370">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L371">				e.printStackTrace();</span>
 
-<span class="nc" id="L325">				return null;</span>
-<span class="fc" id="L326">			}</span>
+<span class="nc" id="L373">				return null;</span>
+<span class="fc" id="L374">			}</span>
 		}
 
-<span class="fc" id="L329">		int iNumLocalPoint = lsIndex.size();</span>
+<span class="fc" id="L377">		int iNumLocalPoint = lsIndex.size();</span>
 
-<span class="fc bfc" id="L331" title="All 2 branches covered.">		if (0 == iNumLocalPoint) return null;</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">		if (0 == iNumLocalPoint) return null;</span>
 
-<span class="fc" id="L333">		int iIndex = 0;</span>
-<span class="fc" id="L334">		double[] adblWeight = new double[iNumLocalPoint];</span>
-<span class="fc" id="L335">		double[] adblResponse = new double[iNumLocalPoint];</span>
-<span class="fc" id="L336">		double[] adblPredictor = new double[iNumLocalPoint];</span>
+<span class="fc" id="L381">		int iIndex = 0;</span>
+<span class="fc" id="L382">		double[] adblWeight = new double[iNumLocalPoint];</span>
+<span class="fc" id="L383">		double[] adblResponse = new double[iNumLocalPoint];</span>
+<span class="fc" id="L384">		double[] adblPredictor = new double[iNumLocalPoint];</span>
 
-<span class="fc bfc" id="L338" title="All 2 branches covered.">		for (int i : lsIndex) {</span>
-<span class="fc" id="L339">			adblWeight[iIndex] = _adblWeight[i];</span>
-<span class="fc" id="L340">			adblResponse[iIndex] = _adblResponse[i];</span>
-<span class="fc" id="L341">			adblPredictor[iIndex++] = _adblPredictorOrdinate[i];</span>
-<span class="fc" id="L342">		}</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (int i : lsIndex) {</span>
+<span class="fc" id="L387">			adblWeight[iIndex] = _adblWeight[i];</span>
+<span class="fc" id="L388">			adblResponse[iIndex] = _adblResponse[i];</span>
+<span class="fc" id="L389">			adblPredictor[iIndex++] = _adblPredictorOrdinate[i];</span>
+<span class="fc" id="L390">		}</span>
 
-<span class="fc" id="L344">		return org.drip.spline.params.SegmentBestFitResponse.Create (adblPredictor, adblResponse,</span>
+<span class="fc" id="L392">		return org.drip.spline.params.SegmentBestFitResponse.Create (adblPredictor, adblResponse,</span>
 			adblWeight);
 	}
 }

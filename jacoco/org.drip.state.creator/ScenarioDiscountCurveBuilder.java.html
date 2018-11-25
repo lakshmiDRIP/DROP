@@ -6,6 +6,7 @@ package org.drip.state.creator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -14,29 +15,46 @@ package org.drip.state.creator;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -53,31 +71,51 @@ package org.drip.state.creator;
  */
 
 /**
- * ScenarioDiscountCurveBuilder implements the the construction of the scenario discount curve using the input
- * 	discount curve instruments, and a wide variety of custom builds. It implements the following
- * 	functionality:
- * 	- Non-linear Custom Discount Curve
- * 	- Shape Preserving Discount Curve Builds - Standard Cubic Polynomial/Cubic KLK Hyperbolic Tension, and
- * 	 	other Custom Builds
- * 	- Smoothing Local/Control Custom Build - DC/Forward/Zero Rate LSQM's
- * 	- &quot;Industry Standard Methodologies&quot; - DENSE/DUALDENSE/CUSTOMDENSE and Hagan-West Forward Interpolator
- * 		Schemes
+ * &lt;i&gt;ScenarioDiscountCurveBuilder&lt;/i&gt; implements the the construction of the scenario discount curve using
+ * the input discount curve instruments, and a wide variety of custom builds. It implements the following
+ * functionality:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Non-linear Custom Discount Curve
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Shape Preserving Discount Curve Builds - Standard Cubic Polynomial/Cubic KLK Hyperbolic Tension,
+ * 				and other Custom Builds
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Smoothing Local/Control Custom Build - DC/Forward/Zero Rate LSQM's
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			&quot;Industry Standard Methodologies&quot; - DENSE/DUALDENSE/CUSTOMDENSE and Hagan-West Forward
+ * 				Interpolator Schemes
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L69">public class ScenarioDiscountCurveBuilder {</span>
+<span class="nc" id="L107">public class ScenarioDiscountCurveBuilder {</span>
 	static class CompQuote {
-<span class="fc" id="L71">		double _dblQuote = java.lang.Double.NaN;</span>
-<span class="fc" id="L72">		org.drip.product.definition.CalibratableComponent _comp = null;</span>
+<span class="fc" id="L109">		double _dblQuote = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">		org.drip.product.definition.CalibratableComponent _comp = null;</span>
  
 		CompQuote (
 			final org.drip.product.definition.CalibratableComponent comp,
 			final double dblQuote)
-<span class="fc" id="L77">		{</span>
-<span class="fc" id="L78">			_comp = comp;</span>
-<span class="fc" id="L79">			_dblQuote = dblQuote;</span>
-<span class="fc" id="L80">		}</span>
+<span class="fc" id="L115">		{</span>
+<span class="fc" id="L116">			_comp = comp;</span>
+<span class="fc" id="L117">			_dblQuote = dblQuote;</span>
+<span class="fc" id="L118">		}</span>
 	}
 
 	private static final boolean s_bBlog = false;
@@ -92,69 +130,69 @@ package org.drip.state.creator;
 		final java.lang.String strTenor,
 		final boolean bIsIRS)
 	{
-<span class="fc" id="L95">		java.util.List&lt;java.lang.Double&gt; lsCalibQuote = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L133">		java.util.List&lt;java.lang.Double&gt; lsCalibQuote = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L97">		java.util.List&lt;org.drip.product.definition.CalibratableComponent&gt; lsCompDENSE = new</span>
+<span class="fc" id="L135">		java.util.List&lt;org.drip.product.definition.CalibratableComponent&gt; lsCompDENSE = new</span>
 			java.util.ArrayList&lt;org.drip.product.definition.CalibratableComponent&gt;();
 
-<span class="fc" id="L100">		org.drip.analytics.date.JulianDate dtMaturity = dtInitialMaturity;</span>
+<span class="fc" id="L138">		org.drip.analytics.date.JulianDate dtMaturity = dtInitialMaturity;</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">		while (dtMaturity.julian() &lt;= dtTerminalMaturity.julian()) {</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		while (dtMaturity.julian() &lt;= dtTerminalMaturity.julian()) {</span>
 			try {
-<span class="fc" id="L104">				org.drip.product.definition.CalibratableComponent comp = null;</span>
+<span class="fc" id="L142">				org.drip.product.definition.CalibratableComponent comp = null;</span>
 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">				if (bIsIRS) {</span>
-<span class="fc" id="L107">					java.lang.String strMaturityTenor = ((int) ((dtMaturity.julian() - dtEffective.julian())</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">				if (bIsIRS) {</span>
+<span class="fc" id="L145">					java.lang.String strMaturityTenor = ((int) ((dtMaturity.julian() - dtEffective.julian())</span>
 						* 12 / 365.25)) + &quot;M&quot;;
 
-<span class="fc" id="L110">					org.drip.market.otc.FixedFloatSwapConvention ffConv =</span>
-<span class="fc" id="L111">						org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency,</span>
+<span class="fc" id="L148">					org.drip.market.otc.FixedFloatSwapConvention ffConv =</span>
+<span class="fc" id="L149">						org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency,</span>
 							&quot;ALL&quot;, strMaturityTenor, &quot;MAIN&quot;);
 
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">					if (null == ffConv) return null;</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">					if (null == ffConv) return null;</span>
 
-<span class="fc" id="L116">					comp = ffConv.createFixFloatComponent (dtEffective, strMaturityTenor, 0., 0., 1.);</span>
-<span class="fc" id="L117">				} else {</span>
-<span class="fc" id="L118">					org.drip.param.period.ComposableFloatingUnitSetting cfusDeposit = new</span>
+<span class="fc" id="L154">					comp = ffConv.createFixFloatComponent (dtEffective, strMaturityTenor, 0., 0., 1.);</span>
+<span class="fc" id="L155">				} else {</span>
+<span class="fc" id="L156">					org.drip.param.period.ComposableFloatingUnitSetting cfusDeposit = new</span>
 						org.drip.param.period.ComposableFloatingUnitSetting (&quot;3M&quot;,
 							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
-<span class="fc" id="L121">								null, org.drip.state.identifier.ForwardLabel.Standard (strCurrency + &quot;-3M&quot;),</span>
+<span class="fc" id="L159">								null, org.drip.state.identifier.ForwardLabel.Standard (strCurrency + &quot;-3M&quot;),</span>
 									org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 						0.);
 
-<span class="fc" id="L125">					org.drip.param.period.CompositePeriodSetting cpsDeposit = new</span>
+<span class="fc" id="L163">					org.drip.param.period.CompositePeriodSetting cpsDeposit = new</span>
 						org.drip.param.period.CompositePeriodSetting (4, &quot;3M&quot;, strCurrency, null, 1., null,
 							null, null, null);
 
-<span class="fc" id="L129">					comp = new org.drip.product.rates.SingleStreamComponent (&quot;DEPOSIT_&quot; + dtMaturity, new</span>
+<span class="fc" id="L167">					comp = new org.drip.product.rates.SingleStreamComponent (&quot;DEPOSIT_&quot; + dtMaturity, new</span>
 						org.drip.product.rates.Stream
 							(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L132">								(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
+<span class="fc" id="L170">								(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
 									dtMaturity), cpsDeposit, cfusDeposit)), null);
 				}
 
-<span class="fc" id="L136">				lsCompDENSE.add (comp);</span>
+<span class="fc" id="L174">				lsCompDENSE.add (comp);</span>
 
-<span class="fc" id="L138">				lsCalibQuote.add (comp.measureValue (valParams, null, csqs, null, &quot;Rate&quot;));</span>
-<span class="nc" id="L139">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L140">				e.printStackTrace();</span>
+<span class="fc" id="L176">				lsCalibQuote.add (comp.measureValue (valParams, null, csqs, null, &quot;Rate&quot;));</span>
+<span class="nc" id="L177">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L178">				e.printStackTrace();</span>
 
-<span class="nc" id="L142">				return null;</span>
-<span class="fc" id="L143">			}</span>
+<span class="nc" id="L180">				return null;</span>
+<span class="fc" id="L181">			}</span>
 
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			if (null == (dtMaturity = dtMaturity.addTenorAndAdjust (strTenor, strCurrency))) return null;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			if (null == (dtMaturity = dtMaturity.addTenorAndAdjust (strTenor, strCurrency))) return null;</span>
 		}
 
-<span class="fc" id="L148">		int iNumDENSEComp = lsCompDENSE.size();</span>
+<span class="fc" id="L186">		int iNumDENSEComp = lsCompDENSE.size();</span>
 
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (0 == iNumDENSEComp) return null;</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (0 == iNumDENSEComp) return null;</span>
 
-<span class="fc" id="L152">		CompQuote[] aCQ = new CompQuote[iNumDENSEComp];</span>
+<span class="fc" id="L190">		CompQuote[] aCQ = new CompQuote[iNumDENSEComp];</span>
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDENSEComp; ++i)</span>
-<span class="fc" id="L155">			aCQ[i] = new CompQuote (lsCompDENSE.get (i), lsCalibQuote.get (i));</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDENSEComp; ++i)</span>
+<span class="fc" id="L193">			aCQ[i] = new CompQuote (lsCompDENSE.get (i), lsCalibQuote.get (i));</span>
 
-<span class="fc" id="L157">		return aCQ;</span>
+<span class="fc" id="L195">		return aCQ;</span>
 	}
 
 	/**
@@ -172,12 +210,12 @@ package org.drip.state.creator;
 		final org.drip.product.definition.CalibratableComponent[] aCalibInst)
 	{
 		try {
-<span class="nc" id="L175">			return new org.drip.param.market.DiscountCurveScenarioContainer (aCalibInst);</span>
-<span class="nc" id="L176">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L177">			e.printStackTrace();</span>
+<span class="nc" id="L213">			return new org.drip.param.market.DiscountCurveScenarioContainer (aCalibInst);</span>
+<span class="nc" id="L214">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L215">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L180">		return null;</span>
+<span class="nc" id="L218">		return null;</span>
 	}
 
 	/**
@@ -201,8 +239,8 @@ package org.drip.state.creator;
 		final java.lang.String[] astrCalibMeasure,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc)
 	{
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		return null == dt ? null : org.drip.state.boot.DiscountCurveScenario.Standard</span>
-<span class="fc" id="L205">			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), aCalibInst, adblCalibQuote,</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">		return null == dt ? null : org.drip.state.boot.DiscountCurveScenario.Standard</span>
+<span class="fc" id="L243">			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), aCalibInst, adblCalibQuote,</span>
 				astrCalibMeasure, 0., null, lsfc, null);
 	}
 
@@ -231,24 +269,24 @@ package org.drip.state.creator;
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
 		final double dblEpochResponse)
 	{
-<span class="pc bpc" id="L234" title="1 of 2 branches missed.">		if (null == llsc) return null;</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (null == llsc) return null;</span>
 
 		try {
-<span class="fc" id="L237">			org.drip.spline.grid.Span spanDF = llsc.calibrateSpan (aStretchSpec, dblEpochResponse, valParam,</span>
+<span class="fc" id="L275">			org.drip.spline.grid.Span spanDF = llsc.calibrateSpan (aStretchSpec, dblEpochResponse, valParam,</span>
 				pricerParam, quotingParam, csqs);
 
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			if (null == spanDF) return null;</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">			if (null == spanDF) return null;</span>
 
-<span class="fc" id="L242">			org.drip.state.curve.DiscountFactorDiscountCurve dcdf = new</span>
+<span class="fc" id="L280">			org.drip.state.curve.DiscountFactorDiscountCurve dcdf = new</span>
 				org.drip.state.curve.DiscountFactorDiscountCurve (strCurrency, spanDF);
 
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">			return dcdf.setCCIS (new org.drip.analytics.input.LatentStateShapePreservingCCIS (llsc,</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">			return dcdf.setCCIS (new org.drip.analytics.input.LatentStateShapePreservingCCIS (llsc,</span>
 				aStretchSpec, valParam, pricerParam, quotingParam, csqs)) ? dcdf : null;
-<span class="nc" id="L247">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L248">			e.printStackTrace();</span>
+<span class="nc" id="L285">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L286">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L251">		return null;</span>
+<span class="nc" id="L289">		return null;</span>
 	}
 
 	/**
@@ -274,72 +312,72 @@ package org.drip.state.creator;
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
 	{
-<span class="pc bpc" id="L277" title="1 of 2 branches missed.">		if (null == dcShapePreserver) return null;</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">		if (null == dcShapePreserver) return null;</span>
 
-<span class="pc bpc" id="L279" title="1 of 2 branches missed.">		if (null == gccp) return dcShapePreserver;</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		if (null == gccp) return dcShapePreserver;</span>
 
-<span class="fc" id="L281">		java.lang.String strSmootheningQM = gccp.smootheningQuantificationMetric();</span>
+<span class="fc" id="L319">		java.lang.String strSmootheningQM = gccp.smootheningQuantificationMetric();</span>
 
-<span class="fc" id="L283">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapQMTruth = dcShapePreserver.canonicalTruthness</span>
-<span class="fc" id="L284">			(strSmootheningQM);</span>
+<span class="fc" id="L321">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapQMTruth = dcShapePreserver.canonicalTruthness</span>
+<span class="fc" id="L322">			(strSmootheningQM);</span>
 
-<span class="pc bpc" id="L286" title="1 of 2 branches missed.">		if (null == mapQMTruth) return null;</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		if (null == mapQMTruth) return null;</span>
 
-<span class="fc" id="L288">		int iTruthSize = mapQMTruth.size();</span>
+<span class="fc" id="L326">		int iTruthSize = mapQMTruth.size();</span>
 
-<span class="pc bpc" id="L290" title="1 of 2 branches missed.">		if (0 == iTruthSize) return null;</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">		if (0 == iTruthSize) return null;</span>
 
-<span class="fc" id="L292">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt;&gt; esQMTruth =</span>
-<span class="fc" id="L293">			mapQMTruth.entrySet();</span>
+<span class="fc" id="L330">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt;&gt; esQMTruth =</span>
+<span class="fc" id="L331">			mapQMTruth.entrySet();</span>
 
-<span class="pc bpc" id="L295" title="2 of 4 branches missed.">		if (null == esQMTruth || 0 == esQMTruth.size()) return null;</span>
+<span class="pc bpc" id="L333" title="2 of 4 branches missed.">		if (null == esQMTruth || 0 == esQMTruth.size()) return null;</span>
 
-<span class="fc" id="L297">		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();</span>
+<span class="fc" id="L335">		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L299">		int i = 0;</span>
-<span class="fc" id="L300">		int[] aiDate = new int[iTruthSize];</span>
-<span class="fc" id="L301">		double[] adblQM = new double[iTruthSize];</span>
-<span class="fc" id="L302">		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new</span>
+<span class="fc" id="L337">		int i = 0;</span>
+<span class="fc" id="L338">		int[] aiDate = new int[iTruthSize];</span>
+<span class="fc" id="L339">		double[] adblQM = new double[iTruthSize];</span>
+<span class="fc" id="L340">		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iTruthSize - 1];
 
-<span class="fc bfc" id="L305" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meQMTruth : esQMTruth) {</span>
-<span class="pc bpc" id="L306" title="1 of 2 branches missed.">			if (null == meQMTruth) return null;</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meQMTruth : esQMTruth) {</span>
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">			if (null == meQMTruth) return null;</span>
 
-<span class="fc bfc" id="L308" title="All 2 branches covered.">			if (0 != i) aPRBP[i - 1] = gccp.defaultSegmentBuilderControl();</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">			if (0 != i) aPRBP[i - 1] = gccp.defaultSegmentBuilderControl();</span>
 
-<span class="fc" id="L310">			aiDate[i] = meQMTruth.getKey();</span>
+<span class="fc" id="L348">			aiDate[i] = meQMTruth.getKey();</span>
 
-<span class="fc" id="L312">			adblQM[i++] = meQMTruth.getValue();</span>
+<span class="fc" id="L350">			adblQM[i++] = meQMTruth.getValue();</span>
 
 			if (s_bBlog)
 				System.out.println (&quot;\t\t&quot; + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
 					&quot; = &quot; + meQMTruth.getValue());
-<span class="fc" id="L317">		}</span>
+<span class="fc" id="L355">		}</span>
 
 		try {
-<span class="fc" id="L320">			org.drip.spline.stretch.MultiSegmentSequence stretch =</span>
+<span class="fc" id="L358">			org.drip.spline.stretch.MultiSegmentSequence stretch =</span>
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L322">					(strName + &quot;_STRETCH&quot;, aiDate, adblQM, aPRBP, gccp.bestFitWeightedResponse(),</span>
-<span class="fc" id="L323">						gccp.calibrationBoundaryCondition(), gccp.calibrationDetail());</span>
+<span class="fc" id="L360">					(strName + &quot;_STRETCH&quot;, aiDate, adblQM, aPRBP, gccp.bestFitWeightedResponse(),</span>
+<span class="fc" id="L361">						gccp.calibrationBoundaryCondition(), gccp.calibrationDetail());</span>
 
-<span class="fc" id="L325">			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;</span>
+<span class="fc" id="L363">			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;</span>
 
-<span class="fc" id="L327">			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
-<span class="pc bpc" id="L328" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
-<span class="nc" id="L329">				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new</span>
+<span class="fc" id="L365">			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
+<span class="nc" id="L367">				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan (stretch));
-<span class="fc" id="L331">			else if</span>
+<span class="fc" id="L369">			else if</span>
 				(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
-<span class="fc" id="L334">				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
+<span class="fc" id="L372">				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan (stretch));
 
-<span class="fc" id="L337">			return dcMultiPass;</span>
-<span class="nc" id="L338">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L339">			e.printStackTrace();</span>
+<span class="fc" id="L375">			return dcMultiPass;</span>
+<span class="nc" id="L376">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L377">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L342">		return null;</span>
+<span class="nc" id="L380">		return null;</span>
 	}
 
 	/**
@@ -365,78 +403,78 @@ package org.drip.state.creator;
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
 	{
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (null == dcShapePreserver) return null;</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">		if (null == dcShapePreserver) return null;</span>
 
-<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		if (null == lccp) return dcShapePreserver;</span>
+<span class="pc bpc" id="L408" title="1 of 2 branches missed.">		if (null == lccp) return dcShapePreserver;</span>
 
-<span class="fc" id="L372">		java.lang.String strSmootheningQM = lccp.smootheningQuantificationMetric();</span>
+<span class="fc" id="L410">		java.lang.String strSmootheningQM = lccp.smootheningQuantificationMetric();</span>
 
-<span class="fc" id="L374">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapQMTruth = dcShapePreserver.canonicalTruthness</span>
-<span class="fc" id="L375">			(strSmootheningQM);</span>
+<span class="fc" id="L412">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapQMTruth = dcShapePreserver.canonicalTruthness</span>
+<span class="fc" id="L413">			(strSmootheningQM);</span>
 
-<span class="pc bpc" id="L377" title="1 of 2 branches missed.">		if (null == mapQMTruth) return null;</span>
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">		if (null == mapQMTruth) return null;</span>
 
-<span class="fc" id="L379">		int iTruthSize = mapQMTruth.size();</span>
+<span class="fc" id="L417">		int iTruthSize = mapQMTruth.size();</span>
 
-<span class="pc bpc" id="L381" title="1 of 2 branches missed.">		if (0 == iTruthSize) return null;</span>
+<span class="pc bpc" id="L419" title="1 of 2 branches missed.">		if (0 == iTruthSize) return null;</span>
 
-<span class="fc" id="L383">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt;&gt; esQMTruth =</span>
-<span class="fc" id="L384">			mapQMTruth.entrySet();</span>
+<span class="fc" id="L421">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt;&gt; esQMTruth =</span>
+<span class="fc" id="L422">			mapQMTruth.entrySet();</span>
 
-<span class="pc bpc" id="L386" title="2 of 4 branches missed.">		if (null == esQMTruth || 0 == esQMTruth.size()) return null;</span>
+<span class="pc bpc" id="L424" title="2 of 4 branches missed.">		if (null == esQMTruth || 0 == esQMTruth.size()) return null;</span>
 
-<span class="fc" id="L388">		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();</span>
+<span class="fc" id="L426">		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L390">		int i = 0;</span>
-<span class="fc" id="L391">		int[] aiDate = new int[iTruthSize];</span>
-<span class="fc" id="L392">		double[] adblQM = new double[iTruthSize];</span>
-<span class="fc" id="L393">		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new</span>
+<span class="fc" id="L428">		int i = 0;</span>
+<span class="fc" id="L429">		int[] aiDate = new int[iTruthSize];</span>
+<span class="fc" id="L430">		double[] adblQM = new double[iTruthSize];</span>
+<span class="fc" id="L431">		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iTruthSize - 1];
 
-<span class="fc bfc" id="L396" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meQMTruth : esQMTruth) {</span>
-<span class="pc bpc" id="L397" title="1 of 2 branches missed.">			if (null == meQMTruth) return null;</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meQMTruth : esQMTruth) {</span>
+<span class="pc bpc" id="L435" title="1 of 2 branches missed.">			if (null == meQMTruth) return null;</span>
 
-<span class="fc bfc" id="L399" title="All 2 branches covered.">			if (0 != i) aPRBP[i - 1] = lccp.defaultSegmentBuilderControl();</span>
+<span class="fc bfc" id="L437" title="All 2 branches covered.">			if (0 != i) aPRBP[i - 1] = lccp.defaultSegmentBuilderControl();</span>
 
-<span class="fc" id="L401">			aiDate[i] = meQMTruth.getKey();</span>
+<span class="fc" id="L439">			aiDate[i] = meQMTruth.getKey();</span>
 
-<span class="fc" id="L403">			adblQM[i++] = meQMTruth.getValue();</span>
+<span class="fc" id="L441">			adblQM[i++] = meQMTruth.getValue();</span>
 
 			if (s_bBlog)
 				System.out.println (&quot;\t\t&quot; + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
 					&quot; = &quot; + meQMTruth.getValue());
-<span class="fc" id="L408">		}</span>
+<span class="fc" id="L446">		}</span>
 
 		try {
-<span class="fc" id="L411">			org.drip.spline.pchip.LocalMonotoneCkGenerator lcr =</span>
-<span class="fc" id="L412">				org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (aiDate, adblQM,</span>
-<span class="fc" id="L413">					lccp.C1GeneratorScheme(), lccp.eliminateSpuriousExtrema(), lccp.applyMonotoneFilter());</span>
+<span class="fc" id="L449">			org.drip.spline.pchip.LocalMonotoneCkGenerator lcr =</span>
+<span class="fc" id="L450">				org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (aiDate, adblQM,</span>
+<span class="fc" id="L451">					lccp.C1GeneratorScheme(), lccp.eliminateSpuriousExtrema(), lccp.applyMonotoneFilter());</span>
 
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">			if (null == lcr) return null;</span>
+<span class="pc bpc" id="L453" title="1 of 2 branches missed.">			if (null == lcr) return null;</span>
 
-<span class="fc" id="L417">			org.drip.spline.stretch.MultiSegmentSequence stretch =</span>
-<span class="fc" id="L418">				org.drip.spline.pchip.LocalControlStretchBuilder.CustomSlopeHermiteSpline (strName +</span>
-<span class="fc" id="L419">					&quot;_STRETCH&quot;, aiDate, adblQM, lcr.C1(), aPRBP, lccp.bestFitWeightedResponse(),</span>
-<span class="fc" id="L420">						lccp.calibrationDetail());</span>
+<span class="fc" id="L455">			org.drip.spline.stretch.MultiSegmentSequence stretch =</span>
+<span class="fc" id="L456">				org.drip.spline.pchip.LocalControlStretchBuilder.CustomSlopeHermiteSpline (strName +</span>
+<span class="fc" id="L457">					&quot;_STRETCH&quot;, aiDate, adblQM, lcr.C1(), aPRBP, lccp.bestFitWeightedResponse(),</span>
+<span class="fc" id="L458">						lccp.calibrationDetail());</span>
 
-<span class="fc" id="L422">			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;</span>
+<span class="fc" id="L460">			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;</span>
 
-<span class="fc" id="L424">			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
-<span class="pc bpc" id="L425" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
-<span class="nc" id="L426">				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new</span>
+<span class="fc" id="L462">			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase</span>
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
+<span class="nc" id="L464">				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan (stretch));
-<span class="fc" id="L428">			else if</span>
+<span class="fc" id="L466">			else if</span>
 				(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-<span class="pc bpc" id="L430" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
-<span class="fc" id="L431">				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new</span>
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">				(strSmootheningQM))</span>
+<span class="fc" id="L469">				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan (stretch));
 
-<span class="fc" id="L434">			return dcMultiPass;</span>
-<span class="nc" id="L435">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L436">			e.printStackTrace();</span>
+<span class="fc" id="L472">			return dcMultiPass;</span>
+<span class="nc" id="L473">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L474">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L439">		return null;</span>
+<span class="nc" id="L477">		return null;</span>
 	}
 
 	/**
@@ -479,159 +517,159 @@ package org.drip.state.creator;
 		final double dblEpochResponse,
 		final boolean bZeroSmooth)
 	{
-<span class="pc bpc" id="L482" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strBasisType || strBasisType.isEmpty() || null ==</span>
+<span class="pc bpc" id="L520" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == strBasisType || strBasisType.isEmpty() || null ==</span>
 			valParams || null == fsbp)
-<span class="nc" id="L484">			return null;</span>
+<span class="nc" id="L522">			return null;</span>
 
-<span class="pc bpc" id="L486" title="1 of 2 branches missed.">		int iNumQuote1 = null == adblQuote1 ? 0 : adblQuote1.length;</span>
-<span class="pc bpc" id="L487" title="1 of 2 branches missed.">		int iNumQuote2 = null == adblQuote2 ? 0 : adblQuote2.length;</span>
-<span class="pc bpc" id="L488" title="1 of 2 branches missed.">		int iNumComp1 = null == aCalibComp1 ? 0 : aCalibComp1.length;</span>
-<span class="pc bpc" id="L489" title="1 of 2 branches missed.">		int iNumComp2 = null == aCalibComp2 ? 0 : aCalibComp2.length;</span>
-<span class="fc" id="L490">		org.drip.state.estimator.LocalControlCurveParams lccp = null;</span>
-<span class="fc" id="L491">		org.drip.state.inference.LinearLatentStateCalibrator llsc = null;</span>
-<span class="fc" id="L492">		org.drip.state.inference.LatentStateStretchSpec stretchSpec1 = null;</span>
-<span class="fc" id="L493">		org.drip.state.inference.LatentStateStretchSpec stretchSpec2 = null;</span>
-<span class="fc" id="L494">		org.drip.state.representation.LatentStateSpecification[] aLSS = null;</span>
-<span class="fc" id="L495">		org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = null;</span>
-<span class="fc" id="L496">		org.drip.state.representation.LatentStateSpecification lssFunding = null;</span>
-<span class="fc" id="L497">		org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserving = null;</span>
-<span class="fc bfc" id="L498" title="All 2 branches covered.">		int iNumManifestMeasures1 = null == astrManifestMeasure1 ? 0 : astrManifestMeasure1.length;</span>
-<span class="pc bpc" id="L499" title="1 of 2 branches missed.">		int iNumManifestMeasures2 = null == astrManifestMeasure2 ? 0 : astrManifestMeasure2.length;</span>
+<span class="pc bpc" id="L524" title="1 of 2 branches missed.">		int iNumQuote1 = null == adblQuote1 ? 0 : adblQuote1.length;</span>
+<span class="pc bpc" id="L525" title="1 of 2 branches missed.">		int iNumQuote2 = null == adblQuote2 ? 0 : adblQuote2.length;</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		int iNumComp1 = null == aCalibComp1 ? 0 : aCalibComp1.length;</span>
+<span class="pc bpc" id="L527" title="1 of 2 branches missed.">		int iNumComp2 = null == aCalibComp2 ? 0 : aCalibComp2.length;</span>
+<span class="fc" id="L528">		org.drip.state.estimator.LocalControlCurveParams lccp = null;</span>
+<span class="fc" id="L529">		org.drip.state.inference.LinearLatentStateCalibrator llsc = null;</span>
+<span class="fc" id="L530">		org.drip.state.inference.LatentStateStretchSpec stretchSpec1 = null;</span>
+<span class="fc" id="L531">		org.drip.state.inference.LatentStateStretchSpec stretchSpec2 = null;</span>
+<span class="fc" id="L532">		org.drip.state.representation.LatentStateSpecification[] aLSS = null;</span>
+<span class="fc" id="L533">		org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = null;</span>
+<span class="fc" id="L534">		org.drip.state.representation.LatentStateSpecification lssFunding = null;</span>
+<span class="fc" id="L535">		org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserving = null;</span>
+<span class="fc bfc" id="L536" title="All 2 branches covered.">		int iNumManifestMeasures1 = null == astrManifestMeasure1 ? 0 : astrManifestMeasure1.length;</span>
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">		int iNumManifestMeasures2 = null == astrManifestMeasure2 ? 0 : astrManifestMeasure2.length;</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
-<span class="fc" id="L501">			mapForwardLabel = null;</span>
+<span class="fc" id="L539">			mapForwardLabel = null;</span>
 
-<span class="pc bpc" id="L503" title="5 of 12 branches missed.">		if ((0 == iNumComp1 &amp;&amp; 0 == iNumComp2) || iNumComp1 != iNumQuote1 || iNumComp2 != iNumQuote2 ||</span>
+<span class="pc bpc" id="L541" title="5 of 12 branches missed.">		if ((0 == iNumComp1 &amp;&amp; 0 == iNumComp2) || iNumComp1 != iNumQuote1 || iNumComp2 != iNumQuote2 ||</span>
 			iNumComp1 != iNumManifestMeasures1 || iNumComp2 != iNumManifestMeasures2)
-<span class="nc" id="L505">			return null;</span>
+<span class="nc" id="L543">			return null;</span>
 
-<span class="fc bfc" id="L507" title="All 2 branches covered.">		java.lang.String strCurrency = (0 == iNumComp1 ? aCalibComp2 : aCalibComp1)[0].payCurrency();</span>
+<span class="fc bfc" id="L545" title="All 2 branches covered.">		java.lang.String strCurrency = (0 == iNumComp1 ? aCalibComp2 : aCalibComp1)[0].payCurrency();</span>
 
 		try {
-<span class="fc" id="L510">			lssFunding = new org.drip.state.representation.LatentStateSpecification</span>
+<span class="fc" id="L548">			lssFunding = new org.drip.state.representation.LatentStateSpecification</span>
 				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING,
 					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
-<span class="fc" id="L513">						org.drip.state.identifier.FundingLabel.Standard (strCurrency));</span>
-<span class="nc" id="L514">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L515">			e.printStackTrace();</span>
+<span class="fc" id="L551">						org.drip.state.identifier.FundingLabel.Standard (strCurrency));</span>
+<span class="nc" id="L552">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L553">			e.printStackTrace();</span>
 
-<span class="nc" id="L517">			return null;</span>
-<span class="fc" id="L518">		}</span>
+<span class="nc" id="L555">			return null;</span>
+<span class="fc" id="L556">		}</span>
 
-<span class="fc bfc" id="L520" title="All 2 branches covered.">		if (0 != iNumComp1) mapForwardLabel = aCalibComp1[0].forwardLabel();</span>
+<span class="fc bfc" id="L558" title="All 2 branches covered.">		if (0 != iNumComp1) mapForwardLabel = aCalibComp1[0].forwardLabel();</span>
 
-<span class="pc bpc" id="L522" title="1 of 4 branches missed.">		if (null == mapForwardLabel &amp;&amp; 0 != iNumComp2) mapForwardLabel = aCalibComp2[0].forwardLabel();</span>
+<span class="pc bpc" id="L560" title="1 of 4 branches missed.">		if (null == mapForwardLabel &amp;&amp; 0 != iNumComp2) mapForwardLabel = aCalibComp2[0].forwardLabel();</span>
 
-<span class="pc bpc" id="L524" title="2 of 4 branches missed.">		if (null == mapForwardLabel || 0 == mapForwardLabel.size())</span>
-<span class="nc" id="L525">			aLSS = new org.drip.state.representation.LatentStateSpecification[] {lssFunding};</span>
+<span class="pc bpc" id="L562" title="2 of 4 branches missed.">		if (null == mapForwardLabel || 0 == mapForwardLabel.size())</span>
+<span class="nc" id="L563">			aLSS = new org.drip.state.representation.LatentStateSpecification[] {lssFunding};</span>
 		else {
 			try {
-<span class="fc" id="L528">				aLSS = new org.drip.state.representation.LatentStateSpecification[] {lssFunding, new</span>
+<span class="fc" id="L566">				aLSS = new org.drip.state.representation.LatentStateSpecification[] {lssFunding, new</span>
 					org.drip.state.representation.LatentStateSpecification
 						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD,
 							org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
-<span class="fc" id="L532">								mapForwardLabel.get (&quot;DERIVED&quot;))};</span>
-<span class="nc" id="L533">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L534">				e.printStackTrace();</span>
+<span class="fc" id="L570">								mapForwardLabel.get (&quot;DERIVED&quot;))};</span>
+<span class="nc" id="L571">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L572">				e.printStackTrace();</span>
 
-<span class="nc" id="L536">				return null;</span>
-<span class="fc" id="L537">			}</span>
+<span class="nc" id="L574">				return null;</span>
+<span class="fc" id="L575">			}</span>
 		}
 
-<span class="fc bfc" id="L540" title="All 2 branches covered.">		if (0 != iNumComp1) {</span>
-<span class="fc" id="L541">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new</span>
+<span class="fc bfc" id="L578" title="All 2 branches covered.">		if (0 != iNumComp1) {</span>
+<span class="fc" id="L579">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new</span>
 				org.drip.state.inference.LatentStateSegmentSpec[iNumComp1];
 
 			try {
-<span class="fc bfc" id="L545" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumComp1; ++i) {</span>
-<span class="fc" id="L546">					org.drip.product.calib.ProductQuoteSet pqs = aCalibComp1[i].calibQuoteSet (aLSS);</span>
+<span class="fc bfc" id="L583" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumComp1; ++i) {</span>
+<span class="fc" id="L584">					org.drip.product.calib.ProductQuoteSet pqs = aCalibComp1[i].calibQuoteSet (aLSS);</span>
 
-<span class="pc bpc" id="L548" title="2 of 4 branches missed.">					if (null == pqs || !pqs.set (astrManifestMeasure1[i], adblQuote1[i])) return null;</span>
+<span class="pc bpc" id="L586" title="2 of 4 branches missed.">					if (null == pqs || !pqs.set (astrManifestMeasure1[i], adblQuote1[i])) return null;</span>
 
-<span class="fc" id="L550">					aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp1[i],</span>
+<span class="fc" id="L588">					aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp1[i],</span>
 						pqs);
 				}
 
-<span class="fc" id="L554">				stretchSpec1 = new org.drip.state.inference.LatentStateStretchSpec (strName + &quot;_COMP1&quot;,</span>
+<span class="fc" id="L592">				stretchSpec1 = new org.drip.state.inference.LatentStateStretchSpec (strName + &quot;_COMP1&quot;,</span>
 					aSegmentSpec);
-<span class="nc" id="L556">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L557">				e.printStackTrace();</span>
+<span class="nc" id="L594">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L595">				e.printStackTrace();</span>
 
-<span class="nc" id="L559">				return null;</span>
-<span class="fc" id="L560">			}</span>
+<span class="nc" id="L597">				return null;</span>
+<span class="fc" id="L598">			}</span>
 		}
 
-<span class="pc bpc" id="L563" title="1 of 2 branches missed.">		if (0 != iNumComp2) {</span>
-<span class="fc" id="L564">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new</span>
+<span class="pc bpc" id="L601" title="1 of 2 branches missed.">		if (0 != iNumComp2) {</span>
+<span class="fc" id="L602">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new</span>
 				org.drip.state.inference.LatentStateSegmentSpec[iNumComp2];
 
 			try {
-<span class="fc bfc" id="L568" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumComp2; ++i) {</span>
-<span class="fc" id="L569">					org.drip.product.calib.ProductQuoteSet pqs = aCalibComp2[i].calibQuoteSet (aLSS);</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumComp2; ++i) {</span>
+<span class="fc" id="L607">					org.drip.product.calib.ProductQuoteSet pqs = aCalibComp2[i].calibQuoteSet (aLSS);</span>
 
-<span class="pc bpc" id="L571" title="2 of 4 branches missed.">					if (null == pqs || !pqs.set (astrManifestMeasure2[i], adblQuote2[i])) return null;</span>
+<span class="pc bpc" id="L609" title="2 of 4 branches missed.">					if (null == pqs || !pqs.set (astrManifestMeasure2[i], adblQuote2[i])) return null;</span>
 
-<span class="fc" id="L573">					aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp2[i],</span>
+<span class="fc" id="L611">					aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp2[i],</span>
 						pqs);
 				}
 
-<span class="fc" id="L577">				stretchSpec2 = new org.drip.state.inference.LatentStateStretchSpec (strName + &quot;_COMP2&quot;,</span>
+<span class="fc" id="L615">				stretchSpec2 = new org.drip.state.inference.LatentStateStretchSpec (strName + &quot;_COMP2&quot;,</span>
 					aSegmentSpec);
-<span class="nc" id="L579">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L580">				e.printStackTrace();</span>
+<span class="nc" id="L617">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L618">				e.printStackTrace();</span>
 
-<span class="nc" id="L582">				return null;</span>
-<span class="fc" id="L583">			}</span>
+<span class="nc" id="L620">				return null;</span>
+<span class="fc" id="L621">			}</span>
 		}
 
-<span class="pc bpc" id="L586" title="1 of 4 branches missed.">		if (null == stretchSpec1 &amp;&amp; null == stretchSpec2) return null;</span>
+<span class="pc bpc" id="L624" title="1 of 4 branches missed.">		if (null == stretchSpec1 &amp;&amp; null == stretchSpec2) return null;</span>
 
-<span class="fc bfc" id="L588" title="All 2 branches covered.">		if (null == stretchSpec1)</span>
-<span class="fc" id="L589">			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec2};</span>
-<span class="pc bpc" id="L590" title="1 of 2 branches missed.">		else if (null == stretchSpec2)</span>
-<span class="nc" id="L591">			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec1};</span>
+<span class="fc bfc" id="L626" title="All 2 branches covered.">		if (null == stretchSpec1)</span>
+<span class="fc" id="L627">			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec2};</span>
+<span class="pc bpc" id="L628" title="1 of 2 branches missed.">		else if (null == stretchSpec2)</span>
+<span class="nc" id="L629">			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec1};</span>
 		else
-<span class="fc" id="L593">			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec1,</span>
+<span class="fc" id="L631">			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec1,</span>
 				stretchSpec2};
 
 		try {
-<span class="fc" id="L597">			llsc = new org.drip.state.inference.LinearLatentStateCalibrator (new</span>
+<span class="fc" id="L635">			llsc = new org.drip.state.inference.LinearLatentStateCalibrator (new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl (strBasisType, fsbp,
-<span class="fc" id="L599">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+<span class="fc" id="L637">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
 						org.drip.spline.params.ResponseScalingShapeControl (true, new
 							org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null),
-<span class="fc" id="L602">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L640">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
 
-<span class="fc" id="L605">			dcShapePreserving = ShapePreservingDFBuild (strCurrency, llsc, aStretchSpec, valParams,</span>
+<span class="fc" id="L643">			dcShapePreserving = ShapePreservingDFBuild (strCurrency, llsc, aStretchSpec, valParams,</span>
 				pricerParam, csqs, quotingParam, dblEpochResponse);
-<span class="nc" id="L607">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L608">			e.printStackTrace();</span>
+<span class="nc" id="L645">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L646">			e.printStackTrace();</span>
 
-<span class="nc" id="L610">			return null;</span>
-<span class="fc" id="L611">		}</span>
+<span class="nc" id="L648">			return null;</span>
+<span class="fc" id="L649">		}</span>
 
-<span class="fc bfc" id="L613" title="All 2 branches covered.">		if (!bZeroSmooth) return dcShapePreserving;</span>
+<span class="fc bfc" id="L651" title="All 2 branches covered.">		if (!bZeroSmooth) return dcShapePreserving;</span>
 
 		try {
-<span class="fc" id="L616">			lccp = new org.drip.state.estimator.LocalControlCurveParams</span>
+<span class="fc" id="L654">			lccp = new org.drip.state.estimator.LocalControlCurveParams</span>
 				(org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN83,
 					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, new
 						org.drip.spline.params.SegmentCustomBuilderControl
 							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 								org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="fc" id="L622">									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
+<span class="fc" id="L660">									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new</span>
 										org.drip.spline.params.ResponseScalingShapeControl (true, new
 											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
 												null),
 													org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE,
 														null, null, true, true);
-<span class="nc" id="L628">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L629">			e.printStackTrace();</span>
+<span class="nc" id="L666">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L667">			e.printStackTrace();</span>
 
-<span class="nc" id="L631">			return null;</span>
-<span class="fc" id="L632">		}</span>
+<span class="nc" id="L669">			return null;</span>
+<span class="fc" id="L670">		}</span>
 
-<span class="fc" id="L634">		return SmoothingLocalControlBuild (dcShapePreserving, llsc, lccp, valParams, null, null, null);</span>
+<span class="fc" id="L672">		return SmoothingLocalControlBuild (dcShapePreserving, llsc, lccp, valParams, null, null, null);</span>
 	}
 
 	/**
@@ -663,16 +701,16 @@ package org.drip.state.creator;
 		final boolean bZeroSmooth)
 	{
 		try {
-<span class="fc" id="L666">			return DFRateShapePreserver (strName, valParams, null, null, null,</span>
+<span class="fc" id="L704">			return DFRateShapePreserver (strName, valParams, null, null, null,</span>
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, new
 					org.drip.spline.basis.ExponentialTensionSetParams (1.), aCalibComp1, adblQuote1,
 						astrManifestMeasure1, aCalibComp2, adblQuote2, astrManifestMeasure2, 1.,
 							bZeroSmooth);
-<span class="nc" id="L671">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L672">			e.printStackTrace();</span>
+<span class="nc" id="L709">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L710">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L675">		return null;</span>
+<span class="nc" id="L713">		return null;</span>
 	}
 
 	/**
@@ -704,16 +742,16 @@ package org.drip.state.creator;
 		final boolean bZeroSmooth)
 	{
 		try {
-<span class="fc" id="L707">			return DFRateShapePreserver (strName, valParams, null, null, null,</span>
+<span class="fc" id="L745">			return DFRateShapePreserver (strName, valParams, null, null, null,</span>
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (4), aCalibComp1, adblQuote1,
 						astrManifestMeasure1, aCalibComp2, adblQuote2, astrManifestMeasure2, 1.,
 							bZeroSmooth);
-<span class="nc" id="L712">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L713">			e.printStackTrace();</span>
+<span class="nc" id="L750">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L751">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L716">		return null;</span>
+<span class="nc" id="L754">		return null;</span>
 	}
 
 	/**
@@ -756,74 +794,74 @@ package org.drip.state.creator;
 		final java.lang.String[] astrManifestMeasure2,
 		final org.drip.state.discount.TurnListDiscountFactor tldf)
 	{
-<span class="fc" id="L759">		org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserver = CubicKLKHyperbolicDFRateShapePreserver</span>
-<span class="fc" id="L760">			(strName, valParams, aCalibComp1, adblQuote1, astrManifestMeasure1, aCalibComp2, adblQuote2,</span>
+<span class="fc" id="L797">		org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserver = CubicKLKHyperbolicDFRateShapePreserver</span>
+<span class="fc" id="L798">			(strName, valParams, aCalibComp1, adblQuote1, astrManifestMeasure1, aCalibComp2, adblQuote2,</span>
 				astrManifestMeasure2, false);
 
-<span class="pc bpc" id="L763" title="4 of 6 branches missed.">		if (null == dcShapePreserver || (null != tldf &amp;&amp; !dcShapePreserver.setTurns (tldf))) return null;</span>
+<span class="pc bpc" id="L801" title="4 of 6 branches missed.">		if (null == dcShapePreserver || (null != tldf &amp;&amp; !dcShapePreserver.setTurns (tldf))) return null;</span>
 
-<span class="fc" id="L765">		org.drip.param.market.CurveSurfaceQuoteContainer csqs = org.drip.param.creator.MarketParamsBuilder.Create</span>
-<span class="fc" id="L766">			(dcShapePreserver, null, null, null, null, null, null);</span>
+<span class="fc" id="L803">		org.drip.param.market.CurveSurfaceQuoteContainer csqs = org.drip.param.creator.MarketParamsBuilder.Create</span>
+<span class="fc" id="L804">			(dcShapePreserver, null, null, null, null, null, null);</span>
 
-<span class="pc bpc" id="L768" title="1 of 2 branches missed.">		if (null == csqs) return null;</span>
+<span class="pc bpc" id="L806" title="1 of 2 branches missed.">		if (null == csqs) return null;</span>
 
-<span class="fc" id="L770">		CompQuote[] aCQ1 = null;</span>
+<span class="fc" id="L808">		CompQuote[] aCQ1 = null;</span>
 
-<span class="fc" id="L772">		java.lang.String strCurrency = aCalibComp1[0].payCurrency();</span>
+<span class="fc" id="L810">		java.lang.String strCurrency = aCalibComp1[0].payCurrency();</span>
 
-<span class="pc bpc" id="L774" title="1 of 4 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty()) {</span>
-<span class="pc bpc" id="L775" title="1 of 2 branches missed.">			if (null != aCalibComp1) {</span>
-<span class="fc" id="L776">				int iNumComp1 = aCalibComp1.length;</span>
+<span class="pc bpc" id="L812" title="1 of 4 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty()) {</span>
+<span class="pc bpc" id="L813" title="1 of 2 branches missed.">			if (null != aCalibComp1) {</span>
+<span class="fc" id="L814">				int iNumComp1 = aCalibComp1.length;</span>
 
-<span class="pc bpc" id="L778" title="1 of 2 branches missed.">				if (0 != iNumComp1) {</span>
-<span class="fc" id="L779">					aCQ1 = new CompQuote[iNumComp1];</span>
+<span class="pc bpc" id="L816" title="1 of 2 branches missed.">				if (0 != iNumComp1) {</span>
+<span class="fc" id="L817">					aCQ1 = new CompQuote[iNumComp1];</span>
 
-<span class="fc bfc" id="L781" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumComp1; ++i)</span>
-<span class="fc" id="L782">						aCQ1[i] = new CompQuote (aCalibComp1[i], adblQuote1[i]);</span>
+<span class="fc bfc" id="L819" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumComp1; ++i)</span>
+<span class="fc" id="L820">						aCQ1[i] = new CompQuote (aCalibComp1[i], adblQuote1[i]);</span>
 				}
-<span class="fc" id="L784">			}</span>
+<span class="fc" id="L822">			}</span>
 		} else
-<span class="fc" id="L786">			aCQ1 = CompQuote (valParams, csqs, strCurrency, aCalibComp1[0].effectiveDate(),</span>
-<span class="fc" id="L787">				aCalibComp1[0].maturityDate(), aCalibComp1[aCalibComp1.length - 1].maturityDate(), strTenor1,</span>
+<span class="fc" id="L824">			aCQ1 = CompQuote (valParams, csqs, strCurrency, aCalibComp1[0].effectiveDate(),</span>
+<span class="fc" id="L825">				aCalibComp1[0].maturityDate(), aCalibComp1[aCalibComp1.length - 1].maturityDate(), strTenor1,</span>
 					false);
 
-<span class="pc bpc" id="L790" title="2 of 4 branches missed.">		if (null == strTenor2 || strTenor2.isEmpty()) return dcShapePreserver;</span>
+<span class="pc bpc" id="L828" title="2 of 4 branches missed.">		if (null == strTenor2 || strTenor2.isEmpty()) return dcShapePreserver;</span>
 
-<span class="fc" id="L792">		CompQuote[] aCQ2 = CompQuote (valParams, csqs, strCurrency, aCalibComp2[0].effectiveDate(),</span>
-<span class="fc" id="L793">			aCalibComp2[0].maturityDate(), aCalibComp2[aCalibComp2.length - 1].maturityDate(), strTenor2,</span>
+<span class="fc" id="L830">		CompQuote[] aCQ2 = CompQuote (valParams, csqs, strCurrency, aCalibComp2[0].effectiveDate(),</span>
+<span class="fc" id="L831">			aCalibComp2[0].maturityDate(), aCalibComp2[aCalibComp2.length - 1].maturityDate(), strTenor2,</span>
 				true);
 
-<span class="pc bpc" id="L796" title="1 of 2 branches missed.">		int iNumDENSEComp1 = null == aCQ1 ? 0 : aCQ1.length;</span>
-<span class="pc bpc" id="L797" title="1 of 2 branches missed.">		int iNumDENSEComp2 = null == aCQ2 ? 0 : aCQ2.length;</span>
-<span class="fc" id="L798">		int iTotalNumDENSEComp = iNumDENSEComp1 + iNumDENSEComp2;</span>
+<span class="pc bpc" id="L834" title="1 of 2 branches missed.">		int iNumDENSEComp1 = null == aCQ1 ? 0 : aCQ1.length;</span>
+<span class="pc bpc" id="L835" title="1 of 2 branches missed.">		int iNumDENSEComp2 = null == aCQ2 ? 0 : aCQ2.length;</span>
+<span class="fc" id="L836">		int iTotalNumDENSEComp = iNumDENSEComp1 + iNumDENSEComp2;</span>
 
-<span class="pc bpc" id="L800" title="1 of 2 branches missed.">		if (0 == iTotalNumDENSEComp) return null;</span>
+<span class="pc bpc" id="L838" title="1 of 2 branches missed.">		if (0 == iTotalNumDENSEComp) return null;</span>
 
-<span class="fc" id="L802">		double[] adblCalibQuote = new double[iTotalNumDENSEComp];</span>
-<span class="fc" id="L803">		java.lang.String[] astrCalibMeasure = new java.lang.String[iTotalNumDENSEComp];</span>
-<span class="fc" id="L804">		org.drip.product.definition.CalibratableComponent[] aCalibComp = new</span>
+<span class="fc" id="L840">		double[] adblCalibQuote = new double[iTotalNumDENSEComp];</span>
+<span class="fc" id="L841">		java.lang.String[] astrCalibMeasure = new java.lang.String[iTotalNumDENSEComp];</span>
+<span class="fc" id="L842">		org.drip.product.definition.CalibratableComponent[] aCalibComp = new</span>
 			org.drip.product.definition.CalibratableComponent[iTotalNumDENSEComp];
 
-<span class="fc bfc" id="L807" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDENSEComp1; ++i) {</span>
-<span class="fc" id="L808">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
-<span class="fc" id="L809">			aCalibComp[i] = aCQ1[i]._comp;</span>
-<span class="fc" id="L810">			adblCalibQuote[i] = aCQ1[i]._dblQuote;</span>
+<span class="fc bfc" id="L845" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDENSEComp1; ++i) {</span>
+<span class="fc" id="L846">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="fc" id="L847">			aCalibComp[i] = aCQ1[i]._comp;</span>
+<span class="fc" id="L848">			adblCalibQuote[i] = aCQ1[i]._dblQuote;</span>
 		}
 
-<span class="fc bfc" id="L813" title="All 2 branches covered.">		for (int i = iNumDENSEComp1; i &lt; iTotalNumDENSEComp; ++i) {</span>
-<span class="fc" id="L814">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
-<span class="fc" id="L815">			aCalibComp[i] = aCQ2[i - iNumDENSEComp1]._comp;</span>
-<span class="fc" id="L816">			adblCalibQuote[i] = aCQ2[i - iNumDENSEComp1]._dblQuote;</span>
+<span class="fc bfc" id="L851" title="All 2 branches covered.">		for (int i = iNumDENSEComp1; i &lt; iTotalNumDENSEComp; ++i) {</span>
+<span class="fc" id="L852">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="fc" id="L853">			aCalibComp[i] = aCQ2[i - iNumDENSEComp1]._comp;</span>
+<span class="fc" id="L854">			adblCalibQuote[i] = aCQ2[i - iNumDENSEComp1]._dblQuote;</span>
 		}
 
 		try {
-<span class="fc" id="L820">			return ScenarioDiscountCurveBuilder.NonlinearBuild (new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L821">				(valParams.valueDate()), strCurrency, aCalibComp, adblCalibQuote, astrCalibMeasure, null);</span>
-<span class="nc" id="L822">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L823">			e.printStackTrace();</span>
+<span class="fc" id="L858">			return ScenarioDiscountCurveBuilder.NonlinearBuild (new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L859">				(valParams.valueDate()), strCurrency, aCalibComp, adblCalibQuote, astrCalibMeasure, null);</span>
+<span class="nc" id="L860">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L861">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L826">		return null;</span>
+<span class="nc" id="L864">		return null;</span>
 	}
 
 	/**
@@ -863,7 +901,7 @@ package org.drip.state.creator;
 		final java.lang.String[] astrManifestMeasure2,
 		final org.drip.state.discount.TurnListDiscountFactor tldf)
 	{
-<span class="fc" id="L866">		return CustomDENSE (strName, valParams, aCalibComp1, adblQuote1, null, astrManifestMeasure1,</span>
+<span class="fc" id="L904">		return CustomDENSE (strName, valParams, aCalibComp1, adblQuote1, null, astrManifestMeasure1,</span>
 			aCalibComp2, adblQuote2, &quot;3M&quot;, astrManifestMeasure2, tldf);
 	}
 
@@ -909,7 +947,7 @@ package org.drip.state.creator;
 		final java.lang.String[] astrManifestMeasure2,
 		final org.drip.state.discount.TurnListDiscountFactor tldf)
 	{
-<span class="fc" id="L912">		return CustomDENSE (strName, valParams, aCalibComp1, adblQuote1, strTenor1, astrManifestMeasure1,</span>
+<span class="fc" id="L950">		return CustomDENSE (strName, valParams, aCalibComp1, adblQuote1, strTenor1, astrManifestMeasure1,</span>
 			aCalibComp2, adblQuote2, strTenor2, astrManifestMeasure2, tldf);
 	}
 
@@ -934,37 +972,37 @@ package org.drip.state.creator;
 		final double[] adblDF,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="nc bnc" id="L937" title="All 8 branches missed.">		if (null == strName || strName.isEmpty() || null == aiDate || null == dtStart) return null;</span>
+<span class="nc bnc" id="L975" title="All 8 branches missed.">		if (null == strName || strName.isEmpty() || null == aiDate || null == dtStart) return null;</span>
 
-<span class="nc" id="L939">		int iNumDate = aiDate.length;</span>
+<span class="nc" id="L977">		int iNumDate = aiDate.length;</span>
 
-<span class="nc bnc" id="L941" title="All 2 branches missed.">		if (0 == iNumDate) return null;</span>
+<span class="nc bnc" id="L979" title="All 2 branches missed.">		if (0 == iNumDate) return null;</span>
 
-<span class="nc" id="L943">		double[] adblResponseValue = new double[iNumDate + 1];</span>
-<span class="nc" id="L944">		double[] adblPredictorOrdinate = new double[iNumDate + 1];</span>
-<span class="nc" id="L945">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="nc" id="L981">		double[] adblResponseValue = new double[iNumDate + 1];</span>
+<span class="nc" id="L982">		double[] adblPredictorOrdinate = new double[iNumDate + 1];</span>
+<span class="nc" id="L983">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumDate];
 
-<span class="nc bnc" id="L948" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumDate; ++i) {</span>
-<span class="nc bnc" id="L949" title="All 2 branches missed.">			adblPredictorOrdinate[i] = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
+<span class="nc bnc" id="L986" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumDate; ++i) {</span>
+<span class="nc bnc" id="L987" title="All 2 branches missed.">			adblPredictorOrdinate[i] = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
 
-<span class="nc bnc" id="L951" title="All 2 branches missed.">			adblResponseValue[i] = 0 == i ? 1. : adblDF[i - 1];</span>
+<span class="nc bnc" id="L989" title="All 2 branches missed.">			adblResponseValue[i] = 0 == i ? 1. : adblDF[i - 1];</span>
 
-<span class="nc bnc" id="L953" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
+<span class="nc bnc" id="L991" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
 		}
 
 		try {
-<span class="nc" id="L957">			return new org.drip.state.curve.DiscountFactorDiscountCurve (strCurrency, new</span>
+<span class="nc" id="L995">			return new org.drip.state.curve.DiscountFactorDiscountCurve (strCurrency, new</span>
 				org.drip.spline.grid.OverlappingStretchSpan
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="nc" id="L960">						(strName, adblPredictorOrdinate, adblResponseValue, aSCBC, null,</span>
-<span class="nc" id="L961">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="nc" id="L998">						(strName, adblPredictorOrdinate, adblResponseValue, aSCBC, null,</span>
+<span class="nc" id="L999">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-<span class="nc" id="L963">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L964">			e.printStackTrace();</span>
+<span class="nc" id="L1001">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1002">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L967">		return null;</span>
+<span class="nc" id="L1005">		return null;</span>
 	}
 
 	/**
@@ -987,16 +1025,16 @@ package org.drip.state.creator;
 		final double[] adblDF)
 	{
 		try {
-<span class="nc" id="L990">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1028">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="nc" id="L994">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L995">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L996">			e.printStackTrace();</span>
+<span class="nc" id="L1032">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1033">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1034">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L999">		return null;</span>
+<span class="nc" id="L1037">		return null;</span>
 	}
 
 	/**
@@ -1019,16 +1057,16 @@ package org.drip.state.creator;
 		final double[] adblDF)
 	{
 		try {
-<span class="nc" id="L1022">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1060">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="nc" id="L1026">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L1027">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1028">			e.printStackTrace();</span>
+<span class="nc" id="L1064">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1065">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1066">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1031">		return null;</span>
+<span class="nc" id="L1069">		return null;</span>
 	}
 
 	/**
@@ -1051,16 +1089,16 @@ package org.drip.state.creator;
 		final double[] adblDF)
 	{
 		try {
-<span class="nc" id="L1054">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1092">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
 						org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="nc" id="L1058">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L1059">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1060">			e.printStackTrace();</span>
+<span class="nc" id="L1096">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1097">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1098">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1063">		return null;</span>
+<span class="nc" id="L1101">		return null;</span>
 	}
 
 	/**
@@ -1085,16 +1123,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L1088">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1126">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L1092">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L1093">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1094">			e.printStackTrace();</span>
+<span class="nc" id="L1130">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1131">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1132">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1097">		return null;</span>
+<span class="nc" id="L1135">		return null;</span>
 	}
 
 	/**
@@ -1119,16 +1157,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L1122">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1160">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_EXPONENTIAL_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L1126">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L1127">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1128">			e.printStackTrace();</span>
+<span class="nc" id="L1164">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1165">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1166">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1131">		return null;</span>
+<span class="nc" id="L1169">		return null;</span>
 	}
 
 	/**
@@ -1153,16 +1191,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L1156">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1194">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L1160">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L1161">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1162">			e.printStackTrace();</span>
+<span class="nc" id="L1198">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1199">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1200">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1165">		return null;</span>
+<span class="nc" id="L1203">		return null;</span>
 	}
 
 	/**
@@ -1187,16 +1225,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L1190">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
+<span class="nc" id="L1228">			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L1194">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L1195">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1196">			e.printStackTrace();</span>
+<span class="nc" id="L1232">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L1233">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1234">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1199">		return null;</span>
+<span class="nc" id="L1237">		return null;</span>
 	}
 
 	/**
@@ -1216,33 +1254,33 @@ package org.drip.state.creator;
 		final int aiDate[],
 		final double adblDF[])
 	{
-<span class="pc bpc" id="L1219" title="6 of 12 branches missed.">		if (null == aiDate || 0 == aiDate.length || null == adblDF || aiDate.length != adblDF.length ||</span>
-<span class="pc bpc" id="L1220" title="1 of 2 branches missed.">			null == dtStart || null == strCurrency || strCurrency.isEmpty())</span>
-<span class="nc" id="L1221">			return null;</span>
+<span class="pc bpc" id="L1257" title="6 of 12 branches missed.">		if (null == aiDate || 0 == aiDate.length || null == adblDF || aiDate.length != adblDF.length ||</span>
+<span class="pc bpc" id="L1258" title="1 of 2 branches missed.">			null == dtStart || null == strCurrency || strCurrency.isEmpty())</span>
+<span class="nc" id="L1259">			return null;</span>
 
-<span class="fc" id="L1223">		double dblDFBegin = 1.;</span>
-<span class="fc" id="L1224">		double[] adblRate = new double[aiDate.length];</span>
+<span class="fc" id="L1261">		double dblDFBegin = 1.;</span>
+<span class="fc" id="L1262">		double[] adblRate = new double[aiDate.length];</span>
 
-<span class="fc" id="L1226">		double dblPeriodBegin = dtStart.julian();</span>
+<span class="fc" id="L1264">		double dblPeriodBegin = dtStart.julian();</span>
 
-<span class="fc bfc" id="L1228" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDate.length; ++i) {</span>
-<span class="pc bpc" id="L1229" title="1 of 2 branches missed.">			if (aiDate[i] &lt;= dblPeriodBegin) return null;</span>
+<span class="fc bfc" id="L1266" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDate.length; ++i) {</span>
+<span class="pc bpc" id="L1267" title="1 of 2 branches missed.">			if (aiDate[i] &lt;= dblPeriodBegin) return null;</span>
 
-<span class="fc" id="L1231">			adblRate[i] = 365.25 / (aiDate[i] - dblPeriodBegin) * java.lang.Math.log (dblDFBegin /</span>
+<span class="fc" id="L1269">			adblRate[i] = 365.25 / (aiDate[i] - dblPeriodBegin) * java.lang.Math.log (dblDFBegin /</span>
 				adblDF[i]);
 
-<span class="fc" id="L1234">			dblDFBegin = adblDF[i];</span>
-<span class="fc" id="L1235">			dblPeriodBegin = aiDate[i];</span>
+<span class="fc" id="L1272">			dblDFBegin = adblDF[i];</span>
+<span class="fc" id="L1273">			dblPeriodBegin = aiDate[i];</span>
 		}
 
 		try {
-<span class="fc" id="L1239">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
+<span class="fc" id="L1277">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
 				adblRate, false, &quot;&quot;, -1);
-<span class="nc" id="L1241">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1242">			e.printStackTrace();</span>
+<span class="nc" id="L1279">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1280">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1245">		return null;</span>
+<span class="nc" id="L1283">		return null;</span>
 	}
 
 	/**
@@ -1260,16 +1298,16 @@ package org.drip.state.creator;
 		final java.lang.String strCurrency,
 		final double dblRate)
 	{
-<span class="pc bpc" id="L1263" title="1 of 2 branches missed.">		if (null == dtStart) return null;</span>
+<span class="pc bpc" id="L1301" title="1 of 2 branches missed.">		if (null == dtStart) return null;</span>
 
 		try {
-<span class="fc" id="L1266">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]</span>
-<span class="fc" id="L1267">				{dtStart.julian()}, new double[] {dblRate}, false, &quot;&quot;, -1);</span>
-<span class="nc" id="L1268">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1269">			e.printStackTrace();</span>
+<span class="fc" id="L1304">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]</span>
+<span class="fc" id="L1305">				{dtStart.julian()}, new double[] {dblRate}, false, &quot;&quot;, -1);</span>
+<span class="nc" id="L1306">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1307">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1272">		return null;</span>
+<span class="nc" id="L1310">		return null;</span>
 	}
 
 	/**
@@ -1291,16 +1329,16 @@ package org.drip.state.creator;
 		final java.lang.String strCompoundingDayCount,
 		final int iCompoundingFreq)
 	{
-<span class="nc bnc" id="L1294" title="All 2 branches missed.">		if (null == dtStart) return null;</span>
+<span class="nc bnc" id="L1332" title="All 2 branches missed.">		if (null == dtStart) return null;</span>
 
 		try {
-<span class="nc" id="L1297">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]</span>
-<span class="nc" id="L1298">				{dtStart.julian()}, new double[] {dblRate}, true, strCompoundingDayCount, iCompoundingFreq);</span>
-<span class="nc" id="L1299">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1300">			e.printStackTrace();</span>
+<span class="nc" id="L1335">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]</span>
+<span class="nc" id="L1336">				{dtStart.julian()}, new double[] {dblRate}, true, strCompoundingDayCount, iCompoundingFreq);</span>
+<span class="nc" id="L1337">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1338">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1303">		return null;</span>
+<span class="nc" id="L1341">		return null;</span>
 	}
 
 	/**
@@ -1322,16 +1360,16 @@ package org.drip.state.creator;
 		final java.lang.String strCompoundingDayCount,
 		final int iCompoundingFreq)
 	{
-<span class="pc bpc" id="L1325" title="2 of 4 branches missed.">		if (null == dtStart || !org.drip.quant.common.NumberUtil.IsValid (dblYield)) return null;</span>
+<span class="pc bpc" id="L1363" title="2 of 4 branches missed.">		if (null == dtStart || !org.drip.quant.common.NumberUtil.IsValid (dblYield)) return null;</span>
 
 		try {
-<span class="fc" id="L1328">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]</span>
-<span class="fc" id="L1329">				{dtStart.julian()}, new double[] {dblYield}, true, strCompoundingDayCount, iCompoundingFreq);</span>
-<span class="nc" id="L1330">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1331">			e.printStackTrace();</span>
+<span class="fc" id="L1366">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]</span>
+<span class="fc" id="L1367">				{dtStart.julian()}, new double[] {dblYield}, true, strCompoundingDayCount, iCompoundingFreq);</span>
+<span class="nc" id="L1368">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1369">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1334">		return null;</span>
+<span class="nc" id="L1372">		return null;</span>
 	}
 
 	/**
@@ -1352,13 +1390,13 @@ package org.drip.state.creator;
 		final double[] adblRate)
 	{
 		try {
-<span class="fc" id="L1355">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
+<span class="fc" id="L1393">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
 				adblRate, false, &quot;&quot;, -1);
-<span class="nc" id="L1357">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1358">			e.printStackTrace();</span>
+<span class="nc" id="L1395">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1396">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1361">		return null;</span>
+<span class="nc" id="L1399">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

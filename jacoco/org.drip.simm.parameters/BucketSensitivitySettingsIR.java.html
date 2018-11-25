@@ -6,31 +6,49 @@ package org.drip.simm.parameters;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,39 +65,57 @@ package org.drip.simm.parameters;
  */
 
 /**
- * BucketSensitivitySettingsIR holds the Delta Risk Weights, Concentration Thresholds, and
- *  Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;BucketSensitivitySettingsIR&lt;/i&gt; holds the Delta Risk Weights, Concentration Thresholds, and
+ * Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.LiquiditySettings
 {
-<span class="nc" id="L74">	private double _crossCurveCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private org.drip.measure.stochastic.LabelCorrelation _crossTenorCorrelation = null;</span>
-<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _oisTenorRiskWeight = null;</span>
-<span class="nc" id="L77">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _primeTenorRiskWeight = null;</span>
-<span class="nc" id="L78">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor1MTenorRiskWeight = null;</span>
-<span class="nc" id="L79">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor3MTenorRiskWeight = null;</span>
-<span class="nc" id="L80">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor6MTenorRiskWeight = null;</span>
-<span class="nc" id="L81">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor12MTenorRiskWeight = null;</span>
-<span class="nc" id="L82">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _municipalTenorRiskWeight = null;</span>
+<span class="nc" id="L110">	private double _crossCurveCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private org.drip.measure.stochastic.LabelCorrelation _crossTenorCorrelation = null;</span>
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _oisTenorRiskWeight = null;</span>
+<span class="nc" id="L113">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _primeTenorRiskWeight = null;</span>
+<span class="nc" id="L114">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor1MTenorRiskWeight = null;</span>
+<span class="nc" id="L115">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor3MTenorRiskWeight = null;</span>
+<span class="nc" id="L116">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor6MTenorRiskWeight = null;</span>
+<span class="nc" id="L117">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _libor12MTenorRiskWeight = null;</span>
+<span class="nc" id="L118">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _municipalTenorRiskWeight = null;</span>
 
 	/**
 	 * Construct the ISDA 2.0 Standard IR Delta Sensitivity Settings for the Currency
@@ -92,53 +128,53 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_20 (
 		final java.lang.String currency)
 	{
-<span class="nc" id="L95">		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer20.Threshold</span>
-<span class="nc" id="L96">			(currency);</span>
+<span class="nc" id="L131">		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer20.Threshold</span>
+<span class="nc" id="L132">			(currency);</span>
 
-<span class="nc" id="L98">		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L134">		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 			currency,
 			org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS
 		);
 
-<span class="nc" id="L103">		org.drip.simm.rates.IRWeight libor1MRiskWeight =</span>
-<span class="nc" id="L104">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L139">		org.drip.simm.rates.IRWeight libor1MRiskWeight =</span>
+<span class="nc" id="L140">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M
 			);
 
-<span class="nc" id="L109">		org.drip.simm.rates.IRWeight libor3MRiskWeight =</span>
-<span class="nc" id="L110">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L145">		org.drip.simm.rates.IRWeight libor3MRiskWeight =</span>
+<span class="nc" id="L146">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M
 			);
 
-<span class="nc" id="L115">		org.drip.simm.rates.IRWeight libor6MRiskWeight =</span>
-<span class="nc" id="L116">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L151">		org.drip.simm.rates.IRWeight libor6MRiskWeight =</span>
+<span class="nc" id="L152">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M
 			);
 
-<span class="nc" id="L121">		org.drip.simm.rates.IRWeight libor12MRiskWeight =</span>
-<span class="nc" id="L122">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L157">		org.drip.simm.rates.IRWeight libor12MRiskWeight =</span>
+<span class="nc" id="L158">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M
 			);
 
-<span class="nc" id="L127">		org.drip.simm.rates.IRWeight primeRiskWeight =</span>
-<span class="nc" id="L128">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L163">		org.drip.simm.rates.IRWeight primeRiskWeight =</span>
+<span class="nc" id="L164">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME
 			);
 
-<span class="nc" id="L133">		org.drip.simm.rates.IRWeight municipalRiskWeight =</span>
-<span class="nc" id="L134">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
+<span class="nc" id="L169">		org.drip.simm.rates.IRWeight municipalRiskWeight =</span>
+<span class="nc" id="L170">			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL
 			);
 
 		try
 		{
-<span class="nc bnc" id="L141" title="All 16 branches missed.">			return null == irThreshold ||</span>
+<span class="nc bnc" id="L177" title="All 16 branches missed.">			return null == irThreshold ||</span>
 				null == libor1MRiskWeight ||
 				null == libor1MRiskWeight ||
 				null == libor3MRiskWeight ||
@@ -146,24 +182,24 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 				null == libor12MRiskWeight ||
 				null == primeRiskWeight ||
 				null == municipalRiskWeight ? null : new BucketSensitivitySettingsIR (
-<span class="nc" id="L149">					oisRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L150">					libor1MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L151">					libor3MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L152">					libor6MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L153">					libor12MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L154">					primeRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L155">					municipalRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L156">					org.drip.simm.rates.IRSettingsContainer20.SingleCurveTenorCorrelation(),</span>
+<span class="nc" id="L185">					oisRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L186">					libor1MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L187">					libor3MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L188">					libor6MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L189">					libor12MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L190">					primeRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L191">					municipalRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L192">					org.drip.simm.rates.IRSettingsContainer20.SingleCurveTenorCorrelation(),</span>
 					org.drip.simm.rates.IRSystemics20.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
-<span class="nc" id="L158">					irThreshold.deltaVega().delta()</span>
+<span class="nc" id="L194">					irThreshold.deltaVega().delta()</span>
 				);
 		}
-<span class="nc" id="L161">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L197">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L163">			e.printStackTrace();</span>
+<span class="nc" id="L199">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L166">		return null;</span>
+<span class="nc" id="L202">		return null;</span>
 	}
 
 	/**
@@ -177,53 +213,53 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_21 (
 		final java.lang.String currency)
 	{
-<span class="nc" id="L180">		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer21.Threshold</span>
-<span class="nc" id="L181">			(currency);</span>
+<span class="nc" id="L216">		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer21.Threshold</span>
+<span class="nc" id="L217">			(currency);</span>
 
-<span class="nc" id="L183">		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L219">		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 			currency,
 			org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS
 		);
 
-<span class="nc" id="L188">		org.drip.simm.rates.IRWeight libor1MRiskWeight =</span>
-<span class="nc" id="L189">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L224">		org.drip.simm.rates.IRWeight libor1MRiskWeight =</span>
+<span class="nc" id="L225">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M
 			);
 
-<span class="nc" id="L194">		org.drip.simm.rates.IRWeight libor3MRiskWeight =</span>
-<span class="nc" id="L195">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L230">		org.drip.simm.rates.IRWeight libor3MRiskWeight =</span>
+<span class="nc" id="L231">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M
 			);
 
-<span class="nc" id="L200">		org.drip.simm.rates.IRWeight libor6MRiskWeight =</span>
-<span class="nc" id="L201">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L236">		org.drip.simm.rates.IRWeight libor6MRiskWeight =</span>
+<span class="nc" id="L237">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M
 			);
 
-<span class="nc" id="L206">		org.drip.simm.rates.IRWeight libor12MRiskWeight =</span>
-<span class="nc" id="L207">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L242">		org.drip.simm.rates.IRWeight libor12MRiskWeight =</span>
+<span class="nc" id="L243">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M
 			);
 
-<span class="nc" id="L212">		org.drip.simm.rates.IRWeight primeRiskWeight =</span>
-<span class="nc" id="L213">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L248">		org.drip.simm.rates.IRWeight primeRiskWeight =</span>
+<span class="nc" id="L249">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME
 			);
 
-<span class="nc" id="L218">		org.drip.simm.rates.IRWeight municipalRiskWeight =</span>
-<span class="nc" id="L219">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
+<span class="nc" id="L254">		org.drip.simm.rates.IRWeight municipalRiskWeight =</span>
+<span class="nc" id="L255">			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (</span>
 				currency,
 				org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL
 			);
 
 		try
 		{
-<span class="nc bnc" id="L226" title="All 16 branches missed.">			return null == irThreshold ||</span>
+<span class="nc bnc" id="L262" title="All 16 branches missed.">			return null == irThreshold ||</span>
 				null == libor1MRiskWeight ||
 				null == libor1MRiskWeight ||
 				null == libor3MRiskWeight ||
@@ -231,24 +267,24 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 				null == libor12MRiskWeight ||
 				null == primeRiskWeight ||
 				null == municipalRiskWeight ? null : new BucketSensitivitySettingsIR (
-<span class="nc" id="L234">					oisRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L235">					libor1MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L236">					libor3MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L237">					libor6MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L238">					libor12MRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L239">					primeRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L240">					municipalRiskWeight.tenorDelta(),</span>
-<span class="nc" id="L241">					org.drip.simm.rates.IRSettingsContainer21.SingleCurveTenorCorrelation(),</span>
+<span class="nc" id="L270">					oisRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L271">					libor1MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L272">					libor3MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L273">					libor6MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L274">					libor12MRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L275">					primeRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L276">					municipalRiskWeight.tenorDelta(),</span>
+<span class="nc" id="L277">					org.drip.simm.rates.IRSettingsContainer21.SingleCurveTenorCorrelation(),</span>
 					org.drip.simm.rates.IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
-<span class="nc" id="L243">					irThreshold.deltaVega().delta()</span>
+<span class="nc" id="L279">					irThreshold.deltaVega().delta()</span>
 				);
 		}
-<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L282">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L248">			e.printStackTrace();</span>
+<span class="nc" id="L284">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L251">		return null;</span>
+<span class="nc" id="L287">		return null;</span>
 	}
 
 	/**
@@ -281,9 +317,9 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L284">		super (concentrationThreshold);</span>
+<span class="nc" id="L320">		super (concentrationThreshold);</span>
 
-<span class="nc bnc" id="L286" title="All 16 branches missed.">		if (null == (_oisTenorRiskWeight = oisTenorRiskWeight) ||</span>
+<span class="nc bnc" id="L322" title="All 16 branches missed.">		if (null == (_oisTenorRiskWeight = oisTenorRiskWeight) ||</span>
 			null == (_libor1MTenorRiskWeight = libor1MTenorRiskWeight) ||
 			null == (_libor3MTenorRiskWeight = libor3MTenorRiskWeight) ||
 			null == (_libor6MTenorRiskWeight = libor6MTenorRiskWeight) ||
@@ -291,12 +327,12 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 			null == (_primeTenorRiskWeight = primeTenorRiskWeight) ||
 			null == (_municipalTenorRiskWeight = municipalTenorRiskWeight) ||
 			null == (_crossTenorCorrelation = crossTenorCorrelation) ||
-<span class="nc bnc" id="L294" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||</span>
+<span class="nc bnc" id="L330" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||</span>
 				-1. &gt; _crossCurveCorrelation || 1. &lt; _crossCurveCorrelation)
 		{
-<span class="nc" id="L297">			throw new java.lang.Exception (&quot;BucketSensitivitySettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L333">			throw new java.lang.Exception (&quot;BucketSensitivitySettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L299">	}</span>
+<span class="nc" id="L335">	}</span>
 
 	/**
 	 * Retrieve the OIS Tenor Risk Weight
@@ -306,7 +342,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; oisTenorRiskWeight()
 	{
-<span class="nc" id="L309">		return _oisTenorRiskWeight;</span>
+<span class="nc" id="L345">		return _oisTenorRiskWeight;</span>
 	}
 
 	/**
@@ -317,7 +353,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor1MTenorRiskWeight()
 	{
-<span class="nc" id="L320">		return _libor1MTenorRiskWeight;</span>
+<span class="nc" id="L356">		return _libor1MTenorRiskWeight;</span>
 	}
 
 	/**
@@ -328,7 +364,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor3MTenorRiskWeight()
 	{
-<span class="nc" id="L331">		return _libor3MTenorRiskWeight;</span>
+<span class="nc" id="L367">		return _libor3MTenorRiskWeight;</span>
 	}
 
 	/**
@@ -339,7 +375,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor6MTenorRiskWeight()
 	{
-<span class="nc" id="L342">		return _libor6MTenorRiskWeight;</span>
+<span class="nc" id="L378">		return _libor6MTenorRiskWeight;</span>
 	}
 
 	/**
@@ -350,7 +386,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; libor12MTenorRiskWeight()
 	{
-<span class="nc" id="L353">		return _libor12MTenorRiskWeight;</span>
+<span class="nc" id="L389">		return _libor12MTenorRiskWeight;</span>
 	}
 
 	/**
@@ -361,7 +397,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; primeTenorRiskWeight()
 	{
-<span class="nc" id="L364">		return _primeTenorRiskWeight;</span>
+<span class="nc" id="L400">		return _primeTenorRiskWeight;</span>
 	}
 
 	/**
@@ -372,7 +408,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; municipalTenorRiskWeight()
 	{
-<span class="nc" id="L375">		return _municipalTenorRiskWeight;</span>
+<span class="nc" id="L411">		return _municipalTenorRiskWeight;</span>
 	}
 
 	/**
@@ -383,7 +419,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public double crossCurveCorrelation()
 	{
-<span class="nc" id="L386">		return _crossCurveCorrelation;</span>
+<span class="nc" id="L422">		return _crossCurveCorrelation;</span>
 	}
 
 	/**
@@ -394,7 +430,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 
 	public org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation()
 	{
-<span class="nc" id="L397">		return _crossTenorCorrelation;</span>
+<span class="nc" id="L433">		return _crossTenorCorrelation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

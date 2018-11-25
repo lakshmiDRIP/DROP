@@ -6,34 +6,52 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,24 +68,38 @@ package org.drip.spaces.cover;
  */
 
 /**
- * CoveringBoundsHelper contains the assortment of Utilities used in the Computation of Upper Bounds for
- * 	Normed Single Function Spaces and Function Space Products.
- * 
- *  The References are:
- *  
- *  1) Carl, B. (1985): Inequalities of the Bernstein-Jackson type and the Degree of Compactness of Operators
- *  	in Banach Spaces, Annals of the Fourier Institute 35 (3) 79-118.
- *  
- *  2) Carl, B., and I. Stephani (1990): Entropy, Compactness, and the Approximation of Operators, Cambridge
- *  	University Press, Cambridge UK. 
- *  
- *  3) Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function Classes,
- *  	in: Proceedings of the 13th Annual Conference on Computational Learning Theory, ACM New York.
+ * &lt;i&gt;CoveringBoundsHelper&lt;/i&gt; contains the assortment of Utilities used in the Computation of Upper Bounds
+ * for Normed Single Function Spaces and Function Space Products. The References are:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B. (1985): Inequalities of the Bernstein-Jackson type and the Degree of Compactness of
+ *  			Operators in Banach Spaces &lt;i&gt;Annals of the Fourier Institute&lt;/i&gt; &lt;b&gt;35 (3)&lt;/b&gt; 79-118
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B., and I. Stephani (1990): &lt;i&gt;Entropy, Compactness, and the Approximation of Operators&lt;/i&gt;
+ *  			&lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge UK 
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function
+ *  			Classes, in: &lt;i&gt;Proceedings of the 13th Annual Conference on Computational Learning
+ *  				Theory&lt;/i&gt; &lt;b&gt;ACM&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Covering Number&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L70">public class CoveringBoundsHelper {</span>
+<span class="nc" id="L102">public class CoveringBoundsHelper {</span>
 
 	/**
 	 * Compute the Dyadic Entropy Number from the nth Entropy Number
@@ -83,10 +115,10 @@ package org.drip.spaces.cover;
 		final double dblLogNEntropyNumber)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))</span>
-<span class="nc" id="L87">			throw new java.lang.Exception (&quot;CoveringBoundsHelper::DyadicEntropyNumber =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;CoveringBoundsHelper::DyadicEntropyNumber =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L89">		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));</span>
+<span class="nc" id="L121">		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));</span>
 	}
 
 	/**
@@ -111,12 +143,12 @@ package org.drip.spaces.cover;
 		final int iEntropyNumberIndexB)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L114" title="All 4 branches missed.">		if (null == mocbA || null == mocbB)</span>
-<span class="nc" id="L115">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (null == mocbA || null == mocbB)</span>
+<span class="nc" id="L147">			throw new java.lang.Exception</span>
 				(&quot;CoveringBoundsHelper::CarlStephaniProductBound =&gt; Invalid Maurey Bounds for the Function Class&quot;);
 
-<span class="nc" id="L118">		return mocbA.entropyNumberUpperBound (iEntropyNumberIndexA) * mocbB.entropyNumberUpperBound</span>
-<span class="nc" id="L119">			(iEntropyNumberIndexB);</span>
+<span class="nc" id="L150">		return mocbA.entropyNumberUpperBound (iEntropyNumberIndexA) * mocbB.entropyNumberUpperBound</span>
+<span class="nc" id="L151">			(iEntropyNumberIndexB);</span>
 	}
 
 	/**
@@ -140,17 +172,17 @@ package org.drip.spaces.cover;
 		final double dblNormB,
 		final int iEntropyNumberIndex)
 	{
-<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (null == mocbA || null == mocbB) return null;</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (null == mocbA || null == mocbB) return null;</span>
 
 		try {
-<span class="nc" id="L146">			return new org.drip.spaces.cover.CarlStephaniNormedBounds (mocbA.entropyNumberUpperBound</span>
-<span class="nc" id="L147">				(iEntropyNumberIndex) * dblNormB, mocbB.entropyNumberUpperBound (iEntropyNumberIndex) *</span>
+<span class="nc" id="L178">			return new org.drip.spaces.cover.CarlStephaniNormedBounds (mocbA.entropyNumberUpperBound</span>
+<span class="nc" id="L179">				(iEntropyNumberIndex) * dblNormB, mocbB.entropyNumberUpperBound (iEntropyNumberIndex) *</span>
 					dblNormA);
-<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L150">			e.printStackTrace();</span>
+<span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L182">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L153">		return null;</span>
+<span class="nc" id="L185">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

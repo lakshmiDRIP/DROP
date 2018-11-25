@@ -6,6 +6,7 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.params;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,19 +70,33 @@ package org.drip.spline.params;
  */
 
 /**
- * SegmentPredictorResponseDerivative contains the segment local parameters used for the segment calibration. It
- * 	holds the edge Y value and the derivatives.
- * 
- * It exposes the following functions:
- * 	- Retrieve the Response Value as well as the DResponseDPredictorOrdinate Array.
- * 	- Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight.
+ * &lt;i&gt;SegmentPredictorResponseDerivative&lt;/i&gt; contains the segment local parameters used for the segment
+ * calibration. It holds the edge Y value and the derivatives. It exposes the following functions:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Retrieve the Response Value as well as the DResponseDPredictorOrdinate Array.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class SegmentPredictorResponseDerivative {
-<span class="fc" id="L66">	private double _dblResponseValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L67">	private double[] _adblDResponseDPredictorOrdinate = null;</span>
+<span class="fc" id="L98">	private double _dblResponseValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double[] _adblDResponseDPredictorOrdinate = null;</span>
 
 	/**
 	 * Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight
@@ -81,50 +113,50 @@ public class SegmentPredictorResponseDerivative {
 		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdB,
 		final double dblCardinalTension)
 	{
-<span class="pc bpc" id="L84" title="3 of 6 branches missed.">		if (null == sprdA || null == sprdB || !org.drip.quant.common.NumberUtil.IsValid (dblCardinalTension))</span>
-<span class="nc" id="L85">			return null;</span>
+<span class="pc bpc" id="L116" title="3 of 6 branches missed.">		if (null == sprdA || null == sprdB || !org.drip.quant.common.NumberUtil.IsValid (dblCardinalTension))</span>
+<span class="nc" id="L117">			return null;</span>
 
-<span class="fc" id="L87">		int iNumDeriv = 0;</span>
+<span class="fc" id="L119">		int iNumDeriv = 0;</span>
 
-<span class="fc" id="L89">		double[] adblEdgeDResponseDPredictorOrdinateA = sprdA.getDResponseDPredictorOrdinate();</span>
+<span class="fc" id="L121">		double[] adblEdgeDResponseDPredictorOrdinateA = sprdA.getDResponseDPredictorOrdinate();</span>
 
-<span class="fc" id="L91">		double[] adblEdgeDResponseDPredictorOrdinateB = sprdB.getDResponseDPredictorOrdinate();</span>
+<span class="fc" id="L123">		double[] adblEdgeDResponseDPredictorOrdinateB = sprdB.getDResponseDPredictorOrdinate();</span>
 
-<span class="pc bpc" id="L93" title="8 of 14 branches missed.">		if ((null != adblEdgeDResponseDPredictorOrdinateA &amp;&amp; null == adblEdgeDResponseDPredictorOrdinateB) ||</span>
+<span class="pc bpc" id="L125" title="8 of 14 branches missed.">		if ((null != adblEdgeDResponseDPredictorOrdinateA &amp;&amp; null == adblEdgeDResponseDPredictorOrdinateB) ||</span>
 			(null == adblEdgeDResponseDPredictorOrdinateA &amp;&amp; null != adblEdgeDResponseDPredictorOrdinateB) ||
 				(null != adblEdgeDResponseDPredictorOrdinateA &amp;&amp; null != adblEdgeDResponseDPredictorOrdinateB
 					&amp;&amp; (iNumDeriv = adblEdgeDResponseDPredictorOrdinateA.length) !=
 						adblEdgeDResponseDPredictorOrdinateB.length))
-<span class="nc" id="L98">			return null;</span>
+<span class="nc" id="L130">			return null;</span>
 
-<span class="fc" id="L100">		double dblAggregatedEdgeResponseValue = 0.5 * (1. - dblCardinalTension) * (sprdA.responseValue() +</span>
-<span class="fc" id="L101">			sprdB.responseValue());</span>
+<span class="fc" id="L132">		double dblAggregatedEdgeResponseValue = 0.5 * (1. - dblCardinalTension) * (sprdA.responseValue() +</span>
+<span class="fc" id="L133">			sprdB.responseValue());</span>
 
-<span class="pc bpc" id="L103" title="3 of 6 branches missed.">		if (null == adblEdgeDResponseDPredictorOrdinateA || null == adblEdgeDResponseDPredictorOrdinateB || 0</span>
+<span class="pc bpc" id="L135" title="3 of 6 branches missed.">		if (null == adblEdgeDResponseDPredictorOrdinateA || null == adblEdgeDResponseDPredictorOrdinateB || 0</span>
 			== iNumDeriv) {
 			try {
-<span class="nc" id="L106">				return new SegmentPredictorResponseDerivative (dblAggregatedEdgeResponseValue, null);</span>
-<span class="nc" id="L107">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L108">				e.printStackTrace();</span>
+<span class="nc" id="L138">				return new SegmentPredictorResponseDerivative (dblAggregatedEdgeResponseValue, null);</span>
+<span class="nc" id="L139">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L140">				e.printStackTrace();</span>
 
-<span class="nc" id="L110">				return null;</span>
+<span class="nc" id="L142">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L114">		double[] adblEdgeDResponseDPredictorOrdinate = new double[iNumDeriv];</span>
+<span class="fc" id="L146">		double[] adblEdgeDResponseDPredictorOrdinate = new double[iNumDeriv];</span>
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeriv; ++i)</span>
-<span class="fc" id="L117">			adblEdgeDResponseDPredictorOrdinate[i] = 0.5 * (1. - dblCardinalTension) *</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDeriv; ++i)</span>
+<span class="fc" id="L149">			adblEdgeDResponseDPredictorOrdinate[i] = 0.5 * (1. - dblCardinalTension) *</span>
 				(adblEdgeDResponseDPredictorOrdinateA[i] + adblEdgeDResponseDPredictorOrdinateB[i]);
 
 		try {
-<span class="fc" id="L121">			return new SegmentPredictorResponseDerivative (dblAggregatedEdgeResponseValue,</span>
+<span class="fc" id="L153">			return new SegmentPredictorResponseDerivative (dblAggregatedEdgeResponseValue,</span>
 				adblEdgeDResponseDPredictorOrdinate);
-<span class="nc" id="L123">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L124">			e.printStackTrace();</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L127">		return null;</span>
+<span class="nc" id="L159">		return null;</span>
 	}
 
 	/**
@@ -140,12 +172,12 @@ public class SegmentPredictorResponseDerivative {
 		final double dblResponseValue,
 		final double[] adblDResponseDPredictorOrdinate)
 		throws java.lang.Exception
-<span class="fc" id="L143">	{</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblResponseValue = dblResponseValue))</span>
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;SegmentPredictorResponseDerivative ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L175">	{</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblResponseValue = dblResponseValue))</span>
+<span class="nc" id="L177">			throw new java.lang.Exception (&quot;SegmentPredictorResponseDerivative ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L147">		_adblDResponseDPredictorOrdinate = adblDResponseDPredictorOrdinate;</span>
-<span class="fc" id="L148">	}</span>
+<span class="fc" id="L179">		_adblDResponseDPredictorOrdinate = adblDResponseDPredictorOrdinate;</span>
+<span class="fc" id="L180">	}</span>
 
 	/**
 	 * Retrieve the Response Value
@@ -155,7 +187,7 @@ public class SegmentPredictorResponseDerivative {
 
 	public double responseValue()
 	{
-<span class="fc" id="L158">		return _dblResponseValue;</span>
+<span class="fc" id="L190">		return _dblResponseValue;</span>
 	}
 
 	/**
@@ -166,7 +198,7 @@ public class SegmentPredictorResponseDerivative {
 
 	public double[] getDResponseDPredictorOrdinate()
 	{
-<span class="fc" id="L169">		return _adblDResponseDPredictorOrdinate;</span>
+<span class="fc" id="L201">		return _adblDResponseDPredictorOrdinate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.state.estimator;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.state.estimator;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,22 +70,40 @@ package org.drip.state.estimator;
  */
 
 /**
- * SmoothingCurveStretchParams contains the Parameters needed to hold the Stretch. It provides functionality
- * 	to:
- * 	- The Stretch Best fit Response and the corresponding Quote Sensitivity
- * 	- The Calibration Detail and the Curve Smoothening Quantification Metric
- * 	- The Segment Builder Parameters
+ * &lt;i&gt;SmoothingCurveStretchParams&lt;/i&gt; contains the Parameters needed to hold the Stretch. It provides
+ * functionality to:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			The Stretch Best fit Response and the corresponding Quote Sensitivity
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The Calibration Detail and the Curve Smoothening Quantification Metric
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			The Segment Builder Parameters
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class SmoothingCurveStretchParams {
-<span class="fc" id="L65">	private int _iCalibrationDetail = -1;</span>
-<span class="fc" id="L66">	private java.lang.String _strSmootheningQuantificationMetric = &quot;&quot;;</span>
-<span class="fc" id="L67">	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;</span>
-<span class="fc" id="L68">	private org.drip.spline.params.StretchBestFitResponse _sbfrSensitivity = null;</span>
+<span class="fc" id="L101">	private int _iCalibrationDetail = -1;</span>
+<span class="fc" id="L102">	private java.lang.String _strSmootheningQuantificationMetric = &quot;&quot;;</span>
+<span class="fc" id="L103">	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;</span>
+<span class="fc" id="L104">	private org.drip.spline.params.StretchBestFitResponse _sbfrSensitivity = null;</span>
 
-<span class="fc" id="L70">	private</span>
+<span class="fc" id="L106">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.params.SegmentCustomBuilderControl&gt;
 			_mapSCBC = new
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.params.SegmentCustomBuilderControl&gt;();
@@ -91,17 +127,17 @@ public abstract class SmoothingCurveStretchParams {
 		final org.drip.spline.params.StretchBestFitResponse sbfr,
 		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity)
 		throws java.lang.Exception
-<span class="fc" id="L94">	{</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (null == scbcDefault)</span>
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;SmoothingCurveStretchParams ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L130">	{</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == scbcDefault)</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;SmoothingCurveStretchParams ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L98">		_sbfr = sbfr;</span>
-<span class="fc" id="L99">		_sbfrSensitivity = sbfrSensitivity;</span>
-<span class="fc" id="L100">		_iCalibrationDetail = iCalibrationDetail;</span>
-<span class="fc" id="L101">		_strSmootheningQuantificationMetric = strSmootheningQuantificationMetric;</span>
+<span class="fc" id="L134">		_sbfr = sbfr;</span>
+<span class="fc" id="L135">		_sbfrSensitivity = sbfrSensitivity;</span>
+<span class="fc" id="L136">		_iCalibrationDetail = iCalibrationDetail;</span>
+<span class="fc" id="L137">		_strSmootheningQuantificationMetric = strSmootheningQuantificationMetric;</span>
 
-<span class="fc" id="L103">		_mapSCBC.put (&quot;default&quot;, scbcDefault);</span>
-<span class="fc" id="L104">	}</span>
+<span class="fc" id="L139">		_mapSCBC.put (&quot;default&quot;, scbcDefault);</span>
+<span class="fc" id="L140">	}</span>
 
 	/**
 	 * Set the Stretch's Segment Builder Control
@@ -116,11 +152,11 @@ public abstract class SmoothingCurveStretchParams {
 		final java.lang.String strStretchName,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L119" title="3 of 6 branches missed.">		if (null == strStretchName || strStretchName.isEmpty() || null == scbc) return false;</span>
+<span class="pc bpc" id="L155" title="3 of 6 branches missed.">		if (null == strStretchName || strStretchName.isEmpty() || null == scbc) return false;</span>
 
-<span class="fc" id="L121">		_mapSCBC.put (strStretchName, scbc);</span>
+<span class="fc" id="L157">		_mapSCBC.put (strStretchName, scbc);</span>
 
-<span class="fc" id="L123">		return true;</span>
+<span class="fc" id="L159">		return true;</span>
 	}
 
 	/**
@@ -131,7 +167,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public java.lang.String smootheningQuantificationMetric()
 	{
-<span class="fc" id="L134">		return _strSmootheningQuantificationMetric;</span>
+<span class="fc" id="L170">		return _strSmootheningQuantificationMetric;</span>
 	}
 
 	/**
@@ -142,7 +178,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public int calibrationDetail()
 	{
-<span class="fc" id="L145">		return _iCalibrationDetail;</span>
+<span class="fc" id="L181">		return _iCalibrationDetail;</span>
 	}
 
 	/**
@@ -153,7 +189,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public org.drip.spline.params.SegmentCustomBuilderControl defaultSegmentBuilderControl()
 	{
-<span class="fc" id="L156">		return _mapSCBC.get (&quot;default&quot;);</span>
+<span class="fc" id="L192">		return _mapSCBC.get (&quot;default&quot;);</span>
 	}
 
 	/**
@@ -167,8 +203,8 @@ public abstract class SmoothingCurveStretchParams {
 	public org.drip.spline.params.SegmentCustomBuilderControl segmentBuilderControl (
 		final java.lang.String strStretchName)
 	{
-<span class="fc bfc" id="L170" title="All 2 branches covered.">		return _mapSCBC.containsKey (strStretchName) ? _mapSCBC.get (strStretchName) : _mapSCBC.get</span>
-<span class="fc" id="L171">			(&quot;default&quot;);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		return _mapSCBC.containsKey (strStretchName) ? _mapSCBC.get (strStretchName) : _mapSCBC.get</span>
+<span class="fc" id="L207">			(&quot;default&quot;);</span>
 	}
 
 	/**
@@ -179,7 +215,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public org.drip.spline.params.StretchBestFitResponse bestFitWeightedResponse()
 	{
-<span class="fc" id="L182">		return _sbfr;</span>
+<span class="fc" id="L218">		return _sbfr;</span>
 	}
 
 	/**
@@ -190,7 +226,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public org.drip.spline.params.StretchBestFitResponse bestFitWeightedResponseSensitivity()
 	{
-<span class="fc" id="L193">		return _sbfrSensitivity;</span>
+<span class="fc" id="L229">		return _sbfrSensitivity;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

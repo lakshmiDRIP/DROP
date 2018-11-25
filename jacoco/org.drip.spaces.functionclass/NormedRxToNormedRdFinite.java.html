@@ -6,34 +6,52 @@ package org.drip.spaces.functionclass;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -50,25 +68,39 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * NormedRxToNormedRdFinite implements the Class F with f E f : Normed R^x To Normed R^d Space of Finite
- * 	Functions.
- * 
- *  The References are:
- *  
- *  1) Carl, B. (1985): Inequalities of the Bernstein-Jackson type and the Degree of Compactness of Operators
- *  	in Banach Spaces, Annals of the Fourier Institute 35 (3) 79-118.
- *  
- *  2) Carl, B., and I. Stephani (1990): Entropy, Compactness, and the Approximation of Operators, Cambridge
- *  	University Press, Cambridge UK. 
- *  
- *  3) Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function Classes,
- *  	in: Proceedings of the 13th Annual Conference on Computational Learning Theory, ACM New York.
+ * &lt;i&gt;NormedRxToNormedRdFinite&lt;/i&gt; implements the Class F with f E f : Normed R&lt;sup&gt;x&lt;/sup&gt; To Normed
+ * R&lt;sup&gt;d&lt;/sup&gt; Space of Finite Functions. The References are:
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B. (1985): Inequalities of the Bernstein-Jackson type and the Degree of Compactness of
+ *  			Operators in Banach Spaces &lt;i&gt;Annals of the Fourier Institute&lt;/i&gt; &lt;b&gt;35 (3)&lt;/b&gt; 79-118
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Carl, B., and I. Stephani (1990): &lt;i&gt;Entropy, Compactness, and the Approximation of Operators&lt;/i&gt;
+ *  			&lt;b&gt;Cambridge University Press&lt;/b&gt; Cambridge UK 
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function
+ *  			Classes, in: &lt;i&gt;Proceedings of the 13th Annual Conference on Computational Learning
+ *  				Theory&lt;/i&gt; &lt;b&gt;ACM&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass&quot;&gt;Function Class&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.NormedRxToNormedRxFinite {
-<span class="nc" id="L71">	private org.drip.spaces.rxtord.NormedRxToNormedRd[] _aNormedRxToNormedRd = null;</span>
+<span class="nc" id="L103">	private org.drip.spaces.rxtord.NormedRxToNormedRd[] _aNormedRxToNormedRd = null;</span>
 
 	/**
 	 * NormedRxToNormedRdFinite Constructor
@@ -84,33 +116,33 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		final org.drip.spaces.rxtord.NormedRxToNormedRd[] aNormedRxToNormedRd)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L87">		super (dblMaureyConstant);</span>
+<span class="nc" id="L119">		super (dblMaureyConstant);</span>
 
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		int iClassSize = null == (_aNormedRxToNormedRd = aNormedRxToNormedRd) ? 0 :</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		int iClassSize = null == (_aNormedRxToNormedRd = aNormedRxToNormedRd) ? 0 :</span>
 			_aNormedRxToNormedRd.length;
 
-<span class="nc bnc" id="L92" title="All 4 branches missed.">		if (null != _aNormedRxToNormedRd &amp;&amp; 0 == iClassSize)</span>
-<span class="nc" id="L93">			throw new java.lang.Exception (&quot;NormedRxToNormedRdFinite ctr: Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null != _aNormedRxToNormedRd &amp;&amp; 0 == iClassSize)</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;NormedRxToNormedRdFinite ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (int i = 0; i &lt; iClassSize; ++i) {</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (null == _aNormedRxToNormedRd[i])</span>
-<span class="nc" id="L97">				throw new java.lang.Exception (&quot;NormedRxToNormedRdFinite ctr: Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int i = 0; i &lt; iClassSize; ++i) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			if (null == _aNormedRxToNormedRd[i])</span>
+<span class="nc" id="L129">				throw new java.lang.Exception (&quot;NormedRxToNormedRdFinite ctr: Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L99">	}</span>
+<span class="nc" id="L131">	}</span>
 
 	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
 	{
-<span class="nc" id="L103">		return null;</span>
+<span class="nc" id="L135">		return null;</span>
 	}
 
 	@Override public org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace()
 	{
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		return null == _aNormedRxToNormedRd ? null : _aNormedRxToNormedRd[0].inputMetricVectorSpace();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		return null == _aNormedRxToNormedRd ? null : _aNormedRxToNormedRd[0].inputMetricVectorSpace();</span>
 	}
 
 	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
 	{
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		return null == _aNormedRxToNormedRd ? null : _aNormedRxToNormedRd[0].outputMetricVectorSpace();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		return null == _aNormedRxToNormedRd ? null : _aNormedRxToNormedRd[0].outputMetricVectorSpace();</span>
 	}
 
 	/**
@@ -121,7 +153,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 	public org.drip.spaces.rxtord.NormedRxToNormedRd[] functionSpaces()
 	{
-<span class="nc" id="L124">		return _aNormedRxToNormedRd;</span>
+<span class="nc" id="L156">		return _aNormedRxToNormedRd;</span>
 	}
 
 	/**
@@ -135,33 +167,33 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	public double[] populationCoveringNumber (
 		final double[] adblCover)
 	{
-<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
 
-<span class="nc" id="L140">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L172">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
 
-<span class="nc" id="L144">		double[] adblPopulationCoveringNumber = _aNormedRxToNormedRd[0].populationCoveringNumber</span>
-<span class="nc" id="L145">			(adblCover[0]);</span>
+<span class="nc" id="L176">		double[] adblPopulationCoveringNumber = _aNormedRxToNormedRd[0].populationCoveringNumber</span>
+<span class="nc" id="L177">			(adblCover[0]);</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationCoveringNumber)) return null;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationCoveringNumber)) return null;</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
-<span class="nc" id="L150">			double[] adblFunctionPopulationCoveringNumber = _aNormedRxToNormedRd[i].populationCoveringNumber</span>
-<span class="nc" id="L151">				(adblCover[i]);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L182">			double[] adblFunctionPopulationCoveringNumber = _aNormedRxToNormedRd[i].populationCoveringNumber</span>
+<span class="nc" id="L183">				(adblCover[i]);</span>
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionPopulationCoveringNumber))</span>
-<span class="nc" id="L154">				return null;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionPopulationCoveringNumber))</span>
+<span class="nc" id="L186">				return null;</span>
 
-<span class="nc" id="L156">			int iDimension = adblFunctionPopulationCoveringNumber.length;</span>
+<span class="nc" id="L188">			int iDimension = adblFunctionPopulationCoveringNumber.length;</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">				if (adblPopulationCoveringNumber[j] &lt; adblFunctionPopulationCoveringNumber[j])</span>
-<span class="nc" id="L160">					adblPopulationCoveringNumber[j] = adblFunctionPopulationCoveringNumber[j];</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">				if (adblPopulationCoveringNumber[j] &lt; adblFunctionPopulationCoveringNumber[j])</span>
+<span class="nc" id="L192">					adblPopulationCoveringNumber[j] = adblFunctionPopulationCoveringNumber[j];</span>
 			}
 		}
 
-<span class="nc" id="L164">		return adblPopulationCoveringNumber;</span>
+<span class="nc" id="L196">		return adblPopulationCoveringNumber;</span>
 	}
 
 	/**
@@ -175,14 +207,14 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	public double[] populationCoveringNumber (
 		final double dblCover)
 	{
-<span class="nc" id="L178">		int iDimension = outputMetricVectorSpace().dimension();</span>
+<span class="nc" id="L210">		int iDimension = outputMetricVectorSpace().dimension();</span>
 
-<span class="nc" id="L180">		double[] adblCover = new double[iDimension];</span>
+<span class="nc" id="L212">		double[] adblCover = new double[iDimension];</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L183">			adblCover[i] = dblCover;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L215">			adblCover[i] = dblCover;</span>
 
-<span class="nc" id="L185">		return populationCoveringNumber (adblCover);</span>
+<span class="nc" id="L217">		return populationCoveringNumber (adblCover);</span>
 	}
 
 	/**
@@ -196,35 +228,35 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	public double[] populationSupremumCoveringNumber (
 		final double[] adblCover)
 	{
-<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
 
-<span class="nc" id="L201">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L233">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
 
-<span class="nc" id="L205">		double[] adblPopulationSupremumCoveringNumber =</span>
-<span class="nc" id="L206">			_aNormedRxToNormedRd[0].populationSupremumCoveringNumber (adblCover[0]);</span>
+<span class="nc" id="L237">		double[] adblPopulationSupremumCoveringNumber =</span>
+<span class="nc" id="L238">			_aNormedRxToNormedRd[0].populationSupremumCoveringNumber (adblCover[0]);</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationSupremumCoveringNumber)) return null;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationSupremumCoveringNumber)) return null;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
-<span class="nc" id="L211">			double[] adblFunctionPopulationSupremumCoveringNumber =</span>
-<span class="nc" id="L212">				_aNormedRxToNormedRd[i].populationSupremumCoveringNumber (adblCover[i]);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L243">			double[] adblFunctionPopulationSupremumCoveringNumber =</span>
+<span class="nc" id="L244">				_aNormedRxToNormedRd[i].populationSupremumCoveringNumber (adblCover[i]);</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionPopulationSupremumCoveringNumber))</span>
-<span class="nc" id="L215">				return null;</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionPopulationSupremumCoveringNumber))</span>
+<span class="nc" id="L247">				return null;</span>
 
-<span class="nc" id="L217">			int iDimension = adblFunctionPopulationSupremumCoveringNumber.length;</span>
+<span class="nc" id="L249">			int iDimension = adblFunctionPopulationSupremumCoveringNumber.length;</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (adblPopulationSupremumCoveringNumber[j] &lt;</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">				if (adblPopulationSupremumCoveringNumber[j] &lt;</span>
 					adblFunctionPopulationSupremumCoveringNumber[j])
-<span class="nc" id="L222">					adblPopulationSupremumCoveringNumber[j] =</span>
+<span class="nc" id="L254">					adblPopulationSupremumCoveringNumber[j] =</span>
 						adblFunctionPopulationSupremumCoveringNumber[j];
 			}
 		}
 
-<span class="nc" id="L227">		return adblPopulationSupremumCoveringNumber;</span>
+<span class="nc" id="L259">		return adblPopulationSupremumCoveringNumber;</span>
 	}
 
 	/**
@@ -238,14 +270,14 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	public double[] populationSupremumCoveringNumber (
 		final double dblCover)
 	{
-<span class="nc" id="L241">		int iDimension = outputMetricVectorSpace().dimension();</span>
+<span class="nc" id="L273">		int iDimension = outputMetricVectorSpace().dimension();</span>
 
-<span class="nc" id="L243">		double[] adblCover = new double[iDimension];</span>
+<span class="nc" id="L275">		double[] adblCover = new double[iDimension];</span>
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L246">			adblCover[i] = dblCover;</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L278">			adblCover[i] = dblCover;</span>
 
-<span class="nc" id="L248">		return populationSupremumCoveringNumber (adblCover);</span>
+<span class="nc" id="L280">		return populationSupremumCoveringNumber (adblCover);</span>
 	}
 
 	/**
@@ -261,32 +293,32 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double[] adblCover)
 	{
-<span class="nc bnc" id="L264" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
+<span class="nc bnc" id="L296" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
 
-<span class="nc" id="L266">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L298">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
 
-<span class="nc" id="L270">		double[] adblSampleCoveringNumber = _aNormedRxToNormedRd[0].sampleCoveringNumber (gvvi,</span>
+<span class="nc" id="L302">		double[] adblSampleCoveringNumber = _aNormedRxToNormedRd[0].sampleCoveringNumber (gvvi,</span>
 			adblCover[0]);
 
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleCoveringNumber)) return null;</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleCoveringNumber)) return null;</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
-<span class="nc" id="L276">			double[] adblFunctionSampleCoveringNumber = _aNormedRxToNormedRd[i].sampleCoveringNumber (gvvi,</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L308">			double[] adblFunctionSampleCoveringNumber = _aNormedRxToNormedRd[i].sampleCoveringNumber (gvvi,</span>
 				adblCover[i]);
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionSampleCoveringNumber)) return null;</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionSampleCoveringNumber)) return null;</span>
 
-<span class="nc" id="L281">			int iDimension = adblFunctionSampleCoveringNumber.length;</span>
+<span class="nc" id="L313">			int iDimension = adblFunctionSampleCoveringNumber.length;</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L284" title="All 2 branches missed.">				if (adblSampleCoveringNumber[j] &lt; adblFunctionSampleCoveringNumber[j])</span>
-<span class="nc" id="L285">					adblSampleCoveringNumber[j] = adblFunctionSampleCoveringNumber[j];</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">				if (adblSampleCoveringNumber[j] &lt; adblFunctionSampleCoveringNumber[j])</span>
+<span class="nc" id="L317">					adblSampleCoveringNumber[j] = adblFunctionSampleCoveringNumber[j];</span>
 			}
 		}
 
-<span class="nc" id="L289">		return adblSampleCoveringNumber;</span>
+<span class="nc" id="L321">		return adblSampleCoveringNumber;</span>
 	}
 
 	/**
@@ -302,14 +334,14 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
-<span class="nc" id="L305">		int iDimension = outputMetricVectorSpace().dimension();</span>
+<span class="nc" id="L337">		int iDimension = outputMetricVectorSpace().dimension();</span>
 
-<span class="nc" id="L307">		double[] adblCover = new double[iDimension];</span>
+<span class="nc" id="L339">		double[] adblCover = new double[iDimension];</span>
 
-<span class="nc bnc" id="L309" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L310">			adblCover[i] = dblCover;</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L342">			adblCover[i] = dblCover;</span>
 
-<span class="nc" id="L312">		return sampleCoveringNumber (gvvi, adblCover);</span>
+<span class="nc" id="L344">		return sampleCoveringNumber (gvvi, adblCover);</span>
 	}
 
 	/**
@@ -325,33 +357,33 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double[] adblCover)
 	{
-<span class="nc bnc" id="L328" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
+<span class="nc bnc" id="L360" title="All 4 branches missed.">		if (null == _aNormedRxToNormedRd || null == adblCover) return null;</span>
 
-<span class="nc" id="L330">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L362">		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">		if (iFunctionSpaceSize != adblCover.length) return null;</span>
 
-<span class="nc" id="L334">		double[] adblSampleSupremumCoveringNumber = _aNormedRxToNormedRd[0].sampleSupremumCoveringNumber</span>
-<span class="nc" id="L335">			(gvvi, adblCover[0]);</span>
+<span class="nc" id="L366">		double[] adblSampleSupremumCoveringNumber = _aNormedRxToNormedRd[0].sampleSupremumCoveringNumber</span>
+<span class="nc" id="L367">			(gvvi, adblCover[0]);</span>
 
-<span class="nc bnc" id="L337" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleSupremumCoveringNumber)) return null;</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleSupremumCoveringNumber)) return null;</span>
 
-<span class="nc bnc" id="L339" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
-<span class="nc" id="L340">			double[] adblFunctionSampleSupremumCoveringNumber =</span>
-<span class="nc" id="L341">				_aNormedRxToNormedRd[i].sampleSupremumCoveringNumber (gvvi, adblCover[i]);</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">		for (int i = 1; i &lt; iFunctionSpaceSize; ++i) {</span>
+<span class="nc" id="L372">			double[] adblFunctionSampleSupremumCoveringNumber =</span>
+<span class="nc" id="L373">				_aNormedRxToNormedRd[i].sampleSupremumCoveringNumber (gvvi, adblCover[i]);</span>
 
-<span class="nc bnc" id="L343" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionSampleSupremumCoveringNumber))</span>
-<span class="nc" id="L344">				return null;</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionSampleSupremumCoveringNumber))</span>
+<span class="nc" id="L376">				return null;</span>
 
-<span class="nc" id="L346">			int iDimension = adblFunctionSampleSupremumCoveringNumber.length;</span>
+<span class="nc" id="L378">			int iDimension = adblFunctionSampleSupremumCoveringNumber.length;</span>
 
-<span class="nc bnc" id="L348" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L349" title="All 2 branches missed.">				if (adblSampleSupremumCoveringNumber[j] &lt; adblFunctionSampleSupremumCoveringNumber[j])</span>
-<span class="nc" id="L350">					adblSampleSupremumCoveringNumber[j] = adblFunctionSampleSupremumCoveringNumber[j];</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">				if (adblSampleSupremumCoveringNumber[j] &lt; adblFunctionSampleSupremumCoveringNumber[j])</span>
+<span class="nc" id="L382">					adblSampleSupremumCoveringNumber[j] = adblFunctionSampleSupremumCoveringNumber[j];</span>
 			}
 		}
 
-<span class="nc" id="L354">		return adblSampleSupremumCoveringNumber;</span>
+<span class="nc" id="L386">		return adblSampleSupremumCoveringNumber;</span>
 	}
 
 	/**
@@ -367,14 +399,14 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
-<span class="nc" id="L370">		int iDimension = outputMetricVectorSpace().dimension();</span>
+<span class="nc" id="L402">		int iDimension = outputMetricVectorSpace().dimension();</span>
 
-<span class="nc" id="L372">		double[] adblCover = new double[iDimension];</span>
+<span class="nc" id="L404">		double[] adblCover = new double[iDimension];</span>
 
-<span class="nc bnc" id="L374" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L375">			adblCover[i] = dblCover;</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L407">			adblCover[i] = dblCover;</span>
 
-<span class="nc" id="L377">		return sampleSupremumCoveringNumber (gvvi, adblCover);</span>
+<span class="nc" id="L409">		return sampleSupremumCoveringNumber (gvvi, adblCover);</span>
 	}
 
 	/**
@@ -385,28 +417,28 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 	public double[] populationRdMetricNorm()
 	{
-<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
 
-<span class="nc" id="L390">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L422">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc" id="L392">		double[] adblPopulationRdMetricNorm = _aNormedRxToNormedRd[0].populationMetricNorm();</span>
+<span class="nc" id="L424">		double[] adblPopulationRdMetricNorm = _aNormedRxToNormedRd[0].populationMetricNorm();</span>
 
-<span class="nc bnc" id="L394" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationRdMetricNorm)) return null;</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationRdMetricNorm)) return null;</span>
 
-<span class="nc bnc" id="L396" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
-<span class="nc" id="L397">			double[] adblPopulationMetricNorm = _aNormedRxToNormedRd[i].populationMetricNorm();</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L429">			double[] adblPopulationMetricNorm = _aNormedRxToNormedRd[i].populationMetricNorm();</span>
 
-<span class="nc bnc" id="L399" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationMetricNorm)) return null;</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationMetricNorm)) return null;</span>
 
-<span class="nc" id="L401">			int iDimension = adblPopulationMetricNorm.length;</span>
+<span class="nc" id="L433">			int iDimension = adblPopulationMetricNorm.length;</span>
 
-<span class="nc bnc" id="L403" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L404" title="All 2 branches missed.">				if (adblPopulationRdMetricNorm[j] &lt; adblPopulationMetricNorm[j])</span>
-<span class="nc" id="L405">					adblPopulationRdMetricNorm[j] = adblPopulationMetricNorm[j];</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">				if (adblPopulationRdMetricNorm[j] &lt; adblPopulationMetricNorm[j])</span>
+<span class="nc" id="L437">					adblPopulationRdMetricNorm[j] = adblPopulationMetricNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L409">		return adblPopulationRdMetricNorm;</span>
+<span class="nc" id="L441">		return adblPopulationRdMetricNorm;</span>
 	}
 
 	/**
@@ -417,28 +449,28 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 	public double[] populationRdSupremumNorm()
 	{
-<span class="nc bnc" id="L420" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
 
-<span class="nc" id="L422">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L454">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc" id="L424">		double[] adblPopulationRdSupremumNorm = _aNormedRxToNormedRd[0].populationESS();</span>
+<span class="nc" id="L456">		double[] adblPopulationRdSupremumNorm = _aNormedRxToNormedRd[0].populationESS();</span>
 
-<span class="nc bnc" id="L426" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationRdSupremumNorm)) return null;</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationRdSupremumNorm)) return null;</span>
 
-<span class="nc bnc" id="L428" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
-<span class="nc" id="L429">			double[] adblPopulationSupremumNorm = _aNormedRxToNormedRd[i].populationESS();</span>
+<span class="nc bnc" id="L460" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L461">			double[] adblPopulationSupremumNorm = _aNormedRxToNormedRd[i].populationESS();</span>
 
-<span class="nc bnc" id="L431" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationSupremumNorm)) return null;</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationSupremumNorm)) return null;</span>
 
-<span class="nc" id="L433">			int iDimension = adblPopulationSupremumNorm.length;</span>
+<span class="nc" id="L465">			int iDimension = adblPopulationSupremumNorm.length;</span>
 
-<span class="nc bnc" id="L435" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L436" title="All 2 branches missed.">				if (adblPopulationRdSupremumNorm[j] &lt; adblPopulationSupremumNorm[j])</span>
-<span class="nc" id="L437">					adblPopulationRdSupremumNorm[j] = adblPopulationSupremumNorm[j];</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">				if (adblPopulationRdSupremumNorm[j] &lt; adblPopulationSupremumNorm[j])</span>
+<span class="nc" id="L469">					adblPopulationRdSupremumNorm[j] = adblPopulationSupremumNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L441">		return adblPopulationRdSupremumNorm;</span>
+<span class="nc" id="L473">		return adblPopulationRdSupremumNorm;</span>
 	}
 
 	/**
@@ -452,28 +484,28 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	public double[] sampleRdMetricNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
-<span class="nc bnc" id="L455" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
 
-<span class="nc" id="L457">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L489">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc" id="L459">		double[] adblSampleRdMetricNorm = _aNormedRxToNormedRd[0].sampleMetricNorm (gvvi);</span>
+<span class="nc" id="L491">		double[] adblSampleRdMetricNorm = _aNormedRxToNormedRd[0].sampleMetricNorm (gvvi);</span>
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleRdMetricNorm)) return null;</span>
+<span class="nc bnc" id="L493" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleRdMetricNorm)) return null;</span>
 
-<span class="nc bnc" id="L463" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
-<span class="nc" id="L464">			double[] adblSampleMetricNorm = _aNormedRxToNormedRd[i].sampleMetricNorm (gvvi);</span>
+<span class="nc bnc" id="L495" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L496">			double[] adblSampleMetricNorm = _aNormedRxToNormedRd[i].sampleMetricNorm (gvvi);</span>
 
-<span class="nc bnc" id="L466" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleMetricNorm)) return null;</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleMetricNorm)) return null;</span>
 
-<span class="nc" id="L468">			int iDimension = adblSampleMetricNorm.length;</span>
+<span class="nc" id="L500">			int iDimension = adblSampleMetricNorm.length;</span>
 
-<span class="nc bnc" id="L470" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L471" title="All 2 branches missed.">				if (adblSampleRdMetricNorm[j] &lt; adblSampleMetricNorm[j])</span>
-<span class="nc" id="L472">					adblSampleRdMetricNorm[j] = adblSampleMetricNorm[j];</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">				if (adblSampleRdMetricNorm[j] &lt; adblSampleMetricNorm[j])</span>
+<span class="nc" id="L504">					adblSampleRdMetricNorm[j] = adblSampleMetricNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L476">		return adblSampleRdMetricNorm;</span>
+<span class="nc" id="L508">		return adblSampleRdMetricNorm;</span>
 	}
 
 	/**
@@ -487,142 +519,142 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	public double[] sampleRdSupremumNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
-<span class="nc bnc" id="L490" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
+<span class="nc bnc" id="L522" title="All 2 branches missed.">		if (null == _aNormedRxToNormedRd) return null;</span>
 
-<span class="nc" id="L492">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
+<span class="nc" id="L524">		int iNumFunction = _aNormedRxToNormedRd.length;</span>
 
-<span class="nc" id="L494">		double[] adblSampleRdSupremumNorm = _aNormedRxToNormedRd[0].sampleSupremumNorm (gvvi);</span>
+<span class="nc" id="L526">		double[] adblSampleRdSupremumNorm = _aNormedRxToNormedRd[0].sampleSupremumNorm (gvvi);</span>
 
-<span class="nc bnc" id="L496" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleRdSupremumNorm)) return null;</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleRdSupremumNorm)) return null;</span>
 
-<span class="nc bnc" id="L498" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
-<span class="nc" id="L499">			double[] adblSampleSupremumNorm = _aNormedRxToNormedRd[i].sampleSupremumNorm (gvvi);</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L531">			double[] adblSampleSupremumNorm = _aNormedRxToNormedRd[i].sampleSupremumNorm (gvvi);</span>
 
-<span class="nc bnc" id="L501" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleSupremumNorm)) return null;</span>
+<span class="nc bnc" id="L533" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleSupremumNorm)) return null;</span>
 
-<span class="nc" id="L503">			int iDimension = adblSampleSupremumNorm.length;</span>
+<span class="nc" id="L535">			int iDimension = adblSampleSupremumNorm.length;</span>
 
-<span class="nc bnc" id="L505" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L506" title="All 2 branches missed.">				if (adblSampleRdSupremumNorm[j] &lt; adblSampleSupremumNorm[j])</span>
-<span class="nc" id="L507">					adblSampleRdSupremumNorm[j] = adblSampleSupremumNorm[j];</span>
+<span class="nc bnc" id="L537" title="All 2 branches missed.">			for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">				if (adblSampleRdSupremumNorm[j] &lt; adblSampleSupremumNorm[j])</span>
+<span class="nc" id="L539">					adblSampleRdSupremumNorm[j] = adblSampleSupremumNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L511">		return adblSampleRdSupremumNorm;</span>
+<span class="nc" id="L543">		return adblSampleRdSupremumNorm;</span>
 	}
 
 	@Override public double operatorPopulationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L517">		double[] adblPopulationMetricNorm = populationRdMetricNorm();</span>
+<span class="nc" id="L549">		double[] adblPopulationMetricNorm = populationRdMetricNorm();</span>
 
-<span class="nc bnc" id="L519" title="All 2 branches missed.">		if (null == adblPopulationMetricNorm)</span>
-<span class="nc" id="L520">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">		if (null == adblPopulationMetricNorm)</span>
+<span class="nc" id="L552">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorPopulationMetricNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L523">		int iDimension = adblPopulationMetricNorm.length;</span>
-<span class="nc" id="L524">		double dblOperatorPopulationMetricNorm = java.lang.Double.NaN;</span>
+<span class="nc" id="L555">		int iDimension = adblPopulationMetricNorm.length;</span>
+<span class="nc" id="L556">		double dblOperatorPopulationMetricNorm = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L526" title="All 2 branches missed.">		if (0 == iDimension)</span>
-<span class="nc" id="L527">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">		if (0 == iDimension)</span>
+<span class="nc" id="L559">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorPopulationMetricNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L530" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L531" title="All 2 branches missed.">			if (0 == j)</span>
-<span class="nc" id="L532">				dblOperatorPopulationMetricNorm = adblPopulationMetricNorm[j];</span>
+<span class="nc bnc" id="L562" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">			if (0 == j)</span>
+<span class="nc" id="L564">				dblOperatorPopulationMetricNorm = adblPopulationMetricNorm[j];</span>
 			else {
-<span class="nc bnc" id="L534" title="All 2 branches missed.">				if (dblOperatorPopulationMetricNorm &lt; adblPopulationMetricNorm[j])</span>
-<span class="nc" id="L535">					dblOperatorPopulationMetricNorm = adblPopulationMetricNorm[j];</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">				if (dblOperatorPopulationMetricNorm &lt; adblPopulationMetricNorm[j])</span>
+<span class="nc" id="L567">					dblOperatorPopulationMetricNorm = adblPopulationMetricNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L539">		return dblOperatorPopulationMetricNorm;</span>
+<span class="nc" id="L571">		return dblOperatorPopulationMetricNorm;</span>
 	}
 
 	@Override public double operatorPopulationSupremumNorm()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L545">		double[] adblPopulationSupremumNorm = populationRdSupremumNorm();</span>
+<span class="nc" id="L577">		double[] adblPopulationSupremumNorm = populationRdSupremumNorm();</span>
 
-<span class="nc bnc" id="L547" title="All 2 branches missed.">		if (null == adblPopulationSupremumNorm)</span>
-<span class="nc" id="L548">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L579" title="All 2 branches missed.">		if (null == adblPopulationSupremumNorm)</span>
+<span class="nc" id="L580">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorPopulationSupremumNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L551">		int iDimension = adblPopulationSupremumNorm.length;</span>
-<span class="nc" id="L552">		double dblOperatorPopulationSupremumNorm = java.lang.Double.NaN;</span>
+<span class="nc" id="L583">		int iDimension = adblPopulationSupremumNorm.length;</span>
+<span class="nc" id="L584">		double dblOperatorPopulationSupremumNorm = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L554" title="All 2 branches missed.">		if (0 == iDimension)</span>
-<span class="nc" id="L555">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L586" title="All 2 branches missed.">		if (0 == iDimension)</span>
+<span class="nc" id="L587">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorPopulationSupremumNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L558" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L559" title="All 2 branches missed.">			if (0 == j)</span>
-<span class="nc" id="L560">				dblOperatorPopulationSupremumNorm = adblPopulationSupremumNorm[j];</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">			if (0 == j)</span>
+<span class="nc" id="L592">				dblOperatorPopulationSupremumNorm = adblPopulationSupremumNorm[j];</span>
 			else {
-<span class="nc bnc" id="L562" title="All 2 branches missed.">				if (dblOperatorPopulationSupremumNorm &lt; adblPopulationSupremumNorm[j])</span>
-<span class="nc" id="L563">					dblOperatorPopulationSupremumNorm = adblPopulationSupremumNorm[j];</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">				if (dblOperatorPopulationSupremumNorm &lt; adblPopulationSupremumNorm[j])</span>
+<span class="nc" id="L595">					dblOperatorPopulationSupremumNorm = adblPopulationSupremumNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L567">		return dblOperatorPopulationSupremumNorm;</span>
+<span class="nc" id="L599">		return dblOperatorPopulationSupremumNorm;</span>
 	}
 
 	@Override public double operatorSampleMetricNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L574">		double[] adblSampleMetricNorm = sampleRdMetricNorm (gvvi);</span>
+<span class="nc" id="L606">		double[] adblSampleMetricNorm = sampleRdMetricNorm (gvvi);</span>
 
-<span class="nc bnc" id="L576" title="All 2 branches missed.">		if (null == adblSampleMetricNorm)</span>
-<span class="nc" id="L577">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L608" title="All 2 branches missed.">		if (null == adblSampleMetricNorm)</span>
+<span class="nc" id="L609">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorSampleMetricNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L580">		int iDimension = adblSampleMetricNorm.length;</span>
-<span class="nc" id="L581">		double dblOperatorSampleMetricNorm = java.lang.Double.NaN;</span>
+<span class="nc" id="L612">		int iDimension = adblSampleMetricNorm.length;</span>
+<span class="nc" id="L613">		double dblOperatorSampleMetricNorm = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L583" title="All 2 branches missed.">		if (0 == iDimension)</span>
-<span class="nc" id="L584">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L615" title="All 2 branches missed.">		if (0 == iDimension)</span>
+<span class="nc" id="L616">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorSampleMetricNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L587" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L588" title="All 2 branches missed.">			if (0 == j)</span>
-<span class="nc" id="L589">				dblOperatorSampleMetricNorm = adblSampleMetricNorm[j];</span>
+<span class="nc bnc" id="L619" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">			if (0 == j)</span>
+<span class="nc" id="L621">				dblOperatorSampleMetricNorm = adblSampleMetricNorm[j];</span>
 			else {
-<span class="nc bnc" id="L591" title="All 2 branches missed.">				if (dblOperatorSampleMetricNorm &lt; adblSampleMetricNorm[j])</span>
-<span class="nc" id="L592">					dblOperatorSampleMetricNorm = adblSampleMetricNorm[j];</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">				if (dblOperatorSampleMetricNorm &lt; adblSampleMetricNorm[j])</span>
+<span class="nc" id="L624">					dblOperatorSampleMetricNorm = adblSampleMetricNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L596">		return dblOperatorSampleMetricNorm;</span>
+<span class="nc" id="L628">		return dblOperatorSampleMetricNorm;</span>
 	}
 
 	@Override public double operatorSampleSupremumNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L603">		double[] adblSampleSupremumNorm = sampleRdSupremumNorm (gvvi);</span>
+<span class="nc" id="L635">		double[] adblSampleSupremumNorm = sampleRdSupremumNorm (gvvi);</span>
 
-<span class="nc bnc" id="L605" title="All 2 branches missed.">		if (null == adblSampleSupremumNorm)</span>
-<span class="nc" id="L606">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L637" title="All 2 branches missed.">		if (null == adblSampleSupremumNorm)</span>
+<span class="nc" id="L638">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorSampleSupremumNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L609">		int iDimension = adblSampleSupremumNorm.length;</span>
-<span class="nc" id="L610">		double dblOperatorSampleSupremumNorm = java.lang.Double.NaN;</span>
+<span class="nc" id="L641">		int iDimension = adblSampleSupremumNorm.length;</span>
+<span class="nc" id="L642">		double dblOperatorSampleSupremumNorm = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L612" title="All 2 branches missed.">		if (0 == iDimension)</span>
-<span class="nc" id="L613">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L644" title="All 2 branches missed.">		if (0 == iDimension)</span>
+<span class="nc" id="L645">			throw new java.lang.Exception</span>
 				(&quot;NormedRxToNormedRdFinite::operatorSampleSupremumNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L616" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
-<span class="nc bnc" id="L617" title="All 2 branches missed.">			if (0 == j)</span>
-<span class="nc" id="L618">				dblOperatorSampleSupremumNorm = adblSampleSupremumNorm[j];</span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">		for (int j = 0; j &lt; iDimension; ++j) {</span>
+<span class="nc bnc" id="L649" title="All 2 branches missed.">			if (0 == j)</span>
+<span class="nc" id="L650">				dblOperatorSampleSupremumNorm = adblSampleSupremumNorm[j];</span>
 			else {
-<span class="nc bnc" id="L620" title="All 2 branches missed.">				if (dblOperatorSampleSupremumNorm &lt; adblSampleSupremumNorm[j])</span>
-<span class="nc" id="L621">					dblOperatorSampleSupremumNorm = adblSampleSupremumNorm[j];</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">				if (dblOperatorSampleSupremumNorm &lt; adblSampleSupremumNorm[j])</span>
+<span class="nc" id="L653">					dblOperatorSampleSupremumNorm = adblSampleSupremumNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L625">		return dblOperatorSampleSupremumNorm;</span>
+<span class="nc" id="L657">		return dblOperatorSampleSupremumNorm;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

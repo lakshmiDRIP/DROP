@@ -6,31 +6,49 @@ package org.drip.simm.parameters;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,33 +65,51 @@ package org.drip.simm.parameters;
  */
 
 /**
- * BucketVegaSettingsCR holds the Vega Risk Weights, Concentration Thresholds, and Cross-Tenor Correlations
- *  for each Credit Curve and its Tenor. The References are:
- *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  	Calculations, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488, eSSRN.
- *  
- *  - Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  	Framework for Forecasting Initial Margin Requirements,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279, eSSRN.
- *  
- *  - Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements
- *  	- A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167, eSSRN.
- *  
- *  - International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology,
- *  	https://www.isda.org/a/oFiDE/isda-simm-v2.pdf.
+ * &lt;i&gt;BucketVegaSettingsCR&lt;/i&gt; holds the Vega Risk Weights, Concentration Thresholds, and Cross-Tenor
+ * Correlations for each Credit Curve and its Tenor. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  				https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  				&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensitivitySettingsCR
 {
-<span class="nc" id="L74">	private double _vegaScaler = java.lang.Double.NaN;</span>
-<span class="nc" id="L75">	private double _historicalVolatilityRatio = java.lang.Double.NaN;</span>
-<span class="nc" id="L76">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorDeltaRiskWeight = null;</span>
+<span class="nc" id="L110">	private double _vegaScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _historicalVolatilityRatio = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorDeltaRiskWeight = null;</span>
 
 	/**
 	 * Retrieve the ISDA 2.0 Credit Qualifying Bucket Vega Settings
@@ -86,33 +122,33 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRQ_20 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L89">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
-<span class="nc" id="L90">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketNumber);</span>
+<span class="nc" id="L125">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
+<span class="nc" id="L126">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketNumber);</span>
 
-<span class="nc bnc" id="L92" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
 		{
-<span class="nc" id="L94">			return null;</span>
+<span class="nc" id="L130">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L99">			return new BucketVegaSettingsCR (</span>
-<span class="nc" id="L100">				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics20.VEGA_RISK_WEIGHT),</span>
-<span class="nc" id="L101">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L102">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L103">				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).vega(),</span>
-<span class="nc" id="L104">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L105">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L135">			return new BucketVegaSettingsCR (</span>
+<span class="nc" id="L136">				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics20.VEGA_RISK_WEIGHT),</span>
+<span class="nc" id="L137">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L138">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L139">				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).vega(),</span>
+<span class="nc" id="L140">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L141">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				1.,
-<span class="nc" id="L107">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
+<span class="nc" id="L143">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
 			);
 		}
-<span class="nc" id="L110">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L146">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="nc" id="L148">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L115">		return null;</span>
+<span class="nc" id="L151">		return null;</span>
 	}
 
 	/**
@@ -126,33 +162,33 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRNQ_20 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L129">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
-<span class="nc" id="L130">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketNumber);</span>
+<span class="nc" id="L165">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
+<span class="nc" id="L166">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketNumber);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
 		{
-<span class="nc" id="L134">			return null;</span>
+<span class="nc" id="L170">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L139">			return new BucketVegaSettingsCR (</span>
-<span class="nc" id="L140">				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics20.VEGA_RISK_WEIGHT),</span>
-<span class="nc" id="L141">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L142">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L143">				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).vega(),</span>
-<span class="nc" id="L144">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L145">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L175">			return new BucketVegaSettingsCR (</span>
+<span class="nc" id="L176">				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics20.VEGA_RISK_WEIGHT),</span>
+<span class="nc" id="L177">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L178">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L179">				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).vega(),</span>
+<span class="nc" id="L180">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L181">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				1.,
-<span class="nc" id="L147">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
+<span class="nc" id="L183">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
 			);
 		}
-<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L186">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L188">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L191">		return null;</span>
 	}
 
 	/**
@@ -166,33 +202,33 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRQ_21 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L169">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
-<span class="nc" id="L170">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketNumber);</span>
+<span class="nc" id="L205">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
+<span class="nc" id="L206">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketNumber);</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
 		{
-<span class="nc" id="L174">			return null;</span>
+<span class="nc" id="L210">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L179">			return new BucketVegaSettingsCR (</span>
-<span class="nc" id="L180">				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics21.VEGA_RISK_WEIGHT),</span>
-<span class="nc" id="L181">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L182">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L183">				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).vega(),</span>
-<span class="nc" id="L184">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L185">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L215">			return new BucketVegaSettingsCR (</span>
+<span class="nc" id="L216">				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics21.VEGA_RISK_WEIGHT),</span>
+<span class="nc" id="L217">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L218">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L219">				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).vega(),</span>
+<span class="nc" id="L220">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L221">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				1.,
-<span class="nc" id="L187">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
+<span class="nc" id="L223">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
 			);
 		}
-<span class="nc" id="L190">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L226">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L192">			e.printStackTrace();</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L195">		return null;</span>
+<span class="nc" id="L231">		return null;</span>
 	}
 
 	/**
@@ -206,33 +242,33 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRNQ_21 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L209">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
-<span class="nc" id="L210">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketNumber);</span>
+<span class="nc" id="L245">		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =</span>
+<span class="nc" id="L246">			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketNumber);</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
 		{
-<span class="nc" id="L214">			return null;</span>
+<span class="nc" id="L250">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L219">			return new BucketVegaSettingsCR (</span>
-<span class="nc" id="L220">				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics21.VEGA_RISK_WEIGHT),</span>
-<span class="nc" id="L221">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L222">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L223">				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).vega(),</span>
-<span class="nc" id="L224">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L225">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L255">			return new BucketVegaSettingsCR (</span>
+<span class="nc" id="L256">				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics21.VEGA_RISK_WEIGHT),</span>
+<span class="nc" id="L257">				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L258">				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L259">				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).vega(),</span>
+<span class="nc" id="L260">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L261">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				1.,
-<span class="nc" id="L227">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
+<span class="nc" id="L263">				bucketSensitivitySettingsCR.tenorRiskWeight()</span>
 			);
 		}
-<span class="nc" id="L230">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L266">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L232">			e.printStackTrace();</span>
+<span class="nc" id="L268">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L235">		return null;</span>
+<span class="nc" id="L271">		return null;</span>
 	}
 
 	/**
@@ -259,21 +295,21 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaRiskWeight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L262">		super (</span>
+<span class="nc" id="L298">		super (</span>
 			tenorVegaRiskWeight,
 			sameIssuerSeniorityCorrelation,
 			differentIssuerSeniorityCorrelation,
 			concentrationThreshold
 		);
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_vegaScaler = vegaScaler) ||</span>
-<span class="nc bnc" id="L270" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_vegaScaler = vegaScaler) ||</span>
+<span class="nc bnc" id="L306" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =</span>
 				historicalVolatilityRatio) ||
 			null == (_tenorDeltaRiskWeight = tenorDeltaRiskWeight))
 		{
-<span class="nc" id="L274">			throw new java.lang.Exception (&quot;BucketVegaSettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L310">			throw new java.lang.Exception (&quot;BucketVegaSettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L276">	}</span>
+<span class="nc" id="L312">	}</span>
 
 	/**
 	 * Retrieve the Vega Scaler
@@ -283,7 +319,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 
 	public double vegaScaler()
 	{
-<span class="nc" id="L286">		return _vegaScaler;</span>
+<span class="nc" id="L322">		return _vegaScaler;</span>
 	}
 
 	/**
@@ -294,7 +330,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 
 	public double historicalVolatilityRatio()
 	{
-<span class="nc" id="L297">		return _historicalVolatilityRatio;</span>
+<span class="nc" id="L333">		return _historicalVolatilityRatio;</span>
 	}
 
 	/**
@@ -305,7 +341,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDeltaRiskWeight()
 	{
-<span class="nc" id="L308">		return _tenorDeltaRiskWeight;</span>
+<span class="nc" id="L344">		return _tenorDeltaRiskWeight;</span>
 	}
 
 	/**
@@ -316,34 +352,34 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeight()
 	{
-<span class="nc" id="L319">		return super.tenorRiskWeight();</span>
+<span class="nc" id="L355">		return super.tenorRiskWeight();</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight()
 	{
-<span class="nc" id="L324">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeight = tenorVegaRiskWeight();</span>
+<span class="nc" id="L360">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeight = tenorVegaRiskWeight();</span>
 
-<span class="nc" id="L326">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight = new</span>
+<span class="nc" id="L362">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L330" title="All 2 branches missed.">			tenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">			tenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L332">			java.lang.String tenor = tenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L368">			java.lang.String tenor = tenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L334" title="All 2 branches missed.">			if (!tenorVegaRiskWeight.containsKey (tenor))</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">			if (!tenorVegaRiskWeight.containsKey (tenor))</span>
 			{
-<span class="nc" id="L336">				return null;</span>
+<span class="nc" id="L372">				return null;</span>
 			}
 
-<span class="nc" id="L339">			tenorRiskWeight.put (</span>
+<span class="nc" id="L375">			tenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L341">				tenorVegaRiskWeightEntry.getValue() * _tenorDeltaRiskWeight.get (tenor) * _vegaScaler *</span>
+<span class="nc" id="L377">				tenorVegaRiskWeightEntry.getValue() * _tenorDeltaRiskWeight.get (tenor) * _vegaScaler *</span>
 					_historicalVolatilityRatio
 			);
-<span class="nc" id="L344">		}</span>
+<span class="nc" id="L380">		}</span>
 
-<span class="nc" id="L346">		return tenorRiskWeight;</span>
+<span class="nc" id="L382">		return tenorRiskWeight;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

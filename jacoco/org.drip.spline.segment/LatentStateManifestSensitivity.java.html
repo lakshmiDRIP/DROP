@@ -6,35 +6,54 @@ package org.drip.spline.segment;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -51,17 +70,25 @@ package org.drip.spline.segment;
  */
 
 /**
- * LatentStateManifestSensitivity contains the Manifest Sensitivity generation control parameters and the
- * 	Manifest Sensitivity outputs related to the given Segment.
+ * &lt;i&gt;LatentStateManifestSensitivity&lt;/i&gt; contains the Manifest Sensitivity generation control parameters and
+ * the Manifest Sensitivity outputs related to the given Segment.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LatentStateManifestSensitivity {
-<span class="fc" id="L61">	private double[] _adblDBasisCoeffDLocalManifest = null;</span>
-<span class="fc" id="L62">	private double[] _adblDBasisCoeffDPreceedingManifest = null;</span>
-<span class="fc" id="L63">	private double _dblDResponseDPreceedingManifest = java.lang.Double.NaN;</span>
-<span class="fc" id="L64">	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;</span>
+<span class="fc" id="L88">	private double[] _adblDBasisCoeffDLocalManifest = null;</span>
+<span class="fc" id="L89">	private double[] _adblDBasisCoeffDPreceedingManifest = null;</span>
+<span class="fc" id="L90">	private double _dblDResponseDPreceedingManifest = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;</span>
 
 	/**
 	 * LatentStateManifestSensitivity constructor
@@ -74,10 +101,10 @@ public class LatentStateManifestSensitivity {
 	public LatentStateManifestSensitivity (
 		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
 		throws java.lang.Exception
-<span class="fc" id="L77">	{</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (null == (_pmsc = pmsc))</span>
-<span class="fc" id="L79">			_pmsc = new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 0, null);</span>
-<span class="fc" id="L80">	}</span>
+<span class="fc" id="L104">	{</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (null == (_pmsc = pmsc))</span>
+<span class="fc" id="L106">			_pmsc = new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 0, null);</span>
+<span class="fc" id="L107">	}</span>
 
 	/**
 	 * Set the Array containing the Sensitivities of the Basis Coefficients to the Local Manifest Measure
@@ -91,20 +118,20 @@ public class LatentStateManifestSensitivity {
 	public boolean setDBasisCoeffDLocalManifest (
 		final double[] adblDBasisCoeffDLocalManifest)
 	{
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (null == adblDBasisCoeffDLocalManifest) return false;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == adblDBasisCoeffDLocalManifest) return false;</span>
 
-<span class="fc" id="L96">		int iNumCoeff = adblDBasisCoeffDLocalManifest.length;</span>
-<span class="fc" id="L97">		_adblDBasisCoeffDLocalManifest = new double[iNumCoeff];</span>
+<span class="fc" id="L123">		int iNumCoeff = adblDBasisCoeffDLocalManifest.length;</span>
+<span class="fc" id="L124">		_adblDBasisCoeffDLocalManifest = new double[iNumCoeff];</span>
 
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (0 == iNumCoeff) return false;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (0 == iNumCoeff) return false;</span>
 
-<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCoeff; ++i) {</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDBasisCoeffDLocalManifest[i] =</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCoeff; ++i) {</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDBasisCoeffDLocalManifest[i] =</span>
 				adblDBasisCoeffDLocalManifest[i]))
-<span class="nc" id="L104">				return false;</span>
+<span class="nc" id="L131">				return false;</span>
 		}
 
-<span class="fc" id="L107">		return true;</span>
+<span class="fc" id="L134">		return true;</span>
 	}
 
 	/**
@@ -115,7 +142,7 @@ public class LatentStateManifestSensitivity {
 
 	public double[] getDBasisCoeffDLocalManifest()
 	{
-<span class="fc" id="L118">		return _adblDBasisCoeffDLocalManifest;</span>
+<span class="fc" id="L145">		return _adblDBasisCoeffDLocalManifest;</span>
 	}
 
 	/**
@@ -131,20 +158,20 @@ public class LatentStateManifestSensitivity {
 	public boolean setDBasisCoeffDPreceedingManifest (
 		final double[] adblDBasisCoeffDPreceedingManifest)
 	{
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == adblDBasisCoeffDPreceedingManifest) return false;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (null == adblDBasisCoeffDPreceedingManifest) return false;</span>
 
-<span class="fc" id="L136">		int iNumCoeff = adblDBasisCoeffDPreceedingManifest.length;</span>
-<span class="fc" id="L137">		_adblDBasisCoeffDPreceedingManifest= new double[iNumCoeff];</span>
+<span class="fc" id="L163">		int iNumCoeff = adblDBasisCoeffDPreceedingManifest.length;</span>
+<span class="fc" id="L164">		_adblDBasisCoeffDPreceedingManifest= new double[iNumCoeff];</span>
 
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (0 == iNumCoeff) return false;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (0 == iNumCoeff) return false;</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCoeff; ++i) {</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDBasisCoeffDPreceedingManifest[i] =</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCoeff; ++i) {</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDBasisCoeffDPreceedingManifest[i] =</span>
 				adblDBasisCoeffDPreceedingManifest[i]))
-<span class="nc" id="L144">				return false;</span>
+<span class="nc" id="L171">				return false;</span>
 		}
 
-<span class="fc" id="L147">		return true;</span>
+<span class="fc" id="L174">		return true;</span>
 	}
 
 	/**
@@ -157,7 +184,7 @@ public class LatentStateManifestSensitivity {
 
 	public double[] getDBasisCoeffDPreceedingManifest()
 	{
-<span class="fc" id="L160">		return _adblDBasisCoeffDPreceedingManifest;</span>
+<span class="fc" id="L187">		return _adblDBasisCoeffDPreceedingManifest;</span>
 	}
 
 	/**
@@ -173,10 +200,10 @@ public class LatentStateManifestSensitivity {
 	public boolean setDResponseDPreceedingManifest (
 		final double dblDResponseDPreceedingManifest)
 	{
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest)) return false;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest)) return false;</span>
 
-<span class="nc" id="L178">		_dblDResponseDPreceedingManifest = dblDResponseDPreceedingManifest;</span>
-<span class="nc" id="L179">		return true;</span>
+<span class="nc" id="L205">		_dblDResponseDPreceedingManifest = dblDResponseDPreceedingManifest;</span>
+<span class="nc" id="L206">		return true;</span>
 	}
 
 	/**
@@ -187,7 +214,7 @@ public class LatentStateManifestSensitivity {
 
 	public double getDResponseDPreceedingManifest()
 	{
-<span class="fc" id="L190">		return _dblDResponseDPreceedingManifest;</span>
+<span class="fc" id="L217">		return _dblDResponseDPreceedingManifest;</span>
 	}
 
 	/**
@@ -198,7 +225,7 @@ public class LatentStateManifestSensitivity {
 
 	public org.drip.spline.params.PreceedingManifestSensitivityControl getPMSC()
 	{
-<span class="fc" id="L201">		return _pmsc;</span>
+<span class="fc" id="L228">		return _pmsc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

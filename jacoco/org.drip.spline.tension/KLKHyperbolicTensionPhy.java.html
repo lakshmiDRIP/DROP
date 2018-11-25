@@ -6,6 +6,7 @@ package org.drip.spline.tension;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.tension;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,17 +70,24 @@ package org.drip.spline.tension;
  */
 
 /**
- * KLKHyperbolicTensionPhy implements the basic framework and the family of C2 Tension Splines outlined in
- *  Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers.
- *
+ * &lt;i&gt;KLKHyperbolicTensionPhy&lt;/i&gt; implements the basic framework and the family of C2 Tension Splines
+ * outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers.
  * KLKHyperbolicTensionPsy implements the custom evaluator, differentiator, and integrator for the KLK
- *  Tension Phy Functions outlined in the publications above.
+ * Tension Phy Functions outlined in the publications above.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension&quot;&gt;Tension&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  
  * @author Lakshmi Krishnamurthy
  */
 
 public class KLKHyperbolicTensionPhy extends org.drip.function.definition.R1ToR1 {
-<span class="nc" id="L65">	private double _dblTension = java.lang.Double.NaN;</span>
+<span class="nc" id="L90">	private double _dblTension = java.lang.Double.NaN;</span>
 
 	/**
 	 * KLKHyperbolicTensionPhy constructor
@@ -76,20 +101,20 @@ public class KLKHyperbolicTensionPhy extends org.drip.function.definition.R1ToR1
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L79">		super (null);</span>
+<span class="nc" id="L104">		super (null);</span>
 
-<span class="nc bnc" id="L81" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))</span>
-<span class="nc" id="L82">			throw new java.lang.Exception (&quot;KLKHyperbolicTensionPhy ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L83">	}</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;KLKHyperbolicTensionPhy ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L108">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L90">			throw new java.lang.Exception (&quot;KLKHyperbolicTensionPhy::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;KLKHyperbolicTensionPhy::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L92">		return java.lang.Math.sinh (_dblTension * dblVariate) / java.lang.Math.sinh (_dblTension);</span>
+<span class="nc" id="L117">		return java.lang.Math.sinh (_dblTension * dblVariate) / java.lang.Math.sinh (_dblTension);</span>
 	}
 
 	@Override public double derivative (
@@ -97,11 +122,11 @@ public class KLKHyperbolicTensionPhy extends org.drip.function.definition.R1ToR1
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt; iOrder)</span>
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;KLKHyperbolicTensionPhy::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt; iOrder)</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;KLKHyperbolicTensionPhy::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L103">		return java.lang.Math.pow (_dblTension, iOrder) * java.lang.Math.sinh (_dblTension * dblVariate) /</span>
-<span class="nc" id="L104">			java.lang.Math.sinh (_dblTension);</span>
+<span class="nc" id="L128">		return java.lang.Math.pow (_dblTension, iOrder) * java.lang.Math.sinh (_dblTension * dblVariate) /</span>
+<span class="nc" id="L129">			java.lang.Math.sinh (_dblTension);</span>
 	}
 
 	@Override public double integrate (
@@ -109,12 +134,12 @@ public class KLKHyperbolicTensionPhy extends org.drip.function.definition.R1ToR1
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L116">		return (java.lang.Math.cosh (_dblTension * dblEnd) - java.lang.Math.cosh (_dblTension * dblBegin)) /</span>
-<span class="nc" id="L117">			(_dblTension * java.lang.Math.sinh (_dblTension));</span>
+<span class="nc" id="L141">		return (java.lang.Math.cosh (_dblTension * dblEnd) - java.lang.Math.cosh (_dblTension * dblBegin)) /</span>
+<span class="nc" id="L142">			(_dblTension * java.lang.Math.sinh (_dblTension));</span>
 	}
 
 	/**
@@ -125,26 +150,26 @@ public class KLKHyperbolicTensionPhy extends org.drip.function.definition.R1ToR1
 
 	public double getTension()
 	{
-<span class="nc" id="L128">		return _dblTension;</span>
+<span class="nc" id="L153">		return _dblTension;</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L135">		KLKHyperbolicTensionPhy khtp = new KLKHyperbolicTensionPhy (2.);</span>
+<span class="nc" id="L160">		KLKHyperbolicTensionPhy khtp = new KLKHyperbolicTensionPhy (2.);</span>
 
-<span class="nc" id="L137">		System.out.println (&quot;KLKHyperbolicTensionPhy[0.0] = &quot; + khtp.evaluate (0.0));</span>
+<span class="nc" id="L162">		System.out.println (&quot;KLKHyperbolicTensionPhy[0.0] = &quot; + khtp.evaluate (0.0));</span>
 
-<span class="nc" id="L139">		System.out.println (&quot;KLKHyperbolicTensionPhy[0.5] = &quot; + khtp.evaluate (0.5));</span>
+<span class="nc" id="L164">		System.out.println (&quot;KLKHyperbolicTensionPhy[0.5] = &quot; + khtp.evaluate (0.5));</span>
 
-<span class="nc" id="L141">		System.out.println (&quot;KLKHyperbolicTensionPhy[1.0] = &quot; + khtp.evaluate (1.0));</span>
+<span class="nc" id="L166">		System.out.println (&quot;KLKHyperbolicTensionPhy[1.0] = &quot; + khtp.evaluate (1.0));</span>
 
-<span class="nc" id="L143">		System.out.println (&quot;KLKHyperbolicTensionPhyDeriv[0.0] = &quot; + khtp.derivative (0.0, 2));</span>
+<span class="nc" id="L168">		System.out.println (&quot;KLKHyperbolicTensionPhyDeriv[0.0] = &quot; + khtp.derivative (0.0, 2));</span>
 
-<span class="nc" id="L145">		System.out.println (&quot;KLKHyperbolicTensionPhyDeriv[0.5] = &quot; + khtp.derivative (0.5, 2));</span>
+<span class="nc" id="L170">		System.out.println (&quot;KLKHyperbolicTensionPhyDeriv[0.5] = &quot; + khtp.derivative (0.5, 2));</span>
 
-<span class="nc" id="L147">		System.out.println (&quot;KLKHyperbolicTensionPhyDeriv[1.0] = &quot; + khtp.derivative (1.0, 2));</span>
-<span class="nc" id="L148">	}</span>
+<span class="nc" id="L172">		System.out.println (&quot;KLKHyperbolicTensionPhyDeriv[1.0] = &quot; + khtp.derivative (1.0, 2));</span>
+<span class="nc" id="L173">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

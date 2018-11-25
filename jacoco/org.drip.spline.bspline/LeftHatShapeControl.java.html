@@ -6,6 +6,7 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +14,46 @@ package org.drip.spline.bspline;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,9 +70,17 @@ package org.drip.spline.bspline;
  */
 
 /**
- * LeftHatShapeControl implements the BasisHatShapeControl interface for the left hat basis set as laid out
- *  in the basic framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000)
- *  Papers.
+ * &lt;i&gt;LeftHatShapeControl&lt;/i&gt; implements the BasisHatShapeControl interface for the left hat basis set as
+ * laid out in the basic framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov
+ * (2000) Papers.
+ *
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -79,29 +105,29 @@ public class LeftHatShapeControl extends org.drip.spline.bspline.BasisHatShapeCo
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L82">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, strShapeControlType, dblTension);</span>
-<span class="fc" id="L83">	}</span>
+<span class="fc" id="L108">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, strShapeControlType, dblTension);</span>
+<span class="fc" id="L109">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="fc" id="L91">		double dblWidth = right() - left();</span>
+<span class="fc" id="L117">		double dblWidth = right() - left();</span>
 
-<span class="fc" id="L93">		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *</span>
+<span class="fc" id="L119">		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *</span>
 			dblWidth));
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="fc" id="L97">			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate));</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="fc" id="L123">			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate));</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (shapeControlType()))</span>
-<span class="fc" id="L100">			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate) * (dblPredictorOrdinate -</span>
-<span class="fc" id="L101">				left()) / dblWidth);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (shapeControlType()))</span>
+<span class="fc" id="L126">			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate) * (dblPredictorOrdinate -</span>
+<span class="fc" id="L127">				left()) / dblWidth);</span>
 
-<span class="fc" id="L103">		return (java.lang.Math.exp (-tension() * (right() - dblPredictorOrdinate))) / (dblWidth * (6. + 6. *</span>
-<span class="fc" id="L104">			tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
+<span class="fc" id="L129">		return (java.lang.Math.exp (-tension() * (right() - dblPredictorOrdinate))) / (dblWidth * (6. + 6. *</span>
+<span class="fc" id="L130">			tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
 	}
 
 	@Override public double derivative (
@@ -109,26 +135,26 @@ public class LeftHatShapeControl extends org.drip.spline.bspline.BasisHatShapeCo
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (0 &gt;= iOrder) throw new java.lang.Exception (&quot;LeftHatShapeControl::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (0 &gt;= iOrder) throw new java.lang.Exception (&quot;LeftHatShapeControl::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L114" title="All 4 branches missed.">		if (!in (dblPredictorOrdinate) || 0. == tension()) return 0.;</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (!in (dblPredictorOrdinate) || 0. == tension()) return 0.;</span>
 
-<span class="nc" id="L116">		double dblWidth = right() - left();</span>
+<span class="nc" id="L142">		double dblWidth = right() - left();</span>
 
-<span class="nc" id="L118">		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *</span>
+<span class="nc" id="L144">		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *</span>
 			dblWidth));
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L122">			return dblScale * org.drip.quant.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow</span>
-<span class="nc" id="L123">				(tension(), iOrder) * java.lang.Math.pow (1. + tension() * (right() - dblPredictorOrdinate),</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L148">			return dblScale * org.drip.quant.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow</span>
+<span class="nc" id="L149">				(tension(), iOrder) * java.lang.Math.pow (1. + tension() * (right() - dblPredictorOrdinate),</span>
 					-iOrder - 1);
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L127">			return (java.lang.Math.pow (tension(), iOrder) * java.lang.Math.exp (-tension() * (right() -</span>
-<span class="nc" id="L128">				dblPredictorOrdinate))) / (dblWidth * (6. + 6. * tension() * dblWidth + tension() * dblWidth</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L153">			return (java.lang.Math.pow (tension(), iOrder) * java.lang.Math.exp (-tension() * (right() -</span>
+<span class="nc" id="L154">				dblPredictorOrdinate))) / (dblWidth * (6. + 6. * tension() * dblWidth + tension() * dblWidth</span>
 					* dblWidth));
 
-<span class="nc" id="L131">		return super.derivative (dblPredictorOrdinate, iOrder);</span>
+<span class="nc" id="L157">		return super.derivative (dblPredictorOrdinate, iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -136,49 +162,49 @@ public class LeftHatShapeControl extends org.drip.spline.bspline.BasisHatShapeCo
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L141">			throw new java.lang.Exception (&quot;LeftHatShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L167">			throw new java.lang.Exception (&quot;LeftHatShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L143">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
+<span class="nc" id="L169">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
 
-<span class="nc" id="L145">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
+<span class="nc" id="L171">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;</span>
 
-<span class="nc" id="L151">		double dblWidth = right() - left();</span>
+<span class="nc" id="L177">		double dblWidth = right() - left();</span>
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L154">			return (java.lang.Math.log ((1. + tension() * (right() - dblBoundedBegin)) / (1. + tension() *</span>
-<span class="nc" id="L155">				(right() - dblBoundedEnd)))) / tension() / (dblWidth * (6. + 6. * tension() * dblWidth + 2. *</span>
-<span class="nc" id="L156">					tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L180">			return (java.lang.Math.log ((1. + tension() * (right() - dblBoundedBegin)) / (1. + tension() *</span>
+<span class="nc" id="L181">				(right() - dblBoundedEnd)))) / tension() / (dblWidth * (6. + 6. * tension() * dblWidth + 2. *</span>
+<span class="nc" id="L182">					tension() * dblWidth * dblWidth));</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L159">			return (java.lang.Math.exp (tension() * (dblBoundedEnd - right())) - java.lang.Math.exp</span>
-<span class="nc" id="L160">				(tension() * (dblBoundedBegin - right()))) / tension() / (dblWidth * (6. + 6. * tension() *</span>
-<span class="nc" id="L161">					dblWidth + tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L185">			return (java.lang.Math.exp (tension() * (dblBoundedEnd - right())) - java.lang.Math.exp</span>
+<span class="nc" id="L186">				(tension() * (dblBoundedBegin - right()))) / tension() / (dblWidth * (6. + 6. * tension() *</span>
+<span class="nc" id="L187">					dblWidth + tension() * dblWidth * dblWidth));</span>
 
-<span class="nc" id="L163">		return super.integrate (dblBoundedBegin, dblBoundedEnd);</span>
+<span class="nc" id="L189">		return super.integrate (dblBoundedBegin, dblBoundedEnd);</span>
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L169">		double dblWidth = right() - left();</span>
+<span class="nc" id="L195">		double dblWidth = right() - left();</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (0. == tension()) return dblWidth;</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (0. == tension()) return dblWidth;</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L174">			return (java.lang.Math.log ((1. + tension() * dblWidth))) / tension() / (dblWidth * (6. + 6. *</span>
-<span class="nc" id="L175">				tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L200">			return (java.lang.Math.log ((1. + tension() * dblWidth))) / tension() / (dblWidth * (6. + 6. *</span>
+<span class="nc" id="L201">				tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L178">			return (1. - java.lang.Math.exp (tension() * dblWidth)) / tension() / (dblWidth * (6. + 6. *</span>
-<span class="nc" id="L179">				tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L204">			return (1. - java.lang.Math.exp (tension() * dblWidth)) / tension() / (dblWidth * (6. + 6. *</span>
+<span class="nc" id="L205">				tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
 
-<span class="nc" id="L181">		return super.integrate (left(), right());</span>
+<span class="nc" id="L207">		return super.integrate (left(), right());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
