@@ -21,7 +21,7 @@
 	* *Product* => Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option Asset Classes.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aproduct) }
-	* *State* =>
+	* *State* => Latent State Inference and Creation Utilities.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Astate) }
 	* *Template* =>
