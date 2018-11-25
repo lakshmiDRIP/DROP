@@ -73,7 +73,7 @@ package org.drip.analytics.cashflow;
  *  Currently it holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the
  *  Coupon Rate, and the Accrual Day Counts, as well as the EOM Adjustment Flags.
  *
- *	<br>
+ *	<br><br>
  *  <ul>
  *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
  *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow">Cash Flow</a></li>

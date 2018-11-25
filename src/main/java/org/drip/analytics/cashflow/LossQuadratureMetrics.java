@@ -74,16 +74,26 @@ package org.drip.analytics.cashflow;
 /**
  * <i>LossPeriodCurveFactors</i> is an Implementation of the Period Class enhanced by the Loss Period
  * Measures. It exports the following Functionality:
- * 
- * 	- Start/End Survival Probabilities
- * 	- Period Effective Notional/Recovery/Discount Factor
- * 	- Serialization into and De-serialization out of Byte Arrays
  *
- *	<br>
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow">Cash Flow</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *  	<li>
+ * 			Start/End Survival Probabilities
+ *  	</li>
+ *  	<li>
+ * 			Period Effective Notional/Recovery/Discount Factor
+ *  	</li>
+ *  	<li>
+ * 			Serialization into and De-serialization out of Byte Arrays
+ *  	</li>
+ *  </ul>
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow">Cash Flow</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

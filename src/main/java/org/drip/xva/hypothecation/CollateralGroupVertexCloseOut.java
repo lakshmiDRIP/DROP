@@ -48,22 +48,40 @@ package org.drip.xva.hypothecation;
  */
 
 /**
- * CollateralGroupVertexCloseOut holds the Dealer and the Client Close Outs at each Re-hypothecation
- *  Collateral Group. The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * <i>CollateralGroupVertexCloseOut</i> holds the Dealer and the Client Close Outs at each Re-hypothecation
+ * Collateral Group. The References are:
+ *
+ *  <br><br>
+ *  <ul>
+ *  	<li>
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs <i>Journal of Credit Risk</i> <b>7 (3)</b> 1-19
+ *  	</li>
+ *  	<li>
+ *  		Burgard, C., and M. Kjaer (2014): In the Balance <i>Risk</i> <b>24 (11)</b> 72-75
+ *  	</li>
+ *  	<li>
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk <i>Risk</i> <b>20 (2)</b>
+ *  			86-90
+ *  	</li>
+ *  	<li>
+ *  		Li, B., and Y. Tang (2007): <i>Quantitative Analysis, Derivatives Modeling, and Trading
+ *  			Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market</i>
+ *  			<b>World Scientific Publishing</b> Singapore
+ *  	</li>
+ *  	<li>
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			<i>Risk</i> <b>21 (2)</b> 97-102
+ *  	</li>
+ *  </ul>
+ *
+ *  <br><br>
+ *  <ul>
+ *		<li><b>Project</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva">XVA</a></li>
+ *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation">Hypothecation</a></li>
+ *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA">XVA Analytics Library</a></li>
+ *  </ul>
+ * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
