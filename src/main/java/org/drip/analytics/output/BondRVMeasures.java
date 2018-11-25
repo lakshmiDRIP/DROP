@@ -73,18 +73,32 @@ package org.drip.analytics.output;
 /**
  * <i>BondRVMeasures</i> encapsulates the comprehensive set of RV measures calculated for the bond to the
  * appropriate exercise:
+ *
+ *	<br><br>
  *  <ul>
- * 		<li>Work-out Information</li>
- * 		<li>Price, Yield, and Yield01</li>
- * 		<li>Spread Measures: Asset Swap/Credit/G/I/OAS/PECS/TSY/Z</li>
- * 		<li>Basis Measures: Bond Basis, Credit Basis, Yield Basis</li>
- * 		<li>Duration Measures: Macaulay/Modified Duration, Convexity</li>
+ * 		<li>
+ * 			Work-out Information
+ * 		</li>
+ * 		<li>
+ * 			Price, Yield, and Yield01
+ * 		</li>
+ * 		<li>
+ * 			Spread Measures: Asset Swap/Credit/G/I/OAS/PECS/TSY/Z
+ * 		</li>
+ * 		<li>
+ * 			Basis Measures: Bond Basis, Credit Basis, Yield Basis
+ * 		</li>
+ * 		<li>
+ * 			Duration Measures: Macaulay/Modified Duration, Convexity
+ * 		</li>
  *  </ul>
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

@@ -4,16 +4,19 @@
 
 DROP Analytics Holiday Set Package holds the Built in Locale Holiday Set.
 
+
 ## Class Components
 
  * [***LocationHoliday***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/holset/LocationHoliday.java)
  <i>LocationHoliday</i> is an interface which is implemented by all the Location Holiday classes. It exposes
  the specific holiday location, as well as the set of location-specific holidays.
 
+
 ## DROP Specifications
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html

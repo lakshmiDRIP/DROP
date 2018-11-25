@@ -4,6 +4,7 @@
 
 DROP Analytics Day Count Package implements Date/Time Creation/Manipulation/Usage Functionality.
 
+
 ## Class Components
 
  * [***Act/Act DC Params***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/ActActDCParams.java)
@@ -93,10 +94,13 @@ DROP Analytics Day Count Package implements Date/Time Creation/Manipulation/Usag
  * [***DCNL_Act***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/DCNL_Act.java)
  <i>DCNL_Act</i> implements the NL/Act day count convention.
 
+
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html

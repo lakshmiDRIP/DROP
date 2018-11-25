@@ -4,6 +4,7 @@
 
 DROP Analytics Definition Package defines the Latent State Curves, Surfaces, and Turns.
 
+
 ## Class Components
 
  * [***Curve***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition/Curve.java)
@@ -34,10 +35,13 @@ DROP Analytics Definition Package defines the Latent State Curves, Surfaces, and
  <i>Turn</i> implements rate spread at discrete time spans. It contains the turn amount and the start/end
  turn spans.
 
+
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html

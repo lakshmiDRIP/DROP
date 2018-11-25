@@ -73,18 +73,27 @@ package org.drip.analytics.date;
 
 /**
  * <i>DateTime</i> provides the representation of the instantiation-time date and time objects. It provides
- *  the following functionality:
+ * the following functionality:
+ *
+ *	<br><br>
  *  <ul>
- *  	<li>Instantiation-time and Explicit Date/Time Construction</li>
- *  	<li>Retrieval of Date/Time Fields</li>
- *  	<li>Serialization/De-serialization to and from Byte Arrays</li>
+ *  	<li>
+ *  		Instantiation-time and Explicit Date/Time Construction
+ *  	</li>
+ *  	<li>
+ *  		Retrieval of Date/Time Fields
+ *  	</li>
+ *  	<li>
+ *  		Serialization/De-serialization to and from Byte Arrays
+ *  	</li>
  *  </ul>
  *
- *	<br>
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

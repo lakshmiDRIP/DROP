@@ -73,7 +73,9 @@ package org.drip.analytics.date;
 
 /**
  * <i>JulianDate</i> provides a comprehensive representation of Julian date and date manipulation
- *  functionality. It exports the following functionality:
+ * functionality. It exports the following functionality:
+ *
+ *	<br><br>
  *  <ul>
  * 		<li>
  * 			Explicit date construction, as well as date construction from several input string formats/today
@@ -85,19 +87,32 @@ package org.drip.analytics.date;
  *  		Leap Year Functionality (number of leap days in the given interval, is the given year a leap year
  *  			etc.)
  * 		</li>
- *  	<li>Generate the subsequent IMM date (CME IMM date, CDS/Credit ISDA IMM date etc)</li>
- *  	<li>Year/Month/Day in numbers/characters</li>
- *  	<li>Days Elapsed/Remaining, is EOM</li>
- *  	<li>Comparison with the Other, equals/hash-code/comparator</li>
- *  	<li>Export the date to a variety of date formats (Oracle, Julian, Bloomberg)</li>
- *  	<li>Serialization/De-serialization to and from Byte Arrays</li>
+ *  	<li>
+ *  		Generate the subsequent IMM date (CME IMM date, CDS/Credit ISDA IMM date etc)
+ *  	</li>
+ *  	<li>
+ *  		Year/Month/Day in numbers/characters
+ *  	</li>
+ *  	<li>
+ *  		Days Elapsed/Remaining, is EOM
+ *  	</li>
+ *  	<li>
+ *  		Comparison with the Other, equals/hash-code/comparator
+ *  	</li>
+ *  	<li>
+ *  		Export the date to a variety of date formats (Oracle, Julian, Bloomberg)
+ *  	</li>
+ *  	<li>
+ *  		Serialization/De-serialization to and from Byte Arrays
+ *  	</li>
  *  </ul>
  *
- *	<br>
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

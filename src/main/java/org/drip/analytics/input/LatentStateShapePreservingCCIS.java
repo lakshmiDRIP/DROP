@@ -71,24 +71,47 @@ package org.drip.analytics.input;
 /**
  * <i>LatentStateShapePreservingCCIS</i> contains the Parameters needed for the Curve Calibration/Estimation.
  * It contains the following:
+ *
+ *	<br><br>
  *  <ul>
- *  	<li>Calibration Valuation Parameters</li>
- *  	<li>Calibration Quoting Parameters</li>
- *  	<li>Calibration Market Parameters</li>
- *  	<li>Calibration Pricing Parameters</li>
- *  	<li>Array of Calibration Span Representation</li>
- *  	<li>Map of Calibration Quotes</li>
- *  	<li>Map of Calibration Measures</li>
- *  	<li>Double Map of the Date/Index Fixings</li>
- *  	<li>The Shape Preserving Linear Latent State Calibrator</li>
+ *  	<li>
+ *  		Calibration Valuation Parameters
+ *  	</li>
+ *  	<li>
+ *  		Calibration Quoting Parameters
+ *  	</li>
+ *  	<li>
+ *  		Calibration Market Parameters
+ *  	</li>
+ *  	<li>
+ *  		Calibration Pricing Parameters
+ *  	</li>
+ *  	<li>
+ *  		Array of Calibration Span Representation
+ *  	</li>
+ *  	<li>
+ *  		Map of Calibration Quotes
+ *  	</li>
+ *  	<li>
+ *  		Map of Calibration Measures
+ *  	</li>
+ *  	<li>
+ *  		Double Map of the Date/Index Fixings
+ *  	</li>
+ *  	<li>
+ *  		The Shape Preserving Linear Latent State Calibrator
+ *  	</li>
  *  </ul>
- *  <br>
+ *	<br><br>
+ *
  * Additional functions provide for retrieval of the above and specific instrument quotes.
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input">Input</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input">Input</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

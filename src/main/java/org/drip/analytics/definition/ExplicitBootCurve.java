@@ -71,14 +71,16 @@ package org.drip.analytics.definition;
 
 /**
  * In <i>ExplicitBootCurve</i>, the segment boundaries explicitly line up with the instrument maturity
- *  boundaries. This feature is exploited in building a boot-strappable curve. Functionality is provides set
- *  the Latent State at the Explicit Node, adjust the Latent State at the given Node, or set a common Flat
- *  Value across all Nodes.
- *  <br>
+ * boundaries. This feature is exploited in building a boot-strappable curve. Functionality is provides set
+ * the Latent State at the Explicit Node, adjust the Latent State at the given Node, or set a common Flat
+ * Value across all Nodes.
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition">Definition</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition">Definition</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

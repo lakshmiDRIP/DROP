@@ -72,19 +72,31 @@ package org.drip.analytics.output;
 
 /**
  * <i>BondWorkoutMeasures</i> encapsulates the parsimonius yet complete set of measures generated out of a
- *  full bond analytics run to a given work-out. It contains the following:
+ * full bond analytics run to a given work-out. It contains the following:
+ *
+ *	<br><br>
  *  <ul>
- * 		<li>Credit Risky/Credit Riskless Clean/Dirty Coupon Measures</li>
- * 		<li>Credit Risky/Credit Riskless Par/Principal PV</li>
- * 		<li>Loss Measures such as expected Recovery, Loss on instantaneous default, and default exposure
- * 		with/without recovery</li>
- * 		<li>Unit Coupon measures such as Accrued 01, first coupon/index rate</li>
+ * 		<li>
+ * 			Credit Risky/Credit Riskless Clean/Dirty Coupon Measures
+ * 		</li>
+ * 		<li>
+ * 			Credit Risky/Credit Riskless Par/Principal PV
+ * 		</li>
+ * 		<li>
+ * 			Loss Measures such as expected Recovery, Loss on instantaneous default, and default exposure
+ * 				with/without recovery
+ * 		</li>
+ * 		<li>
+ * 			Unit Coupon measures such as Accrued 01, first coupon/index rate
+ * 		</li>
  *  </ul>
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

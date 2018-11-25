@@ -74,20 +74,38 @@ package org.drip.analytics.output;
 /**
  * <i>ComponentMeasures</i> is the place holder for analytical single component output measures, optionally
  * across scenarios. It contains measure maps for the following scenarios:
+ *
+ *	<br><br>
  *  <ul>
- * 		<li>Unadjusted Base IR/credit curves</li>
- *		<li>Flat delta/gamma bump measure maps for IR/credit bump curves</li>
- *		<li>Tenor bump double maps for IR/credit curves</li>
- *		<li>Flat/recovery bumped measure maps for recovery bumped credit curves</li>
- *		<li>Measure Maps generated for Custom Scenarios</li>
- *		<li>Accessor Functions for the above fields</li>
- *		<li>Serialize into and de-serialize out of byte arrays</li>
+ * 		<li>
+ * 			Unadjusted Base IR/credit curves
+ * 		</li>
+ *		<li>
+ *			Flat delta/gamma bump measure maps for IR/credit bump curves
+ *		</li>
+ *		<li>
+ *			Tenor bump double maps for IR/credit curves
+ *		</li>
+ *		<li>
+ *			Flat/recovery bumped measure maps for recovery bumped credit curves
+ *		</li>
+ *		<li>
+ *			Measure Maps generated for Custom Scenarios
+ *		</li>
+ *		<li>
+ *			Accessor Functions for the above fields
+ *		</li>
+ *		<li>
+ *			Serialize into and de-serialize out of byte arrays
+ *		</li>
  *  </ul>
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

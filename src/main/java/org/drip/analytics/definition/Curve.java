@@ -73,17 +73,27 @@ package org.drip.analytics.definition;
 
 /**
  * <i>Curve</i> extends the Latent State to abstract the functionality required among all financial curve. It
- *  exposes the following functionality:
+ * exposes the following functionality:
+ *
+ *	<br><br>
  *  <ul>
- *  	<li>Set the Epoch and the Identifiers</li>
- *  	<li>Set up/retrieve the Calibration Inputs</li>
- *  	<li>Retrieve the Latent State Metric Measures</li>
+ *  	<li>
+ *  		Set the Epoch and the Identifiers
+ *  	</li>
+ *  	<li>
+ *  		Set up/retrieve the Calibration Inputs
+ *  	</li>
+ *  	<li>
+ *  		Retrieve the Latent State Metric Measures
+ *  	</li>
  *  </ul>
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition">Definition</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition">Definition</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

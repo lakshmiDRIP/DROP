@@ -73,19 +73,33 @@ package org.drip.analytics.output;
 
 /**
  * <i>BasketMeasures</i> is the place holder for the analytical basket measures, optionally across scenarios.
- *  It contains the following scenario measure maps:
+ * It contains the following scenario measure maps:
+ *
+ *	<br><br>
  *  <ul>
- * 		<li>Unadjusted Base Measures</li>
- *		<li>Flat delta/gamma bump measure maps for IR/credit/RR bump curves</li>
- *		<li>Component/tenor bump double maps for IR/credit/RR curves</li>
- *		<li>Flat/component recovery bumped measure maps for recovery bumped credit curves</li>
- *		<li>Custom scenario measure map</li>
+ * 		<li>
+ * 			Unadjusted Base Measures
+ * 		</li>
+ *		<li>
+ *			Flat delta/gamma bump measure maps for IR/credit/RR bump curves
+ *		</li>
+ *		<li>
+ *			Component/tenor bump double maps for IR/credit/RR curves
+ *		</li>
+ *		<li>
+ *			Flat/component recovery bumped measure maps for recovery bumped credit curves
+ *		</li>
+ *		<li>
+ *			Custom scenario measure map
+ *		</li>
  *  </ul>
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output">Output</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

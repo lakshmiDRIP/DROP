@@ -73,25 +73,35 @@ package org.drip.analytics.daycount;
 
 /**
  * <i>Convention</i> contains flags that indicate where the holidays are loaded from, as well as the holiday
- *  types and load rules. It exports the following date related functionality:
+ * types and load rules. It exports the following date related functionality:
+ *
+ *	<br><br>
  *  <ul>
- *  	<li>Add business days according to the specified calendar</li>
- *  	<li>The Year Fraction between any 2 days given the day count type and the holiday calendar</li>
- *  	<li>Adjust/roll to the next working day according to the adjustment rule</li>
  *  	<li>
- *  		Holiday Functions - is the given day a holiday/business day, the number and the set of
+ *  		Add business days according to the specified calendar
+ *  	</li>
+ *  	<li>
+ *  		The Year Fraction between any 2 days given the day count type and the holiday calendar
+ *  	</li>
+ *  	<li>
+ *  		Adjust/roll to the next working day according to the adjustment rule
+ *  	</li>
+ *  	<li>
+ *  		Holiday Functions; is the given day a holiday/business day, the number and the set of
  *  			holidays/business days between 2 days.
  *  	</li>
  *  	<li>
- *  		Calendars and Day counts - Available set of day count conventions and calendars, and the weekend
+ *  		Calendars and Day counts; Available set of day count conventions and calendars, and the weekend
  *  			days corresponding to a given calendar.
  *  	</li>
  *  </ul>
- *	<br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount">Day Count</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount">Day Count</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

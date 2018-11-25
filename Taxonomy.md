@@ -7,7 +7,7 @@
 
 
 ## Analytics Core Module
- * ***Fixed Income Analytics Library***
+ * [***Fixed Income Analytics Library***](https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md) => Valuation and Risk Functionality of the Principal Asset Classes, i.e., Equity, Rates, Credit, FX, Commodity, and their Hybrids.
 	* *Analytics* => Date, Cash Flow, and Cash Flow Period Measure Generation Utilities.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aanalytics) }  

@@ -70,13 +70,13 @@ package org.drip.analytics.cashflow;
 
 /**
  * <i>Bullet</i> is designed to hold the Point Realizations of the Latent States relevant to Terminal
- * 	Valuation of a Bullet Cash Flow. Current it contains the Period Dates, Period Latent State Identifiers,
- *  and the "Extensive" Fields.
+ * Valuation of a Bullet Cash Flow. Current it contains the Period Dates, Period Latent State Identifiers,
+ * and the "Extensive" Fields.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow">Cash Flow</a></li>
  *  </ul>

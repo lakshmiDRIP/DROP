@@ -4,6 +4,7 @@
 
 DROP Analytics Input Package contains the Curve Surface Construction Customization Inputs.
 
+
 ## Class Components
 
  * [***BootCurveConstructionInput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input/BootCurveConstructionInput.java)
@@ -38,12 +39,16 @@ DROP Analytics Input Package contains the Curve Surface Construction Customizati
  	* Map of Calibration Measures
  	* Double Map of the Date/Index Fixings
  	* The Shape Preserving Linear Latent State Calibrator
+
  Additional functions provide for retrieval of the above and specific instrument quotes.
 
+
 ## DROP Specifications
+
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html

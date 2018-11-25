@@ -70,23 +70,26 @@ package org.drip.analytics.date;
 
 /**
  * <i>DateUtil</i> contains Various Utilities for manipulating Date. The Julian Date - Gregorian Date Inter
- * 	Conversion follows the following References:
- * 
- * 	<ul>
- * 		<li>Fliegel, H. F., and T. C. van Flandern (1968): A Machine Algorithm for Processing Calendar Dates 
- * 			<i>Communications of the ACM</i> <b>11</b> 657
+ * Conversion follows the following References:
+ *
+ *	<br><br>
+ *  <ul>
+ * 		<li>
+ * 			Fliegel, H. F., and T. C. van Flandern (1968): A Machine Algorithm for Processing Calendar Dates 
+ * 				<i>Communications of the ACM</i> <b>11</b> 657
  * 		</li>
- * 
- * 		<li>Fenton, D. (2001): Julian to Calendar Date Conversion 
- * 			http://mathforum.org/library/drmath/view/51907.html
+ * 		<li>
+ * 			Fenton, D. (2001): Julian to Calendar Date Conversion
+ * 				http://mathforum.org/library/drmath/view/51907.html
  * 		</li>
  * 	</ul>
  *
- *	<br>
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date">Date</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

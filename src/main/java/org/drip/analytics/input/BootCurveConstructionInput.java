@@ -71,20 +71,36 @@ package org.drip.analytics.input;
 
 /**
  * <i>BootCurveConstructionInput</i> contains the Parameters needed for the Curve Calibration/Estimation. It
- * 	contains the following:
- * 	<ul>
- *  	<li>Calibration Valuation Parameters</li>
- *  	<li>Calibration Quoting Parameters</li>
- *  	<li>Array of Calibration Instruments</li>
- *  	<li>Map of Calibration Quotes</li>
- *  	<li>Map of Calibration Measures</li>
- *  	<li>Latent State Fixings Container</li>
- * 	</ul>
- *  <br>
+ * contains the following:
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input">Input</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *  	<li>
+ *  		Calibration Valuation Parameters
+ *  	</li>
+ *  	<li>
+ *  		Calibration Quoting Parameters
+ *  	</li>
+ *  	<li>
+ *  		Array of Calibration Instruments
+ *  	</li>
+ *  	<li>
+ *  		Map of Calibration Quotes
+ *  	</li>
+ *  	<li>
+ *  		Map of Calibration Measures
+ *  	</li>
+ *  	<li>
+ *  		Latent State Fixings Container
+ *  	</li>
+ * 	</ul>
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input">Input</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
