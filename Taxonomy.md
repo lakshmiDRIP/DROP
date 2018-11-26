@@ -59,7 +59,7 @@
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution) }
 
 ## Numerical Core Module
- * ***Spline Builder Library***
+ * [***Spline Builder Library***](https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md) => Functionality for constructing Spline Based Curves and Surfaces.
 	* *Spline* => Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) }

@@ -68,7 +68,7 @@ package org.drip.execution.strategy;
 
 /**
  * <i>DiscreteTradingTrajectoryControl</i> holds the Time Trajectory Control Settings of a Trading Block that
- *  is to be executed over a Discrete Time Sequence. The References are:
+ * is to be executed over a Discrete Time Sequence. The References are:
  * 
  * <br>
  * 	<ul>
@@ -93,11 +93,13 @@ package org.drip.execution.strategy;
  * 				265-292
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy">Strategy</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy">Strategy</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

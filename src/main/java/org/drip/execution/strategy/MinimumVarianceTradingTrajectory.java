@@ -68,9 +68,9 @@ package org.drip.execution.strategy;
 
 /**
  * <i>MinimumVarianceTradingTrajectory</i> holds the Trajectory of a Trading Block that is to be executed in
- *  a Single Block, the Idea being to minimize the Trading Variance. The References are:
+ * a Single Block, the Idea being to minimize the Trading Variance. The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 		<li>
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -93,11 +93,13 @@ package org.drip.execution.strategy;
  * 				265-292
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy">Strategy</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy">Strategy</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
