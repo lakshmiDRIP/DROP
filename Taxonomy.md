@@ -37,7 +37,7 @@
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aassetbacked) }
  * ***XVA Analytics Library***
-	* *XVA* =>
+	* *XVA* => Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Axva) }
  * ***Exposure and Margin Analytics Library***

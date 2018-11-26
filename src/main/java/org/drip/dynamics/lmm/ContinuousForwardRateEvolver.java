@@ -69,9 +69,10 @@ package org.drip.dynamics.lmm;
 
 /**
  * <i>ContinuousForwardRateEvolver</i> sets up and implements the Multi-Factor No-arbitrage Dynamics of the
- *  Rates State Quantifiers traced from the Evolution of the Continuously Compounded Forward Rate as
- *  formulated in:
- * 	<br>
+ * Rates State Quantifiers traced from the Evolution of the Continuously Compounded Forward Rate as
+ * formulated in:
+ *
+ *	<br><br>
  *  <ul>
  *  	<li>
  *  		Goldys, B., M. Musiela, and D. Sondermann (1994): <i>Log-normality of Rates and Term Structure
@@ -86,12 +87,15 @@ package org.drip.dynamics.lmm;
  * 				<i>Mathematical Finance</i> <b>7 (2)</b> 127-155
  *  	</li>
  *  </ul>
- * 	<br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics">Dynamics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm">LIBOR Market Model</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics">Dynamics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm">LIBOR Market Model</a></li>
  *  </ul>
+ *  
  * @author Lakshmi Krishnamurthy
  */
 

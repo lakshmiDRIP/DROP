@@ -68,11 +68,13 @@ package org.drip.assetbacked.borrower;
 
 /**
  * <i>RevolvingUtilizationRate</i> contains the Borrower's Net Revolving Utilization Rate.
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked">Asset Backed</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower">Borrower</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetBacked">Asset Backed Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetBackedAnalyticsLibrary.md">Asset Backed Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked">Asset Backed</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower">Borrower</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

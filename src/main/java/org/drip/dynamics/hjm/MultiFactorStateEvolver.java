@@ -69,22 +69,24 @@ package org.drip.dynamics.hjm;
 
 /**
  * <i>MultiFactorStateEvolver</i> sets up and implements the Base Multi-Factor No-arbitrage Dynamics of the
- *  Rates State Quantifiers as formulated in:
+ * Rates State Quantifiers as formulated in:
  * 
  * <ul>
  * 	<li>
  * 		Heath, D., R. Jarrow, and A. Morton (1992): Bond Pricing and Term Structure of Interest Rates: A New
- * 			Methodology for Contingent Claims Valuation <i>Econometrica</i> <b>60 (1)</b> 77-105.
+ * 			Methodology for Contingent Claims Valuation <i>Econometrica</i> <b>60 (1)</b> 77-105
  * 	</li>
  * </ul>
  *
- * 	<br>
+ *	<br><br>
  * In particular it looks to evolve the Multi-factor Instantaneous Forward Rates.
- * 	<br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics">Dynamics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm">HJM</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics">Dynamics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm">HJM</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

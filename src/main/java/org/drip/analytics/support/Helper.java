@@ -73,22 +73,42 @@ package org.drip.analytics.support;
 
 /**
  * <i>Helper</i> contains the collection of the analytics related utility functions used by the modules.
- *  Following are some of the functionality that it exposes:
+ * Following are some of the functionality that it exposes:
+ *
+ *	<br><br>
  *  <ul>
- * 		<li>Yield to Discount Factor, and vice versa.</li>
- * 		<li>Map Bloomberg Day Count Codes to Credit Analytics Day Count Codes</li>
- * 		<li>Generate rule-based curve node manifest measure bumps</li>
- * 		<li>Generate loss periods using a variety of different schemes</li>
- * 		<li>Aggregate/disaggregate/merge coupon period lists</li>
- * 		<li>Create fixings objects, rate index from currency/coupon/frequency</li>
- * 		<li>String Tenor/Month Code/Work-out</li>
- * 		<li>Standard Treasury Bench-mark off of Maturity</li>
+ * 		<li>
+ * 			Yield to Discount Factor, and vice versa
+ * 		</li>
+ * 		<li>
+ * 			Map Bloomberg Day Count Codes to Credit Analytics Day Count Codes
+ * 		</li>
+ * 		<li>
+ * 			Generate rule-based curve node manifest measure bumps
+ * 		</li>
+ * 		<li>
+ * 			Generate loss periods using a variety of different schemes
+ * 		</li>
+ * 		<li>
+ * 			Aggregate/disaggregate/merge coupon period lists
+ * 		</li>
+ * 		<li>
+ * 			Create fixings objects, rate index from currency/coupon/frequency
+ * 		</li>
+ * 		<li>
+ * 			String Tenor/Month Code/Work-out
+ * 		</li>
+ * 		<li>
+ * 			Standard Treasury Bench-mark off of Maturity
+ * 		</li>
  *  </ul>
- *  <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support">Support</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics">Analytics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support">Support</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
