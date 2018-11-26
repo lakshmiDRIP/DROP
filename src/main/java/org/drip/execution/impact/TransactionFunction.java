@@ -68,7 +68,7 @@ package org.drip.execution.impact;
 
 /**
  * <i>TransactionFunction</i> exports the Temporary/Permanent Market Impact Displacement/Volatility
- *  Functional Dependence on the Trade Rate. The References are:
+ * Functional Dependence on the Trade Rate. The References are:
  * 
  * <br>
  * 	<ul>
@@ -93,11 +93,13 @@ package org.drip.execution.impact;
  * 				265-292
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact">Impact</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact">Impact</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

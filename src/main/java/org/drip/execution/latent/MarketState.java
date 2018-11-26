@@ -67,8 +67,8 @@ package org.drip.execution.latent;
  */
 
 /**
- * <i>MarketState</i> holds the Random Market State(s) that control(s) the Cost Evolution and the Eventual Optimal
- * 	Trajectory Generation. The References are:
+ * <i>MarketState</i> holds the Random Market State(s) that control(s) the Cost Evolution and the Eventual
+ * Optimal rajectory Generation. The References are:
  * 
  * 	<br>
  *  <ul>
@@ -93,11 +93,13 @@ package org.drip.execution.latent;
  * 				Financial Studies</i> <b>7 (4)</b> 631-651
  * 		</li>
  *  </ul>
- * 	<br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/latent">Latent</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/latent">Latent</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

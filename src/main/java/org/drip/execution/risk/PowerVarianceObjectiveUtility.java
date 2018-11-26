@@ -68,15 +68,22 @@ package org.drip.execution.risk;
 
 /**
  * <i>PowerVarianceObjectiveUtility</i> implements the Mean-Power-Variance Objective Utility Function that
- *  needs to be optimized to extract the Optimal Execution Trajectory. The Exact Objective Function is of the
- *  Form:
+ * needs to be optimized to extract the Optimal Execution Trajectory. The Exact Objective Function is of the
+ * Form:
  *  
  *  			U[x] = E[x] + lambda * (V[x] ^p)
  *  
- *  where p is greater than 0. p = 1 is the Regular Mean-Variance, and p = 0.5 is VaR Minimization (L-VaR).
- *  The References are:
+ *  where p is greater than 0.
+ *  
+ *  p = 1
+ *  
+ *  is the Regular Mean-Variance, and
+ *  
+ *  p = 0.5
+ *  
+ *  is VaR Minimization (L-VaR). The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 		<li>
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -98,11 +105,13 @@ package org.drip.execution.risk;
  * 				Prices <i>Review of Financial Studies</i> <b>14</b> 371-405
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/risk">Risk</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/risk">Risk</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

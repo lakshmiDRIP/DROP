@@ -49,7 +49,7 @@
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asimm) }
 
 ## Portfolio Core Module
- * ***Asset Allocation Analytics Library***
+ * [***Asset Allocation Analytics Library***](https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md) => Optimal Portfolio Construction and Asset Allocation Functionality.
 	* *Portfolio Construction* => Optimal and Constrained Portfolio Construction Functionality.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aportfolioconstruction) }

@@ -68,9 +68,9 @@ package org.drip.execution.risk;
 
 /**
  * <i>ObjectiveUtility</i> exposes the Objective Utility Function that needs to be optimized to extract the
- * 	Optimal Execution Trajectory. The References are:
+ * Optimal Execution Trajectory. The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 		<li>
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -93,11 +93,13 @@ package org.drip.execution.risk;
  * 				265-292
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/risk">Risk</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/risk">Risk</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

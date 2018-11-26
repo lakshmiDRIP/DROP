@@ -69,7 +69,7 @@ package org.drip.execution.profiletime;
  * <i>UniformParticipationRate</i> exposes the Uniform Background Profile Adjusted Version of the Uniform
  * Participation Rate Transaction Function as described in the "Trading Time" Model. The References are:
  * 
- * 	<br>
+ * <br><br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -92,11 +92,13 @@ package org.drip.execution.profiletime;
  * 				Financial Studies</i> <b>7 (4)</b> 631-651
  * 		</li>
  *  </ul>
- * 	<br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/profiletime">Profile Time</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/profiletime">Profile Time</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

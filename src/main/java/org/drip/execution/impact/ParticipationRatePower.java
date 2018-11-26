@@ -70,7 +70,7 @@ package org.drip.execution.impact;
  * <i>ParticipationRatePower</i> implements a Power-Law Based Temporary/Permanent Market Impact Function
  * where the Price Change scales as a Power of the Trade Rate. The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 		<li>
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -91,11 +91,13 @@ package org.drip.execution.impact;
  * 				Markets</i> <b>1</b> 1-50
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact">Impact</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact">Impact</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
