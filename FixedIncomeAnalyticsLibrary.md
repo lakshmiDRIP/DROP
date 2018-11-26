@@ -9,8 +9,8 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 
 ## Documentation
 
- | Document | Link |
- |-----------------|
+ |        Document         | Link |
+ |-------------------------|------|
  | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v3.11.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
