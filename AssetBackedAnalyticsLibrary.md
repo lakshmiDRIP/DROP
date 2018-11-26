@@ -9,8 +9,8 @@ Asset Backed Analytics Library contains the Valuation and Risk Functionality for
 
 ## Documentation
 
- | Document | Link |
- -------------------
+ |        Document         | Link |
+ |-------------------------|------|
  | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetBacked/AssetBackedAnalytics_v3.65.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetBacked) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
@@ -27,16 +27,17 @@ Asset Backed Analytics Library contains the Valuation and Risk Functionality for
 
  * Market Place Lending Credit Model Methodology
 	* Overview of Credit Model Methodology
-	* Credit Methodology – Purpose and Introduction
+	* Credit Methodology â€“ Purpose and Introduction
 	* Scope of the 2.0 Model
 	* Data Model Construction Rules
 	* Loan Data Quality Rules
 	* Lending Club Loan Level Data
 	* Loan Credit Model Implementation
 	* DROP Credit Model Selection Methodology
-	* Empirical Results – Regressor Contribution Weights
+	* Empirical Results â€“ Regressor Contribution Weights
 	* Empirical Analysis of Seasoning Effects
-	* Analysis of the Vintage/Cohort Effects
+	* Analysis of the Vintage/Cohort Effects
+
 	* Analysis of Empirical Seasonality Effects
 	* CPR And CDR Curve Estimation
 	* Credit Model Future Enhancements
