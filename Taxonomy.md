@@ -32,7 +32,7 @@
 	* *Template* => Pricing/Risk Templates for Fixed Income Products.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Atemplate) }
- * ***Asset Backed Analytics Library***
+ * [***Asset Backed Analytics Library***](https://github.com/lakshmiDRIP/DROP/tree/master/AssetBackedAnalyticsLibrary.md) => Valuation and Risk Functionality for Asset Backed and Mortgage Backed Securities.
 	* *Asset Backed* => Asset Backed Borrower and Loan Level Characteristics.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aassetbacked) }
