@@ -6,32 +6,50 @@ package org.drip.xva.derivative;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,34 +66,53 @@ package org.drip.xva.derivative;
  */
 
 /**
- * ReplicationPortfolioVertex contains the Dynamic Replicating Portfolio of the Pay-out using the Assets in
- *  the Economy, from the Dealer's View Point. The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
- *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;i&gt;ReplicationPortfolioVertex&lt;/i&gt; contains the Dynamic Replicating Portfolio of the Pay-out using the
+ * Assets in the Economy, from the Dealer's View Point. The References are:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): &lt;i&gt;Modeling,
+ *  			Pricing, and Hedging Counter-party Credit Exposure - A Technical Guide&lt;/i&gt; &lt;b&gt;Springer
+ *  			Finance&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  			86-90
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Li, B., and Y. Tang (2007): &lt;i&gt;Quantitative Analysis, Derivatives Modeling, and Trading
+ *  			Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market&lt;/i&gt;
+ *  			&lt;b&gt;World Scientific Publishing&lt;/b&gt; Singapore
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/derivative&quot;&gt;Derivative&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ReplicationPortfolioVertex
 {
-<span class="fc" id="L74">	private double _cashAccount = java.lang.Double.NaN;</span>
-<span class="fc" id="L75">	private double _positionHoldings = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _clientNumeraireHoldings = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _dealerSeniorNumeraireHoldings = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">	private double _dealerSubordinateNumeraireHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _cashAccount = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _positionHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _clientNumeraireHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _dealerSeniorNumeraireHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	private double _dealerSubordinateNumeraireHoldings = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a ReplicationPortfolioVertex Instance without the Zero Recovery Dealer Numeraire
@@ -96,7 +133,7 @@ public class ReplicationPortfolioVertex
 	{
 		try
 		{
-<span class="fc" id="L99">			return new ReplicationPortfolioVertex (</span>
+<span class="fc" id="L136">			return new ReplicationPortfolioVertex (</span>
 				positionHoldings,
 				dealerSeniorNumeraireHoldings,
 				0.,
@@ -104,12 +141,12 @@ public class ReplicationPortfolioVertex
 				cashAccount
 			);
 		}
-<span class="nc" id="L107">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L144">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L109">			e.printStackTrace();</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L112">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -131,19 +168,19 @@ public class ReplicationPortfolioVertex
 		final double clientNumeraireHoldings,
 		final double cashAccount)
 		throws java.lang.Exception
-<span class="fc" id="L134">	{</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dealerSeniorNumeraireHoldings =</span>
+<span class="fc" id="L171">	{</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dealerSeniorNumeraireHoldings =</span>
 				dealerSeniorNumeraireHoldings) ||
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerSubordinateNumeraireHoldings =</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerSubordinateNumeraireHoldings =</span>
 				dealerSubordinateNumeraireHoldings) ||
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientNumeraireHoldings = clientNumeraireHoldings) ||</span>
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cashAccount = cashAccount))</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientNumeraireHoldings = clientNumeraireHoldings) ||</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cashAccount = cashAccount))</span>
 		{
-<span class="nc" id="L142">			throw new java.lang.Exception (&quot;ReplicationPortfolioVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L179">			throw new java.lang.Exception (&quot;ReplicationPortfolioVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L145">		_positionHoldings = positionHoldings;</span>
-<span class="fc" id="L146">	}</span>
+<span class="fc" id="L182">		_positionHoldings = positionHoldings;</span>
+<span class="fc" id="L183">	}</span>
 
 	/**
 	 * Retrieve the Number of Position Holdings
@@ -153,7 +190,7 @@ public class ReplicationPortfolioVertex
 
 	public double positionHoldings()
 	{
-<span class="fc" id="L156">		return _positionHoldings;</span>
+<span class="fc" id="L193">		return _positionHoldings;</span>
 	}
 
 	/**
@@ -164,7 +201,7 @@ public class ReplicationPortfolioVertex
 
 	public double dealerSeniorNumeraireHoldings()
 	{
-<span class="fc" id="L167">		return _dealerSeniorNumeraireHoldings;</span>
+<span class="fc" id="L204">		return _dealerSeniorNumeraireHoldings;</span>
 	}
 
 	/**
@@ -175,7 +212,7 @@ public class ReplicationPortfolioVertex
 
 	public double dealerSubordinateNumeraireHoldings()
 	{
-<span class="fc" id="L178">		return _dealerSubordinateNumeraireHoldings;</span>
+<span class="fc" id="L215">		return _dealerSubordinateNumeraireHoldings;</span>
 	}
 
 	/**
@@ -186,7 +223,7 @@ public class ReplicationPortfolioVertex
 
 	public double clientNumeraireHoldings()
 	{
-<span class="fc" id="L189">		return _clientNumeraireHoldings;</span>
+<span class="fc" id="L226">		return _clientNumeraireHoldings;</span>
 	}
 
 	/**
@@ -197,7 +234,7 @@ public class ReplicationPortfolioVertex
 
 	public double cashAccount()
 	{
-<span class="fc" id="L200">		return _cashAccount;</span>
+<span class="fc" id="L237">		return _cashAccount;</span>
 	}
 
 	/**
@@ -214,24 +251,24 @@ public class ReplicationPortfolioVertex
 		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (null == marketVertex)</span>
 		{
-<span class="nc" id="L219">			throw new java.lang.Exception</span>
+<span class="nc" id="L256">			throw new java.lang.Exception</span>
 				(&quot;ReplicationPortfolioVertex::dealerPreDefaultPositionValue =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L223">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
+<span class="nc" id="L260">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
 
-<span class="nc" id="L225">		double value = -1. * dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings;</span>
+<span class="nc" id="L262">		double value = -1. * dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings;</span>
 
-<span class="nc" id="L227">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="nc" id="L264">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
 		{
-<span class="nc" id="L231">			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings;</span>
+<span class="nc" id="L268">			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings;</span>
 		}
 
-<span class="nc" id="L234">		return value;</span>
+<span class="nc" id="L271">		return value;</span>
 	}
 
 	/**
@@ -248,26 +285,26 @@ public class ReplicationPortfolioVertex
 		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (null == marketVertex)</span>
 		{
-<span class="nc" id="L253">			throw new java.lang.Exception</span>
+<span class="nc" id="L290">			throw new java.lang.Exception</span>
 				(&quot;ReplicationPortfolioVertex::dealerPostDefaultPositionValue =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L257">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
+<span class="nc" id="L294">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
 
-<span class="nc" id="L259">		double value = dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings *</span>
-<span class="nc" id="L260">			dealerMarketVertex.seniorRecoveryRate();</span>
+<span class="nc" id="L296">		double value = dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings *</span>
+<span class="nc" id="L297">			dealerMarketVertex.seniorRecoveryRate();</span>
 
-<span class="nc" id="L262">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="nc" id="L299">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
 		{
-<span class="nc" id="L266">			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings *</span>
-<span class="nc" id="L267">				dealerMarketVertex.subordinateRecoveryRate();</span>
+<span class="nc" id="L303">			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings *</span>
+<span class="nc" id="L304">				dealerMarketVertex.subordinateRecoveryRate();</span>
 		}
 
-<span class="nc" id="L270">		return value;</span>
+<span class="nc" id="L307">		return value;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

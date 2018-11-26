@@ -6,6 +6,7 @@ package org.drip.state.nonlinear;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -15,29 +16,46 @@ package org.drip.state.nonlinear;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,23 +72,39 @@ package org.drip.state.nonlinear;
  */
 
 /**
- * NonlinearCurveBuilder calibrates the discount and credit/hazard curves from the components and their
- *  quotes.
- * 
- * NonlinearCurveCalibrator employs a set of techniques for achieving this calibration.
- * 	- It bootstraps the nodes in sequence to calibrate the curve.
- * 	- In conjunction with splining estimation techniques, it may also be used to perform dual sweep
- * 		calibration. The inner sweep achieves the calibration of the segment spline parameters, while the
- * 		outer sweep calibrates iteratively for the targeted boundary conditions.
- * 	- It may also be used to custom calibrate a single Interest Rate/Hazard Rate Node from the corresponding
- * 		Component
+ * &lt;i&gt;NonlinearCurveBuilder&lt;/i&gt; calibrates the discount and credit/hazard curves from the components and
+ * their quotes. NonlinearCurveCalibrator employs a set of techniques for achieving this calibration.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			It bootstraps the nodes in sequence to calibrate the curve.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			In conjunction with splining estimation techniques, it may also be used to perform dual sweep
+ * 				calibration. The inner sweep achieves the calibration of the segment spline parameters, while
+ * 				the outer sweep calibrates iteratively for the targeted boundary conditions.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			It may also be used to custom calibrate a single Interest Rate/Hazard Rate Node from the
+ * 				corresponding Component.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * CurveCalibrator bootstraps/cooks both discount curves and credit curves.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non Linear&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L73">public class NonlinearCurveBuilder {</span>
+<span class="nc" id="L107">public class NonlinearCurveBuilder {</span>
 
 	private static final boolean SetNode (
 		final org.drip.analytics.definition.ExplicitBootCurve ebc,
@@ -78,23 +112,23 @@ package org.drip.state.nonlinear;
 		final boolean bFlat,
 		final double dblValue)
 	{
-<span class="fc bfc" id="L81" title="All 2 branches covered.">		return bFlat ? ebc.setFlatValue (dblValue) : ebc.setNodeValue (iNodeIndex, dblValue);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		return bFlat ? ebc.setFlatValue (dblValue) : ebc.setNodeValue (iNodeIndex, dblValue);</span>
 	}
 
 	static class CreditCurveCalibrator extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L85">		private boolean _bFlat = false;</span>
-<span class="fc" id="L86">		private int _iCurveSegmentIndex = -1;</span>
-<span class="fc" id="L87">		private java.lang.String _strCalibMeasure = &quot;&quot;;</span>
-<span class="fc" id="L88">		private double _dblCalibValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">		private org.drip.state.govvie.GovvieCurve _gc = null;</span>
-<span class="fc" id="L90">		private org.drip.param.definition.CalibrationParams _cp = null;</span>
-<span class="fc" id="L91">		private org.drip.product.definition.Component _calibComp = null;</span>
-<span class="fc" id="L92">		private org.drip.param.valuation.ValuationParams _valParams = null;</span>
-<span class="fc" id="L93">		private org.drip.state.credit.ExplicitBootCreditCurve _ebcc = null;</span>
-<span class="fc" id="L94">		private org.drip.param.pricer.CreditPricerParams _pricerParams = null;</span>
-<span class="fc" id="L95">		private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
-<span class="fc" id="L96">		private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
-<span class="fc" id="L97">		private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;</span>
+<span class="fc" id="L119">		private boolean _bFlat = false;</span>
+<span class="fc" id="L120">		private int _iCurveSegmentIndex = -1;</span>
+<span class="fc" id="L121">		private java.lang.String _strCalibMeasure = &quot;&quot;;</span>
+<span class="fc" id="L122">		private double _dblCalibValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">		private org.drip.state.govvie.GovvieCurve _gc = null;</span>
+<span class="fc" id="L124">		private org.drip.param.definition.CalibrationParams _cp = null;</span>
+<span class="fc" id="L125">		private org.drip.product.definition.Component _calibComp = null;</span>
+<span class="fc" id="L126">		private org.drip.param.valuation.ValuationParams _valParams = null;</span>
+<span class="fc" id="L127">		private org.drip.state.credit.ExplicitBootCreditCurve _ebcc = null;</span>
+<span class="fc" id="L128">		private org.drip.param.pricer.CreditPricerParams _pricerParams = null;</span>
+<span class="fc" id="L129">		private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
+<span class="fc" id="L130">		private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
+<span class="fc" id="L131">		private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;</span>
 
 		CreditCurveCalibrator (
 			final org.drip.param.valuation.ValuationParams valParams,
@@ -112,38 +146,38 @@ package org.drip.state.nonlinear;
 			final org.drip.param.definition.CalibrationParams cp)
 			throws java.lang.Exception
 		{
-<span class="fc" id="L115">			super (null);</span>
+<span class="fc" id="L149">			super (null);</span>
 
-<span class="fc" id="L117">			_dc = dc;</span>
-<span class="fc" id="L118">			_gc = gc;</span>
-<span class="fc" id="L119">			_vcp = vcp;</span>
-<span class="fc" id="L120">			_ebcc = ebcc;</span>
-<span class="fc" id="L121">			_lsfc = lsfc;</span>
-<span class="fc" id="L122">			_bFlat = bFlat;</span>
-<span class="fc" id="L123">			_calibComp = calibComp;</span>
-<span class="fc" id="L124">			_valParams = valParams;</span>
-<span class="fc" id="L125">			_dblCalibValue = dblCalibValue;</span>
-<span class="fc" id="L126">			_strCalibMeasure = strCalibMeasure;</span>
-<span class="fc" id="L127">			_iCurveSegmentIndex = iCurveSegmentIndex;</span>
+<span class="fc" id="L151">			_dc = dc;</span>
+<span class="fc" id="L152">			_gc = gc;</span>
+<span class="fc" id="L153">			_vcp = vcp;</span>
+<span class="fc" id="L154">			_ebcc = ebcc;</span>
+<span class="fc" id="L155">			_lsfc = lsfc;</span>
+<span class="fc" id="L156">			_bFlat = bFlat;</span>
+<span class="fc" id="L157">			_calibComp = calibComp;</span>
+<span class="fc" id="L158">			_valParams = valParams;</span>
+<span class="fc" id="L159">			_dblCalibValue = dblCalibValue;</span>
+<span class="fc" id="L160">			_strCalibMeasure = strCalibMeasure;</span>
+<span class="fc" id="L161">			_iCurveSegmentIndex = iCurveSegmentIndex;</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">			if (null == (_cp = cp))</span>
-<span class="fc" id="L130">				_cp = new org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null);</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">			if (null == (_cp = cp))</span>
+<span class="fc" id="L164">				_cp = new org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null);</span>
 
-<span class="fc" id="L132">			_pricerParams = new org.drip.param.pricer.CreditPricerParams (pricerParams.unitSize(), _cp,</span>
-<span class="fc" id="L133">				pricerParams.survivalToPayDate(), pricerParams.discretizationScheme());</span>
-<span class="fc" id="L134">		}</span>
+<span class="fc" id="L166">			_pricerParams = new org.drip.param.pricer.CreditPricerParams (pricerParams.unitSize(), _cp,</span>
+<span class="fc" id="L167">				pricerParams.survivalToPayDate(), pricerParams.discretizationScheme());</span>
+<span class="fc" id="L168">		}</span>
 
 		@Override public double evaluate (
 			final double dblRate)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (!SetNode (_ebcc, _iCurveSegmentIndex, _bFlat, dblRate))</span>
-<span class="nc" id="L141">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			if (!SetNode (_ebcc, _iCurveSegmentIndex, _bFlat, dblRate))</span>
+<span class="nc" id="L175">				throw new java.lang.Exception</span>
 					(&quot;NonlinearCurveBuilder::CreditCurveCalibrator::evaluate =&gt; Cannot set Rate = &quot; + dblRate
 						+ &quot; for node &quot; + _iCurveSegmentIndex);
 
-<span class="fc" id="L145">			return _dblCalibValue - _calibComp.measureValue (_valParams, _pricerParams,</span>
-<span class="fc" id="L146">				org.drip.param.creator.MarketParamsBuilder.Create (_dc, _gc, _ebcc, null, null, null, _lsfc),</span>
+<span class="fc" id="L179">			return _dblCalibValue - _calibComp.measureValue (_valParams, _pricerParams,</span>
+<span class="fc" id="L180">				org.drip.param.creator.MarketParamsBuilder.Create (_dc, _gc, _ebcc, null, null, null, _lsfc),</span>
 					_vcp, _strCalibMeasure);
 		}
 	}
@@ -184,17 +218,17 @@ package org.drip.state.nonlinear;
 		final org.drip.param.definition.CalibrationParams cp)
 	{
 		try {
-<span class="fc" id="L187">			org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new</span>
+<span class="fc" id="L221">			org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new</span>
 				org.drip.function.r1tor1solver.FixedPointFinderZheng (0., new CreditCurveCalibrator
 					(valParams, calibComp, dblCalibValue, strCalibMeasure, bFlat, iCurveSegmentIndex, ebcc,
-<span class="fc" id="L190">						dc, gc, pricerParams, lsfc, vcp, cp), true).findRoot();</span>
+<span class="fc" id="L224">						dc, gc, pricerParams, lsfc, vcp, cp), true).findRoot();</span>
 
-<span class="pc bpc" id="L192" title="2 of 4 branches missed.">			return null != rfop &amp;&amp; rfop.containsRoot();</span>
-<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">			return null != rfop &amp;&amp; rfop.containsRoot();</span>
+<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L197">		return false;</span>
+<span class="nc" id="L231">		return false;</span>
 	}
 
 	/**
@@ -229,36 +263,36 @@ package org.drip.state.nonlinear;
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">		if (null == comp)</span>
-<span class="nc" id="L233">			throw new java.lang.Exception (&quot;NonlinearCurveBuilder::DiscountCurveNode =&gt; Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">		if (null == comp)</span>
+<span class="nc" id="L267">			throw new java.lang.Exception (&quot;NonlinearCurveBuilder::DiscountCurveNode =&gt; Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L235">		org.drip.function.definition.R1ToR1 ofIRNode = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L269">		org.drip.function.definition.R1ToR1 ofIRNode = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblValue)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">				if (!SetNode (ebdc, iCurveSegmentIndex, bFlat, dblValue))</span>
-<span class="nc" id="L241">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">				if (!SetNode (ebdc, iCurveSegmentIndex, bFlat, dblValue))</span>
+<span class="nc" id="L275">					throw new java.lang.Exception</span>
 						(&quot;NonlinearCurveBuilder::DiscountCurveNode =&gt; Cannot set Value = &quot; + dblValue +
 							&quot; for node &quot; + iCurveSegmentIndex);
 
-<span class="fc" id="L245">				return dblCalibValue - comp.measureValue (valParams, new</span>
+<span class="fc" id="L279">				return dblCalibValue - comp.measureValue (valParams, new</span>
 					org.drip.param.pricer.CreditPricerParams (1, new
 						org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null), true, 0),
-<span class="fc" id="L248">							org.drip.param.creator.MarketParamsBuilder.Create (ebdc, gc, null, null, null,</span>
+<span class="fc" id="L282">							org.drip.param.creator.MarketParamsBuilder.Create (ebdc, gc, null, null, null,</span>
 								null, lsfc), vcp, strCalibMeasure);
 			}
 		};
 
-<span class="fc" id="L253">		org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new</span>
-<span class="fc" id="L254">			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., ofIRNode, true).findRoot();</span>
+<span class="fc" id="L287">		org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new</span>
+<span class="fc" id="L288">			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., ofIRNode, true).findRoot();</span>
 
-<span class="pc bpc" id="L256" title="2 of 4 branches missed.">		if (null == rfop || !rfop.containsRoot())</span>
-<span class="nc" id="L257">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L290" title="2 of 4 branches missed.">		if (null == rfop || !rfop.containsRoot())</span>
+<span class="nc" id="L291">			throw new java.lang.Exception</span>
 				(&quot;NonlinearCurveBuilder::DiscountCurveNode =&gt; Cannot calibrate IR segment for node #&quot; +
 					iCurveSegmentIndex);
 
-<span class="fc" id="L261">		return rfop.getRoot();</span>
+<span class="fc" id="L295">		return rfop.getRoot();</span>
 	}
 
 	/**
@@ -290,29 +324,29 @@ package org.drip.state.nonlinear;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L293" title="3 of 6 branches missed.">		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||</span>
-<span class="pc bpc" id="L294" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
-<span class="nc" id="L295">			return false;</span>
+<span class="pc bpc" id="L327" title="3 of 6 branches missed.">		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
+<span class="nc" id="L329">			return false;</span>
 
-<span class="fc" id="L297">		int iNumCalibComp = aCalibComp.length;</span>
+<span class="fc" id="L331">		int iNumCalibComp = aCalibComp.length;</span>
 
-<span class="pc bpc" id="L299" title="3 of 6 branches missed.">		if (0 == iNumCalibComp || adblCalibValue.length != iNumCalibComp || astrCalibMeasure.length !=</span>
+<span class="pc bpc" id="L333" title="3 of 6 branches missed.">		if (0 == iNumCalibComp || adblCalibValue.length != iNumCalibComp || astrCalibMeasure.length !=</span>
 			iNumCalibComp)
-<span class="nc" id="L301">			return false;</span>
+<span class="nc" id="L335">			return false;</span>
 
-<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
 			try {
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (DiscountCurveNode (valParams, aCalibComp[i],</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (DiscountCurveNode (valParams, aCalibComp[i],</span>
 					adblCalibValue[i] + dblBump, astrCalibMeasure[i], bFlat, i, ebdc, gc, lsfc, vcp)))
-<span class="nc" id="L307">					return false;</span>
-<span class="nc" id="L308">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L309">				e.printStackTrace();</span>
+<span class="nc" id="L341">					return false;</span>
+<span class="nc" id="L342">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L343">				e.printStackTrace();</span>
 
-<span class="nc" id="L311">				return false;</span>
-<span class="fc" id="L312">			}</span>
+<span class="nc" id="L345">				return false;</span>
+<span class="fc" id="L346">			}</span>
 		}
 
-<span class="fc" id="L315">		return true;</span>
+<span class="fc" id="L349">		return true;</span>
 	}
 
 	/**
@@ -349,45 +383,45 @@ package org.drip.state.nonlinear;
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		if (null == comp)</span>
-<span class="nc" id="L353">			throw new java.lang.Exception (&quot;NonlinearCurveBuilder::VolatilityCurveNode =&gt; Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L386" title="1 of 2 branches missed.">		if (null == comp)</span>
+<span class="nc" id="L387">			throw new java.lang.Exception (&quot;NonlinearCurveBuilder::VolatilityCurveNode =&gt; Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L355">		org.drip.function.definition.R1ToR1 r1r1VolMetric = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L389">		org.drip.function.definition.R1ToR1 r1r1VolMetric = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblValue)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L360" title="1 of 2 branches missed.">				if (!SetNode (ebvc, iCurveSegmentIndex, bFlat, dblValue))</span>
-<span class="nc" id="L361">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">				if (!SetNode (ebvc, iCurveSegmentIndex, bFlat, dblValue))</span>
+<span class="nc" id="L395">					throw new java.lang.Exception</span>
 						(&quot;NonlinearCurveBuilder::VolatilityCurveNode =&gt; Cannot set Value = &quot; + dblValue +
 							&quot; for node &quot; + iCurveSegmentIndex);
 
-<span class="fc" id="L365">				org.drip.param.market.CurveSurfaceQuoteContainer csqs =</span>
-<span class="fc" id="L366">					org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, null, null, null,</span>
+<span class="fc" id="L399">				org.drip.param.market.CurveSurfaceQuoteContainer csqs =</span>
+<span class="fc" id="L400">					org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, null, null, null,</span>
 						lsfc);
 
-<span class="pc bpc" id="L369" title="3 of 6 branches missed.">				if (null == csqs || !csqs.setForwardState (fc) || !csqs.setForwardVolatility (ebvc))</span>
-<span class="nc" id="L370">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L403" title="3 of 6 branches missed.">				if (null == csqs || !csqs.setForwardState (fc) || !csqs.setForwardVolatility (ebvc))</span>
+<span class="nc" id="L404">					throw new java.lang.Exception</span>
 						(&quot;NonlinearCurveBuilder::VolatilityCurveNode =&gt; Cannot set Value = &quot; + dblValue +
 							&quot; for node &quot; + iCurveSegmentIndex);
 
-<span class="fc" id="L374">				return dblCalibValue - comp.measureValue (valParams, new</span>
+<span class="fc" id="L408">				return dblCalibValue - comp.measureValue (valParams, new</span>
 					org.drip.param.pricer.CreditPricerParams (1, new
 						org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null), true, 0),
 							csqs, vcp, strCalibMeasure);
 			}
 		};
 
-<span class="fc" id="L381">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
+<span class="fc" id="L415">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., r1r1VolMetric, true)).findRoot
-<span class="fc" id="L383">				(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.00001, 5.));</span>
+<span class="fc" id="L417">				(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.00001, 5.));</span>
 
-<span class="pc bpc" id="L385" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L386">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L419" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L420">			throw new java.lang.Exception</span>
 				(&quot;NonlinearCurveBuilder::VolatilityCurveNode =&gt; Cannot calibrate segment for node #&quot; +
 					iCurveSegmentIndex + &quot; =&gt; &quot; + dblCalibValue);
 
-<span class="fc" id="L390">		return fpfo.getRoot();</span>
+<span class="fc" id="L424">		return fpfo.getRoot();</span>
 	}
 
 	/**
@@ -421,29 +455,29 @@ package org.drip.state.nonlinear;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L424" title="All 6 branches missed.">		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||</span>
-<span class="nc bnc" id="L425" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
-<span class="nc" id="L426">			return false;</span>
+<span class="nc bnc" id="L458" title="All 6 branches missed.">		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
+<span class="nc" id="L460">			return false;</span>
 
-<span class="nc" id="L428">		int iNumCalibComp = aCalibComp.length;</span>
+<span class="nc" id="L462">		int iNumCalibComp = aCalibComp.length;</span>
 
-<span class="nc bnc" id="L430" title="All 6 branches missed.">		if (0 == iNumCalibComp || adblCalibValue.length != iNumCalibComp || astrCalibMeasure.length !=</span>
+<span class="nc bnc" id="L464" title="All 6 branches missed.">		if (0 == iNumCalibComp || adblCalibValue.length != iNumCalibComp || astrCalibMeasure.length !=</span>
 			iNumCalibComp)
-<span class="nc" id="L432">			return false;</span>
+<span class="nc" id="L466">			return false;</span>
 
-<span class="nc bnc" id="L434" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumCalibComp; ++i) {</span>
 			try {
-<span class="nc bnc" id="L436" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (VolatilityCurveNode (valParams, aCalibComp[i],</span>
+<span class="nc bnc" id="L470" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (VolatilityCurveNode (valParams, aCalibComp[i],</span>
 					adblCalibValue[i] + dblBump, astrCalibMeasure[i], bFlat, i, ebvc, dc, fc, lsfc, vcp)))
-<span class="nc" id="L438">					return false;</span>
-<span class="nc" id="L439">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L440">				e.printStackTrace();</span>
+<span class="nc" id="L472">					return false;</span>
+<span class="nc" id="L473">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L474">				e.printStackTrace();</span>
 
-<span class="nc" id="L442">				return false;</span>
-<span class="nc" id="L443">			}</span>
+<span class="nc" id="L476">				return false;</span>
+<span class="nc" id="L477">			}</span>
 		}
 
-<span class="nc" id="L446">		return true;</span>
+<span class="nc" id="L480">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

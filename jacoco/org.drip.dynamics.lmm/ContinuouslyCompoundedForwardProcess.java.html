@@ -69,8 +69,9 @@ package org.drip.dynamics.lmm;
 
 /**
  * &lt;i&gt;ContinuouslyCompoundedForwardProcess&lt;/i&gt; implements the Continuously Compounded Forward Rate Process
- *  defined in the LIBOR Market Model. The References are:
- * 	&lt;br&gt;
+ * defined in the LIBOR Market Model. The References are:
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *  	&lt;li&gt;
  *  		Goldys, B., M. Musiela, and D. Sondermann (1994): &lt;i&gt;Log-normality of Rates and Term Structure
@@ -85,19 +86,21 @@ package org.drip.dynamics.lmm;
  * 				&lt;i&gt;Mathematical Finance&lt;/i&gt; &lt;b&gt;7 (2)&lt;/b&gt; 127-155
  *  	&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ContinuouslyCompoundedForwardProcess {
-<span class="nc" id="L99">	private int _iSpotDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L100">	private org.drip.measure.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;</span>
+<span class="nc" id="L102">	private int _iSpotDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L103">	private org.drip.measure.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;</span>
 
 	/**
 	 * ContinuouslyCompoundedForwardProcess Constructor
@@ -112,12 +115,12 @@ public class ContinuouslyCompoundedForwardProcess {
 		final int iSpotDate,
 		final org.drip.measure.stochastic.R1R1ToR1 funcR1R1ToR1)
 		throws java.lang.Exception
-<span class="nc" id="L115">	{</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (null == (_funcR1R1ToR1 = funcR1R1ToR1))</span>
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;ContinuouslyCompoundedForwardProcess ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L118">	{</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == (_funcR1R1ToR1 = funcR1R1ToR1))</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;ContinuouslyCompoundedForwardProcess ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L119">		_iSpotDate = iSpotDate;</span>
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L122">		_iSpotDate = iSpotDate;</span>
+<span class="nc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -127,7 +130,7 @@ public class ContinuouslyCompoundedForwardProcess {
 
 	public int spotDate()
 	{
-<span class="nc" id="L130">		return _iSpotDate;</span>
+<span class="nc" id="L133">		return _iSpotDate;</span>
 	}
 
 	/**
@@ -138,7 +141,7 @@ public class ContinuouslyCompoundedForwardProcess {
 
 	public org.drip.measure.stochastic.R1R1ToR1 stochasticForwardRateFunction()
 	{
-<span class="nc" id="L141">		return _funcR1R1ToR1;</span>
+<span class="nc" id="L144">		return _funcR1R1ToR1;</span>
 	}
 
 	/**
@@ -155,11 +158,11 @@ public class ContinuouslyCompoundedForwardProcess {
 		final int iMaturityDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (iMaturityDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L159">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (iMaturityDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L162">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::realizedZeroCouponPrice =&gt; Invalid Maturity Date&quot;);
 
-<span class="nc" id="L162">		return java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iMaturityDate - _iSpotDate));</span>
+<span class="nc" id="L165">		return java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iMaturityDate - _iSpotDate));</span>
 	}
 
 	/**
@@ -179,12 +182,12 @@ public class ContinuouslyCompoundedForwardProcess {
 		final boolean bRealized)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L183">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L186">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::instantaneousForwardRateIntegral =&gt; Invalid Target Date&quot;);
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
-<span class="nc" id="L187">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
+<span class="nc" id="L190">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
 				_iSpotDate));
 	}
 
@@ -205,12 +208,12 @@ public class ContinuouslyCompoundedForwardProcess {
 		final boolean bRealized)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L209">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L212">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::discountFunctionValue =&gt; Invalid Target Date&quot;);
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
-<span class="nc" id="L213">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
+<span class="nc" id="L216">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
 				_iSpotDate));
 	}
 
@@ -232,13 +235,13 @@ public class ContinuouslyCompoundedForwardProcess {
 		final boolean bRealized)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L236">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L239">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::liborRate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L239">		return (discountFunctionValue (new org.drip.analytics.date.JulianDate (iTargetDate).addTenor</span>
-<span class="nc" id="L240">			(strTenor).julian(), bRealized) / discountFunctionValue (iTargetDate, bRealized) - 1.) /</span>
-<span class="nc" id="L241">				org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
+<span class="nc" id="L242">		return (discountFunctionValue (new org.drip.analytics.date.JulianDate (iTargetDate).addTenor</span>
+<span class="nc" id="L243">			(strTenor).julian(), bRealized) / discountFunctionValue (iTargetDate, bRealized) - 1.) /</span>
+<span class="nc" id="L244">				org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

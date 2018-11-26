@@ -74,24 +74,32 @@ package org.drip.analytics.daycount;
 /**
  * &lt;i&gt;DateAdjustParams&lt;/i&gt; class contains the parameters needed for adjusting dates. It exports the following
  * functionality:
- * &lt;ul&gt;
- * 	&lt;li&gt;Accessor for holiday calendar and adjustment type&lt;/li&gt;
- * 	&lt;li&gt;Serialization/De-serialization to and from Byte Arrays&lt;/li&gt;
- * &lt;/ul&gt;
- *	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Accessor for holiday calendar and adjustment type
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Serialization/De-serialization to and from Byte Arrays
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class DateAdjustParams {
-<span class="fc" id="L92">	private int _iRollMode = 0;</span>
-<span class="fc" id="L93">	private int _iNumDaysToRoll = -1;</span>
-<span class="fc" id="L94">	private java.lang.String _strCalendar = &quot;&quot;;</span>
+<span class="fc" id="L100">	private int _iRollMode = 0;</span>
+<span class="fc" id="L101">	private int _iNumDaysToRoll = -1;</span>
+<span class="fc" id="L102">	private java.lang.String _strCalendar = &quot;&quot;;</span>
 
 	/**
 	 * Create a DateAdjustParams instance from the roll mode and the calendar
@@ -105,11 +113,11 @@ public class DateAdjustParams {
 		final int iRollMode,
 		final int iNumDaysToRoll,
 		final java.lang.String strCalendar)
-<span class="fc" id="L108">	{</span>
-<span class="fc" id="L109">		_iRollMode = iRollMode;</span>
-<span class="fc" id="L110">		_strCalendar = strCalendar;</span>
-<span class="fc" id="L111">		_iNumDaysToRoll = iNumDaysToRoll;</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L116">	{</span>
+<span class="fc" id="L117">		_iRollMode = iRollMode;</span>
+<span class="fc" id="L118">		_strCalendar = strCalendar;</span>
+<span class="fc" id="L119">		_iNumDaysToRoll = iNumDaysToRoll;</span>
+<span class="fc" id="L120">	}</span>
 
 	/**
 	 * Retrieve the Roll Mode
@@ -119,7 +127,7 @@ public class DateAdjustParams {
 
 	public int rollMode()
 	{
-<span class="nc" id="L122">		return _iRollMode;</span>
+<span class="nc" id="L130">		return _iRollMode;</span>
 	}
 
 	/**
@@ -130,7 +138,7 @@ public class DateAdjustParams {
 
 	public java.lang.String calendar()
 	{
-<span class="nc" id="L133">		return _strCalendar;</span>
+<span class="nc" id="L141">		return _strCalendar;</span>
 	}
 
 	/**
@@ -147,7 +155,7 @@ public class DateAdjustParams {
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L150">		return org.drip.analytics.daycount.Convention.RollDate (iDate, _iRollMode, _strCalendar,</span>
+<span class="fc" id="L158">		return org.drip.analytics.daycount.Convention.RollDate (iDate, _iRollMode, _strCalendar,</span>
 			_iNumDaysToRoll);
 	}
 }

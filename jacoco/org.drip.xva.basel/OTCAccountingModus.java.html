@@ -6,32 +6,50 @@ package org.drip.xva.basel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,39 +66,57 @@ package org.drip.xva.basel;
  */
 
 /**
- * OTCAccountingModus implements the Generic Basel Accounting Scheme using the Streamlined Accounting
- *  Framework for OTC Derivatives, as described in Albanese and Andersen (2014). The References are:
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955, eSSRN.
- *  
- *  - BCBS (2012): Consultative Document: Application of Own Credit Risk Adjustments to Derivatives, Basel
- *  	Committee on Banking Supervision.
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;i&gt;OTCAccountingModus&lt;/i&gt; implements the Generic Basel Accounting Scheme using the Streamlined Accounting
+ * Framework for OTC Derivatives, as described in Albanese and Andersen (2014). The References are:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  			Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  			&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		BCBS (2012): &lt;i&gt;Consultative Document: Application of Own Credit Risk Adjustments to
+ *  			Derivatives&lt;/i&gt; &lt;b&gt;Basel Committee on Banking Supervision&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class OTCAccountingModus
 {
-<span class="nc" id="L73">	private org.drip.xva.gross.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;</span>
+<span class="nc" id="L109">	private org.drip.xva.gross.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;</span>
 
 	protected OTCAccountingModus (
 		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
-<span class="nc" id="L78">	{</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator))</span>
+<span class="nc" id="L114">	{</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator))</span>
 		{
-<span class="nc" id="L81">			throw new java.lang.Exception (&quot;OTCAccountingModus Contructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;OTCAccountingModus Contructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L83">	}</span>
+<span class="nc" id="L119">	}</span>
 
 	/**
 	 * Retrieve the Counter Party Group Aggregator Instance
@@ -90,7 +126,7 @@ public abstract class OTCAccountingModus
 
 	public org.drip.xva.gross.ExposureAdjustmentAggregator aggregator()
 	{
-<span class="nc" id="L93">		return _exposureAdjustmentAggregator;</span>
+<span class="nc" id="L129">		return _exposureAdjustmentAggregator;</span>
 	}
 
 	/**

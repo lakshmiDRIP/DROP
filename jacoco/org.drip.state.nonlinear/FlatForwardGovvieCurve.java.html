@@ -6,33 +6,51 @@ package org.drip.state.nonlinear;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -49,15 +67,23 @@ package org.drip.state.nonlinear;
  */
 
 /**
- * FlatForwardGovvieCurve manages the Govvie Latent State, using the Flat Forward Rate as the State Response
- *  Representation.
+ * &lt;i&gt;FlatForwardGovvieCurve&lt;/i&gt; manages the Govvie Latent State, using the Flat Forward Rate as the State
+ * Response Representation.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non Linear&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGovvieCurve {
-<span class="fc" id="L59">	private int[] _aiDate = null;</span>
-<span class="fc" id="L60">	private double[] _adblForwardYield = null;</span>
+<span class="fc" id="L85">	private int[] _aiDate = null;</span>
+<span class="fc" id="L86">	private double[] _adblForwardYield = null;</span>
 
 	private double yearFract (
 		final int iStartDate,
@@ -66,8 +92,8 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 		final java.lang.String strDayCount)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L69">		return org.drip.analytics.daycount.Convention.YearFraction (iStartDate, iEndDate, strDayCount, false,</span>
-<span class="fc" id="L70">			aap, currency());</span>
+<span class="fc" id="L95">		return org.drip.analytics.daycount.Convention.YearFraction (iStartDate, iEndDate, strDayCount, false,</span>
+<span class="fc" id="L96">			aap, currency());</span>
 	}
 
 	/**
@@ -90,99 +116,99 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 		final double[] adblForwardYield)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L93">		super (iEpochDate, strTreasuryCode, strCurrency);</span>
+<span class="fc" id="L119">		super (iEpochDate, strTreasuryCode, strCurrency);</span>
 
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">		if (null == (_aiDate = aiDate) || null == (_adblForwardYield = adblForwardYield))</span>
-<span class="nc" id="L96">			throw new java.lang.Exception (&quot;FlatForwardGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (null == (_aiDate = aiDate) || null == (_adblForwardYield = adblForwardYield))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;FlatForwardGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L98">		int iNumNode = _aiDate.length;</span>
+<span class="fc" id="L124">		int iNumNode = _aiDate.length;</span>
 
-<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (0 == iNumNode || iNumNode != _adblForwardYield.length)</span>
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;FlatForwardGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L102">	}</span>
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">		if (0 == iNumNode || iNumNode != _adblForwardYield.length)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;FlatForwardGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L128">	}</span>
 
 	@Override public double yield (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L108" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
 
-<span class="fc" id="L110">		int i = 0;</span>
-<span class="fc" id="L111">		double dblDF = 1.;</span>
-<span class="fc" id="L112">		int iStartDate = _iEpochDate;</span>
-<span class="fc" id="L113">		int iNumDate = _aiDate.length;</span>
+<span class="fc" id="L136">		int i = 0;</span>
+<span class="fc" id="L137">		double dblDF = 1.;</span>
+<span class="fc" id="L138">		int iStartDate = _iEpochDate;</span>
+<span class="fc" id="L139">		int iNumDate = _aiDate.length;</span>
 
-<span class="fc" id="L115">		int iFreq = freq();</span>
+<span class="fc" id="L141">		int iFreq = freq();</span>
 
-<span class="fc" id="L117">		java.lang.String strDayCount = dayCount();</span>
+<span class="fc" id="L143">		java.lang.String strDayCount = dayCount();</span>
 
-<span class="fc" id="L119">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L120">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="fc" id="L145">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L146">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
-<span class="fc bfc" id="L122" title="All 4 branches covered.">		while (i &lt; iNumDate &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
-<span class="fc" id="L123">			dblDF *= java.lang.Math.pow (1. + (_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate,</span>
+<span class="fc bfc" id="L148" title="All 4 branches covered.">		while (i &lt; iNumDate &amp;&amp; (int) iDate &gt;= (int) _aiDate[i]) {</span>
+<span class="fc" id="L149">			dblDF *= java.lang.Math.pow (1. + (_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate,</span>
 				_aiDate[i], aap, strDayCount) * iFreq);
 
-<span class="fc" id="L126">			iStartDate = _aiDate[i++];</span>
+<span class="fc" id="L152">			iStartDate = _aiDate[i++];</span>
 		}
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		if (i &gt;= iNumDate) i = iNumDate - 1;</span>
 
-<span class="fc" id="L131">		return org.drip.analytics.support.Helper.DF2Yield (iFreq, dblDF * java.lang.Math.pow (1. +</span>
-<span class="fc" id="L132">			(_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate, iDate, aap, strDayCount) * iFreq),</span>
-<span class="fc" id="L133">				yearFract (_iEpochDate, iDate, aap, strDayCount));</span>
+<span class="fc" id="L157">		return org.drip.analytics.support.Helper.DF2Yield (iFreq, dblDF * java.lang.Math.pow (1. +</span>
+<span class="fc" id="L158">			(_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate, iDate, aap, strDayCount) * iFreq),</span>
+<span class="fc" id="L159">				yearFract (_iEpochDate, iDate, aap, strDayCount));</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc" id="L142">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L168">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L147">			_adblForwardYield[i] = dblValue;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
+<span class="nc" id="L173">			_adblForwardYield[i] = dblValue;</span>
 
-<span class="nc" id="L149">		return true;</span>
+<span class="nc" id="L175">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc" id="L158">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L184">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L163">			_adblForwardYield[i] += dblValue;</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
+<span class="nc" id="L189">			_adblForwardYield[i] += dblValue;</span>
 
-<span class="nc" id="L165">		return true;</span>
+<span class="nc" id="L191">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc" id="L173">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L199">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L176">			_adblForwardYield[i] = dblValue;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
+<span class="nc" id="L202">			_adblForwardYield[i] = dblValue;</span>
 
-<span class="nc" id="L178">		return true;</span>
+<span class="nc" id="L204">		return true;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{
-<span class="nc" id="L185">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

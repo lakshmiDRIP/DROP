@@ -72,10 +72,13 @@ package org.drip.analytics.daycount;
 
 /**
  * &lt;i&gt;DCAct_Act_ISDA&lt;/i&gt; implements the ISDA Act/Act day count convention.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -88,17 +91,17 @@ public class DCAct_Act_ISDA implements org.drip.analytics.daycount.DCFCalculator
 	 */
 
 	public DCAct_Act_ISDA()
-<span class="fc" id="L91">	{</span>
-<span class="fc" id="L92">	}</span>
+<span class="fc" id="L94">	{</span>
+<span class="fc" id="L95">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L96">		return &quot;DCAct_Act_ISDA&quot;;</span>
+<span class="nc" id="L99">		return &quot;DCAct_Act_ISDA&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L101">		return new java.lang.String[] {&quot;Actual/Actual ISDA&quot;, &quot;Act/Act ISDA&quot;, &quot;US:WIT Act/Act&quot;,</span>
+<span class="fc" id="L104">		return new java.lang.String[] {&quot;Actual/Actual ISDA&quot;, &quot;Act/Act ISDA&quot;, &quot;US:WIT Act/Act&quot;,</span>
 			&quot;DCAct_Act_ISDA&quot;};
 	}
 
@@ -110,17 +113,17 @@ public class DCAct_Act_ISDA implements org.drip.analytics.daycount.DCFCalculator
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L113">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L116">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;DCAct_Act_ISDA::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;DCAct_Act_ISDA::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L118">		return 1. * ((org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate) - dm.anterior()) /</span>
-<span class="fc bfc" id="L119" title="All 2 branches covered.">			(org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate) ? 366. : 365.)) +</span>
-<span class="fc" id="L120">				((org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate) + dm.posterior()) /</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">					(org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate) ? 366. : 365.)) +</span>
-<span class="fc" id="L122">						org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
-<span class="fc" id="L123">							org.drip.analytics.date.DateUtil.Year (iStartDate) - 1;</span>
+<span class="fc" id="L121">		return 1. * ((org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate) - dm.anterior()) /</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">			(org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate) ? 366. : 365.)) +</span>
+<span class="fc" id="L123">				((org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate) + dm.posterior()) /</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">					(org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate) ? 366. : 365.)) +</span>
+<span class="fc" id="L125">						org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
+<span class="fc" id="L126">							org.drip.analytics.date.DateUtil.Year (iStartDate) - 1;</span>
 	}
 
 	@Override public int daysAccrued (
@@ -131,24 +134,24 @@ public class DCAct_Act_ISDA implements org.drip.analytics.daycount.DCFCalculator
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L134">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L137">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;DCAct_Act_ISDA::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;DCAct_Act_ISDA::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L139">		int iDaysAccrued = 0;</span>
+<span class="fc" id="L142">		int iDaysAccrued = 0;</span>
 
-<span class="fc" id="L141">		int iStartYear = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
+<span class="fc" id="L144">		int iStartYear = org.drip.analytics.date.DateUtil.Year (iStartDate);</span>
 
-<span class="fc" id="L143">		int iEndYear = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
+<span class="fc" id="L146">		int iEndYear = org.drip.analytics.date.DateUtil.Year (iEndDate);</span>
 
-<span class="pc bpc" id="L145" title="1 of 4 branches missed.">		if (iEndYear == iStartYear) iDaysAccrued -= 0 == iEndYear % 4 ? 366 : 365;</span>
+<span class="pc bpc" id="L148" title="1 of 4 branches missed.">		if (iEndYear == iStartYear) iDaysAccrued -= 0 == iEndYear % 4 ? 366 : 365;</span>
 
-<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int iYear = iStartYear + 1; iYear &lt; iEndYear; ++iYear)</span>
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			iDaysAccrued += 0 == iYear % 4 ? 366 : 365;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int iYear = iStartYear + 1; iYear &lt; iEndYear; ++iYear)</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">			iDaysAccrued += 0 == iYear % 4 ? 366 : 365;</span>
 
-<span class="fc" id="L150">		return iDaysAccrued + org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate) - dm.anterior() +</span>
-<span class="fc" id="L151">			org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate) + dm.posterior();</span>
+<span class="fc" id="L153">		return iDaysAccrued + org.drip.analytics.date.DateUtil.DaysRemaining (iStartDate) - dm.anterior() +</span>
+<span class="fc" id="L154">			org.drip.analytics.date.DateUtil.DaysElapsed (iEndDate) + dm.posterior();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

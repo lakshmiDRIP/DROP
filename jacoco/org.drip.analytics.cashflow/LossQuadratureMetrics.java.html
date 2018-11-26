@@ -74,30 +74,40 @@ package org.drip.analytics.cashflow;
 /**
  * &lt;i&gt;LossPeriodCurveFactors&lt;/i&gt; is an Implementation of the Period Class enhanced by the Loss Period
  * Measures. It exports the following Functionality:
- * 
- * 	- Start/End Survival Probabilities
- * 	- Period Effective Notional/Recovery/Discount Factor
- * 	- Serialization into and De-serialization out of Byte Arrays
  *
- *	&lt;br&gt;
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Start/End Survival Probabilities
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Period Effective Notional/Recovery/Discount Factor
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Serialization into and De-serialization out of Byte Arrays
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LossQuadratureMetrics {
-<span class="fc" id="L93">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L94">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L95">	private double _dblAccrualDCF = java.lang.Double.NaN;</span>
-<span class="fc" id="L96">	private double _dblEffectiveDF = java.lang.Double.NaN;</span>
-<span class="fc" id="L97">	private double _dblEndSurvival = java.lang.Double.NaN;</span>
-<span class="fc" id="L98">	private double _dblStartSurvival = java.lang.Double.NaN;</span>
-<span class="fc" id="L99">	private double _dblEffectiveNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L100">	private double _dblEffectiveRecovery = java.lang.Double.NaN;</span>
+<span class="fc" id="L103">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L104">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L105">	private double _dblAccrualDCF = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private double _dblEffectiveDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblEndSurvival = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblStartSurvival = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblEffectiveNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblEffectiveRecovery = java.lang.Double.NaN;</span>
 
 	/**
 	 * Create an Instance of the LossPeriodCurveFactors using the Period's Dates and Curves to generate the
@@ -125,34 +135,34 @@ public class LossQuadratureMetrics {
 		final org.drip.state.credit.CreditCurve cc,
 		final int iDefaultLag)
 	{
-<span class="fc" id="L128">		if (</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||</span>
-<span class="pc bpc" id="L131" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveRecovery) ||</span>
+<span class="fc" id="L138">		if (</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||</span>
+<span class="pc bpc" id="L141" title="3 of 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveRecovery) ||</span>
 			null == dc ||
 			null == cc
 		)
-<span class="nc" id="L135">			return null;</span>
+<span class="nc" id="L145">			return null;</span>
 
 		try {
-<span class="fc" id="L138">			return new LossQuadratureMetrics (</span>
+<span class="fc" id="L148">			return new LossQuadratureMetrics (</span>
 				iStartDate,
 				iEndDate,
-<span class="fc" id="L141">				cc.survival (iStartDate),</span>
-<span class="fc" id="L142">				cc.survival (iEndDate),</span>
+<span class="fc" id="L151">				cc.survival (iStartDate),</span>
+<span class="fc" id="L152">				cc.survival (iEndDate),</span>
 				dblAccrualDCF,
 				dblEffectiveNotional,
 				dblEffectiveRecovery,
-<span class="fc" id="L146">				dc.effectiveDF (</span>
+<span class="fc" id="L156">				dc.effectiveDF (</span>
 					iStartDate + iDefaultLag,
 					iEndDate + iDefaultLag
 				)
 			);
-<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L162">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L165">		return null;</span>
 	}
 
 	/**
@@ -178,36 +188,36 @@ public class LossQuadratureMetrics {
 		final org.drip.state.credit.CreditCurve cc,
 		final int iDefaultLag)
 	{
-<span class="nc" id="L181">		if (</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||</span>
-<span class="nc bnc" id="L183" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||</span>
+<span class="nc" id="L191">		if (</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||</span>
+<span class="nc bnc" id="L193" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||</span>
 			null == dc ||
 			null == cc
 		)
-<span class="nc" id="L187">			return null;</span>
+<span class="nc" id="L197">			return null;</span>
 
 		try {
-<span class="nc" id="L190">			return new LossQuadratureMetrics (</span>
+<span class="nc" id="L200">			return new LossQuadratureMetrics (</span>
 				iStartDate,
 				iEndDate,
-<span class="nc" id="L193">				cc.survival (iStartDate),</span>
-<span class="nc" id="L194">				cc.survival (iEndDate),</span>
+<span class="nc" id="L203">				cc.survival (iStartDate),</span>
+<span class="nc" id="L204">				cc.survival (iEndDate),</span>
 				dblAccrualDCF,
 				dblEffectiveNotional,
-<span class="nc" id="L197">				cc.effectiveRecovery (</span>
+<span class="nc" id="L207">				cc.effectiveRecovery (</span>
 					iStartDate + iDefaultLag,
 					iEndDate + iDefaultLag
 				),
-<span class="nc" id="L201">				dc.effectiveDF (</span>
+<span class="nc" id="L211">				dc.effectiveDF (</span>
 					iStartDate + iDefaultLag,
 					iEndDate + iDefaultLag
 				)
 			);
-<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L207">			e.printStackTrace();</span>
+<span class="nc" id="L216">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L217">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L210">		return null;</span>
+<span class="nc" id="L220">		return null;</span>
 	}
 
 	/**
@@ -235,20 +245,20 @@ public class LossQuadratureMetrics {
 		final double dblEffectiveRecovery,
 		final double dblEffectiveDF)
 		throws java.lang.Exception
-<span class="fc" id="L238">	{</span>
-<span class="fc" id="L239">		if (</span>
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblStartSurvival = dblStartSurvival) ||</span>
-<span class="pc bpc" id="L241" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEndSurvival = dblEndSurvival) ||</span>
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualDCF = dblAccrualDCF) ||</span>
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveNotional = dblEffectiveNotional) ||</span>
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveRecovery = dblEffectiveRecovery) ||</span>
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveDF = dblEffectiveDF)</span>
+<span class="fc" id="L248">	{</span>
+<span class="fc" id="L249">		if (</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblStartSurvival = dblStartSurvival) ||</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEndSurvival = dblEndSurvival) ||</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualDCF = dblAccrualDCF) ||</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveNotional = dblEffectiveNotional) ||</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveRecovery = dblEffectiveRecovery) ||</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveDF = dblEffectiveDF)</span>
 		)
-<span class="nc" id="L247">			throw new java.lang.Exception (&quot;LossPeriodCurveFactors Constructor =&gt; Invalid params&quot;);</span>
+<span class="nc" id="L257">			throw new java.lang.Exception (&quot;LossPeriodCurveFactors Constructor =&gt; Invalid params&quot;);</span>
 
-<span class="fc" id="L249">		_iEndDate = iEndDate;</span>
-<span class="fc" id="L250">		_iStartDate = iStartDate;</span>
-<span class="fc" id="L251">	}</span>
+<span class="fc" id="L259">		_iEndDate = iEndDate;</span>
+<span class="fc" id="L260">		_iStartDate = iStartDate;</span>
+<span class="fc" id="L261">	}</span>
 
 	/**
 	 * Period Start Date
@@ -258,7 +268,7 @@ public class LossQuadratureMetrics {
 
 	public int startDate()
 	{
-<span class="fc" id="L261">		return _iStartDate;</span>
+<span class="fc" id="L271">		return _iStartDate;</span>
 	}
 
 	/**
@@ -269,7 +279,7 @@ public class LossQuadratureMetrics {
 
 	public double startSurvival()
 	{
-<span class="fc" id="L272">		return _dblStartSurvival;</span>
+<span class="fc" id="L282">		return _dblStartSurvival;</span>
 	}
 
 	/**
@@ -280,7 +290,7 @@ public class LossQuadratureMetrics {
 
 	public int endDate()
 	{
-<span class="fc" id="L283">		return _iEndDate;</span>
+<span class="fc" id="L293">		return _iEndDate;</span>
 	}
 
 	/**
@@ -291,7 +301,7 @@ public class LossQuadratureMetrics {
 
 	public double endSurvival()
 	{
-<span class="fc" id="L294">		return _dblEndSurvival;</span>
+<span class="fc" id="L304">		return _dblEndSurvival;</span>
 	}
 
 	/**
@@ -302,7 +312,7 @@ public class LossQuadratureMetrics {
 
 	public double effectiveNotional()
 	{
-<span class="fc" id="L305">		return _dblEffectiveNotional;</span>
+<span class="fc" id="L315">		return _dblEffectiveNotional;</span>
 	}
 
 	/**
@@ -313,7 +323,7 @@ public class LossQuadratureMetrics {
 
 	public double effectiveRecovery()
 	{
-<span class="fc" id="L316">		return _dblEffectiveRecovery;</span>
+<span class="fc" id="L326">		return _dblEffectiveRecovery;</span>
 	}
 
 	/**
@@ -324,7 +334,7 @@ public class LossQuadratureMetrics {
 
 	public double effectiveDF()
 	{
-<span class="fc" id="L327">		return _dblEffectiveDF;</span>
+<span class="fc" id="L337">		return _dblEffectiveDF;</span>
 	}
 
 	/**
@@ -335,7 +345,7 @@ public class LossQuadratureMetrics {
 
 	public double accrualDCF()
 	{
-<span class="fc" id="L338">		return _dblAccrualDCF;</span>
+<span class="fc" id="L348">		return _dblAccrualDCF;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

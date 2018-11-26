@@ -69,8 +69,9 @@ package org.drip.dynamics.lmm;
 
 /**
  * &lt;i&gt;LognormalLIBORPointEvolver&lt;/i&gt; sets up and implements the Multi-Factor No-arbitrage Dynamics of the
- *  Point Rates State Quantifiers traced from the Evolution of the LIBOR Forward Rate as formulated in:
- * 	&lt;br&gt;
+ * Point Rates State Quantifiers traced from the Evolution of the LIBOR Forward Rate as formulated in:
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *  	&lt;li&gt;
  *  		Goldys, B., M. Musiela, and D. Sondermann (1994): &lt;i&gt;Log-normality of Rates and Term Structure
@@ -85,38 +86,40 @@ package org.drip.dynamics.lmm;
  * 				&lt;i&gt;Mathematical Finance&lt;/i&gt; &lt;b&gt;7 (2)&lt;/b&gt; 127-155
  *  	&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.PointStateEvolver {
-<span class="fc" id="L99">	private org.drip.state.forward.ForwardCurve _fc = null;</span>
-<span class="fc" id="L100">	private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
-<span class="fc" id="L101">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
-<span class="fc" id="L102">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
-<span class="fc" id="L103">	private org.drip.dynamics.lmm.LognormalLIBORVolatility _llv = null;</span>
+<span class="fc" id="L102">	private org.drip.state.forward.ForwardCurve _fc = null;</span>
+<span class="fc" id="L103">	private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
+<span class="fc" id="L104">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L105">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="fc" id="L106">	private org.drip.dynamics.lmm.LognormalLIBORVolatility _llv = null;</span>
 
 	private double forwardDerivative (
 		final int iViewDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L109">		org.drip.function.definition.R1ToR1 freR1ToR1 = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="fc" id="L110">		{</span>
+<span class="fc" id="L112">		org.drip.function.definition.R1ToR1 freR1ToR1 = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="fc" id="L113">		{</span>
 			@Override public double evaluate (
 				final double dblDate)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L115">				return _fc.forward ((int) dblDate);</span>
+<span class="fc" id="L118">				return _fc.forward ((int) dblDate);</span>
 			}
 		};
 
-<span class="fc" id="L119">		return freR1ToR1.derivative (iViewDate, 1);</span>
+<span class="fc" id="L122">		return freR1ToR1.derivative (iViewDate, 1);</span>
 	}
 
 	private double continuousForwardRateIncrement (
@@ -125,37 +128,37 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 		final double[] adblMultivariateRandom)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L128">		final int iNumFactor = adblMultivariateRandom.length;</span>
+<span class="fc" id="L131">		final int iNumFactor = adblMultivariateRandom.length;</span>
 
-<span class="fc" id="L130">		final double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="fc" id="L133">		final double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
-<span class="fc" id="L132">		org.drip.function.definition.R1ToR1 continuousForwardRateR1ToR1 = new</span>
-<span class="fc" id="L133">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L135">		org.drip.function.definition.R1ToR1 continuousForwardRateR1ToR1 = new</span>
+<span class="fc" id="L136">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblDate)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L138">				double dblForwardPointVolatilityModulus = 0.;</span>
-<span class="fc" id="L139">				double dblPointVolatilityMultifactorRandom = 0.;</span>
+<span class="fc" id="L141">				double dblForwardPointVolatilityModulus = 0.;</span>
+<span class="fc" id="L142">				double dblPointVolatilityMultifactorRandom = 0.;</span>
 
-<span class="fc" id="L141">				double[] adblContinuousForwardVolatility = _llv.continuousForwardVolatility ((int) dblDate,</span>
-<span class="fc" id="L142">					_fc);</span>
+<span class="fc" id="L144">				double[] adblContinuousForwardVolatility = _llv.continuousForwardVolatility ((int) dblDate,</span>
+<span class="fc" id="L145">					_fc);</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">				if (null != adblContinuousForwardVolatility) {</span>
-<span class="fc bfc" id="L145" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L146">						dblForwardPointVolatilityModulus += adblContinuousForwardVolatility[i] *</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">				if (null != adblContinuousForwardVolatility) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L149">						dblForwardPointVolatilityModulus += adblContinuousForwardVolatility[i] *</span>
 							adblContinuousForwardVolatility[i];
-<span class="fc" id="L148">						dblPointVolatilityMultifactorRandom += adblContinuousForwardVolatility[i] *</span>
+<span class="fc" id="L151">						dblPointVolatilityMultifactorRandom += adblContinuousForwardVolatility[i] *</span>
 							adblMultivariateRandom[i];
 					}
 				}
 
-<span class="fc" id="L153">				return (_fc.forward ((int) dblDate) + 0.5 * dblForwardPointVolatilityModulus) *</span>
+<span class="fc" id="L156">				return (_fc.forward ((int) dblDate) + 0.5 * dblForwardPointVolatilityModulus) *</span>
 					dblAnnualizedIncrement + dblPointVolatilityMultifactorRandom * dblSpotTimeIncrementSQRT;
 			}
 		};
 
-<span class="fc" id="L158">		return continuousForwardRateR1ToR1.derivative (iViewDate, 1);</span>
+<span class="fc" id="L161">		return continuousForwardRateR1ToR1.derivative (iViewDate, 1);</span>
 	}
 
 	private double spotRateIncrement (
@@ -165,33 +168,33 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 		final double[] adblMultivariateRandom)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L168">		final int iNumFactor = adblMultivariateRandom.length;</span>
+<span class="fc" id="L171">		final int iNumFactor = adblMultivariateRandom.length;</span>
 
-<span class="fc" id="L170">		final double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="fc" id="L173">		final double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
-<span class="fc" id="L172">		org.drip.function.definition.R1ToR1 spotRateR1ToR1 = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L173">			(null) {</span>
+<span class="fc" id="L175">		org.drip.function.definition.R1ToR1 spotRateR1ToR1 = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L176">			(null) {</span>
 			@Override public double evaluate (
 				final double dblDate)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L178">				double dblPointVolatilityMultifactorRandom = 0.;</span>
+<span class="fc" id="L181">				double dblPointVolatilityMultifactorRandom = 0.;</span>
 
-<span class="fc" id="L180">				double[] adblContinuousForwardVolatility = _llv.continuousForwardVolatility ((int) dblDate,</span>
-<span class="fc" id="L181">					_fc);</span>
+<span class="fc" id="L183">				double[] adblContinuousForwardVolatility = _llv.continuousForwardVolatility ((int) dblDate,</span>
+<span class="fc" id="L184">					_fc);</span>
 
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">				if (null != adblContinuousForwardVolatility) {</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="fc" id="L185">						dblPointVolatilityMultifactorRandom += adblContinuousForwardVolatility[i] *</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">				if (null != adblContinuousForwardVolatility) {</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">					for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L188">						dblPointVolatilityMultifactorRandom += adblContinuousForwardVolatility[i] *</span>
 							adblMultivariateRandom[i];
 				}
 
-<span class="fc" id="L189">				return _fc.forward ((int) dblDate) * dblAnnualizedIncrement +</span>
+<span class="fc" id="L192">				return _fc.forward ((int) dblDate) * dblAnnualizedIncrement +</span>
 					dblPointVolatilityMultifactorRandom * dblAnnualizedIncrementSQRT;
 			}
 		};
 
-<span class="fc" id="L194">		return spotRateR1ToR1.derivative (dblViewDate, 1);</span>
+<span class="fc" id="L197">		return spotRateR1ToR1.derivative (dblViewDate, 1);</span>
 	}
 
 	/**
@@ -213,11 +216,11 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 		final org.drip.state.forward.ForwardCurve fc,
 		final org.drip.state.discount.MergedDiscountForwardCurve dc)
 		throws java.lang.Exception
-<span class="fc" id="L216">	{</span>
-<span class="pc bpc" id="L217" title="5 of 10 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_llv = llv)</span>
+<span class="fc" id="L219">	{</span>
+<span class="pc bpc" id="L220" title="5 of 10 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_llv = llv)</span>
 			|| null == (_fc = fc) || null == (_dc = dc))
-<span class="nc" id="L219">			throw new java.lang.Exception (&quot;LognormalLIBORPointEvolver ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L220">	}</span>
+<span class="nc" id="L222">			throw new java.lang.Exception (&quot;LognormalLIBORPointEvolver ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L223">	}</span>
 
 	/**
 	 * Retrieve the Funding Label
@@ -227,7 +230,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L230">		return _lslFunding;</span>
+<span class="nc" id="L233">		return _lslFunding;</span>
 	}
 
 	/**
@@ -238,7 +241,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-<span class="nc" id="L241">		return _lslForward;</span>
+<span class="nc" id="L244">		return _lslForward;</span>
 	}
 
 	/**
@@ -249,7 +252,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 	public org.drip.dynamics.lmm.LognormalLIBORVolatility llv()
 	{
-<span class="nc" id="L252">		return _llv;</span>
+<span class="nc" id="L255">		return _llv;</span>
 	}
 
 	/**
@@ -260,7 +263,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 	public org.drip.state.forward.ForwardCurve forwardCurve()
 	{
-<span class="nc" id="L263">		return _fc;</span>
+<span class="nc" id="L266">		return _fc;</span>
 	}
 
 	/**
@@ -271,7 +274,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 	public org.drip.state.discount.MergedDiscountForwardCurve discountCurve()
 	{
-<span class="nc" id="L274">		return _dc;</span>
+<span class="nc" id="L277">		return _dc;</span>
 	}
 
 	@Override public org.drip.dynamics.lmm.BGMPointUpdate evolve (
@@ -280,104 +283,104 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 		final int iSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
-<span class="pc bpc" id="L283" title="4 of 6 branches missed.">		if (iSpotDate &gt; iViewDate || (null != lsqmPrev &amp;&amp; !(lsqmPrev instanceof</span>
+<span class="pc bpc" id="L286" title="4 of 6 branches missed.">		if (iSpotDate &gt; iViewDate || (null != lsqmPrev &amp;&amp; !(lsqmPrev instanceof</span>
 			org.drip.dynamics.lmm.BGMPointUpdate)))
-<span class="nc" id="L285">			return null;</span>
+<span class="nc" id="L288">			return null;</span>
 
-<span class="fc" id="L287">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L290">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L289">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="fc" id="L292">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
-<span class="fc" id="L291">		double[] adblMultivariateRandom = _llv.msg().random();</span>
+<span class="fc" id="L294">		double[] adblMultivariateRandom = _llv.msg().random();</span>
 
-<span class="fc" id="L293">		java.lang.String strTenor = _lslForward.tenor();</span>
+<span class="fc" id="L296">		java.lang.String strTenor = _lslForward.tenor();</span>
 
-<span class="fc" id="L295">		double dblLIBOR = java.lang.Double.NaN;</span>
-<span class="fc" id="L296">		double dblSpotRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L297">		double dblDiscountFactor = java.lang.Double.NaN;</span>
-<span class="fc" id="L298">		double dblContinuouslyCompoundedForwardRate = java.lang.Double.NaN;</span>
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		org.drip.dynamics.lmm.BGMPointUpdate bgmPrev = null == lsqmPrev ? null :</span>
+<span class="fc" id="L298">		double dblLIBOR = java.lang.Double.NaN;</span>
+<span class="fc" id="L299">		double dblSpotRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L300">		double dblDiscountFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L301">		double dblContinuouslyCompoundedForwardRate = java.lang.Double.NaN;</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		org.drip.dynamics.lmm.BGMPointUpdate bgmPrev = null == lsqmPrev ? null :</span>
 			(org.drip.dynamics.lmm.BGMPointUpdate) lsqmPrev;
 
-<span class="fc" id="L302">		int iForwardDate = new org.drip.analytics.date.JulianDate (iViewDate).addTenor (strTenor).julian();</span>
+<span class="fc" id="L305">		int iForwardDate = new org.drip.analytics.date.JulianDate (iViewDate).addTenor (strTenor).julian();</span>
 
 		try {
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">			if (null == bgmPrev) {</span>
-<span class="fc" id="L306">				dblLIBOR = _fc.forward (iForwardDate);</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">			if (null == bgmPrev) {</span>
+<span class="fc" id="L309">				dblLIBOR = _fc.forward (iForwardDate);</span>
 
-<span class="fc" id="L308">				dblDiscountFactor = _dc.df (iViewDate);</span>
+<span class="fc" id="L311">				dblDiscountFactor = _dc.df (iViewDate);</span>
 
-<span class="fc" id="L310">				dblSpotRate = _dc.forward (iSpotDate, iSpotDate + 1);</span>
+<span class="fc" id="L313">				dblSpotRate = _dc.forward (iSpotDate, iSpotDate + 1);</span>
 
-<span class="fc" id="L312">				dblContinuouslyCompoundedForwardRate = _dc.forward (iViewDate, iViewDate + 1);</span>
+<span class="fc" id="L315">				dblContinuouslyCompoundedForwardRate = _dc.forward (iViewDate, iViewDate + 1);</span>
 			} else {
-<span class="nc" id="L314">				dblLIBOR = bgmPrev.libor();</span>
+<span class="nc" id="L317">				dblLIBOR = bgmPrev.libor();</span>
 
-<span class="nc" id="L316">				dblSpotRate = bgmPrev.spotRate();</span>
+<span class="nc" id="L319">				dblSpotRate = bgmPrev.spotRate();</span>
 
-<span class="nc" id="L318">				dblDiscountFactor = bgmPrev.discountFactor();</span>
+<span class="nc" id="L321">				dblDiscountFactor = bgmPrev.discountFactor();</span>
 
-<span class="nc" id="L320">				dblContinuouslyCompoundedForwardRate = bgmPrev.continuousForwardRate();</span>
+<span class="nc" id="L323">				dblContinuouslyCompoundedForwardRate = bgmPrev.continuousForwardRate();</span>
 			}
 
-<span class="fc" id="L323">			double[] adblLognormalFactorPointVolatility = _llv.factorPointVolatility (iSpotDate, iViewDate);</span>
+<span class="fc" id="L326">			double[] adblLognormalFactorPointVolatility = _llv.factorPointVolatility (iSpotDate, iViewDate);</span>
 
-<span class="fc" id="L325">			double[] adblContinuousForwardVolatility = _llv.continuousForwardVolatility (iViewDate, _fc);</span>
+<span class="fc" id="L328">			double[] adblContinuousForwardVolatility = _llv.continuousForwardVolatility (iViewDate, _fc);</span>
 
-<span class="fc" id="L327">			double dblCrossVolatilityDotProduct = 0.;</span>
-<span class="fc" id="L328">			double dblLognormalPointVolatilityModulus = 0.;</span>
-<span class="fc" id="L329">			double dblLIBORVolatilityMultiFactorRandom = 0.;</span>
-<span class="fc" id="L330">			double dblContinuousForwardVolatilityModulus = 0.;</span>
-<span class="fc" id="L331">			double dblForwardVolatilityMultiFactorRandom = 0.;</span>
-<span class="fc" id="L332">			int iNumFactor = adblLognormalFactorPointVolatility.length;</span>
+<span class="fc" id="L330">			double dblCrossVolatilityDotProduct = 0.;</span>
+<span class="fc" id="L331">			double dblLognormalPointVolatilityModulus = 0.;</span>
+<span class="fc" id="L332">			double dblLIBORVolatilityMultiFactorRandom = 0.;</span>
+<span class="fc" id="L333">			double dblContinuousForwardVolatilityModulus = 0.;</span>
+<span class="fc" id="L334">			double dblForwardVolatilityMultiFactorRandom = 0.;</span>
+<span class="fc" id="L335">			int iNumFactor = adblLognormalFactorPointVolatility.length;</span>
 
-<span class="fc bfc" id="L334" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L335">				dblLognormalPointVolatilityModulus += adblLognormalFactorPointVolatility[i] *</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L338">				dblLognormalPointVolatilityModulus += adblLognormalFactorPointVolatility[i] *</span>
 					adblLognormalFactorPointVolatility[i];
-<span class="fc" id="L337">				dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[i] *</span>
+<span class="fc" id="L340">				dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[i] *</span>
 					adblContinuousForwardVolatility[i];
-<span class="fc" id="L339">				dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[i] *</span>
+<span class="fc" id="L342">				dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[i] *</span>
 					adblMultivariateRandom[i] * dblAnnualizedIncrementSQRT;
-<span class="fc" id="L341">				dblContinuousForwardVolatilityModulus += adblContinuousForwardVolatility[i] *</span>
+<span class="fc" id="L344">				dblContinuousForwardVolatilityModulus += adblContinuousForwardVolatility[i] *</span>
 					adblContinuousForwardVolatility[i];
-<span class="fc" id="L343">				dblForwardVolatilityMultiFactorRandom += adblContinuousForwardVolatility[i] *</span>
+<span class="fc" id="L346">				dblForwardVolatilityMultiFactorRandom += adblContinuousForwardVolatility[i] *</span>
 					adblMultivariateRandom[i] * dblAnnualizedIncrementSQRT;
 			}
 
-<span class="fc" id="L347">			double dblDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
+<span class="fc" id="L350">			double dblDCF = org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
 
-<span class="fc" id="L349">			double dblLIBORDCF = dblDCF * dblLIBOR;</span>
+<span class="fc" id="L352">			double dblLIBORDCF = dblDCF * dblLIBOR;</span>
 
-<span class="fc" id="L351">			double dblLIBORIncrement = dblAnnualizedIncrement * (forwardDerivative (iForwardDate) + dblLIBOR</span>
+<span class="fc" id="L354">			double dblLIBORIncrement = dblAnnualizedIncrement * (forwardDerivative (iForwardDate) + dblLIBOR</span>
 				* dblCrossVolatilityDotProduct + (dblLognormalPointVolatilityModulus * dblLIBOR * dblLIBORDCF
 					/ (1. + dblLIBORDCF))) + dblLIBOR * dblLIBORVolatilityMultiFactorRandom;
 
-<span class="fc" id="L355">			double dblContinuousForwardRateIncrement = continuousForwardRateIncrement (iViewDate,</span>
+<span class="fc" id="L358">			double dblContinuousForwardRateIncrement = continuousForwardRateIncrement (iViewDate,</span>
 				dblAnnualizedIncrement, adblMultivariateRandom);
 
-<span class="fc" id="L358">			double dblSpotRateIncrement = spotRateIncrement (iSpotDate, iViewDate, dblAnnualizedIncrement,</span>
+<span class="fc" id="L361">			double dblSpotRateIncrement = spotRateIncrement (iSpotDate, iViewDate, dblAnnualizedIncrement,</span>
 				adblMultivariateRandom);
 
-<span class="fc" id="L361">			double dblEvolvedContinuousForwardRate = dblContinuouslyCompoundedForwardRate +</span>
+<span class="fc" id="L364">			double dblEvolvedContinuousForwardRate = dblContinuouslyCompoundedForwardRate +</span>
 				dblContinuousForwardRateIncrement;
-<span class="fc" id="L363">			double dblDiscountFactorIncrement = dblDiscountFactor * (dblSpotRate -</span>
+<span class="fc" id="L366">			double dblDiscountFactorIncrement = dblDiscountFactor * (dblSpotRate -</span>
 				dblContinuouslyCompoundedForwardRate) * dblAnnualizedIncrement -
 					dblForwardVolatilityMultiFactorRandom;
 
-<span class="fc" id="L367">			return org.drip.dynamics.lmm.BGMPointUpdate.Create (_lslFunding, _lslForward, iSpotDate,</span>
+<span class="fc" id="L370">			return org.drip.dynamics.lmm.BGMPointUpdate.Create (_lslFunding, _lslForward, iSpotDate,</span>
 				iSpotDate + iSpotTimeIncrement, iViewDate, dblLIBOR + dblLIBORIncrement, dblLIBORIncrement,
 					dblEvolvedContinuousForwardRate, dblContinuousForwardRateIncrement, dblSpotRate +
 						dblSpotRateIncrement, dblSpotRateIncrement, dblDiscountFactor +
 							dblDiscountFactorIncrement, dblDiscountFactorIncrement, java.lang.Math.exp
-<span class="fc" id="L372">								(dblEvolvedContinuousForwardRate) - 1., (java.lang.Math.exp (dblDCF *</span>
+<span class="fc" id="L375">								(dblEvolvedContinuousForwardRate) - 1., (java.lang.Math.exp (dblDCF *</span>
 									dblEvolvedContinuousForwardRate) - 1.) / dblDCF, java.lang.Math.sqrt
-<span class="fc" id="L374">										(dblLognormalPointVolatilityModulus), java.lang.Math.sqrt</span>
-<span class="fc" id="L375">											(dblContinuousForwardVolatilityModulus));</span>
-<span class="nc" id="L376">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L377">			e.printStackTrace();</span>
+<span class="fc" id="L377">										(dblLognormalPointVolatilityModulus), java.lang.Math.sqrt</span>
+<span class="fc" id="L378">											(dblContinuousForwardVolatilityModulus));</span>
+<span class="nc" id="L379">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L380">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L380">		return null;</span>
+<span class="nc" id="L383">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

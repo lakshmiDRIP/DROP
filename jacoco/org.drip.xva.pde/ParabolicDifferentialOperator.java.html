@@ -6,32 +6,50 @@ package org.drip.xva.pde;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,31 +66,50 @@ package org.drip.xva.pde;
  */
 
 /**
- * ParabolicDifferentialOperator sets up the Parabolic Differential Equation based on the Ito Evolution
- * 	Differential for the Reference Underlier Asset, as laid out in Burgard and Kjaer (2014). The References
- * 	are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
- *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;i&gt;ParabolicDifferentialOperator&lt;/i&gt; sets up the Parabolic Differential Equation based on the Ito
+ * Evolution Differential for the Reference Underlier Asset, as laid out in Burgard and Kjaer (2014). The
+ * References are:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): &lt;i&gt;Modeling,
+ *  			Pricing, and Hedging Counter-party Credit Exposure - A Technical Guide&lt;/i&gt; &lt;b&gt;Springer
+ *  			Finance&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  			86-90
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Li, B., and Y. Tang (2007): &lt;i&gt;Quantitative Analysis, Derivatives Modeling, and Trading
+ *  			Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market&lt;/i&gt;
+ *  			&lt;b&gt;World Scientific Publishing&lt;/b&gt; Singapore
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/pde&quot;&gt;PDE&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ParabolicDifferentialOperator
 {
-<span class="fc" id="L75">	private org.drip.exposure.evolver.PrimarySecurity _tradeable = null;</span>
+<span class="fc" id="L112">	private org.drip.exposure.evolver.PrimarySecurity _tradeable = null;</span>
 
 	/**
 	 * ParabolicDifferentialOperator Constructor
@@ -85,12 +122,12 @@ public class ParabolicDifferentialOperator
 	public ParabolicDifferentialOperator (
 		final org.drip.exposure.evolver.PrimarySecurity tradeable)
 		throws java.lang.Exception
-<span class="fc" id="L88">	{</span>
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == (_tradeable = tradeable))</span>
+<span class="fc" id="L125">	{</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == (_tradeable = tradeable))</span>
 		{
-<span class="nc" id="L91">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L130">	}</span>
 
 	/**
 	 * Retrieve the Tradeable Position
@@ -100,7 +137,7 @@ public class ParabolicDifferentialOperator
 
 	public org.drip.exposure.evolver.PrimarySecurity asset()
 	{
-<span class="nc" id="L103">		return _tradeable;</span>
+<span class="nc" id="L140">		return _tradeable;</span>
 	}
 
 	/**
@@ -119,29 +156,29 @@ public class ParabolicDifferentialOperator
 		final double positionValueVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == evolutionTrajectoryVertex ||</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex))</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (null == evolutionTrajectoryVertex ||</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex))</span>
 		{
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator::theta =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;ParabolicDifferentialOperator::theta =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L128">		org.drip.xva.derivative.PositionGreekVertex positionGreekVertex =</span>
-<span class="nc" id="L129">			evolutionTrajectoryVertex.positionGreekVertex();</span>
+<span class="nc" id="L165">		org.drip.xva.derivative.PositionGreekVertex positionGreekVertex =</span>
+<span class="nc" id="L166">			evolutionTrajectoryVertex.positionGreekVertex();</span>
 
-<span class="nc" id="L131">		double volatility = _tradeable.evolver().evaluator().volatility().value (</span>
+<span class="nc" id="L168">		double volatility = _tradeable.evolver().evaluator().volatility().value (</span>
 			new org.drip.measure.realization.JumpDiffusionVertex (
-<span class="nc" id="L133">				evolutionTrajectoryVertex.time(),</span>
+<span class="nc" id="L170">				evolutionTrajectoryVertex.time(),</span>
 				positionValueVertex,
 				0.,
 				false
 			)
 		);
 
-<span class="nc" id="L140">		return</span>
+<span class="nc" id="L177">		return</span>
 			0.5 * volatility * volatility * positionValueVertex * positionValueVertex *
-<span class="nc" id="L142">				positionGreekVertex.derivativeXVAValueGamma() -</span>
-<span class="nc" id="L143">			_tradeable.cashAccumulationRate() * positionValueVertex *</span>
-<span class="nc" id="L144">				positionGreekVertex.derivativeXVAValueDelta();</span>
+<span class="nc" id="L179">				positionGreekVertex.derivativeXVAValueGamma() -</span>
+<span class="nc" id="L180">			_tradeable.cashAccumulationRate() * positionValueVertex *</span>
+<span class="nc" id="L181">				positionGreekVertex.derivativeXVAValueDelta();</span>
 	}
 
 	/**
@@ -159,45 +196,45 @@ public class ParabolicDifferentialOperator
 		final double positionValueVertex,
 		final double shift)
 	{
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (null == evolutionTrajectoryVertex ||</span>
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex) ||</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (shift))</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		if (null == evolutionTrajectoryVertex ||</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex) ||</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (shift))</span>
 		{
-<span class="nc" id="L166">			return null;</span>
+<span class="nc" id="L203">			return null;</span>
 		}
 
-<span class="fc" id="L169">		org.drip.xva.derivative.PositionGreekVertex positionGreekVertex =</span>
-<span class="fc" id="L170">			evolutionTrajectoryVertex.positionGreekVertex();</span>
+<span class="fc" id="L206">		org.drip.xva.derivative.PositionGreekVertex positionGreekVertex =</span>
+<span class="fc" id="L207">			evolutionTrajectoryVertex.positionGreekVertex();</span>
 
-<span class="fc" id="L172">		double positionValueVertexDown = positionValueVertex - shift;</span>
-<span class="fc" id="L173">		double positionValueVertexUp = positionValueVertex + shift;</span>
-<span class="fc" id="L174">		double volatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L209">		double positionValueVertexDown = positionValueVertex - shift;</span>
+<span class="fc" id="L210">		double positionValueVertexUp = positionValueVertex + shift;</span>
+<span class="fc" id="L211">		double volatility = java.lang.Double.NaN;</span>
 
 		try
 		{
-<span class="fc" id="L178">			volatility = _tradeable.evolver().evaluator().volatility().value (</span>
+<span class="fc" id="L215">			volatility = _tradeable.evolver().evaluator().volatility().value (</span>
 				new org.drip.measure.realization.JumpDiffusionVertex (
-<span class="fc" id="L180">					evolutionTrajectoryVertex.time(),</span>
+<span class="fc" id="L217">					evolutionTrajectoryVertex.time(),</span>
 					positionValueVertex,
 					0.,
 					false
 				)
 			);
 		}
-<span class="nc" id="L187">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L224">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L189">			e.printStackTrace();</span>
+<span class="nc" id="L226">			e.printStackTrace();</span>
 
-<span class="nc" id="L191">			return null;</span>
-<span class="fc" id="L192">		}</span>
+<span class="nc" id="L228">			return null;</span>
+<span class="fc" id="L229">		}</span>
 
-<span class="fc" id="L194">		double gammaCoefficient = 0.5 * volatility * volatility *</span>
-<span class="fc" id="L195">			positionGreekVertex.derivativeXVAValueGamma();</span>
+<span class="fc" id="L231">		double gammaCoefficient = 0.5 * volatility * volatility *</span>
+<span class="fc" id="L232">			positionGreekVertex.derivativeXVAValueGamma();</span>
 
-<span class="fc" id="L197">		double deltaCoefficient = -1. * _tradeable.cashAccumulationRate() *</span>
-<span class="fc" id="L198">			positionGreekVertex.derivativeXVAValueDelta();</span>
+<span class="fc" id="L234">		double deltaCoefficient = -1. * _tradeable.cashAccumulationRate() *</span>
+<span class="fc" id="L235">			positionGreekVertex.derivativeXVAValueDelta();</span>
 
-<span class="fc" id="L200">		return new double[]</span>
+<span class="fc" id="L237">		return new double[]</span>
 		{
 			gammaCoefficient * positionValueVertexDown * positionValueVertexDown + deltaCoefficient *
 				positionValueVertexDown,

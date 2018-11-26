@@ -6,32 +6,50 @@ package org.drip.xva.vertex;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,27 +66,45 @@ package org.drip.xva.vertex;
  */
 
 /**
- * BurgardKjaerBuilder contains the Builders that construct the Burgard Kjaer Vertex using a Variant of the
- *  Generalized Burgard Kjaer (2013) Scheme. The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;i&gt;BurgardKjaerBuilder&lt;/i&gt; contains the Builders that construct the Burgard Kjaer Vertex using a Variant
+ * of the Generalized Burgard Kjaer (2013) Scheme. The References are:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  			86-90
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Li, B., and Y. Tang (2007): &lt;i&gt;Quantitative Analysis, Derivatives Modeling, and Trading
+ *  			Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market&lt;/i&gt;
+ *  			&lt;b&gt;World Scientific Publishing&lt;/b&gt; Singapore
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/vertex&quot;&gt;Vertex&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L71">public class BurgardKjaerBuilder</span>
+<span class="nc" id="L107">public class BurgardKjaerBuilder</span>
 {
 
 	/**
@@ -88,57 +124,57 @@ package org.drip.xva.vertex;
 		final org.drip.exposure.universe.MarketVertex marketVertex,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (null == marketVertex)</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == marketVertex)</span>
 		{
-<span class="nc" id="L93">			return null;</span>
+<span class="nc" id="L129">			return null;</span>
 		}
 
-<span class="fc" id="L96">		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =</span>
-<span class="fc" id="L97">			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
+<span class="fc" id="L132">		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =</span>
+<span class="fc" id="L133">			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
 				closeOutScheme,
 				forward,
 				0.
 			);
 
-<span class="fc" id="L103">		org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure =</span>
-<span class="fc" id="L104">			org.drip.xva.vertex.BurgardKjaerExposure.Initial (</span>
+<span class="fc" id="L139">		org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure =</span>
+<span class="fc" id="L140">			org.drip.xva.vertex.BurgardKjaerExposure.Initial (</span>
 				forward,
 				collateralGroupVertexCloseOut
 			);
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == burgardKjaerVertexExposure)</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (null == burgardKjaerVertexExposure)</span>
 		{
-<span class="nc" id="L111">			return null;</span>
+<span class="nc" id="L147">			return null;</span>
 		}
 
-<span class="fc" id="L114">		double fundingExposure = burgardKjaerVertexExposure.funding();</span>
+<span class="fc" id="L150">		double fundingExposure = burgardKjaerVertexExposure.funding();</span>
 
-<span class="fc" id="L116">		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();</span>
+<span class="fc" id="L152">		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();</span>
 
-<span class="fc" id="L118">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
+<span class="fc" id="L154">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
 
-<span class="fc" id="L120">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="fc" id="L156">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="fc" id="L122">		double dealerSurvival = dealerMarketVertex.survivalProbability();</span>
+<span class="fc" id="L158">		double dealerSurvival = dealerMarketVertex.survivalProbability();</span>
 
-<span class="fc" id="L124">		double dealerSeniorRecoveryRate = dealerMarketVertex.seniorRecoveryRate();</span>
+<span class="fc" id="L160">		double dealerSeniorRecoveryRate = dealerMarketVertex.seniorRecoveryRate();</span>
 
-<span class="fc" id="L126">		double dealerSubordinateRecoveryRate = dealerMarketVertex.subordinateRecoveryRate();</span>
+<span class="fc" id="L162">		double dealerSubordinateRecoveryRate = dealerMarketVertex.subordinateRecoveryRate();</span>
 
-<span class="fc" id="L128">		double clientSurvival = marketVertex.client().survivalProbability();</span>
+<span class="fc" id="L164">		double clientSurvival = marketVertex.client().survivalProbability();</span>
 
-<span class="fc" id="L130">		double incrementalDealerSurvival = dealerSurvival - 1.;</span>
+<span class="fc" id="L166">		double incrementalDealerSurvival = dealerSurvival - 1.;</span>
 
-<span class="fc" id="L132">		double adjustedExposure =</span>
-<span class="fc" id="L133">			forward + dealerSurvival * (clientSurvival - 1.) * burgardKjaerVertexExposure.credit() +</span>
-<span class="fc" id="L134">			clientSurvival * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +</span>
+<span class="fc" id="L168">		double adjustedExposure =</span>
+<span class="fc" id="L169">			forward + dealerSurvival * (clientSurvival - 1.) * burgardKjaerVertexExposure.credit() +</span>
+<span class="fc" id="L170">			clientSurvival * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +</span>
 			clientSurvival * incrementalDealerSurvival * fundingExposure -
-<span class="fc" id="L136">			dealerSurvival * clientSurvival * marketVertex.csaSpread() *</span>
-<span class="fc" id="L137">				burgardKjaerVertexExposure.variationMarginPosting();</span>
+<span class="fc" id="L172">			dealerSurvival * clientSurvival * marketVertex.csaSpread() *</span>
+<span class="fc" id="L173">				burgardKjaerVertexExposure.variationMarginPosting();</span>
 
 		try
 		{
-<span class="fc" id="L141">			return new org.drip.xva.vertex.BurgardKjaer (</span>
+<span class="fc" id="L177">			return new org.drip.xva.vertex.BurgardKjaer (</span>
 				anchorDate,
 				forward,
 				0.,
@@ -146,18 +182,18 @@ package org.drip.xva.vertex;
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (
 					(fundingExposure + dealerSubordinateRecoveryRate * adjustedExposure - dealerDefaultCloseOut) /
-<span class="fc" id="L149">						(dealerSeniorRecoveryRate - dealerSubordinateRecoveryRate) / dealerMarketVertex.seniorFundingReplicator(),</span>
+<span class="fc" id="L185">						(dealerSeniorRecoveryRate - dealerSubordinateRecoveryRate) / dealerMarketVertex.seniorFundingReplicator(),</span>
 					(fundingExposure + dealerSeniorRecoveryRate * adjustedExposure - dealerDefaultCloseOut) /
 						(dealerSubordinateRecoveryRate - dealerSeniorRecoveryRate) / dealerSubordinateFundingMarketVertex
 				)
 			);
 		}
-<span class="nc" id="L155">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L191">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L157">			e.printStackTrace();</span>
+<span class="nc" id="L193">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L160">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	/**
@@ -179,73 +215,73 @@ package org.drip.xva.vertex;
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
 		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure)
 	{
-<span class="pc bpc" id="L182" title="4 of 8 branches missed.">		if (null == collateralGroupVertexExposure ||</span>
+<span class="pc bpc" id="L218" title="4 of 8 branches missed.">		if (null == collateralGroupVertexExposure ||</span>
 			null == marketEdge ||
 			null == collateralGroupVertexCloseOut ||
 			null == burgardKjaerVertexExposure)
 		{
-<span class="nc" id="L187">			return null;</span>
+<span class="nc" id="L223">			return null;</span>
 		}
 
-<span class="fc" id="L190">		double fundingExposure = burgardKjaerVertexExposure.funding();</span>
+<span class="fc" id="L226">		double fundingExposure = burgardKjaerVertexExposure.funding();</span>
 
-<span class="fc" id="L192">		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();</span>
+<span class="fc" id="L228">		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();</span>
 
-<span class="fc" id="L194">		org.drip.exposure.universe.MarketVertex marketVertexStart = marketEdge.start();</span>
+<span class="fc" id="L230">		org.drip.exposure.universe.MarketVertex marketVertexStart = marketEdge.start();</span>
 
-<span class="fc" id="L196">		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
+<span class="fc" id="L232">		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
 
-<span class="fc" id="L198">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();</span>
+<span class="fc" id="L234">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();</span>
 
-<span class="fc" id="L200">		double dealerSubordinateFundingMarketVertexFinish = dealerMarketVertexFinish.subordinateFundingReplicator();</span>
+<span class="fc" id="L236">		double dealerSubordinateFundingMarketVertexFinish = dealerMarketVertexFinish.subordinateFundingReplicator();</span>
 
-<span class="fc" id="L202">		double dealerSurvivalFinish = dealerMarketVertexFinish.survivalProbability();</span>
+<span class="fc" id="L238">		double dealerSurvivalFinish = dealerMarketVertexFinish.survivalProbability();</span>
 
-<span class="fc" id="L204">		double dealerSeniorRecoveryRateFinish = dealerMarketVertexFinish.seniorRecoveryRate();</span>
+<span class="fc" id="L240">		double dealerSeniorRecoveryRateFinish = dealerMarketVertexFinish.seniorRecoveryRate();</span>
 
-<span class="fc" id="L206">		double dealerSubordinateRecoveryRateFinish = dealerMarketVertexFinish.subordinateRecoveryRate();</span>
+<span class="fc" id="L242">		double dealerSubordinateRecoveryRateFinish = dealerMarketVertexFinish.subordinateRecoveryRate();</span>
 
-<span class="fc" id="L208">		double clientSurvivalFinish = marketVertexFinish.client().survivalProbability();</span>
+<span class="fc" id="L244">		double clientSurvivalFinish = marketVertexFinish.client().survivalProbability();</span>
 
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">		double incrementalDealerSurvival = dealerSurvivalFinish -</span>
-<span class="fc" id="L211">			(null == marketVertexStart ? 1. : marketVertexStart.dealer().survivalProbability());</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		double incrementalDealerSurvival = dealerSurvivalFinish -</span>
+<span class="fc" id="L247">			(null == marketVertexStart ? 1. : marketVertexStart.dealer().survivalProbability());</span>
 
-<span class="fc" id="L213">		double adjustedExposure =</span>
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">			collateralGroupVertexExposure.uncollateralized() +</span>
+<span class="fc" id="L249">		double adjustedExposure =</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">			collateralGroupVertexExposure.uncollateralized() +</span>
 			dealerSurvivalFinish *
 				(clientSurvivalFinish -
-<span class="fc" id="L217">					(null == marketVertexStart ? 1. : marketVertexStart.client().survivalProbability())) *</span>
-<span class="fc" id="L218">				burgardKjaerVertexExposure.credit() +</span>
-<span class="fc" id="L219">			clientSurvivalFinish * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +</span>
+<span class="fc" id="L253">					(null == marketVertexStart ? 1. : marketVertexStart.client().survivalProbability())) *</span>
+<span class="fc" id="L254">				burgardKjaerVertexExposure.credit() +</span>
+<span class="fc" id="L255">			clientSurvivalFinish * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +</span>
 			clientSurvivalFinish * incrementalDealerSurvival * fundingExposure -
-<span class="fc" id="L221">			dealerSurvivalFinish * clientSurvivalFinish * marketVertexFinish.csaSpread() *</span>
-<span class="fc" id="L222">				burgardKjaerVertexExposure.variationMarginPosting();</span>
+<span class="fc" id="L257">			dealerSurvivalFinish * clientSurvivalFinish * marketVertexFinish.csaSpread() *</span>
+<span class="fc" id="L258">				burgardKjaerVertexExposure.variationMarginPosting();</span>
 
 		try
 		{
-<span class="fc" id="L226">			return new org.drip.xva.vertex.BurgardKjaer (</span>
+<span class="fc" id="L262">			return new org.drip.xva.vertex.BurgardKjaer (</span>
 				anchorDate,
-<span class="fc" id="L228">				collateralGroupVertexExposure.variationMarginEstimate(),</span>
-<span class="fc" id="L229">				collateralGroupVertexExposure.tradePayment(),</span>
+<span class="fc" id="L264">				collateralGroupVertexExposure.variationMarginEstimate(),</span>
+<span class="fc" id="L265">				collateralGroupVertexExposure.tradePayment(),</span>
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (
 					(fundingExposure + dealerSubordinateRecoveryRateFinish * adjustedExposure -
 						dealerDefaultCloseOut) / (dealerSeniorRecoveryRateFinish -
 						dealerSubordinateRecoveryRateFinish) /
-<span class="fc" id="L236">						dealerMarketVertexFinish.seniorFundingReplicator(),</span>
+<span class="fc" id="L272">						dealerMarketVertexFinish.seniorFundingReplicator(),</span>
 					(fundingExposure + dealerSeniorRecoveryRateFinish * adjustedExposure - dealerDefaultCloseOut)
 						/ (dealerSubordinateRecoveryRateFinish - dealerSeniorRecoveryRateFinish) /
 						dealerSubordinateFundingMarketVertexFinish
 				)
 			);
 		}
-<span class="nc" id="L243">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L279">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L245">			e.printStackTrace();</span>
+<span class="nc" id="L281">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L248">		return null;</span>
+<span class="nc" id="L284">		return null;</span>
 	}
 
 	/**
@@ -273,32 +309,32 @@ package org.drip.xva.vertex;
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-<span class="pc bpc" id="L276" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
-<span class="pc bpc" id="L277" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance) ||</span>
-<span class="pc bpc" id="L279" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (hedgeError))</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance) ||</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (hedgeError))</span>
 		{
-<span class="nc" id="L281">			return null;</span>
+<span class="nc" id="L317">			return null;</span>
 		}
 
-<span class="fc" id="L284">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
-<span class="fc" id="L285">		double collateralizedExposure = uncollateralizedExposure - collateralBalance;</span>
+<span class="fc" id="L320">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
+<span class="fc" id="L321">		double collateralizedExposure = uncollateralizedExposure - collateralBalance;</span>
 
-<span class="fc" id="L287">		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =</span>
-<span class="fc" id="L288">			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
+<span class="fc" id="L323">		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =</span>
+<span class="fc" id="L324">			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
 				closeOutScheme,
 				uncollateralizedExposure,
 				collateralBalance
 			);
 
-<span class="pc bpc" id="L294" title="1 of 2 branches missed.">		if (null == collateralGroupVertexCloseOut)</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">		if (null == collateralGroupVertexCloseOut)</span>
 		{
-<span class="nc" id="L296">			return null;</span>
+<span class="nc" id="L332">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L301">			return DealerPortfolioBuilder (</span>
+<span class="fc" id="L337">			return DealerPortfolioBuilder (</span>
 				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
@@ -307,19 +343,19 @@ package org.drip.xva.vertex;
 				marketEdge,
 				collateralGroupVertexCloseOut,
 				new org.drip.xva.vertex.BurgardKjaerExposure (
-<span class="fc" id="L310">					collateralizedExposure - collateralGroupVertexCloseOut.client(),</span>
-<span class="fc" id="L311">					collateralizedExposure - collateralGroupVertexCloseOut.dealer(),</span>
+<span class="fc" id="L346">					collateralizedExposure - collateralGroupVertexCloseOut.client(),</span>
+<span class="fc" id="L347">					collateralizedExposure - collateralGroupVertexCloseOut.dealer(),</span>
 					hedgeError,
 					collateralBalance
 				)
 			);
 		}
-<span class="nc" id="L317">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L353">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L319">			e.printStackTrace();</span>
+<span class="nc" id="L355">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L322">		return null;</span>
+<span class="nc" id="L358">		return null;</span>
 	}
 
 	/**
@@ -345,26 +381,26 @@ package org.drip.xva.vertex;
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
-<span class="pc bpc" id="L349" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
-<span class="pc bpc" id="L350" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
+<span class="pc bpc" id="L386" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
 		{
-<span class="nc" id="L352">			return null;</span>
+<span class="nc" id="L388">			return null;</span>
 		}
 
-<span class="fc" id="L355">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
-<span class="fc" id="L356">		double collateralizedExposure = uncollateralizedExposure - collateralBalance;</span>
+<span class="fc" id="L391">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
+<span class="fc" id="L392">		double collateralizedExposure = uncollateralizedExposure - collateralBalance;</span>
 
 		try
 		{
-<span class="fc" id="L360">			return DealerPortfolioBuilder (</span>
+<span class="fc" id="L396">			return DealerPortfolioBuilder (</span>
 				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-<span class="pc bpc" id="L367" title="3 of 6 branches missed.">				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
+<span class="pc bpc" id="L403" title="3 of 6 branches missed.">				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
 					closeOutScheme,
 					uncollateralizedExposure,
 					collateralBalance
@@ -377,12 +413,12 @@ package org.drip.xva.vertex;
 				)
 			);
 		}
-<span class="nc" id="L380">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L416">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L382">			e.printStackTrace();</span>
+<span class="nc" id="L418">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L385">		return null;</span>
+<span class="nc" id="L421">		return null;</span>
 	}
 
 	/**
@@ -405,24 +441,24 @@ package org.drip.xva.vertex;
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-<span class="pc bpc" id="L408" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
-<span class="pc bpc" id="L409" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))</span>
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))</span>
 		{
-<span class="nc" id="L411">			return null;</span>
+<span class="nc" id="L447">			return null;</span>
 		}
 
-<span class="fc" id="L414">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
+<span class="fc" id="L450">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
 
 		try
 		{
-<span class="fc" id="L418">			return DealerPortfolioBuilder (</span>
+<span class="fc" id="L454">			return DealerPortfolioBuilder (</span>
 				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-<span class="fc" id="L425">				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
+<span class="fc" id="L461">				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
 					closeOutScheme,
 					uncollateralizedExposure,
 					uncollateralizedExposure
@@ -435,12 +471,12 @@ package org.drip.xva.vertex;
 				)
 			);
 		}
-<span class="nc" id="L438">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L474">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L440">			e.printStackTrace();</span>
+<span class="nc" id="L476">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L443">		return null;</span>
+<span class="nc" id="L479">		return null;</span>
 	}
 
 	/**
@@ -462,25 +498,25 @@ package org.drip.xva.vertex;
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-<span class="pc bpc" id="L465" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
-<span class="pc bpc" id="L466" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))</span>
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))</span>
 		{
-<span class="nc" id="L468">			return null;</span>
+<span class="nc" id="L504">			return null;</span>
 		}
 
-<span class="fc" id="L471">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
-<span class="pc bpc" id="L472" title="1 of 2 branches missed.">		double collateralBalance = 0. &gt; uncollateralizedExposure ? uncollateralizedExposure : 0.;</span>
+<span class="fc" id="L507">		double uncollateralizedExposure = exposure + realizedCashFlow;</span>
+<span class="pc bpc" id="L508" title="1 of 2 branches missed.">		double collateralBalance = 0. &gt; uncollateralizedExposure ? uncollateralizedExposure : 0.;</span>
 
 		try
 		{
-<span class="fc" id="L476">			return DealerPortfolioBuilder (</span>
+<span class="fc" id="L512">			return DealerPortfolioBuilder (</span>
 				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
 					realizedCashFlow
 				),
 				marketEdge,
-<span class="pc bpc" id="L483" title="2 of 4 branches missed.">				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
+<span class="pc bpc" id="L519" title="2 of 4 branches missed.">				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (</span>
 					closeOutScheme,
 					uncollateralizedExposure,
 					collateralBalance
@@ -493,12 +529,12 @@ package org.drip.xva.vertex;
 				)
 			);
 		}
-<span class="nc" id="L496">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L532">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L498">			e.printStackTrace();</span>
+<span class="nc" id="L534">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L501">		return null;</span>
+<span class="nc" id="L537">		return null;</span>
 	}
 
 	/**
@@ -520,24 +556,24 @@ package org.drip.xva.vertex;
 		final double collateralBalance,
 		final org.drip.exposure.universe.MarketEdge marketEdge)
 	{
-<span class="pc bpc" id="L523" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
-<span class="pc bpc" id="L524" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
-<span class="pc bpc" id="L525" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||</span>
+<span class="pc bpc" id="L560" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
 		{
-<span class="nc" id="L527">			return null;</span>
+<span class="nc" id="L563">			return null;</span>
 		}
 
-<span class="fc" id="L530">		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
+<span class="fc" id="L566">		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();</span>
 
-<span class="fc" id="L532">		double dealerSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();</span>
+<span class="fc" id="L568">		double dealerSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();</span>
 
-<span class="fc" id="L534">		double clientRecoveryFinish = marketVertexFinish.client().seniorRecoveryRate();</span>
+<span class="fc" id="L570">		double clientRecoveryFinish = marketVertexFinish.client().seniorRecoveryRate();</span>
 
-<span class="fc" id="L536">		double collateralizedExposure = exposure + realizedCashFlow - collateralBalance;</span>
+<span class="fc" id="L572">		double collateralizedExposure = exposure + realizedCashFlow - collateralBalance;</span>
 
 		try
 		{
-<span class="fc" id="L540">			return DealerPortfolioBuilder (</span>
+<span class="fc" id="L576">			return DealerPortfolioBuilder (</span>
 				anchorDate,
 				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
 					exposure,
@@ -556,12 +592,12 @@ package org.drip.xva.vertex;
 				)
 			);
 		}
-<span class="nc" id="L559">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L595">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L561">			e.printStackTrace();</span>
+<span class="nc" id="L597">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L564">		return null;</span>
+<span class="nc" id="L600">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

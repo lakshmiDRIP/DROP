@@ -73,19 +73,21 @@ package org.drip.analytics.eventday;
 
 /**
  * &lt;i&gt;Weekend&lt;/i&gt; holds the left and the right weekend days. It provides functionality to retrieve them,
- *  check if the given day is a weekend, and serialize/de-serialize weekend days.
- *  &lt;br&gt;
+ * check if the given day is a weekend, and serialize/de-serialize weekend days.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Weekend {
-<span class="fc" id="L88">	private int[] _aiDay = null;</span>
+<span class="fc" id="L90">	private int[] _aiDay = null;</span>
 
 	/**
 	 * Create a Weekend Instance with SATURDAY and SUNDAY
@@ -96,13 +98,13 @@ public class Weekend {
 	public static final Weekend StandardWeekend()
 	{
 		try {
-<span class="fc" id="L99">			return new Weekend (new int[] {org.drip.analytics.date.DateUtil.SUNDAY,</span>
+<span class="fc" id="L101">			return new Weekend (new int[] {org.drip.analytics.date.DateUtil.SUNDAY,</span>
 				org.drip.analytics.date.DateUtil.SATURDAY});
-<span class="nc" id="L101">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L102">			e.printStackTrace();</span>
+<span class="nc" id="L103">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L104">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L105">		return null;</span>
+<span class="nc" id="L107">		return null;</span>
 	}
 
 	/**
@@ -116,18 +118,18 @@ public class Weekend {
 	public Weekend (
 		final int[] aiDay)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == aiDay) throw new java.lang.Exception (&quot;Weekend ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L121">	{</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == aiDay) throw new java.lang.Exception (&quot;Weekend ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L122">		int iNumWeekendDays = aiDay.length;;</span>
+<span class="fc" id="L124">		int iNumWeekendDays = aiDay.length;;</span>
 
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (0 == iNumWeekendDays) throw new java.lang.Exception (&quot;Weekend ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (0 == iNumWeekendDays) throw new java.lang.Exception (&quot;Weekend ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L126">		_aiDay = new int[iNumWeekendDays];</span>
+<span class="fc" id="L128">		_aiDay = new int[iNumWeekendDays];</span>
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumWeekendDays; ++i)</span>
-<span class="fc" id="L129">			_aiDay[i] = aiDay[i];</span>
-<span class="fc" id="L130">	}</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumWeekendDays; ++i)</span>
+<span class="fc" id="L131">			_aiDay[i] = aiDay[i];</span>
+<span class="fc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the weekend days
@@ -137,7 +139,7 @@ public class Weekend {
 
 	public int[] days()
 	{
-<span class="nc" id="L140">		return _aiDay;</span>
+<span class="nc" id="L142">		return _aiDay;</span>
 	}
 
 	/**
@@ -151,11 +153,11 @@ public class Weekend {
 	public boolean isLeftWeekend (
 		final int iDate)
 	{
-<span class="pc bpc" id="L154" title="2 of 4 branches missed.">		if (null == _aiDay || 0 == _aiDay.length) return false;</span>
+<span class="pc bpc" id="L156" title="2 of 4 branches missed.">		if (null == _aiDay || 0 == _aiDay.length) return false;</span>
 
-<span class="fc bfc" id="L156" title="All 2 branches covered.">		if (_aiDay[0] == (iDate % 7)) return true;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		if (_aiDay[0] == (iDate % 7)) return true;</span>
 
-<span class="fc" id="L158">		return false;</span>
+<span class="fc" id="L160">		return false;</span>
 	}
 
 	/**
@@ -169,11 +171,11 @@ public class Weekend {
 	public boolean isRightWeekend (
 		final double dblDate)
 	{
-<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if (null == _aiDay || 1 &gt;= _aiDay.length) return false;</span>
+<span class="pc bpc" id="L174" title="2 of 4 branches missed.">		if (null == _aiDay || 1 &gt;= _aiDay.length) return false;</span>
 
-<span class="fc bfc" id="L174" title="All 2 branches covered.">		if (_aiDay[1] == (dblDate % 7)) return true;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		if (_aiDay[1] == (dblDate % 7)) return true;</span>
 
-<span class="fc" id="L176">		return false;</span>
+<span class="fc" id="L178">		return false;</span>
 	}
 
 	/**
@@ -187,7 +189,7 @@ public class Weekend {
 	public boolean isWeekend (
 		final int iDate)
 	{
-<span class="fc bfc" id="L190" title="All 4 branches covered.">		return isLeftWeekend (iDate) || isRightWeekend (iDate);</span>
+<span class="fc bfc" id="L192" title="All 4 branches covered.">		return isLeftWeekend (iDate) || isRightWeekend (iDate);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -72,19 +72,21 @@ package org.drip.analytics.support;
  */
 
 /**
- *  &lt;i&gt;Logger&lt;/i&gt; implements level-set logging, backed by either the screen or a file. Logging always
- * 	includes time-stamps, and happens according to the level requested.
- *  &lt;br&gt;
+ * &lt;i&gt;Logger&lt;/i&gt; implements level-set logging, backed by either the screen or a file. Logging always includes
+ * time stamps, and happens according to the level requested.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L87">public class Logger {</span>
+<span class="nc" id="L89">public class Logger {</span>
 
 	/**
 	 * Logger level ERROR
@@ -110,21 +112,21 @@ package org.drip.analytics.support;
 
 	public static final int DEBUG = 4;
 
-<span class="fc" id="L113">	private static boolean s_bInit = false;</span>
-<span class="fc" id="L114">	private static java.io.BufferedWriter _writeLog = null;</span>
+<span class="fc" id="L115">	private static boolean s_bInit = false;</span>
+<span class="fc" id="L116">	private static java.io.BufferedWriter _writeLog = null;</span>
 
 	private static final java.lang.String ImprintPreSub (
 		final int iLevel,
 		final java.lang.String strMsg)
 	{
-<span class="nc bnc" id="L120" title="All 4 branches missed.">		if (null == strMsg || strMsg.isEmpty()) return &quot;&quot;;</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == strMsg || strMsg.isEmpty()) return &quot;&quot;;</span>
 
-<span class="nc" id="L122">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+<span class="nc" id="L124">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
 
-<span class="nc" id="L124">		sb.append (&quot;[&quot;).append ((new java.util.Date()).toString()).append (&quot;|Level:&quot;).append (iLevel).append</span>
-<span class="nc" id="L125">			(&quot;|&quot;).append (strMsg).append (&quot;]\n&quot;);</span>
+<span class="nc" id="L126">		sb.append (&quot;[&quot;).append ((new java.util.Date()).toString()).append (&quot;|Level:&quot;).append (iLevel).append</span>
+<span class="nc" id="L127">			(&quot;|&quot;).append (strMsg).append (&quot;]\n&quot;);</span>
 
-<span class="nc" id="L127">		return sb.toString();</span>
+<span class="nc" id="L129">		return sb.toString();</span>
 	}
 
 	/**
@@ -138,20 +140,20 @@ package org.drip.analytics.support;
 	public static boolean Init (
 		final java.lang.String strConfigFile)
 	{
-<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (null == strConfigFile || strConfigFile.isEmpty()) return true;</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (null == strConfigFile || strConfigFile.isEmpty()) return true;</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (s_bInit) return true;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (s_bInit) return true;</span>
 
 		try {
-<span class="nc" id="L146">			_writeLog = new java.io.BufferedWriter (new java.io.FileWriter</span>
-<span class="nc" id="L147">				(org.drip.param.config.ConfigLoader.LoggerLocation (strConfigFile)));</span>
+<span class="nc" id="L148">			_writeLog = new java.io.BufferedWriter (new java.io.FileWriter</span>
+<span class="nc" id="L149">				(org.drip.param.config.ConfigLoader.LoggerLocation (strConfigFile)));</span>
 
-<span class="nc" id="L149">			return s_bInit = true;</span>
-<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L151">			e.printStackTrace();</span>
+<span class="nc" id="L151">			return s_bInit = true;</span>
+<span class="nc" id="L152">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L153">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L154">		return s_bInit = false;</span>
+<span class="nc" id="L156">		return s_bInit = false;</span>
 	}
 
 	/**
@@ -169,23 +171,23 @@ package org.drip.analytics.support;
 		final boolean bHardLog,
 		final java.lang.String strMsg)
 	{
-<span class="nc bnc" id="L172" title="All 6 branches missed.">		if (!s_bInit || null == strMsg || strMsg.isEmpty()) return false;</span>
+<span class="nc bnc" id="L174" title="All 6 branches missed.">		if (!s_bInit || null == strMsg || strMsg.isEmpty()) return false;</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (bHardLog) {</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (bHardLog) {</span>
 			try {
-<span class="nc" id="L176">				_writeLog.write (ImprintPreSub (iLevel, strMsg));</span>
+<span class="nc" id="L178">				_writeLog.write (ImprintPreSub (iLevel, strMsg));</span>
 
-<span class="nc" id="L178">				return true;</span>
-<span class="nc" id="L179">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L180">				e.printStackTrace();</span>
+<span class="nc" id="L180">				return true;</span>
+<span class="nc" id="L181">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L182">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L183">			return false;</span>
+<span class="nc" id="L185">			return false;</span>
 		}
 
-<span class="nc" id="L186">		System.out.println (ImprintPreSub (iLevel, strMsg));</span>
+<span class="nc" id="L188">		System.out.println (ImprintPreSub (iLevel, strMsg));</span>
 
-<span class="nc" id="L188">		return true;</span>
+<span class="nc" id="L190">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

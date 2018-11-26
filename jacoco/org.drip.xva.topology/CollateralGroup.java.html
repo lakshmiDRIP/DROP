@@ -6,31 +6,49 @@ package org.drip.xva.topology;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -47,29 +65,48 @@ package org.drip.xva.topology;
  */
 
 /**
- * CollateralGroup represents an Aggregation of Position Groups over a common Collateral Specification. The
- *  References are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management, and
- *  	Collateral Trading &lt;b&gt;https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301&lt;/b&gt;&lt;br&gt;&lt;br&gt;
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;i&gt;CollateralGroup&lt;/i&gt; represents an Aggregation of Position Groups over a common Collateral
+ * Specification. The References are:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Albanese, C., L. Andersen, and, S. Iabichino (2015): The FVA Puzzle: Accounting, Risk Management,
+ *  			and Collateral Trading https://papers.ssrn.com/sol3/paper.cfm?abstract_id_2517301
+ *  			&lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  			86-90
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology&quot;&gt;Topology&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 {
-<span class="nc" id="L71">	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;</span>
-<span class="nc" id="L72">	private java.util.Map&lt;java.lang.String, org.drip.xva.topology.PositionGroup&gt; _positionGroupMap = null;</span>
+<span class="nc" id="L108">	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;</span>
+<span class="nc" id="L109">	private java.util.Map&lt;java.lang.String, org.drip.xva.topology.PositionGroup&gt; _positionGroupMap = null;</span>
 
 	/**
 	 * CollateralGroup Constructor
@@ -87,19 +124,19 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L90">		super (</span>
+<span class="nc" id="L127">		super (</span>
 			id,
 			name
 		);
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == (_collateralGroupSpecification = collateralGroupSpecification))</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == (_collateralGroupSpecification = collateralGroupSpecification))</span>
 		{
-<span class="nc" id="L97">			throw new java.lang.Exception (&quot;CollateralGroup Contructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;CollateralGroup Contructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L100">		_positionGroupMap = new</span>
+<span class="nc" id="L137">		_positionGroupMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.topology.PositionGroup&gt;();
-<span class="nc" id="L102">	}</span>
+<span class="nc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Collateral Group Specification
@@ -109,7 +146,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
 	{
-<span class="nc" id="L112">		return _collateralGroupSpecification;</span>
+<span class="nc" id="L149">		return _collateralGroupSpecification;</span>
 	}
 
 	/**
@@ -120,7 +157,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public java.util.Map&lt;java.lang.String, org.drip.xva.topology.PositionGroup&gt; positionGroupMap()
 	{
-<span class="nc" id="L123">		return _positionGroupMap;</span>
+<span class="nc" id="L160">		return _positionGroupMap;</span>
 	}
 
 	/**
@@ -134,17 +171,17 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	public boolean addPositionGroup (
 		final org.drip.xva.topology.PositionGroup positionGroup)
 	{
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (null == positionGroup)</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (null == positionGroup)</span>
 		{
-<span class="nc" id="L139">			return false;</span>
+<span class="nc" id="L176">			return false;</span>
 		}
 
-<span class="nc" id="L142">		_positionGroupMap.put (</span>
-<span class="nc" id="L143">			positionGroup.id(),</span>
+<span class="nc" id="L179">		_positionGroupMap.put (</span>
+<span class="nc" id="L180">			positionGroup.id(),</span>
 			positionGroup
 		);
 
-<span class="nc" id="L147">		return true;</span>
+<span class="nc" id="L184">		return true;</span>
 	}
 
 	/**
@@ -158,8 +195,8 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	public boolean containsPositionGroup (
 		final java.lang.String positionGroupID)
 	{
-<span class="nc bnc" id="L161" title="All 4 branches missed.">		return null == positionGroupID || positionGroupID.isEmpty() ? false : _positionGroupMap.containsKey</span>
-<span class="nc" id="L162">			(positionGroupID);</span>
+<span class="nc bnc" id="L198" title="All 4 branches missed.">		return null == positionGroupID || positionGroupID.isEmpty() ? false : _positionGroupMap.containsKey</span>
+<span class="nc" id="L199">			(positionGroupID);</span>
 	}
 
 	/**
@@ -173,7 +210,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	public org.drip.xva.topology.PositionGroup positionGroup (
 		final java.lang.String positionGroupID)
 	{
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		return containsPositionGroup (positionGroupID) ? _positionGroupMap.get (positionGroupID) : null;</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		return containsPositionGroup (positionGroupID) ? _positionGroupMap.get (positionGroupID) : null;</span>
 	}
 
 	/**
@@ -184,7 +221,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.OvernightLabel overnightLabel()
 	{
-<span class="nc" id="L187">		return _collateralGroupSpecification.overnightLabel();</span>
+<span class="nc" id="L224">		return _collateralGroupSpecification.overnightLabel();</span>
 	}
 
 	/**
@@ -195,7 +232,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.CSALabel csaLabel()
 	{
-<span class="nc" id="L198">		return _collateralGroupSpecification.csaLabel();</span>
+<span class="nc" id="L235">		return _collateralGroupSpecification.csaLabel();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

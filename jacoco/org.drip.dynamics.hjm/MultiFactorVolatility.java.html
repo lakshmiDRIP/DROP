@@ -69,19 +69,22 @@ package org.drip.dynamics.hjm;
 
 /**
  * &lt;i&gt;MultiFactorVolatility&lt;/i&gt; implements the Volatility of the Multi-factor Stochastic Evolution Process.
- *  The Factors may come from the Underlying Stochastic Variables, or from Principal Components.
+ * The Factors may come from the Underlying Stochastic Variables, or from Principal Components.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm&quot;&gt;HJM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm&quot;&gt;HJM&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultiFactorVolatility {
-<span class="fc" id="L83">	private org.drip.analytics.definition.MarketSurface[] _aMSVolatility = null;</span>
-<span class="fc" id="L84">	private org.drip.sequence.random.PrincipalFactorSequenceGenerator _pfsg = null;</span>
+<span class="fc" id="L86">	private org.drip.analytics.definition.MarketSurface[] _aMSVolatility = null;</span>
+<span class="fc" id="L87">	private org.drip.sequence.random.PrincipalFactorSequenceGenerator _pfsg = null;</span>
 
 	/**
 	 * MultiFactorVolatility Constructor
@@ -96,15 +99,15 @@ public class MultiFactorVolatility {
 		final org.drip.analytics.definition.MarketSurface[] aMSVolatility,
 		final org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg)
 		throws java.lang.Exception
-<span class="fc" id="L99">	{</span>
-<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (null == (_aMSVolatility = aMSVolatility) || null == (_pfsg = pfsg))</span>
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;MultiFactorVolatility ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L102">	{</span>
+<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (null == (_aMSVolatility = aMSVolatility) || null == (_pfsg = pfsg))</span>
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;MultiFactorVolatility ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L103">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="fc" id="L106">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (0 == iNumFactor || _aMSVolatility.length &lt; iNumFactor)</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;MultiFactorVolatility ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (0 == iNumFactor || _aMSVolatility.length &lt; iNumFactor)</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;MultiFactorVolatility ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L110">	}</span>
 
 	/**
 	 * Retrieve the Array of Volatility Surfaces
@@ -114,7 +117,7 @@ public class MultiFactorVolatility {
 
 	public org.drip.analytics.definition.MarketSurface[] volatilitySurface()
 	{
-<span class="nc" id="L117">		return _aMSVolatility;</span>
+<span class="nc" id="L120">		return _aMSVolatility;</span>
 	}
 
 	/**
@@ -125,7 +128,7 @@ public class MultiFactorVolatility {
 
 	public org.drip.sequence.random.PrincipalFactorSequenceGenerator msg()
 	{
-<span class="fc" id="L128">		return _pfsg;</span>
+<span class="fc" id="L131">		return _pfsg;</span>
 	}
 
 	/**
@@ -141,29 +144,29 @@ public class MultiFactorVolatility {
 		final int iFactorIndex,
 		final int iXDate)
 	{
-<span class="fc" id="L144">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="fc" id="L147">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (iFactorIndex &gt;= iNumFactor) return null;</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (iFactorIndex &gt;= iNumFactor) return null;</span>
 
-<span class="fc" id="L148">		final int iNumVariate = _aMSVolatility.length;</span>
+<span class="fc" id="L151">		final int iNumVariate = _aMSVolatility.length;</span>
 
-<span class="fc" id="L150">		return new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L153">		return new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L155">				double dblMultiFactorVol = 0.;</span>
+<span class="fc" id="L158">				double dblMultiFactorVol = 0.;</span>
 
-<span class="fc" id="L157">				double[] adblFactor = _pfsg.factors()[iFactorIndex];</span>
+<span class="fc" id="L160">				double[] adblFactor = _pfsg.factors()[iFactorIndex];</span>
 
-<span class="fc bfc" id="L159" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="fc" id="L160">					org.drip.analytics.definition.NodeStructure tsVolatilityXDate =</span>
-<span class="fc" id="L161">						_aMSVolatility[iFactorIndex].xAnchorTermStructure (iXDate);</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="fc" id="L163">					org.drip.analytics.definition.NodeStructure tsVolatilityXDate =</span>
+<span class="fc" id="L164">						_aMSVolatility[iFactorIndex].xAnchorTermStructure (iXDate);</span>
 
-<span class="fc" id="L163">					dblMultiFactorVol += adblFactor[i] * tsVolatilityXDate.node ((int) dblX);</span>
+<span class="fc" id="L166">					dblMultiFactorVol += adblFactor[i] * tsVolatilityXDate.node ((int) dblX);</span>
 				}
 
-<span class="fc" id="L166">				return _pfsg.factorWeight()[iFactorIndex] * dblMultiFactorVol;</span>
+<span class="fc" id="L169">				return _pfsg.factorWeight()[iFactorIndex] * dblMultiFactorVol;</span>
 			}
 		};
 	}
@@ -186,14 +189,14 @@ public class MultiFactorVolatility {
 		final int iYDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L189">		org.drip.function.definition.R1ToR1 auVolatilityFunction = xDateVolatilityFunction (iFactorIndex,</span>
+<span class="fc" id="L192">		org.drip.function.definition.R1ToR1 auVolatilityFunction = xDateVolatilityFunction (iFactorIndex,</span>
 			iXDate);
 
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if (null == auVolatilityFunction)</span>
-<span class="nc" id="L193">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (null == auVolatilityFunction)</span>
+<span class="nc" id="L196">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorVolatility::volatilityIntegral =&gt; Cannot extract X Date Volatility Function&quot;);
 
-<span class="fc" id="L196">		return auVolatilityFunction.integrate (iXDate, iYDate) / 365.25;</span>
+<span class="fc" id="L199">		return auVolatilityFunction.integrate (iXDate, iYDate) / 365.25;</span>
 	}
 
 	/**
@@ -214,21 +217,21 @@ public class MultiFactorVolatility {
 		final int iYDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L217">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="nc" id="L220">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (iFactorIndex &gt;= iNumFactor)</span>
-<span class="nc" id="L220">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (iFactorIndex &gt;= iNumFactor)</span>
+<span class="nc" id="L223">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorVolatility::factorPointVolatility =&gt; Invalid Factor Index&quot;);
 
-<span class="nc" id="L223">		double[] adblFactor = _pfsg.factors()[iFactorIndex];</span>
+<span class="nc" id="L226">		double[] adblFactor = _pfsg.factors()[iFactorIndex];</span>
 
-<span class="nc" id="L225">		int iNumVariate = adblFactor.length;</span>
-<span class="nc" id="L226">		double dblFactorPointVolatility = 0.;</span>
+<span class="nc" id="L228">		int iNumVariate = adblFactor.length;</span>
+<span class="nc" id="L229">		double dblFactorPointVolatility = 0.;</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L229">			dblFactorPointVolatility += adblFactor[i] * _aMSVolatility[i].node (iXDate, iYDate);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L232">			dblFactorPointVolatility += adblFactor[i] * _aMSVolatility[i].node (iXDate, iYDate);</span>
 
-<span class="nc" id="L231">		return dblFactorPointVolatility;</span>
+<span class="nc" id="L234">		return dblFactorPointVolatility;</span>
 	}
 
 	/**
@@ -244,34 +247,34 @@ public class MultiFactorVolatility {
 		final int iXDate,
 		final int iYDate)
 	{
-<span class="fc" id="L247">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="fc" id="L250">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="fc" id="L249">		double[][] aadblFactor = _pfsg.factors();</span>
+<span class="fc" id="L252">		double[][] aadblFactor = _pfsg.factors();</span>
 
-<span class="fc" id="L251">		int iNumVariate = aadblFactor[0].length;</span>
-<span class="fc" id="L252">		double[] adblVariateVolatility = new double[iNumVariate];</span>
-<span class="fc" id="L253">		double[] adblFactorPointVolatility = new double[iNumFactor];</span>
+<span class="fc" id="L254">		int iNumVariate = aadblFactor[0].length;</span>
+<span class="fc" id="L255">		double[] adblVariateVolatility = new double[iNumVariate];</span>
+<span class="fc" id="L256">		double[] adblFactorPointVolatility = new double[iNumFactor];</span>
 
-<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
 			try {
-<span class="fc" id="L257">				adblVariateVolatility[iVariateIndex] = _aMSVolatility[iVariateIndex].node (iXDate, iYDate);</span>
-<span class="nc" id="L258">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L259">				e.printStackTrace();</span>
+<span class="fc" id="L260">				adblVariateVolatility[iVariateIndex] = _aMSVolatility[iVariateIndex].node (iXDate, iYDate);</span>
+<span class="nc" id="L261">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L262">				e.printStackTrace();</span>
 
-<span class="nc" id="L261">				return null;</span>
-<span class="fc" id="L262">			}</span>
+<span class="nc" id="L264">				return null;</span>
+<span class="fc" id="L265">			}</span>
 		}
 
-<span class="fc bfc" id="L265" title="All 2 branches covered.">		for (int iFactorIndex = 0; iFactorIndex &lt; iNumFactor; ++iFactorIndex) {</span>
-<span class="fc" id="L266">			adblFactorPointVolatility[iFactorIndex] = 0.;</span>
-<span class="fc" id="L267">			double[] adblFactor = aadblFactor[iFactorIndex];</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">		for (int iFactorIndex = 0; iFactorIndex &lt; iNumFactor; ++iFactorIndex) {</span>
+<span class="fc" id="L269">			adblFactorPointVolatility[iFactorIndex] = 0.;</span>
+<span class="fc" id="L270">			double[] adblFactor = aadblFactor[iFactorIndex];</span>
 
-<span class="fc bfc" id="L269" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex)</span>
-<span class="fc" id="L270">				adblFactorPointVolatility[iFactorIndex] += adblFactor[iVariateIndex] *</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex)</span>
+<span class="fc" id="L273">				adblFactorPointVolatility[iFactorIndex] += adblFactor[iVariateIndex] *</span>
 					adblVariateVolatility[iVariateIndex];
 		}
 
-<span class="fc" id="L274">		return adblFactorPointVolatility;</span>
+<span class="fc" id="L277">		return adblFactorPointVolatility;</span>
 	}
 
 	/**
@@ -292,21 +295,21 @@ public class MultiFactorVolatility {
 		final int iYDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L295">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="fc" id="L298">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (iFactorIndex &gt;= iNumFactor)</span>
-<span class="nc" id="L298">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		if (iFactorIndex &gt;= iNumFactor)</span>
+<span class="nc" id="L301">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorVolatility::weightedFactorPointVolatility =&gt; Invalid Factor Index&quot;);
 
-<span class="fc" id="L301">		double[] adblFactor = _pfsg.factors()[iFactorIndex];</span>
+<span class="fc" id="L304">		double[] adblFactor = _pfsg.factors()[iFactorIndex];</span>
 
-<span class="fc" id="L303">		int iNumVariate = adblFactor.length;</span>
-<span class="fc" id="L304">		double dblFactorPointVolatility = 0.;</span>
+<span class="fc" id="L306">		int iNumVariate = adblFactor.length;</span>
+<span class="fc" id="L307">		double dblFactorPointVolatility = 0.;</span>
 
-<span class="fc bfc" id="L306" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L307">			dblFactorPointVolatility += adblFactor[i] * _aMSVolatility[i].node (iXDate, iYDate);</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L310">			dblFactorPointVolatility += adblFactor[i] * _aMSVolatility[i].node (iXDate, iYDate);</span>
 
-<span class="fc" id="L309">		return _pfsg.factorWeight()[iFactorIndex] * dblFactorPointVolatility;</span>
+<span class="fc" id="L312">		return _pfsg.factorWeight()[iFactorIndex] * dblFactorPointVolatility;</span>
 	}
 
 	/**
@@ -325,17 +328,17 @@ public class MultiFactorVolatility {
 		final int iYDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L328">		int iNumFactor = _pfsg.numFactor();</span>
+<span class="nc" id="L331">		int iNumFactor = _pfsg.numFactor();</span>
 
-<span class="nc" id="L330">		double dblPointVolatilityModulus = 0.;</span>
+<span class="nc" id="L333">		double dblPointVolatilityModulus = 0.;</span>
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="nc" id="L333">			double dblWeightedFactorPointVolatility = weightedFactorPointVolatility (i, iXDate, iYDate);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="nc" id="L336">			double dblWeightedFactorPointVolatility = weightedFactorPointVolatility (i, iXDate, iYDate);</span>
 
-<span class="nc" id="L335">			dblPointVolatilityModulus += dblWeightedFactorPointVolatility * dblWeightedFactorPointVolatility;</span>
+<span class="nc" id="L338">			dblPointVolatilityModulus += dblWeightedFactorPointVolatility * dblWeightedFactorPointVolatility;</span>
 		}
 
-<span class="nc" id="L338">		return dblPointVolatilityModulus;</span>
+<span class="nc" id="L341">		return dblPointVolatilityModulus;</span>
 	}
 
 	/**
@@ -358,19 +361,19 @@ public class MultiFactorVolatility {
 		final boolean bTerminal)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L361">		org.drip.function.definition.R1ToR1 pointVolatilityR1ToR1 = new</span>
-<span class="nc" id="L362">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L364">		org.drip.function.definition.R1ToR1 pointVolatilityR1ToR1 = new</span>
+<span class="nc" id="L365">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L367" title="All 2 branches missed.">				return bTerminal ? pointVolatilityModulus (iXDate, (int) dblVariate) : pointVolatilityModulus</span>
-<span class="nc" id="L368">					((int) dblVariate, iYDate);</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">				return bTerminal ? pointVolatilityModulus (iXDate, (int) dblVariate) : pointVolatilityModulus</span>
+<span class="nc" id="L371">					((int) dblVariate, iYDate);</span>
 			}
 		};
 
-<span class="nc bnc" id="L372" title="All 2 branches missed.">		return bTerminal ? pointVolatilityR1ToR1.derivative (iXDate, iOrder) :</span>
-<span class="nc" id="L373">			pointVolatilityR1ToR1.derivative (iXDate, iOrder);</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">		return bTerminal ? pointVolatilityR1ToR1.derivative (iXDate, iOrder) :</span>
+<span class="nc" id="L376">			pointVolatilityR1ToR1.derivative (iXDate, iOrder);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,32 +6,50 @@ package org.drip.xva.derivative;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,37 +66,56 @@ package org.drip.xva.derivative;
  */
 
 /**
- * EvolutionTrajectoryVertex holds the Evolution Snapshot of the Trade-able Prices, the Cash Account, the
- *  Replication Portfolio, and the corresponding Derivative Value, as laid out in Burgard and Kjaer (2014).
- *  The References are:
- *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
- *  
- *  - Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): Modeling, Pricing,
- *  	and Hedging Counter-party Credit Exposure - A Technical Guide, Springer Finance, New York.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;i&gt;EvolutionTrajectoryVertex&lt;/i&gt; holds the Evolution Snapshot of the Trade-able Prices, the Cash Account,
+ * the Replication Portfolio, and the corresponding Derivative Value, as laid out in Burgard and Kjaer
+ * (2014). The References are:
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Cesari, G., J. Aquilina, N. Charpillon, X. Filipovic, G. Lee, and L. Manda (2009): &lt;i&gt;Modeling,
+ *  			Pricing, and Hedging Counter-party Credit Exposure - A Technical Guide&lt;/i&gt; &lt;b&gt;Springer
+ *  			Finance&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  			86-90
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Li, B., and Y. Tang (2007): &lt;i&gt;Quantitative Analysis, Derivatives Modeling, and Trading
+ *  			Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market&lt;/i&gt;
+ *  			&lt;b&gt;World Scientific Publishing&lt;/b&gt; Singapore
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/derivative&quot;&gt;Derivative&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class EvolutionTrajectoryVertex
 {
-<span class="fc" id="L75">	private double _time = java.lang.Double.NaN;</span>
-<span class="fc" id="L76">	private double _collateral = java.lang.Double.NaN;</span>
-<span class="fc" id="L77">	private double _hedgeError = java.lang.Double.NaN;</span>
-<span class="fc" id="L78">	private double _clientGainOnDealerDefault = java.lang.Double.NaN;</span>
-<span class="fc" id="L79">	private double _dealerGainOnClientDefault = java.lang.Double.NaN;</span>
-<span class="fc" id="L80">	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;</span>
-<span class="fc" id="L81">	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;</span>
+<span class="fc" id="L112">	private double _time = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _collateral = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _hedgeError = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	private double _clientGainOnDealerDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private double _dealerGainOnClientDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;</span>
+<span class="fc" id="L118">	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;</span>
 
 	/**
 	 * EvolutionTrajectoryVertex Constructor
@@ -103,20 +140,20 @@ public class EvolutionTrajectoryVertex
 		final double collateral,
 		final double hedgeError)
 		throws java.lang.Exception
-<span class="fc" id="L106">	{</span>
-<span class="pc bpc" id="L107" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_time = time) ||</span>
+<span class="fc" id="L143">	{</span>
+<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_time = time) ||</span>
 			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
 			null == (_positionGreekVertex = positionGreekVertex) ||
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientGainOnDealerDefault =</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientGainOnDealerDefault =</span>
 				clientGainOnDealerDefault) ||
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerGainOnClientDefault =</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerGainOnClientDefault =</span>
 				dealerGainOnClientDefault) ||
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_collateral = collateral) ||</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_collateral = collateral) ||</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
 		{
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;EvolutionTrajectoryVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L154">			throw new java.lang.Exception (&quot;EvolutionTrajectoryVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L119">	}</span>
+<span class="fc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Time Instant
@@ -126,7 +163,7 @@ public class EvolutionTrajectoryVertex
 
 	public double time()
 	{
-<span class="fc" id="L129">		return _time;</span>
+<span class="fc" id="L166">		return _time;</span>
 	}
 
 	/**
@@ -137,7 +174,7 @@ public class EvolutionTrajectoryVertex
 
 	public double collateral()
 	{
-<span class="nc" id="L140">		return _collateral;</span>
+<span class="nc" id="L177">		return _collateral;</span>
 	}
 
 	/**
@@ -148,7 +185,7 @@ public class EvolutionTrajectoryVertex
 
 	public double hedgeError()
 	{
-<span class="nc" id="L151">		return _hedgeError;</span>
+<span class="nc" id="L188">		return _hedgeError;</span>
 	}
 
 	/**
@@ -159,7 +196,7 @@ public class EvolutionTrajectoryVertex
 
 	public org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex()
 	{
-<span class="fc" id="L162">		return _replicationPortfolioVertex;</span>
+<span class="fc" id="L199">		return _replicationPortfolioVertex;</span>
 	}
 
 	/**
@@ -170,7 +207,7 @@ public class EvolutionTrajectoryVertex
 
 	public org.drip.xva.derivative.PositionGreekVertex positionGreekVertex()
 	{
-<span class="fc" id="L173">		return _positionGreekVertex;</span>
+<span class="fc" id="L210">		return _positionGreekVertex;</span>
 	}
 
 	/**
@@ -181,7 +218,7 @@ public class EvolutionTrajectoryVertex
 
 	public double gainOnDealerDefault()
 	{
-<span class="fc" id="L184">		return _clientGainOnDealerDefault;</span>
+<span class="fc" id="L221">		return _clientGainOnDealerDefault;</span>
 	}
 
 	/**
@@ -192,7 +229,7 @@ public class EvolutionTrajectoryVertex
 
 	public double gainOnClientDefault()
 	{
-<span class="fc" id="L195">		return _dealerGainOnClientDefault;</span>
+<span class="fc" id="L232">		return _dealerGainOnClientDefault;</span>
 	}
 
 	/**
@@ -210,27 +247,27 @@ public class EvolutionTrajectoryVertex
 		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (null == marketVertex)</span>
 		{
-<span class="nc" id="L215">			throw new java.lang.Exception</span>
+<span class="nc" id="L252">			throw new java.lang.Exception</span>
 				(&quot;EvolutionTrajectoryVertex::verifyFundingConstraint =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L219">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
+<span class="nc" id="L256">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
 
-<span class="nc" id="L221">		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +</span>
-<span class="nc" id="L222">			dealerMarketVertex.seniorFundingReplicator() *</span>
-<span class="nc" id="L223">				_replicationPortfolioVertex.dealerSeniorNumeraireHoldings();</span>
+<span class="nc" id="L258">		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +</span>
+<span class="nc" id="L259">			dealerMarketVertex.seniorFundingReplicator() *</span>
+<span class="nc" id="L260">				_replicationPortfolioVertex.dealerSeniorNumeraireHoldings();</span>
 
-<span class="nc" id="L225">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="nc" id="L262">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
 		{
-<span class="nc" id="L229">			fundingConstraint += dealerSubordinateFundingMarketVertex *</span>
-<span class="nc" id="L230">				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();</span>
+<span class="nc" id="L266">			fundingConstraint += dealerSubordinateFundingMarketVertex *</span>
+<span class="nc" id="L267">				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();</span>
 		}
 
-<span class="nc" id="L233">		return fundingConstraint;</span>
+<span class="nc" id="L270">		return fundingConstraint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

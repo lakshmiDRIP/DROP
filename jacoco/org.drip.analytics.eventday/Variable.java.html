@@ -73,23 +73,25 @@ package org.drip.analytics.eventday;
 
 /**
  * &lt;i&gt;Variable&lt;/i&gt; class contains the rule characterizing the variable holiday’s month, day in week, week in
- *  month, and the weekend days. Specific holidays in the given year are generated using these rules.
- *  &lt;br&gt;
+ * month, and the weekend days. Specific holidays in the given year are generated using these rules.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Variable extends Base {
-<span class="nc" id="L88">	private int _iMonth = 0;</span>
-<span class="nc" id="L89">	private int _iWeekDay = 0;</span>
-<span class="nc" id="L90">	private int _iWeekInMonth = 0;</span>
-<span class="nc" id="L91">	private boolean _bFromFront = true;</span>
-<span class="nc" id="L92">	private org.drip.analytics.eventday.Weekend _wkend = null;</span>
+<span class="nc" id="L90">	private int _iMonth = 0;</span>
+<span class="nc" id="L91">	private int _iWeekDay = 0;</span>
+<span class="nc" id="L92">	private int _iWeekInMonth = 0;</span>
+<span class="nc" id="L93">	private boolean _bFromFront = true;</span>
+<span class="nc" id="L94">	private org.drip.analytics.eventday.Weekend _wkend = null;</span>
 
 	/**
 	 * Construct the object from the week, day, month, from front/back, week end, and description
@@ -110,39 +112,39 @@ public class Variable extends Base {
 		final Weekend wkend,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L113">		super (strDescription);</span>
+<span class="nc" id="L115">		super (strDescription);</span>
 
-<span class="nc" id="L115">		_wkend = wkend;</span>
-<span class="nc" id="L116">		_iMonth = iMonth;</span>
-<span class="nc" id="L117">		_iWeekDay = iWeekDay;</span>
-<span class="nc" id="L118">		_bFromFront = bFromFront;</span>
-<span class="nc" id="L119">		_iWeekInMonth = iWeekInMonth;</span>
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L117">		_wkend = wkend;</span>
+<span class="nc" id="L118">		_iMonth = iMonth;</span>
+<span class="nc" id="L119">		_iWeekDay = iWeekDay;</span>
+<span class="nc" id="L120">		_bFromFront = bFromFront;</span>
+<span class="nc" id="L121">		_iWeekInMonth = iWeekInMonth;</span>
+<span class="nc" id="L122">	}</span>
 
 	@Override public int dateInYear (
 		final int iYear,
 		final boolean bAdjustForWeekend)
 	{
-<span class="nc" id="L126">		int iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L128">		int iDate = java.lang.Integer.MIN_VALUE;</span>
 
 		try {
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			if (_bFromFront)</span>
-<span class="nc" id="L130">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
-<span class="nc" id="L131">					_iWeekDay)).julian() + (7 * (_iWeekInMonth - 1));</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			if (_bFromFront)</span>
+<span class="nc" id="L132">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
+<span class="nc" id="L133">					_iWeekDay)).julian() + (7 * (_iWeekInMonth - 1));</span>
 			else {
-<span class="nc" id="L133">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
-<span class="nc" id="L134">					org.drip.analytics.date.DateUtil.DaysInMonth (_iMonth, iYear))).julian() - (7 *</span>
+<span class="nc" id="L135">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
+<span class="nc" id="L136">					org.drip.analytics.date.DateUtil.DaysInMonth (_iMonth, iYear))).julian() - (7 *</span>
 						(_iWeekInMonth - 1));
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">				while (_iWeekDay != (iDate % 7)) --iDate;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				while (_iWeekDay != (iDate % 7)) --iDate;</span>
 			}
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (bAdjustForWeekend) return Base.rollHoliday (iDate, true, _wkend);</span>
-<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L142">			e.printStackTrace();</span>
-<span class="nc" id="L143">		}</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			if (bAdjustForWeekend) return Base.rollHoliday (iDate, true, _wkend);</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
+<span class="nc" id="L145">		}</span>
 
-<span class="nc" id="L145">		return iDate;</span>
+<span class="nc" id="L147">		return iDate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

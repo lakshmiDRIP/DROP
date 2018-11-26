@@ -70,14 +70,15 @@ package org.drip.analytics.cashflow;
 
 /**
  * &lt;i&gt;ComposableUnitPeriod&lt;/i&gt; represents the Cash Flow Periods' Composable Unit Period Details. Currently it
- *  holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the Coupon and
- *  the Accrual Day Counts, as well as the EOM Adjustment Flags.
+ * holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the Coupon and the
+ * Accrual Day Counts, as well as the EOM Adjustment Flags.
  *
- *	&lt;br&gt;
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -103,12 +104,12 @@ public abstract class ComposableUnitPeriod {
 
 	public static final int NODE_RIGHT_OF_SEGMENT = 4;
 
-<span class="fc" id="L106">	private int _iFreq = -1;</span>
-<span class="fc" id="L107">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="fc" id="L108">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L109">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L110">	private double _dblFullCouponDCF = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private org.drip.param.period.UnitCouponAccrualSetting _ucas = null;</span>
+<span class="fc" id="L107">	private int _iFreq = -1;</span>
+<span class="fc" id="L108">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="fc" id="L109">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L110">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L111">	private double _dblFullCouponDCF = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private org.drip.param.period.UnitCouponAccrualSetting _ucas = null;</span>
 
 	protected ComposableUnitPeriod (
 		final int iStartDate,
@@ -116,26 +117,26 @@ public abstract class ComposableUnitPeriod {
 		final java.lang.String strTenor,
 		final org.drip.param.period.UnitCouponAccrualSetting ucas)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (</span>
 			(_iStartDate = iStartDate) &gt;= (_iEndDate = iEndDate) ||
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">			null == (_strTenor = strTenor) || strTenor.isEmpty() ||</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">			null == (_strTenor = strTenor) || strTenor.isEmpty() ||</span>
 			null == (_ucas = ucas)
 		)
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ComposableUnitPeriod ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;ComposableUnitPeriod ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L127">		_iFreq = org.drip.analytics.support.Helper.TenorToFreq (_strTenor);</span>
+<span class="fc" id="L128">		_iFreq = org.drip.analytics.support.Helper.TenorToFreq (_strTenor);</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		_dblFullCouponDCF = _ucas.couponDCFOffOfFreq() ? 1. / _iFreq :</span>
-<span class="fc" id="L130">			org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		_dblFullCouponDCF = _ucas.couponDCFOffOfFreq() ? 1. / _iFreq :</span>
+<span class="fc" id="L131">			org.drip.analytics.daycount.Convention.YearFraction (</span>
 				_iStartDate,
 				_iEndDate,
-<span class="fc" id="L133">				_ucas.couponDC(),</span>
-<span class="fc" id="L134">				_ucas.couponEOMAdjustment(),</span>
-<span class="fc" id="L135">				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq),</span>
-<span class="fc" id="L136">				_ucas.calendar()</span>
+<span class="fc" id="L134">				_ucas.couponDC(),</span>
+<span class="fc" id="L135">				_ucas.couponEOMAdjustment(),</span>
+<span class="fc" id="L136">				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq),</span>
+<span class="fc" id="L137">				_ucas.calendar()</span>
 			);
-<span class="fc" id="L138">	}</span>
+<span class="fc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Accrual Start Date
@@ -145,7 +146,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int startDate()
 	{
-<span class="fc" id="L148">		return _iStartDate;</span>
+<span class="fc" id="L149">		return _iStartDate;</span>
 	}
 
 	/**
@@ -156,7 +157,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int endDate()
 	{
-<span class="fc" id="L159">		return _iEndDate;</span>
+<span class="fc" id="L160">		return _iEndDate;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int freq()
 	{
-<span class="nc" id="L170">		return _iFreq;</span>
+<span class="nc" id="L171">		return _iFreq;</span>
 	}
 
 	/**
@@ -178,7 +179,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String couponDC()
 	{
-<span class="fc" id="L181">		return _ucas.couponDC();</span>
+<span class="fc" id="L182">		return _ucas.couponDC();</span>
 	}
 
 	/**
@@ -189,7 +190,7 @@ public abstract class ComposableUnitPeriod {
 
 	public boolean couponEOMAdjustment()
 	{
-<span class="fc" id="L192">		return _ucas.couponEOMAdjustment();</span>
+<span class="fc" id="L193">		return _ucas.couponEOMAdjustment();</span>
 	}
 
 	/**
@@ -200,7 +201,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String accrualDC()
 	{
-<span class="fc" id="L203">		return _ucas.accrualDC();</span>
+<span class="fc" id="L204">		return _ucas.accrualDC();</span>
 	}
 
 	/**
@@ -211,7 +212,7 @@ public abstract class ComposableUnitPeriod {
 
 	public boolean accrualEOMAdjustment()
 	{
-<span class="fc" id="L214">		return _ucas.accrualEOMAdjustment();</span>
+<span class="fc" id="L215">		return _ucas.accrualEOMAdjustment();</span>
 	}
 
 	/**
@@ -222,7 +223,7 @@ public abstract class ComposableUnitPeriod {
 
 	public boolean couponDCFOffOfFreq()
 	{
-<span class="nc" id="L225">		return _ucas.couponDCFOffOfFreq();</span>
+<span class="nc" id="L226">		return _ucas.couponDCFOffOfFreq();</span>
 	}
 
 	/**
@@ -233,7 +234,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String calendar()
 	{
-<span class="fc" id="L236">		return _ucas.calendar();</span>
+<span class="fc" id="L237">		return _ucas.calendar();</span>
 	}
 
 	/**
@@ -244,7 +245,7 @@ public abstract class ComposableUnitPeriod {
 
 	public int accrualCompoundingRule()
 	{
-<span class="fc" id="L247">		return _ucas.accrualCompoundingRule();</span>
+<span class="fc" id="L248">		return _ucas.accrualCompoundingRule();</span>
 	}
 
 	/**
@@ -255,7 +256,7 @@ public abstract class ComposableUnitPeriod {
 
 	public double fullCouponDCF()
 	{
-<span class="fc" id="L258">		return _dblFullCouponDCF;</span>
+<span class="fc" id="L259">		return _dblFullCouponDCF;</span>
 	}
 
 	/**
@@ -266,7 +267,7 @@ public abstract class ComposableUnitPeriod {
 
 	public java.lang.String tenor()
 	{
-<span class="nc" id="L269">		return _strTenor;</span>
+<span class="nc" id="L270">		return _strTenor;</span>
 	}
 
 	/**
@@ -280,11 +281,11 @@ public abstract class ComposableUnitPeriod {
 	public int dateLocation (
 		final int iDateNode)
 	{
-<span class="fc bfc" id="L283" title="All 2 branches covered.">		if (iDateNode &lt; _iStartDate) return NODE_LEFT_OF_SEGMENT;</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		if (iDateNode &lt; _iStartDate) return NODE_LEFT_OF_SEGMENT;</span>
 
-<span class="fc bfc" id="L285" title="All 2 branches covered.">		if (iDateNode &gt; _iEndDate) return NODE_RIGHT_OF_SEGMENT;</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">		if (iDateNode &gt; _iEndDate) return NODE_RIGHT_OF_SEGMENT;</span>
 
-<span class="fc" id="L287">		return NODE_INSIDE_SEGMENT;</span>
+<span class="fc" id="L288">		return NODE_INSIDE_SEGMENT;</span>
 	}
 
 	/**
@@ -302,29 +303,29 @@ public abstract class ComposableUnitPeriod {
 		final int iAccrualEnd)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		if (NODE_INSIDE_SEGMENT != dateLocation (iAccrualEnd))</span>
-<span class="nc" id="L306">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">		if (NODE_INSIDE_SEGMENT != dateLocation (iAccrualEnd))</span>
+<span class="nc" id="L307">			throw new java.lang.Exception</span>
 				(&quot;ComposableUnitPeriod::accrualDCF =&gt; Invalid in-period accrual date!&quot;);
 
-<span class="fc" id="L309">		org.drip.analytics.daycount.ActActDCParams aap = new org.drip.analytics.daycount.ActActDCParams (</span>
+<span class="fc" id="L310">		org.drip.analytics.daycount.ActActDCParams aap = new org.drip.analytics.daycount.ActActDCParams (</span>
 			_iFreq,
 			_iEndDate - _iStartDate
 		);
 
-<span class="fc" id="L314">		java.lang.String strAccrualDC = accrualDC();</span>
+<span class="fc" id="L315">		java.lang.String strAccrualDC = accrualDC();</span>
 
-<span class="fc" id="L316">		java.lang.String strCalendar = calendar();</span>
+<span class="fc" id="L317">		java.lang.String strCalendar = calendar();</span>
 
-<span class="fc" id="L318">		boolean bAccrualEOMAdjustment = accrualEOMAdjustment();</span>
+<span class="fc" id="L319">		boolean bAccrualEOMAdjustment = accrualEOMAdjustment();</span>
 
-<span class="fc" id="L320">		return org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc" id="L321">		return org.drip.analytics.daycount.Convention.YearFraction (</span>
 			_iStartDate,
 			iAccrualEnd,
 			strAccrualDC,
 			bAccrualEOMAdjustment,
 			aap,
 			strCalendar
-<span class="fc" id="L327">		) / org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc" id="L328">		) / org.drip.analytics.daycount.Convention.YearFraction (</span>
 			_iStartDate,
 			_iEndDate,
 			strAccrualDC,
@@ -348,7 +349,7 @@ public abstract class ComposableUnitPeriod {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L351">		return baseRate (csqc) + basis();</span>
+<span class="fc" id="L352">		return baseRate (csqc) + basis();</span>
 	}
 
 	/**
