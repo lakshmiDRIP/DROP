@@ -4,6 +4,7 @@
 
 DROP Execution Risk Package contains the Optimal Execution MVO Efficient Frontier.
 
+
 ## Class Components
 
  * [***Mean Variance Objective Utility***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/risk/MeanVarianceObjectiveUtility.java)
@@ -21,7 +22,15 @@ DROP Execution Risk Package contains the Optimal Execution MVO Efficient Frontie
 
   			U[x] = E[x] + lambda * (V[x] ^p)
 
-  where p is greater than 0. p = 1 is the Regular Mean-Variance, and p = 0.5 is VaR Minimization (L-VaR).
+  where p is greater than 0.
+  
+  p = 1
+  
+  is the Regular Mean-Variance, and
+  
+  p = 0.5
+  
+  is VaR Minimization (L-VaR).
 
 
 # References
@@ -62,6 +71,7 @@ DROP Execution Risk Package contains the Optimal Execution MVO Efficient Frontie
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html

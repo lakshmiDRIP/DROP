@@ -68,10 +68,10 @@ package org.drip.execution.athl;
 
 /**
  * <i>PermanentImpactQuasiArbitrage</i> implements the Linear Permanent Market Impact with Coefficients that
- *  have been determined empirically by Almgren, Thum, Hauptmann, and Li (2005), independent of the no Quasi-
- *  Arbitrage Criterion identified by Huberman and Stanzl (2004). The References are:
+ * have been determined empirically by Almgren, Thum, Hauptmann, and Li (2005), independent of the no Quasi-
+ * Arbitrage Criterion identified by Huberman and Stanzl (2004). The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of Risk</i>
@@ -93,11 +93,13 @@ package org.drip.execution.athl;
  * 			<b>72 (4)</b> 1247-1275
  * 	</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl">ATHL</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl">ATHL</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

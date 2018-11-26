@@ -4,6 +4,7 @@
 
 DROP Execution Profile Time Package implements the Participation Rate Profile Time Models.
 
+
 ## Class Components
 
  * [***Background Participation Rate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/profiletime/BackgroundParticipationRate.java)
@@ -46,6 +47,7 @@ DROP Execution Profile Time Package implements the Participation Rate Profile Ti
  * Main                     => https://lakshmidrip.github.io/DROP/
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html

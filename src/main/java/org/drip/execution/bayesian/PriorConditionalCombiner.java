@@ -68,10 +68,10 @@ package org.drip.execution.bayesian;
 
 /**
  * <i>PriorConditionalCombiner</i> holds the Distributions associated with the Prior Drift and the
- *  Conditional Price Distributions. It uses them to generate the resulting Joint, Posterior, and MAP Implied
- *  Posterior Distributions. The References are:
+ * Conditional Price Distributions. It uses them to generate the resulting Joint, Posterior, and MAP Implied
+ * Posterior Distributions. The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 		<li>
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs <i>Journal of Financial
@@ -94,11 +94,13 @@ package org.drip.execution.bayesian;
  * 				Trading</i> <b>1 (1)</b> 12-21
  * 		</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian">Bayesian</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian">Bayesian</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

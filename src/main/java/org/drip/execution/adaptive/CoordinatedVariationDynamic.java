@@ -68,11 +68,11 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationDynamic</i> implements the HJB-based Single Step Optimal Cost Dynamic Trajectory
- *  using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
- *  from the Realization of the Market State Variable as described in the "Trading Time" Model. The
- *  References are:
+ * using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
+ * from the Realization of the Market State Variable as described in the "Trading Time" Model. The References
+ * are:
  *  
- * 	<br>
+ * 	<br><br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -95,11 +95,13 @@ package org.drip.execution.adaptive;
  * 				Financial Studies</i> <b>7 (4)</b> 631-651
  * 		</li>
  *  </ul>
- * 	<br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive">Adaptive</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive">Adaptive</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

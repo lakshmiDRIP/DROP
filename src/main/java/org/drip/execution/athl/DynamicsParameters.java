@@ -68,10 +68,10 @@ package org.drip.execution.athl;
 
 /**
  * <i>DynamicsParameters</i> generates the Variants of the Market Dynamics Parameters constructed using the
- *  Methodologies presented in Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
- *  (2003). The References are:
+ * Methodologies presented in Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
+ * (2003). The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -92,11 +92,13 @@ package org.drip.execution.athl;
  * 			57-62
  * 	</li>
  * 	</ul>
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl">ATHL</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost">Transaction Cost Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution">Execution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl">ATHL</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

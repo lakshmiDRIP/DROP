@@ -53,7 +53,7 @@
 	* *Portfolio Construction* => Optimal and Constrained Portfolio Construction Functionality.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aportfolioconstruction) }
- * ***Transaction Cost Analytics Library***
+ * [***Transaction Cost Analytics Library***](https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md) => Estimating Single Trade/Portfolio Execution Cost, and corresponding Optimal Trajectories.
 	* *Execution* => Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution) }
