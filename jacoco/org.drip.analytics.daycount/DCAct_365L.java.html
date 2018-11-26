@@ -72,10 +72,13 @@ package org.drip.analytics.daycount;
 
 /**
  * &lt;i&gt;DCAct_365L&lt;/i&gt; implements the Act/365L day count convention.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -88,17 +91,17 @@ public class DCAct_365L implements org.drip.analytics.daycount.DCFCalculator {
 	 */
 
 	public DCAct_365L()
-<span class="fc" id="L91">	{</span>
-<span class="fc" id="L92">	}</span>
+<span class="fc" id="L94">	{</span>
+<span class="fc" id="L95">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L96">		return &quot;DCAct_365L&quot;;</span>
+<span class="nc" id="L99">		return &quot;DCAct_365L&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L101">		return new java.lang.String[] {&quot;Act/365L&quot;, &quot;Actual/365L&quot;, &quot;ISMA-Year&quot;, &quot;Actual/Actual AFB&quot;,</span>
+<span class="fc" id="L104">		return new java.lang.String[] {&quot;Act/365L&quot;, &quot;Actual/365L&quot;, &quot;ISMA-Year&quot;, &quot;Actual/Actual AFB&quot;,</span>
 			&quot;DCAct_365L&quot;};
 	}
 
@@ -110,26 +113,26 @@ public class DCAct_365L implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == actactParams)</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;DCAct_365L::yearFraction =&gt; Invalid actact Params!&quot;);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (null == actactParams)</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;DCAct_365L::yearFraction =&gt; Invalid actact Params!&quot;);</span>
 
-<span class="nc" id="L116">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="nc" id="L119">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;DCAct_365L::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;DCAct_365L::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (1 == actactParams.freq()) {</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			if (org.drip.analytics.date.DateUtil.ContainsFeb29 (iStartDate, iEndDate,</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (1 == actactParams.freq()) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			if (org.drip.analytics.date.DateUtil.ContainsFeb29 (iStartDate, iEndDate,</span>
 				org.drip.analytics.date.DateUtil.RIGHT_INCLUDE))
-<span class="nc" id="L124">				return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 366.;</span>
+<span class="nc" id="L127">				return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 366.;</span>
 
-<span class="nc" id="L126">			return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 365.;</span>
+<span class="nc" id="L129">			return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 365.;</span>
 		}
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
-<span class="nc" id="L130">			return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 366.;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (org.drip.analytics.date.DateUtil.IsLeapYear (iEndDate))</span>
+<span class="nc" id="L133">			return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 366.;</span>
 
-<span class="nc" id="L132">		return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 365.;</span>
+<span class="nc" id="L135">		return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 365.;</span>
 	}
 
 	@Override public int daysAccrued (
@@ -140,23 +143,23 @@ public class DCAct_365L implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (null == actactParams)</span>
-<span class="nc" id="L144">			throw new java.lang.Exception (&quot;DCAct_365L::daysAccrued =&gt; Invalid actact Params!&quot;);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == actactParams)</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;DCAct_365L::daysAccrued =&gt; Invalid actact Params!&quot;);</span>
 
-<span class="nc" id="L146">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="nc" id="L149">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L149">			throw new java.lang.Exception (&quot;DCAct_365L::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;DCAct_365L::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (1 == actactParams.freq()) {</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">			if (org.drip.analytics.date.DateUtil.ContainsFeb29 (iStartDate, iEndDate,</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (1 == actactParams.freq()) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (org.drip.analytics.date.DateUtil.ContainsFeb29 (iStartDate, iEndDate,</span>
 				org.drip.analytics.date.DateUtil.RIGHT_INCLUDE))
-<span class="nc" id="L154">				return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
+<span class="nc" id="L157">				return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
 
-<span class="nc" id="L156">			return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
+<span class="nc" id="L159">			return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
 		}
 
-<span class="nc" id="L159">		return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
+<span class="nc" id="L162">		return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -70,11 +70,13 @@ package org.drip.analytics.output;
 
 /**
  * &lt;i&gt;BulletMetrics&lt;/i&gt; holds the results of the Bullet Cash flow metrics estimate output.
- *  &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -86,31 +88,31 @@ public class BulletMetrics {
 	 * Bullet Latent State Identification Support Fields
 	 */
 
-<span class="nc" id="L89">	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;</span>
-<span class="nc" id="L90">	private org.drip.state.identifier.FundingLabel _fundingLabel = null;</span>
-<span class="nc" id="L91">	private org.drip.state.identifier.FXLabel _fxLabel = null;</span>
+<span class="nc" id="L91">	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;</span>
+<span class="nc" id="L92">	private org.drip.state.identifier.FundingLabel _fundingLabel = null;</span>
+<span class="nc" id="L93">	private org.drip.state.identifier.FXLabel _fxLabel = null;</span>
 
 	/*
 	 * Bullet Parameters Specification Fields
 	 */
 
-<span class="nc" id="L97">	private int _iTerminalDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L98">	private int _iPayDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L99">	private double _dblNotional = java.lang.Double.NaN;</span>
+<span class="nc" id="L99">	private int _iTerminalDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L100">	private int _iPayDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L101">	private double _dblNotional = java.lang.Double.NaN;</span>
 
 	/*
 	 * Bullet State Point Value Fields
 	 */
 
-<span class="nc" id="L105">	private double _dblSurvival = java.lang.Double.NaN;</span>
-<span class="nc" id="L106">	private double _dblDF = java.lang.Double.NaN;</span>
-<span class="nc" id="L107">	private double _dblFX = java.lang.Double.NaN;</span>
+<span class="nc" id="L107">	private double _dblSurvival = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private double _dblDF = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblFX = java.lang.Double.NaN;</span>
 
 	/*
 	 * Bullet Convexity Adjustment Fields
 	 */
 
-<span class="nc" id="L113">	private org.drip.analytics.output.ConvexityAdjustment _convAdj = null;</span>
+<span class="nc" id="L115">	private org.drip.analytics.output.ConvexityAdjustment _convAdj = null;</span>
 
 	/**
 	 * BulletMetrics Constructor
@@ -141,19 +143,19 @@ public class BulletMetrics {
 		final org.drip.state.identifier.FundingLabel fundingLabel,
 		final org.drip.state.identifier.FXLabel fxLabel)
 		throws java.lang.Exception
-<span class="nc" id="L144">	{</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional) ||</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSurvival = dblSurvival) ||</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblDF = dblDF) ||</span>
-<span class="nc bnc" id="L148" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblFX = dblFX) || null == (_convAdj =</span>
+<span class="nc" id="L146">	{</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional) ||</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSurvival = dblSurvival) ||</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblDF = dblDF) ||</span>
+<span class="nc bnc" id="L150" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblFX = dblFX) || null == (_convAdj =</span>
 						convAdj) || null == (_fundingLabel = fundingLabel))
-<span class="nc" id="L150">			throw new java.lang.Exception (&quot;BulletMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;BulletMetrics ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L152">		_fxLabel = fxLabel;</span>
-<span class="nc" id="L153">		_iPayDate = iPayDate;</span>
-<span class="nc" id="L154">		_creditLabel = creditLabel;</span>
-<span class="nc" id="L155">		_iTerminalDate = iTerminalDate;</span>
-<span class="nc" id="L156">	}</span>
+<span class="nc" id="L154">		_fxLabel = fxLabel;</span>
+<span class="nc" id="L155">		_iPayDate = iPayDate;</span>
+<span class="nc" id="L156">		_creditLabel = creditLabel;</span>
+<span class="nc" id="L157">		_iTerminalDate = iTerminalDate;</span>
+<span class="nc" id="L158">	}</span>
 
 	/**
 	 * Retrieve the Terminal Date
@@ -163,7 +165,7 @@ public class BulletMetrics {
 
 	public int terminalDate()
 	{
-<span class="nc" id="L166">		return _iTerminalDate;</span>
+<span class="nc" id="L168">		return _iTerminalDate;</span>
 	}
 
 	/**
@@ -174,7 +176,7 @@ public class BulletMetrics {
 
 	public int payDate()
 	{
-<span class="nc" id="L177">		return _iPayDate;</span>
+<span class="nc" id="L179">		return _iPayDate;</span>
 	}
 
 	/**
@@ -185,7 +187,7 @@ public class BulletMetrics {
 
 	public double notional()
 	{
-<span class="nc" id="L188">		return _dblNotional;</span>
+<span class="nc" id="L190">		return _dblNotional;</span>
 	}
 
 	/**
@@ -196,7 +198,7 @@ public class BulletMetrics {
 
 	public double survival()
 	{
-<span class="nc" id="L199">		return _dblSurvival;</span>
+<span class="nc" id="L201">		return _dblSurvival;</span>
 	}
 
 	/**
@@ -207,7 +209,7 @@ public class BulletMetrics {
 
 	public double df()
 	{
-<span class="nc" id="L210">		return _dblDF;</span>
+<span class="nc" id="L212">		return _dblDF;</span>
 	}
 
 	/**
@@ -218,7 +220,7 @@ public class BulletMetrics {
 
 	public double fx()
 	{
-<span class="nc" id="L221">		return _dblFX;</span>
+<span class="nc" id="L223">		return _dblFX;</span>
 	}
 
 	/**
@@ -229,7 +231,7 @@ public class BulletMetrics {
 
 	public double annuity()
 	{
-<span class="nc" id="L232">		return _dblNotional * _dblSurvival * _dblDF * _dblFX;</span>
+<span class="nc" id="L234">		return _dblNotional * _dblSurvival * _dblDF * _dblFX;</span>
 	}
 
 	/**
@@ -240,7 +242,7 @@ public class BulletMetrics {
 
 	public org.drip.analytics.output.ConvexityAdjustment convexityAdjustment()
 	{
-<span class="nc" id="L243">		return _convAdj;</span>
+<span class="nc" id="L245">		return _convAdj;</span>
 	}
 
 	/**
@@ -254,15 +256,15 @@ public class BulletMetrics {
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; survivalProbabilityCreditLoading (
 		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
-<span class="nc bnc" id="L257" title="All 4 branches missed.">		if (null == creditLabel || !creditLabel.match (_creditLabel)) return null;</span>
+<span class="nc bnc" id="L259" title="All 4 branches missed.">		if (null == creditLabel || !creditLabel.match (_creditLabel)) return null;</span>
 
-<span class="nc" id="L259">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapSurvivalProbabilityLoading = new</span>
+<span class="nc" id="L261">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapSurvivalProbabilityLoading = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L262">		mapSurvivalProbabilityLoading.put (_iPayDate, _dblNotional * _dblDF * _dblFX *</span>
-<span class="nc" id="L263">			_convAdj.cumulative());</span>
+<span class="nc" id="L264">		mapSurvivalProbabilityLoading.put (_iPayDate, _dblNotional * _dblDF * _dblFX *</span>
+<span class="nc" id="L265">			_convAdj.cumulative());</span>
 
-<span class="nc" id="L265">		return mapSurvivalProbabilityLoading;</span>
+<span class="nc" id="L267">		return mapSurvivalProbabilityLoading;</span>
 	}
 
 	/**
@@ -276,15 +278,15 @@ public class BulletMetrics {
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; discountFactorFundingLoading (
 		final org.drip.state.identifier.FundingLabel fundingLabel)
 	{
-<span class="nc bnc" id="L279" title="All 4 branches missed.">		if (null == fundingLabel || !fundingLabel.match (_fundingLabel)) return null;</span>
+<span class="nc bnc" id="L281" title="All 4 branches missed.">		if (null == fundingLabel || !fundingLabel.match (_fundingLabel)) return null;</span>
 
-<span class="nc" id="L281">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDiscountFactorLoading = new</span>
+<span class="nc" id="L283">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDiscountFactorLoading = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L284">		mapDiscountFactorLoading.put (_iPayDate, _dblNotional * _dblSurvival * _dblFX *</span>
-<span class="nc" id="L285">			_convAdj.cumulative());</span>
+<span class="nc" id="L286">		mapDiscountFactorLoading.put (_iPayDate, _dblNotional * _dblSurvival * _dblFX *</span>
+<span class="nc" id="L287">			_convAdj.cumulative());</span>
 
-<span class="nc" id="L287">		return mapDiscountFactorLoading;</span>
+<span class="nc" id="L289">		return mapDiscountFactorLoading;</span>
 	}
 
 	/**
@@ -298,14 +300,14 @@ public class BulletMetrics {
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; fxFXLoading (
 		final org.drip.state.identifier.FXLabel fxLabel)
 	{
-<span class="nc bnc" id="L301" title="All 4 branches missed.">		if (null == fxLabel || !fxLabel.match (_fxLabel)) return null;</span>
+<span class="nc bnc" id="L303" title="All 4 branches missed.">		if (null == fxLabel || !fxLabel.match (_fxLabel)) return null;</span>
 
-<span class="nc" id="L303">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapFXLoading = new</span>
+<span class="nc" id="L305">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapFXLoading = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L306">		mapFXLoading.put (_iPayDate, _dblNotional * _dblSurvival * _dblDF * _convAdj.cumulative());</span>
+<span class="nc" id="L308">		mapFXLoading.put (_iPayDate, _dblNotional * _dblSurvival * _dblDF * _convAdj.cumulative());</span>
 
-<span class="nc" id="L308">		return mapFXLoading;</span>
+<span class="nc" id="L310">		return mapFXLoading;</span>
 	}
 
 	/**
@@ -316,7 +318,7 @@ public class BulletMetrics {
 
 	public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
-<span class="nc" id="L319">		return _creditLabel;</span>
+<span class="nc" id="L321">		return _creditLabel;</span>
 	}
 
 	/**
@@ -327,7 +329,7 @@ public class BulletMetrics {
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L330">		return _fundingLabel;</span>
+<span class="nc" id="L332">		return _fundingLabel;</span>
 	}
 
 	/**
@@ -338,7 +340,7 @@ public class BulletMetrics {
 
 	public org.drip.state.identifier.FXLabel fxLabel()
 	{
-<span class="nc" id="L341">		return _fxLabel;</span>
+<span class="nc" id="L343">		return _fxLabel;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

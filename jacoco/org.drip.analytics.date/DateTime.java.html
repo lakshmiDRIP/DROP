@@ -73,26 +73,35 @@ package org.drip.analytics.date;
 
 /**
  * &lt;i&gt;DateTime&lt;/i&gt; provides the representation of the instantiation-time date and time objects. It provides
- *  the following functionality:
+ * the following functionality:
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *  	&lt;li&gt;Instantiation-time and Explicit Date/Time Construction&lt;/li&gt;
- *  	&lt;li&gt;Retrieval of Date/Time Fields&lt;/li&gt;
- *  	&lt;li&gt;Serialization/De-serialization to and from Byte Arrays&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Instantiation-time and Explicit Date/Time Construction
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Retrieval of Date/Time Fields
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Serialization/De-serialization to and from Byte Arrays
+ *  	&lt;/li&gt;
  *  &lt;/ul&gt;
  *
- *	&lt;br&gt;
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date&quot;&gt;Date&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date&quot;&gt;Date&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class DateTime {
-<span class="pc" id="L94">	private long _lTime = 0L;</span>
-<span class="pc" id="L95">	private double _dblDate = java.lang.Double.NaN;</span>
+<span class="pc" id="L103">	private long _lTime = 0L;</span>
+<span class="pc" id="L104">	private double _dblDate = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default constructor initializes the time and date to the current time and current date.
@@ -102,14 +111,14 @@ public class DateTime {
 
 	public DateTime()
 		throws java.lang.Exception
-<span class="fc" id="L105">	{</span>
-<span class="fc" id="L106">		_lTime = System.nanoTime();</span>
+<span class="fc" id="L114">	{</span>
+<span class="fc" id="L115">		_lTime = System.nanoTime();</span>
 
-<span class="fc" id="L108">		java.util.Date dtNow = new java.util.Date();</span>
+<span class="fc" id="L117">		java.util.Date dtNow = new java.util.Date();</span>
 
-<span class="fc" id="L110">		_dblDate = org.drip.analytics.date.DateUtil.ToJulian (org.drip.analytics.date.DateUtil.Year (dtNow),</span>
-<span class="fc" id="L111">			org.drip.analytics.date.DateUtil.Month (dtNow), org.drip.analytics.date.DateUtil.Day (dtNow));</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L119">		_dblDate = org.drip.analytics.date.DateUtil.ToJulian (org.drip.analytics.date.DateUtil.Year (dtNow),</span>
+<span class="fc" id="L120">			org.drip.analytics.date.DateUtil.Month (dtNow), org.drip.analytics.date.DateUtil.Day (dtNow));</span>
+<span class="fc" id="L121">	}</span>
 
 	/**
 	 * Constructs DateTime from separate date and time inputs 
@@ -124,13 +133,13 @@ public class DateTime {
 		final double dblDate,
 		final long lTime)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;DateTime ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L136">	{</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;DateTime ctr: Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L131">		_lTime = lTime;</span>
-<span class="nc" id="L132">		_dblDate = dblDate;</span>
-<span class="nc" id="L133">	}</span>
+<span class="nc" id="L140">		_lTime = lTime;</span>
+<span class="nc" id="L141">		_dblDate = dblDate;</span>
+<span class="nc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Date
@@ -140,7 +149,7 @@ public class DateTime {
 
 	public double date()
 	{
-<span class="nc" id="L143">		return _dblDate;</span>
+<span class="nc" id="L152">		return _dblDate;</span>
 	}
 
 	/**
@@ -151,7 +160,7 @@ public class DateTime {
 
 	public long time()
 	{
-<span class="nc" id="L154">		return _lTime;</span>
+<span class="nc" id="L163">		return _lTime;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -73,24 +73,32 @@ package org.drip.analytics.daycount;
 
 /**
  * &lt;i&gt;ActActDCParams&lt;/i&gt; contains parameters to represent Act/Act day count. It exports the following
- *  functionality:
+ * functionality:
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- * 		&lt;li&gt;Frequency/Start/End Date Fields&lt;/li&gt;
- *  	&lt;li&gt;Serialization/De-serialization to and from Byte Arrays&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Frequency/Start/End Date Fields
+ * 		&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Serialization/De-serialization to and from Byte Arrays
+ *  	&lt;/li&gt;
  *  &lt;/ul&gt;
- *	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ActActDCParams {
-<span class="fc" id="L92">	private int _iFreq = 0;</span>
-<span class="fc" id="L93">	private int _iNumDays = -1;</span>
+<span class="fc" id="L100">	private int _iFreq = 0;</span>
+<span class="fc" id="L101">	private int _iNumDays = -1;</span>
 
 	/**
 	 * Construct an ActActDCParams from the specified Frequency
@@ -104,12 +112,12 @@ public class ActActDCParams {
 		final int iFreq)
 	{
 		try {
-<span class="fc" id="L107">			return new ActActDCParams (iFreq, (int) (365.25 / iFreq));</span>
-<span class="nc" id="L108">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L109">			e.printStackTrace();</span>
+<span class="fc" id="L115">			return new ActActDCParams (iFreq, (int) (365.25 / iFreq));</span>
+<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L117">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L112">		return null;</span>
+<span class="nc" id="L120">		return null;</span>
 	}
 
 	/**
@@ -125,13 +133,13 @@ public class ActActDCParams {
 		final int iFreq,
 		final int iNumDays)
 		throws java.lang.Exception
-<span class="fc" id="L128">	{</span>
-<span class="fc" id="L129">		_iFreq = iFreq;</span>
+<span class="fc" id="L136">	{</span>
+<span class="fc" id="L137">		_iFreq = iFreq;</span>
 
-<span class="pc bpc" id="L131" title="3 of 6 branches missed.">		if (0 &gt;= (_iFreq = iFreq) || !org.drip.quant.common.NumberUtil.IsValid (_iNumDays = iNumDays) || 0 &gt;=</span>
+<span class="pc bpc" id="L139" title="3 of 6 branches missed.">		if (0 &gt;= (_iFreq = iFreq) || !org.drip.quant.common.NumberUtil.IsValid (_iNumDays = iNumDays) || 0 &gt;=</span>
 			_iNumDays)
-<span class="nc" id="L133">			throw new java.lang.Exception (&quot;ActActDCParams ctr: Invalid inputs&quot;);</span>
-<span class="fc" id="L134">	}</span>
+<span class="nc" id="L141">			throw new java.lang.Exception (&quot;ActActDCParams ctr: Invalid inputs&quot;);</span>
+<span class="fc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Frequency
@@ -141,7 +149,7 @@ public class ActActDCParams {
 
 	public int freq()
 	{
-<span class="nc" id="L144">		return _iFreq;</span>
+<span class="nc" id="L152">		return _iFreq;</span>
 	}
 
 	/**
@@ -152,7 +160,7 @@ public class ActActDCParams {
 
 	public int days()
 	{
-<span class="fc" id="L155">		return _iNumDays;</span>
+<span class="fc" id="L163">		return _iNumDays;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,32 +6,50 @@ package org.drip.state.sequence;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,15 +66,23 @@ package org.drip.state.sequence;
  */
 
 /**
- * PathVertexRd exposes the Functionality to generate a Sequence of the Path Vertex Latent State R^d
- *  Realizations across Multiple Paths.
+ * &lt;i&gt;PathVertexRd&lt;/i&gt; exposes the Functionality to generate a Sequence of the Path Vertex Latent State
+ * R&lt;sup&gt;d&lt;/sup&gt; Realizations across Multiple Paths.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class PathVertexRd {
-<span class="fc" id="L58">	private org.drip.measure.process.DiffusionEvolver[] _aDE = null;</span>
-<span class="fc" id="L59">	private org.drip.measure.discrete.CorrelatedPathVertexDimension _cpvd = null;</span>
+<span class="fc" id="L84">	private org.drip.measure.process.DiffusionEvolver[] _aDE = null;</span>
+<span class="fc" id="L85">	private org.drip.measure.discrete.CorrelatedPathVertexDimension _cpvd = null;</span>
 
 	/**
 	 * Generate a Standard Instance of PathVertexRd
@@ -71,23 +97,23 @@ public class PathVertexRd {
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
 		final org.drip.measure.process.DiffusionEvolver de)
 	{
-<span class="nc bnc" id="L74" title="All 4 branches missed.">		if (null == cpvd || null == de) return null;</span>
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (null == cpvd || null == de) return null;</span>
 
-<span class="nc" id="L76">		int iNumDimension = cpvd.numDimension();</span>
+<span class="nc" id="L102">		int iNumDimension = cpvd.numDimension();</span>
 
-<span class="nc" id="L78">		org.drip.measure.process.DiffusionEvolver[] aDE = new</span>
+<span class="nc" id="L104">		org.drip.measure.process.DiffusionEvolver[] aDE = new</span>
 			org.drip.measure.process.DiffusionEvolver[iNumDimension];
 
-<span class="nc bnc" id="L81" title="All 2 branches missed.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
-<span class="nc" id="L82">			aDE[iDimension] = de;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
+<span class="nc" id="L108">			aDE[iDimension] = de;</span>
 
 		try {
-<span class="nc" id="L85">			return new PathVertexRd (cpvd, aDE);</span>
-<span class="nc" id="L86">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L87">			e.printStackTrace();</span>
+<span class="nc" id="L111">			return new PathVertexRd (cpvd, aDE);</span>
+<span class="nc" id="L112">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L113">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L90">		return null;</span>
+<span class="nc" id="L116">		return null;</span>
 	}
 
 	/**
@@ -103,20 +129,20 @@ public class PathVertexRd {
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
 		final org.drip.measure.process.DiffusionEvolver[] aDE)
 		throws java.lang.Exception
-<span class="fc" id="L106">	{</span>
-<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (null == (_cpvd = cpvd) || null == (_aDE = aDE))</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;PathVertexRd Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L132">	{</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (null == (_cpvd = cpvd) || null == (_aDE = aDE))</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;PathVertexRd Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L110">		int iNumDimension = _aDE.length;</span>
+<span class="fc" id="L136">		int iNumDimension = _aDE.length;</span>
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (iNumDimension != _cpvd.numDimension())</span>
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;PathVertexRd Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (iNumDimension != _cpvd.numDimension())</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;PathVertexRd Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">			if (null == _aDE[iDimension])</span>
-<span class="nc" id="L117">				throw new java.lang.Exception (&quot;PathVertexRd Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (null == _aDE[iDimension])</span>
+<span class="nc" id="L143">				throw new java.lang.Exception (&quot;PathVertexRd Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L119">	}</span>
+<span class="fc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Latent State Dimension
@@ -126,7 +152,7 @@ public class PathVertexRd {
 
 	public int dimension()
 	{
-<span class="fc" id="L129">		return _aDE.length;</span>
+<span class="fc" id="L155">		return _aDE.length;</span>
 	}
 
 	/**
@@ -137,7 +163,7 @@ public class PathVertexRd {
 
 	public org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd()
 	{
-<span class="fc" id="L140">		return _cpvd;</span>
+<span class="fc" id="L166">		return _cpvd;</span>
 	}
 
 	/**
@@ -148,7 +174,7 @@ public class PathVertexRd {
 
 	public org.drip.measure.process.DiffusionEvolver[] evolver()
 	{
-<span class="nc" id="L151">		return _aDE;</span>
+<span class="nc" id="L177">		return _aDE;</span>
 	}
 
 	/**
@@ -164,70 +190,70 @@ public class PathVertexRd {
 		final double[] adblPathInitial,
 		final double[] adblTimeIncrement)
 	{
-<span class="pc bpc" id="L167" title="2 of 4 branches missed.">		if (null == adblPathInitial || null == adblTimeIncrement) return null;</span>
+<span class="pc bpc" id="L193" title="2 of 4 branches missed.">		if (null == adblPathInitial || null == adblTimeIncrement) return null;</span>
 
-<span class="fc" id="L169">		int iNumPath = _cpvd.numPath();</span>
+<span class="fc" id="L195">		int iNumPath = _cpvd.numPath();</span>
 
-<span class="fc" id="L171">		int iNumDimension = dimension();</span>
+<span class="fc" id="L197">		int iNumDimension = dimension();</span>
 
-<span class="fc" id="L173">		int iNumVertex = _cpvd.numVertex();</span>
+<span class="fc" id="L199">		int iNumVertex = _cpvd.numVertex();</span>
 
-<span class="pc bpc" id="L175" title="2 of 4 branches missed.">		if (iNumDimension != adblPathInitial.length || iNumVertex != adblTimeIncrement.length) return null;</span>
+<span class="pc bpc" id="L201" title="2 of 4 branches missed.">		if (iNumDimension != adblPathInitial.length || iNumVertex != adblTimeIncrement.length) return null;</span>
 
-<span class="fc" id="L177">		double[][][] aaadblPathForward = new double[iNumPath][iNumVertex][iNumDimension];</span>
+<span class="fc" id="L203">		double[][][] aaadblPathForward = new double[iNumPath][iNumVertex][iNumDimension];</span>
 
-<span class="fc" id="L179">		org.drip.measure.discrete.VertexRd[] aVertexRd = _cpvd.multiPathVertexRd();</span>
+<span class="fc" id="L205">		org.drip.measure.discrete.VertexRd[] aVertexRd = _cpvd.multiPathVertexRd();</span>
 
-<span class="pc bpc" id="L181" title="2 of 4 branches missed.">		if (null == aVertexRd || iNumPath != aVertexRd.length) return null;</span>
+<span class="pc bpc" id="L207" title="2 of 4 branches missed.">		if (null == aVertexRd || iNumPath != aVertexRd.length) return null;</span>
 
-<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">			if (null == aVertexRd[iPath]) return null;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">			if (null == aVertexRd[iPath]) return null;</span>
 
-<span class="fc" id="L186">			java.util.List&lt;double[]&gt; lsVertexRd = aVertexRd[iPath].vertexList();</span>
+<span class="fc" id="L212">			java.util.List&lt;double[]&gt; lsVertexRd = aVertexRd[iPath].vertexList();</span>
 
-<span class="fc" id="L188">			org.drip.measure.realization.JumpDiffusionEdgeUnit[][] aaJDEU = new</span>
+<span class="fc" id="L214">			org.drip.measure.realization.JumpDiffusionEdgeUnit[][] aaJDEU = new</span>
 				org.drip.measure.realization.JumpDiffusionEdgeUnit[iNumDimension][iNumVertex];
-<span class="fc" id="L190">			org.drip.measure.realization.JumpDiffusionVertex[][] aaJDV = new</span>
+<span class="fc" id="L216">			org.drip.measure.realization.JumpDiffusionVertex[][] aaJDV = new</span>
 				org.drip.measure.realization.JumpDiffusionVertex[iNumDimension][iNumVertex + 1];
 
-<span class="fc bfc" id="L193" title="All 2 branches covered.">			for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
-<span class="fc" id="L194">				double[] adblRd = lsVertexRd.get (iTimeVertex);</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">			for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
+<span class="fc" id="L220">				double[] adblRd = lsVertexRd.get (iTimeVertex);</span>
 
-<span class="pc bpc" id="L196" title="2 of 4 branches missed.">				if (null == adblRd || iNumDimension != adblRd.length) return null;</span>
+<span class="pc bpc" id="L222" title="2 of 4 branches missed.">				if (null == adblRd || iNumDimension != adblRd.length) return null;</span>
 
-<span class="fc bfc" id="L198" title="All 2 branches covered.">				for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">				for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
 					try {
-<span class="fc" id="L200">						aaJDEU[iDimension][iTimeVertex] = new</span>
+<span class="fc" id="L226">						aaJDEU[iDimension][iTimeVertex] = new</span>
 							org.drip.measure.realization.JumpDiffusionEdgeUnit
 								(adblTimeIncrement[iTimeVertex], adblRd[iDimension], 0.);
-<span class="nc" id="L203">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L204">						e.printStackTrace();</span>
+<span class="nc" id="L229">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L230">						e.printStackTrace();</span>
 
-<span class="nc" id="L206">						return null;</span>
-<span class="fc" id="L207">					}</span>
+<span class="nc" id="L232">						return null;</span>
+<span class="fc" id="L233">					}</span>
 				}
 			}
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">			for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
 				try {
-<span class="fc" id="L213">					aaJDV[iDimension] = _aDE[iDimension].vertexSequence (new</span>
+<span class="fc" id="L239">					aaJDV[iDimension] = _aDE[iDimension].vertexSequence (new</span>
 						org.drip.measure.realization.JumpDiffusionVertex (0., adblPathInitial[iDimension],
 							0., false), aaJDEU[iDimension], adblTimeIncrement);
-<span class="nc" id="L216">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L217">					e.printStackTrace();</span>
+<span class="nc" id="L242">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L243">					e.printStackTrace();</span>
 
-<span class="nc" id="L219">					return null;</span>
-<span class="fc" id="L220">				}</span>
+<span class="nc" id="L245">					return null;</span>
+<span class="fc" id="L246">				}</span>
 			}
 
-<span class="fc bfc" id="L223" title="All 2 branches covered.">			for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
-<span class="fc bfc" id="L224" title="All 2 branches covered.">				for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
-<span class="fc" id="L225">					aaadblPathForward[iPath][iTimeVertex][iDimension] =</span>
-<span class="fc" id="L226">						aaJDV[iDimension][iTimeVertex].value();</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">			for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">				for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
+<span class="fc" id="L251">					aaadblPathForward[iPath][iTimeVertex][iDimension] =</span>
+<span class="fc" id="L252">						aaJDV[iDimension][iTimeVertex].value();</span>
 			}
 		}
 
-<span class="fc" id="L230">		return aaadblPathForward;</span>
+<span class="fc" id="L256">		return aaadblPathForward;</span>
 	}
 
 	/**
@@ -243,16 +269,16 @@ public class PathVertexRd {
 		final double[] adblPathInitial,
 		final double dblTimeIncrement)
 	{
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement)) return null;</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement)) return null;</span>
 
-<span class="fc" id="L248">		int iNumVertex = _cpvd.numVertex();</span>
+<span class="fc" id="L274">		int iNumVertex = _cpvd.numVertex();</span>
 
-<span class="fc" id="L250">		double[] adblTimeIncrement = new double[iNumVertex];</span>
+<span class="fc" id="L276">		double[] adblTimeIncrement = new double[iNumVertex];</span>
 
-<span class="fc bfc" id="L252" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex)</span>
-<span class="fc" id="L253">			adblTimeIncrement[iTimeVertex] = dblTimeIncrement;</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex)</span>
+<span class="fc" id="L279">			adblTimeIncrement[iTimeVertex] = dblTimeIncrement;</span>
 
-<span class="fc" id="L255">		return pathVertex (adblPathInitial, adblTimeIncrement);</span>
+<span class="fc" id="L281">		return pathVertex (adblPathInitial, adblTimeIncrement);</span>
 	}
 
 	/**
@@ -268,26 +294,26 @@ public class PathVertexRd {
 		final double[] adblPathInitial,
 		final java.lang.String[] astrEventTenor)
 	{
-<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (null == astrEventTenor) return null;</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		if (null == astrEventTenor) return null;</span>
 
-<span class="nc" id="L273">		int iNumVertex = _cpvd.numVertex();</span>
+<span class="nc" id="L299">		int iNumVertex = _cpvd.numVertex();</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (iNumVertex != astrEventTenor.length) return null;</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (iNumVertex != astrEventTenor.length) return null;</span>
 
-<span class="nc" id="L277">		double[] adblTimeIncrement = new double[iNumVertex];</span>
+<span class="nc" id="L303">		double[] adblTimeIncrement = new double[iNumVertex];</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
 			try {
-<span class="nc" id="L281">				adblTimeIncrement[iTimeVertex] = org.drip.analytics.support.Helper.TenorToYearFraction</span>
-<span class="nc" id="L282">					(astrEventTenor[iTimeVertex]);</span>
-<span class="nc" id="L283">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L284">				e.printStackTrace();</span>
+<span class="nc" id="L307">				adblTimeIncrement[iTimeVertex] = org.drip.analytics.support.Helper.TenorToYearFraction</span>
+<span class="nc" id="L308">					(astrEventTenor[iTimeVertex]);</span>
+<span class="nc" id="L309">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L310">				e.printStackTrace();</span>
 
-<span class="nc" id="L286">				return null;</span>
-<span class="nc" id="L287">			}</span>
+<span class="nc" id="L312">				return null;</span>
+<span class="nc" id="L313">			}</span>
 		}
 
-<span class="nc" id="L290">		return pathVertex (adblPathInitial, adblTimeIncrement);</span>
+<span class="nc" id="L316">		return pathVertex (adblPathInitial, adblTimeIncrement);</span>
 	}
 
 	/**
@@ -305,29 +331,29 @@ public class PathVertexRd {
 		final int iSpotDate,
 		final int[] aiEventDate)
 	{
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">		if (null == aiEventDate) return null;</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">		if (null == aiEventDate) return null;</span>
 
-<span class="fc" id="L310">		int iNumVertex = _cpvd.numVertex();</span>
+<span class="fc" id="L336">		int iNumVertex = _cpvd.numVertex();</span>
 
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">		if (iNumVertex != aiEventDate.length) return null;</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		if (iNumVertex != aiEventDate.length) return null;</span>
 
-<span class="fc" id="L314">		double[] adblTimeIncrement = new double[iNumVertex];</span>
+<span class="fc" id="L340">		double[] adblTimeIncrement = new double[iNumVertex];</span>
 
-<span class="fc" id="L316">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L317">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (1);</span>
+<span class="fc" id="L342">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L343">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (1);</span>
 
-<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
 			try {
-<span class="fc" id="L321">				adblTimeIncrement[iTimeVertex] = org.drip.analytics.daycount.Convention.YearFraction</span>
-<span class="fc" id="L322">					(iSpotDate, aiEventDate[iTimeVertex], &quot;Act/Act ISDA&quot;, false, aap, &quot;&quot;);</span>
-<span class="nc" id="L323">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L324">				e.printStackTrace();</span>
+<span class="fc" id="L347">				adblTimeIncrement[iTimeVertex] = org.drip.analytics.daycount.Convention.YearFraction</span>
+<span class="fc" id="L348">					(iSpotDate, aiEventDate[iTimeVertex], &quot;Act/Act ISDA&quot;, false, aap, &quot;&quot;);</span>
+<span class="nc" id="L349">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L350">				e.printStackTrace();</span>
 
-<span class="nc" id="L326">				return null;</span>
-<span class="fc" id="L327">			}</span>
+<span class="nc" id="L352">				return null;</span>
+<span class="fc" id="L353">			}</span>
 		}
 
-<span class="fc" id="L330">		return pathVertex (adblPathInitial, adblTimeIncrement);</span>
+<span class="fc" id="L356">		return pathVertex (adblPathInitial, adblTimeIncrement);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

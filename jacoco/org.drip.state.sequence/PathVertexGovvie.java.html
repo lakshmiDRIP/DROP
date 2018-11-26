@@ -6,32 +6,50 @@ package org.drip.state.sequence;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -48,60 +66,68 @@ package org.drip.state.sequence;
  */
 
 /**
- * PathVertexGovvie exposes the Functionality to generate a Sequence of Path/Vertex Govvie Curves.
+ * &lt;i&gt;PathVertexGovvie&lt;/i&gt; exposes the Functionality to generate a Sequence of Path/Vertex Govvie Curves.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
-<span class="fc" id="L57">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
+<span class="fc" id="L83">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
 
 	private org.drip.state.govvie.GovvieCurve[][] curveVertex (
 		final double[][][] aaadblPathForward)
 	{
-<span class="pc bpc" id="L62" title="1 of 2 branches missed.">		if (null == aaadblPathForward) return null;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == aaadblPathForward) return null;</span>
 
-<span class="fc" id="L64">		org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd = cpvd();</span>
+<span class="fc" id="L90">		org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd = cpvd();</span>
 
-<span class="fc" id="L66">		int iNumPath = cpvd.numPath();</span>
+<span class="fc" id="L92">		int iNumPath = cpvd.numPath();</span>
 
-<span class="fc" id="L68">		int iNumVertex = cpvd.numVertex();</span>
+<span class="fc" id="L94">		int iNumVertex = cpvd.numVertex();</span>
 
-<span class="fc" id="L70">		java.lang.String[] astrTenor = _gbs.tenors();</span>
+<span class="fc" id="L96">		java.lang.String[] astrTenor = _gbs.tenors();</span>
 
-<span class="fc" id="L72">		java.lang.String strTreasuryCode = _gbs.code();</span>
+<span class="fc" id="L98">		java.lang.String strTreasuryCode = _gbs.code();</span>
 
-<span class="fc" id="L74">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
+<span class="fc" id="L100">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
 
-<span class="fc" id="L76">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
+<span class="fc" id="L102">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
 
-<span class="fc" id="L78">		org.drip.state.nonlinear.FlatForwardGovvieCurve[][] aaFFGC = new</span>
+<span class="fc" id="L104">		org.drip.state.nonlinear.FlatForwardGovvieCurve[][] aaFFGC = new</span>
 			org.drip.state.nonlinear.FlatForwardGovvieCurve[iNumPath][iNumVertex];
 
-<span class="fc bfc" id="L81" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
-<span class="fc" id="L82">			org.drip.analytics.date.JulianDate dtEvent = dtSpot.addYears (iTimeVertex + 1);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
+<span class="fc" id="L108">			org.drip.analytics.date.JulianDate dtEvent = dtSpot.addYears (iTimeVertex + 1);</span>
 
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">			if (null == dtEvent) return null;</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			if (null == dtEvent) return null;</span>
 
-<span class="fc" id="L86">			int iEventDate = dtEvent.julian();</span>
+<span class="fc" id="L112">			int iEventDate = dtEvent.julian();</span>
 
-<span class="fc" id="L88">			int[] aiDate = org.drip.analytics.support.Helper.TenorToDate (dtEvent, astrTenor);</span>
+<span class="fc" id="L114">			int[] aiDate = org.drip.analytics.support.Helper.TenorToDate (dtEvent, astrTenor);</span>
 
-<span class="fc bfc" id="L90" title="All 2 branches covered.">			for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">			for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
 				try {
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">					if (null == (aaFFGC[iPath][iTimeVertex] = new</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">					if (null == (aaFFGC[iPath][iTimeVertex] = new</span>
 						org.drip.state.nonlinear.FlatForwardGovvieCurve (iEventDate, strTreasuryCode,
 							strCurrency, aiDate, aaadblPathForward[iPath][iTimeVertex])))
-<span class="nc" id="L95">						return null;</span>
-<span class="nc" id="L96">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L97">					e.printStackTrace();</span>
+<span class="nc" id="L121">						return null;</span>
+<span class="nc" id="L122">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L123">					e.printStackTrace();</span>
 
-<span class="nc" id="L99">					return null;</span>
-<span class="fc" id="L100">				}</span>
+<span class="nc" id="L125">					return null;</span>
+<span class="fc" id="L126">				}</span>
 			}
 		}
 
-<span class="fc" id="L104">		return aaFFGC;</span>
+<span class="fc" id="L130">		return aaFFGC;</span>
 	}
 
 	/**
@@ -119,23 +145,23 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
 		final org.drip.measure.process.DiffusionEvolver de)
 	{
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (null == cpvd || null == de) return null;</span>
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == cpvd || null == de) return null;</span>
 
-<span class="fc" id="L124">		int iNumDimension = cpvd.numDimension();</span>
+<span class="fc" id="L150">		int iNumDimension = cpvd.numDimension();</span>
 
-<span class="fc" id="L126">		org.drip.measure.process.DiffusionEvolver[] aDE = new</span>
+<span class="fc" id="L152">		org.drip.measure.process.DiffusionEvolver[] aDE = new</span>
 			org.drip.measure.process.DiffusionEvolver[iNumDimension];
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
-<span class="fc" id="L130">			aDE[iDimension] = de;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
+<span class="fc" id="L156">			aDE[iDimension] = de;</span>
 
 		try {
-<span class="fc" id="L133">			return new PathVertexGovvie (gbs, cpvd, aDE);</span>
-<span class="nc" id="L134">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L135">			e.printStackTrace();</span>
+<span class="fc" id="L159">			return new PathVertexGovvie (gbs, cpvd, aDE);</span>
+<span class="nc" id="L160">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L161">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L138">		return null;</span>
+<span class="nc" id="L164">		return null;</span>
 	}
 
 	/**
@@ -154,11 +180,11 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 		final org.drip.measure.process.DiffusionEvolver[] aDE)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L157">		super (cpvd, aDE);</span>
+<span class="fc" id="L183">		super (cpvd, aDE);</span>
 
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (null == (_gbs = gbs))</span>
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;PathVertexGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L161">	}</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (null == (_gbs = gbs))</span>
+<span class="nc" id="L186">			throw new java.lang.Exception (&quot;PathVertexGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L187">	}</span>
 
 	/**
 	 * Generate the Govvie Builder Settings Instance
@@ -168,7 +194,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 
 	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSettings()
 	{
-<span class="fc" id="L171">		return _gbs;</span>
+<span class="fc" id="L197">		return _gbs;</span>
 	}
 
 	/**
@@ -182,7 +208,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final double[] adblTimeIncrement)
 	{
-<span class="nc" id="L185">		return curveVertex (pathVertex (_gbs.groundForwardYield(), adblTimeIncrement));</span>
+<span class="nc" id="L211">		return curveVertex (pathVertex (_gbs.groundForwardYield(), adblTimeIncrement));</span>
 	}
 
 	/**
@@ -196,7 +222,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final double dblTimeIncrement)
 	{
-<span class="fc" id="L199">		return curveVertex (pathVertex (_gbs.groundForwardYield(), dblTimeIncrement));</span>
+<span class="fc" id="L225">		return curveVertex (pathVertex (_gbs.groundForwardYield(), dblTimeIncrement));</span>
 	}
 
 	/**
@@ -210,7 +236,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final java.lang.String[] astrEventTenor)
 	{
-<span class="nc" id="L213">		return curveVertex (pathVertex (_gbs.groundForwardYield(), astrEventTenor));</span>
+<span class="nc" id="L239">		return curveVertex (pathVertex (_gbs.groundForwardYield(), astrEventTenor));</span>
 	}
 
 	/**
@@ -224,7 +250,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final int[] aiEventDate)
 	{
-<span class="fc" id="L227">		return curveVertex (pathVertex (_gbs.groundForwardYield(), _gbs.spot().julian(), aiEventDate));</span>
+<span class="fc" id="L253">		return curveVertex (pathVertex (_gbs.groundForwardYield(), _gbs.spot().julian(), aiEventDate));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -73,18 +73,20 @@ package org.drip.analytics.eventday;
 
 /**
  * &lt;i&gt;Static&lt;/i&gt; implements a complete date as a specific holiday.
- *  &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class Static extends Base {
-<span class="fc" id="L87">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L89">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
 
 	/**
 	 * Create a static holiday from the date string and the description
@@ -99,18 +101,18 @@ public class Static extends Base {
 		final java.lang.String strDate,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L102">		org.drip.analytics.date.JulianDate dtHol = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
-<span class="nc" id="L103">			(strDate);</span>
+<span class="nc" id="L104">		org.drip.analytics.date.JulianDate dtHol = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
+<span class="nc" id="L105">			(strDate);</span>
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (null == dtHol) return null;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == dtHol) return null;</span>
 
 		try {
-<span class="nc" id="L108">			return new Static (dtHol, strDescription);</span>
-<span class="nc" id="L109">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L110">			e.printStackTrace();</span>
+<span class="nc" id="L110">			return new Static (dtHol, strDescription);</span>
+<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L112">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L113">		return null;</span>
+<span class="nc" id="L115">		return null;</span>
 	}
 
 	/**
@@ -127,18 +129,18 @@ public class Static extends Base {
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L130">		super (strDescription);</span>
+<span class="fc" id="L132">		super (strDescription);</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;Static ctr: Null date into Static Holiday&quot;);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;Static ctr: Null date into Static Holiday&quot;);</span>
 
-<span class="fc" id="L134">		_iDate = dt.julian();</span>
-<span class="fc" id="L135">	}</span>
+<span class="fc" id="L136">		_iDate = dt.julian();</span>
+<span class="fc" id="L137">	}</span>
 
 	@Override public int dateInYear (
 		final int iYear,
 		final boolean bAdjusted)
 	{
-<span class="fc" id="L141">		return _iDate;</span>
+<span class="fc" id="L143">		return _iDate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

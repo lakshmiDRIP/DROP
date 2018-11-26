@@ -71,11 +71,13 @@ package org.drip.analytics.daycount;
 
 /**
  * &lt;i&gt;DC28_360&lt;/i&gt; implements the 28/360 day count convention.
- *	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -88,17 +90,17 @@ public class DC28_360 implements org.drip.analytics.daycount.DCFCalculator {
 	 */
 
 	public DC28_360()
-<span class="fc" id="L91">	{</span>
-<span class="fc" id="L92">	}</span>
+<span class="fc" id="L93">	{</span>
+<span class="fc" id="L94">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L96">		return &quot;DC28_360&quot;;</span>
+<span class="nc" id="L98">		return &quot;DC28_360&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L101">		return new java.lang.String[] {&quot;28/360&quot;, &quot;DC28_360&quot;};</span>
+<span class="fc" id="L103">		return new java.lang.String[] {&quot;28/360&quot;, &quot;DC28_360&quot;};</span>
 	}
 
 	@Override public double yearFraction (
@@ -109,16 +111,16 @@ public class DC28_360 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L112">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L114">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;DC28_360::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;DC28_360::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L117">		return (360.* (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
-<span class="fc" id="L118">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 28. *</span>
-<span class="fc" id="L119">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
-<span class="fc" id="L120">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
-<span class="fc" id="L121">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior()))</span>
+<span class="fc" id="L119">		return (360.* (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
+<span class="fc" id="L120">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 28. *</span>
+<span class="fc" id="L121">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
+<span class="fc" id="L122">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
+<span class="fc" id="L123">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior()))</span>
 							/ 360.;
 	}
 
@@ -130,16 +132,16 @@ public class DC28_360 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L133">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L135">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;DC28_360::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;DC28_360::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L138">		return 360 * (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
-<span class="fc" id="L139">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 28 *</span>
-<span class="fc" id="L140">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
-<span class="fc" id="L141">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
-<span class="fc" id="L142">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior());</span>
+<span class="fc" id="L140">		return 360 * (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
+<span class="fc" id="L141">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 28 *</span>
+<span class="fc" id="L142">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
+<span class="fc" id="L143">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
+<span class="fc" id="L144">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

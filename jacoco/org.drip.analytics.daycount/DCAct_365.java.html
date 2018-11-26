@@ -72,10 +72,13 @@ package org.drip.analytics.daycount;
 
 /**
  * &lt;i&gt;DCAct_365&lt;/i&gt; implements the Act/365 day count convention.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -88,17 +91,17 @@ public class DCAct_365 implements org.drip.analytics.daycount.DCFCalculator {
 	 */
 
 	public DCAct_365()
-<span class="fc" id="L91">	{</span>
-<span class="fc" id="L92">	}</span>
+<span class="fc" id="L94">	{</span>
+<span class="fc" id="L95">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L96">		return &quot;DCAct_365&quot;;</span>
+<span class="nc" id="L99">		return &quot;DCAct_365&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L101">		return new java.lang.String[] {&quot;Actual/365 Fixed&quot;, &quot;Act/365 Fixed&quot;, &quot;A/365 Fixed&quot;, &quot;A/365F&quot;,</span>
+<span class="fc" id="L104">		return new java.lang.String[] {&quot;Actual/365 Fixed&quot;, &quot;Act/365 Fixed&quot;, &quot;A/365 Fixed&quot;, &quot;A/365F&quot;,</span>
 			&quot;English&quot;, &quot;Act/365&quot;, &quot;DCAct_365&quot;};
 	}
 
@@ -110,12 +113,12 @@ public class DCAct_365 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L113">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L116">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;DCAct_365::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;DCAct_365::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L118">		return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 365.;</span>
+<span class="fc" id="L121">		return 1. * (iEndDate - iStartDate + dm.posterior() - dm.anterior()) / 365.;</span>
 	}
 
 	@Override public int daysAccrued (
@@ -126,12 +129,12 @@ public class DCAct_365 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L129">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L132">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;DCAct_365::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;DCAct_365::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L134">		return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
+<span class="fc" id="L137">		return iEndDate - iStartDate + dm.posterior() - dm.anterior();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

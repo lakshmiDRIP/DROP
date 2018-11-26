@@ -19,34 +19,52 @@ import org.drip.state.fx.FXCurve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -63,36 +81,44 @@ import org.drip.state.fx.FXCurve;
  */
 
 /**
- * FXStateShifted demonstrates the Generation and the Usage of Tenor Bumped FX Curves.
+ * &lt;i&gt;FXStateShifted&lt;/i&gt; demonstrates the Generation and the Usage of Tenor Bumped FX Curves.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L71">public class FXStateShifted {</span>
+<span class="nc" id="L97">public class FXStateShifted {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L77">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L103">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L79">		CurrencyPair cp = new CurrencyPair (</span>
+<span class="fc" id="L105">		CurrencyPair cp = new CurrencyPair (</span>
 			&quot;EUR&quot;,
 			&quot;USD&quot;,
 			&quot;USD&quot;,
 			10000.
 		);
 
-<span class="fc" id="L86">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+<span class="fc" id="L112">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
 			0,
-<span class="fc" id="L88">			cp.denomCcy()</span>
+<span class="fc" id="L114">			cp.denomCcy()</span>
 		);
 
-<span class="fc" id="L91">		double dblFXSpot = 1.1013;</span>
-<span class="fc" id="L92">		double dblBump = 0.0001;</span>
-<span class="fc" id="L93">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L117">		double dblFXSpot = 1.1013;</span>
+<span class="fc" id="L118">		double dblBump = 0.0001;</span>
+<span class="fc" id="L119">		boolean bIsBumpProportional = false;</span>
 
-<span class="fc" id="L95">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L121">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			&quot;2D&quot;,
 			&quot;3D&quot;,
@@ -106,7 +132,7 @@ import org.drip.state.fx.FXCurve;
 			&quot;9M&quot;
 		};
 
-<span class="fc" id="L109">		double[] adblFXForward = new double[] {</span>
+<span class="fc" id="L135">		double[] adblFXForward = new double[] {</span>
 			1.1011,		// &quot;1D&quot;
 			1.1007,		// &quot;2D&quot;
 			1.0999,		// &quot;3D&quot;
@@ -120,7 +146,7 @@ import org.drip.state.fx.FXCurve;
 			1.1011		// &quot;9M&quot;
 		};
 
-<span class="fc" id="L123">		Map&lt;String, FXCurve&gt; mapBumpedFXCurve = LatentMarketStateBuilder.BumpedFXCurve (</span>
+<span class="fc" id="L149">		Map&lt;String, FXCurve&gt; mapBumpedFXCurve = LatentMarketStateBuilder.BumpedFXCurve (</span>
 			dtSpot,
 			cp,
 			astrMaturityTenor,
@@ -132,30 +158,30 @@ import org.drip.state.fx.FXCurve;
 			bIsBumpProportional
 		);
 
-<span class="fc" id="L135">		FXForwardComponent[] aFXFC = OTCInstrumentBuilder.FXForward (</span>
+<span class="fc" id="L161">		FXForwardComponent[] aFXFC = OTCInstrumentBuilder.FXForward (</span>
 			dtSpot,
 			cp,
 			astrMaturityTenor
 		);
 
-<span class="fc" id="L141">		System.out.println (&quot;\n\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\n\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L143">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L169">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (Map.Entry&lt;String, FXCurve&gt; meFX : mapBumpedFXCurve.entrySet()) {</span>
-<span class="fc" id="L146">			String strKey = meFX.getKey();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		for (Map.Entry&lt;String, FXCurve&gt; meFX : mapBumpedFXCurve.entrySet()) {</span>
+<span class="fc" id="L172">			String strKey = meFX.getKey();</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fxfwd&quot;)) continue;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fxfwd&quot;)) continue;</span>
 
-<span class="fc" id="L150">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L176">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L152">			csqc.setFXState (meFX.getValue());</span>
+<span class="fc" id="L178">			csqc.setFXState (meFX.getValue());</span>
 
-<span class="fc" id="L154">			System.out.print (&quot;\t|  [&quot; + meFX.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L180">			System.out.print (&quot;\t|  [&quot; + meFX.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L156" title="All 2 branches covered.">			for (Component comp : aFXFC)</span>
-<span class="fc" id="L157">				System.out.print (FormatUtil.FormatDouble (</span>
-<span class="fc" id="L158">					comp.measureValue (</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">			for (Component comp : aFXFC)</span>
+<span class="fc" id="L183">				System.out.print (FormatUtil.FormatDouble (</span>
+<span class="fc" id="L184">					comp.measureValue (</span>
 						valParams,
 						null,
 						csqc,
@@ -163,33 +189,33 @@ import org.drip.state.fx.FXCurve;
 						&quot;Outright&quot;
 					), 1, 4, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L166">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L167">		}</span>
+<span class="fc" id="L192">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L193">		}</span>
 
-<span class="fc" id="L169">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L195">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L171">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;\n\t|---------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L173">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L199">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L175">		csqcBase.setFXState (mapBumpedFXCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L201">		csqcBase.setFXState (mapBumpedFXCurve.get (&quot;Base&quot;));</span>
 
-<span class="fc" id="L177">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L203">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L179">		csqcBump.setFXState (mapBumpedFXCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L205">		csqcBump.setFXState (mapBumpedFXCurve.get (&quot;Bump&quot;));</span>
 
-<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (Component comp : aFXFC)</span>
-<span class="fc" id="L182">			System.out.println (</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		for (Component comp : aFXFC)</span>
+<span class="fc" id="L208">			System.out.println (</span>
 				&quot;\t| OUTRIGHT  =&gt; &quot; +
-<span class="fc" id="L184">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="fc" id="L185">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L210">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L211">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;Outright&quot;
 				), 1, 4, 1.) + &quot; | &quot; +
-<span class="fc" id="L192">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L218">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -198,7 +224,7 @@ import org.drip.state.fx.FXCurve;
 				), 1, 4, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc" id="L201">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
-<span class="fc" id="L202">	}</span>
+<span class="fc" id="L227">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+<span class="fc" id="L228">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

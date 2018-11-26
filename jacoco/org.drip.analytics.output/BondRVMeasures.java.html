@@ -73,40 +73,54 @@ package org.drip.analytics.output;
 /**
  * &lt;i&gt;BondRVMeasures&lt;/i&gt; encapsulates the comprehensive set of RV measures calculated for the bond to the
  * appropriate exercise:
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- * 		&lt;li&gt;Work-out Information&lt;/li&gt;
- * 		&lt;li&gt;Price, Yield, and Yield01&lt;/li&gt;
- * 		&lt;li&gt;Spread Measures: Asset Swap/Credit/G/I/OAS/PECS/TSY/Z&lt;/li&gt;
- * 		&lt;li&gt;Basis Measures: Bond Basis, Credit Basis, Yield Basis&lt;/li&gt;
- * 		&lt;li&gt;Duration Measures: Macaulay/Modified Duration, Convexity&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Work-out Information
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Price, Yield, and Yield01
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Spread Measures: Asset Swap/Credit/G/I/OAS/PECS/TSY/Z
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Basis Measures: Bond Basis, Credit Basis, Yield Basis
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Duration Measures: Macaulay/Modified Duration, Convexity
+ * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- *  &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BondRVMeasures {
-<span class="fc" id="L94">	private double _dblPECS = java.lang.Double.NaN;</span>
-<span class="fc" id="L95">	private double _dblPrice = java.lang.Double.NaN;</span>
-<span class="fc" id="L96">	private double _dblGSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L97">	private double _dblISpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L98">	private double _dblYield01 = java.lang.Double.NaN;</span>
-<span class="fc" id="L99">	private double _dblZSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L100">	private double _dblOASpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L101">	private double _dblBondBasis = java.lang.Double.NaN;</span>
-<span class="fc" id="L102">	private double _dblConvexity = java.lang.Double.NaN;</span>
-<span class="fc" id="L103">	private double _dblTSYSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L104">	private double _dblCreditBasis = java.lang.Double.NaN;</span>
-<span class="fc" id="L105">	private org.drip.param.valuation.WorkoutInfo _wi = null;</span>
-<span class="fc" id="L106">	private double _dblDiscountMargin = java.lang.Double.NaN;</span>
-<span class="fc" id="L107">	private double _dblAssetSwapSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblMacaulayDuration = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private double _dblModifiedDuration = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblPECS = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblGSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblISpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _dblYield01 = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _dblZSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _dblOASpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	private double _dblBondBasis = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private double _dblConvexity = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">	private double _dblTSYSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L118">	private double _dblCreditBasis = java.lang.Double.NaN;</span>
+<span class="fc" id="L119">	private org.drip.param.valuation.WorkoutInfo _wi = null;</span>
+<span class="fc" id="L120">	private double _dblDiscountMargin = java.lang.Double.NaN;</span>
+<span class="fc" id="L121">	private double _dblAssetSwapSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblMacaulayDuration = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _dblModifiedDuration = java.lang.Double.NaN;</span>
 
 	/**
 	 * BondRVMeasures ctr
@@ -149,25 +163,25 @@ public class BondRVMeasures {
 		final double dblConvexity,
 		final org.drip.param.valuation.WorkoutInfo wi)
 		throws java.lang.Exception
-<span class="fc" id="L152">	{</span>
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (null == (_wi = wi)) throw new java.lang.Exception (&quot;BondRVMeasures ctr: Invalid inputs!&quot;);</span>
+<span class="fc" id="L166">	{</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (null == (_wi = wi)) throw new java.lang.Exception (&quot;BondRVMeasures ctr: Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L155">		_dblPECS = dblPECS;</span>
-<span class="fc" id="L156">		_dblPrice = dblPrice;</span>
-<span class="fc" id="L157">		_dblGSpread = dblGSpread;</span>
-<span class="fc" id="L158">		_dblISpread = dblISpread;</span>
-<span class="fc" id="L159">		_dblYield01 = dblYield01;</span>
-<span class="fc" id="L160">		_dblZSpread = dblZSpread;</span>
-<span class="fc" id="L161">		_dblOASpread = dblOASpread;</span>
-<span class="fc" id="L162">		_dblBondBasis = dblBondBasis;</span>
-<span class="fc" id="L163">		_dblConvexity = dblConvexity;</span>
-<span class="fc" id="L164">		_dblTSYSpread = dblTSYSpread;</span>
-<span class="fc" id="L165">		_dblCreditBasis = dblCreditBasis;</span>
-<span class="fc" id="L166">		_dblDiscountMargin = dblDiscountMargin;</span>
-<span class="fc" id="L167">		_dblAssetSwapSpread = dblAssetSwapSpread;</span>
-<span class="fc" id="L168">		_dblMacaulayDuration = dblMacaulayDuration;</span>
-<span class="fc" id="L169">		_dblModifiedDuration = dblModifiedDuration;</span>
-<span class="fc" id="L170">	}</span>
+<span class="fc" id="L169">		_dblPECS = dblPECS;</span>
+<span class="fc" id="L170">		_dblPrice = dblPrice;</span>
+<span class="fc" id="L171">		_dblGSpread = dblGSpread;</span>
+<span class="fc" id="L172">		_dblISpread = dblISpread;</span>
+<span class="fc" id="L173">		_dblYield01 = dblYield01;</span>
+<span class="fc" id="L174">		_dblZSpread = dblZSpread;</span>
+<span class="fc" id="L175">		_dblOASpread = dblOASpread;</span>
+<span class="fc" id="L176">		_dblBondBasis = dblBondBasis;</span>
+<span class="fc" id="L177">		_dblConvexity = dblConvexity;</span>
+<span class="fc" id="L178">		_dblTSYSpread = dblTSYSpread;</span>
+<span class="fc" id="L179">		_dblCreditBasis = dblCreditBasis;</span>
+<span class="fc" id="L180">		_dblDiscountMargin = dblDiscountMargin;</span>
+<span class="fc" id="L181">		_dblAssetSwapSpread = dblAssetSwapSpread;</span>
+<span class="fc" id="L182">		_dblMacaulayDuration = dblMacaulayDuration;</span>
+<span class="fc" id="L183">		_dblModifiedDuration = dblModifiedDuration;</span>
+<span class="fc" id="L184">	}</span>
 
 	/**
 	 * Retrieve the Work-out Info
@@ -177,7 +191,7 @@ public class BondRVMeasures {
 
 	public org.drip.param.valuation.WorkoutInfo wi()
 	{
-<span class="fc" id="L180">		return _wi;</span>
+<span class="fc" id="L194">		return _wi;</span>
 	}
 
 	/**
@@ -188,7 +202,7 @@ public class BondRVMeasures {
 
 	public double pecs()
 	{
-<span class="fc" id="L191">		return _dblPECS;</span>
+<span class="fc" id="L205">		return _dblPECS;</span>
 	}
 
 	/**
@@ -199,7 +213,7 @@ public class BondRVMeasures {
 
 	public double price()
 	{
-<span class="fc" id="L202">		return _dblPrice;</span>
+<span class="fc" id="L216">		return _dblPrice;</span>
 	}
 
 	/**
@@ -210,7 +224,7 @@ public class BondRVMeasures {
 
 	public double gSpread()
 	{
-<span class="fc" id="L213">		return _dblGSpread;</span>
+<span class="fc" id="L227">		return _dblGSpread;</span>
 	}
 
 	/**
@@ -221,7 +235,7 @@ public class BondRVMeasures {
 
 	public double iSpread()
 	{
-<span class="fc" id="L224">		return _dblISpread;</span>
+<span class="fc" id="L238">		return _dblISpread;</span>
 	}
 
 	/**
@@ -232,7 +246,7 @@ public class BondRVMeasures {
 
 	public double yield01()
 	{
-<span class="fc" id="L235">		return _dblYield01;</span>
+<span class="fc" id="L249">		return _dblYield01;</span>
 	}
 
 	/**
@@ -243,7 +257,7 @@ public class BondRVMeasures {
 
 	public double zSpread()
 	{
-<span class="fc" id="L246">		return _dblZSpread;</span>
+<span class="fc" id="L260">		return _dblZSpread;</span>
 	}
 
 	/**
@@ -254,7 +268,7 @@ public class BondRVMeasures {
 
 	public double oas()
 	{
-<span class="fc" id="L257">		return _dblOASpread;</span>
+<span class="fc" id="L271">		return _dblOASpread;</span>
 	}
 
 	/**
@@ -265,7 +279,7 @@ public class BondRVMeasures {
 
 	public double bondBasis()
 	{
-<span class="fc" id="L268">		return _dblBondBasis;</span>
+<span class="fc" id="L282">		return _dblBondBasis;</span>
 	}
 
 	/**
@@ -276,7 +290,7 @@ public class BondRVMeasures {
 
 	public double convexity()
 	{
-<span class="fc" id="L279">		return _dblConvexity;</span>
+<span class="fc" id="L293">		return _dblConvexity;</span>
 	}
 
 	/**
@@ -287,7 +301,7 @@ public class BondRVMeasures {
 
 	public double tsySpread()
 	{
-<span class="fc" id="L290">		return _dblTSYSpread;</span>
+<span class="fc" id="L304">		return _dblTSYSpread;</span>
 	}
 
 	/**
@@ -298,7 +312,7 @@ public class BondRVMeasures {
 
 	public double creditBasis()
 	{
-<span class="fc" id="L301">		return _dblCreditBasis;</span>
+<span class="fc" id="L315">		return _dblCreditBasis;</span>
 	}
 
 	/**
@@ -309,7 +323,7 @@ public class BondRVMeasures {
 
 	public double discountMargin()
 	{
-<span class="fc" id="L312">		return _dblDiscountMargin;</span>
+<span class="fc" id="L326">		return _dblDiscountMargin;</span>
 	}
 
 	/**
@@ -320,7 +334,7 @@ public class BondRVMeasures {
 
 	public double asw()
 	{
-<span class="fc" id="L323">		return _dblAssetSwapSpread;</span>
+<span class="fc" id="L337">		return _dblAssetSwapSpread;</span>
 	}
 
 	/**
@@ -331,7 +345,7 @@ public class BondRVMeasures {
 
 	public double macaulayDuration()
 	{
-<span class="fc" id="L334">		return _dblMacaulayDuration;</span>
+<span class="fc" id="L348">		return _dblMacaulayDuration;</span>
 	}
 
 	/**
@@ -342,7 +356,7 @@ public class BondRVMeasures {
 
 	public double modifiedDuration()
 	{
-<span class="fc" id="L345">		return _dblModifiedDuration;</span>
+<span class="fc" id="L359">		return _dblModifiedDuration;</span>
 	}
 
 	/**
@@ -356,62 +370,62 @@ public class BondRVMeasures {
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; toMap (
 		final java.lang.String strPrefix)
 	{
-<span class="fc" id="L359">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapRVMeasures = new</span>
+<span class="fc" id="L373">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapRVMeasures = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L362">		mapRVMeasures.put (strPrefix + &quot;AssetSwapSpread&quot;, _dblAssetSwapSpread);</span>
+<span class="fc" id="L376">		mapRVMeasures.put (strPrefix + &quot;AssetSwapSpread&quot;, _dblAssetSwapSpread);</span>
 
-<span class="fc" id="L364">		mapRVMeasures.put (strPrefix + &quot;ASW&quot;, _dblAssetSwapSpread);</span>
+<span class="fc" id="L378">		mapRVMeasures.put (strPrefix + &quot;ASW&quot;, _dblAssetSwapSpread);</span>
 
-<span class="fc" id="L366">		mapRVMeasures.put (strPrefix + &quot;BondBasis&quot;, _dblBondBasis);</span>
+<span class="fc" id="L380">		mapRVMeasures.put (strPrefix + &quot;BondBasis&quot;, _dblBondBasis);</span>
 
-<span class="fc" id="L368">		mapRVMeasures.put (strPrefix + &quot;Convexity&quot;, _dblConvexity);</span>
+<span class="fc" id="L382">		mapRVMeasures.put (strPrefix + &quot;Convexity&quot;, _dblConvexity);</span>
 
-<span class="fc" id="L370">		mapRVMeasures.put (strPrefix + &quot;CreditBasis&quot;, _dblCreditBasis);</span>
+<span class="fc" id="L384">		mapRVMeasures.put (strPrefix + &quot;CreditBasis&quot;, _dblCreditBasis);</span>
 
-<span class="fc" id="L372">		mapRVMeasures.put (strPrefix + &quot;DiscountMargin&quot;, _dblDiscountMargin);</span>
+<span class="fc" id="L386">		mapRVMeasures.put (strPrefix + &quot;DiscountMargin&quot;, _dblDiscountMargin);</span>
 
-<span class="fc" id="L374">		mapRVMeasures.put (strPrefix + &quot;Duration&quot;, _dblModifiedDuration);</span>
+<span class="fc" id="L388">		mapRVMeasures.put (strPrefix + &quot;Duration&quot;, _dblModifiedDuration);</span>
 
-<span class="fc" id="L376">		mapRVMeasures.put (strPrefix + &quot;GSpread&quot;, _dblGSpread);</span>
+<span class="fc" id="L390">		mapRVMeasures.put (strPrefix + &quot;GSpread&quot;, _dblGSpread);</span>
 
-<span class="fc" id="L378">		mapRVMeasures.put (strPrefix + &quot;ISpread&quot;, _dblISpread);</span>
+<span class="fc" id="L392">		mapRVMeasures.put (strPrefix + &quot;ISpread&quot;, _dblISpread);</span>
 
-<span class="fc" id="L380">		mapRVMeasures.put (strPrefix + &quot;MacaulayDuration&quot;, _dblMacaulayDuration);</span>
+<span class="fc" id="L394">		mapRVMeasures.put (strPrefix + &quot;MacaulayDuration&quot;, _dblMacaulayDuration);</span>
 
-<span class="fc" id="L382">		mapRVMeasures.put (strPrefix + &quot;ModifiedDuration&quot;, _dblModifiedDuration);</span>
+<span class="fc" id="L396">		mapRVMeasures.put (strPrefix + &quot;ModifiedDuration&quot;, _dblModifiedDuration);</span>
 
-<span class="fc" id="L384">		mapRVMeasures.put (strPrefix + &quot;OAS&quot;, _dblOASpread);</span>
+<span class="fc" id="L398">		mapRVMeasures.put (strPrefix + &quot;OAS&quot;, _dblOASpread);</span>
 
-<span class="fc" id="L386">		mapRVMeasures.put (strPrefix + &quot;OASpread&quot;, _dblOASpread);</span>
+<span class="fc" id="L400">		mapRVMeasures.put (strPrefix + &quot;OASpread&quot;, _dblOASpread);</span>
 
-<span class="fc" id="L388">		mapRVMeasures.put (strPrefix + &quot;OptionAdjustedSpread&quot;, _dblOASpread);</span>
+<span class="fc" id="L402">		mapRVMeasures.put (strPrefix + &quot;OptionAdjustedSpread&quot;, _dblOASpread);</span>
 
-<span class="fc" id="L390">		mapRVMeasures.put (strPrefix + &quot;PECS&quot;, _dblPECS);</span>
+<span class="fc" id="L404">		mapRVMeasures.put (strPrefix + &quot;PECS&quot;, _dblPECS);</span>
 
-<span class="fc" id="L392">		mapRVMeasures.put (strPrefix + &quot;Price&quot;, _dblPrice);</span>
+<span class="fc" id="L406">		mapRVMeasures.put (strPrefix + &quot;Price&quot;, _dblPrice);</span>
 
-<span class="fc" id="L394">		mapRVMeasures.put (strPrefix + &quot;TSYSpread&quot;, _dblTSYSpread);</span>
+<span class="fc" id="L408">		mapRVMeasures.put (strPrefix + &quot;TSYSpread&quot;, _dblTSYSpread);</span>
 
-<span class="fc" id="L396">		mapRVMeasures.put (strPrefix + &quot;WorkoutDate&quot;, (double) _wi.date());</span>
+<span class="fc" id="L410">		mapRVMeasures.put (strPrefix + &quot;WorkoutDate&quot;, (double) _wi.date());</span>
 
-<span class="fc" id="L398">		mapRVMeasures.put (strPrefix + &quot;WorkoutFactor&quot;, _wi.factor());</span>
+<span class="fc" id="L412">		mapRVMeasures.put (strPrefix + &quot;WorkoutFactor&quot;, _wi.factor());</span>
 
-<span class="fc" id="L400">		mapRVMeasures.put (strPrefix + &quot;WorkoutType&quot;, (double) _wi.type());</span>
+<span class="fc" id="L414">		mapRVMeasures.put (strPrefix + &quot;WorkoutType&quot;, (double) _wi.type());</span>
 
-<span class="fc" id="L402">		mapRVMeasures.put (strPrefix + &quot;WorkoutYield&quot;, _wi.yield());</span>
+<span class="fc" id="L416">		mapRVMeasures.put (strPrefix + &quot;WorkoutYield&quot;, _wi.yield());</span>
 
-<span class="fc" id="L404">		mapRVMeasures.put (strPrefix + &quot;Yield&quot;, _wi.yield());</span>
+<span class="fc" id="L418">		mapRVMeasures.put (strPrefix + &quot;Yield&quot;, _wi.yield());</span>
 
-<span class="fc" id="L406">		mapRVMeasures.put (strPrefix + &quot;Yield01&quot;, _dblYield01);</span>
+<span class="fc" id="L420">		mapRVMeasures.put (strPrefix + &quot;Yield01&quot;, _dblYield01);</span>
 
-<span class="fc" id="L408">		mapRVMeasures.put (strPrefix + &quot;YieldBasis&quot;, _dblBondBasis);</span>
+<span class="fc" id="L422">		mapRVMeasures.put (strPrefix + &quot;YieldBasis&quot;, _dblBondBasis);</span>
 
-<span class="fc" id="L410">		mapRVMeasures.put (strPrefix + &quot;YieldSpread&quot;, _dblBondBasis);</span>
+<span class="fc" id="L424">		mapRVMeasures.put (strPrefix + &quot;YieldSpread&quot;, _dblBondBasis);</span>
 
-<span class="fc" id="L412">		mapRVMeasures.put (strPrefix + &quot;ZSpread&quot;, _dblZSpread);</span>
+<span class="fc" id="L426">		mapRVMeasures.put (strPrefix + &quot;ZSpread&quot;, _dblZSpread);</span>
 
-<span class="fc" id="L414">		return mapRVMeasures;</span>
+<span class="fc" id="L428">		return mapRVMeasures;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

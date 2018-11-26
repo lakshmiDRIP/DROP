@@ -73,19 +73,21 @@ package org.drip.analytics.eventday;
 
 /**
  * &lt;i&gt;Base&lt;/i&gt; is an abstraction around holiday and description. Abstract function generates an optional
- * 	adjustment for weekends in a given year.
- *  &lt;br&gt;
+ * adjustment for weekends in a given year.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class Base {
-<span class="fc" id="L88">	private java.lang.String _strDescription = &quot;&quot;;</span>
+<span class="fc" id="L90">	private java.lang.String _strDescription = &quot;&quot;;</span>
 
 	/**
 	 * Constructs the Base instance from the description
@@ -95,9 +97,9 @@ public abstract class Base {
 
 	public Base (
 		final java.lang.String strDescription)
-<span class="fc" id="L98">	{</span>
-<span class="fc" id="L99">		_strDescription = strDescription;</span>
-<span class="fc" id="L100">	}</span>
+<span class="fc" id="L100">	{</span>
+<span class="fc" id="L101">		_strDescription = strDescription;</span>
+<span class="fc" id="L102">	}</span>
 
 	/**
 	 * Roll the date to a non-holiday according to the rule specified
@@ -117,17 +119,17 @@ public abstract class Base {
 		final Weekend wkend)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L120">		int iRolledDate = iDate;</span>
+<span class="nc" id="L122">		int iRolledDate = iDate;</span>
 
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null != wkend &amp;&amp; wkend.isLeftWeekend (iDate)) iRolledDate = iDate - 1;</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null != wkend &amp;&amp; wkend.isLeftWeekend (iDate)) iRolledDate = iDate - 1;</span>
 
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null != wkend &amp;&amp; wkend.isRightWeekend (iDate)) iRolledDate = iDate + 1;</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null != wkend &amp;&amp; wkend.isRightWeekend (iDate)) iRolledDate = iDate + 1;</span>
 
-<span class="nc" id="L126">		if (bBalkOnYearShift &amp; org.drip.analytics.date.DateUtil.Year (iDate) !=</span>
-<span class="nc bnc" id="L127" title="All 4 branches missed.">			org.drip.analytics.date.DateUtil.Year (iRolledDate))</span>
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;Base::rollHoliday =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L128">		if (bBalkOnYearShift &amp; org.drip.analytics.date.DateUtil.Year (iDate) !=</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">			org.drip.analytics.date.DateUtil.Year (iRolledDate))</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;Base::rollHoliday =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L130">		return iRolledDate;</span>
+<span class="nc" id="L132">		return iRolledDate;</span>
 	}
 
 	/**
@@ -138,7 +140,7 @@ public abstract class Base {
 
 	public java.lang.String description()
 	{
-<span class="nc" id="L141">		return _strDescription;</span>
+<span class="nc" id="L143">		return _strDescription;</span>
 	}
 
 	/**

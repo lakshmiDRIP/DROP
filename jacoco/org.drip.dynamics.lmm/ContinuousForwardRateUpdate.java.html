@@ -69,8 +69,9 @@ package org.drip.dynamics.lmm;
 
 /**
  * &lt;i&gt;ContinuousForwardRateUpdate&lt;/i&gt; contains the Instantaneous Snapshot of the Evolving Discount Latent
- *  State Quantification Metrics Updated using the Continuously Compounded Forward Rate Dynamics.
- * 	&lt;br&gt;
+ * State Quantification Metrics Updated using the Continuously Compounded Forward Rate Dynamics.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *  	&lt;li&gt;
  *  		Goldys, B., M. Musiela, and D. Sondermann (1994): &lt;i&gt;Log-normality of Rates and Term Structure
@@ -85,21 +86,23 @@ package org.drip.dynamics.lmm;
  * 				&lt;i&gt;Mathematical Finance&lt;/i&gt; &lt;b&gt;7 (2)&lt;/b&gt; 127-155
  *  	&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate {
-<span class="nc" id="L99">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
-<span class="nc" id="L100">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
-<span class="nc" id="L101">	private double _dblDContinuousForwardDXInitial = java.lang.Double.NaN;</span>
-<span class="nc" id="L102">	private double _dblDContinuousForwardDXTerminal = java.lang.Double.NaN;</span>
+<span class="nc" id="L102">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="nc" id="L103">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="nc" id="L104">	private double _dblDContinuousForwardDXInitial = java.lang.Double.NaN;</span>
+<span class="nc" id="L105">	private double _dblDContinuousForwardDXTerminal = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct an Instance of ContinuousForwardRateUpdate
@@ -136,46 +139,46 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 		final double dblDContinuousForwardDXInitial,
 		final double dblDContinuousForwardDXTerminal)
 	{
-<span class="nc" id="L139">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new org.drip.dynamics.evolution.LSQMPointRecord();</span>
+<span class="nc" id="L142">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new org.drip.dynamics.evolution.LSQMPointRecord();</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE,
 				dblContinuousForwardRate))
-<span class="nc" id="L144">			return null;</span>
+<span class="nc" id="L147">			return null;</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, dblSpotRate))
-<span class="nc" id="L148">			return null;</span>
+<span class="nc" id="L151">			return null;</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR, dblDiscountFactor))
-<span class="nc" id="L152">			return null;</span>
+<span class="nc" id="L155">			return null;</span>
 
-<span class="nc" id="L154">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new org.drip.dynamics.evolution.LSQMPointRecord();</span>
+<span class="nc" id="L157">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new org.drip.dynamics.evolution.LSQMPointRecord();</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE,
 				dblContinuousForwardRateIncrement))
-<span class="nc" id="L159">			return null;</span>
+<span class="nc" id="L162">			return null;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, dblSpotRateIncrement))
-<span class="nc" id="L163">			return null;</span>
+<span class="nc" id="L166">			return null;</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
 				dblDiscountFactorIncrement))
-<span class="nc" id="L168">			return null;</span>
+<span class="nc" id="L171">			return null;</span>
 
 		try {
-<span class="nc" id="L171">			return new ContinuousForwardRateUpdate (lslFunding, lslForward, iInitialDate, iFinalDate,</span>
+<span class="nc" id="L174">			return new ContinuousForwardRateUpdate (lslFunding, lslForward, iInitialDate, iFinalDate,</span>
 				iTargetPointDate, lrSnapshot, lrIncrement, dblDContinuousForwardDXInitial,
 					dblDContinuousForwardDXTerminal);
-<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L175">			e.printStackTrace();</span>
+<span class="nc" id="L177">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L178">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L181">		return null;</span>
 	}
 
 	private ContinuousForwardRateUpdate (
@@ -190,14 +193,14 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 		final double dblDContinuousForwardDXTerminal)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L193">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
+<span class="nc" id="L196">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
 
-<span class="nc bnc" id="L195" title="All 4 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDContinuousForwardDXTerminal =</span>
+<span class="nc bnc" id="L198" title="All 4 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDContinuousForwardDXTerminal =</span>
 				dblDContinuousForwardDXTerminal) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L198" title="All 2 branches missed.">					(_dblDContinuousForwardDXInitial = dblDContinuousForwardDXInitial))</span>
-<span class="nc" id="L199">			throw new java.lang.Exception (&quot;ContinuousForwardRateUpdate ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L200">	}</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">					(_dblDContinuousForwardDXInitial = dblDContinuousForwardDXInitial))</span>
+<span class="nc" id="L202">			throw new java.lang.Exception (&quot;ContinuousForwardRateUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L203">	}</span>
 
 	/**
 	 * Retrieve the Continuously Compounded Forward Rate
@@ -210,7 +213,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	public double continuousForwardRate()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L213">		return snapshot().qm (_lslForward,</span>
+<span class="nc" id="L216">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE);
 	}
 
@@ -225,7 +228,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	public double continuousForwardRateIncrement()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L228">		return increment().qm (_lslForward,</span>
+<span class="nc" id="L231">		return increment().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE);
 	}
 
@@ -240,7 +243,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	public double spotRate()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L243">		return snapshot().qm (_lslFunding,</span>
+<span class="nc" id="L246">		return snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -255,7 +258,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	public double spotRateIncrement()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L258">		return increment().qm (_lslFunding,</span>
+<span class="nc" id="L261">		return increment().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -270,7 +273,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	public double discountFactor()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L273">		return snapshot().qm (_lslFunding,</span>
+<span class="nc" id="L276">		return snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 
@@ -285,7 +288,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	public double discountFactorIncrement()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L288">		return increment().qm (_lslFunding,</span>
+<span class="nc" id="L291">		return increment().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 
@@ -297,7 +300,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 
 	public double dContinuousForwardDXInitial()
 	{
-<span class="nc" id="L300">		return _dblDContinuousForwardDXInitial;</span>
+<span class="nc" id="L303">		return _dblDContinuousForwardDXInitial;</span>
 	}
 
 	/**
@@ -308,7 +311,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 
 	public double dContinuousForwardDXTerminal()
 	{
-<span class="nc" id="L311">		return _dblDContinuousForwardDXTerminal;</span>
+<span class="nc" id="L314">		return _dblDContinuousForwardDXTerminal;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

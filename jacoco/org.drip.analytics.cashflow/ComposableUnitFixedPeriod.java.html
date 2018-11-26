@@ -70,21 +70,22 @@ package org.drip.analytics.cashflow;
 
 /**
  * &lt;i&gt;ComposableUnitFixedPeriod&lt;/i&gt; represents the Fixed Cash Flow Periods' Composable Period Details.
- *  Currently it holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the
- *  Coupon Rate, and the Accrual Day Counts, as well as the EOM Adjustment Flags.
+ * Currently it holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the
+ * Coupon Rate, and the Accrual Day Counts, as well as the EOM Adjustment Flags.
  *
- *	&lt;br&gt;
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.ComposableUnitPeriod {
-<span class="fc" id="L87">	private org.drip.param.period.ComposableFixedUnitSetting _cfus = null;</span>
+<span class="fc" id="L88">	private org.drip.param.period.ComposableFixedUnitSetting _cfus = null;</span>
 
 	/**
 	 * The ComposableUnitFixedPeriod constructor
@@ -104,32 +105,32 @@ public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.Compo
 		final org.drip.param.period.ComposableFixedUnitSetting cfus)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L107">		super (</span>
+<span class="fc" id="L108">		super (</span>
 			iStartDate,
 			iEndDate,
-<span class="fc" id="L110">			cfus.tenor(),</span>
+<span class="fc" id="L111">			cfus.tenor(),</span>
 			ucas
 		);
 
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == (_cfus = cfus))</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;ComposableUnitFixedPeriod Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L116">	}</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == (_cfus = cfus))</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;ComposableUnitFixedPeriod Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L117">	}</span>
 
 	@Override public double baseRate (
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L122">		return _cfus.fixedCoupon();</span>
+<span class="fc" id="L123">		return _cfus.fixedCoupon();</span>
 	}
 
 	@Override public double basis()
 	{
-<span class="fc" id="L127">		return _cfus.basis();</span>
+<span class="fc" id="L128">		return _cfus.basis();</span>
 	}
 
 	@Override public java.lang.String couponCurrency()
 	{
-<span class="fc" id="L132">		return _cfus.couponCurrency();</span>
+<span class="fc" id="L133">		return _cfus.couponCurrency();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

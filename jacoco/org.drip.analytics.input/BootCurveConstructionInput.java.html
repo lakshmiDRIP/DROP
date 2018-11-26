@@ -71,32 +71,48 @@ package org.drip.analytics.input;
 
 /**
  * &lt;i&gt;BootCurveConstructionInput&lt;/i&gt; contains the Parameters needed for the Curve Calibration/Estimation. It
- * 	contains the following:
- * 	&lt;ul&gt;
- *  	&lt;li&gt;Calibration Valuation Parameters&lt;/li&gt;
- *  	&lt;li&gt;Calibration Quoting Parameters&lt;/li&gt;
- *  	&lt;li&gt;Array of Calibration Instruments&lt;/li&gt;
- *  	&lt;li&gt;Map of Calibration Quotes&lt;/li&gt;
- *  	&lt;li&gt;Map of Calibration Measures&lt;/li&gt;
- *  	&lt;li&gt;Latent State Fixings Container&lt;/li&gt;
- * 	&lt;/ul&gt;
- *  &lt;br&gt;
+ * contains the following:
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input&quot;&gt;Input&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Calibration Valuation Parameters
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Calibration Quoting Parameters
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Array of Calibration Instruments
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Map of Calibration Quotes
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Map of Calibration Measures
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Latent State Fixings Container
+ *  	&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/input&quot;&gt;Input&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BootCurveConstructionInput implements org.drip.analytics.input.CurveConstructionInputSet {
-<span class="fc" id="L94">	private org.drip.param.valuation.ValuationParams _valParam = null;</span>
-<span class="fc" id="L95">	private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
-<span class="fc" id="L96">	private org.drip.param.valuation.ValuationCustomizationParams _quotingParam = null;</span>
-<span class="fc" id="L97">	private org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;</span>
-<span class="fc" id="L98">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; _mapMeasures = null;</span>
-<span class="fc" id="L99">	private</span>
+<span class="fc" id="L110">	private org.drip.param.valuation.ValuationParams _valParam = null;</span>
+<span class="fc" id="L111">	private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
+<span class="fc" id="L112">	private org.drip.param.valuation.ValuationCustomizationParams _quotingParam = null;</span>
+<span class="fc" id="L113">	private org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;</span>
+<span class="fc" id="L114">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; _mapMeasures = null;</span>
+<span class="fc" id="L115">	private</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			_mapQuote = null;
 
@@ -121,61 +137,61 @@ public class BootCurveConstructionInput implements org.drip.analytics.input.Curv
 		final java.lang.String[] astrCalibMeasure,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc)
 	{
-<span class="pc bpc" id="L124" title="3 of 6 branches missed.">		if (null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure) return null;</span>
+<span class="pc bpc" id="L140" title="3 of 6 branches missed.">		if (null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure) return null;</span>
 
-<span class="fc" id="L126">		int iNumInst = aCalibInst.length;</span>
+<span class="fc" id="L142">		int iNumInst = aCalibInst.length;</span>
 
-<span class="pc bpc" id="L128" title="3 of 6 branches missed.">		if (0 == iNumInst || adblCalibQuote.length != iNumInst || astrCalibMeasure.length != iNumInst)</span>
-<span class="nc" id="L129">			return null;</span>
+<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (0 == iNumInst || adblCalibQuote.length != iNumInst || astrCalibMeasure.length != iNumInst)</span>
+<span class="nc" id="L145">			return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="fc" id="L132">			mapQuote = new</span>
+<span class="fc" id="L148">			mapQuote = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
 
-<span class="fc" id="L135">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; mapMeasures = new</span>
+<span class="fc" id="L151">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; mapMeasures = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt;();
 
-<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInst; ++i) {</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			if (null == aCalibInst[i]) return null;</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInst; ++i) {</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">			if (null == aCalibInst[i]) return null;</span>
 
-<span class="fc" id="L141">			java.lang.String strInstrumentCode = aCalibInst[i].primaryCode();</span>
+<span class="fc" id="L157">			java.lang.String strInstrumentCode = aCalibInst[i].primaryCode();</span>
 
-<span class="pc bpc" id="L143" title="2 of 6 branches missed.">			if (null == strInstrumentCode || strInstrumentCode.isEmpty() || null == astrCalibMeasure[i] ||</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">				astrCalibMeasure[i].isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">					(adblCalibQuote[i]))</span>
-<span class="fc" id="L146">				return null;</span>
+<span class="pc bpc" id="L159" title="2 of 6 branches missed.">			if (null == strInstrumentCode || strInstrumentCode.isEmpty() || null == astrCalibMeasure[i] ||</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">				astrCalibMeasure[i].isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">					(adblCalibQuote[i]))</span>
+<span class="fc" id="L162">				return null;</span>
 
-<span class="fc" id="L148">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalibManifestMeasureQuote</span>
+<span class="fc" id="L164">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalibManifestMeasureQuote</span>
 				= new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L151">			mapCalibManifestMeasureQuote.put (astrCalibMeasure[i], adblCalibQuote[i]);</span>
+<span class="fc" id="L167">			mapCalibManifestMeasureQuote.put (astrCalibMeasure[i], adblCalibQuote[i]);</span>
 
-<span class="fc" id="L153">			mapMeasures.put (strInstrumentCode, new java.lang.String[] {astrCalibMeasure[i]});</span>
+<span class="fc" id="L169">			mapMeasures.put (strInstrumentCode, new java.lang.String[] {astrCalibMeasure[i]});</span>
 
-<span class="fc" id="L155">			mapQuote.put (strInstrumentCode, mapCalibManifestMeasureQuote);</span>
+<span class="fc" id="L171">			mapQuote.put (strInstrumentCode, mapCalibManifestMeasureQuote);</span>
 
-<span class="fc" id="L157">			java.lang.String[] astrSecCode = aCalibInst[i].secondaryCode();</span>
+<span class="fc" id="L173">			java.lang.String[] astrSecCode = aCalibInst[i].secondaryCode();</span>
 
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">			if (null != astrSecCode) {</span>
-<span class="fc" id="L160">				int iNumSecCode = astrSecCode.length;</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">			if (null != astrSecCode) {</span>
+<span class="fc" id="L176">				int iNumSecCode = astrSecCode.length;</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumSecCode; ++j) {</span>
-<span class="fc" id="L163">					java.lang.String strSecCode = astrSecCode[j];</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumSecCode; ++j) {</span>
+<span class="fc" id="L179">					java.lang.String strSecCode = astrSecCode[j];</span>
 
-<span class="pc bpc" id="L165" title="2 of 4 branches missed.">					if (null == strSecCode || strSecCode.isEmpty())</span>
-<span class="nc" id="L166">						mapQuote.put (strSecCode, mapCalibManifestMeasureQuote);</span>
+<span class="pc bpc" id="L181" title="2 of 4 branches missed.">					if (null == strSecCode || strSecCode.isEmpty())</span>
+<span class="nc" id="L182">						mapQuote.put (strSecCode, mapCalibManifestMeasureQuote);</span>
 				}
 			}
 		}
 
 		try {
-<span class="fc" id="L172">			return new BootCurveConstructionInput (valParam, quotingParam, aCalibInst, mapQuote, mapMeasures,</span>
+<span class="fc" id="L188">			return new BootCurveConstructionInput (valParam, quotingParam, aCalibInst, mapQuote, mapMeasures,</span>
 				lsfc);
-<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L175">			e.printStackTrace();</span>
+<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L191">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	/**
@@ -201,59 +217,59 @@ public class BootCurveConstructionInput implements org.drip.analytics.input.Curv
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; mapMeasures,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc)
 		throws java.lang.Exception
-<span class="fc" id="L204">	{</span>
-<span class="pc bpc" id="L205" title="4 of 8 branches missed.">		if (null == (_valParam = valParam) || null == (_aCalibInst = aCalibInst) || null == (_mapQuote =</span>
+<span class="fc" id="L220">	{</span>
+<span class="pc bpc" id="L221" title="4 of 8 branches missed.">		if (null == (_valParam = valParam) || null == (_aCalibInst = aCalibInst) || null == (_mapQuote =</span>
 			mapQuote) || null == (_mapMeasures = mapMeasures))
-<span class="nc" id="L207">			throw new java.lang.Exception (&quot;BootCurveConstructionInput ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L223">			throw new java.lang.Exception (&quot;BootCurveConstructionInput ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L209">		_lsfc = lsfc;</span>
-<span class="fc" id="L210">		_quotingParam = quotingParam;</span>
-<span class="fc" id="L211">		int iNumInst = _aCalibInst.length;</span>
+<span class="fc" id="L225">		_lsfc = lsfc;</span>
+<span class="fc" id="L226">		_quotingParam = quotingParam;</span>
+<span class="fc" id="L227">		int iNumInst = _aCalibInst.length;</span>
 
-<span class="pc bpc" id="L213" title="3 of 6 branches missed.">		if (0 == iNumInst || iNumInst &gt; _mapQuote.size() || iNumInst &gt; _mapMeasures.size())</span>
-<span class="nc" id="L214">			throw new java.lang.Exception (&quot;BootCurveConstructionInput ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L215">	}</span>
+<span class="pc bpc" id="L229" title="3 of 6 branches missed.">		if (0 == iNumInst || iNumInst &gt; _mapQuote.size() || iNumInst &gt; _mapMeasures.size())</span>
+<span class="nc" id="L230">			throw new java.lang.Exception (&quot;BootCurveConstructionInput ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L231">	}</span>
 
 	@Override public org.drip.param.valuation.ValuationParams valuationParameter()
 	{
-<span class="nc" id="L219">		return _valParam;</span>
+<span class="nc" id="L235">		return _valParam;</span>
 	}
 
 	@Override public org.drip.param.pricer.CreditPricerParams pricerParameter()
 	{
-<span class="nc" id="L224">		return null;</span>
+<span class="nc" id="L240">		return null;</span>
 	}
 
 	@Override public org.drip.param.market.CurveSurfaceQuoteContainer marketParameters()
 	{
-<span class="nc" id="L229">		return null;</span>
+<span class="nc" id="L245">		return null;</span>
 	}
 
 	@Override public org.drip.param.valuation.ValuationCustomizationParams quotingParameter()
 	{
-<span class="nc" id="L234">		return _quotingParam;</span>
+<span class="nc" id="L250">		return _quotingParam;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] components()
 	{
-<span class="fc" id="L239">		return _aCalibInst;</span>
+<span class="fc" id="L255">		return _aCalibInst;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
 			quoteMap()
 	{
-<span class="fc" id="L246">		return _mapQuote;</span>
+<span class="fc" id="L262">		return _mapQuote;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String[]&gt; measures()
 	{
-<span class="nc" id="L251">		return _mapMeasures;</span>
+<span class="nc" id="L267">		return _mapMeasures;</span>
 	}
 
 	@Override public org.drip.param.market.LatentStateFixingsContainer fixing()
 	{
-<span class="fc" id="L256">		return _lsfc;</span>
+<span class="fc" id="L272">		return _lsfc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

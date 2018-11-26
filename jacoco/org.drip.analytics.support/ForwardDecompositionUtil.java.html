@@ -70,18 +70,20 @@ package org.drip.analytics.support;
 
 /**
  * &lt;i&gt;ForwardDecompositionUtil&lt;/i&gt; contains the utility functions needed to carry out periodic decomposition
- *  at MTM sync points for the given stream.
- *  &lt;br&gt;
+ * at MTM sync points for the given stream.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class ForwardDecompositionUtil {</span>
+<span class="nc" id="L86">public class ForwardDecompositionUtil {</span>
 
 	/**
 	 * Decompose the Stream into an Array of Single Forward Period Floating Streams
@@ -96,43 +98,43 @@ package org.drip.analytics.support;
 		final org.drip.product.rates.Stream fs,
 		final int iNumPeriodsToAccumulate)
 	{
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == fs) return null;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (null == fs) return null;</span>
 
-<span class="nc" id="L101">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponFlow = fs.cashFlowPeriod();</span>
+<span class="nc" id="L103">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponFlow = fs.cashFlowPeriod();</span>
 
-<span class="nc" id="L103">		int iNumPeriods = lsCouponFlow.size();</span>
+<span class="nc" id="L105">		int iNumPeriods = lsCouponFlow.size();</span>
 
-<span class="nc" id="L105">		int iCFPIndex = 0;</span>
-<span class="nc" id="L106">		int iNumPeriodsAccumulated = 0;</span>
-<span class="nc" id="L107">		int iNumForward = iNumPeriods / iNumPeriodsToAccumulate;</span>
-<span class="nc" id="L108">		org.drip.product.rates.Stream[] aFS = new org.drip.product.rates.Stream[iNumForward];</span>
+<span class="nc" id="L107">		int iCFPIndex = 0;</span>
+<span class="nc" id="L108">		int iNumPeriodsAccumulated = 0;</span>
+<span class="nc" id="L109">		int iNumForward = iNumPeriods / iNumPeriodsToAccumulate;</span>
+<span class="nc" id="L110">		org.drip.product.rates.Stream[] aFS = new org.drip.product.rates.Stream[iNumForward];</span>
 
-<span class="nc" id="L110">		java.util.List&lt;java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt;&gt; lslsCouponPeriod = new</span>
+<span class="nc" id="L112">		java.util.List&lt;java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt;&gt; lslsCouponPeriod = new</span>
 			java.util.ArrayList&lt;java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt;&gt;();
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForward; ++i)</span>
-<span class="nc" id="L114">			lslsCouponPeriod.add (new java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;());</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForward; ++i)</span>
+<span class="nc" id="L116">			lslsCouponPeriod.add (new java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;());</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cfp : lsCouponFlow) {</span>
-<span class="nc" id="L117">			java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = lslsCouponPeriod.get</span>
-<span class="nc" id="L118">				(iCFPIndex);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod cfp : lsCouponFlow) {</span>
+<span class="nc" id="L119">			java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCouponPeriod = lslsCouponPeriod.get</span>
+<span class="nc" id="L120">				(iCFPIndex);</span>
 
-<span class="nc" id="L120">			lsCouponPeriod.add (cfp);</span>
+<span class="nc" id="L122">			lsCouponPeriod.add (cfp);</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			if (++iNumPeriodsAccumulated != iNumPeriodsToAccumulate) continue;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">			if (++iNumPeriodsAccumulated != iNumPeriodsToAccumulate) continue;</span>
 
-<span class="nc" id="L124">			iNumPeriodsAccumulated = 0;</span>
+<span class="nc" id="L126">			iNumPeriodsAccumulated = 0;</span>
 
 			try {
-<span class="nc" id="L127">				aFS[iCFPIndex++] = new org.drip.product.rates.Stream (lsCouponPeriod);</span>
-<span class="nc" id="L128">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L129">				e.printStackTrace();</span>
+<span class="nc" id="L129">				aFS[iCFPIndex++] = new org.drip.product.rates.Stream (lsCouponPeriod);</span>
+<span class="nc" id="L130">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L131">				e.printStackTrace();</span>
 
-<span class="nc" id="L131">				return null;</span>
-<span class="nc" id="L132">			}</span>
-<span class="nc" id="L133">		}</span>
+<span class="nc" id="L133">				return null;</span>
+<span class="nc" id="L134">			}</span>
+<span class="nc" id="L135">		}</span>
 
-<span class="nc" id="L135">		return aFS;</span>
+<span class="nc" id="L137">		return aFS;</span>
 	}
 
 	/**
@@ -146,59 +148,59 @@ package org.drip.analytics.support;
 	public static final org.drip.product.definition.CalibratableComponent[] DualStreamForwardArray (
 		final org.drip.product.rates.DualStreamComponent dsc)
 	{
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (null == dsc) return null;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == dsc) return null;</span>
 
-<span class="nc" id="L151">		org.drip.product.rates.Stream streamDerived = dsc.derivedStream();</span>
+<span class="nc" id="L153">		org.drip.product.rates.Stream streamDerived = dsc.derivedStream();</span>
 
-<span class="nc" id="L153">		org.drip.product.rates.Stream streamReference = dsc.referenceStream();</span>
+<span class="nc" id="L155">		org.drip.product.rates.Stream streamReference = dsc.referenceStream();</span>
 
-<span class="nc" id="L155">		int iNumForward = 0;</span>
-<span class="nc" id="L156">		org.drip.product.rates.Stream[] aStreamDerivedForward = null;</span>
-<span class="nc" id="L157">		org.drip.product.rates.Stream[] aStreamReferenceForward = null;</span>
+<span class="nc" id="L157">		int iNumForward = 0;</span>
+<span class="nc" id="L158">		org.drip.product.rates.Stream[] aStreamDerivedForward = null;</span>
+<span class="nc" id="L159">		org.drip.product.rates.Stream[] aStreamReferenceForward = null;</span>
 
-<span class="nc" id="L159">		int iDerivedStreamTenorMonths = 12 / streamDerived.freq();</span>
+<span class="nc" id="L161">		int iDerivedStreamTenorMonths = 12 / streamDerived.freq();</span>
 
-<span class="nc" id="L161">		int iReferenceStreamTenorMonths = 12 / streamReference.freq();</span>
+<span class="nc" id="L163">		int iReferenceStreamTenorMonths = 12 / streamReference.freq();</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (iReferenceStreamTenorMonths &gt; iDerivedStreamTenorMonths) {</span>
-<span class="nc bnc" id="L164" title="All 4 branches missed.">			if (null == (aStreamReferenceForward = SinglePeriodStreamDecompose (streamReference, 1)) || 0 ==</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (iReferenceStreamTenorMonths &gt; iDerivedStreamTenorMonths) {</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">			if (null == (aStreamReferenceForward = SinglePeriodStreamDecompose (streamReference, 1)) || 0 ==</span>
 				(iNumForward = aStreamReferenceForward.length))
-<span class="nc" id="L166">				return null;</span>
+<span class="nc" id="L168">				return null;</span>
 
-<span class="nc bnc" id="L168" title="All 4 branches missed.">			if (null == (aStreamDerivedForward = SinglePeriodStreamDecompose (streamDerived,</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">			if (null == (aStreamDerivedForward = SinglePeriodStreamDecompose (streamDerived,</span>
 				iReferenceStreamTenorMonths / iDerivedStreamTenorMonths)) || iNumForward !=
 					aStreamDerivedForward.length)
-<span class="nc" id="L171">				return null;</span>
+<span class="nc" id="L173">				return null;</span>
 		} else {
-<span class="nc bnc" id="L173" title="All 4 branches missed.">			if (null == (aStreamDerivedForward = SinglePeriodStreamDecompose (streamDerived, 1)) || 0 ==</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">			if (null == (aStreamDerivedForward = SinglePeriodStreamDecompose (streamDerived, 1)) || 0 ==</span>
 				(iNumForward = aStreamDerivedForward.length))
-<span class="nc" id="L175">				return null;</span>
+<span class="nc" id="L177">				return null;</span>
 
-<span class="nc bnc" id="L177" title="All 4 branches missed.">			if (null == (aStreamReferenceForward = SinglePeriodStreamDecompose (streamReference,</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">			if (null == (aStreamReferenceForward = SinglePeriodStreamDecompose (streamReference,</span>
 				iDerivedStreamTenorMonths / iReferenceStreamTenorMonths)) || iNumForward !=
 					aStreamReferenceForward.length)
-<span class="nc" id="L180">				return null;</span>
+<span class="nc" id="L182">				return null;</span>
 		}
 
-<span class="nc" id="L183">		org.drip.product.definition.CalibratableComponent[] aRC = new</span>
+<span class="nc" id="L185">		org.drip.product.definition.CalibratableComponent[] aRC = new</span>
 			org.drip.product.definition.CalibratableComponent[iNumForward];
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForward; ++i) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForward; ++i) {</span>
 			try {
-<span class="nc" id="L188">				if (null == (aRC[i] = org.drip.product.creator.DualStreamComponentBuilder.MakeFloatFloat</span>
-<span class="nc bnc" id="L189" title="All 2 branches missed.">					(aStreamReferenceForward[i], aStreamDerivedForward[i], new</span>
-<span class="nc" id="L190">						org.drip.param.valuation.CashSettleParams (0, streamDerived.couponCurrency(), 0))))</span>
-<span class="nc" id="L191">					return null;</span>
+<span class="nc" id="L190">				if (null == (aRC[i] = org.drip.product.creator.DualStreamComponentBuilder.MakeFloatFloat</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">					(aStreamReferenceForward[i], aStreamDerivedForward[i], new</span>
+<span class="nc" id="L192">						org.drip.param.valuation.CashSettleParams (0, streamDerived.couponCurrency(), 0))))</span>
+<span class="nc" id="L193">					return null;</span>
 
-<span class="nc" id="L193">				aRC[i].setPrimaryCode (streamReference.name() + &quot;::&quot; + streamDerived.name() + &quot;_&quot; + i);</span>
-<span class="nc" id="L194">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">				e.printStackTrace();</span>
+<span class="nc" id="L195">				aRC[i].setPrimaryCode (streamReference.name() + &quot;::&quot; + streamDerived.name() + &quot;_&quot; + i);</span>
+<span class="nc" id="L196">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L197">				e.printStackTrace();</span>
 
-<span class="nc" id="L197">				return null;</span>
-<span class="nc" id="L198">			}</span>
+<span class="nc" id="L199">				return null;</span>
+<span class="nc" id="L200">			}</span>
 		}
 
-<span class="nc" id="L201">		return aRC;</span>
+<span class="nc" id="L203">		return aRC;</span>
 	}
 
 	/**
@@ -213,8 +215,8 @@ package org.drip.analytics.support;
 		CalibratableFixedIncomeComponentForwardArray (
 			final org.drip.product.definition.CalibratableComponent rc)
 	{
-<span class="nc bnc" id="L216" title="All 4 branches missed.">		return null != rc &amp;&amp; rc instanceof org.drip.product.rates.DualStreamComponent ?</span>
-<span class="nc" id="L217">			DualStreamForwardArray ((org.drip.product.rates.DualStreamComponent) rc) : null;</span>
+<span class="nc bnc" id="L218" title="All 4 branches missed.">		return null != rc &amp;&amp; rc instanceof org.drip.product.rates.DualStreamComponent ?</span>
+<span class="nc" id="L219">			DualStreamForwardArray ((org.drip.product.rates.DualStreamComponent) rc) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

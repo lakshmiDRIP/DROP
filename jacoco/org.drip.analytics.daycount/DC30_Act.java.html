@@ -72,11 +72,13 @@ package org.drip.analytics.daycount;
 
 /**
  * &lt;i&gt;DC30_Act&lt;/i&gt; implements the 30/Act day count convention.
- *	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -89,17 +91,17 @@ public class DC30_Act implements org.drip.analytics.daycount.DCFCalculator {
 	 */
 
 	public DC30_Act()
-<span class="fc" id="L92">	{</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L94">	{</span>
+<span class="fc" id="L95">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L97">		return &quot;DC30_Act&quot;;</span>
+<span class="nc" id="L99">		return &quot;DC30_Act&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L102">		return new java.lang.String[] {&quot;ISMA 30/Act&quot;, &quot;30/Act&quot;, &quot;ISDA SWAPS:30/Act&quot;, &quot;ISDA30/Act&quot;,</span>
+<span class="fc" id="L104">		return new java.lang.String[] {&quot;ISMA 30/Act&quot;, &quot;30/Act&quot;, &quot;ISDA SWAPS:30/Act&quot;, &quot;ISDA30/Act&quot;,</span>
 			&quot;ISDA 30E/ACT&quot;, &quot;DC30_Act&quot;};
 	}
 
@@ -111,19 +113,19 @@ public class DC30_Act implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (null == actactParams)</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;DC30_Act::yearFraction =&gt; Invalid actact Params!&quot;);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (null == actactParams)</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;DC30_Act::yearFraction =&gt; Invalid actact Params!&quot;);</span>
 
-<span class="nc" id="L117">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="nc" id="L119">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;DC30_Act::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;DC30_Act::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="nc" id="L122">		return org.drip.analytics.date.DateUtil.Year (iEndDate) - org.drip.analytics.date.DateUtil.Year</span>
-<span class="nc" id="L123">			(iStartDate) + (30. * (org.drip.analytics.date.DateUtil.Month (iEndDate) -</span>
-<span class="nc" id="L124">				org.drip.analytics.date.DateUtil.Month (iStartDate)) + (org.drip.analytics.date.DateUtil.Date</span>
-<span class="nc" id="L125">					(iEndDate) - org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() -</span>
-<span class="nc" id="L126">						dm.anterior())) / actactParams.freq() / actactParams.days();</span>
+<span class="nc" id="L124">		return org.drip.analytics.date.DateUtil.Year (iEndDate) - org.drip.analytics.date.DateUtil.Year</span>
+<span class="nc" id="L125">			(iStartDate) + (30. * (org.drip.analytics.date.DateUtil.Month (iEndDate) -</span>
+<span class="nc" id="L126">				org.drip.analytics.date.DateUtil.Month (iStartDate)) + (org.drip.analytics.date.DateUtil.Date</span>
+<span class="nc" id="L127">					(iEndDate) - org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() -</span>
+<span class="nc" id="L128">						dm.anterior())) / actactParams.freq() / actactParams.days();</span>
 	}
 
 	@Override public int daysAccrued (
@@ -134,19 +136,19 @@ public class DC30_Act implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (null == actactParams)</span>
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;DC30_Act::daysAccrued =&gt; Invalid actact Params!&quot;);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (null == actactParams)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;DC30_Act::daysAccrued =&gt; Invalid actact Params!&quot;);</span>
 
-<span class="nc" id="L140">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="nc" id="L142">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;DC30_Act::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L145">			throw new java.lang.Exception (&quot;DC30_Act::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="nc" id="L145">		return 360 * (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
-<span class="nc" id="L146">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 30 *</span>
-<span class="nc" id="L147">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
-<span class="nc" id="L148">					(iStartDate)) + org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
-<span class="nc" id="L149">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior();</span>
+<span class="nc" id="L147">		return 360 * (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
+<span class="nc" id="L148">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 30 *</span>
+<span class="nc" id="L149">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
+<span class="nc" id="L150">					(iStartDate)) + org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
+<span class="nc" id="L151">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

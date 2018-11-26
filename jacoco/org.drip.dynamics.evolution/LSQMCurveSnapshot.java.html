@@ -69,18 +69,21 @@ package org.drip.dynamics.evolution;
 
 /**
  * &lt;i&gt;LSQMCurveSnapshot&lt;/i&gt; contains the Snapshot of the Evolving Term Structure of the Latent State
- *  Quantification Metrics.
+ * Quantification Metrics.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LSQMCurveSnapshot {
-<span class="fc" id="L83">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String,</span>
+<span class="fc" id="L86">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String,</span>
 		org.drip.analytics.definition.Curve&gt;&gt; _mmCurve = new java.util.HashMap&lt;java.lang.String,
 			java.util.Map&lt;java.lang.String, org.drip.analytics.definition.Curve&gt;&gt;();
 
@@ -89,8 +92,8 @@ public class LSQMCurveSnapshot {
 	 */
 
 	public LSQMCurveSnapshot()
-<span class="fc" id="L92">	{</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L95">	{</span>
+<span class="fc" id="L96">	}</span>
 
 	/**
 	 * Retrieve the Latent State Labels
@@ -100,7 +103,7 @@ public class LSQMCurveSnapshot {
 
 	public java.util.Set&lt;java.lang.String&gt; latentStateLabel()
 	{
-<span class="nc" id="L103">		return _mmCurve.keySet();</span>
+<span class="nc" id="L106">		return _mmCurve.keySet();</span>
 	}
 
 	/**
@@ -114,7 +117,7 @@ public class LSQMCurveSnapshot {
 	public boolean containsLatentState (
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		return null == lsl ? false : _mmCurve.containsKey (lsl.fullyQualifiedName());</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		return null == lsl ? false : _mmCurve.containsKey (lsl.fullyQualifiedName());</span>
 	}
 
 	/**
@@ -130,11 +133,11 @@ public class LSQMCurveSnapshot {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final java.lang.String strQM)
 	{
-<span class="nc bnc" id="L133" title="All 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return false;</span>
+<span class="nc bnc" id="L136" title="All 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return false;</span>
 
-<span class="nc" id="L135">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="nc" id="L138">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		return _mmCurve.containsKey (strLabel) &amp;&amp; _mmCurve.get (strLabel).containsKey (strQM);</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		return _mmCurve.containsKey (strLabel) &amp;&amp; _mmCurve.get (strLabel).containsKey (strQM);</span>
 	}
 
 	/**
@@ -150,19 +153,19 @@ public class LSQMCurveSnapshot {
 		final java.lang.String strQM,
 		final org.drip.analytics.definition.Curve curve)
 	{
-<span class="pc bpc" id="L153" title="3 of 6 branches missed.">		if (null == strQM || strQM.isEmpty() || null == curve) return false;</span>
+<span class="pc bpc" id="L156" title="3 of 6 branches missed.">		if (null == strQM || strQM.isEmpty() || null == curve) return false;</span>
 
-<span class="fc" id="L155">		java.lang.String strLabel = curve.label().fullyQualifiedName();</span>
+<span class="fc" id="L158">		java.lang.String strLabel = curve.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L157">		java.util.Map&lt;java.lang.String, org.drip.analytics.definition.Curve&gt; mapCurve = _mmCurve.containsKey</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">			(strLabel) ? _mmCurve.get (strLabel) : new java.util.HashMap&lt;java.lang.String,</span>
+<span class="fc" id="L160">		java.util.Map&lt;java.lang.String, org.drip.analytics.definition.Curve&gt; mapCurve = _mmCurve.containsKey</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			(strLabel) ? _mmCurve.get (strLabel) : new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.analytics.definition.Curve&gt;();
 
-<span class="fc" id="L161">		mapCurve.put (strQM, curve);</span>
+<span class="fc" id="L164">		mapCurve.put (strQM, curve);</span>
 
-<span class="fc" id="L163">		_mmCurve.put (strLabel, mapCurve);</span>
+<span class="fc" id="L166">		_mmCurve.put (strLabel, mapCurve);</span>
 
-<span class="fc" id="L165">		return true;</span>
+<span class="fc" id="L168">		return true;</span>
 	}
 
 	/**
@@ -178,14 +181,14 @@ public class LSQMCurveSnapshot {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final java.lang.String strQM)
 	{
-<span class="pc bpc" id="L181" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return null;</span>
+<span class="pc bpc" id="L184" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return null;</span>
 
-<span class="fc" id="L183">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L186">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="fc" id="L185">		java.util.Map&lt;java.lang.String, org.drip.analytics.definition.Curve&gt; mapCurve = _mmCurve.get</span>
-<span class="fc" id="L186">			(strLabel);</span>
+<span class="fc" id="L188">		java.util.Map&lt;java.lang.String, org.drip.analytics.definition.Curve&gt; mapCurve = _mmCurve.get</span>
+<span class="fc" id="L189">			(strLabel);</span>
 
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		return mapCurve.containsKey (strQM) ? mapCurve.get (strQM) : null;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		return mapCurve.containsKey (strQM) ? mapCurve.get (strQM) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
