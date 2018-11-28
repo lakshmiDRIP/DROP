@@ -72,17 +72,19 @@ package org.drip.function.r1tor1;
 /**
  * <i>QuadraticRationalShapeControl</i> implements the deterministic rational shape control functionality on
  * top of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
- * <br>
+ * <br><br>
  * 			y = 1 / [1 + lambda * x * (1-x)]
- * <br>
+ * <br><br>
  *		where is the normalized ordinate mapped as
- * <br>
+ * <br><br>
  * 			x ==== (x - x_i-1) / (x_i - x_i-1)
- * <br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function">Function</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1">R<sup>1</sup> To R<sup>1</sup></a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning">Machine Learning Library</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1">R<sup>1</sup> To R<sup>1</sup></a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy

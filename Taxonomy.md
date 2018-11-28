@@ -36,11 +36,11 @@
 	* *Asset Backed* => Asset Backed Borrower and Loan Level Characteristics.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aassetbacked) }
- * ***XVA Analytics Library***
+ * [***XVA Analytics Library***](https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md) => Utilities to generate various Valuation Adjustments (Collateral VA/CVA/DVA/FBA/FCA/FVA/MVA/XVA).
 	* *XVA* => Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Axva) }
- * ***Exposure and Margin Analytics Library***
+ * [***Exposure and Margin Analytics Library***](https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md) => Computes the Scenario Exposures at the specified Trade Group Granularity.
 	* *Exposure* => Exposure Group Level Collateralized/Uncollateralized Exposure.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexposure) }
