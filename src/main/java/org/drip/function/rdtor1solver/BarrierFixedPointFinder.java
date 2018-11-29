@@ -70,11 +70,13 @@ package org.drip.function.rdtor1solver;
  * <i>BarrierFixedPointFinder</i> invokes the Iterative Finders for locating the Fixed Point of
  * R<sup>d</sup> To R<sup>1</sup> Convex/Non-Convex Functions Under Inequality Constraints using Barrier
  * Sequences of decaying Strengths.
- * <br><br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function">Function</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver">R<sup>d</sup> To R<sup>1</sup> Solver</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer">Numerical Optimizer Library</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1solver">R<sup>d</sup> To R<sup>1</sup> Solver</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

@@ -69,11 +69,13 @@ package org.drip.function.rdtor1;
 /**
  * <i>CovarianceEllipsoidMultivariate</i> implements a R<sup>d</sup> To R<sup>1</sup> Co-variance Estimate of
  * the specified Distribution.
- * <br><br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function">Function</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1">R<sup>d</sup> To R<sup>1</sup></a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer">Numerical Optimizer Library</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1">R<sup>d</sup> To R<sup>1</sup></a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
