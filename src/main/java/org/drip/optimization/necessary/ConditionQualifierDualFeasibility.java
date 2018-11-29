@@ -68,7 +68,7 @@ package org.drip.optimization.necessary;
 
 /**
  * <i>ConditionQualifierDualFeasibility</i> holds the Zero Order Necessary Dual Feasibility Condition. The
- *  References are:
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -93,14 +93,14 @@ package org.drip.optimization.necessary;
  * 				NJ
  * 		</li>
  * 	</ul>
- * 
- * <br><br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization">Optimization</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary">Necessary Conditions</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer">Numerical Optimizer Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization">Optimization</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary">Necessary</a></li>
  *  </ul>
- * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */

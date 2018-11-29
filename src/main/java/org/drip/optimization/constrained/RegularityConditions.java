@@ -68,8 +68,8 @@ package org.drip.optimization.constrained;
 
 /**
  * <i>RegularityConditions</i> holds the Results of the Verification of the Regularity Conditions/Constraint
- *  Qualifications at the specified (possibly) Optimal Variate and the corresponding Fritz John Multipliers.
- *  The References are:
+ * Qualifications at the specified (possibly) Optimal Variate and the corresponding Fritz John Multipliers.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -94,14 +94,14 @@ package org.drip.optimization.constrained;
  * 				NJ
  * 		</li>
  * 	</ul>
- * 
- * <br><br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization">Optimization</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained">Constrained</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer">Numerical Optimizer Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization">Optimization</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained">Constrained</a></li>
  *  </ul>
- * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
