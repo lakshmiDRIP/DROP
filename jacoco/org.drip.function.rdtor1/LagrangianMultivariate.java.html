@@ -69,19 +69,21 @@ package org.drip.function.rdtor1;
 /**
  * &lt;i&gt;LagrangianMultivariate&lt;/i&gt; implements a R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Multivariate Function along
  * with the specified Set of Equality Constraints.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LagrangianMultivariate extends org.drip.function.definition.RdToR1 {
-<span class="fc" id="L83">	private org.drip.function.definition.RdToR1 _RdToR1Objective = null;</span>
-<span class="fc" id="L84">	private org.drip.function.definition.RdToR1[] _aRdToR1EqualityConstraint = null;</span>
+<span class="fc" id="L85">	private org.drip.function.definition.RdToR1 _RdToR1Objective = null;</span>
+<span class="fc" id="L86">	private org.drip.function.definition.RdToR1[] _aRdToR1EqualityConstraint = null;</span>
 
 	/**
 	 * LagrangianMultivariate Constructor
@@ -97,13 +99,13 @@ public class LagrangianMultivariate extends org.drip.function.definition.RdToR1 
 		final org.drip.function.definition.RdToR1[] aRdToR1EqualityConstraint)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L100">		super (null);</span>
+<span class="fc" id="L102">		super (null);</span>
 
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == (_RdToR1Objective = RdToR1Objective))</span>
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;LagrangianMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == (_RdToR1Objective = RdToR1Objective))</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;LagrangianMultivariate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L105">		_aRdToR1EqualityConstraint = aRdToR1EqualityConstraint;</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L107">		_aRdToR1EqualityConstraint = aRdToR1EqualityConstraint;</span>
+<span class="fc" id="L108">	}</span>
 
 	/**
 	 * Retrieve the Objective R^d To R^1 Function Instance
@@ -113,7 +115,7 @@ public class LagrangianMultivariate extends org.drip.function.definition.RdToR1 
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-<span class="nc" id="L116">		return _RdToR1Objective;</span>
+<span class="nc" id="L118">		return _RdToR1Objective;</span>
 	}
 
 	/**
@@ -124,7 +126,7 @@ public class LagrangianMultivariate extends org.drip.function.definition.RdToR1 
 
 	public org.drip.function.definition.RdToR1[] constraintFunctions()
 	{
-<span class="nc" id="L127">		return _aRdToR1EqualityConstraint;</span>
+<span class="nc" id="L129">		return _aRdToR1EqualityConstraint;</span>
 	}
 
 	/**
@@ -135,7 +137,7 @@ public class LagrangianMultivariate extends org.drip.function.definition.RdToR1 
 
 	public int objectiveFunctionDimension()
 	{
-<span class="fc" id="L138">		return _RdToR1Objective.dimension();</span>
+<span class="fc" id="L140">		return _RdToR1Objective.dimension();</span>
 	}
 
 	/**
@@ -146,165 +148,165 @@ public class LagrangianMultivariate extends org.drip.function.definition.RdToR1 
 
 	public int constraintFunctionDimension()
 	{
-<span class="fc bfc" id="L149" title="All 2 branches covered.">		return null == _aRdToR1EqualityConstraint ? 0 : _aRdToR1EqualityConstraint.length;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		return null == _aRdToR1EqualityConstraint ? 0 : _aRdToR1EqualityConstraint.length;</span>
 	}
 
 	@Override public int dimension()
 	{
-<span class="fc" id="L154">		return objectiveFunctionDimension() + constraintFunctionDimension();</span>
+<span class="fc" id="L156">		return objectiveFunctionDimension() + constraintFunctionDimension();</span>
 	}
 
 	@Override public double evaluate (
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L161">		org.drip.function.rdtor1.ObjectiveConstraintVariateSet ocvs =</span>
-<span class="fc" id="L162">			org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Partition (adblVariate,</span>
-<span class="fc" id="L163">				objectiveFunctionDimension());</span>
+<span class="fc" id="L163">		org.drip.function.rdtor1.ObjectiveConstraintVariateSet ocvs =</span>
+<span class="fc" id="L164">			org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Partition (adblVariate,</span>
+<span class="fc" id="L165">				objectiveFunctionDimension());</span>
 
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (null == ocvs)</span>
-<span class="nc" id="L166">			throw new java.lang.Exception (&quot;LagrangianMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (null == ocvs)</span>
+<span class="nc" id="L168">			throw new java.lang.Exception (&quot;LagrangianMultivariate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L168">		double[] adblConstraintVariate = ocvs.constraintVariates();</span>
+<span class="fc" id="L170">		double[] adblConstraintVariate = ocvs.constraintVariates();</span>
 
-<span class="fc" id="L170">		double[] adblObjectiveVariate = ocvs.objectiveVariates();</span>
+<span class="fc" id="L172">		double[] adblObjectiveVariate = ocvs.objectiveVariates();</span>
 
-<span class="fc" id="L172">		int iNumConstraint = adblConstraintVariate.length;</span>
+<span class="fc" id="L174">		int iNumConstraint = adblConstraintVariate.length;</span>
 
-<span class="fc" id="L174">		double dblValue = _RdToR1Objective.evaluate (adblObjectiveVariate);</span>
+<span class="fc" id="L176">		double dblValue = _RdToR1Objective.evaluate (adblObjectiveVariate);</span>
 
-<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
-<span class="fc" id="L177">			dblValue += adblConstraintVariate[i] * _aRdToR1EqualityConstraint[i].evaluate</span>
-<span class="fc" id="L178">				(adblObjectiveVariate);</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
+<span class="fc" id="L179">			dblValue += adblConstraintVariate[i] * _aRdToR1EqualityConstraint[i].evaluate</span>
+<span class="fc" id="L180">				(adblObjectiveVariate);</span>
 
-<span class="fc" id="L180">		return dblValue;</span>
+<span class="fc" id="L182">		return dblValue;</span>
 	}
 
 	@Override public double[] jacobian (
 		final double[] adblVariate)
 	{
-<span class="fc" id="L186">		int iObjectiveDimension = objectiveFunctionDimension();</span>
+<span class="fc" id="L188">		int iObjectiveDimension = objectiveFunctionDimension();</span>
 
-<span class="fc" id="L188">		int iConstraintDimension = constraintFunctionDimension();</span>
+<span class="fc" id="L190">		int iConstraintDimension = constraintFunctionDimension();</span>
 
-<span class="fc" id="L190">		double[] adblObjectiveVariate = null;</span>
-<span class="fc" id="L191">		double[] adblConstraintVariate = null;</span>
-<span class="fc" id="L192">		double[][] aadblConstraintJacobian = null;</span>
-<span class="fc" id="L193">		double[] adblJacobian = new double[iObjectiveDimension + iConstraintDimension];</span>
+<span class="fc" id="L192">		double[] adblObjectiveVariate = null;</span>
+<span class="fc" id="L193">		double[] adblConstraintVariate = null;</span>
+<span class="fc" id="L194">		double[][] aadblConstraintJacobian = null;</span>
+<span class="fc" id="L195">		double[] adblJacobian = new double[iObjectiveDimension + iConstraintDimension];</span>
 
-<span class="fc bfc" id="L195" title="All 2 branches covered.">		if (0 == iConstraintDimension)</span>
-<span class="fc" id="L196">			adblObjectiveVariate = adblVariate;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		if (0 == iConstraintDimension)</span>
+<span class="fc" id="L198">			adblObjectiveVariate = adblVariate;</span>
 		else {
-<span class="fc" id="L198">			org.drip.function.rdtor1.ObjectiveConstraintVariateSet ocvs =</span>
-<span class="fc" id="L199">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Partition (adblVariate,</span>
+<span class="fc" id="L200">			org.drip.function.rdtor1.ObjectiveConstraintVariateSet ocvs =</span>
+<span class="fc" id="L201">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Partition (adblVariate,</span>
 					iObjectiveDimension);
 
-<span class="pc bpc" id="L202" title="1 of 2 branches missed.">			if (null == ocvs) return null;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">			if (null == ocvs) return null;</span>
 
-<span class="fc" id="L204">			adblObjectiveVariate = ocvs.objectiveVariates();</span>
+<span class="fc" id="L206">			adblObjectiveVariate = ocvs.objectiveVariates();</span>
 
-<span class="fc" id="L206">			adblConstraintVariate = ocvs.constraintVariates();</span>
+<span class="fc" id="L208">			adblConstraintVariate = ocvs.constraintVariates();</span>
 		}
 
-<span class="fc" id="L209">		double[] adblObjectiveJacobian = _RdToR1Objective.jacobian (adblObjectiveVariate);</span>
+<span class="fc" id="L211">		double[] adblObjectiveJacobian = _RdToR1Objective.jacobian (adblObjectiveVariate);</span>
 
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (null == adblObjectiveJacobian) return null;</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">		if (null == adblObjectiveJacobian) return null;</span>
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">		if (0 != iConstraintDimension) aadblConstraintJacobian = new double[iConstraintDimension][];</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		if (0 != iConstraintDimension) aadblConstraintJacobian = new double[iConstraintDimension][];</span>
 
-<span class="fc bfc" id="L215" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
-<span class="fc" id="L216">			if (null == (aadblConstraintJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian</span>
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">				(adblObjectiveVariate)))</span>
-<span class="nc" id="L218">				return null;</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
+<span class="fc" id="L218">			if (null == (aadblConstraintJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">				(adblObjectiveVariate)))</span>
+<span class="nc" id="L220">				return null;</span>
 
 			try {
-<span class="fc" id="L221">				adblJacobian[iObjectiveDimension + i] = _aRdToR1EqualityConstraint[i].evaluate</span>
-<span class="fc" id="L222">					(adblObjectiveVariate);</span>
-<span class="nc" id="L223">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L224">				e.printStackTrace();</span>
+<span class="fc" id="L223">				adblJacobian[iObjectiveDimension + i] = _aRdToR1EqualityConstraint[i].evaluate</span>
+<span class="fc" id="L224">					(adblObjectiveVariate);</span>
+<span class="nc" id="L225">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L226">				e.printStackTrace();</span>
 
-<span class="nc" id="L226">				return null;</span>
-<span class="fc" id="L227">			}</span>
+<span class="nc" id="L228">				return null;</span>
+<span class="fc" id="L229">			}</span>
 		}
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; iObjectiveDimension; ++i) {</span>
-<span class="fc" id="L231">			adblJacobian[i] = adblObjectiveJacobian[i];</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		for (int i = 0; i &lt; iObjectiveDimension; ++i) {</span>
+<span class="fc" id="L233">			adblJacobian[i] = adblObjectiveJacobian[i];</span>
 
-<span class="fc bfc" id="L233" title="All 2 branches covered.">			for (int j = 0; j &lt; iConstraintDimension; ++j)</span>
-<span class="fc" id="L234">				adblJacobian[i] += adblConstraintVariate[j] * aadblConstraintJacobian[j][i];</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">			for (int j = 0; j &lt; iConstraintDimension; ++j)</span>
+<span class="fc" id="L236">				adblJacobian[i] += adblConstraintVariate[j] * aadblConstraintJacobian[j][i];</span>
 		}
 
-<span class="fc" id="L237">		return adblJacobian;</span>
+<span class="fc" id="L239">		return adblJacobian;</span>
 	}
 
 	@Override public double[][] hessian (
 		final double[] adblVariate)
 	{
-<span class="fc" id="L243">		int iObjectiveDimension = objectiveFunctionDimension();</span>
+<span class="fc" id="L245">		int iObjectiveDimension = objectiveFunctionDimension();</span>
 
-<span class="fc" id="L245">		int iConstraintDimension = constraintFunctionDimension();</span>
+<span class="fc" id="L247">		int iConstraintDimension = constraintFunctionDimension();</span>
 
-<span class="fc" id="L247">		double[] adblObjectiveVariate = null;</span>
-<span class="fc" id="L248">		double[] adblConstraintVariate = null;</span>
+<span class="fc" id="L249">		double[] adblObjectiveVariate = null;</span>
+<span class="fc" id="L250">		double[] adblConstraintVariate = null;</span>
 
-<span class="fc bfc" id="L250" title="All 2 branches covered.">		if (0 == iConstraintDimension)</span>
-<span class="fc" id="L251">			adblObjectiveVariate = adblVariate;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">		if (0 == iConstraintDimension)</span>
+<span class="fc" id="L253">			adblObjectiveVariate = adblVariate;</span>
 		else {
-<span class="fc" id="L253">			org.drip.function.rdtor1.ObjectiveConstraintVariateSet ocvs =</span>
-<span class="fc" id="L254">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Partition (adblVariate,</span>
+<span class="fc" id="L255">			org.drip.function.rdtor1.ObjectiveConstraintVariateSet ocvs =</span>
+<span class="fc" id="L256">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Partition (adblVariate,</span>
 					iObjectiveDimension);
 
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">			if (null == ocvs) return null;</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">			if (null == ocvs) return null;</span>
 
-<span class="fc" id="L259">			adblObjectiveVariate = ocvs.objectiveVariates();</span>
+<span class="fc" id="L261">			adblObjectiveVariate = ocvs.objectiveVariates();</span>
 
-<span class="fc" id="L261">			adblConstraintVariate = ocvs.constraintVariates();</span>
+<span class="fc" id="L263">			adblConstraintVariate = ocvs.constraintVariates();</span>
 		}
 
-<span class="fc" id="L264">		double[][] aadblObjectiveHessian = _RdToR1Objective.hessian (adblObjectiveVariate);</span>
+<span class="fc" id="L266">		double[][] aadblObjectiveHessian = _RdToR1Objective.hessian (adblObjectiveVariate);</span>
 
-<span class="fc" id="L266">		double[][] aadblConstraintJacobian = null;</span>
-<span class="fc" id="L267">		double[][][] aaadblConstraintHessian = null;</span>
-<span class="fc" id="L268">		int iDimension = iObjectiveDimension + iConstraintDimension;</span>
-<span class="fc" id="L269">		double[][] aadblHessian = new double[iDimension][iDimension];</span>
+<span class="fc" id="L268">		double[][] aadblConstraintJacobian = null;</span>
+<span class="fc" id="L269">		double[][][] aaadblConstraintHessian = null;</span>
+<span class="fc" id="L270">		int iDimension = iObjectiveDimension + iConstraintDimension;</span>
+<span class="fc" id="L271">		double[][] aadblHessian = new double[iDimension][iDimension];</span>
 
-<span class="fc bfc" id="L271" title="All 2 branches covered.">		if (0 != iConstraintDimension) {</span>
-<span class="fc" id="L272">			aadblConstraintJacobian = new double[iConstraintDimension][];</span>
-<span class="fc" id="L273">			aaadblConstraintHessian = new double[iConstraintDimension][][];</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">		if (0 != iConstraintDimension) {</span>
+<span class="fc" id="L274">			aadblConstraintJacobian = new double[iConstraintDimension][];</span>
+<span class="fc" id="L275">			aaadblConstraintHessian = new double[iConstraintDimension][][];</span>
 		}
 
-<span class="fc bfc" id="L276" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
-<span class="fc" id="L277">			if (null == (aaadblConstraintHessian[i] = _aRdToR1EqualityConstraint[i].hessian</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">				(adblObjectiveVariate)))</span>
-<span class="nc" id="L279">				return null;</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
+<span class="fc" id="L279">			if (null == (aaadblConstraintHessian[i] = _aRdToR1EqualityConstraint[i].hessian</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">				(adblObjectiveVariate)))</span>
+<span class="nc" id="L281">				return null;</span>
 		}
 
-<span class="fc bfc" id="L282" title="All 2 branches covered.">		for (int i = 0; i &lt; iObjectiveDimension; ++i) {</span>
-<span class="fc bfc" id="L283" title="All 2 branches covered.">			for (int j = 0; j &lt; iObjectiveDimension; ++j) {</span>
-<span class="fc" id="L284">				aadblHessian[i][j] = aadblObjectiveHessian[i][j];</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		for (int i = 0; i &lt; iObjectiveDimension; ++i) {</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">			for (int j = 0; j &lt; iObjectiveDimension; ++j) {</span>
+<span class="fc" id="L286">				aadblHessian[i][j] = aadblObjectiveHessian[i][j];</span>
 
-<span class="fc bfc" id="L286" title="All 2 branches covered.">				for (int k = 0; k &lt; iConstraintDimension; ++k)</span>
-<span class="fc" id="L287">					aadblHessian[i][j] += adblConstraintVariate[k] * aaadblConstraintHessian[k][i][j];</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">				for (int k = 0; k &lt; iConstraintDimension; ++k)</span>
+<span class="fc" id="L289">					aadblHessian[i][j] += adblConstraintVariate[k] * aaadblConstraintHessian[k][i][j];</span>
 			}
 		}
 
-<span class="fc bfc" id="L291" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
-<span class="fc bfc" id="L292" title="All 2 branches covered.">			for (int j = 0; j &lt; iConstraintDimension; ++j)</span>
-<span class="fc" id="L293">				aadblHessian[i + iObjectiveDimension][j + iObjectiveDimension] = 0.;</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">			for (int j = 0; j &lt; iConstraintDimension; ++j)</span>
+<span class="fc" id="L295">				aadblHessian[i + iObjectiveDimension][j + iObjectiveDimension] = 0.;</span>
 
-<span class="fc" id="L295">			if (null == (aadblConstraintJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian</span>
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">				(adblObjectiveVariate)))</span>
-<span class="nc" id="L297">				return null;</span>
+<span class="fc" id="L297">			if (null == (aadblConstraintJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">				(adblObjectiveVariate)))</span>
+<span class="nc" id="L299">				return null;</span>
 		}
 
-<span class="fc bfc" id="L300" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
-<span class="fc bfc" id="L301" title="All 2 branches covered.">			for (int j = 0; j &lt; iObjectiveDimension; ++j) {</span>
-<span class="fc" id="L302">				aadblHessian[iObjectiveDimension + i][j] = aadblConstraintJacobian[i][j];</span>
-<span class="fc" id="L303">				aadblHessian[j][iObjectiveDimension + i] = aadblConstraintJacobian[i][j];</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">		for (int i = 0; i &lt; iConstraintDimension; ++i) {</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">			for (int j = 0; j &lt; iObjectiveDimension; ++j) {</span>
+<span class="fc" id="L304">				aadblHessian[iObjectiveDimension + i][j] = aadblConstraintJacobian[i][j];</span>
+<span class="fc" id="L305">				aadblHessian[j][iObjectiveDimension + i] = aadblConstraintJacobian[i][j];</span>
 			}
 		}
 
-<span class="fc" id="L307">		return aadblHessian;</span>
+<span class="fc" id="L309">		return aadblHessian;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

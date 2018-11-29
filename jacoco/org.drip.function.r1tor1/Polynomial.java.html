@@ -72,18 +72,20 @@ package org.drip.function.r1tor1;
 /**
  * &lt;i&gt;Polynomial&lt;/i&gt; provides the evaluation of the n&lt;sup&gt;th&lt;/sup&gt; order Polynomial and its derivatives for a
  * specified variate.
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Polynomial extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L86">	private int _iDegree = -1;</span>
+<span class="fc" id="L88">	private int _iDegree = -1;</span>
 
 	/**
 	 * Polynomial constructor
@@ -97,19 +99,19 @@ public class Polynomial extends org.drip.function.definition.R1ToR1 {
 		final int iDegree)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L100">		super (null);</span>
+<span class="fc" id="L102">		super (null);</span>
 
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (0 &gt; (_iDegree = iDegree)) throw new java.lang.Exception (&quot;Polynomial ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L103">	}</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (0 &gt; (_iDegree = iDegree)) throw new java.lang.Exception (&quot;Polynomial ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L105">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;Polynomial::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;Polynomial::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L112">		return java.lang.Math.pow (dblVariate, _iDegree);</span>
+<span class="fc" id="L114">		return java.lang.Math.pow (dblVariate, _iDegree);</span>
 	}
 
 	@Override public double derivative (
@@ -117,11 +119,11 @@ public class Polynomial extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt; iOrder)</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;Polynomial::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt; iOrder)</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;Polynomial::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L123" title="All 2 branches covered.">		return iOrder &gt; _iDegree ? 0. : java.lang.Math.pow (dblVariate, _iDegree - iOrder) *</span>
-<span class="fc" id="L124">			org.drip.quant.common.NumberUtil.NPK (_iDegree, _iDegree - iOrder);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		return iOrder &gt; _iDegree ? 0. : java.lang.Math.pow (dblVariate, _iDegree - iOrder) *</span>
+<span class="fc" id="L126">			org.drip.quant.common.NumberUtil.NPK (_iDegree, _iDegree - iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -129,11 +131,11 @@ public class Polynomial extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;Polynomial::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;Polynomial::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L136">		return (java.lang.Math.pow (dblEnd, _iDegree + 1) - java.lang.Math.pow (dblBegin, _iDegree + 1)) /</span>
+<span class="nc" id="L138">		return (java.lang.Math.pow (dblEnd, _iDegree + 1) - java.lang.Math.pow (dblBegin, _iDegree + 1)) /</span>
 			(_iDegree + 1);
 	}
 
@@ -145,26 +147,26 @@ public class Polynomial extends org.drip.function.definition.R1ToR1 {
 
 	public double getDegree()
 	{
-<span class="nc" id="L148">		 return _iDegree;</span>
+<span class="nc" id="L150">		 return _iDegree;</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L155">		Polynomial poly = new Polynomial (4);</span>
+<span class="nc" id="L157">		Polynomial poly = new Polynomial (4);</span>
 
-<span class="nc" id="L157">		System.out.println (&quot;Poly[0.0] = &quot; + poly.evaluate (0.0));</span>
+<span class="nc" id="L159">		System.out.println (&quot;Poly[0.0] = &quot; + poly.evaluate (0.0));</span>
 
-<span class="nc" id="L159">		System.out.println (&quot;Poly[0.5] = &quot; + poly.evaluate (0.5));</span>
+<span class="nc" id="L161">		System.out.println (&quot;Poly[0.5] = &quot; + poly.evaluate (0.5));</span>
 
-<span class="nc" id="L161">		System.out.println (&quot;Poly[1.0] = &quot; + poly.evaluate (1.0));</span>
+<span class="nc" id="L163">		System.out.println (&quot;Poly[1.0] = &quot; + poly.evaluate (1.0));</span>
 
-<span class="nc" id="L163">		System.out.println (&quot;Deriv[0.0] = &quot; + poly.derivative (0.0, 3));</span>
+<span class="nc" id="L165">		System.out.println (&quot;Deriv[0.0] = &quot; + poly.derivative (0.0, 3));</span>
 
-<span class="nc" id="L165">		System.out.println (&quot;Deriv[0.5] = &quot; + poly.derivative (0.5, 3));</span>
+<span class="nc" id="L167">		System.out.println (&quot;Deriv[0.5] = &quot; + poly.derivative (0.5, 3));</span>
 
-<span class="nc" id="L167">		System.out.println (&quot;Deriv[1.0] = &quot; + poly.derivative (1.0, 3));</span>
-<span class="nc" id="L168">	}</span>
+<span class="nc" id="L169">		System.out.println (&quot;Deriv[1.0] = &quot; + poly.derivative (1.0, 3));</span>
+<span class="nc" id="L170">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -71,7 +71,7 @@ package org.drip.execution.capture;
  * Uniform Trading Trajectory generated using the Linear Market Impact Evolution Parameters. The References
  * are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -94,11 +94,13 @@ package org.drip.execution.capture;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -119,56 +121,56 @@ public class LinearImpactUniformTrajectoryEstimator extends
 		final org.drip.execution.strategy.MinimumImpactTradingTrajectory mittUniform)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L122">		super (mittUniform);</span>
-<span class="nc" id="L123">	}</span>
+<span class="nc" id="L124">		super (mittUniform);</span>
+<span class="nc" id="L125">	}</span>
 
 	@Override public org.drip.measure.gaussian.R1UnivariateNormal totalCostDistributionSynopsis (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == apep) return null;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="nc" id="L130">		org.drip.execution.strategy.MinimumImpactTradingTrajectory mitt =</span>
-<span class="nc" id="L131">			(org.drip.execution.strategy.MinimumImpactTradingTrajectory) trajectory();</span>
+<span class="nc" id="L132">		org.drip.execution.strategy.MinimumImpactTradingTrajectory mitt =</span>
+<span class="nc" id="L133">			(org.drip.execution.strategy.MinimumImpactTradingTrajectory) trajectory();</span>
 
-<span class="nc" id="L133">		double dblBlockSize = mitt.tradeSize();</span>
+<span class="nc" id="L135">		double dblBlockSize = mitt.tradeSize();</span>
 
-<span class="nc" id="L135">		double dblExecutionTime = mitt.executionTime();</span>
+<span class="nc" id="L137">		double dblExecutionTime = mitt.executionTime();</span>
 
-<span class="nc" id="L137">		double dblNumberOfTradesReciprocal = 1. / mitt.numberOfTrades();</span>
+<span class="nc" id="L139">		double dblNumberOfTradesReciprocal = 1. / mitt.numberOfTrades();</span>
 
-<span class="nc" id="L139">		double dblMarketCoreVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L140">		double dblBlockSizeSquared = dblBlockSize * dblBlockSize;</span>
-<span class="nc" id="L141">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
+<span class="nc" id="L141">		double dblMarketCoreVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L142">		double dblBlockSizeSquared = dblBlockSize * dblBlockSize;</span>
+<span class="nc" id="L143">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
 			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) apep;
 
-<span class="nc" id="L144">		double dblPermanentLinearImpactParameter = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
-<span class="nc" id="L145">			lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
+<span class="nc" id="L146">		double dblPermanentLinearImpactParameter = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
+<span class="nc" id="L147">			lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
 
-<span class="nc" id="L147">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
+<span class="nc" id="L149">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
 			(org.drip.execution.impact.TransactionFunctionLinear)
-<span class="nc" id="L149">				apep.temporaryExpectation().epochImpactFunction();</span>
+<span class="nc" id="L151">				apep.temporaryExpectation().epochImpactFunction();</span>
 
 		try {
-<span class="nc" id="L152">			dblMarketCoreVolatility = apep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
-<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L154">			e.printStackTrace();</span>
+<span class="nc" id="L154">			dblMarketCoreVolatility = apep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
 
-<span class="nc" id="L156">			return null;</span>
-<span class="nc" id="L157">		}</span>
+<span class="nc" id="L158">			return null;</span>
+<span class="nc" id="L159">		}</span>
 
 		try {
-<span class="nc" id="L160">			return new org.drip.measure.gaussian.R1UnivariateNormal (0.5 * dblPermanentLinearImpactParameter</span>
-<span class="nc" id="L161">				* dblBlockSizeSquared + tflTemporaryExpectation.offset() * java.lang.Math.abs (dblBlockSize)</span>
-<span class="nc" id="L162">					+ (tflTemporaryExpectation.slope() - 0.5 * dblPermanentLinearImpactParameter *</span>
-<span class="nc" id="L163">						mitt.tradeTimeInterval()) * dblBlockSizeSquared / dblExecutionTime,</span>
+<span class="nc" id="L162">			return new org.drip.measure.gaussian.R1UnivariateNormal (0.5 * dblPermanentLinearImpactParameter</span>
+<span class="nc" id="L163">				* dblBlockSizeSquared + tflTemporaryExpectation.offset() * java.lang.Math.abs (dblBlockSize)</span>
+<span class="nc" id="L164">					+ (tflTemporaryExpectation.slope() - 0.5 * dblPermanentLinearImpactParameter *</span>
+<span class="nc" id="L165">						mitt.tradeTimeInterval()) * dblBlockSizeSquared / dblExecutionTime,</span>
 							dblMarketCoreVolatility * dblMarketCoreVolatility * dblBlockSizeSquared *
 								dblExecutionTime * (1. - dblNumberOfTradesReciprocal) * (1. - 0.5 *
 									dblNumberOfTradesReciprocal) / 3.);
-<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L169">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

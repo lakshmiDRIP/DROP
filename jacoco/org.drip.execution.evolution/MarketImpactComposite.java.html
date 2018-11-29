@@ -68,10 +68,10 @@ package org.drip.execution.evolution;
 
 /**
  * &lt;i&gt;MarketImpactComposite&lt;/i&gt; contains the Composite Evolution Increment Components of the Movements
- *  exhibited by an Asset's Manifest Measures owing to the Stochastic and the Deterministic Factors. The
- *  References are:
+ * exhibited by an Asset's Manifest Measures owing to the Stochastic and the Deterministic Factors. The
+ * References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -94,19 +94,21 @@ package org.drip.execution.evolution;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class MarketImpactComposite extends org.drip.execution.evolution.MarketImpactComponent {
-<span class="nc" id="L108">	private org.drip.execution.evolution.MarketImpactComponent _micStochastic = null;</span>
-<span class="nc" id="L109">	private org.drip.execution.evolution.MarketImpactComponent _micDeterministic = null;</span>
+<span class="nc" id="L110">	private org.drip.execution.evolution.MarketImpactComponent _micStochastic = null;</span>
+<span class="nc" id="L111">	private org.drip.execution.evolution.MarketImpactComponent _micDeterministic = null;</span>
 
 	/**
 	 * Construct a Standard Instance of MarketImpactComposite
@@ -121,15 +123,15 @@ public class MarketImpactComposite extends org.drip.execution.evolution.MarketIm
 		final org.drip.execution.evolution.MarketImpactComponent micDeterministic,
 		final org.drip.execution.evolution.MarketImpactComponent micStochastic)
 	{
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == micDeterministic || null == micStochastic) return null;</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null == micDeterministic || null == micStochastic) return null;</span>
 
 		try {
-<span class="nc" id="L127">			return new MarketImpactComposite (micDeterministic, micStochastic);</span>
-<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L129">			e.printStackTrace();</span>
+<span class="nc" id="L129">			return new MarketImpactComposite (micDeterministic, micStochastic);</span>
+<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L132">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	protected MarketImpactComposite (
@@ -137,11 +139,11 @@ public class MarketImpactComposite extends org.drip.execution.evolution.MarketIm
 		final org.drip.execution.evolution.MarketImpactComponent micStochastic)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L140">		super (micDeterministic.currentStep() + micStochastic.currentStep(), micDeterministic.previousStep()</span>
-<span class="nc" id="L141">			+ micStochastic.previousStep(), micDeterministic.permanentImpact() +</span>
-<span class="nc" id="L142">				micStochastic.permanentImpact(), micDeterministic.temporaryImpact() +</span>
-<span class="nc" id="L143">					micStochastic.temporaryImpact());</span>
-<span class="nc" id="L144">	}</span>
+<span class="nc" id="L142">		super (micDeterministic.currentStep() + micStochastic.currentStep(), micDeterministic.previousStep()</span>
+<span class="nc" id="L143">			+ micStochastic.previousStep(), micDeterministic.permanentImpact() +</span>
+<span class="nc" id="L144">				micStochastic.permanentImpact(), micDeterministic.temporaryImpact() +</span>
+<span class="nc" id="L145">					micStochastic.temporaryImpact());</span>
+<span class="nc" id="L146">	}</span>
 
 	/**
 	 * Retrieve the Deterministic Impact Component Instance
@@ -151,7 +153,7 @@ public class MarketImpactComposite extends org.drip.execution.evolution.MarketIm
 
 	public org.drip.execution.evolution.MarketImpactComponent deterministic()
 	{
-<span class="nc" id="L154">		return _micDeterministic;</span>
+<span class="nc" id="L156">		return _micDeterministic;</span>
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class MarketImpactComposite extends org.drip.execution.evolution.MarketIm
 
 	public org.drip.execution.evolution.MarketImpactComponent stochastic()
 	{
-<span class="nc" id="L165">		return _micStochastic;</span>
+<span class="nc" id="L167">		return _micStochastic;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

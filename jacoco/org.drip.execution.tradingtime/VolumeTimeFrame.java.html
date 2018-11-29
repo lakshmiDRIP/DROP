@@ -68,9 +68,9 @@ package org.drip.execution.tradingtime;
 
 /**
  * &lt;i&gt;VolumeTimeFrame&lt;/i&gt; implements the Pre- and Post-transformed Increment in the Volume Time Space as used
- *  in the &quot;Trading Time&quot; Model. The References are:
+ * in the &quot;Trading Time&quot; Model. The References are:
  * 
- * 	&lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -93,19 +93,21 @@ package org.drip.execution.tradingtime;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime&quot;&gt;Trading Time&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime&quot;&gt;Trading Time&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionEdge {
-<span class="nc" id="L107">	private double _dblHoldings = java.lang.Double.NaN;</span>
-<span class="nc" id="L108">	private double _dblTradeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblHoldings = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblTradeRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * VolumeTimeFrame Constructor
@@ -131,15 +133,15 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L134">		super (dblPrevious, dblVolatility * dblVolatility * dblTemporal, new</span>
+<span class="nc" id="L136">		super (dblPrevious, dblVolatility * dblVolatility * dblTemporal, new</span>
 			org.drip.measure.realization.StochasticEdgeDiffusion (dblVolatility * dblBrownian), null, new
 				org.drip.measure.realization.JumpDiffusionEdgeUnit (dblTimeIncrement, dblBrownian, 0.));
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate / (dblVolatility *</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate / (dblVolatility *</span>
 				dblVolatility)))
-<span class="nc" id="L141">			throw new java.lang.Exception (&quot;VolumeTimeFrame Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="nc" id="L142">	}</span>
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;VolumeTimeFrame Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L144">	}</span>
 
 	/**
 	 * Retrieve the Holdings
@@ -149,7 +151,7 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 
 	public double holdings()
 	{
-<span class="nc" id="L152">		return _dblHoldings;</span>
+<span class="nc" id="L154">		return _dblHoldings;</span>
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 
 	public double tradeRate()
 	{
-<span class="nc" id="L163">		return _dblTradeRate;</span>
+<span class="nc" id="L165">		return _dblTradeRate;</span>
 	}
 
 	/**
@@ -177,11 +179,11 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 		final org.drip.execution.tradingtime.CoordinatedVariation cv)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (null == cv)</span>
-<span class="nc" id="L181">			throw new java.lang.Exception (&quot;VolumeTimeFrame::transactionCostIncrement =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == cv)</span>
+<span class="nc" id="L183">			throw new java.lang.Exception (&quot;VolumeTimeFrame::transactionCostIncrement =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L183">		return _dblHoldings * diffusionStochastic() + cv.invariant() * _dblTradeRate * _dblTradeRate *</span>
-<span class="nc" id="L184">			deterministic();</span>
+<span class="nc" id="L185">		return _dblHoldings * diffusionStochastic() + cv.invariant() * _dblTradeRate * _dblTradeRate *</span>
+<span class="nc" id="L186">			deterministic();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

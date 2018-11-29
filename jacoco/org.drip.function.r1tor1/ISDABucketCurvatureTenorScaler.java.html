@@ -65,8 +65,9 @@ package org.drip.function.r1tor1;
 
 /**
  * &lt;i&gt;ISDABucketCurvatureTenorScaler&lt;/i&gt; generates the ISDA SIMM Tenor Scaling Factor for a given Bucket
- *  Curvature. The References are:
- * &lt;br&gt;
+ * Curvature. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
@@ -91,11 +92,13 @@ package org.drip.function.r1tor1;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -105,7 +108,7 @@ public class ISDABucketCurvatureTenorScaler extends org.drip.function.definition
 {
 	private static final int STANDARD_BUCKET_CURVATURE_SCALER_MPOR = 14;
 
-<span class="nc" id="L108">	private int _mporCalendarDays = -1;</span>
+<span class="nc" id="L111">	private int _mporCalendarDays = -1;</span>
 
 	/**
 	 * Construct the Standard ISDA Bucket Curvature Tenor Scaler
@@ -117,14 +120,14 @@ public class ISDABucketCurvatureTenorScaler extends org.drip.function.definition
 	{
 		try
 		{
-<span class="nc" id="L120">			return new ISDABucketCurvatureTenorScaler (STANDARD_BUCKET_CURVATURE_SCALER_MPOR);</span>
+<span class="nc" id="L123">			return new ISDABucketCurvatureTenorScaler (STANDARD_BUCKET_CURVATURE_SCALER_MPOR);</span>
 		}
-<span class="nc" id="L122">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L125">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L124">			e.printStackTrace();</span>
+<span class="nc" id="L127">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L127">		return null;</span>
+<span class="nc" id="L130">		return null;</span>
 	}
 
 	/**
@@ -139,24 +142,24 @@ public class ISDABucketCurvatureTenorScaler extends org.drip.function.definition
 		final int mporCalendarDays)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L142">		super (null);</span>
+<span class="nc" id="L145">		super (null);</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (0 &gt;= (_mporCalendarDays = mporCalendarDays))</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (0 &gt;= (_mporCalendarDays = mporCalendarDays))</span>
 		{
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;ISDABucketCurvatureTenorScaler Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L149">			throw new java.lang.Exception (&quot;ISDABucketCurvatureTenorScaler Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L148">	}</span>
+<span class="nc" id="L151">	}</span>
 
 	@Override public double evaluate (
 		final double t)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (t) || 0 &gt;= t)</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (t) || 0 &gt;= t)</span>
 		{
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;ISDABucketCurvatureTenorScaler::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L159">			throw new java.lang.Exception (&quot;ISDABucketCurvatureTenorScaler::evaluate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L159">		return 0.5 * java.lang.Math.min (</span>
+<span class="nc" id="L162">		return 0.5 * java.lang.Math.min (</span>
 			1.,
 			((double) _mporCalendarDays) / t
 		);
@@ -170,7 +173,7 @@ public class ISDABucketCurvatureTenorScaler extends org.drip.function.definition
 
 	public int mporCalendarDays()
 	{
-<span class="nc" id="L173">		return _mporCalendarDays;</span>
+<span class="nc" id="L176">		return _mporCalendarDays;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

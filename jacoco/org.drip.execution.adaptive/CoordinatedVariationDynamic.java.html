@@ -68,11 +68,11 @@ package org.drip.execution.adaptive;
 
 /**
  * &lt;i&gt;CoordinatedVariationDynamic&lt;/i&gt; implements the HJB-based Single Step Optimal Cost Dynamic Trajectory
- *  using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
- *  from the Realization of the Market State Variable as described in the &quot;Trading Time&quot; Model. The
- *  References are:
+ * using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
+ * from the Realization of the Market State Variable as described in the &quot;Trading Time&quot; Model. The References
+ * are:
  *  
- * 	&lt;br&gt;
+ * 	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -95,20 +95,22 @@ package org.drip.execution.adaptive;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.CoordinatedVariationTrajectory {
-<span class="fc" id="L109">	private double[] _adblNonDimensionalHoldings = null;</span>
-<span class="fc" id="L110">	private double[] _adblScaledNonDimensionalTradeRate = null;</span>
-<span class="fc" id="L111">	private org.drip.execution.hjb.NonDimensionalCost[] _aNDC = null;</span>
+<span class="fc" id="L111">	private double[] _adblNonDimensionalHoldings = null;</span>
+<span class="fc" id="L112">	private double[] _adblScaledNonDimensionalTradeRate = null;</span>
+<span class="fc" id="L113">	private org.drip.execution.hjb.NonDimensionalCost[] _aNDC = null;</span>
 
 	/**
 	 * CoordinatedVariationDynamic Constructor
@@ -128,25 +130,25 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 		final org.drip.execution.hjb.NonDimensionalCost[] aNDC)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L131">		super (cvtd);</span>
+<span class="fc" id="L133">		super (cvtd);</span>
 
-<span class="pc bpc" id="L133" title="3 of 6 branches missed.">		if (null == (_aNDC = aNDC) || null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) ||</span>
+<span class="pc bpc" id="L135" title="3 of 6 branches missed.">		if (null == (_aNDC = aNDC) || null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) ||</span>
 			null == (_adblScaledNonDimensionalTradeRate = adblScaledNonDimensionalTradeRate) ||
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))</span>
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L139">		int iNumTimeNode = _adblNonDimensionalHoldings.length;</span>
+<span class="fc" id="L141">		int iNumTimeNode = _adblNonDimensionalHoldings.length;</span>
 
-<span class="pc bpc" id="L141" title="3 of 6 branches missed.">		if (0 == iNumTimeNode || iNumTimeNode != _adblScaledNonDimensionalTradeRate.length || iNumTimeNode !=</span>
+<span class="pc bpc" id="L143" title="3 of 6 branches missed.">		if (0 == iNumTimeNode || iNumTimeNode != _adblScaledNonDimensionalTradeRate.length || iNumTimeNode !=</span>
 			_aNDC.length)
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L145">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			if (null == _aNDC[i])</span>
-<span class="nc" id="L147">				throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			if (null == _aNDC[i])</span>
+<span class="nc" id="L149">				throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L149">	}</span>
+<span class="fc" id="L151">	}</span>
 
 	/**
 	 * Retrieve the Array of the Non Dimensional Holdings
@@ -156,7 +158,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public double[] nonDimensionalHoldings()
 	{
-<span class="fc" id="L159">		return _adblNonDimensionalHoldings;</span>
+<span class="fc" id="L161">		return _adblNonDimensionalHoldings;</span>
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public double[] scaledNonDimensionalTradeRate()
 	{
-<span class="fc" id="L170">		return _adblScaledNonDimensionalTradeRate;</span>
+<span class="fc" id="L172">		return _adblScaledNonDimensionalTradeRate;</span>
 	}
 
 	/**
@@ -178,7 +180,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public org.drip.execution.hjb.NonDimensionalCost[] nonDimensionalCost()
 	{
-<span class="fc" id="L181">		return _aNDC;</span>
+<span class="fc" id="L183">		return _aNDC;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

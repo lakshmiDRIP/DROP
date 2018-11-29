@@ -67,9 +67,9 @@ package org.drip.execution.principal;
 
 /**
  * &lt;i&gt;GrossProfitEstimator&lt;/i&gt; generates the Gross Profit Distribution and the Information Ratio for a given
- *  Level of Principal Discount. The References are:
+ * Level of Principal Discount. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 	&lt;li&gt;
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -90,18 +90,20 @@ package org.drip.execution.principal;
  * 			57-62
  * 	&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class GrossProfitEstimator {
-<span class="fc" id="L104">	private org.drip.execution.optimum.EfficientTradingTrajectory _ett = null;</span>
+<span class="fc" id="L106">	private org.drip.execution.optimum.EfficientTradingTrajectory _ett = null;</span>
 
 	/**
 	 * GrossProfitEstimator Constructor
@@ -114,10 +116,10 @@ public class GrossProfitEstimator {
 	public GrossProfitEstimator (
 		final org.drip.execution.optimum.EfficientTradingTrajectory ett)
 		throws java.lang.Exception
-<span class="fc" id="L117">	{</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == (_ett = ett))</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;GrossProfitEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L119">	{</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == (_ett = ett))</span>
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;GrossProfitEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L122">	}</span>
 
 	/**
 	 * Retrieve the Optimal Efficient Trajectory
@@ -127,7 +129,7 @@ public class GrossProfitEstimator {
 
 	public org.drip.execution.optimum.EfficientTradingTrajectory efficientTrajectory()
 	{
-<span class="fc" id="L130">		return _ett;</span>
+<span class="fc" id="L132">		return _ett;</span>
 	}
 
 	/**
@@ -142,13 +144,13 @@ public class GrossProfitEstimator {
 		final double dblPrincipalDiscount)
 	{
 		try {
-<span class="fc" id="L145">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
-<span class="fc" id="L146">				- _ett.transactionCostExpectation(), java.lang.Math.sqrt (_ett.transactionCostVariance()));</span>
-<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="fc" id="L147">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
+<span class="fc" id="L148">				- _ett.transactionCostExpectation(), java.lang.Math.sqrt (_ett.transactionCostVariance()));</span>
+<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L150">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L151">		return null;</span>
+<span class="nc" id="L153">		return null;</span>
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class GrossProfitEstimator {
 	public double breakevenPrincipalDiscount()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L165">		return _ett.transactionCostExpectation() / _ett.tradeSize();</span>
+<span class="fc" id="L167">		return _ett.transactionCostExpectation() / _ett.tradeSize();</span>
 	}
 
 	/**
@@ -176,19 +178,19 @@ public class GrossProfitEstimator {
 	public org.drip.measure.gaussian.R1UnivariateNormal horizonPrincipalMeasure (
 		final double dblPrincipalDiscount)
 	{
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount)) return null;</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount)) return null;</span>
 
-<span class="fc" id="L181">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
+<span class="fc" id="L183">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
 
 		try {
-<span class="fc" id="L184">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
-<span class="fc" id="L185">				- _ett.transactionCostExpectation() * dblInverseHorizon, java.lang.Math.sqrt</span>
-<span class="fc" id="L186">					(_ett.transactionCostVariance() * dblInverseHorizon));</span>
-<span class="nc" id="L187">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L188">			e.printStackTrace();</span>
+<span class="fc" id="L186">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
+<span class="fc" id="L187">				- _ett.transactionCostExpectation() * dblInverseHorizon, java.lang.Math.sqrt</span>
+<span class="fc" id="L188">					(_ett.transactionCostVariance() * dblInverseHorizon));</span>
+<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L190">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L191">		return null;</span>
+<span class="nc" id="L193">		return null;</span>
 	}
 
 	/**
@@ -205,14 +207,14 @@ public class GrossProfitEstimator {
 		final double dblPrincipalDiscount)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount))</span>
-<span class="nc" id="L209">			throw new java.lang.Exception (&quot;GrossProfitEstimator::informationRatio =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount))</span>
+<span class="nc" id="L211">			throw new java.lang.Exception (&quot;GrossProfitEstimator::informationRatio =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L211">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
+<span class="fc" id="L213">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
 
-<span class="fc" id="L213">		return dblInverseHorizon * (dblPrincipalDiscount * _ett.tradeSize() -</span>
-<span class="fc" id="L214">			_ett.transactionCostExpectation()) / java.lang.Math.sqrt (dblInverseHorizon *</span>
-<span class="fc" id="L215">				_ett.transactionCostVariance());</span>
+<span class="fc" id="L215">		return dblInverseHorizon * (dblPrincipalDiscount * _ett.tradeSize() -</span>
+<span class="fc" id="L216">			_ett.transactionCostExpectation()) / java.lang.Math.sqrt (dblInverseHorizon *</span>
+<span class="fc" id="L217">				_ett.transactionCostVariance());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

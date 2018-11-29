@@ -68,10 +68,10 @@ package org.drip.execution.discrete;
 
 /**
  * &lt;i&gt;EvolutionIncrement&lt;/i&gt; contains the Realized Stochastic Evolution Increments of the Price/Short-fall
- *  exhibited by an Asset owing to the Volatility and the Market Impact Factors over the Slice Time Interval.
- *  It is composed of Stochastic and Deterministic Price Increment Components. The References are:
+ * exhibited by an Asset owing to the Volatility and the Market Impact Factors over the Slice Time Interval.
+ * It is composed of Stochastic and Deterministic Price Increment Components. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -94,11 +94,13 @@ package org.drip.execution.discrete;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -120,8 +122,8 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 		final org.drip.execution.evolution.MarketImpactComponent micStochastic)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L123">		super (micDeterministic, micStochastic);</span>
-<span class="nc" id="L124">	}</span>
+<span class="nc" id="L125">		super (micDeterministic, micStochastic);</span>
+<span class="nc" id="L126">	}</span>
 
 	/**
 	 * Retrieve the Change induced by Deterministic Asset Price Market Dynamic Drivers
@@ -131,9 +133,9 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 
 	public double marketDynamicDrift()
 	{
-<span class="nc" id="L134">		org.drip.execution.evolution.MarketImpactComponent micDeterministic = deterministic();</span>
+<span class="nc" id="L136">		org.drip.execution.evolution.MarketImpactComponent micDeterministic = deterministic();</span>
 
-<span class="nc" id="L136">		return micDeterministic.previousStep() + micDeterministic.currentStep();</span>
+<span class="nc" id="L138">		return micDeterministic.previousStep() + micDeterministic.currentStep();</span>
 	}
 
 	/**
@@ -144,9 +146,9 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 
 	public double marketDynamicWander()
 	{
-<span class="nc" id="L147">		org.drip.execution.evolution.MarketImpactComponent micStochastic = stochastic();</span>
+<span class="nc" id="L149">		org.drip.execution.evolution.MarketImpactComponent micStochastic = stochastic();</span>
 
-<span class="nc" id="L149">		return micStochastic.previousStep() + micStochastic.currentStep();</span>
+<span class="nc" id="L151">		return micStochastic.previousStep() + micStochastic.currentStep();</span>
 	}
 
 	/**
@@ -157,7 +159,7 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 
 	public double permanentImpactDrift()
 	{
-<span class="nc" id="L160">		return deterministic().permanentImpact();</span>
+<span class="nc" id="L162">		return deterministic().permanentImpact();</span>
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 
 	public double permanentImpactWander()
 	{
-<span class="nc" id="L171">		return stochastic().permanentImpact();</span>
+<span class="nc" id="L173">		return stochastic().permanentImpact();</span>
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 
 	public double temporaryImpactDrift()
 	{
-<span class="nc" id="L182">		return deterministic().temporaryImpact();</span>
+<span class="nc" id="L184">		return deterministic().temporaryImpact();</span>
 	}
 
 	/**
@@ -190,7 +192,7 @@ public class EvolutionIncrement extends org.drip.execution.evolution.MarketImpac
 
 	public double temporaryImpactWander()
 	{
-<span class="nc" id="L193">		return stochastic().temporaryImpact();</span>
+<span class="nc" id="L195">		return stochastic().temporaryImpact();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

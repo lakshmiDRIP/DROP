@@ -75,12 +75,14 @@ package org.drip.function.r1tor1solver;
  * method.
  * &lt;br&gt;&lt;br&gt;
  * FixedPointFinderZheng overrides the iterateCompoundVariate method to achieve the desired simplification in
- * 	the iterative variate selection.
- * &lt;br&gt;
+ * the iterative variate selection.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -95,25 +97,25 @@ public class FixedPointFinderZheng extends org.drip.function.r1tor1solver.FixedP
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L98">		double dblVariateMid = org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblCurrentVariate,</span>
+<span class="fc" id="L100">		double dblVariateMid = org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblCurrentVariate,</span>
 			dblContraVariate);
 
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L102">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L104">			throw new java.lang.Exception</span>
 				(&quot;FixedPointFinderZheng::iterateCompoundVariate =&gt; Cannot increment rfop!&quot;);
 
-<span class="fc" id="L105">		double dblOF = _of.evaluate (dblVariateMid);</span>
+<span class="fc" id="L107">		double dblOF = _of.evaluate (dblVariateMid);</span>
 
-<span class="fc" id="L107">		double dblNextVariate = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">		double dblNextVariate = java.lang.Double.NaN;</span>
 
-<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (dblCurrentOF != dblOF &amp;&amp; dblContraPointOF != dblOF)</span>
-<span class="fc" id="L110">			dblNextVariate = org.drip.function.r1tor1solver.VariateIteratorPrimitive.InverseQuadraticInterpolation</span>
-<span class="fc" id="L111">				(dblCurrentVariate, dblVariateMid, dblContraVariate, dblCurrentOF, dblOF, dblContraPointOF);</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (dblCurrentOF != dblOF &amp;&amp; dblContraPointOF != dblOF)</span>
+<span class="fc" id="L112">			dblNextVariate = org.drip.function.r1tor1solver.VariateIteratorPrimitive.InverseQuadraticInterpolation</span>
+<span class="fc" id="L113">				(dblCurrentVariate, dblVariateMid, dblContraVariate, dblCurrentOF, dblOF, dblContraPointOF);</span>
 		else
-<span class="nc" id="L113">			dblNextVariate = org.drip.function.r1tor1solver.VariateIteratorPrimitive.FalsePosition (dblCurrentVariate,</span>
+<span class="nc" id="L115">			dblNextVariate = org.drip.function.r1tor1solver.VariateIteratorPrimitive.FalsePosition (dblCurrentVariate,</span>
 				dblContraVariate, dblCurrentOF, dblContraPointOF);
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		return dblVariateMid &lt; dblNextVariate ? dblVariateMid : dblNextVariate;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		return dblVariateMid &lt; dblNextVariate ? dblVariateMid : dblNextVariate;</span>
 	}
 
 	/**
@@ -132,7 +134,7 @@ public class FixedPointFinderZheng extends org.drip.function.r1tor1solver.FixedP
 		final boolean bWhine)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L135">		super (dblOFGoal, of, null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, bWhine);</span>
-<span class="fc" id="L136">	}</span>
+<span class="fc" id="L137">		super (dblOFGoal, of, null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, bWhine);</span>
+<span class="fc" id="L138">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -111,21 +111,23 @@ package org.drip.function.r1tor1solver;
  * 		iterators (or custom ones), or b) a variate selector scheme for each iteration.
  * 	&lt;/li&gt;
  * &lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class FixedPointFinder {
-<span class="fc" id="L125">	protected boolean _bWhine = false;</span>
-<span class="fc" id="L126">	protected double _dblOFGoal = java.lang.Double.NaN;</span>
-<span class="fc" id="L127">	protected org.drip.function.r1tor1solver.ExecutionControl _ec = null;</span>
-<span class="fc" id="L128">	protected org.drip.function.definition.R1ToR1 _of = null;</span>
+<span class="fc" id="L127">	protected boolean _bWhine = false;</span>
+<span class="fc" id="L128">	protected double _dblOFGoal = java.lang.Double.NaN;</span>
+<span class="fc" id="L129">	protected org.drip.function.r1tor1solver.ExecutionControl _ec = null;</span>
+<span class="fc" id="L130">	protected org.drip.function.definition.R1ToR1 _of = null;</span>
 
 	protected FixedPointFinder (
 		final double dblOFGoal,
@@ -133,14 +135,14 @@ public abstract class FixedPointFinder {
 		final org.drip.function.r1tor1solver.ExecutionControl ec,
 		final boolean bWhine)
 		throws java.lang.Exception
-<span class="fc" id="L136">	{</span>
-<span class="pc bpc" id="L137" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoal = dblOFGoal) || null == (_of = of))</span>
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;FixedPointFinder constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L138">	{</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoal = dblOFGoal) || null == (_of = of))</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;FixedPointFinder constructor: Invalid inputs&quot;);</span>
 
-<span class="fc" id="L140">		_ec = new org.drip.function.r1tor1solver.ExecutionControl (of, null);</span>
+<span class="fc" id="L142">		_ec = new org.drip.function.r1tor1solver.ExecutionControl (of, null);</span>
 
-<span class="fc" id="L142">		_bWhine = bWhine;</span>
-<span class="fc" id="L143">	}</span>
+<span class="fc" id="L144">		_bWhine = bWhine;</span>
+<span class="fc" id="L145">	}</span>
 
 	protected abstract boolean iterateVariate (
 		final org.drip.function.r1tor1solver.IteratedVariate vi,
@@ -160,45 +162,45 @@ public abstract class FixedPointFinder {
 	public org.drip.function.r1tor1solver.FixedPointFinderOutput findRoot (
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="fc" id="L163">		org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = null;</span>
+<span class="fc" id="L165">		org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = null;</span>
 
-<span class="fc" id="L165">		org.drip.function.r1tor1solver.ExecutionInitializationOutput eiop = initializeVariateZone (ih);</span>
+<span class="fc" id="L167">		org.drip.function.r1tor1solver.ExecutionInitializationOutput eiop = initializeVariateZone (ih);</span>
 
-<span class="fc bfc" id="L167" title="All 4 branches covered.">		if (null == eiop || !eiop.isDone()) return null;</span>
+<span class="fc bfc" id="L169" title="All 4 branches covered.">		if (null == eiop || !eiop.isDone()) return null;</span>
 
 		try {
-<span class="fc" id="L170">			rfop = new org.drip.function.r1tor1solver.FixedPointFinderOutput (eiop);</span>
+<span class="fc" id="L172">			rfop = new org.drip.function.r1tor1solver.FixedPointFinderOutput (eiop);</span>
 
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			if (!rfop.incrOFCalcs()) return rfop;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			if (!rfop.incrOFCalcs()) return rfop;</span>
 
-<span class="fc" id="L174">			double dblOF = _of.evaluate (eiop.getStartingVariate());</span>
+<span class="fc" id="L176">			double dblOF = _of.evaluate (eiop.getStartingVariate());</span>
 
-<span class="fc" id="L176">			double dblAbsoluteTolerance = _ec.calcAbsoluteOFTolerance (dblOF);</span>
+<span class="fc" id="L178">			double dblAbsoluteTolerance = _ec.calcAbsoluteOFTolerance (dblOF);</span>
 
-<span class="fc" id="L178">			double dblAbsoluteConvergence = _ec.calcAbsoluteVariateConvergence (eiop.getStartingVariate());</span>
+<span class="fc" id="L180">			double dblAbsoluteConvergence = _ec.calcAbsoluteVariateConvergence (eiop.getStartingVariate());</span>
 
-<span class="fc" id="L180">			org.drip.function.r1tor1solver.IteratedVariate iv = new</span>
+<span class="fc" id="L182">			org.drip.function.r1tor1solver.IteratedVariate iv = new</span>
 				org.drip.function.r1tor1solver.IteratedVariate (eiop, dblOF);
 
-<span class="fc" id="L183">			int iNumIterationsPending = _ec.getNumIterations();</span>
+<span class="fc" id="L185">			int iNumIterationsPending = _ec.getNumIterations();</span>
 
-<span class="fc bfc" id="L185" title="All 2 branches covered.">			while (!_ec.hasOFReachedGoal (dblAbsoluteTolerance, iv.getOF(), _dblOFGoal)) {</span>
-<span class="fc" id="L186">				double dblPrevVariate = iv.getVariate();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">			while (!_ec.hasOFReachedGoal (dblAbsoluteTolerance, iv.getOF(), _dblOFGoal)) {</span>
+<span class="fc" id="L188">				double dblPrevVariate = iv.getVariate();</span>
 
-<span class="pc bpc" id="L188" title="2 of 6 branches missed.">				if (!rfop.incrIterations() || 0 == --iNumIterationsPending || !iterateVariate (iv, rfop))</span>
-<span class="fc" id="L189">					return rfop;</span>
+<span class="pc bpc" id="L190" title="2 of 6 branches missed.">				if (!rfop.incrIterations() || 0 == --iNumIterationsPending || !iterateVariate (iv, rfop))</span>
+<span class="fc" id="L191">					return rfop;</span>
 
-<span class="pc bpc" id="L191" title="3 of 4 branches missed.">				if (_ec.isVariateConvergenceCheckEnabled() &amp;&amp; (java.lang.Math.abs (dblPrevVariate -</span>
-<span class="nc" id="L192">					iv.getVariate()) &lt; dblAbsoluteConvergence))</span>
-<span class="nc" id="L193">					break;</span>
-<span class="fc" id="L194">			}</span>
+<span class="pc bpc" id="L193" title="3 of 4 branches missed.">				if (_ec.isVariateConvergenceCheckEnabled() &amp;&amp; (java.lang.Math.abs (dblPrevVariate -</span>
+<span class="nc" id="L194">					iv.getVariate()) &lt; dblAbsoluteConvergence))</span>
+<span class="nc" id="L195">					break;</span>
+<span class="fc" id="L196">			}</span>
 
-<span class="fc" id="L196">			rfop.setRoot (iv.getVariate());</span>
-<span class="nc" id="L197">		} catch (java.lang.Exception e) {</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
-<span class="fc" id="L199">		}</span>
+<span class="fc" id="L198">			rfop.setRoot (iv.getVariate());</span>
+<span class="nc" id="L199">		} catch (java.lang.Exception e) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
+<span class="fc" id="L201">		}</span>
 
-<span class="fc" id="L201">		return rfop;</span>
+<span class="fc" id="L203">		return rfop;</span>
 	}
 
 	/**
@@ -209,7 +211,7 @@ public abstract class FixedPointFinder {
 
 	public org.drip.function.r1tor1solver.FixedPointFinderOutput findRoot()
 	{
-<span class="fc" id="L212">		return findRoot (null);</span>
+<span class="fc" id="L214">		return findRoot (null);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,10 +68,10 @@ package org.drip.execution.discrete;
 
 /**
  * &lt;i&gt;ShortfallIncrement&lt;/i&gt; generates the Realized Incremental Stochastic Trading/Execution Short-fall and
- *  the corresponding Implementation Short-fall corresponding to the Trajectory of a Holdings Block that is
- *  to be executed over Time. The References are:
+ * the corresponding Implementation Short-fall corresponding to the Trajectory of a Holdings Block that is to
+ * be executed over Time. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -94,18 +94,20 @@ package org.drip.execution.discrete;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionIncrement {
-<span class="nc" id="L108">	private org.drip.execution.discrete.PriceIncrement _pi = null;</span>
+<span class="nc" id="L110">	private org.drip.execution.discrete.PriceIncrement _pi = null;</span>
 
 	/**
 	 * Generate a Standard ShortfallIncrement Instance
@@ -122,37 +124,37 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 		final double dblPreviousHoldings,
 		final double dblHoldingsIncrement)
 	{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null == pi || !org.drip.quant.common.NumberUtil.IsValid (dblPreviousHoldings) ||</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblHoldingsIncrement))</span>
-<span class="nc" id="L127">			return null;</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == pi || !org.drip.quant.common.NumberUtil.IsValid (dblPreviousHoldings) ||</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblHoldingsIncrement))</span>
+<span class="nc" id="L129">			return null;</span>
 
-<span class="nc" id="L129">		double dblCurrentHoldings = dblPreviousHoldings + dblHoldingsIncrement;</span>
+<span class="nc" id="L131">		double dblCurrentHoldings = dblPreviousHoldings + dblHoldingsIncrement;</span>
 
 		try {
-<span class="nc" id="L132">			org.drip.execution.evolution.MarketImpactComponent micStochastic = pi.stochastic();</span>
+<span class="nc" id="L134">			org.drip.execution.evolution.MarketImpactComponent micStochastic = pi.stochastic();</span>
 
-<span class="nc" id="L134">			org.drip.execution.evolution.MarketImpactComponent micDeterministic = pi.deterministic();</span>
+<span class="nc" id="L136">			org.drip.execution.evolution.MarketImpactComponent micDeterministic = pi.deterministic();</span>
 
-<span class="nc" id="L136">			return new ShortfallIncrement (</span>
+<span class="nc" id="L138">			return new ShortfallIncrement (</span>
 				new org.drip.execution.evolution.MarketImpactComponent (
-<span class="nc" id="L138">					micDeterministic.currentStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L139">					micDeterministic.previousStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L140">					pi.permanentImpactDrift() * dblCurrentHoldings,</span>
-<span class="nc" id="L141">					pi.temporaryImpactDrift() * dblHoldingsIncrement</span>
+<span class="nc" id="L140">					micDeterministic.currentStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L141">					micDeterministic.previousStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L142">					pi.permanentImpactDrift() * dblCurrentHoldings,</span>
+<span class="nc" id="L143">					pi.temporaryImpactDrift() * dblHoldingsIncrement</span>
 				),
 				new org.drip.execution.evolution.MarketImpactComponent (
-<span class="nc" id="L144">					micStochastic.currentStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L145">					micStochastic.previousStep() * dblCurrentHoldings,</span>
-<span class="nc" id="L146">					pi.permanentImpactWander() * dblCurrentHoldings,</span>
-<span class="nc" id="L147">					pi.temporaryImpactWander() * dblHoldingsIncrement</span>
+<span class="nc" id="L146">					micStochastic.currentStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L147">					micStochastic.previousStep() * dblCurrentHoldings,</span>
+<span class="nc" id="L148">					pi.permanentImpactWander() * dblCurrentHoldings,</span>
+<span class="nc" id="L149">					pi.temporaryImpactWander() * dblHoldingsIncrement</span>
 				),
 				pi
 			);
-<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L154">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L157">		return null;</span>
 	}
 
 	private ShortfallIncrement (
@@ -161,10 +163,10 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 		final org.drip.execution.discrete.PriceIncrement pi)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L164">		super (micDeterministic, micStochastic);</span>
+<span class="nc" id="L166">		super (micDeterministic, micStochastic);</span>
 
-<span class="nc" id="L166">		_pi = pi;</span>
-<span class="nc" id="L167">	}</span>
+<span class="nc" id="L168">		_pi = pi;</span>
+<span class="nc" id="L169">	}</span>
 
 	/**
 	 * Compute the Implementation Short-fall
@@ -174,7 +176,7 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 
 	public double implementationShortfall()
 	{
-<span class="nc" id="L177">		return total();</span>
+<span class="nc" id="L179">		return total();</span>
 	}
 
 	/**
@@ -185,7 +187,7 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 
 	public org.drip.execution.discrete.PriceIncrement compositePriceIncrement()
 	{
-<span class="nc" id="L188">		return _pi;</span>
+<span class="nc" id="L190">		return _pi;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

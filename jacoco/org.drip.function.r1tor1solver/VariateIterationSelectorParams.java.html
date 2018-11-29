@@ -90,34 +90,36 @@ package org.drip.function.r1tor1solver;
  * 		The lower bound on the variate shift between iterations that serves as the fall-back to the &quot;robust&quot;
  * 	&lt;/li&gt;
  * &lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class VariateIterationSelectorParams {
-<span class="pc" id="L104">	private int _iFastIteratorPrimitive = -1;</span>
-<span class="pc" id="L105">	private int _iRobustIteratorPrimitive = -1;</span>
-<span class="pc" id="L106">	private double _dblRelativeVariateShift = java.lang.Double.NaN;</span>
-<span class="pc" id="L107">	private double _dblVariateShiftLowerBound = java.lang.Double.NaN;</span>
+<span class="pc" id="L106">	private int _iFastIteratorPrimitive = -1;</span>
+<span class="pc" id="L107">	private int _iRobustIteratorPrimitive = -1;</span>
+<span class="pc" id="L108">	private double _dblRelativeVariateShift = java.lang.Double.NaN;</span>
+<span class="pc" id="L109">	private double _dblVariateShiftLowerBound = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default VariateIterationSelectorParams constructor
 	 */
 
 	public VariateIterationSelectorParams()
-<span class="fc" id="L114">	{</span>
-<span class="fc" id="L115">		_dblRelativeVariateShift = 0.5;</span>
-<span class="fc" id="L116">		_dblVariateShiftLowerBound = 0.01;</span>
-<span class="fc" id="L117">		_iRobustIteratorPrimitive = org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION;</span>
-<span class="fc" id="L118">		_iFastIteratorPrimitive =</span>
+<span class="fc" id="L116">	{</span>
+<span class="fc" id="L117">		_dblRelativeVariateShift = 0.5;</span>
+<span class="fc" id="L118">		_dblVariateShiftLowerBound = 0.01;</span>
+<span class="fc" id="L119">		_iRobustIteratorPrimitive = org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION;</span>
+<span class="fc" id="L120">		_iFastIteratorPrimitive =</span>
 			org.drip.function.r1tor1solver.VariateIteratorPrimitive.INVERSE_QUADRATIC_INTERPOLATION;
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L122">	}</span>
 
 	/**
 	 * VariateIterationSelectorParams constructor
@@ -136,12 +138,12 @@ public class VariateIterationSelectorParams {
 		final int iFastIteratorPrimitive,
 		final int iRobustIteratorPrimitive)
 		throws java.lang.Exception
-<span class="nc" id="L139">	{</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeVariateShift = dblRelativeVariateShift) ||</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateShiftLowerBound =</span>
+<span class="nc" id="L141">	{</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeVariateShift = dblRelativeVariateShift) ||</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateShiftLowerBound =</span>
 				dblVariateShiftLowerBound))
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;VariateIterationSelectorParams constructor: Invalid inputs!&quot;);</span>
-<span class="nc" id="L144">	}</span>
+<span class="nc" id="L145">			throw new java.lang.Exception (&quot;VariateIterationSelectorParams constructor: Invalid inputs!&quot;);</span>
+<span class="nc" id="L146">	}</span>
 
 	/**
 	 * Retrieve the relative variate Shift
@@ -151,7 +153,7 @@ public class VariateIterationSelectorParams {
 
 	public double getRelativeVariateShift()
 	{
-<span class="fc" id="L154">		return _dblRelativeVariateShift;</span>
+<span class="fc" id="L156">		return _dblRelativeVariateShift;</span>
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class VariateIterationSelectorParams {
 
 	public double getVariateShiftLowerBound()
 	{
-<span class="fc" id="L165">		return _dblVariateShiftLowerBound;</span>
+<span class="fc" id="L167">		return _dblVariateShiftLowerBound;</span>
 	}
 
 	/**
@@ -173,7 +175,7 @@ public class VariateIterationSelectorParams {
 
 	public int getFastVariateIteratorPrimitive()
 	{
-<span class="fc" id="L176">		return _iFastIteratorPrimitive;</span>
+<span class="fc" id="L178">		return _iFastIteratorPrimitive;</span>
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class VariateIterationSelectorParams {
 
 	public int getRobustVariateIteratorPrimitive()
 	{
-<span class="fc" id="L187">		return _iRobustIteratorPrimitive;</span>
+<span class="fc" id="L189">		return _iRobustIteratorPrimitive;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,11 +68,13 @@ package org.drip.function.definition;
 
 /**
  * &lt;i&gt;UnitVector&lt;/i&gt; implements the Normalized R&lt;sup&gt;d&lt;/sup&gt; Unit Vector.
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -92,35 +94,35 @@ public class UnitVector {
 	public static final UnitVector Standard (
 		final double[] adbl)
 	{
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == adbl) return null;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (null == adbl) return null;</span>
 
-<span class="nc" id="L97">		int iDimension = adbl.length;</span>
-<span class="nc" id="L98">		double dblGradientModulus = 0.;</span>
-<span class="nc" id="L99">		double[] adblComponent = new double[iDimension];</span>
+<span class="nc" id="L99">		int iDimension = adbl.length;</span>
+<span class="nc" id="L100">		double dblGradientModulus = 0.;</span>
+<span class="nc" id="L101">		double[] adblComponent = new double[iDimension];</span>
 
-<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (0 == iDimension) return null;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (0 == iDimension) return null;</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adbl[i])) return null;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adbl[i])) return null;</span>
 
-<span class="nc" id="L106">			dblGradientModulus += adbl[i] * adbl[i];</span>
+<span class="nc" id="L108">			dblGradientModulus += adbl[i] * adbl[i];</span>
 		}
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (0. == dblGradientModulus) return null;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (0. == dblGradientModulus) return null;</span>
 
-<span class="nc" id="L111">		dblGradientModulus = java.lang.Math.sqrt (dblGradientModulus);</span>
+<span class="nc" id="L113">		dblGradientModulus = java.lang.Math.sqrt (dblGradientModulus);</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L114">			adblComponent[i] = adbl[i] / dblGradientModulus;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L116">			adblComponent[i] = adbl[i] / dblGradientModulus;</span>
 
-<span class="nc" id="L116">		return new UnitVector (adblComponent);</span>
+<span class="nc" id="L118">		return new UnitVector (adblComponent);</span>
 	}
 
 	protected UnitVector (
 		final double[] adblComponent)
-<span class="fc" id="L121">	{</span>
-<span class="fc" id="L122">		_adblComponent = adblComponent;</span>
-<span class="fc" id="L123">	}</span>
+<span class="fc" id="L123">	{</span>
+<span class="fc" id="L124">		_adblComponent = adblComponent;</span>
+<span class="fc" id="L125">	}</span>
 
 	/**
 	 * Retrieve the Unit Vector's Component Array
@@ -130,7 +132,7 @@ public class UnitVector {
 
 	public double[] component()
 	{
-<span class="fc" id="L133">		return _adblComponent;</span>
+<span class="fc" id="L135">		return _adblComponent;</span>
 	}
 
 	/**
@@ -146,20 +148,20 @@ public class UnitVector {
 		final double[] adblVariate,
 		final double dblStepLength)
 	{
-<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (dblStepLength)) return null;</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (dblStepLength)) return null;</span>
 
-<span class="nc" id="L151">		int iVariateDimension = adblVariate.length;</span>
-<span class="nc" id="L152">		double[] adblIncrementedVariate = new double[iVariateDimension];</span>
+<span class="nc" id="L153">		int iVariateDimension = adblVariate.length;</span>
+<span class="nc" id="L154">		double[] adblIncrementedVariate = new double[iVariateDimension];</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (iVariateDimension != _adblComponent.length) return null;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (iVariateDimension != _adblComponent.length) return null;</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int i = 0; i &lt; iVariateDimension; ++i) {</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return null;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		for (int i = 0; i &lt; iVariateDimension; ++i) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return null;</span>
 
-<span class="nc" id="L159">			adblIncrementedVariate[i] = adblVariate[i] + dblStepLength * _adblComponent[i];</span>
+<span class="nc" id="L161">			adblIncrementedVariate[i] = adblVariate[i] + dblStepLength * _adblComponent[i];</span>
 		}
 
-<span class="nc" id="L162">		return adblIncrementedVariate;</span>
+<span class="nc" id="L164">		return adblIncrementedVariate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

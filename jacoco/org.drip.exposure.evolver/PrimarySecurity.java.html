@@ -67,9 +67,9 @@ package org.drip.exposure.evolver;
 
 /**
  * &lt;i&gt;PrimarySecurity&lt;/i&gt; holds Definitions and Parameters that specify a Primary Security in XVA Terms. The
- *  References are:
+ * References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-
@@ -95,11 +95,13 @@ package org.drip.exposure.evolver;
  *  		&lt;/li&gt;
  *  		&lt;li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,8 +109,8 @@ package org.drip.exposure.evolver;
 
 public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentState
 {
-<span class="fc" id="L110">	private java.lang.String _id = &quot;&quot;;</span>
-<span class="fc" id="L111">	private double _repoRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private java.lang.String _id = &quot;&quot;;</span>
+<span class="fc" id="L113">	private double _repoRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * PrimarySecurity Constructor
@@ -128,17 +130,17 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 		final double repoRate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L131">		super (</span>
+<span class="fc" id="L133">		super (</span>
 			label,
 			evolver
 		);
 
-<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (null == (_id = id) || _id.isEmpty() ||</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))</span>
+<span class="pc bpc" id="L138" title="2 of 4 branches missed.">		if (null == (_id = id) || _id.isEmpty() ||</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))</span>
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;PrimarySecurity Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L141">			throw new java.lang.Exception (&quot;PrimarySecurity Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L141">	}</span>
+<span class="fc" id="L143">	}</span>
 
 	/**
 	 * Retrieve the Security ID
@@ -148,7 +150,7 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 
 	public java.lang.String id()
 	{
-<span class="fc" id="L151">		return _id;</span>
+<span class="fc" id="L153">		return _id;</span>
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 
 	public double repoRate()
 	{
-<span class="nc" id="L162">		return _repoRate;</span>
+<span class="nc" id="L164">		return _repoRate;</span>
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 
 	public boolean isRepoable()
 	{
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		return 0. != _repoRate;</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		return 0. != _repoRate;</span>
 	}
 
 	/**
@@ -181,7 +183,7 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 
 	public double cashAccumulationRate()
 	{
-<span class="fc" id="L184">		return -1. * _repoRate;</span>
+<span class="fc" id="L186">		return -1. * _repoRate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

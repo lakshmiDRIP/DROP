@@ -70,7 +70,7 @@ package org.drip.execution.strategy;
  * &lt;i&gt;MinimumImpactTradingTrajectory&lt;/i&gt; holds the Trajectory of a Trading Block that is to be executed
  * uniformly over Equal Intervals, the Idea being to minimize the Trading Impact. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -93,11 +93,13 @@ package org.drip.execution.strategy;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *  
  * @author Lakshmi Krishnamurthy
@@ -124,37 +126,37 @@ public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.
 		final double dblFinishTime,
 		final int iNumInterval)
 	{
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings) ||</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblStartTime) ||</span>
-<span class="nc bnc" id="L130" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) || dblStartTime &gt;=</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings) ||</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblStartTime) ||</span>
+<span class="nc bnc" id="L132" title="All 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) || dblStartTime &gt;=</span>
 						dblFinishTime || 0 &gt;= iNumInterval)
-<span class="nc" id="L132">			return null;</span>
+<span class="nc" id="L134">			return null;</span>
 
-<span class="nc" id="L134">		double dblTradeList = (dblFinishHoldings - dblStartHoldings) / iNumInterval;</span>
-<span class="nc" id="L135">		double dblTimeInterval = (dblFinishTime - dblStartTime) / iNumInterval;</span>
-<span class="nc" id="L136">		double[] adblExecutionTimeNode = new double[iNumInterval + 1];</span>
-<span class="nc" id="L137">		double[] adblHoldings = new double[iNumInterval + 1];</span>
-<span class="nc" id="L138">		adblExecutionTimeNode[iNumInterval] = dblFinishTime;</span>
-<span class="nc" id="L139">		double[] adblTradeList = new double[iNumInterval];</span>
-<span class="nc" id="L140">		adblHoldings[iNumInterval] = dblFinishHoldings;</span>
-<span class="nc" id="L141">		adblExecutionTimeNode[0] = dblStartTime;</span>
-<span class="nc" id="L142">		adblHoldings[0] = dblStartHoldings;</span>
-<span class="nc" id="L143">		adblTradeList[0] = dblTradeList;</span>
+<span class="nc" id="L136">		double dblTradeList = (dblFinishHoldings - dblStartHoldings) / iNumInterval;</span>
+<span class="nc" id="L137">		double dblTimeInterval = (dblFinishTime - dblStartTime) / iNumInterval;</span>
+<span class="nc" id="L138">		double[] adblExecutionTimeNode = new double[iNumInterval + 1];</span>
+<span class="nc" id="L139">		double[] adblHoldings = new double[iNumInterval + 1];</span>
+<span class="nc" id="L140">		adblExecutionTimeNode[iNumInterval] = dblFinishTime;</span>
+<span class="nc" id="L141">		double[] adblTradeList = new double[iNumInterval];</span>
+<span class="nc" id="L142">		adblHoldings[iNumInterval] = dblFinishHoldings;</span>
+<span class="nc" id="L143">		adblExecutionTimeNode[0] = dblStartTime;</span>
+<span class="nc" id="L144">		adblHoldings[0] = dblStartHoldings;</span>
+<span class="nc" id="L145">		adblTradeList[0] = dblTradeList;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumInterval; ++i) {</span>
-<span class="nc" id="L146">			adblTradeList[i] = dblTradeList;</span>
-<span class="nc" id="L147">			adblHoldings[i] = dblStartHoldings + i * dblTradeList;</span>
-<span class="nc" id="L148">			adblExecutionTimeNode[i] = dblStartTime + i * dblTimeInterval;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumInterval; ++i) {</span>
+<span class="nc" id="L148">			adblTradeList[i] = dblTradeList;</span>
+<span class="nc" id="L149">			adblHoldings[i] = dblStartHoldings + i * dblTradeList;</span>
+<span class="nc" id="L150">			adblExecutionTimeNode[i] = dblStartTime + i * dblTimeInterval;</span>
 		}
 
 		try {
-<span class="nc" id="L152">			return new MinimumImpactTradingTrajectory (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
-<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L154">			e.printStackTrace();</span>
+<span class="nc" id="L154">			return new MinimumImpactTradingTrajectory (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L157">		return null;</span>
+<span class="nc" id="L159">		return null;</span>
 	}
 
 	protected MinimumImpactTradingTrajectory (
@@ -163,8 +165,8 @@ public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.
 		final double[] adblTradeList)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L166">		super (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
-<span class="nc" id="L167">	}</span>
+<span class="nc" id="L168">		super (adblExecutionTimeNode, adblHoldings, adblTradeList);</span>
+<span class="nc" id="L169">	}</span>
 
 	/**
 	 * Retrieve the Trade Size
@@ -174,9 +176,9 @@ public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.
 
 	public double tradeSize()
 	{
-<span class="nc" id="L177">		double[] adblHoldings = holdings();</span>
+<span class="nc" id="L179">		double[] adblHoldings = holdings();</span>
 
-<span class="nc" id="L179">		return adblHoldings[1] - adblHoldings[0];</span>
+<span class="nc" id="L181">		return adblHoldings[1] - adblHoldings[0];</span>
 	}
 
 	/**
@@ -187,9 +189,9 @@ public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.
 
 	public double tradeTimeInterval()
 	{
-<span class="nc" id="L190">		double[] adblExecutionTimeNode = executionTimeNode();</span>
+<span class="nc" id="L192">		double[] adblExecutionTimeNode = executionTimeNode();</span>
 
-<span class="nc" id="L192">		return adblExecutionTimeNode[1] - adblExecutionTimeNode[0];</span>
+<span class="nc" id="L194">		return adblExecutionTimeNode[1] - adblExecutionTimeNode[0];</span>
 	}
 
 	/**
@@ -200,11 +202,11 @@ public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.
 
 	public double tradeRate()
 	{
-<span class="nc" id="L203">		double[] adblHoldings = holdings();</span>
+<span class="nc" id="L205">		double[] adblHoldings = holdings();</span>
 
-<span class="nc" id="L205">		double[] adblExecutionTimeNode = executionTimeNode();</span>
+<span class="nc" id="L207">		double[] adblExecutionTimeNode = executionTimeNode();</span>
 
-<span class="nc" id="L207">		return (adblHoldings[1] - adblHoldings[0]) / (adblExecutionTimeNode[1] - adblExecutionTimeNode[0]);</span>
+<span class="nc" id="L209">		return (adblHoldings[1] - adblHoldings[0]) / (adblExecutionTimeNode[1] - adblExecutionTimeNode[0]);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

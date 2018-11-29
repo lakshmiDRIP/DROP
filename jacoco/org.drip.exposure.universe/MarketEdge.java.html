@@ -69,7 +69,7 @@ package org.drip.exposure.universe;
  * &lt;i&gt;MarketEdge&lt;/i&gt; holds the Vertex Realizations of the Market States of the Reference Universe along an
  * Evolution Edge. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Burgard, C., and M. Kjaer (2013): Funding Costs, Funding Strategies &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;23
@@ -92,11 +92,13 @@ package org.drip.exposure.universe;
  *  		&lt;/li&gt;
  *  		&lt;li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/universe&quot;&gt;Universe&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/universe&quot;&gt;Universe&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -104,8 +106,8 @@ package org.drip.exposure.universe;
 
 public class MarketEdge
 {
-<span class="fc" id="L107">	private org.drip.exposure.universe.MarketVertex _startingMarketVertex = null;</span>
-<span class="fc" id="L108">	private org.drip.exposure.universe.MarketVertex _finishingMarketVertex = null;</span>
+<span class="fc" id="L109">	private org.drip.exposure.universe.MarketVertex _startingMarketVertex = null;</span>
+<span class="fc" id="L110">	private org.drip.exposure.universe.MarketVertex _finishingMarketVertex = null;</span>
 
 	/**
 	 * MarketEdge Constructor
@@ -120,13 +122,13 @@ public class MarketEdge
 		final org.drip.exposure.universe.MarketVertex startingMarketVertex,
 		final org.drip.exposure.universe.MarketVertex finishingMarketVertex)
 		throws java.lang.Exception
-<span class="fc" id="L123">	{</span>
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == (_startingMarketVertex = startingMarketVertex) ||</span>
+<span class="fc" id="L125">	{</span>
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">		if (null == (_startingMarketVertex = startingMarketVertex) ||</span>
 			null == (_finishingMarketVertex = finishingMarketVertex))
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;MarketEdge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;MarketEdge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Market Vertex Increment
@@ -136,7 +138,7 @@ public class MarketEdge
 
 	public int vertexIncrement()
 	{
-<span class="fc" id="L139">		return _finishingMarketVertex.anchorDate().julian() - _startingMarketVertex.anchorDate().julian();</span>
+<span class="fc" id="L141">		return _finishingMarketVertex.anchorDate().julian() - _startingMarketVertex.anchorDate().julian();</span>
 	}
 
 	/**
@@ -147,7 +149,7 @@ public class MarketEdge
 
 	public org.drip.exposure.universe.MarketVertex start()
 	{
-<span class="fc" id="L150">		return _startingMarketVertex;</span>
+<span class="fc" id="L152">		return _startingMarketVertex;</span>
 	}
 
 	/**
@@ -158,7 +160,7 @@ public class MarketEdge
 
 	public org.drip.exposure.universe.MarketVertex finish()
 	{
-<span class="fc" id="L161">		return _finishingMarketVertex;</span>
+<span class="fc" id="L163">		return _finishingMarketVertex;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

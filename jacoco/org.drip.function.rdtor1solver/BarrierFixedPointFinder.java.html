@@ -70,21 +70,23 @@ package org.drip.function.rdtor1solver;
  * &lt;i&gt;BarrierFixedPointFinder&lt;/i&gt; invokes the Iterative Finders for locating the Fixed Point of
  * R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Convex/Non-Convex Functions Under Inequality Constraints using Barrier
  * Sequences of decaying Strengths.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BarrierFixedPointFinder {
-<span class="fc" id="L84">	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;</span>
-<span class="fc" id="L85">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
-<span class="fc" id="L86">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _ipbc = null;</span>
-<span class="fc" id="L87">	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;</span>
+<span class="fc" id="L86">	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;</span>
+<span class="fc" id="L87">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
+<span class="fc" id="L88">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _ipbc = null;</span>
+<span class="fc" id="L89">	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;</span>
 
 	/**
 	 * BarrierFixedPointFinder Constructor
@@ -103,22 +105,22 @@ public class BarrierFixedPointFinder {
 		final org.drip.function.rdtor1solver.InteriorPointBarrierControl ipbc,
 		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec)
 		throws java.lang.Exception
-<span class="fc" id="L106">	{</span>
-<span class="pc bpc" id="L107" title="3 of 6 branches missed.">		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null ==</span>
+<span class="fc" id="L108">	{</span>
+<span class="pc bpc" id="L109" title="3 of 6 branches missed.">		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null ==</span>
 			(_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint) || null == (_ipbc = ipbc))
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L111">		_lsec = lsec;</span>
-<span class="fc" id="L112">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
+<span class="fc" id="L113">		_lsec = lsec;</span>
+<span class="fc" id="L114">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
 
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (0 == iNumInequalityConstraint)</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (0 == iNumInequalityConstraint)</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L117" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			if (null == _aRdToR1InequalityConstraint[i])</span>
-<span class="nc" id="L119">				throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			if (null == _aRdToR1InequalityConstraint[i])</span>
+<span class="nc" id="L121">				throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L121">	}</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Objective Function
@@ -128,7 +130,7 @@ public class BarrierFixedPointFinder {
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-<span class="nc" id="L131">		return _rdToR1ObjectiveFunction;</span>
+<span class="nc" id="L133">		return _rdToR1ObjectiveFunction;</span>
 	}
 
 	/**
@@ -139,7 +141,7 @@ public class BarrierFixedPointFinder {
 
 	public org.drip.function.definition.RdToR1[] inequalityConstraints()
 	{
-<span class="nc" id="L142">		return _aRdToR1InequalityConstraint;</span>
+<span class="nc" id="L144">		return _aRdToR1InequalityConstraint;</span>
 	}
 
 	/**
@@ -150,7 +152,7 @@ public class BarrierFixedPointFinder {
 
 	public org.drip.function.rdtor1solver.InteriorPointBarrierControl control()
 	{
-<span class="nc" id="L153">		return _ipbc;</span>
+<span class="nc" id="L155">		return _ipbc;</span>
 	}
 
 	/**
@@ -165,46 +167,46 @@ public class BarrierFixedPointFinder {
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier solve (
 		final double[] adblStartingVariate)
 	{
-<span class="fc" id="L168">		int iOutstandingDecaySteps = _ipbc.numDecaySteps();</span>
+<span class="fc" id="L170">		int iOutstandingDecaySteps = _ipbc.numDecaySteps();</span>
 
-<span class="fc" id="L170">		double dblBarrierStrength = _ipbc.initialStrength();</span>
+<span class="fc" id="L172">		double dblBarrierStrength = _ipbc.initialStrength();</span>
 
-<span class="fc" id="L172">		double dblBarrierDecayVelocity = _ipbc.decayVelocity();</span>
+<span class="fc" id="L174">		double dblBarrierDecayVelocity = _ipbc.decayVelocity();</span>
 
-<span class="fc" id="L174">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
-<span class="fc" id="L175">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = null;</span>
-<span class="fc" id="L176">		double[] adblStartingInequalityConstraintMultiplier = new double[iNumInequalityConstraint];</span>
+<span class="fc" id="L176">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
+<span class="fc" id="L177">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = null;</span>
+<span class="fc" id="L178">		double[] adblStartingInequalityConstraintMultiplier = new double[iNumInequalityConstraint];</span>
 
 		try {
-<span class="fc bfc" id="L179" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumInequalityConstraint; ++i)</span>
-<span class="fc" id="L180">				adblStartingInequalityConstraintMultiplier[i] = dblBarrierStrength /</span>
-<span class="fc" id="L181">					_aRdToR1InequalityConstraint[i].evaluate (adblStartingVariate);</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumInequalityConstraint; ++i)</span>
+<span class="fc" id="L182">				adblStartingInequalityConstraintMultiplier[i] = dblBarrierStrength /</span>
+<span class="fc" id="L183">					_aRdToR1InequalityConstraint[i].evaluate (adblStartingVariate);</span>
 
-<span class="fc" id="L183">			vicm = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (false,</span>
+<span class="fc" id="L185">			vicm = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (false,</span>
 				adblStartingVariate, adblStartingInequalityConstraintMultiplier);
-<span class="nc" id="L185">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L186">			e.printStackTrace();</span>
+<span class="nc" id="L187">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L188">			e.printStackTrace();</span>
 
-<span class="nc" id="L188">			return null;</span>
-<span class="fc" id="L189">		}</span>
+<span class="nc" id="L190">			return null;</span>
+<span class="fc" id="L191">		}</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">		while (--iOutstandingDecaySteps &gt;= 0) {</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		while (--iOutstandingDecaySteps &gt;= 0) {</span>
 			try {
-<span class="fc" id="L193">				org.drip.function.rdtor1solver.InteriorFixedPointFinder bfpf = new</span>
+<span class="fc" id="L195">				org.drip.function.rdtor1solver.InteriorFixedPointFinder bfpf = new</span>
 					org.drip.function.rdtor1solver.InteriorFixedPointFinder (_rdToR1ObjectiveFunction,
 						_aRdToR1InequalityConstraint, _lsec, _ipbc, dblBarrierStrength);
 
-<span class="fc bfc" id="L197" title="All 2 branches covered.">				if (null == (vicm = bfpf.find (vicm))) return null;</span>
-<span class="nc" id="L198">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L199">				e.printStackTrace();</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">				if (null == (vicm = bfpf.find (vicm))) return null;</span>
+<span class="nc" id="L200">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L201">				e.printStackTrace();</span>
 
-<span class="nc" id="L201">				return null;</span>
-<span class="fc" id="L202">			}</span>
+<span class="nc" id="L203">				return null;</span>
+<span class="fc" id="L204">			}</span>
 
-<span class="fc" id="L204">			dblBarrierStrength *= dblBarrierDecayVelocity;</span>
+<span class="fc" id="L206">			dblBarrierStrength *= dblBarrierDecayVelocity;</span>
 		}
 
-<span class="fc" id="L207">		return vicm;</span>
+<span class="fc" id="L209">		return vicm;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,9 +68,9 @@ package org.drip.execution.capture;
 
 /**
  * &lt;i&gt;TrajectoryShortfallAggregate&lt;/i&gt; aggregates the  Execution Short-fall Distribution across each Interval
- *  in the Trade. The References are:
+ * in the Trade. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -93,18 +93,20 @@ package org.drip.execution.capture;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TrajectoryShortfallAggregate {
-<span class="fc" id="L107">	private java.util.List&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt; _lsSID = null;</span>
+<span class="fc" id="L109">	private java.util.List&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt; _lsSID = null;</span>
 
 	/**
 	 * TrajectoryShortfallAggregate Constructor
@@ -117,20 +119,20 @@ public class TrajectoryShortfallAggregate {
 	public TrajectoryShortfallAggregate (
 		final java.util.List&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt; lsSID)
 		throws java.lang.Exception
-<span class="fc" id="L120">	{</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == (_lsSID = lsSID))</span>
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;TrajectoryShortfallAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L122">	{</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == (_lsSID = lsSID))</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;TrajectoryShortfallAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L124">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L126">		int iNumInterval = _lsSID.size();</span>
 
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (0 == iNumInterval)</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;TrajectoryShortfallAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (0 == iNumInterval)</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;TrajectoryShortfallAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (org.drip.execution.discrete.ShortfallIncrementDistribution sid : _lsSID) {</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if (null == sid)</span>
-<span class="nc" id="L131">				throw new java.lang.Exception (&quot;TrajectoryShortfallAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L132">		}</span>
-<span class="fc" id="L133">	}</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (org.drip.execution.discrete.ShortfallIncrementDistribution sid : _lsSID) {</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			if (null == sid)</span>
+<span class="nc" id="L133">				throw new java.lang.Exception (&quot;TrajectoryShortfallAggregate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L134">		}</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the List of the Interval Cost Distributions
@@ -140,7 +142,7 @@ public class TrajectoryShortfallAggregate {
 
 	public java.util.List&lt;org.drip.execution.discrete.ShortfallIncrementDistribution&gt; list()
 	{
-<span class="nc" id="L143">		return _lsSID;</span>
+<span class="nc" id="L145">		return _lsSID;</span>
 	}
 
 	/**
@@ -151,23 +153,23 @@ public class TrajectoryShortfallAggregate {
 
 	public org.drip.measure.gaussian.R1UnivariateNormal totalCostDistribution()
 	{
-<span class="fc" id="L154">		double dblTotalCostMean = 0.;</span>
-<span class="fc" id="L155">		double dblTotalCostVariance = 0.;</span>
+<span class="fc" id="L156">		double dblTotalCostMean = 0.;</span>
+<span class="fc" id="L157">		double dblTotalCostVariance = 0.;</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (org.drip.measure.gaussian.R1UnivariateNormal r1un : _lsSID) {</span>
-<span class="fc" id="L158">			dblTotalCostMean = dblTotalCostMean + r1un.mean();</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (org.drip.measure.gaussian.R1UnivariateNormal r1un : _lsSID) {</span>
+<span class="fc" id="L160">			dblTotalCostMean = dblTotalCostMean + r1un.mean();</span>
 
-<span class="fc" id="L160">			dblTotalCostVariance = dblTotalCostVariance + r1un.variance();</span>
-<span class="fc" id="L161">		}</span>
+<span class="fc" id="L162">			dblTotalCostVariance = dblTotalCostVariance + r1un.variance();</span>
+<span class="fc" id="L163">		}</span>
 
 		try {
-<span class="fc" id="L164">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblTotalCostMean, java.lang.Math.sqrt</span>
-<span class="fc" id="L165">				(dblTotalCostVariance));</span>
-<span class="nc" id="L166">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L167">			e.printStackTrace();</span>
+<span class="fc" id="L166">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblTotalCostMean, java.lang.Math.sqrt</span>
+<span class="fc" id="L167">				(dblTotalCostVariance));</span>
+<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L170">		return null;</span>
+<span class="nc" id="L172">		return null;</span>
 	}
 
 	/**
@@ -178,14 +180,14 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] incrementalExpectation()
 	{
-<span class="fc" id="L181">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L183">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L183">		double[] adblIncrementalExpectationSequence = new double[iNumInterval];</span>
+<span class="fc" id="L185">		double[] adblIncrementalExpectationSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L185" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc" id="L186">			adblIncrementalExpectationSequence[i] = _lsSID.get (i).mean();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc" id="L188">			adblIncrementalExpectationSequence[i] = _lsSID.get (i).mean();</span>
 
-<span class="fc" id="L188">		return adblIncrementalExpectationSequence;</span>
+<span class="fc" id="L190">		return adblIncrementalExpectationSequence;</span>
 	}
 
 	/**
@@ -196,15 +198,15 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] cumulativeExpectation()
 	{
-<span class="fc" id="L199">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L201">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L201">		double[] adblCumulativeExpectationSequence = new double[iNumInterval];</span>
+<span class="fc" id="L203">		double[] adblCumulativeExpectationSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc bfc" id="L204" title="All 2 branches covered.">			adblCumulativeExpectationSequence[i] = 0 == i ? _lsSID.get (i).expectation() :</span>
-<span class="fc" id="L205">				adblCumulativeExpectationSequence[i - 1] + _lsSID.get (i).expectation();</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">			adblCumulativeExpectationSequence[i] = 0 == i ? _lsSID.get (i).expectation() :</span>
+<span class="fc" id="L207">				adblCumulativeExpectationSequence[i - 1] + _lsSID.get (i).expectation();</span>
 
-<span class="fc" id="L207">		return adblCumulativeExpectationSequence;</span>
+<span class="fc" id="L209">		return adblCumulativeExpectationSequence;</span>
 	}
 
 	/**
@@ -215,14 +217,14 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] incrementalVariance()
 	{
-<span class="fc" id="L218">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L220">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L220">		double[] adblIncrementalVarianceSequence = new double[iNumInterval];</span>
+<span class="fc" id="L222">		double[] adblIncrementalVarianceSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc" id="L223">			adblIncrementalVarianceSequence[i] = _lsSID.get (i).variance();</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc" id="L225">			adblIncrementalVarianceSequence[i] = _lsSID.get (i).variance();</span>
 
-<span class="fc" id="L225">		return adblIncrementalVarianceSequence;</span>
+<span class="fc" id="L227">		return adblIncrementalVarianceSequence;</span>
 	}
 
 	/**
@@ -233,15 +235,15 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] cumulativeVariance()
 	{
-<span class="fc" id="L236">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L238">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L238">		double[] adblCumulativeVarianceSequence = new double[iNumInterval];</span>
+<span class="fc" id="L240">		double[] adblCumulativeVarianceSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L240" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc bfc" id="L241" title="All 2 branches covered.">			adblCumulativeVarianceSequence[i] = 0 == i ? _lsSID.get (i).variance() :</span>
-<span class="fc" id="L242">				adblCumulativeVarianceSequence[i - 1] + _lsSID.get (i).variance();</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">			adblCumulativeVarianceSequence[i] = 0 == i ? _lsSID.get (i).variance() :</span>
+<span class="fc" id="L244">				adblCumulativeVarianceSequence[i - 1] + _lsSID.get (i).variance();</span>
 
-<span class="fc" id="L244">		return adblCumulativeVarianceSequence;</span>
+<span class="fc" id="L246">		return adblCumulativeVarianceSequence;</span>
 	}
 
 	/**
@@ -252,14 +254,14 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] incrementalMarketDynamicExpectation()
 	{
-<span class="nc" id="L255">		int iNumInterval = _lsSID.size();</span>
+<span class="nc" id="L257">		int iNumInterval = _lsSID.size();</span>
 
-<span class="nc" id="L257">		double[] adblIncrementalMarketDynamicExpectationSequence = new double[iNumInterval];</span>
+<span class="nc" id="L259">		double[] adblIncrementalMarketDynamicExpectationSequence = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L260">			adblIncrementalMarketDynamicExpectationSequence[i] = _lsSID.get (i).marketDynamicExpectation();</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L262">			adblIncrementalMarketDynamicExpectationSequence[i] = _lsSID.get (i).marketDynamicExpectation();</span>
 
-<span class="nc" id="L262">		return adblIncrementalMarketDynamicExpectationSequence;</span>
+<span class="nc" id="L264">		return adblIncrementalMarketDynamicExpectationSequence;</span>
 	}
 
 	/**
@@ -270,16 +272,16 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] cumulativeMarketDynamicExpectation()
 	{
-<span class="nc" id="L273">		int iNumInterval = _lsSID.size();</span>
+<span class="nc" id="L275">		int iNumInterval = _lsSID.size();</span>
 
-<span class="nc" id="L275">		double[] adblCumulativeMarketDynamicExpectationSequence = new double[iNumInterval];</span>
+<span class="nc" id="L277">		double[] adblCumulativeMarketDynamicExpectationSequence = new double[iNumInterval];</span>
 
-<span class="nc bnc" id="L277" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc bnc" id="L278" title="All 2 branches missed.">			adblCumulativeMarketDynamicExpectationSequence[i] = 0 == i ? _lsSID.get</span>
-<span class="nc" id="L279">				(i).marketDynamicExpectation() : adblCumulativeMarketDynamicExpectationSequence[i - 1] +</span>
-<span class="nc" id="L280">					_lsSID.get (i).marketDynamicExpectation();</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			adblCumulativeMarketDynamicExpectationSequence[i] = 0 == i ? _lsSID.get</span>
+<span class="nc" id="L281">				(i).marketDynamicExpectation() : adblCumulativeMarketDynamicExpectationSequence[i - 1] +</span>
+<span class="nc" id="L282">					_lsSID.get (i).marketDynamicExpectation();</span>
 
-<span class="nc" id="L282">		return adblCumulativeMarketDynamicExpectationSequence;</span>
+<span class="nc" id="L284">		return adblCumulativeMarketDynamicExpectationSequence;</span>
 	}
 
 	/**
@@ -290,15 +292,15 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] incrementalPermanentImpactExpectation()
 	{
-<span class="fc" id="L293">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L295">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L295">		double[] adblIncrementalPermanentImpactExpectationSequence = new double[iNumInterval];</span>
+<span class="fc" id="L297">		double[] adblIncrementalPermanentImpactExpectationSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc" id="L298">			adblIncrementalPermanentImpactExpectationSequence[i] = _lsSID.get</span>
-<span class="fc" id="L299">				(i).permanentImpactExpectation();</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc" id="L300">			adblIncrementalPermanentImpactExpectationSequence[i] = _lsSID.get</span>
+<span class="fc" id="L301">				(i).permanentImpactExpectation();</span>
 
-<span class="fc" id="L301">		return adblIncrementalPermanentImpactExpectationSequence;</span>
+<span class="fc" id="L303">		return adblIncrementalPermanentImpactExpectationSequence;</span>
 	}
 
 	/**
@@ -309,16 +311,16 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] cumulativePermanentImpactExpectation()
 	{
-<span class="fc" id="L312">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L314">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L314">		double[] adblCumulativePermanentImpactExpectationSequence = new double[iNumInterval];</span>
+<span class="fc" id="L316">		double[] adblCumulativePermanentImpactExpectationSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L316" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc bfc" id="L317" title="All 2 branches covered.">			adblCumulativePermanentImpactExpectationSequence[i] = 0 == i ? _lsSID.get</span>
-<span class="fc" id="L318">				(i).permanentImpactExpectation() : adblCumulativePermanentImpactExpectationSequence[i - 1] +</span>
-<span class="fc" id="L319">					_lsSID.get (i).permanentImpactExpectation();</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">			adblCumulativePermanentImpactExpectationSequence[i] = 0 == i ? _lsSID.get</span>
+<span class="fc" id="L320">				(i).permanentImpactExpectation() : adblCumulativePermanentImpactExpectationSequence[i - 1] +</span>
+<span class="fc" id="L321">					_lsSID.get (i).permanentImpactExpectation();</span>
 
-<span class="fc" id="L321">		return adblCumulativePermanentImpactExpectationSequence;</span>
+<span class="fc" id="L323">		return adblCumulativePermanentImpactExpectationSequence;</span>
 	}
 
 	/**
@@ -329,15 +331,15 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] incrementalTemporaryImpactExpectation()
 	{
-<span class="fc" id="L332">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L334">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L334">		double[] adblIncrementalTemporaryImpactExpectationSequence = new double[iNumInterval];</span>
+<span class="fc" id="L336">		double[] adblIncrementalTemporaryImpactExpectationSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L336" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc" id="L337">			adblIncrementalTemporaryImpactExpectationSequence[i] = _lsSID.get</span>
-<span class="fc" id="L338">				(i).temporaryImpactExpectation();</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc" id="L339">			adblIncrementalTemporaryImpactExpectationSequence[i] = _lsSID.get</span>
+<span class="fc" id="L340">				(i).temporaryImpactExpectation();</span>
 
-<span class="fc" id="L340">		return adblIncrementalTemporaryImpactExpectationSequence;</span>
+<span class="fc" id="L342">		return adblIncrementalTemporaryImpactExpectationSequence;</span>
 	}
 
 	/**
@@ -348,16 +350,16 @@ public class TrajectoryShortfallAggregate {
 
 	public double[] cumulativeTemporaryImpactExpectation()
 	{
-<span class="fc" id="L351">		int iNumInterval = _lsSID.size();</span>
+<span class="fc" id="L353">		int iNumInterval = _lsSID.size();</span>
 
-<span class="fc" id="L353">		double[] adblCumulativeTemporaryImpactExpectationSequence = new double[iNumInterval];</span>
+<span class="fc" id="L355">		double[] adblCumulativeTemporaryImpactExpectationSequence = new double[iNumInterval];</span>
 
-<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="fc bfc" id="L356" title="All 2 branches covered.">			adblCumulativeTemporaryImpactExpectationSequence[i] = 0 == i ? _lsSID.get</span>
-<span class="fc" id="L357">				(i).temporaryImpactExpectation() : adblCumulativeTemporaryImpactExpectationSequence[i - 1] +</span>
-<span class="fc" id="L358">					_lsSID.get (i).temporaryImpactExpectation();</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">			adblCumulativeTemporaryImpactExpectationSequence[i] = 0 == i ? _lsSID.get</span>
+<span class="fc" id="L359">				(i).temporaryImpactExpectation() : adblCumulativeTemporaryImpactExpectationSequence[i - 1] +</span>
+<span class="fc" id="L360">					_lsSID.get (i).temporaryImpactExpectation();</span>
 
-<span class="fc" id="L360">		return adblCumulativeTemporaryImpactExpectationSequence;</span>
+<span class="fc" id="L362">		return adblCumulativeTemporaryImpactExpectationSequence;</span>
 	}
 
 	/**
@@ -368,14 +370,14 @@ public class TrajectoryShortfallAggregate {
 
 	public double shortfallExpectation()
 	{
-<span class="nc" id="L371">		int iNumInterval = _lsSID.size();</span>
+<span class="nc" id="L373">		int iNumInterval = _lsSID.size();</span>
 
-<span class="nc" id="L373">		double dblExpectedShortfall = 0.;</span>
+<span class="nc" id="L375">		double dblExpectedShortfall = 0.;</span>
 
-<span class="nc bnc" id="L375" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L376">			dblExpectedShortfall = dblExpectedShortfall + _lsSID.get (i).expectation();</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L378">			dblExpectedShortfall = dblExpectedShortfall + _lsSID.get (i).expectation();</span>
 
-<span class="nc" id="L378">		return dblExpectedShortfall;</span>
+<span class="nc" id="L380">		return dblExpectedShortfall;</span>
 	}
 
 	/**
@@ -386,14 +388,14 @@ public class TrajectoryShortfallAggregate {
 
 	public double shortfallVariance()
 	{
-<span class="nc" id="L389">		int iNumInterval = _lsSID.size();</span>
+<span class="nc" id="L391">		int iNumInterval = _lsSID.size();</span>
 
-<span class="nc" id="L391">		double dblShortfallVariance = 0.;</span>
+<span class="nc" id="L393">		double dblShortfallVariance = 0.;</span>
 
-<span class="nc bnc" id="L393" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
-<span class="nc" id="L394">			dblShortfallVariance = dblShortfallVariance + _lsSID.get (i).variance();</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInterval; ++i)</span>
+<span class="nc" id="L396">			dblShortfallVariance = dblShortfallVariance + _lsSID.get (i).variance();</span>
 
-<span class="nc" id="L396">		return dblShortfallVariance;</span>
+<span class="nc" id="L398">		return dblShortfallVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,7 +68,7 @@ package org.drip.exposure.regression;
  * &lt;i&gt;LocalVolatilityGenerationControl&lt;/i&gt; holds the Parameters the control the Calculation of the Local
  * Volatility in the Pykhtin (2009) Brownian Bridge Calibration. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -92,11 +92,13 @@ package org.drip.exposure.regression;
  *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -123,10 +125,10 @@ public class LocalVolatilityGenerationControl
 
 	public static final double LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS = 0.90;
 
-<span class="nc" id="L126">	private double[] _uniformCPDArray = null;</span>
-<span class="nc" id="L127">	private int _localVolatilityIndexShift = -1;</span>
-<span class="nc" id="L128">	private double[] _impliedBrownianVariateArray = null;</span>
-<span class="nc" id="L129">	private org.drip.spline.params.SegmentCustomBuilderControl[] _segmentCustomBuilderControlArray = null;</span>
+<span class="nc" id="L128">	private double[] _uniformCPDArray = null;</span>
+<span class="nc" id="L129">	private int _localVolatilityIndexShift = -1;</span>
+<span class="nc" id="L130">	private double[] _impliedBrownianVariateArray = null;</span>
+<span class="nc" id="L131">	private org.drip.spline.params.SegmentCustomBuilderControl[] _segmentCustomBuilderControlArray = null;</span>
 
 	/**
 	 * Construct a Standard Instance of LocalVolatilityGenerationControl
@@ -139,49 +141,49 @@ public class LocalVolatilityGenerationControl
 	public static final LocalVolatilityGenerationControl Standard (
 		final int ensembleSize)
 	{
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; ensembleSize)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; ensembleSize)</span>
 		{
-<span class="nc" id="L144">			return null;</span>
+<span class="nc" id="L146">			return null;</span>
 		}
 
-<span class="nc" id="L147">		double[] uniformCPDArray = new double[ensembleSize];</span>
-<span class="nc" id="L148">		double[] impliedBrownianVariateArray = new double[ensembleSize];</span>
-<span class="nc" id="L149">		int localVolatilityIndexShift = (int) (LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS *</span>
+<span class="nc" id="L149">		double[] uniformCPDArray = new double[ensembleSize];</span>
+<span class="nc" id="L150">		double[] impliedBrownianVariateArray = new double[ensembleSize];</span>
+<span class="nc" id="L151">		int localVolatilityIndexShift = (int) (LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS *</span>
 			PYKHTIN_2009_EMPIRICAL_FLOOR + (1 - LOCAL_VOLATILITY_SMOOTHING_FLOOR_BIAS) * ensembleSize);
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; localVolatilityIndexShift)</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (PYKHTIN_2009_EMPIRICAL_FLOOR &gt; localVolatilityIndexShift)</span>
 		{
-<span class="nc" id="L154">			return null;</span>
+<span class="nc" id="L156">			return null;</span>
 		}
 
-<span class="nc" id="L157">		for (int realizationCoordinate = 0;</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			realizationCoordinate &lt; ensembleSize;</span>
-<span class="nc" id="L159">			++realizationCoordinate)</span>
+<span class="nc" id="L159">		for (int realizationCoordinate = 0;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			realizationCoordinate &lt; ensembleSize;</span>
+<span class="nc" id="L161">			++realizationCoordinate)</span>
 		{
 			try
 			{
-<span class="nc" id="L163">				impliedBrownianVariateArray[realizationCoordinate] =</span>
+<span class="nc" id="L165">				impliedBrownianVariateArray[realizationCoordinate] =</span>
 					org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-<span class="nc" id="L165">						(uniformCPDArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) /</span>
+<span class="nc" id="L167">						(uniformCPDArray[realizationCoordinate] = (((double) realizationCoordinate) + 0.5) /</span>
 							((double) ensembleSize));
 			}
-<span class="nc" id="L168">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L170">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L170">				e.printStackTrace();</span>
+<span class="nc" id="L172">				e.printStackTrace();</span>
 
-<span class="nc" id="L172">				return null;</span>
-<span class="nc" id="L173">			}</span>
+<span class="nc" id="L174">				return null;</span>
+<span class="nc" id="L175">			}</span>
 		}
 
 		try
 		{
-<span class="nc" id="L178">			org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new</span>
+<span class="nc" id="L180">			org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl[ensembleSize - 1];
-<span class="nc" id="L180">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
+<span class="nc" id="L182">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl (
 					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
-<span class="nc" id="L184">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
+<span class="nc" id="L186">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
 						0,
 						2
 					),
@@ -192,26 +194,26 @@ public class LocalVolatilityGenerationControl
 					null
 				);
 
-<span class="nc" id="L195">			for (int realizationCoordinate = 0;</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">				realizationCoordinate &lt; ensembleSize - 1;</span>
-<span class="nc" id="L197">				++realizationCoordinate)</span>
+<span class="nc" id="L197">			for (int realizationCoordinate = 0;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">				realizationCoordinate &lt; ensembleSize - 1;</span>
+<span class="nc" id="L199">				++realizationCoordinate)</span>
 			{
-<span class="nc" id="L199">				segmentCustomBuilderControlArray[realizationCoordinate] = segmentCustomBuilderControl;</span>
+<span class="nc" id="L201">				segmentCustomBuilderControlArray[realizationCoordinate] = segmentCustomBuilderControl;</span>
 			}
 
-<span class="nc" id="L202">			return new LocalVolatilityGenerationControl (</span>
+<span class="nc" id="L204">			return new LocalVolatilityGenerationControl (</span>
 				localVolatilityIndexShift,
 				uniformCPDArray,
 				impliedBrownianVariateArray,
 				segmentCustomBuilderControlArray
 			);
 		}
-<span class="nc" id="L209">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L211">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L211">			e.printStackTrace();</span>
+<span class="nc" id="L213">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L216">		return null;</span>
 	}
 
 	/**
@@ -231,24 +233,24 @@ public class LocalVolatilityGenerationControl
 		final double[] impliedBrownianVariateArray,
 		final org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray)
 		throws java.lang.Exception
-<span class="nc" id="L234">	{</span>
-<span class="nc bnc" id="L235" title="All 8 branches missed.">		if (0 &gt;= (_localVolatilityIndexShift = localVolatilityIndexShift) ||</span>
+<span class="nc" id="L236">	{</span>
+<span class="nc bnc" id="L237" title="All 8 branches missed.">		if (0 &gt;= (_localVolatilityIndexShift = localVolatilityIndexShift) ||</span>
 			null == (_uniformCPDArray = uniformCPDArray) ||
 			null == (_impliedBrownianVariateArray = impliedBrownianVariateArray) ||
 			null == (_segmentCustomBuilderControlArray = segmentCustomBuilderControlArray))
 		{
-<span class="nc" id="L240">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L242">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L243">		int uniformCPDArraySize = _uniformCPDArray.length;</span>
+<span class="nc" id="L245">		int uniformCPDArraySize = _uniformCPDArray.length;</span>
 
-<span class="nc bnc" id="L245" title="All 6 branches missed.">		if (0 == uniformCPDArraySize ||</span>
+<span class="nc bnc" id="L247" title="All 6 branches missed.">		if (0 == uniformCPDArraySize ||</span>
 			uniformCPDArraySize != _impliedBrownianVariateArray.length ||
 			uniformCPDArraySize != _segmentCustomBuilderControlArray.length + 1)
 		{
-<span class="nc" id="L249">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L251">			throw new java.lang.Exception (&quot;LocalVolatilityGenerationControl Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L251">	}</span>
+<span class="nc" id="L253">	}</span>
 
 	/**
 	 * Retrieve the Local Volatility Index Shift
@@ -258,7 +260,7 @@ public class LocalVolatilityGenerationControl
 
 	public int localVolatilityIndexShift()
 	{
-<span class="nc" id="L261">		return _localVolatilityIndexShift;</span>
+<span class="nc" id="L263">		return _localVolatilityIndexShift;</span>
 	}
 
 	/**
@@ -269,7 +271,7 @@ public class LocalVolatilityGenerationControl
 
 	public double[] uniformCPDArray()
 	{
-<span class="nc" id="L272">		return _uniformCPDArray;</span>
+<span class="nc" id="L274">		return _uniformCPDArray;</span>
 	}
 
 	/**
@@ -280,7 +282,7 @@ public class LocalVolatilityGenerationControl
 
 	public double[] impliedBrownianVariateArray()
 	{
-<span class="nc" id="L283">		return _impliedBrownianVariateArray;</span>
+<span class="nc" id="L285">		return _impliedBrownianVariateArray;</span>
 	}
 
 	/**
@@ -291,7 +293,7 @@ public class LocalVolatilityGenerationControl
 
 	public org.drip.spline.params.SegmentCustomBuilderControl[] segmentCustomBuilderControlArray()
 	{
-<span class="nc" id="L294">		return _segmentCustomBuilderControlArray;</span>
+<span class="nc" id="L296">		return _segmentCustomBuilderControlArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

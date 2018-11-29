@@ -68,10 +68,9 @@ package org.drip.execution.athl;
 
 /**
  * &lt;i&gt;IJK&lt;/i&gt; holds the Empirical Signals that have been emitted off of a Transaction Run using the Scheme by
- *  Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren (2003). The References
- *  are:
+ * Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren (2003). The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 	&lt;li&gt;
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -92,19 +91,21 @@ package org.drip.execution.athl;
  * 			57-62
  * 	&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class IJK {
-<span class="nc" id="L106">	private org.drip.execution.athl.TransactionSignal _tsI = null;</span>
-<span class="nc" id="L107">	private org.drip.execution.athl.TransactionSignal _tsK = null;</span>
+<span class="nc" id="L107">	private org.drip.execution.athl.TransactionSignal _tsI = null;</span>
+<span class="nc" id="L108">	private org.drip.execution.athl.TransactionSignal _tsK = null;</span>
 
 	/**
 	 * IJK Constructor
@@ -119,10 +120,10 @@ public class IJK {
 		final org.drip.execution.athl.TransactionSignal tsI,
 		final org.drip.execution.athl.TransactionSignal tsK)
 		throws java.lang.Exception
-<span class="nc" id="L122">	{</span>
-<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == (_tsI = tsI) || null == (_tsK = tsK))</span>
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;IJK Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L125">	}</span>
+<span class="nc" id="L123">	{</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == (_tsI = tsI) || null == (_tsK = tsK))</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;IJK Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L126">	}</span>
 
 	/**
 	 * The Almgren-Thum-Hauptmann-Li &quot;I&quot; Transaction Signal
@@ -132,7 +133,7 @@ public class IJK {
 
 	public org.drip.execution.athl.TransactionSignal i()
 	{
-<span class="nc" id="L135">		return _tsI;</span>
+<span class="nc" id="L136">		return _tsI;</span>
 	}
 
 	/**
@@ -143,7 +144,7 @@ public class IJK {
 
 	public org.drip.execution.athl.TransactionSignal k()
 	{
-<span class="nc" id="L146">		return _tsK;</span>
+<span class="nc" id="L147">		return _tsK;</span>
 	}
 
 	/**
@@ -155,13 +156,13 @@ public class IJK {
 	public org.drip.execution.athl.TransactionSignal j()
 	{
 		try {
-<span class="nc" id="L158">			return new org.drip.execution.athl.TransactionSignal (_tsK.drift() + 0.5 * _tsI.drift(),</span>
-<span class="nc" id="L159">				_tsK.iWander() + 0.5 * _tsI.iWander(), _tsK.jWander());</span>
-<span class="nc" id="L160">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L161">			e.printStackTrace();</span>
+<span class="nc" id="L159">			return new org.drip.execution.athl.TransactionSignal (_tsK.drift() + 0.5 * _tsI.drift(),</span>
+<span class="nc" id="L160">				_tsK.iWander() + 0.5 * _tsI.iWander(), _tsK.jWander());</span>
+<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L162">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L164">		return null;</span>
+<span class="nc" id="L165">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

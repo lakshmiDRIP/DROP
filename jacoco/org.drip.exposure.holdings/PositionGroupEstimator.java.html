@@ -66,9 +66,9 @@ package org.drip.exposure.holdings;
 
 /**
  * &lt;i&gt;PositionGroupEstimator&lt;/i&gt; evaluates the Value of the Position Group given the Realized Market Path.
- *  The References are:
+ * The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Burgard, C., and M. Kjaer (2013): Funding Costs, Funding Strategies &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;23
@@ -91,11 +91,13 @@ package org.drip.exposure.holdings;
  *  		&lt;/li&gt;
  *  		&lt;li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/holdings&quot;&gt;Holdings&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/holdings&quot;&gt;Holdings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -109,22 +111,22 @@ public class PositionGroupEstimator implements org.drip.exposure.mpor.VariationM
 	 */
 
 	public PositionGroupEstimator()
-<span class="nc" id="L112">	{</span>
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L114">	{</span>
+<span class="nc" id="L115">	}</span>
 
 	@Override public double variationMarginEstimate (
 		final int vertexDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L120">		return 1.;</span>
+<span class="nc" id="L122">		return 1.;</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int vertexDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L127">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
+<span class="nc" id="L129">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -132,24 +134,24 @@ public class PositionGroupEstimator implements org.drip.exposure.mpor.VariationM
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
 		{
-<span class="nc" id="L137">			return null;</span>
+<span class="nc" id="L139">			return null;</span>
 		}
 
-<span class="nc" id="L140">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L141">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L142">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L143">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc" id="L144">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
-<span class="nc" id="L145">			(0.);</span>
+<span class="nc" id="L146">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L147">			(0.);</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc" id="L149">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+<span class="nc" id="L151">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
 		}
 
-<span class="nc" id="L152">		return denseTradePaymentArray;</span>
+<span class="nc" id="L154">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

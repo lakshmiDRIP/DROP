@@ -72,24 +72,26 @@ package org.drip.function.r1tor1;
 /**
  * &lt;i&gt;LinearRationalShapeControl&lt;/i&gt; implements the deterministic rational shape control functionality on top
  * of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
- *	&lt;br&gt;
+ *	&lt;br&gt;&lt;br&gt;
  * 			y = 1 / [1 + lambda * x]
- *	&lt;br&gt;
+ *	&lt;br&gt;&lt;br&gt;
  *		where is the normalized ordinate mapped as
  * 
  * 			x === (x - x_i-1) / (x_i - x_i-1)
- *	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *  
  * @author Lakshmi Krishnamurthy
  */
 
 public class LinearRationalShapeControl extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L92">	private double _dblLambda = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private double _dblLambda = java.lang.Double.NaN;</span>
 
 	/**
 	 * LinearRationalShapeControl constructor
@@ -103,17 +105,17 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L106">		super (null);</span>
+<span class="fc" id="L108">		super (null);</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;LinearRationalShapeControl ctr: Invalid tension&quot;);</span>
-<span class="fc" id="L110">	}</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LinearRationalShapeControl ctr: Invalid tension&quot;);</span>
+<span class="fc" id="L112">	}</span>
 
 	@Override public double evaluate (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L116">		return 1. / (1. + _dblLambda * dblX);</span>
+<span class="fc" id="L118">		return 1. / (1. + _dblLambda * dblX);</span>
 	}
 
 	@Override public double derivative (
@@ -121,15 +123,15 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;LinearRationalShapeControl::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;LinearRationalShapeControl::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L127">		double dblDerivative = 1. / (1. + _dblLambda * dblX);</span>
+<span class="fc" id="L129">		double dblDerivative = 1. / (1. + _dblLambda * dblX);</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="fc" id="L130">			dblDerivative *= (-1. * _dblLambda / (1. + _dblLambda * dblX));</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="fc" id="L132">			dblDerivative *= (-1. * _dblLambda / (1. + _dblLambda * dblX));</span>
 
-<span class="fc" id="L132">		return dblDerivative;</span>
+<span class="fc" id="L134">		return dblDerivative;</span>
 	}
 
 	@Override public double integrate (
@@ -137,11 +139,11 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L142">			throw new java.lang.Exception (&quot;LinearRationalShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;LinearRationalShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L144">		return (java.lang.Math.log ((1. + _dblLambda * dblEnd) / (1. + _dblLambda * dblBegin))) / _dblLambda;</span>
+<span class="nc" id="L146">		return (java.lang.Math.log ((1. + _dblLambda * dblEnd) / (1. + _dblLambda * dblBegin))) / _dblLambda;</span>
 	}
 
 	/**
@@ -152,7 +154,7 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 
 	public double getShapeControlCoefficient()
 	{
-<span class="nc" id="L155">		return _dblLambda;</span>
+<span class="nc" id="L157">		return _dblLambda;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

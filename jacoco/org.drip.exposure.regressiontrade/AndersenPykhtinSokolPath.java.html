@@ -69,7 +69,7 @@ package org.drip.exposure.regressiontrade;
  * Dense Trade Payments. Adjustments are applied in accordance with the Andersen, Pykhtin, and Sokol (2017a)
  * Regression Scheme. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -93,11 +93,13 @@ package org.drip.exposure.regressiontrade;
  *  				Agreements http://www.risk-europe.com/protected/michael-pykhtin.pdf
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade&quot;&gt;Regression Trade&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade&quot;&gt;Regression Trade&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -105,9 +107,9 @@ package org.drip.exposure.regressiontrade;
 
 public class AndersenPykhtinSokolPath
 {
-<span class="nc" id="L108">	private org.drip.exposure.mpor.TradePayment[] _denseTradePaymentArray = null;</span>
+<span class="nc" id="L110">	private org.drip.exposure.mpor.TradePayment[] _denseTradePaymentArray = null;</span>
 
-<span class="nc" id="L110">	private java.util.Map&lt;java.lang.Integer, org.drip.exposure.regressiontrade.VariationMarginEstimateVertex&gt;</span>
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.Integer, org.drip.exposure.regressiontrade.VariationMarginEstimateVertex&gt;</span>
 		_variationMarginEstimateTrajectory = new java.util.TreeMap&lt;java.lang.Integer,
 			org.drip.exposure.regressiontrade.VariationMarginEstimateVertex&gt;();
 
@@ -122,13 +124,13 @@ public class AndersenPykhtinSokolPath
 	public AndersenPykhtinSokolPath (
 		final org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray)
 		throws java.lang.Exception
-<span class="nc" id="L125">	{</span>
-<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null == (_denseTradePaymentArray = denseTradePaymentArray) ||</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == (_denseTradePaymentArray = denseTradePaymentArray) ||</span>
 			0 == _denseTradePaymentArray.length)
 		{
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolPath Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolPath Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Add the Variation Margin Estimate corresponding to the Vertex
@@ -147,22 +149,22 @@ public class AndersenPykhtinSokolPath
 	{
 		try
 		{
-<span class="nc" id="L150">			_variationMarginEstimateTrajectory.put (</span>
-<span class="nc" id="L151">				vertexDate,</span>
+<span class="nc" id="L152">			_variationMarginEstimateTrajectory.put (</span>
+<span class="nc" id="L153">				vertexDate,</span>
 				new org.drip.exposure.regressiontrade.VariationMarginEstimateVertex (
 					unadjustedVariationMarginEstimate,
 					adjustedVariationMarginEstimate
 				)
 			);
 
-<span class="nc" id="L158">			return true;</span>
+<span class="nc" id="L160">			return true;</span>
 		}
-<span class="nc" id="L160">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return false;</span>
+<span class="nc" id="L167">		return false;</span>
 	}
 
 	/**
@@ -174,7 +176,7 @@ public class AndersenPykhtinSokolPath
 	public java.util.Map&lt;java.lang.Integer, org.drip.exposure.regressiontrade.VariationMarginEstimateVertex&gt;
 		variationMarginEstimateTrajectory()
 	{
-<span class="nc" id="L177">		return _variationMarginEstimateTrajectory;</span>
+<span class="nc" id="L179">		return _variationMarginEstimateTrajectory;</span>
 	}
 
 	/**
@@ -185,7 +187,7 @@ public class AndersenPykhtinSokolPath
 
 	public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray()
 	{
-<span class="nc" id="L188">		return _denseTradePaymentArray;</span>
+<span class="nc" id="L190">		return _denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,18 +68,20 @@ package org.drip.feed.transformer;
 
 /**
  * &lt;i&gt;FundingFuturesClosesReconstitutor&lt;/i&gt; transforms the Funding Futures Closes- Feed Inputs into Formats
- *  suitable for Valuation Metrics and Sensitivities Generation.
- * 	&lt;br&gt;
+ * suitable for Valuation Metrics and Sensitivities Generation.
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class FundingFuturesClosesReconstitutor {</span>
+<span class="nc" id="L84">public class FundingFuturesClosesReconstitutor {</span>
 
 	/**
 	 * Regularize the Funding Futures Feed Closes
@@ -98,39 +100,39 @@ package org.drip.feed.transformer;
 		final int iLastPriceIndex,
 		final int iFuturesExpiryDateIndex)
 	{
-<span class="nc" id="L101">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strClosesLocation,</span>
+<span class="nc" id="L103">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strClosesLocation,</span>
 			true);
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (null == csvGrid) return false;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (null == csvGrid) return false;</span>
 
-<span class="nc" id="L106">		org.drip.analytics.date.JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (iSpotDateIndex);</span>
+<span class="nc" id="L108">		org.drip.analytics.date.JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (iSpotDateIndex);</span>
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == adtSpot) return false;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (null == adtSpot) return false;</span>
 
-<span class="nc" id="L110">		int iNumClose = adtSpot.length;</span>
-<span class="nc" id="L111">		double[] adblForwardRate = new double[iNumClose];</span>
+<span class="nc" id="L112">		int iNumClose = adtSpot.length;</span>
+<span class="nc" id="L113">		double[] adblForwardRate = new double[iNumClose];</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
 
-<span class="nc" id="L115">		double[] adblLastPrice = csvGrid.doubleArrayAtColumn (iLastPriceIndex);</span>
+<span class="nc" id="L117">		double[] adblLastPrice = csvGrid.doubleArrayAtColumn (iLastPriceIndex);</span>
 
-<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null == adblLastPrice || iNumClose != adblLastPrice.length) return false;</span>
+<span class="nc bnc" id="L119" title="All 4 branches missed.">		if (null == adblLastPrice || iNumClose != adblLastPrice.length) return false;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
-<span class="nc" id="L120">			adblForwardRate[i] = 0.01 * (100. - adblLastPrice[i]);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
+<span class="nc" id="L122">			adblForwardRate[i] = 0.01 * (100. - adblLastPrice[i]);</span>
 
-<span class="nc" id="L122">		org.drip.analytics.date.JulianDate[] adtFuturesExpiry = csvGrid.dateArrayAtColumn</span>
-<span class="nc" id="L123">			(iFuturesExpiryDateIndex);</span>
+<span class="nc" id="L124">		org.drip.analytics.date.JulianDate[] adtFuturesExpiry = csvGrid.dateArrayAtColumn</span>
+<span class="nc" id="L125">			(iFuturesExpiryDateIndex);</span>
 
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null == adtFuturesExpiry || iNumClose != adtFuturesExpiry.length) return false;</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == adtFuturesExpiry || iNumClose != adtFuturesExpiry.length) return false;</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;CloseDate,Price,ForwardRate,FuturesExpiry&quot;);</span>
+<span class="nc" id="L129">		System.out.println (&quot;CloseDate,Price,ForwardRate,FuturesExpiry&quot;);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
-<span class="nc" id="L130">			System.out.println (adtSpot[i] + &quot;,&quot; + adblLastPrice[i] + &quot;,&quot; + adblForwardRate[i] + &quot;,&quot; +</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
+<span class="nc" id="L132">			System.out.println (adtSpot[i] + &quot;,&quot; + adblLastPrice[i] + &quot;,&quot; + adblForwardRate[i] + &quot;,&quot; +</span>
 				adtFuturesExpiry[i]);
 
-<span class="nc" id="L133">		return true;</span>
+<span class="nc" id="L135">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,9 +68,9 @@ package org.drip.execution.bayesian;
 
 /**
  * &lt;i&gt;PriorDriftDistribution&lt;/i&gt; holds the Prior Belief Distribution associated with the Directional Drift.
- *  The References are:
+ * The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
@@ -93,11 +93,13 @@ package org.drip.execution.bayesian;
  * 				Trading&lt;/i&gt; &lt;b&gt;1 (1)&lt;/b&gt; 12-21
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -119,8 +121,8 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 		final double dblConfidence)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L122">		super (dblExpectation, dblConfidence);</span>
-<span class="fc" id="L123">	}</span>
+<span class="fc" id="L124">		super (dblExpectation, dblConfidence);</span>
+<span class="fc" id="L125">	}</span>
 
 	/**
 	 * Retrieve the Expectation of the Prior Drift Distribution
@@ -130,7 +132,7 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 
 	public double expectation()
 	{
-<span class="fc" id="L133">		return mean();</span>
+<span class="fc" id="L135">		return mean();</span>
 	}
 
 	/**
@@ -141,7 +143,7 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 
 	public double confidence()
 	{
-<span class="fc" id="L144">		return java.lang.Math.sqrt (variance());</span>
+<span class="fc" id="L146">		return java.lang.Math.sqrt (variance());</span>
 	}
 
 	/**
@@ -155,26 +157,26 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 	public double[] realizedDrift (
 		final int iNumRealization)
 	{
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
 
-<span class="fc" id="L160">		double[] adblRealizedDrift = new double[iNumRealization];</span>
+<span class="fc" id="L162">		double[] adblRealizedDrift = new double[iNumRealization];</span>
 
-<span class="fc" id="L162">		double dblConfidence = confidence();</span>
+<span class="fc" id="L164">		double dblConfidence = confidence();</span>
 
-<span class="fc" id="L164">		double dblExpectation = mean();</span>
+<span class="fc" id="L166">		double dblExpectation = mean();</span>
 
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
 			try {
-<span class="fc" id="L168">				adblRealizedDrift[i] = dblExpectation + dblConfidence *</span>
-<span class="fc" id="L169">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (java.lang.Math.random());</span>
-<span class="nc" id="L170">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L171">				e.printStackTrace();</span>
+<span class="fc" id="L170">				adblRealizedDrift[i] = dblExpectation + dblConfidence *</span>
+<span class="fc" id="L171">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (java.lang.Math.random());</span>
+<span class="nc" id="L172">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L173">				e.printStackTrace();</span>
 
-<span class="nc" id="L173">				return null;</span>
-<span class="fc" id="L174">			}</span>
+<span class="nc" id="L175">				return null;</span>
+<span class="fc" id="L176">			}</span>
 		}
 
-<span class="fc" id="L177">		return adblRealizedDrift;</span>
+<span class="fc" id="L179">		return adblRealizedDrift;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -68,10 +68,10 @@ package org.drip.execution.athl;
 
 /**
  * &lt;i&gt;TransactionSignal&lt;/i&gt; holds the Realized Empirical Signals that have been emitted off of a Transaction
- *  Run, decomposed using the Scheme by Almgren, Thum, Hauptmann, and Li (2005), based off of the
- *  Parameterization of Almgren (2003). The References are:
+ * Run, decomposed using the Scheme by Almgren, Thum, Hauptmann, and Li (2005), based off of the
+ * Parameterization of Almgren (2003). The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 	&lt;li&gt;
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -92,20 +92,22 @@ package org.drip.execution.athl;
  * 			57-62
  * 	&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TransactionSignal {
-<span class="nc" id="L106">	private double _dblDrift = java.lang.Double.NaN;</span>
-<span class="nc" id="L107">	private double _dblIWander = java.lang.Double.NaN;</span>
-<span class="nc" id="L108">	private double _dblJWander = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private double _dblDrift = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblIWander = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblJWander = java.lang.Double.NaN;</span>
 
 	/**
 	 * TransactionSignal Constructor
@@ -122,12 +124,12 @@ public class TransactionSignal {
 		final double dblIWander,
 		final double dblJWander)
 		throws java.lang.Exception
-<span class="nc" id="L125">	{</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblJWander = dblJWander))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;TransactionSignal Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblJWander = dblJWander))</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;TransactionSignal Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Drift of the Transaction Signal
@@ -137,7 +139,7 @@ public class TransactionSignal {
 
 	public double drift()
 	{
-<span class="nc" id="L140">		return _dblDrift;</span>
+<span class="nc" id="L142">		return _dblDrift;</span>
 	}
 
 	/**
@@ -148,7 +150,7 @@ public class TransactionSignal {
 
 	public double iWander()
 	{
-<span class="nc" id="L151">		return _dblIWander;</span>
+<span class="nc" id="L153">		return _dblIWander;</span>
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class TransactionSignal {
 
 	public double jWander()
 	{
-<span class="nc" id="L162">		return _dblJWander;</span>
+<span class="nc" id="L164">		return _dblJWander;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

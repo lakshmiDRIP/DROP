@@ -87,51 +87,53 @@ package org.drip.function.r1tor1solver;
  * 		The starting variate from the initialization
  * 	&lt;/li&gt;
  * &lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class ExecutionInitializationOutput {
-<span class="pc" id="L101">	private int _iNumOFCalcs = 0;</span>
-<span class="pc" id="L102">	private long _lStartTime = 0L;</span>
-<span class="pc" id="L103">	private boolean _bDone = false;</span>
-<span class="pc" id="L104">	private int _iNumIterations = 0;</span>
-<span class="pc" id="L105">	private int _iNumOFDerivCalcs = 0;</span>
-<span class="pc" id="L106">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="pc" id="L107">	private double _dblStartingVariate = java.lang.Double.NaN;</span>
+<span class="pc" id="L103">	private int _iNumOFCalcs = 0;</span>
+<span class="pc" id="L104">	private long _lStartTime = 0L;</span>
+<span class="pc" id="L105">	private boolean _bDone = false;</span>
+<span class="pc" id="L106">	private int _iNumIterations = 0;</span>
+<span class="pc" id="L107">	private int _iNumOFDerivCalcs = 0;</span>
+<span class="pc" id="L108">	private double _dblTime = java.lang.Double.NaN;</span>
+<span class="pc" id="L109">	private double _dblStartingVariate = java.lang.Double.NaN;</span>
 
 	protected ExecutionInitializationOutput()
-<span class="fc" id="L110">	{</span>
-<span class="fc" id="L111">		_lStartTime = System.nanoTime();</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L112">	{</span>
+<span class="fc" id="L113">		_lStartTime = System.nanoTime();</span>
+<span class="fc" id="L114">	}</span>
 
 	protected ExecutionInitializationOutput (
 		final ExecutionInitializationOutput eiopOther)
 		throws java.lang.Exception
-<span class="nc" id="L117">	{</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == eiopOther)</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;ExecutionInitializationOutput constructor: Invalid inputs!&quot;);</span>
+<span class="nc" id="L119">	{</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == eiopOther)</span>
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;ExecutionInitializationOutput constructor: Invalid inputs!&quot;);</span>
 
-<span class="nc" id="L121">		_iNumOFCalcs = eiopOther._iNumOFCalcs;</span>
-<span class="nc" id="L122">		_lStartTime = eiopOther._lStartTime;</span>
-<span class="nc" id="L123">		_bDone = eiopOther._bDone;</span>
-<span class="nc" id="L124">		_iNumIterations = eiopOther._iNumIterations;</span>
-<span class="nc" id="L125">		_iNumOFDerivCalcs = eiopOther._iNumOFDerivCalcs;</span>
-<span class="nc" id="L126">		_dblTime = eiopOther._dblTime;</span>
-<span class="nc" id="L127">		_dblStartingVariate = eiopOther._dblStartingVariate;</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L123">		_iNumOFCalcs = eiopOther._iNumOFCalcs;</span>
+<span class="nc" id="L124">		_lStartTime = eiopOther._lStartTime;</span>
+<span class="nc" id="L125">		_bDone = eiopOther._bDone;</span>
+<span class="nc" id="L126">		_iNumIterations = eiopOther._iNumIterations;</span>
+<span class="nc" id="L127">		_iNumOFDerivCalcs = eiopOther._iNumOFDerivCalcs;</span>
+<span class="nc" id="L128">		_dblTime = eiopOther._dblTime;</span>
+<span class="nc" id="L129">		_dblStartingVariate = eiopOther._dblStartingVariate;</span>
+<span class="nc" id="L130">	}</span>
 
 	protected boolean done()
 	{
-<span class="fc" id="L132">		_dblTime = (System.nanoTime() - _lStartTime) * 0.000001;</span>
+<span class="fc" id="L134">		_dblTime = (System.nanoTime() - _lStartTime) * 0.000001;</span>
 
-<span class="fc" id="L134">		return _bDone = true;</span>
+<span class="fc" id="L136">		return _bDone = true;</span>
 	}
 
 	/**
@@ -142,8 +144,8 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean incrIterations()
 	{
-<span class="fc" id="L145">		++_iNumIterations;</span>
-<span class="fc" id="L146">		return true;</span>
+<span class="fc" id="L147">		++_iNumIterations;</span>
+<span class="fc" id="L148">		return true;</span>
 	}
 
 	/**
@@ -154,7 +156,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final int getNumIterations()
 	{
-<span class="fc" id="L157">		return _iNumIterations;</span>
+<span class="fc" id="L159">		return _iNumIterations;</span>
 	}
 
 	/**
@@ -165,8 +167,8 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean incrOFCalcs()
 	{
-<span class="fc" id="L168">		++_iNumOFCalcs;</span>
-<span class="fc" id="L169">		return true;</span>
+<span class="fc" id="L170">		++_iNumOFCalcs;</span>
+<span class="fc" id="L171">		return true;</span>
 	}
 
 	/**
@@ -177,7 +179,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final int getNumOFCalcs()
 	{
-<span class="fc" id="L180">		return _iNumOFCalcs;</span>
+<span class="fc" id="L182">		return _iNumOFCalcs;</span>
 	}
 
 	/**
@@ -188,8 +190,8 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean incrOFDerivCalcs()
 	{
-<span class="nc" id="L191">		++_iNumOFDerivCalcs;</span>
-<span class="nc" id="L192">		return true;</span>
+<span class="nc" id="L193">		++_iNumOFDerivCalcs;</span>
+<span class="nc" id="L194">		return true;</span>
 	}
 
 	/**
@@ -200,7 +202,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final int getNumOFDerivCalcs()
 	{
-<span class="fc" id="L203">		return _iNumOFDerivCalcs;</span>
+<span class="fc" id="L205">		return _iNumOFDerivCalcs;</span>
 	}
 
 	/**
@@ -211,7 +213,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean isDone()
 	{
-<span class="fc" id="L214">		return _bDone;</span>
+<span class="fc" id="L216">		return _bDone;</span>
 	}
 
 	/**
@@ -222,7 +224,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final double time()
 	{
-<span class="fc" id="L225">		return _dblTime;</span>
+<span class="fc" id="L227">		return _dblTime;</span>
 	}
 
 	/**
@@ -236,10 +238,10 @@ public abstract class ExecutionInitializationOutput {
 	public boolean setStartingVariate (
 		final double dblStartingVariate)
 	{
-<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingVariate)) return false;</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingVariate)) return false;</span>
 
-<span class="fc" id="L241">		_dblStartingVariate = dblStartingVariate;</span>
-<span class="fc" id="L242">		return true;</span>
+<span class="fc" id="L243">		_dblStartingVariate = dblStartingVariate;</span>
+<span class="fc" id="L244">		return true;</span>
 	}
 
 	/**
@@ -250,7 +252,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public double getStartingVariate()
 	{
-<span class="fc" id="L253">		return _dblStartingVariate;</span>
+<span class="fc" id="L255">		return _dblStartingVariate;</span>
 	}
 
 	/**
@@ -261,19 +263,19 @@ public abstract class ExecutionInitializationOutput {
 
 	public java.lang.String displayString()
 	{
-<span class="fc" id="L264">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L266">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L266">		sb.append (&quot;\t\tInitialization Done? &quot; + isDone() + &quot; [&quot; + time() + &quot; msec]&quot;);</span>
+<span class="fc" id="L268">		sb.append (&quot;\t\tInitialization Done? &quot; + isDone() + &quot; [&quot; + time() + &quot; msec]&quot;);</span>
 
-<span class="fc" id="L268">		sb.append (&quot;\n\t\tNum Iterations: &quot; + getNumIterations());</span>
+<span class="fc" id="L270">		sb.append (&quot;\n\t\tNum Iterations: &quot; + getNumIterations());</span>
 
-<span class="fc" id="L270">		sb.append (&quot;\n\t\tNum OF Calculations: &quot; + getNumOFCalcs());</span>
+<span class="fc" id="L272">		sb.append (&quot;\n\t\tNum OF Calculations: &quot; + getNumOFCalcs());</span>
 
-<span class="fc" id="L272">		sb.append (&quot;\n\t\tNum OF Derivative Calculations: &quot; + getNumOFDerivCalcs());</span>
+<span class="fc" id="L274">		sb.append (&quot;\n\t\tNum OF Derivative Calculations: &quot; + getNumOFDerivCalcs());</span>
 
-<span class="fc" id="L274">		sb.append (&quot;\n\t\tStarting Variate: &quot; + getStartingVariate());</span>
+<span class="fc" id="L276">		sb.append (&quot;\n\t\tStarting Variate: &quot; + getStartingVariate());</span>
 
-<span class="fc" id="L276">		return sb.toString();</span>
+<span class="fc" id="L278">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

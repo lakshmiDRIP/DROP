@@ -68,7 +68,7 @@ package org.drip.exposure.regression;
  * &lt;i&gt;PykhtinBrownianBridgeStretch&lt;/i&gt; generates the Regression Based Path Exposures off of the Pillar
  * Vertexes using the Pykhtin (2009) Scheme. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -92,11 +92,13 @@ package org.drip.exposure.regression;
  *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -104,8 +106,8 @@ package org.drip.exposure.regression;
 
 public class PykhtinBrownianBridgeStretch
 {
-<span class="nc" id="L107">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _sparseVertexExposureTrajectory = null;</span>
-<span class="nc" id="L108">	private java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt; _localVolatilityTrajectory</span>
+<span class="nc" id="L109">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _sparseVertexExposureTrajectory = null;</span>
+<span class="nc" id="L110">	private java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt; _localVolatilityTrajectory</span>
 		= null;
 
 	/**
@@ -122,13 +124,13 @@ public class PykhtinBrownianBridgeStretch
 		final java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt;
 			localVolatilityTrajectory)
 		throws java.lang.Exception
-<span class="nc" id="L125">	{</span>
-<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null == (_sparseVertexExposureTrajectory = sparseVertexExposureTrajectory) ||</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == (_sparseVertexExposureTrajectory = sparseVertexExposureTrajectory) ||</span>
 			null == (_localVolatilityTrajectory = localVolatilityTrajectory))
 		{
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeStretch Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeStretch Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Path Sparse Vertex Exposure Trajectory
@@ -138,7 +140,7 @@ public class PykhtinBrownianBridgeStretch
 
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; sparseVertexExposureTrajectory()
 	{
-<span class="nc" id="L141">		return _sparseVertexExposureTrajectory;</span>
+<span class="nc" id="L143">		return _sparseVertexExposureTrajectory;</span>
 	}
 
 	/**
@@ -149,7 +151,7 @@ public class PykhtinBrownianBridgeStretch
 
 	public java.util.Map&lt;java.lang.Integer, org.drip.function.definition.R1ToR1&gt; localVolatilityTrajectory()
 	{
-<span class="nc" id="L152">		return _localVolatilityTrajectory;</span>
+<span class="nc" id="L154">		return _localVolatilityTrajectory;</span>
 	}
 
 	/**
@@ -163,50 +165,50 @@ public class PykhtinBrownianBridgeStretch
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposure (
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; wanderTrajectory)
 	{
-<span class="nc" id="L166">		int sparseLeftPillarDate = -1;</span>
+<span class="nc" id="L168">		int sparseLeftPillarDate = -1;</span>
 
-<span class="nc" id="L168">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposureTrajectory = new</span>
+<span class="nc" id="L170">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposureTrajectory = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; sparseExposureTrajectoryEntry :
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			_sparseVertexExposureTrajectory.entrySet())</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			_sparseVertexExposureTrajectory.entrySet())</span>
 		{
-<span class="nc" id="L174">			int sparseRightPillarDate = sparseExposureTrajectoryEntry.getKey();</span>
+<span class="nc" id="L176">			int sparseRightPillarDate = sparseExposureTrajectoryEntry.getKey();</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (-1 == sparseLeftPillarDate)</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (-1 == sparseLeftPillarDate)</span>
 			{
-<span class="nc" id="L178">				sparseLeftPillarDate = sparseRightPillarDate;</span>
-<span class="nc" id="L179">				continue;</span>
+<span class="nc" id="L180">				sparseLeftPillarDate = sparseRightPillarDate;</span>
+<span class="nc" id="L181">				continue;</span>
 			}
 
 			try
 			{
-<span class="nc" id="L184">				new PykhtinBrownianBridgeSegment (</span>
+<span class="nc" id="L186">				new PykhtinBrownianBridgeSegment (</span>
 					new org.drip.exposure.regression.PillarVertex (
 						sparseLeftPillarDate,
-<span class="nc" id="L187">						_sparseVertexExposureTrajectory.get (sparseLeftPillarDate)</span>
+<span class="nc" id="L189">						_sparseVertexExposureTrajectory.get (sparseLeftPillarDate)</span>
 					),
 					new org.drip.exposure.regression.PillarVertex (
 						sparseRightPillarDate,
-<span class="nc" id="L191">						_sparseVertexExposureTrajectory.get (sparseRightPillarDate)</span>
+<span class="nc" id="L193">						_sparseVertexExposureTrajectory.get (sparseRightPillarDate)</span>
 					),
-<span class="nc" id="L193">					_localVolatilityTrajectory.get (sparseRightPillarDate)</span>
-<span class="nc" id="L194">				).denseExposureTrajectoryUpdate (</span>
+<span class="nc" id="L195">					_localVolatilityTrajectory.get (sparseRightPillarDate)</span>
+<span class="nc" id="L196">				).denseExposureTrajectoryUpdate (</span>
 					denseExposureTrajectory,
 					wanderTrajectory
 				);
 			}
-<span class="nc" id="L199">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L201">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L201">				e.printStackTrace();</span>
+<span class="nc" id="L203">				e.printStackTrace();</span>
 
-<span class="nc" id="L203">				return null;</span>
-<span class="nc" id="L204">			}</span>
+<span class="nc" id="L205">				return null;</span>
+<span class="nc" id="L206">			}</span>
 
-<span class="nc" id="L206">			sparseLeftPillarDate = sparseRightPillarDate;</span>
-<span class="nc" id="L207">		}</span>
+<span class="nc" id="L208">			sparseLeftPillarDate = sparseRightPillarDate;</span>
+<span class="nc" id="L209">		}</span>
 
-<span class="nc" id="L209">		return denseExposureTrajectory;</span>
+<span class="nc" id="L211">		return denseExposureTrajectory;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

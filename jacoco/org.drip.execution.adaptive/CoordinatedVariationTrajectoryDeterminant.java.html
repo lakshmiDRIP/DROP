@@ -68,11 +68,11 @@ package org.drip.execution.adaptive;
 
 /**
  * &lt;i&gt;CoordinatedVariationTrajectoryDeterminant&lt;/i&gt; contains the HJB-based MultiStep Optimal Cost Dynamic
- *  Trajectory Generation Metrics using the Coordinated Variation Version of the Stochastic Volatility and
- *  the Transaction Function arising from the Realization of the Market State Variable as described in the
- *  &quot;Trading Time&quot; Model. The References are:
+ * Trajectory Generation Metrics using the Coordinated Variation Version of the Stochastic Volatility and the
+ * Transaction Function arising from the Realization of the Market State Variable as described in the
+ * &quot;Trading Time&quot; Model. The References are:
  * 
- * 	&lt;br&gt;
+ * 	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -95,24 +95,26 @@ package org.drip.execution.adaptive;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CoordinatedVariationTrajectoryDeterminant {
-<span class="fc" id="L109">	private double _dblOrderSize = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _dblCostScale = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _dblTimeScale = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _dblMarketPower = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	private double _dblTradeRateScale = java.lang.Double.NaN;</span>
-<span class="fc" id="L114">	private double _dblMeanMarketUrgency = java.lang.Double.NaN;</span>
-<span class="fc" id="L115">	private double _dblNonDimensionalRiskAversion = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblOrderSize = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _dblCostScale = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _dblTimeScale = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _dblMarketPower = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	private double _dblTradeRateScale = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private double _dblMeanMarketUrgency = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">	private double _dblNonDimensionalRiskAversion = java.lang.Double.NaN;</span>
 
 	/**
 	 * CoordinatedVariationTrajectoryDeterminant Constructor
@@ -137,19 +139,19 @@ public class CoordinatedVariationTrajectoryDeterminant {
 		final double dblNonDimensionalRiskAversion,
 		final double dblMarketPower)
 		throws java.lang.Exception
-<span class="fc" id="L140">	{</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOrderSize = dblOrderSize) ||</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTimeScale = dblTimeScale) ||</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblCostScale = dblCostScale) ||</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRateScale = dblTradeRateScale) ||</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblMeanMarketUrgency =</span>
+<span class="fc" id="L142">	{</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOrderSize = dblOrderSize) ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTimeScale = dblTimeScale) ||</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblCostScale = dblCostScale) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRateScale = dblTradeRateScale) ||</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblMeanMarketUrgency =</span>
 							dblMeanMarketUrgency) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">								(_dblNonDimensionalRiskAversion = dblNonDimensionalRiskAversion) ||</span>
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (_dblMarketPower =</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">								(_dblNonDimensionalRiskAversion = dblNonDimensionalRiskAversion) ||</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">									!org.drip.quant.common.NumberUtil.IsValid (_dblMarketPower =</span>
 										dblMarketPower))
-<span class="nc" id="L150">			throw new java.lang.Exception</span>
+<span class="nc" id="L152">			throw new java.lang.Exception</span>
 				(&quot;CoordinatedVariationTrajectoryDeterminant Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L152">	}</span>
+<span class="fc" id="L154">	}</span>
 
 	/**
 	 * Retrieve the Order Size
@@ -159,7 +161,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double orderSize()
 	{
-<span class="nc" id="L162">		return _dblOrderSize;</span>
+<span class="nc" id="L164">		return _dblOrderSize;</span>
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double timeScale()
 	{
-<span class="fc" id="L173">		return _dblTimeScale;</span>
+<span class="fc" id="L175">		return _dblTimeScale;</span>
 	}
 
 	/**
@@ -181,7 +183,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double costScale()
 	{
-<span class="fc" id="L184">		return _dblCostScale;</span>
+<span class="fc" id="L186">		return _dblCostScale;</span>
 	}
 
 	/**
@@ -192,7 +194,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double tradeRateScale()
 	{
-<span class="fc" id="L195">		return _dblTradeRateScale;</span>
+<span class="fc" id="L197">		return _dblTradeRateScale;</span>
 	}
 
 	/**
@@ -203,7 +205,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double meanMarketUrgency()
 	{
-<span class="fc" id="L206">		return _dblMeanMarketUrgency;</span>
+<span class="fc" id="L208">		return _dblMeanMarketUrgency;</span>
 	}
 
 	/**
@@ -214,7 +216,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double nonDimensionalRiskAversion()
 	{
-<span class="fc" id="L217">		return _dblNonDimensionalRiskAversion;</span>
+<span class="fc" id="L219">		return _dblNonDimensionalRiskAversion;</span>
 	}
 
 	/**
@@ -225,7 +227,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double marketPower()
 	{
-<span class="fc" id="L228">		return _dblMarketPower;</span>
+<span class="fc" id="L230">		return _dblMarketPower;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

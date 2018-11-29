@@ -69,7 +69,7 @@ package org.drip.exposure.evolver;
  * Numeraire Evolver Dynamics, the Terminal Latent State Evolver Dynamics, and the Primary Security Evolver
  * Dynamics. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and
@@ -93,11 +93,13 @@ package org.drip.exposure.evolver;
  *  		&lt;/li&gt;
  *  		&lt;li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -105,10 +107,10 @@ package org.drip.exposure.evolver;
 
 public class DynamicsContainer
 {
-<span class="fc" id="L108">	private org.drip.exposure.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;</span>
-<span class="fc" id="L109">	private java.util.Map&lt;java.lang.String, org.drip.exposure.evolver.PrimarySecurity&gt; _mapPrimarySecurityDynamics</span>
+<span class="fc" id="L110">	private org.drip.exposure.evolver.LatentStateDynamicsContainer _latentStateDynamicsContainer = null;</span>
+<span class="fc" id="L111">	private java.util.Map&lt;java.lang.String, org.drip.exposure.evolver.PrimarySecurity&gt; _mapPrimarySecurityDynamics</span>
 		= null;
-<span class="fc" id="L111">	private java.util.Map&lt;java.lang.String, org.drip.exposure.evolver.ScalingNumeraire&gt;</span>
+<span class="fc" id="L113">	private java.util.Map&lt;java.lang.String, org.drip.exposure.evolver.ScalingNumeraire&gt;</span>
 		_mapScalingNumeraireDynamics = null;
 
 	/**
@@ -116,15 +118,15 @@ public class DynamicsContainer
 	 */
 
 	public DynamicsContainer()
-<span class="fc" id="L119">	{</span>
-<span class="fc" id="L120">		_mapScalingNumeraireDynamics = new</span>
+<span class="fc" id="L121">	{</span>
+<span class="fc" id="L122">		_mapScalingNumeraireDynamics = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.exposure.evolver.ScalingNumeraire&gt;();
 
-<span class="fc" id="L123">		_mapPrimarySecurityDynamics = new</span>
+<span class="fc" id="L125">		_mapPrimarySecurityDynamics = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.exposure.evolver.PrimarySecurity&gt;();
 
-<span class="fc" id="L126">		_latentStateDynamicsContainer = new org.drip.exposure.evolver.LatentStateDynamicsContainer();</span>
-<span class="fc" id="L127">	}</span>
+<span class="fc" id="L128">		_latentStateDynamicsContainer = new org.drip.exposure.evolver.LatentStateDynamicsContainer();</span>
+<span class="fc" id="L129">	}</span>
 
 	/**
 	 * Retrieve the Scaling Numeraire Evolver Dynamics Settings Map
@@ -134,7 +136,7 @@ public class DynamicsContainer
 
 	public java.util.Map&lt;java.lang.String, org.drip.exposure.evolver.ScalingNumeraire&gt; scalingNumeraireMap()
 	{
-<span class="nc" id="L137">		return _mapScalingNumeraireDynamics;</span>
+<span class="nc" id="L139">		return _mapScalingNumeraireDynamics;</span>
 	}
 
 	/**
@@ -150,18 +152,18 @@ public class DynamicsContainer
 		final java.lang.String numeraireName,
 		final org.drip.exposure.evolver.ScalingNumeraire numeraire)
 	{
-<span class="pc bpc" id="L153" title="3 of 6 branches missed.">		if (null == numeraireName || numeraireName.isEmpty() ||</span>
+<span class="pc bpc" id="L155" title="3 of 6 branches missed.">		if (null == numeraireName || numeraireName.isEmpty() ||</span>
 			null == numeraire)
 		{
-<span class="nc" id="L156">			return false;</span>
+<span class="nc" id="L158">			return false;</span>
 		}
 
-<span class="fc" id="L159">		_mapScalingNumeraireDynamics.put (</span>
+<span class="fc" id="L161">		_mapScalingNumeraireDynamics.put (</span>
 			numeraireName,
 			numeraire
 		);
 
-<span class="fc" id="L164">		return true;</span>
+<span class="fc" id="L166">		return true;</span>
 	}
 
 	/**
@@ -175,8 +177,8 @@ public class DynamicsContainer
 	public boolean scalingNumeraireExists (
 		final java.lang.String numeraireName)
 	{
-<span class="nc bnc" id="L178" title="All 4 branches missed.">		return null != numeraireName &amp;&amp; !numeraireName.isEmpty() &amp;&amp; _mapScalingNumeraireDynamics.containsKey</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">			(numeraireName);</span>
+<span class="nc bnc" id="L180" title="All 4 branches missed.">		return null != numeraireName &amp;&amp; !numeraireName.isEmpty() &amp;&amp; _mapScalingNumeraireDynamics.containsKey</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">			(numeraireName);</span>
 	}
 
 	/**
@@ -190,8 +192,8 @@ public class DynamicsContainer
 	public org.drip.exposure.evolver.ScalingNumeraire scalingNumeraire (
 		final java.lang.String numeraireName)
 	{
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		return !scalingNumeraireExists (numeraireName) ? null : _mapScalingNumeraireDynamics.get</span>
-<span class="nc" id="L194">			(numeraireName);</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		return !scalingNumeraireExists (numeraireName) ? null : _mapScalingNumeraireDynamics.get</span>
+<span class="nc" id="L196">			(numeraireName);</span>
 	}
 
 	/**
@@ -202,7 +204,7 @@ public class DynamicsContainer
 
 	public org.drip.exposure.evolver.LatentStateDynamicsContainer terminalLatentStateContainer()
 	{
-<span class="fc" id="L205">		return _latentStateDynamicsContainer;</span>
+<span class="fc" id="L207">		return _latentStateDynamicsContainer;</span>
 	}
 
 	/**
@@ -216,9 +218,9 @@ public class DynamicsContainer
 	public boolean addTerminalLatentState (
 		final org.drip.exposure.evolver.TerminalLatentState terminalLatentState)
 	{
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		return _latentStateDynamicsContainer.addTerminalLatentState (terminalLatentState) &amp;&amp;</span>
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">			addScalingNumeraire (</span>
-<span class="fc" id="L221">				terminalLatentState.label().fullyQualifiedName(),</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		return _latentStateDynamicsContainer.addTerminalLatentState (terminalLatentState) &amp;&amp;</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">			addScalingNumeraire (</span>
+<span class="fc" id="L223">				terminalLatentState.label().fullyQualifiedName(),</span>
 				terminalLatentState
 			);
 	}
@@ -234,7 +236,7 @@ public class DynamicsContainer
 	public boolean terminalLatentStateExists (
 		final org.drip.state.identifier.LatentStateLabel label)
 	{
-<span class="nc" id="L237">		return _latentStateDynamicsContainer.labelExists (label);</span>
+<span class="nc" id="L239">		return _latentStateDynamicsContainer.labelExists (label);</span>
 	}
 
 	/**
@@ -245,7 +247,7 @@ public class DynamicsContainer
 
 	public java.util.Map&lt;java.lang.String, org.drip.exposure.evolver.PrimarySecurity&gt; primarySecurityMap()
 	{
-<span class="nc" id="L248">		return _mapPrimarySecurityDynamics;</span>
+<span class="nc" id="L250">		return _mapPrimarySecurityDynamics;</span>
 	}
 
 	/**
@@ -259,18 +261,18 @@ public class DynamicsContainer
 	public boolean addPrimarySecurity (
 		final org.drip.exposure.evolver.PrimarySecurity primarySecurity)
 	{
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (null == primarySecurity)</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">		if (null == primarySecurity)</span>
 		{
-<span class="nc" id="L264">			return false;</span>
+<span class="nc" id="L266">			return false;</span>
 		}
 
-<span class="fc" id="L267">		_mapPrimarySecurityDynamics.put (</span>
-<span class="fc" id="L268">			primarySecurity.id(),</span>
+<span class="fc" id="L269">		_mapPrimarySecurityDynamics.put (</span>
+<span class="fc" id="L270">			primarySecurity.id(),</span>
 			primarySecurity
 		);
 
-<span class="pc bpc" id="L272" title="2 of 4 branches missed.">		return addTerminalLatentState (primarySecurity) &amp;&amp; addScalingNumeraire (</span>
-<span class="fc" id="L273">			primarySecurity.label().fullyQualifiedName(),</span>
+<span class="pc bpc" id="L274" title="2 of 4 branches missed.">		return addTerminalLatentState (primarySecurity) &amp;&amp; addScalingNumeraire (</span>
+<span class="fc" id="L275">			primarySecurity.label().fullyQualifiedName(),</span>
 			primarySecurity
 		);
 	}
@@ -286,7 +288,7 @@ public class DynamicsContainer
 	public boolean primarySecurityExists (
 		final java.lang.String id)
 	{
-<span class="pc bpc" id="L289" title="2 of 4 branches missed.">		return null == id || id.isEmpty() ? false : _mapPrimarySecurityDynamics.containsKey (id);</span>
+<span class="pc bpc" id="L291" title="2 of 4 branches missed.">		return null == id || id.isEmpty() ? false : _mapPrimarySecurityDynamics.containsKey (id);</span>
 	}
 
 	/**
@@ -300,7 +302,7 @@ public class DynamicsContainer
 	public org.drip.exposure.evolver.PrimarySecurity primarySecurity (
 		final java.lang.String id)
 	{
-<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		return primarySecurityExists (id) ? _mapPrimarySecurityDynamics.get (id) : null;</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		return primarySecurityExists (id) ? _mapPrimarySecurityDynamics.get (id) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

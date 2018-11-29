@@ -68,7 +68,7 @@ package org.drip.exposure.regression;
  * &lt;i&gt;PykhtinBrownianBridgeSegment&lt;/i&gt; generates the Segment Regression Based Exposures off of the
  * corresponding Pillar Vertexes using the Pykhtin (2009) Scheme. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -92,11 +92,13 @@ package org.drip.exposure.regression;
  *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -104,9 +106,9 @@ package org.drip.exposure.regression;
 
 public class PykhtinBrownianBridgeSegment
 {
-<span class="nc" id="L107">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
-<span class="nc" id="L108">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
-<span class="nc" id="L109">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
+<span class="nc" id="L109">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
+<span class="nc" id="L110">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
+<span class="nc" id="L111">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
 
 	/**
 	 * PykhtinBrownianBridgeSegment Constructor
@@ -123,15 +125,15 @@ public class PykhtinBrownianBridgeSegment
 		final org.drip.exposure.regression.PillarVertex rightPillar,
 		final org.drip.function.definition.R1ToR1 rightPillarLocalVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L126">	{</span>
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
 			null == (_rightPillar = rightPillar) ||
-<span class="nc bnc" id="L129" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
 			null == (_rightPillarLocalVolatility = rightPillarLocalVolatility))
 		{
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeSegment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeSegment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L134">	}</span>
+<span class="nc" id="L136">	}</span>
 
 	/**
 	 * Retrieve the Left Pillar Vertex
@@ -141,7 +143,7 @@ public class PykhtinBrownianBridgeSegment
 
 	public org.drip.exposure.regression.PillarVertex leftPillar()
 	{
-<span class="nc" id="L144">		return _leftPillar;</span>
+<span class="nc" id="L146">		return _leftPillar;</span>
 	}
 
 	/**
@@ -152,7 +154,7 @@ public class PykhtinBrownianBridgeSegment
 
 	public org.drip.exposure.regression.PillarVertex rightPillar()
 	{
-<span class="nc" id="L155">		return _rightPillar;</span>
+<span class="nc" id="L157">		return _rightPillar;</span>
 	}
 
 	/**
@@ -163,7 +165,7 @@ public class PykhtinBrownianBridgeSegment
 
 	public org.drip.function.definition.R1ToR1 rightPillarLocalVolatility()
 	{
-<span class="nc" id="L166">		return _rightPillarLocalVolatility;</span>
+<span class="nc" id="L168">		return _rightPillarLocalVolatility;</span>
 	}
 
 	/**
@@ -179,62 +181,62 @@ public class PykhtinBrownianBridgeSegment
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposureTrajectory,
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; wanderTrajectory)
 	{
-<span class="nc bnc" id="L182" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
 		{
-<span class="nc" id="L184">			return false;</span>
+<span class="nc" id="L186">			return false;</span>
 		}
 
-<span class="nc" id="L187">		int leftPillarDate = _leftPillar.date();</span>
+<span class="nc" id="L189">		int leftPillarDate = _leftPillar.date();</span>
 
-<span class="nc" id="L189">		int rightPillarDate = _rightPillar.date();</span>
+<span class="nc" id="L191">		int rightPillarDate = _rightPillar.date();</span>
 
-<span class="nc" id="L191">		double leftPillarExposure = _leftPillar.exposure();</span>
+<span class="nc" id="L193">		double leftPillarExposure = _leftPillar.exposure();</span>
 
-<span class="nc" id="L193">		double rightPillarExposure = _rightPillar.exposure();</span>
+<span class="nc" id="L195">		double rightPillarExposure = _rightPillar.exposure();</span>
 
-<span class="nc" id="L195">		int dateWidth = rightPillarDate - leftPillarDate;</span>
-<span class="nc" id="L196">		double urgency = 1. / dateWidth;</span>
-<span class="nc" id="L197">		double localVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L198">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
+<span class="nc" id="L197">		int dateWidth = rightPillarDate - leftPillarDate;</span>
+<span class="nc" id="L198">		double urgency = 1. / dateWidth;</span>
+<span class="nc" id="L199">		double localVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L200">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
 
-<span class="nc" id="L200">		denseExposureTrajectory.put (</span>
-<span class="nc" id="L201">			leftPillarDate,</span>
-<span class="nc" id="L202">			leftPillarExposure</span>
+<span class="nc" id="L202">		denseExposureTrajectory.put (</span>
+<span class="nc" id="L203">			leftPillarDate,</span>
+<span class="nc" id="L204">			leftPillarExposure</span>
 		);
 
-<span class="nc" id="L205">		denseExposureTrajectory.put (</span>
-<span class="nc" id="L206">			rightPillarDate,</span>
-<span class="nc" id="L207">			rightPillarExposure</span>
+<span class="nc" id="L207">		denseExposureTrajectory.put (</span>
+<span class="nc" id="L208">			rightPillarDate,</span>
+<span class="nc" id="L209">			rightPillarExposure</span>
 		);
 
 		try
 		{
-<span class="nc" id="L212">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
+<span class="nc" id="L214">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
 		}
-<span class="nc" id="L214">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L216">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
 
-<span class="nc" id="L218">			return false;</span>
-<span class="nc" id="L219">		}</span>
+<span class="nc" id="L220">			return false;</span>
+<span class="nc" id="L221">		}</span>
 
-<span class="nc bnc" id="L221" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
 		{
-<span class="nc" id="L223">			int date = leftPillarDate + dateIndex;</span>
+<span class="nc" id="L225">			int date = leftPillarDate + dateIndex;</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">			if (!wanderTrajectory.containsKey (date))</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			if (!wanderTrajectory.containsKey (date))</span>
 			{
-<span class="nc" id="L227">				return false;</span>
+<span class="nc" id="L229">				return false;</span>
 			}
 
-<span class="nc" id="L230">			denseExposureTrajectory.put (</span>
-<span class="nc" id="L231">				date,</span>
-<span class="nc" id="L232">				rightPillarExposure - localDrift * (dateWidth - dateIndex) + localVolatility * urgency *</span>
-<span class="nc" id="L233">					wanderTrajectory.get (date) * java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex))</span>
+<span class="nc" id="L232">			denseExposureTrajectory.put (</span>
+<span class="nc" id="L233">				date,</span>
+<span class="nc" id="L234">				rightPillarExposure - localDrift * (dateWidth - dateIndex) + localVolatility * urgency *</span>
+<span class="nc" id="L235">					wanderTrajectory.get (date) * java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex))</span>
 			);
 		}
 
-<span class="nc" id="L237">		return true;</span>
+<span class="nc" id="L239">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
