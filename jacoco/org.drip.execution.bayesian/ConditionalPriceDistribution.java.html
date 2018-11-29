@@ -68,9 +68,9 @@ package org.drip.execution.bayesian;
 
 /**
  * &lt;i&gt;ConditionalPriceDistribution&lt;/i&gt; holds the Price Distribution Conditional on a given Drift. The
- *  References are:
+ * References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
@@ -93,20 +93,22 @@ package org.drip.execution.bayesian;
  * 				Trading&lt;/i&gt; &lt;b&gt;1 (1)&lt;/b&gt; 12-21
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-<span class="fc" id="L107">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblPriceVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private double _dblConditionalDrift = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblPriceVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblConditionalDrift = java.lang.Double.NaN;</span>
 
 	/**
 	 * ConditionalPriceDistribution Constructor
@@ -124,13 +126,13 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L127">		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));</span>
+<span class="fc" id="L129">		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));</span>
 
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. &gt;= _dblTime ||</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))</span>
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;ConditionalPriceDistribution Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L133">	}</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. &gt;= _dblTime ||</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;ConditionalPriceDistribution Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Distribution Time Horizon
@@ -140,7 +142,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double time()
 	{
-<span class="fc" id="L143">		return _dblTime;</span>
+<span class="fc" id="L145">		return _dblTime;</span>
 	}
 
 	/**
@@ -151,7 +153,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double priceVolatility()
 	{
-<span class="fc" id="L154">		return _dblPriceVolatility;</span>
+<span class="fc" id="L156">		return _dblPriceVolatility;</span>
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double conditionalDrift()
 	{
-<span class="nc" id="L165">		return _dblConditionalDrift;</span>
+<span class="nc" id="L167">		return _dblConditionalDrift;</span>
 	}
 
 	/**
@@ -176,8 +178,8 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	public double priceVolatilitySwing()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L179">		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
-<span class="fc" id="L180">			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);</span>
+<span class="fc" id="L181">		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
+<span class="fc" id="L182">			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);</span>
 	}
 
 	/**
@@ -191,24 +193,24 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	public double[] priceVolatilitySwings (
 		final int iNumRealization)
 	{
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
 
-<span class="nc" id="L196">		double[] adblVolatilitySwings = new double[iNumRealization];</span>
+<span class="nc" id="L198">		double[] adblVolatilitySwings = new double[iNumRealization];</span>
 
-<span class="nc" id="L198">		double dblVolatilityTimeSQRT = _dblPriceVolatility * java.lang.Math.sqrt (_dblTime);</span>
+<span class="nc" id="L200">		double dblVolatilityTimeSQRT = _dblPriceVolatility * java.lang.Math.sqrt (_dblTime);</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
 			try {
-<span class="nc" id="L202">				adblVolatilitySwings[i] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
-<span class="nc" id="L203">					(java.lang.Math.random()) * dblVolatilityTimeSQRT;</span>
-<span class="nc" id="L204">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L205">				e.printStackTrace();</span>
+<span class="nc" id="L204">				adblVolatilitySwings[i] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
+<span class="nc" id="L205">					(java.lang.Math.random()) * dblVolatilityTimeSQRT;</span>
+<span class="nc" id="L206">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L207">				e.printStackTrace();</span>
 
-<span class="nc" id="L207">				return null;</span>
-<span class="nc" id="L208">			}</span>
+<span class="nc" id="L209">				return null;</span>
+<span class="nc" id="L210">			}</span>
 		}
 
-<span class="nc" id="L211">		return adblVolatilitySwings;</span>
+<span class="nc" id="L213">		return adblVolatilitySwings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

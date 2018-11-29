@@ -66,9 +66,9 @@ package org.drip.exposure.csatimeline;
 
 /**
  * &lt;i&gt;LastFlowDates&lt;/i&gt; holds the Last Client/Dealer Margin Flow and Trade Flow Dates using the
- * 	Parameterization laid out in Andersen, Pykhtin, and Sokol (2017). The References are:
+ * Parameterization laid out in Andersen, Pykhtin, and Sokol (2017). The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -92,11 +92,13 @@ package org.drip.exposure.csatimeline;
  *  				Credit Risk&lt;/i&gt; &lt;b&gt;5 (4)&lt;/b&gt; 3-27
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline&quot;&gt;CSA Timeline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline&quot;&gt;CSA Time Line&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -104,14 +106,14 @@ package org.drip.exposure.csatimeline;
 
 public class LastFlowDates
 {
-<span class="nc" id="L107">	private org.drip.analytics.date.JulianDate _spot = null;</span>
-<span class="nc" id="L108">	private org.drip.analytics.date.JulianDate _valuation = null;</span>
-<span class="nc" id="L109">	private org.drip.analytics.date.JulianDate _clientTradePayment = null;</span>
-<span class="nc" id="L110">	private org.drip.analytics.date.JulianDate _dealerTradePayment = null;</span>
-<span class="nc" id="L111">	private org.drip.analytics.date.JulianDate _variationMarginPeriodEnd = null;</span>
-<span class="nc" id="L112">	private org.drip.analytics.date.JulianDate _variationMarginPeriodStart = null;</span>
-<span class="nc" id="L113">	private org.drip.analytics.date.JulianDate _clientVariationMarginPosting = null;</span>
-<span class="nc" id="L114">	private org.drip.analytics.date.JulianDate _dealerVariationMarginPosting = null;</span>
+<span class="nc" id="L109">	private org.drip.analytics.date.JulianDate _spot = null;</span>
+<span class="nc" id="L110">	private org.drip.analytics.date.JulianDate _valuation = null;</span>
+<span class="nc" id="L111">	private org.drip.analytics.date.JulianDate _clientTradePayment = null;</span>
+<span class="nc" id="L112">	private org.drip.analytics.date.JulianDate _dealerTradePayment = null;</span>
+<span class="nc" id="L113">	private org.drip.analytics.date.JulianDate _variationMarginPeriodEnd = null;</span>
+<span class="nc" id="L114">	private org.drip.analytics.date.JulianDate _variationMarginPeriodStart = null;</span>
+<span class="nc" id="L115">	private org.drip.analytics.date.JulianDate _clientVariationMarginPosting = null;</span>
+<span class="nc" id="L116">	private org.drip.analytics.date.JulianDate _dealerVariationMarginPosting = null;</span>
 
 	/**
 	 * Generate a LastFlowDates Instance from the Spot Date and the AndersenPykhtinSokolLag
@@ -128,55 +130,55 @@ public class LastFlowDates
 		final org.drip.exposure.csatimeline.AndersenPykhtinSokolLag andersenPykhtinSokolLag,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L131" title="All 4 branches missed.">		if (null == spot || null == andersenPykhtinSokolLag)</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">		if (null == spot || null == andersenPykhtinSokolLag)</span>
 		{
-<span class="nc" id="L133">			return null;</span>
+<span class="nc" id="L135">			return null;</span>
 		}
 
-<span class="nc" id="L136">		org.drip.analytics.date.JulianDate clientVariationMarginPostingDate = spot.subtractBusDays (</span>
-<span class="nc" id="L137">			andersenPykhtinSokolLag.clientVariationMarginPostingDelay(),</span>
+<span class="nc" id="L138">		org.drip.analytics.date.JulianDate clientVariationMarginPostingDate = spot.subtractBusDays (</span>
+<span class="nc" id="L139">			andersenPykhtinSokolLag.clientVariationMarginPostingDelay(),</span>
 			calendarSet
 		);
 
-<span class="nc" id="L141">		org.drip.analytics.date.JulianDate dealerVariationMarginPostingDate = spot.subtractBusDays (</span>
-<span class="nc" id="L142">			andersenPykhtinSokolLag.dealerVariationMarginPostingDelay(),</span>
+<span class="nc" id="L143">		org.drip.analytics.date.JulianDate dealerVariationMarginPostingDate = spot.subtractBusDays (</span>
+<span class="nc" id="L144">			andersenPykhtinSokolLag.dealerVariationMarginPostingDelay(),</span>
 			calendarSet
 		);
 
-<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (null == clientVariationMarginPostingDate || null == dealerVariationMarginPostingDate)</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == clientVariationMarginPostingDate || null == dealerVariationMarginPostingDate)</span>
 		{
-<span class="nc" id="L148">			return null;</span>
+<span class="nc" id="L150">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L153">			return new LastFlowDates (</span>
-<span class="nc" id="L154">				clientVariationMarginPostingDate.subtractBusDays (</span>
+<span class="nc" id="L155">			return new LastFlowDates (</span>
+<span class="nc" id="L156">				clientVariationMarginPostingDate.subtractBusDays (</span>
 					1,
 					calendarSet
 				),
 				clientVariationMarginPostingDate,
 				dealerVariationMarginPostingDate,
-<span class="nc" id="L160">				spot.subtractBusDays (</span>
-<span class="nc" id="L161">					andersenPykhtinSokolLag.clientTradePaymentDelay(),</span>
+<span class="nc" id="L162">				spot.subtractBusDays (</span>
+<span class="nc" id="L163">					andersenPykhtinSokolLag.clientTradePaymentDelay(),</span>
 					calendarSet
 				),
-<span class="nc" id="L164">				spot.subtractBusDays (</span>
-<span class="nc" id="L165">					andersenPykhtinSokolLag.dealerTradePaymentDelay(),</span>
+<span class="nc" id="L166">				spot.subtractBusDays (</span>
+<span class="nc" id="L167">					andersenPykhtinSokolLag.dealerTradePaymentDelay(),</span>
 					calendarSet
 				),
 				spot,
-<span class="nc bnc" id="L169" title="All 2 branches missed.">				clientVariationMarginPostingDate.julian() &lt; dealerVariationMarginPostingDate.julian() ?</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">				clientVariationMarginPostingDate.julian() &lt; dealerVariationMarginPostingDate.julian() ?</span>
 					clientVariationMarginPostingDate : dealerVariationMarginPostingDate,
 				spot
 			);
 		}
-<span class="nc" id="L174">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L176">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L176">			e.printStackTrace();</span>
+<span class="nc" id="L178">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L179">		return null;</span>
+<span class="nc" id="L181">		return null;</span>
 	}
 
 	/**
@@ -204,8 +206,8 @@ public class LastFlowDates
 		final org.drip.analytics.date.JulianDate variationMarginPeriodStart,
 		final org.drip.analytics.date.JulianDate variationMarginPeriodEnd)
 		throws java.lang.Exception
-<span class="nc" id="L207">	{</span>
-<span class="nc bnc" id="L208" title="All 16 branches missed.">		if (null == (_valuation = valuation) ||</span>
+<span class="nc" id="L209">	{</span>
+<span class="nc bnc" id="L210" title="All 16 branches missed.">		if (null == (_valuation = valuation) ||</span>
 			null == (_clientVariationMarginPosting = clientVariationMarginPosting) ||
 			null == (_dealerVariationMarginPosting = dealerVariationMarginPosting) ||
 			null == (_clientTradePayment = clientTradePayment) ||
@@ -214,9 +216,9 @@ public class LastFlowDates
 			null == (_variationMarginPeriodStart = variationMarginPeriodStart) ||
 			null == (_variationMarginPeriodEnd = variationMarginPeriodEnd))
 		{
-<span class="nc" id="L217">			throw new java.lang.Exception (&quot;LastFlowDates Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L219">			throw new java.lang.Exception (&quot;LastFlowDates Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L219">	}</span>
+<span class="nc" id="L221">	}</span>
 
 	/**
 	 * Retrieve the Valuation Date
@@ -226,7 +228,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate valuation()
 	{
-<span class="nc" id="L229">		return _valuation;</span>
+<span class="nc" id="L231">		return _valuation;</span>
 	}
 
 	/**
@@ -237,7 +239,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate clientVariationMarginPosting()
 	{
-<span class="nc" id="L240">		return _clientVariationMarginPosting;</span>
+<span class="nc" id="L242">		return _clientVariationMarginPosting;</span>
 	}
 
 	/**
@@ -248,7 +250,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate dealerVariationMarginPosting()
 	{
-<span class="nc" id="L251">		return _dealerVariationMarginPosting;</span>
+<span class="nc" id="L253">		return _dealerVariationMarginPosting;</span>
 	}
 
 	/**
@@ -259,7 +261,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate clientTradePayment()
 	{
-<span class="nc" id="L262">		return _clientTradePayment;</span>
+<span class="nc" id="L264">		return _clientTradePayment;</span>
 	}
 
 	/**
@@ -270,7 +272,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate dealerTradePayment()
 	{
-<span class="nc" id="L273">		return _dealerTradePayment;</span>
+<span class="nc" id="L275">		return _dealerTradePayment;</span>
 	}
 
 	/**
@@ -281,7 +283,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate spot()
 	{
-<span class="nc" id="L284">		return _spot;</span>
+<span class="nc" id="L286">		return _spot;</span>
 	}
 
 	/**
@@ -292,7 +294,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate etd()
 	{
-<span class="nc" id="L295">		return _spot;</span>
+<span class="nc" id="L297">		return _spot;</span>
 	}
 
 	/**
@@ -303,7 +305,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate variationMarginPeriodStart()
 	{
-<span class="nc" id="L306">		return _variationMarginPeriodStart;</span>
+<span class="nc" id="L308">		return _variationMarginPeriodStart;</span>
 	}
 
 	/**
@@ -314,7 +316,7 @@ public class LastFlowDates
 
 	public org.drip.analytics.date.JulianDate variationMarginPeriodEnd()
 	{
-<span class="nc" id="L317">		return _variationMarginPeriodEnd;</span>
+<span class="nc" id="L319">		return _variationMarginPeriodEnd;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

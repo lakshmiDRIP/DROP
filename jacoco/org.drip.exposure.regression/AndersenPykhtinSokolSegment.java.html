@@ -66,10 +66,10 @@ package org.drip.exposure.regression;
 
 /**
  * &lt;i&gt;AndersenPykhtinSokolSegment&lt;/i&gt; generates the Segment Regression Based Exposures off of the
- *  corresponding Pillar Vertexes using the Pykhtin (2009) Scheme with the Andersen, Pykhtin, and Sokol
- *  (2017) Adjustments applied. The References are:
+ * corresponding Pillar Vertexes using the Pykhtin (2009) Scheme with the Andersen, Pykhtin, and Sokol (2017)
+ * Adjustments applied. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -93,11 +93,13 @@ package org.drip.exposure.regression;
  *  				Pricing &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *  
  * @author Lakshmi Krishnamurthy
@@ -105,10 +107,10 @@ package org.drip.exposure.regression;
 
 public class AndersenPykhtinSokolSegment
 {
-<span class="nc" id="L108">	private int _epochDate = -1;</span>
-<span class="nc" id="L109">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
-<span class="nc" id="L110">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
-<span class="nc" id="L111">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
+<span class="nc" id="L110">	private int _epochDate = -1;</span>
+<span class="nc" id="L111">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
+<span class="nc" id="L112">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
+<span class="nc" id="L113">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
 
 	/**
 	 * AndersenPykhtinSokolSegment Constructor
@@ -127,17 +129,17 @@ public class AndersenPykhtinSokolSegment
 		final org.drip.exposure.regression.PillarVertex rightPillar,
 		final org.drip.function.definition.R1ToR1 rightPillarLocalVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L130">	{</span>
-<span class="nc bnc" id="L131" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
+<span class="nc" id="L132">	{</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
 			null == (_rightPillar = rightPillar) ||
-<span class="nc bnc" id="L133" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
 			null == (_rightPillarLocalVolatility = rightPillarLocalVolatility))
 		{
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolSegment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolSegment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L139">		_epochDate = epochDate;</span>
-<span class="nc" id="L140">	}</span>
+<span class="nc" id="L141">		_epochDate = epochDate;</span>
+<span class="nc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Epoch Date
@@ -147,7 +149,7 @@ public class AndersenPykhtinSokolSegment
 
 	public int epochDate()
 	{
-<span class="nc" id="L150">		return _epochDate;</span>
+<span class="nc" id="L152">		return _epochDate;</span>
 	}
 
 	/**
@@ -158,7 +160,7 @@ public class AndersenPykhtinSokolSegment
 
 	public org.drip.exposure.regression.PillarVertex leftPillar()
 	{
-<span class="nc" id="L161">		return _leftPillar;</span>
+<span class="nc" id="L163">		return _leftPillar;</span>
 	}
 
 	/**
@@ -169,7 +171,7 @@ public class AndersenPykhtinSokolSegment
 
 	public org.drip.exposure.regression.PillarVertex rightPillar()
 	{
-<span class="nc" id="L172">		return _rightPillar;</span>
+<span class="nc" id="L174">		return _rightPillar;</span>
 	}
 
 	/**
@@ -180,7 +182,7 @@ public class AndersenPykhtinSokolSegment
 
 	public org.drip.function.definition.R1ToR1 rightPillarLocalVolatility()
 	{
-<span class="nc" id="L183">		return _rightPillarLocalVolatility;</span>
+<span class="nc" id="L185">		return _rightPillarLocalVolatility;</span>
 	}
 
 	/**
@@ -196,47 +198,47 @@ public class AndersenPykhtinSokolSegment
 		final double[] denseExposureTrajectory,
 		final double[] wanderTrajectory)
 	{
-<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
+<span class="nc bnc" id="L201" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
 		{
-<span class="nc" id="L201">			return false;</span>
+<span class="nc" id="L203">			return false;</span>
 		}
 
-<span class="nc" id="L204">		int leftPillarDate = _leftPillar.date();</span>
+<span class="nc" id="L206">		int leftPillarDate = _leftPillar.date();</span>
 
-<span class="nc" id="L206">		int rightPillarDate = _rightPillar.date();</span>
+<span class="nc" id="L208">		int rightPillarDate = _rightPillar.date();</span>
 
-<span class="nc" id="L208">		double leftPillarExposure = _leftPillar.exposure();</span>
+<span class="nc" id="L210">		double leftPillarExposure = _leftPillar.exposure();</span>
 
-<span class="nc" id="L210">		double rightPillarExposure = _rightPillar.exposure();</span>
+<span class="nc" id="L212">		double rightPillarExposure = _rightPillar.exposure();</span>
 
-<span class="nc" id="L212">		int dateWidth = rightPillarDate - leftPillarDate;</span>
-<span class="nc" id="L213">		double urgency = 1. / dateWidth;</span>
-<span class="nc" id="L214">		double localVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L215">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
-<span class="nc" id="L216">		denseExposureTrajectory[leftPillarDate - _epochDate] = leftPillarExposure;</span>
-<span class="nc" id="L217">		denseExposureTrajectory[rightPillarDate - _epochDate] = rightPillarExposure;</span>
+<span class="nc" id="L214">		int dateWidth = rightPillarDate - leftPillarDate;</span>
+<span class="nc" id="L215">		double urgency = 1. / dateWidth;</span>
+<span class="nc" id="L216">		double localVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L217">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
+<span class="nc" id="L218">		denseExposureTrajectory[leftPillarDate - _epochDate] = leftPillarExposure;</span>
+<span class="nc" id="L219">		denseExposureTrajectory[rightPillarDate - _epochDate] = rightPillarExposure;</span>
 
 		try
 		{
-<span class="nc" id="L221">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
+<span class="nc" id="L223">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
 		}
-<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L225">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L225">			e.printStackTrace();</span>
+<span class="nc" id="L227">			e.printStackTrace();</span>
 
-<span class="nc" id="L227">			return false;</span>
-<span class="nc" id="L228">		}</span>
+<span class="nc" id="L229">			return false;</span>
+<span class="nc" id="L230">		}</span>
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
 		{
-<span class="nc" id="L232">			int epochIndex = leftPillarDate + dateIndex - _epochDate;</span>
+<span class="nc" id="L234">			int epochIndex = leftPillarDate + dateIndex - _epochDate;</span>
 
-<span class="nc" id="L234">			denseExposureTrajectory[epochIndex] = rightPillarExposure - localDrift * (dateWidth - dateIndex)</span>
-<span class="nc" id="L235">				+ localVolatility * urgency * wanderTrajectory[epochIndex] * java.lang.Math.sqrt (dateIndex *</span>
+<span class="nc" id="L236">			denseExposureTrajectory[epochIndex] = rightPillarExposure - localDrift * (dateWidth - dateIndex)</span>
+<span class="nc" id="L237">				+ localVolatility * urgency * wanderTrajectory[epochIndex] * java.lang.Math.sqrt (dateIndex *</span>
 					(dateWidth - dateIndex));
 		}
 
-<span class="nc" id="L239">		return true;</span>
+<span class="nc" id="L241">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -72,7 +72,7 @@ package org.drip.function.r1tor1solver;
 
 /**
  * &lt;i&gt;ExecutionControlParams&lt;/i&gt; holds the parameters needed for controlling the execution of the fixed point
- * 	finder.
+ * finder.
  * &lt;br&gt;&lt;br&gt;
  * ExecutionControlParams fields control the fixed point search in one of the following ways:
  * &lt;br&gt;
@@ -96,36 +96,38 @@ package org.drip.function.r1tor1solver;
  * 		Absolute Variate Convergence Fall-back, fall-back used to determine if the variate has converged.
  * 	&lt;/li&gt;
  * &lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ExecutionControlParams {
-<span class="pc" id="L110">	private int _iNumIterations = 0;</span>
-<span class="pc" id="L111">	private boolean _bIsVariateConvergenceCheckEnabled = false;</span>
-<span class="pc" id="L112">	private double _dblOFGoalToleranceFactor = java.lang.Double.NaN;</span>
-<span class="pc" id="L113">	private double _dblVariateConvergenceFactor = java.lang.Double.NaN;</span>
-<span class="pc" id="L114">	private double _dblAbsoluteOFToleranceFallback = java.lang.Double.NaN;</span>
-<span class="pc" id="L115">	private double _dblAbsoluteVariateConvergenceFallback = java.lang.Double.NaN;</span>
+<span class="pc" id="L112">	private int _iNumIterations = 0;</span>
+<span class="pc" id="L113">	private boolean _bIsVariateConvergenceCheckEnabled = false;</span>
+<span class="pc" id="L114">	private double _dblOFGoalToleranceFactor = java.lang.Double.NaN;</span>
+<span class="pc" id="L115">	private double _dblVariateConvergenceFactor = java.lang.Double.NaN;</span>
+<span class="pc" id="L116">	private double _dblAbsoluteOFToleranceFallback = java.lang.Double.NaN;</span>
+<span class="pc" id="L117">	private double _dblAbsoluteVariateConvergenceFallback = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default Execution Control Parameters constructor
 	 */
 
 	public ExecutionControlParams()
-<span class="fc" id="L122">	{</span>
-<span class="fc" id="L123">		_iNumIterations = 200;</span>
-<span class="fc" id="L124">		_dblOFGoalToleranceFactor = 1.0e-07;</span>
-<span class="fc" id="L125">		_dblVariateConvergenceFactor = 1.0e-07;</span>
-<span class="fc" id="L126">		_dblAbsoluteOFToleranceFallback = 1.0e-08;</span>
-<span class="fc" id="L127">		_dblAbsoluteVariateConvergenceFallback = 1.0e-08;</span>
-<span class="fc" id="L128">	}</span>
+<span class="fc" id="L124">	{</span>
+<span class="fc" id="L125">		_iNumIterations = 200;</span>
+<span class="fc" id="L126">		_dblOFGoalToleranceFactor = 1.0e-07;</span>
+<span class="fc" id="L127">		_dblVariateConvergenceFactor = 1.0e-07;</span>
+<span class="fc" id="L128">		_dblAbsoluteOFToleranceFallback = 1.0e-08;</span>
+<span class="fc" id="L129">		_dblAbsoluteVariateConvergenceFallback = 1.0e-08;</span>
+<span class="fc" id="L130">	}</span>
 
 	/**
 	 * Execution Control Parameters constructor
@@ -148,18 +150,18 @@ public class ExecutionControlParams {
 		final double dblAbsoluteOFToleranceFallback,
 		final double dblAbsoluteVariateConvergenceFallback)
 		throws java.lang.Exception
-<span class="nc" id="L151">	{</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoalToleranceFactor = dblOFGoalToleranceFactor)</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblVariateConvergenceFactor =</span>
+<span class="nc" id="L153">	{</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoalToleranceFactor = dblOFGoalToleranceFactor)</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblVariateConvergenceFactor =</span>
 				dblVariateConvergenceFactor) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L155" title="All 2 branches missed.">					(_dblAbsoluteOFToleranceFallback = dblAbsoluteOFToleranceFallback) ||</span>
-<span class="nc bnc" id="L156" title="All 4 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteVariateConvergenceFallback =</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">					(_dblAbsoluteOFToleranceFallback = dblAbsoluteOFToleranceFallback) ||</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteVariateConvergenceFallback =</span>
 							dblAbsoluteVariateConvergenceFallback) || 0 &gt;= (_iNumIterations =
 								iNumIterations))
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;ExecutionControlParams constructor: Invalid inputs&quot;);</span>
+<span class="nc" id="L161">			throw new java.lang.Exception (&quot;ExecutionControlParams constructor: Invalid inputs&quot;);</span>
 
-<span class="nc" id="L161">		_bIsVariateConvergenceCheckEnabled = bIsVariateConvergenceCheckEnabled;</span>
-<span class="nc" id="L162">	}</span>
+<span class="nc" id="L163">		_bIsVariateConvergenceCheckEnabled = bIsVariateConvergenceCheckEnabled;</span>
+<span class="nc" id="L164">	}</span>
 
 	/**
 	 * Return the number of iterations allowed
@@ -169,7 +171,7 @@ public class ExecutionControlParams {
 
 	public int getNumIterations()
 	{
-<span class="fc" id="L172">		return _iNumIterations;</span>
+<span class="fc" id="L174">		return _iNumIterations;</span>
 	}
 
 	/**
@@ -180,7 +182,7 @@ public class ExecutionControlParams {
 
 	public double getOFGoalToleranceFactor()
 	{
-<span class="fc" id="L183">		return _dblOFGoalToleranceFactor;</span>
+<span class="fc" id="L185">		return _dblOFGoalToleranceFactor;</span>
 	}
 
 	/**
@@ -191,7 +193,7 @@ public class ExecutionControlParams {
 
 	public double getVariateConvergenceFactor()
 	{
-<span class="fc" id="L194">		return _dblVariateConvergenceFactor;</span>
+<span class="fc" id="L196">		return _dblVariateConvergenceFactor;</span>
 	}
 
 	/**
@@ -202,7 +204,7 @@ public class ExecutionControlParams {
 
 	public double getAbsoluteOFToleranceFallback()
 	{
-<span class="fc" id="L205">		return _dblAbsoluteOFToleranceFallback;</span>
+<span class="fc" id="L207">		return _dblAbsoluteOFToleranceFallback;</span>
 	}
 
 	/**
@@ -213,7 +215,7 @@ public class ExecutionControlParams {
 
 	public double getAbsoluteVariateConvergenceFallback()
 	{
-<span class="fc" id="L216">		return _dblAbsoluteVariateConvergenceFallback;</span>
+<span class="fc" id="L218">		return _dblAbsoluteVariateConvergenceFallback;</span>
 	}
 
 	/**
@@ -224,7 +226,7 @@ public class ExecutionControlParams {
 
 	public boolean isVariateConvergenceCheckEnabled()
 	{
-<span class="fc" id="L227">		return _bIsVariateConvergenceCheckEnabled;</span>
+<span class="fc" id="L229">		return _bIsVariateConvergenceCheckEnabled;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

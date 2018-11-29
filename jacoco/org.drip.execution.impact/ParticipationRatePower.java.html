@@ -70,7 +70,7 @@ package org.drip.execution.impact;
  * &lt;i&gt;ParticipationRatePower&lt;/i&gt; implements a Power-Law Based Temporary/Permanent Market Impact Function
  * where the Price Change scales as a Power of the Trade Rate. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -91,19 +91,21 @@ package org.drip.execution.impact;
  * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact&quot;&gt;Impact&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact&quot;&gt;Impact&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ParticipationRatePower extends org.drip.execution.impact.TransactionFunctionPower {
-<span class="fc" id="L105">	private double _dblConstant = java.lang.Double.NaN;</span>
-<span class="fc" id="L106">	private double _dblExponent = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblConstant = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblExponent = java.lang.Double.NaN;</span>
 
 	/**
 	 * ParticipationRatePower Constructor
@@ -118,48 +120,48 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final double dblConstant,
 		final double dblExponent)
 		throws java.lang.Exception
-<span class="fc" id="L121">	{</span>
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) || 0. &gt; _dblConstant ||</span>
-<span class="pc bpc" id="L123" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. &gt; _dblExponent)</span>
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;ParticipationRatePower Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L125">	}</span>
+<span class="fc" id="L123">	{</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) || 0. &gt; _dblConstant ||</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. &gt; _dblExponent)</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;ParticipationRatePower Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L127">	}</span>
 
 	@Override public double constant()
 	{
-<span class="fc" id="L129">		return _dblConstant;</span>
+<span class="fc" id="L131">		return _dblConstant;</span>
 	}
 
 	@Override public double exponent()
 	{
-<span class="fc" id="L134">		return _dblExponent;</span>
+<span class="fc" id="L136">		return _dblExponent;</span>
 	}
 
 	@Override public double regularize (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
-<span class="nc" id="L142">			throw new java.lang.Exception (&quot;ParticipationRatePower::regularize =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;ParticipationRatePower::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L144">		return 1. / dblTradeInterval;</span>
+<span class="fc" id="L146">		return 1. / dblTradeInterval;</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L151">		return 1.;</span>
+<span class="fc" id="L153">		return 1.;</span>
 	}
 
 	@Override public double evaluate  (
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;ParticipationRatePower::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
+<span class="nc" id="L161">			throw new java.lang.Exception (&quot;ParticipationRatePower::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * _dblConstant * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="fc" id="L162">			(dblTradeRate), _dblExponent);</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * _dblConstant * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="fc" id="L164">			(dblTradeRate), _dblExponent);</span>
 	}
 
 	@Override public double derivative (
@@ -167,16 +169,16 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L170" title="2 of 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
-<span class="nc" id="L171">			throw new java.lang.Exception (&quot;ParticipationRatePower::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
+<span class="nc" id="L173">			throw new java.lang.Exception (&quot;ParticipationRatePower::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L173">		double dblCoefficient = 1.;</span>
+<span class="fc" id="L175">		double dblCoefficient = 1.;</span>
 
-<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="fc" id="L176">			dblCoefficient = dblCoefficient * (_dblExponent - i);</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="fc" id="L178">			dblCoefficient = dblCoefficient * (_dblExponent - i);</span>
 
-<span class="fc bfc" id="L178" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * dblCoefficient * _dblConstant * java.lang.Math.pow</span>
-<span class="fc" id="L179">			(java.lang.Math.abs (dblTradeRate), _dblExponent - iOrder);</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * dblCoefficient * _dblConstant * java.lang.Math.pow</span>
+<span class="fc" id="L181">			(java.lang.Math.abs (dblTradeRate), _dblExponent - iOrder);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

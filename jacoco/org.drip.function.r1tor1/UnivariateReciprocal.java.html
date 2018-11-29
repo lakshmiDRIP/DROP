@@ -70,18 +70,20 @@ package org.drip.function.r1tor1;
 
 /**
  * &lt;i&gt;UnivariateReciprocal&lt;/i&gt; provides the evaluation 1/f(x) instead of f(x) for a given f.
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class UnivariateReciprocal extends org.drip.function.definition.R1ToR1 {
-<span class="nc" id="L84">	private org.drip.function.definition.R1ToR1 _au = null;</span>
+<span class="nc" id="L86">	private org.drip.function.definition.R1ToR1 _au = null;</span>
 
 	/**
 	 * UnivariateReciprocal constructor
@@ -95,36 +97,36 @@ public class UnivariateReciprocal extends org.drip.function.definition.R1ToR1 {
 		final org.drip.function.definition.R1ToR1 au)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (null);</span>
+<span class="nc" id="L100">		super (null);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (null == (_au = au)) throw new java.lang.Exception (&quot;UnivariateReciprocal ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L101">	}</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (null == (_au = au)) throw new java.lang.Exception (&quot;UnivariateReciprocal ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L103">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L107">		return 1. / _au.evaluate (dblVariate);</span>
+<span class="nc" id="L109">		return 1. / _au.evaluate (dblVariate);</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L114">		UnivariateReciprocal ur = new UnivariateReciprocal (new</span>
+<span class="nc" id="L116">		UnivariateReciprocal ur = new UnivariateReciprocal (new</span>
 			org.drip.function.r1tor1.NaturalLogSeriesElement (1));
 
-<span class="nc" id="L117">		System.out.println (&quot;UnivariateReciprocal[0.0] = &quot; + ur.evaluate (0.0));</span>
+<span class="nc" id="L119">		System.out.println (&quot;UnivariateReciprocal[0.0] = &quot; + ur.evaluate (0.0));</span>
 
-<span class="nc" id="L119">		System.out.println (&quot;UnivariateReciprocal[0.5] = &quot; + ur.evaluate (0.5));</span>
+<span class="nc" id="L121">		System.out.println (&quot;UnivariateReciprocal[0.5] = &quot; + ur.evaluate (0.5));</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;UnivariateReciprocal[1.0] = &quot; + ur.evaluate (1.0));</span>
+<span class="nc" id="L123">		System.out.println (&quot;UnivariateReciprocal[1.0] = &quot; + ur.evaluate (1.0));</span>
 
-<span class="nc" id="L123">		System.out.println (&quot;UnivariateReciprocalDeriv[0.0] = &quot; + ur.derivative (0.0, 3));</span>
+<span class="nc" id="L125">		System.out.println (&quot;UnivariateReciprocalDeriv[0.0] = &quot; + ur.derivative (0.0, 3));</span>
 
-<span class="nc" id="L125">		System.out.println (&quot;UnivariateReciprocalDeriv[0.5] = &quot; + ur.derivative (0.5, 3));</span>
+<span class="nc" id="L127">		System.out.println (&quot;UnivariateReciprocalDeriv[0.5] = &quot; + ur.derivative (0.5, 3));</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;UnivariateReciprocalDeriv[1.0] = &quot; + ur.derivative (1.0, 3));</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L129">		System.out.println (&quot;UnivariateReciprocalDeriv[1.0] = &quot; + ur.derivative (1.0, 3));</span>
+<span class="nc" id="L130">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

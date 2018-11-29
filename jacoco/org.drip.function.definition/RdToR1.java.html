@@ -71,11 +71,13 @@ package org.drip.function.definition;
  * &lt;i&gt;RdToR1&lt;/i&gt; provides the evaluation of the R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; objective function and its
  * derivatives for a specified set of R&lt;sup&gt;d&lt;/sup&gt; variates. Default implementation of the derivatives are
  * for non-analytical lack box objective functions.
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -87,7 +89,7 @@ public abstract class RdToR1 {
 
 	protected static final int DIMENSION_NOT_FIXED = -1;
 
-<span class="fc" id="L90">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
+<span class="fc" id="L92">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
 
 	/**
 	 * Validate the Input Double Array
@@ -100,24 +102,24 @@ public abstract class RdToR1 {
 	public static final boolean ValidateInput (
 		final double[] adblVariate)
 	{
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (null == adblVariate) return false;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (null == adblVariate) return false;</span>
 
-<span class="fc" id="L105">		int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L107">		int iNumVariate = adblVariate.length;</span>
 
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (0 == iNumVariate) return false;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (0 == iNumVariate) return false;</span>
 
-<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return false;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return false;</span>
 		}
 
-<span class="fc" id="L113">		return true;</span>
+<span class="fc" id="L115">		return true;</span>
 	}
 
 	protected RdToR1 (
 		final org.drip.quant.calculus.DerivativeControl dc)
-<span class="fc" id="L118">	{</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
+<span class="fc" id="L122">	}</span>
 
 	/**
 	 * Retrieve the Dimension of the Input Variate
@@ -156,49 +158,49 @@ public abstract class RdToR1 {
 		final int iVariateIndex,
 		final int iOrder)
 	{
-<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate) || 0 &gt;= iOrder) return null;</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate) || 0 &gt;= iOrder) return null;</span>
 
-<span class="nc" id="L161">		double dblDerivative = 0.;</span>
-<span class="nc" id="L162">		int iNumVariate = adblVariate.length;</span>
-<span class="nc" id="L163">		double dblOrderedVariateInfinitesimal = 1.;</span>
-<span class="nc" id="L164">		double dblVariateInfinitesimal = java.lang.Double.NaN;</span>
+<span class="nc" id="L163">		double dblDerivative = 0.;</span>
+<span class="nc" id="L164">		int iNumVariate = adblVariate.length;</span>
+<span class="nc" id="L165">		double dblOrderedVariateInfinitesimal = 1.;</span>
+<span class="nc" id="L166">		double dblVariateInfinitesimal = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (iNumVariate &lt;= iVariateIndex) return null;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (iNumVariate &lt;= iVariateIndex) return null;</span>
 
 		try {
-<span class="nc" id="L169">			dblVariateInfinitesimal = _dc.getVariateInfinitesimal (adblVariate[iVariateIndex]);</span>
-<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L171">			e.printStackTrace();</span>
+<span class="nc" id="L171">			dblVariateInfinitesimal = _dc.getVariateInfinitesimal (adblVariate[iVariateIndex]);</span>
+<span class="nc" id="L172">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L173">			e.printStackTrace();</span>
 
-<span class="nc" id="L173">			return null;</span>
-<span class="nc" id="L174">		}</span>
+<span class="nc" id="L175">			return null;</span>
+<span class="nc" id="L176">		}</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			if (0 != i) dblOrderedVariateInfinitesimal *= (2. * dblVariateInfinitesimal);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		for (int i = 0; i &lt;= iOrder; ++i) {</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			if (0 != i) dblOrderedVariateInfinitesimal *= (2. * dblVariateInfinitesimal);</span>
 
-<span class="nc" id="L179">			double[] adblVariateIncremental = new double[iNumVariate];</span>
+<span class="nc" id="L181">			double[] adblVariateIncremental = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">				adblVariateIncremental[j] = j == iVariateIndex ? adblVariate[j] + dblVariateInfinitesimal *</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">				adblVariateIncremental[j] = j == iVariateIndex ? adblVariate[j] + dblVariateInfinitesimal *</span>
 					(iOrder - 2. * i) : adblVariate[j];
 
 			try {
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
-<span class="nc" id="L187">					evaluate (adblVariateIncremental);</span>
-<span class="nc" id="L188">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L189">				e.printStackTrace();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="nc" id="L189">					evaluate (adblVariateIncremental);</span>
+<span class="nc" id="L190">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L191">				e.printStackTrace();</span>
 
-<span class="nc" id="L191">				return null;</span>
-<span class="nc" id="L192">			}</span>
+<span class="nc" id="L193">				return null;</span>
+<span class="nc" id="L194">			}</span>
 		}
 
 		try {
-<span class="nc" id="L196">			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
-<span class="nc" id="L197">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L198">			e.printStackTrace();</span>
+<span class="nc" id="L198">			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
+<span class="nc" id="L199">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L200">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L201">		return null;</span>
+<span class="nc" id="L203">		return null;</span>
 	}
 
 	/**
@@ -219,7 +221,7 @@ public abstract class RdToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L222">		return differential (adblVariate, iVariateIndex, iOrder).calcSlope (true);</span>
+<span class="nc" id="L224">		return differential (adblVariate, iVariateIndex, iOrder).calcSlope (true);</span>
 	}
 
 	/**
@@ -233,24 +235,24 @@ public abstract class RdToR1 {
 	public double[] jacobian (
 		final double[] adblVariate)
 	{
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (null == adblVariate) return null;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (null == adblVariate) return null;</span>
 
-<span class="nc" id="L238">		int iNumVariate = adblVariate.length;</span>
-<span class="nc" id="L239">		double[] adblJacobian = new double[iNumVariate];</span>
+<span class="nc" id="L240">		int iNumVariate = adblVariate.length;</span>
+<span class="nc" id="L241">		double[] adblJacobian = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (0 == iNumVariate) return null;</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (0 == iNumVariate) return null;</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
 			try {
-<span class="nc" id="L245">				adblJacobian[i] = derivative (adblVariate, i, 1);</span>
-<span class="nc" id="L246">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L247">				e.printStackTrace();</span>
+<span class="nc" id="L247">				adblJacobian[i] = derivative (adblVariate, i, 1);</span>
+<span class="nc" id="L248">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L249">				e.printStackTrace();</span>
 
-<span class="nc" id="L249">				return null;</span>
-<span class="nc" id="L250">			}</span>
+<span class="nc" id="L251">				return null;</span>
+<span class="nc" id="L252">			}</span>
 		}
 
-<span class="nc" id="L253">		return adblJacobian;</span>
+<span class="nc" id="L255">		return adblJacobian;</span>
 	}
 
 	/**
@@ -264,7 +266,7 @@ public abstract class RdToR1 {
 	public org.drip.function.definition.UnitVector gradient (
 		final double[] adblVariate)
 	{
-<span class="nc" id="L267">		return org.drip.function.definition.UnitVector.Standard (jacobian (adblVariate));</span>
+<span class="nc" id="L269">		return org.drip.function.definition.UnitVector.Standard (jacobian (adblVariate));</span>
 	}
 
 	/**
@@ -278,43 +280,43 @@ public abstract class RdToR1 {
 	public double[][] hessian (
 		final double[] adblVariate)
 	{
-<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (null == adblVariate) return null;</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">		if (null == adblVariate) return null;</span>
 
-<span class="nc" id="L283">		final int iNumVariate = adblVariate.length;</span>
-<span class="nc" id="L284">		double[][] adblHessian = new double[iNumVariate][iNumVariate];</span>
+<span class="nc" id="L285">		final int iNumVariate = adblVariate.length;</span>
+<span class="nc" id="L286">		double[][] adblHessian = new double[iNumVariate][iNumVariate];</span>
 
-<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (0 == iNumVariate) return null;</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (0 == iNumVariate) return null;</span>
 
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc" id="L289">			final int iVariateIndex = i;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L291">			final int iVariateIndex = i;</span>
 
-<span class="nc" id="L291">			org.drip.function.definition.RdToR1 gradientRdToR1 = new org.drip.function.definition.RdToR1</span>
-<span class="nc" id="L292">				(null) {</span>
+<span class="nc" id="L293">			org.drip.function.definition.RdToR1 gradientRdToR1 = new org.drip.function.definition.RdToR1</span>
+<span class="nc" id="L294">				(null) {</span>
 				@Override public int dimension()
 				{
-<span class="nc" id="L295">					return iNumVariate;</span>
+<span class="nc" id="L297">					return iNumVariate;</span>
 				}
 
 				@Override public double evaluate (
 					final double[] adblVariate)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L302">					return derivative (adblVariate, iVariateIndex, 1);</span>
+<span class="nc" id="L304">					return derivative (adblVariate, iVariateIndex, 1);</span>
 				}
 			};
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j) {</span>
 				try {
-<span class="nc" id="L308">					adblHessian[i][j] = gradientRdToR1.derivative (adblVariate, j, 1);</span>
-<span class="nc" id="L309">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L310">					e.printStackTrace();</span>
+<span class="nc" id="L310">					adblHessian[i][j] = gradientRdToR1.derivative (adblVariate, j, 1);</span>
+<span class="nc" id="L311">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L312">					e.printStackTrace();</span>
 
-<span class="nc" id="L312">					return null;</span>
-<span class="nc" id="L313">				}</span>
+<span class="nc" id="L314">					return null;</span>
+<span class="nc" id="L315">				}</span>
 			}
 		}
 
-<span class="nc" id="L317">		return adblHessian;</span>
+<span class="nc" id="L319">		return adblHessian;</span>
 	}
 
 	/**
@@ -333,32 +335,32 @@ public abstract class RdToR1 {
 		final double[] adblRightEdge)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L336" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblLeftEdge) ||</span>
-<span class="nc bnc" id="L337" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblRightEdge))</span>
-<span class="nc" id="L338">			throw new java.lang.Exception (&quot;RdToR1::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblLeftEdge) ||</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblRightEdge))</span>
+<span class="nc" id="L340">			throw new java.lang.Exception (&quot;RdToR1::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L340">		double dblIntegrand = 0.;</span>
-<span class="nc" id="L341">		int iNumVariate = adblLeftEdge.length;</span>
-<span class="nc" id="L342">		double[] adblVariate = new double[iNumVariate];</span>
-<span class="nc" id="L343">		double[] adblVariateWidth = new double[iNumVariate];</span>
+<span class="nc" id="L342">		double dblIntegrand = 0.;</span>
+<span class="nc" id="L343">		int iNumVariate = adblLeftEdge.length;</span>
+<span class="nc" id="L344">		double[] adblVariate = new double[iNumVariate];</span>
+<span class="nc" id="L345">		double[] adblVariateWidth = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L345" title="All 2 branches missed.">		if (adblRightEdge.length != iNumVariate)</span>
-<span class="nc" id="L346">			throw new java.lang.Exception (&quot;RdToR1::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">		if (adblRightEdge.length != iNumVariate)</span>
+<span class="nc" id="L348">			throw new java.lang.Exception (&quot;RdToR1::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L348" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L349">			adblVariateWidth[j] = adblRightEdge[j] - adblLeftEdge[j];</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L351">			adblVariateWidth[j] = adblRightEdge[j] - adblLeftEdge[j];</span>
 
-<span class="nc bnc" id="L351" title="All 2 branches missed.">		for (int i = 0; i &lt; QUADRATURE_SAMPLING; ++i) {</span>
-<span class="nc bnc" id="L352" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L353">				adblVariate[j] = adblLeftEdge[j] + java.lang.Math.random() * adblVariateWidth[j];</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">		for (int i = 0; i &lt; QUADRATURE_SAMPLING; ++i) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L355">				adblVariate[j] = adblLeftEdge[j] + java.lang.Math.random() * adblVariateWidth[j];</span>
 
-<span class="nc" id="L355">			dblIntegrand += evaluate (adblVariate);</span>
+<span class="nc" id="L357">			dblIntegrand += evaluate (adblVariate);</span>
 		}
 
-<span class="nc bnc" id="L358" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L359">			dblIntegrand = dblIntegrand * adblVariateWidth[j];</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L361">			dblIntegrand = dblIntegrand * adblVariateWidth[j];</span>
 
-<span class="nc" id="L361">		return dblIntegrand / QUADRATURE_SAMPLING;</span>
+<span class="nc" id="L363">		return dblIntegrand / QUADRATURE_SAMPLING;</span>
 	}
 
 	/**
@@ -374,57 +376,57 @@ public abstract class RdToR1 {
 		final double[] adblVariateLeft,
 		final double[] adblVariateRight)
 	{
-<span class="nc bnc" id="L377" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
-<span class="nc bnc" id="L378" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))</span>
-<span class="nc" id="L379">			return null;</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))</span>
+<span class="nc" id="L381">			return null;</span>
 
-<span class="nc" id="L381">		double dblValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L382">		double dblMaxima = java.lang.Double.NaN;</span>
-<span class="nc" id="L383">		int iNumVariate = adblVariateLeft.length;</span>
-<span class="nc" id="L384">		double[] adblVariate = new double[iNumVariate];</span>
-<span class="nc" id="L385">		double[] adblVariateWidth = new double[iNumVariate];</span>
-<span class="nc" id="L386">		double[] adblMaximaVariate = new double[iNumVariate];</span>
+<span class="nc" id="L383">		double dblValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L384">		double dblMaxima = java.lang.Double.NaN;</span>
+<span class="nc" id="L385">		int iNumVariate = adblVariateLeft.length;</span>
+<span class="nc" id="L386">		double[] adblVariate = new double[iNumVariate];</span>
+<span class="nc" id="L387">		double[] adblVariateWidth = new double[iNumVariate];</span>
+<span class="nc" id="L388">		double[] adblMaximaVariate = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (adblVariateRight.length != iNumVariate) return null;</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		if (adblVariateRight.length != iNumVariate) return null;</span>
 
-<span class="nc bnc" id="L390" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L391">			adblVariateWidth[j] = adblVariateRight[j] - adblVariateLeft[j];</span>
+<span class="nc bnc" id="L392" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L393">			adblVariateWidth[j] = adblVariateRight[j] - adblVariateLeft[j];</span>
 
-<span class="nc bnc" id="L393" title="All 2 branches missed.">		for (int i = 0; i &lt; EXTREMA_SAMPLING; ++i) {</span>
-<span class="nc bnc" id="L394" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L395">				adblVariate[j] = adblVariateLeft[j] + java.lang.Math.random() * adblVariateWidth[j];</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">		for (int i = 0; i &lt; EXTREMA_SAMPLING; ++i) {</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L397">				adblVariate[j] = adblVariateLeft[j] + java.lang.Math.random() * adblVariateWidth[j];</span>
 
 			try {
-<span class="nc" id="L398">				dblValue = evaluate (adblVariate);</span>
-<span class="nc" id="L399">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L400">				e.printStackTrace();</span>
+<span class="nc" id="L400">				dblValue = evaluate (adblVariate);</span>
+<span class="nc" id="L401">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L402">				e.printStackTrace();</span>
 
-<span class="nc" id="L402">				return null;</span>
-<span class="nc" id="L403">			}</span>
+<span class="nc" id="L404">				return null;</span>
+<span class="nc" id="L405">			}</span>
 
-<span class="nc bnc" id="L405" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMaxima)) {</span>
-<span class="nc" id="L406">				dblMaxima = dblValue;</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMaxima)) {</span>
+<span class="nc" id="L408">				dblMaxima = dblValue;</span>
 
-<span class="nc bnc" id="L408" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L409">					adblMaximaVariate[j] = adblVariate[j];</span>
+<span class="nc bnc" id="L410" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L411">					adblMaximaVariate[j] = adblVariate[j];</span>
 			} else {
-<span class="nc bnc" id="L411" title="All 2 branches missed.">				if (dblMaxima &lt; dblValue) {</span>
-<span class="nc" id="L412">					dblMaxima = dblValue;</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">				if (dblMaxima &lt; dblValue) {</span>
+<span class="nc" id="L414">					dblMaxima = dblValue;</span>
 
-<span class="nc bnc" id="L414" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L415">						adblMaximaVariate[j] = adblVariate[j];</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L417">						adblMaximaVariate[j] = adblVariate[j];</span>
 				}
 			}
 		}
 
 		try {
-<span class="nc" id="L421">			return new org.drip.function.definition.VariateOutputPair (adblMaximaVariate, new double[]</span>
+<span class="nc" id="L423">			return new org.drip.function.definition.VariateOutputPair (adblMaximaVariate, new double[]</span>
 				{dblMaxima});
-<span class="nc" id="L423">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L424">			e.printStackTrace();</span>
+<span class="nc" id="L425">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L426">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L427">		return null;</span>
+<span class="nc" id="L429">		return null;</span>
 	}
 
 	/**
@@ -440,57 +442,57 @@ public abstract class RdToR1 {
 		final double[] adblVariateLeft,
 		final double[] adblVariateRight)
 	{
-<span class="nc bnc" id="L443" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
-<span class="nc bnc" id="L444" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))</span>
-<span class="nc" id="L445">			return null;</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))</span>
+<span class="nc" id="L447">			return null;</span>
 
-<span class="nc" id="L447">		double dblValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L448">		double dblMinima = java.lang.Double.NaN;</span>
-<span class="nc" id="L449">		int iNumVariate = adblVariateLeft.length;</span>
-<span class="nc" id="L450">		double[] adblVariate = new double[iNumVariate];</span>
-<span class="nc" id="L451">		double[] adblVariateWidth = new double[iNumVariate];</span>
-<span class="nc" id="L452">		double[] adblMinimaVariate = new double[iNumVariate];</span>
+<span class="nc" id="L449">		double dblValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L450">		double dblMinima = java.lang.Double.NaN;</span>
+<span class="nc" id="L451">		int iNumVariate = adblVariateLeft.length;</span>
+<span class="nc" id="L452">		double[] adblVariate = new double[iNumVariate];</span>
+<span class="nc" id="L453">		double[] adblVariateWidth = new double[iNumVariate];</span>
+<span class="nc" id="L454">		double[] adblMinimaVariate = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L454" title="All 2 branches missed.">		if (adblVariateRight.length != iNumVariate) return null;</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">		if (adblVariateRight.length != iNumVariate) return null;</span>
 
-<span class="nc bnc" id="L456" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L457">			adblVariateWidth[j] = adblVariateRight[j] - adblVariateLeft[j];</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L459">			adblVariateWidth[j] = adblVariateRight[j] - adblVariateLeft[j];</span>
 
-<span class="nc bnc" id="L459" title="All 2 branches missed.">		for (int i = 0; i &lt; EXTREMA_SAMPLING; ++i) {</span>
-<span class="nc bnc" id="L460" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L461">				adblVariate[j] = adblVariateLeft[j] + java.lang.Math.random() * adblVariateWidth[j];</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">		for (int i = 0; i &lt; EXTREMA_SAMPLING; ++i) {</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L463">				adblVariate[j] = adblVariateLeft[j] + java.lang.Math.random() * adblVariateWidth[j];</span>
 
 			try {
-<span class="nc" id="L464">				dblValue = evaluate (adblVariate);</span>
-<span class="nc" id="L465">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L466">				e.printStackTrace();</span>
+<span class="nc" id="L466">				dblValue = evaluate (adblVariate);</span>
+<span class="nc" id="L467">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L468">				e.printStackTrace();</span>
 
-<span class="nc" id="L468">				return null;</span>
-<span class="nc" id="L469">			}</span>
+<span class="nc" id="L470">				return null;</span>
+<span class="nc" id="L471">			}</span>
 
-<span class="nc bnc" id="L471" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMinima)) {</span>
-<span class="nc" id="L472">				dblMinima = dblValue;</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMinima)) {</span>
+<span class="nc" id="L474">				dblMinima = dblValue;</span>
 
-<span class="nc bnc" id="L474" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L475">					adblMinimaVariate[j] = adblVariate[j];</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L477">					adblMinimaVariate[j] = adblVariate[j];</span>
 			} else {
-<span class="nc bnc" id="L477" title="All 2 branches missed.">				if (dblMinima &gt; dblValue) {</span>
-<span class="nc" id="L478">					dblMinima = dblValue;</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">				if (dblMinima &gt; dblValue) {</span>
+<span class="nc" id="L480">					dblMinima = dblValue;</span>
 
-<span class="nc bnc" id="L480" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="nc" id="L481">						adblMinimaVariate[j] = adblVariate[j];</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="nc" id="L483">						adblMinimaVariate[j] = adblVariate[j];</span>
 				}
 			}
 		}
 
 		try {
-<span class="nc" id="L487">			return new org.drip.function.definition.VariateOutputPair (adblMinimaVariate, new double[]</span>
+<span class="nc" id="L489">			return new org.drip.function.definition.VariateOutputPair (adblMinimaVariate, new double[]</span>
 				{dblMinima});
-<span class="nc" id="L489">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L490">			e.printStackTrace();</span>
+<span class="nc" id="L491">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L492">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L493">		return null;</span>
+<span class="nc" id="L495">		return null;</span>
 	}
 
 	/**
@@ -507,18 +509,18 @@ public abstract class RdToR1 {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L510">		double[] adblJacobian = jacobian (adblVariate);</span>
+<span class="nc" id="L512">		double[] adblJacobian = jacobian (adblVariate);</span>
 
-<span class="nc bnc" id="L512" title="All 2 branches missed.">		if (null == adblJacobian)</span>
-<span class="nc" id="L513">			throw new java.lang.Exception (&quot;RdToR1::gradientModulus =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">		if (null == adblJacobian)</span>
+<span class="nc" id="L515">			throw new java.lang.Exception (&quot;RdToR1::gradientModulus =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L515">		double dblGradientModulus = 0.;</span>
-<span class="nc" id="L516">		int iNumVariate = adblVariate.length;</span>
+<span class="nc" id="L517">		double dblGradientModulus = 0.;</span>
+<span class="nc" id="L518">		int iNumVariate = adblVariate.length;</span>
 
-<span class="nc bnc" id="L518" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L519">			dblGradientModulus += adblJacobian[i] * adblJacobian[i];</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L521">			dblGradientModulus += adblJacobian[i] * adblJacobian[i];</span>
 
-<span class="nc" id="L521">		return dblGradientModulus;</span>
+<span class="nc" id="L523">		return dblGradientModulus;</span>
 	}
 
 	/**
@@ -529,46 +531,46 @@ public abstract class RdToR1 {
 
 	public org.drip.function.definition.RdToR1 gradientModulusFunction()
 	{
-<span class="nc" id="L532">		org.drip.function.definition.RdToR1 gradientModulusRdToR1 = new org.drip.function.definition.RdToR1</span>
-<span class="nc" id="L533">			(null) {</span>
+<span class="nc" id="L534">		org.drip.function.definition.RdToR1 gradientModulusRdToR1 = new org.drip.function.definition.RdToR1</span>
+<span class="nc" id="L535">			(null) {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L536">				return dimension();</span>
+<span class="nc" id="L538">				return dimension();</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L543">				return gradientModulus (adblVariate);</span>
+<span class="nc" id="L545">				return gradientModulus (adblVariate);</span>
 			}
 
 			@Override public double[] jacobian (
 				final double[] adblVariate)
 			{
-<span class="nc" id="L549">				double[] adblParentJacobian = jacobian (adblVariate);</span>
+<span class="nc" id="L551">				double[] adblParentJacobian = jacobian (adblVariate);</span>
 
-<span class="nc" id="L551">				double[][] adblParentHessian = hessian (adblVariate);</span>
+<span class="nc" id="L553">				double[][] adblParentHessian = hessian (adblVariate);</span>
 
-<span class="nc bnc" id="L553" title="All 4 branches missed.">				if (null == adblParentJacobian || null == adblParentHessian) return null;</span>
+<span class="nc bnc" id="L555" title="All 4 branches missed.">				if (null == adblParentJacobian || null == adblParentHessian) return null;</span>
 
-<span class="nc" id="L555">				int iDimension = adblParentJacobian.length;</span>
-<span class="nc" id="L556">				double[] adblGradientModulusJacobian = new double[iDimension];</span>
+<span class="nc" id="L557">				int iDimension = adblParentJacobian.length;</span>
+<span class="nc" id="L558">				double[] adblGradientModulusJacobian = new double[iDimension];</span>
 
-<span class="nc bnc" id="L558" title="All 2 branches missed.">				for (int k = 0; k &lt; iDimension; ++k) {</span>
-<span class="nc" id="L559">					adblGradientModulusJacobian[k] = 0.;</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">				for (int k = 0; k &lt; iDimension; ++k) {</span>
+<span class="nc" id="L561">					adblGradientModulusJacobian[k] = 0.;</span>
 
-<span class="nc bnc" id="L561" title="All 2 branches missed.">					for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L562">						adblGradientModulusJacobian[k] += adblParentJacobian[i] * adblParentHessian[i][k];</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">					for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L564">						adblGradientModulusJacobian[k] += adblParentJacobian[i] * adblParentHessian[i][k];</span>
 
-<span class="nc" id="L564">					adblGradientModulusJacobian[k] *= 2.;</span>
+<span class="nc" id="L566">					adblGradientModulusJacobian[k] *= 2.;</span>
 				}
 
-<span class="nc" id="L567">				return adblGradientModulusJacobian;</span>
+<span class="nc" id="L569">				return adblGradientModulusJacobian;</span>
 			}
 		};
 
-<span class="nc" id="L571">		return gradientModulusRdToR1;</span>
+<span class="nc" id="L573">		return gradientModulusRdToR1;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

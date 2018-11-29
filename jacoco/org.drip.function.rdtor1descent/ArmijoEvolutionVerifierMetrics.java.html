@@ -77,11 +77,13 @@ package org.drip.function.rdtor1descent;
  * 				Derivatives &lt;i&gt;Pacific Journal of Mathematics&lt;/i&gt; &lt;b&gt;16 (1)&lt;/b&gt; 1-3
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Descent&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -89,10 +91,10 @@ package org.drip.function.rdtor1descent;
 
 public class ArmijoEvolutionVerifierMetrics extends
 	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-<span class="fc" id="L92">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L93">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L94">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L95">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private boolean _bMaximizerCheck = false;</span>
+<span class="fc" id="L95">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L96">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * ArmijoEvolutionVerifierMetrics Constructor
@@ -120,16 +122,16 @@ public class ArmijoEvolutionVerifierMetrics extends
 		final double[] adblCurrentVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L123">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+<span class="fc" id="L125">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
 				dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">					(_dblNextVariateFunctionValue = dblNextVariateFunctionValue))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">					(_dblNextVariateFunctionValue = dblNextVariateFunctionValue))</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L131">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L132">	}</span>
+<span class="fc" id="L133">		_bMaximizerCheck = bMaximizerCheck;</span>
+<span class="fc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the Armijo Parameter
@@ -139,7 +141,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L142">		return _dblArmijoParameter;</span>
+<span class="nc" id="L144">		return _dblArmijoParameter;</span>
 	}
 
 	/**
@@ -150,7 +152,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L153">		return _bMaximizerCheck;</span>
+<span class="nc" id="L155">		return _bMaximizerCheck;</span>
 	}
 
 	/**
@@ -161,7 +163,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public double currentVariateFunctionValue()
 	{
-<span class="nc" id="L164">		return _dblCurrentVariateFunctionValue;</span>
+<span class="nc" id="L166">		return _dblCurrentVariateFunctionValue;</span>
 	}
 
 	/**
@@ -172,7 +174,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public double nextVariateFunctionValue()
 	{
-<span class="nc" id="L175">		return _dblNextVariateFunctionValue;</span>
+<span class="nc" id="L177">		return _dblNextVariateFunctionValue;</span>
 	}
 
 	/**
@@ -184,17 +186,17 @@ public class ArmijoEvolutionVerifierMetrics extends
 	public boolean verify()
 	{
 		try {
-<span class="fc" id="L187">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
-<span class="fc" id="L188">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (targetDirection().component(),</span>
-<span class="fc" id="L189">					currentVariateFunctionJacobian());</span>
+<span class="fc" id="L189">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
+<span class="fc" id="L190">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (targetDirection().component(),</span>
+<span class="fc" id="L191">					currentVariateFunctionJacobian());</span>
 
-<span class="pc bpc" id="L191" title="3 of 6 branches missed.">			return _bMaximizerCheck ? _dblNextVariateFunctionValue &gt;= dblGradientUpdatedFunctionValue :</span>
+<span class="pc bpc" id="L193" title="3 of 6 branches missed.">			return _bMaximizerCheck ? _dblNextVariateFunctionValue &gt;= dblGradientUpdatedFunctionValue :</span>
 				_dblNextVariateFunctionValue &lt;= dblGradientUpdatedFunctionValue;
-<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L197">		return false;</span>
+<span class="nc" id="L199">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

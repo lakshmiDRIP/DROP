@@ -68,10 +68,10 @@ package org.drip.execution.bayesian;
 
 /**
  * &lt;i&gt;PriorConditionalCombiner&lt;/i&gt; holds the Distributions associated with the Prior Drift and the
- *  Conditional Price Distributions. It uses them to generate the resulting Joint, Posterior, and MAP Implied
- *  Posterior Distributions. The References are:
+ * Conditional Price Distributions. It uses them to generate the resulting Joint, Posterior, and MAP Implied
+ * Posterior Distributions. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
@@ -94,19 +94,21 @@ package org.drip.execution.bayesian;
  * 				Trading&lt;/i&gt; &lt;b&gt;1 (1)&lt;/b&gt; 12-21
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PriorConditionalCombiner {
-<span class="fc" id="L108">	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;</span>
-<span class="fc" id="L109">	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;</span>
+<span class="fc" id="L110">	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;</span>
+<span class="fc" id="L111">	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;</span>
 
 	/**
 	 * PriorConditionalCombiner Constructor
@@ -121,10 +123,10 @@ public class PriorConditionalCombiner {
 		final org.drip.execution.bayesian.PriorDriftDistribution pdd,
 		final org.drip.execution.bayesian.ConditionalPriceDistribution cpd)
 		throws java.lang.Exception
-<span class="fc" id="L124">	{</span>
-<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		if (null == (_pdd = pdd) || null == (_cpd = cpd))</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;PriorConditionalCombiner Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L127">	}</span>
+<span class="fc" id="L126">	{</span>
+<span class="pc bpc" id="L127" title="2 of 4 branches missed.">		if (null == (_pdd = pdd) || null == (_cpd = cpd))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;PriorConditionalCombiner Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L129">	}</span>
 
 	/**
 	 * Retrieve the Prior Drift Distribution Instance
@@ -134,7 +136,7 @@ public class PriorConditionalCombiner {
 
 	public org.drip.execution.bayesian.PriorDriftDistribution prior()
 	{
-<span class="fc" id="L137">		return _pdd;</span>
+<span class="fc" id="L139">		return _pdd;</span>
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class PriorConditionalCombiner {
 
 	public org.drip.execution.bayesian.ConditionalPriceDistribution conditional()
 	{
-<span class="fc" id="L148">		return _cpd;</span>
+<span class="fc" id="L150">		return _cpd;</span>
 	}
 
 	/**
@@ -156,16 +158,16 @@ public class PriorConditionalCombiner {
 
 	public org.drip.measure.gaussian.R1UnivariateNormal jointPriceDistribution()
 	{
-<span class="nc" id="L159">		double dblTime = _cpd.time();</span>
+<span class="nc" id="L161">		double dblTime = _cpd.time();</span>
 
 		try {
-<span class="nc" id="L162">			return new org.drip.measure.gaussian.R1UnivariateNormal (_pdd.expectation() * dblTime,</span>
-<span class="nc" id="L163">				_pdd.variance() * dblTime * dblTime +_cpd.variance());</span>
-<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="nc" id="L164">			return new org.drip.measure.gaussian.R1UnivariateNormal (_pdd.expectation() * dblTime,</span>
+<span class="nc" id="L165">				_pdd.variance() * dblTime * dblTime +_cpd.variance());</span>
+<span class="nc" id="L166">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L167">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L168">		return null;</span>
+<span class="nc" id="L170">		return null;</span>
 	}
 
 	/**
@@ -179,25 +181,25 @@ public class PriorConditionalCombiner {
 	public org.drip.measure.gaussian.R1UnivariateNormal posteriorDriftDistribution (
 		final double dblDeltaS)
 	{
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDeltaS)) return null;</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDeltaS)) return null;</span>
 
-<span class="fc" id="L184">		double dblT = _cpd.time();</span>
+<span class="fc" id="L186">		double dblT = _cpd.time();</span>
 
-<span class="fc" id="L186">		double dblNuSquared = _pdd.variance();</span>
+<span class="fc" id="L188">		double dblNuSquared = _pdd.variance();</span>
 
-<span class="fc" id="L188">		double dblSigmaSquared = _cpd.variance() / dblT;</span>
+<span class="fc" id="L190">		double dblSigmaSquared = _cpd.variance() / dblT;</span>
 
-<span class="fc" id="L190">		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);</span>
+<span class="fc" id="L192">		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);</span>
 
 		try {
-<span class="fc" id="L193">			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +</span>
+<span class="fc" id="L195">			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +</span>
 				dblNuSquared * dblDeltaS) * dblPrecisionSquared, dblSigmaSquared * dblNuSquared *
 					dblPrecisionSquared);
-<span class="nc" id="L196">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="nc" id="L198">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L199">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L200">		return null;</span>
+<span class="nc" id="L202">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

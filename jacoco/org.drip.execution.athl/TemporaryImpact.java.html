@@ -68,10 +68,10 @@ package org.drip.execution.athl;
 
 /**
  * &lt;i&gt;TemporaryImpact&lt;/i&gt; implements the Temporary Market Impact with Exponent/Coefficients that have been
- * 	determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
- *  (2003). The References are:
+ * determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
+ * (2003). The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 	&lt;li&gt;
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -92,18 +92,20 @@ package org.drip.execution.athl;
  * 			57-62
  * 	&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TemporaryImpact extends org.drip.execution.impact.TransactionFunctionPower {
-<span class="fc" id="L106">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
+<span class="fc" id="L108">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
 
 	/**
 	 * TemporaryImpact Constructor
@@ -116,10 +118,10 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 	public TemporaryImpact (
 		final org.drip.execution.parameters.AssetFlowSettings afp)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == (_afp = afp))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;TemporaryImpact Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L122">	}</span>
+<span class="fc" id="L121">	{</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == (_afp = afp))</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;TemporaryImpact Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L124">	}</span>
 
 	/**
 	 * Retrieve the Asset Flow Parameters
@@ -129,48 +131,48 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 
 	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
 	{
-<span class="fc" id="L132">		return _afp;</span>
+<span class="fc" id="L134">		return _afp;</span>
 	}
 
 	@Override public double regularize (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;TemporaryImpact::regularize =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;TemporaryImpact::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L142">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
+<span class="fc" id="L144">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L149">		return _afp.dailyVolatility();</span>
+<span class="fc" id="L151">		return _afp.dailyVolatility();</span>
 	}
 
 	@Override public double constant()
 	{
-<span class="fc" id="L154">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
+<span class="fc" id="L156">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
 	}
 
 	@Override public double exponent()
 	{
-<span class="fc" id="L159">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
+<span class="fc" id="L161">		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;TemporaryImpact::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
+<span class="nc" id="L169">			throw new java.lang.Exception (&quot;TemporaryImpact::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L169">		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
-<span class="fc" id="L170">		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
+<span class="fc" id="L171">		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
+<span class="fc" id="L172">		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
 
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		return dblEta * (dblNormalizedX &lt; 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="fc" id="L173">			(dblNormalizedX), dblBeta);</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		return dblEta * (dblNormalizedX &lt; 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="fc" id="L175">			(dblNormalizedX), dblBeta);</span>
 	}
 
 	@Override public double derivative  (
@@ -178,18 +180,18 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L181" title="All 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
-<span class="nc" id="L182">			throw new java.lang.Exception (&quot;TemporaryImpact::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;TemporaryImpact::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L184">		double dblCoefficient = 1.;</span>
-<span class="nc" id="L185">		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
-<span class="nc" id="L186">		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
+<span class="nc" id="L186">		double dblCoefficient = 1.;</span>
+<span class="nc" id="L187">		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;</span>
+<span class="nc" id="L188">		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="nc" id="L189">			dblCoefficient = dblCoefficient * (dblBeta - i);</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="nc" id="L191">			dblCoefficient = dblCoefficient * (dblBeta - i);</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		return dblEta * (dblNormalizedX &lt; 0. ? -1. : 1.) * dblCoefficient * java.lang.Math.pow</span>
-<span class="nc" id="L192">			(java.lang.Math.abs (dblNormalizedX), dblBeta - iOrder);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		return dblEta * (dblNormalizedX &lt; 0. ? -1. : 1.) * dblCoefficient * java.lang.Math.pow</span>
+<span class="nc" id="L194">			(java.lang.Math.abs (dblNormalizedX), dblBeta - iOrder);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

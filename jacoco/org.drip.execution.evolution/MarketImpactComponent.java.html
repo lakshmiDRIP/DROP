@@ -68,9 +68,9 @@ package org.drip.execution.evolution;
 
 /**
  * &lt;i&gt;MarketImpactComponent&lt;/i&gt; exposes the Evolution Increment Components of the Movements exhibited by an
- *  Asset's Manifest Measures owing to either Stochastic or Deterministic Factors. The References are:
+ * Asset's Manifest Measures owing to either Stochastic or Deterministic Factors. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -93,21 +93,23 @@ package org.drip.execution.evolution;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class MarketImpactComponent {
-<span class="nc" id="L107">	private double _dblCurrentStep = java.lang.Double.NaN;</span>
-<span class="nc" id="L108">	private double _dblPreviousStep = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _dblPermanentImpact = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dblTemporaryImpact = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblCurrentStep = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblPreviousStep = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dblPermanentImpact = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dblTemporaryImpact = java.lang.Double.NaN;</span>
 
 	/**
 	 * MarketImpactComponent Constructor
@@ -126,13 +128,13 @@ public class MarketImpactComponent {
 		final double dblPermanentImpact,
 		final double dblTemporaryImpact)
 		throws java.lang.Exception
-<span class="nc" id="L129">	{</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))</span>
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;MarketImpactComponent Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L135">	}</span>
+<span class="nc" id="L131">	{</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;MarketImpactComponent Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the Previous Step Contribution
@@ -142,7 +144,7 @@ public class MarketImpactComponent {
 
 	public double previousStep()
 	{
-<span class="nc" id="L145">		return _dblPreviousStep;</span>
+<span class="nc" id="L147">		return _dblPreviousStep;</span>
 	}
 
 	/**
@@ -153,7 +155,7 @@ public class MarketImpactComponent {
 
 	public double currentStep()
 	{
-<span class="nc" id="L156">		return _dblCurrentStep;</span>
+<span class="nc" id="L158">		return _dblCurrentStep;</span>
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class MarketImpactComponent {
 
 	public double permanentImpact()
 	{
-<span class="nc" id="L167">		return _dblPermanentImpact;</span>
+<span class="nc" id="L169">		return _dblPermanentImpact;</span>
 	}
 
 	/**
@@ -175,7 +177,7 @@ public class MarketImpactComponent {
 
 	public double temporaryImpact()
 	{
-<span class="nc" id="L178">		return _dblTemporaryImpact;</span>
+<span class="nc" id="L180">		return _dblTemporaryImpact;</span>
 	}
 
 	/**
@@ -186,7 +188,7 @@ public class MarketImpactComponent {
 
 	public double total()
 	{
-<span class="nc" id="L189">		return previousStep() + currentStep() + permanentImpact() + temporaryImpact();</span>
+<span class="nc" id="L191">		return previousStep() + currentStep() + permanentImpact() + temporaryImpact();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

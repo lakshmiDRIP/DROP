@@ -68,10 +68,11 @@ package org.drip.execution.adaptive;
 
 /**
  * &lt;i&gt;CoordinatedVariationRollingHorizon&lt;/i&gt; implements the &quot;Rolling Horizon&quot; Approximation of the Optimal
- *  Cost Dynamic Trajectory arising from the Coordinated Variation Version of the Stochastic Volatility and
- *  the Transaction Function arising from the Realization of the Market State Variable as described in the
- *  &quot;Trading Time&quot; Model. The References are:
- * 	&lt;br&gt;
+ * Cost Dynamic Trajectory arising from the Coordinated Variation Version of the Stochastic Volatility and
+ * the Transaction Function arising from the Realization of the Market State Variable as described in the
+ * &quot;Trading Time&quot; Model. The References are:
+ * 
+ * 	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -94,11 +95,13 @@ package org.drip.execution.adaptive;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -106,9 +109,9 @@ package org.drip.execution.adaptive;
 
 public class CoordinatedVariationRollingHorizon extends
 	org.drip.execution.adaptive.CoordinatedVariationTrajectory {
-<span class="fc" id="L109">	private double[] _adblNonDimensionalCost = null;</span>
-<span class="fc" id="L110">	private double[] _adblNonDimensionalHoldings = null;</span>
-<span class="fc" id="L111">	private double[] _adblNonDimensionalTradeRate = null;</span>
+<span class="fc" id="L112">	private double[] _adblNonDimensionalCost = null;</span>
+<span class="fc" id="L113">	private double[] _adblNonDimensionalHoldings = null;</span>
+<span class="fc" id="L114">	private double[] _adblNonDimensionalTradeRate = null;</span>
 
 	/**
 	 * CoordinatedVariationRollingHorizon Constructor
@@ -128,23 +131,23 @@ public class CoordinatedVariationRollingHorizon extends
 		final double[] adblNonDimensionalCost)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L131">		super (cvtd);</span>
+<span class="fc" id="L134">		super (cvtd);</span>
 
-<span class="pc bpc" id="L133" title="3 of 6 branches missed.">		if (null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) || null ==</span>
+<span class="pc bpc" id="L136" title="3 of 6 branches missed.">		if (null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) || null ==</span>
 			(_adblNonDimensionalTradeRate = adblNonDimensionalTradeRate) || null == (_adblNonDimensionalCost
 				= adblNonDimensionalCost) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">					(_adblNonDimensionalHoldings) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">						(_adblNonDimensionalTradeRate) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">							(_adblNonDimensionalCost))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">					(_adblNonDimensionalHoldings) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">						(_adblNonDimensionalTradeRate) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">							(_adblNonDimensionalCost))</span>
+<span class="nc" id="L142">			throw new java.lang.Exception</span>
 				(&quot;CoordinatedVariationRollingHorizon Constructor =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L142">		int iNumTimeNode = _adblNonDimensionalHoldings.length;</span>
+<span class="fc" id="L145">		int iNumTimeNode = _adblNonDimensionalHoldings.length;</span>
 
-<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (0 == iNumTimeNode || iNumTimeNode != _adblNonDimensionalTradeRate.length)</span>
-<span class="nc" id="L145">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">		if (0 == iNumTimeNode || iNumTimeNode != _adblNonDimensionalTradeRate.length)</span>
+<span class="nc" id="L148">			throw new java.lang.Exception</span>
 				(&quot;CoordinatedVariationRollingHorizon Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L147">	}</span>
+<span class="fc" id="L150">	}</span>
 
 	/**
 	 * Retrieve the Array of the Non Dimensional Holdings
@@ -154,7 +157,7 @@ public class CoordinatedVariationRollingHorizon extends
 
 	public double[] nonDimensionalHoldings()
 	{
-<span class="fc" id="L157">		return _adblNonDimensionalHoldings;</span>
+<span class="fc" id="L160">		return _adblNonDimensionalHoldings;</span>
 	}
 
 	/**
@@ -165,7 +168,7 @@ public class CoordinatedVariationRollingHorizon extends
 
 	public double[] nonDimensionalTradeRate()
 	{
-<span class="fc" id="L168">		return _adblNonDimensionalTradeRate;</span>
+<span class="fc" id="L171">		return _adblNonDimensionalTradeRate;</span>
 	}
 
 	/**
@@ -176,7 +179,7 @@ public class CoordinatedVariationRollingHorizon extends
 
 	public double[] nonDimensionalCost()
 	{
-<span class="fc" id="L179">		return _adblNonDimensionalCost;</span>
+<span class="fc" id="L182">		return _adblNonDimensionalCost;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

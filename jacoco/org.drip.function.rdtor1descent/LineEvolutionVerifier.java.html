@@ -87,44 +87,46 @@ package org.drip.function.rdtor1descent;
  * 				Review&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 185-188
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Descent&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L100">public abstract class LineEvolutionVerifier {</span>
+<span class="fc" id="L102">public abstract class LineEvolutionVerifier {</span>
 
 	protected static final double[] NextVariate (
 		final org.drip.function.definition.UnitVector uvTargetDirection,
 		final double[] adblCurrentVariate,
 		final double dblStepLength)
 	{
-<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (null == adblCurrentVariate || !org.drip.quant.common.NumberUtil.IsValid (dblStepLength))</span>
-<span class="nc" id="L108">			return null;</span>
+<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (null == adblCurrentVariate || !org.drip.quant.common.NumberUtil.IsValid (dblStepLength))</span>
+<span class="nc" id="L110">			return null;</span>
 
-<span class="fc" id="L110">		int iDimension = adblCurrentVariate.length;</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		double[] adblNextVariate = 0 == iDimension ? null : new double[iDimension];</span>
+<span class="fc" id="L112">		int iDimension = adblCurrentVariate.length;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		double[] adblNextVariate = 0 == iDimension ? null : new double[iDimension];</span>
 
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (null == adblNextVariate || null == uvTargetDirection) return null;</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		if (null == adblNextVariate || null == uvTargetDirection) return null;</span>
 
-<span class="fc" id="L115">		double[] adblTargetDirection = uvTargetDirection.component();</span>
+<span class="fc" id="L117">		double[] adblTargetDirection = uvTargetDirection.component();</span>
 
-<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (null == adblTargetDirection || iDimension != adblTargetDirection.length) return null;</span>
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == adblTargetDirection || iDimension != adblTargetDirection.length) return null;</span>
 
-<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblCurrentVariate[i]) ||</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (adblTargetDirection[i]))</span>
-<span class="nc" id="L122">				return null;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblCurrentVariate[i]) ||</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (adblTargetDirection[i]))</span>
+<span class="nc" id="L124">				return null;</span>
 
-<span class="fc" id="L124">			adblNextVariate[i] = adblCurrentVariate[i] + dblStepLength * adblTargetDirection[i];</span>
+<span class="fc" id="L126">			adblNextVariate[i] = adblCurrentVariate[i] + dblStepLength * adblTargetDirection[i];</span>
 		}
 
-<span class="fc" id="L127">		return adblNextVariate;</span>
+<span class="fc" id="L129">		return adblNextVariate;</span>
 	}
 
 	/**
@@ -147,12 +149,12 @@ package org.drip.function.rdtor1descent;
 		final double dblStepLength)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L150">		org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = metrics (uvTargetDirection,</span>
+<span class="nc" id="L152">		org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = metrics (uvTargetDirection,</span>
 			adblCurrentVariate, funcRdToR1, dblStepLength);
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (null == levm) throw new java.lang.Exception (&quot;LineEvolutionVerifier::verify =&gt; Cannot Verify&quot;);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (null == levm) throw new java.lang.Exception (&quot;LineEvolutionVerifier::verify =&gt; Cannot Verify&quot;);</span>
 
-<span class="nc" id="L155">		return levm.verify();</span>
+<span class="nc" id="L157">		return levm.verify();</span>
 	}
 
 	/**

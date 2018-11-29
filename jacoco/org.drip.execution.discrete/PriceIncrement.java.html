@@ -68,10 +68,10 @@ package org.drip.execution.discrete;
 
 /**
  * &lt;i&gt;PriceIncrement&lt;/i&gt; contains the Realized Stochastic Evolution Increments of the Price Movements
- *  exhibited by an Asset owing to the Volatility and the Market Impact Factors over the Slice Time Interval.
- *  It is composed of Stochastic and Deterministic Price Increment Components. The References are:
+ * exhibited by an Asset owing to the Volatility and the Market Impact Factors over the Slice Time Interval.
+ * It is composed of Stochastic and Deterministic Price Increment Components. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -94,18 +94,20 @@ package org.drip.execution.discrete;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncrement {
-<span class="nc" id="L108">	private double _dblPreviousEquilibriumPrice = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblPreviousEquilibriumPrice = java.lang.Double.NaN;</span>
 
 	/**
 	 * PriceIncrement Constructor
@@ -123,12 +125,12 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 		final org.drip.execution.evolution.MarketImpactComponent micStochastic)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L126">		super (micDeterministic, micStochastic);</span>
+<span class="nc" id="L128">		super (micDeterministic, micStochastic);</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousEquilibriumPrice =</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousEquilibriumPrice =</span>
 			dblPreviousEquilibriumPrice))
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;PriceIncrement Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;PriceIncrement Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Previous Equilibrium Price
@@ -138,7 +140,7 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 
 	public double previousEquilibriumPrice()
 	{
-<span class="nc" id="L141">		return _dblPreviousEquilibriumPrice;</span>
+<span class="nc" id="L143">		return _dblPreviousEquilibriumPrice;</span>
 	}
 
 	/**
@@ -149,8 +151,8 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 
 	public double newEquilibriumPrice()
 	{
-<span class="nc" id="L152">		return _dblPreviousEquilibriumPrice + marketDynamicWander() + marketDynamicDrift() +</span>
-<span class="nc" id="L153">			permanentImpactWander() + permanentImpactDrift();</span>
+<span class="nc" id="L154">		return _dblPreviousEquilibriumPrice + marketDynamicWander() + marketDynamicDrift() +</span>
+<span class="nc" id="L155">			permanentImpactWander() + permanentImpactDrift();</span>
 	}
 
 	/**
@@ -161,7 +163,7 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 
 	public double newExecutionPrice()
 	{
-<span class="nc" id="L164">		return newEquilibriumPrice() + temporaryImpactWander() + temporaryImpactDrift();</span>
+<span class="nc" id="L166">		return newEquilibriumPrice() + temporaryImpactWander() + temporaryImpactDrift();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -93,22 +93,24 @@ package org.drip.execution.strategy;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ContinuousTradingTrajectory implements org.drip.execution.strategy.TradingTrajectory {
-<span class="fc" id="L107">	private double _dblExecutionTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private org.drip.function.definition.R1ToR1 _r1ToR1Holdings = null;</span>
-<span class="fc" id="L109">	private org.drip.function.definition.R1ToR1 _r1ToR1TradeRate = null;</span>
-<span class="fc" id="L110">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostVariance = null;</span>
-<span class="fc" id="L111">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostExpectation = null;</span>
+<span class="fc" id="L109">	private double _dblExecutionTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private org.drip.function.definition.R1ToR1 _r1ToR1Holdings = null;</span>
+<span class="fc" id="L111">	private org.drip.function.definition.R1ToR1 _r1ToR1TradeRate = null;</span>
+<span class="fc" id="L112">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostVariance = null;</span>
+<span class="fc" id="L113">	private org.drip.function.definition.R1ToR1 _r1ToR1TransactionCostExpectation = null;</span>
 
 	/**
 	 * Construct a Standard Instance of ContinuousTradingTrajectory
@@ -127,26 +129,26 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation,
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance)
 	{
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == r1ToR1Holdings) return null;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == r1ToR1Holdings) return null;</span>
 
-<span class="nc" id="L132">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L133">		{</span>
+<span class="nc" id="L134">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L135">		{</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L138">				return r1ToR1Holdings.derivative (dblVariate, 1);</span>
+<span class="nc" id="L140">				return r1ToR1Holdings.derivative (dblVariate, 1);</span>
 			}
 		};
 
 		try {
-<span class="nc" id="L143">			return new ContinuousTradingTrajectory (dblExecutionTime, r1ToR1Holdings, r1ToR1TradeRate,</span>
+<span class="nc" id="L145">			return new ContinuousTradingTrajectory (dblExecutionTime, r1ToR1Holdings, r1ToR1TradeRate,</span>
 				r1ToR1TransactionCostExpectation, r1ToR1TransactionCostVariance);
-<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L146">			e.printStackTrace();</span>
+<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L148">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L149">		return null;</span>
+<span class="nc" id="L151">		return null;</span>
 	}
 
 	/**
@@ -168,45 +170,45 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation,
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance)
 		throws java.lang.Exception
-<span class="fc" id="L171">	{</span>
-<span class="pc bpc" id="L172" title="6 of 12 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExecutionTime = dblExecutionTime) || 0. &gt;=</span>
+<span class="fc" id="L173">	{</span>
+<span class="pc bpc" id="L174" title="6 of 12 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExecutionTime = dblExecutionTime) || 0. &gt;=</span>
 			_dblExecutionTime || null == (_r1ToR1Holdings = r1ToR1Holdings) || null == (_r1ToR1TradeRate =
 				r1ToR1TradeRate) || null == (_r1ToR1TransactionCostExpectation =
 					r1ToR1TransactionCostExpectation) || null == (_r1ToR1TransactionCostVariance =
 						r1ToR1TransactionCostVariance))
-<span class="nc" id="L177">			throw new java.lang.Exception (&quot;ContinuousTradingTrajectory Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L178">	}</span>
+<span class="nc" id="L179">			throw new java.lang.Exception (&quot;ContinuousTradingTrajectory Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L180">	}</span>
 
 	@Override public double tradeSize()
 	{
 		try {
-<span class="fc" id="L183">			return _r1ToR1Holdings.evaluate (0.);</span>
-<span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L185">			e.printStackTrace();</span>
+<span class="fc" id="L185">			return _r1ToR1Holdings.evaluate (0.);</span>
+<span class="nc" id="L186">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L187">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L188">		return 0.;</span>
+<span class="nc" id="L190">		return 0.;</span>
 	}
 
 	@Override public double executedBlockSize()
 	{
 		try {
-<span class="nc" id="L194">			return _r1ToR1Holdings.evaluate (0.) - _r1ToR1Holdings.evaluate (_dblExecutionTime);</span>
-<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L196">			e.printStackTrace();</span>
+<span class="nc" id="L196">			return _r1ToR1Holdings.evaluate (0.) - _r1ToR1Holdings.evaluate (_dblExecutionTime);</span>
+<span class="nc" id="L197">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L198">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L199">		return 0.;</span>
+<span class="nc" id="L201">		return 0.;</span>
 	}
 
 	@Override public double executionTime()
 	{
-<span class="fc" id="L204">		return _dblExecutionTime;</span>
+<span class="fc" id="L206">		return _dblExecutionTime;</span>
 	}
 
 	@Override public double instantTradeRate()
 	{
-<span class="nc" id="L209">		return executedBlockSize() / executionTime();</span>
+<span class="nc" id="L211">		return executedBlockSize() / executionTime();</span>
 	}
 
 	/**
@@ -217,7 +219,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 holdings()
 	{
-<span class="fc" id="L220">		return _r1ToR1Holdings;</span>
+<span class="fc" id="L222">		return _r1ToR1Holdings;</span>
 	}
 
 	/**
@@ -228,7 +230,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 tradeRate()
 	{
-<span class="fc" id="L231">		return _r1ToR1TradeRate;</span>
+<span class="fc" id="L233">		return _r1ToR1TradeRate;</span>
 	}
 
 	/**
@@ -239,7 +241,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 transactionCostExpectationFunction()
 	{
-<span class="fc" id="L242">		return _r1ToR1TransactionCostExpectation;</span>
+<span class="fc" id="L244">		return _r1ToR1TransactionCostExpectation;</span>
 	}
 
 	/**
@@ -250,7 +252,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 
 	public org.drip.function.definition.R1ToR1 transactionCostVarianceFunction()
 	{
-<span class="fc" id="L253">		return _r1ToR1TransactionCostVariance;</span>
+<span class="fc" id="L255">		return _r1ToR1TransactionCostVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

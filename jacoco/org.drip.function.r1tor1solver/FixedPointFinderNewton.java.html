@@ -84,60 +84,62 @@ package org.drip.function.r1tor1solver;
  * 		Iterating the next search variate using the Newton's method.
  * 	&lt;/li&gt;
  * &lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class FixedPointFinderNewton extends org.drip.function.r1tor1solver.FixedPointFinder {
-<span class="fc" id="L98">	private org.drip.function.r1tor1solver.ExecutionInitializer _ei = null;</span>
+<span class="fc" id="L100">	private org.drip.function.r1tor1solver.ExecutionInitializer _ei = null;</span>
 
 	private double calcVariateOFSlope (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;FixedPointFinderNewton::calcVariateOFSlope =&gt; Invalid input!&quot;);</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;FixedPointFinderNewton::calcVariateOFSlope =&gt; Invalid input!&quot;);</span>
 
-<span class="fc" id="L107">		org.drip.quant.calculus.Differential diff = _of.differential (dblVariate, 1);</span>
+<span class="fc" id="L109">		org.drip.quant.calculus.Differential diff = _of.differential (dblVariate, 1);</span>
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == diff)</span>
-<span class="nc" id="L110">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (null == diff)</span>
+<span class="nc" id="L112">			throw new java.lang.Exception</span>
 				(&quot;FixedPointFinderNewton::calcVariateTargetSlope =&gt; Cannot evaluate Derivative for variate &quot;
 					+ dblVariate);
 
-<span class="fc" id="L114">		return diff.calcSlope (false);</span>
+<span class="fc" id="L116">		return diff.calcSlope (false);</span>
 	}
 
 	@Override protected boolean iterateVariate (
 		final org.drip.function.r1tor1solver.IteratedVariate vi,
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 	{
-<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (null == vi || null == rfop) return false;</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">		if (null == vi || null == rfop) return false;</span>
 
-<span class="fc" id="L123">		double dblVariate = vi.getVariate();</span>
+<span class="fc" id="L125">		double dblVariate = vi.getVariate();</span>
 
 		try {
-<span class="fc" id="L126">			double dblVariateNext = dblVariate - calcVariateOFSlope (dblVariate) * vi.getOF();</span>
+<span class="fc" id="L128">			double dblVariateNext = dblVariate - calcVariateOFSlope (dblVariate) * vi.getOF();</span>
 
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">			return vi.setVariate (dblVariateNext) &amp;&amp; vi.setOF (_of.evaluate (dblVariateNext)) &amp;&amp;</span>
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">				rfop.incrOFDerivCalcs() &amp;&amp; rfop.incrOFCalcs();</span>
-<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L131">			e.printStackTrace();</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">			return vi.setVariate (dblVariateNext) &amp;&amp; vi.setOF (_of.evaluate (dblVariateNext)) &amp;&amp;</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">				rfop.incrOFDerivCalcs() &amp;&amp; rfop.incrOFCalcs();</span>
+<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L133">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L134">		return false;</span>
+<span class="nc" id="L136">		return false;</span>
 	}
 
 	@Override protected org.drip.function.r1tor1solver.ExecutionInitializationOutput initializeVariateZone (
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="fc" id="L140">		return _ei.initializeBracket (ih, _dblOFGoal);</span>
+<span class="fc" id="L142">		return _ei.initializeBracket (ih, _dblOFGoal);</span>
 	}
 
 	/**
@@ -156,9 +158,9 @@ public class FixedPointFinderNewton extends org.drip.function.r1tor1solver.Fixed
 		final boolean bWhine)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L159">		super (dblOFGoal, of, null, bWhine);</span>
+<span class="fc" id="L161">		super (dblOFGoal, of, null, bWhine);</span>
 
-<span class="fc" id="L161">		_ei = new org.drip.function.r1tor1solver.ExecutionInitializer (_of, null, true);</span>
-<span class="fc" id="L162">	}</span>
+<span class="fc" id="L163">		_ei = new org.drip.function.r1tor1solver.ExecutionInitializer (_of, null, true);</span>
+<span class="fc" id="L164">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

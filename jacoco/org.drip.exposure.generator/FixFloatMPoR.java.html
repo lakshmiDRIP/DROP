@@ -68,7 +68,7 @@ package org.drip.exposure.generator;
  * &lt;i&gt;FixFloatMPoR&lt;/i&gt; estimates the MPoR Variation Margin and the Trade Payments for the given Fix Float
  * Component off of the Realized Market Path. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -93,11 +93,13 @@ package org.drip.exposure.generator;
  *  		&lt;/li&gt;
  *  		&lt;li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -105,8 +107,8 @@ package org.drip.exposure.generator;
 
 public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex
 {
-<span class="nc" id="L108">	private org.drip.exposure.generator.FixedStreamMPoR _fixedStreamMPoR = null;</span>
-<span class="nc" id="L109">	private org.drip.exposure.generator.FloatStreamMPoR _floatStreamMPoR = null;</span>
+<span class="nc" id="L110">	private org.drip.exposure.generator.FixedStreamMPoR _fixedStreamMPoR = null;</span>
+<span class="nc" id="L111">	private org.drip.exposure.generator.FloatStreamMPoR _floatStreamMPoR = null;</span>
 
 	/**
 	 * FixFloatMPoR Constructor
@@ -121,22 +123,22 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 		final org.drip.product.rates.FixFloatComponent fixFloatComponent,
 		final double notional)
 		throws java.lang.Exception
-<span class="nc" id="L124">	{</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == fixFloatComponent)</span>
+<span class="nc" id="L126">	{</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == fixFloatComponent)</span>
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;FixFloatMPoR Construtor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;FixFloatMPoR Construtor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L130">		_fixedStreamMPoR = new org.drip.exposure.generator.FixedStreamMPoR (</span>
-<span class="nc" id="L131">			fixFloatComponent.referenceStream(),</span>
+<span class="nc" id="L132">		_fixedStreamMPoR = new org.drip.exposure.generator.FixedStreamMPoR (</span>
+<span class="nc" id="L133">			fixFloatComponent.referenceStream(),</span>
 			notional
 		);
 
-<span class="nc" id="L135">		_floatStreamMPoR = new org.drip.exposure.generator.FloatStreamMPoR (</span>
-<span class="nc" id="L136">			fixFloatComponent.derivedStream(),</span>
+<span class="nc" id="L137">		_floatStreamMPoR = new org.drip.exposure.generator.FloatStreamMPoR (</span>
+<span class="nc" id="L138">			fixFloatComponent.derivedStream(),</span>
 			notional
 		);
-<span class="nc" id="L139">	}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Fixed Stream MPoR
@@ -146,7 +148,7 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 
 	public org.drip.exposure.generator.FixedStreamMPoR fixedStreamMPoR()
 	{
-<span class="nc" id="L149">		return _fixedStreamMPoR;</span>
+<span class="nc" id="L151">		return _fixedStreamMPoR;</span>
 	}
 
 	/**
@@ -157,7 +159,7 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 
 	public org.drip.exposure.generator.FloatStreamMPoR floatStreamMPoR()
 	{
-<span class="nc" id="L160">		return _floatStreamMPoR;</span>
+<span class="nc" id="L162">		return _floatStreamMPoR;</span>
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 
 	public double notional()
 	{
-<span class="nc" id="L171">		return _fixedStreamMPoR.notional();</span>
+<span class="nc" id="L173">		return _fixedStreamMPoR.notional();</span>
 	}
 
 	@Override public double variationMarginEstimate (
@@ -176,10 +178,10 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L179">		return _fixedStreamMPoR.variationMarginEstimate (</span>
+<span class="nc" id="L181">		return _fixedStreamMPoR.variationMarginEstimate (</span>
 			forwardDate,
 			marketPath
-<span class="nc" id="L182">		) + _floatStreamMPoR.variationMarginEstimate (</span>
+<span class="nc" id="L184">		) + _floatStreamMPoR.variationMarginEstimate (</span>
 			forwardDate,
 			marketPath
 		);
@@ -189,39 +191,39 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L192">		org.drip.exposure.mpor.TradePayment fixedStreamTradePayment = _fixedStreamMPoR.tradePayment (</span>
+<span class="nc" id="L194">		org.drip.exposure.mpor.TradePayment fixedStreamTradePayment = _fixedStreamMPoR.tradePayment (</span>
 			forwardDate,
 			marketPath
 		);
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (null == fixedStreamTradePayment)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (null == fixedStreamTradePayment)</span>
 		{
-<span class="nc" id="L199">			return null;</span>
+<span class="nc" id="L201">			return null;</span>
 		}
 
-<span class="nc" id="L202">		org.drip.exposure.mpor.TradePayment floatStreamTradePayment = _floatStreamMPoR.tradePayment (</span>
+<span class="nc" id="L204">		org.drip.exposure.mpor.TradePayment floatStreamTradePayment = _floatStreamMPoR.tradePayment (</span>
 			forwardDate,
 			marketPath
 		);
 	
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (null == floatStreamTradePayment)</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (null == floatStreamTradePayment)</span>
 		{
-<span class="nc" id="L209">			return null;</span>
+<span class="nc" id="L211">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L214">			return new org.drip.exposure.mpor.TradePayment (</span>
-<span class="nc" id="L215">				fixedStreamTradePayment.dealer() + floatStreamTradePayment.dealer(),</span>
-<span class="nc" id="L216">				fixedStreamTradePayment.client() + floatStreamTradePayment.client()</span>
+<span class="nc" id="L216">			return new org.drip.exposure.mpor.TradePayment (</span>
+<span class="nc" id="L217">				fixedStreamTradePayment.dealer() + floatStreamTradePayment.dealer(),</span>
+<span class="nc" id="L218">				fixedStreamTradePayment.client() + floatStreamTradePayment.client()</span>
 			);
 		}
-<span class="nc" id="L219">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L221">			e.printStackTrace();</span>
+<span class="nc" id="L223">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L224">		return null;</span>
+<span class="nc" id="L226">		return null;</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -229,54 +231,54 @@ public class FixFloatMPoR implements org.drip.exposure.mpor.VariationMarginTrade
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L232">		org.drip.exposure.mpor.TradePayment[] fixedStreamTradePaymentArray =</span>
-<span class="nc" id="L233">			_fixedStreamMPoR.denseTradePaymentArray (</span>
+<span class="nc" id="L234">		org.drip.exposure.mpor.TradePayment[] fixedStreamTradePaymentArray =</span>
+<span class="nc" id="L235">			_fixedStreamMPoR.denseTradePaymentArray (</span>
 				startDate,
 				endDate,
 				marketPath
 			);
 
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (null == fixedStreamTradePaymentArray)</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (null == fixedStreamTradePaymentArray)</span>
 		{
-<span class="nc" id="L241">			return null;</span>
+<span class="nc" id="L243">			return null;</span>
 		}
 
-<span class="nc" id="L244">		org.drip.exposure.mpor.TradePayment[] floatStreamTradePaymentArray =</span>
-<span class="nc" id="L245">			_floatStreamMPoR.denseTradePaymentArray (</span>
+<span class="nc" id="L246">		org.drip.exposure.mpor.TradePayment[] floatStreamTradePaymentArray =</span>
+<span class="nc" id="L247">			_floatStreamMPoR.denseTradePaymentArray (</span>
 				startDate,
 				endDate,
 				marketPath
 			);
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (null == floatStreamTradePaymentArray)</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (null == floatStreamTradePaymentArray)</span>
 		{
-<span class="nc" id="L253">			return null;</span>
+<span class="nc" id="L255">			return null;</span>
 		}
 
-<span class="nc" id="L256">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L257">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L258">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L259">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L264">				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (</span>
-<span class="nc" id="L265">					fixedStreamTradePaymentArray[denseDateIndex].dealer() +</span>
-<span class="nc" id="L266">						floatStreamTradePaymentArray[denseDateIndex].dealer(),</span>
-<span class="nc" id="L267">					fixedStreamTradePaymentArray[denseDateIndex].client() +</span>
-<span class="nc" id="L268">						floatStreamTradePaymentArray[denseDateIndex].client()</span>
+<span class="nc" id="L266">				denseTradePaymentArray[denseDateIndex] = new org.drip.exposure.mpor.TradePayment (</span>
+<span class="nc" id="L267">					fixedStreamTradePaymentArray[denseDateIndex].dealer() +</span>
+<span class="nc" id="L268">						floatStreamTradePaymentArray[denseDateIndex].dealer(),</span>
+<span class="nc" id="L269">					fixedStreamTradePaymentArray[denseDateIndex].client() +</span>
+<span class="nc" id="L270">						floatStreamTradePaymentArray[denseDateIndex].client()</span>
 				);
 			}
-<span class="nc" id="L271">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L273">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L273">				e.printStackTrace();</span>
+<span class="nc" id="L275">				e.printStackTrace();</span>
 
-<span class="nc" id="L275">				return null;</span>
-<span class="nc" id="L276">			}</span>
+<span class="nc" id="L277">				return null;</span>
+<span class="nc" id="L278">			}</span>
 		}
 
-<span class="nc" id="L279">		return denseTradePaymentArray;</span>
+<span class="nc" id="L281">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

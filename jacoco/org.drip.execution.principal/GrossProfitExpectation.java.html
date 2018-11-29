@@ -68,9 +68,9 @@ package org.drip.execution.principal;
 
 /**
  * &lt;i&gt;GrossProfitExpectation&lt;/i&gt; implements the R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Univariate that computes the
- *  Explicit Profit of a Principal Execution given the Optimal Trajectory. The References are:
+ * Explicit Profit of a Principal Execution given the Optimal Trajectory. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 	&lt;li&gt;
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -91,19 +91,21 @@ package org.drip.execution.principal;
  * 			57-62
  * 	&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 {
-<span class="nc" id="L105">	private double _dblNumExecutedUnit = java.lang.Double.NaN;</span>
-<span class="nc" id="L106">	private double _dblTransactionCost = java.lang.Double.NaN;</span>
+<span class="nc" id="L107">	private double _dblNumExecutedUnit = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private double _dblTransactionCost = java.lang.Double.NaN;</span>
 
 	/**
 	 * GrossProfitExpectation Constructor
@@ -119,12 +121,12 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 		final double dblTransactionCost)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L122">		super (null);</span>
+<span class="nc" id="L124">		super (null);</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNumExecutedUnit = dblNumExecutedUnit) ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCost = dblTransactionCost))</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;GrossProfitExpectation Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L127">	}</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNumExecutedUnit = dblNumExecutedUnit) ||</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCost = dblTransactionCost))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;GrossProfitExpectation Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">	}</span>
 
 	/**
 	 * Retrieve the Execution Transaction Cost
@@ -134,7 +136,7 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 
 	public double transactionCost()
 	{
-<span class="nc" id="L137">		return _dblTransactionCost;</span>
+<span class="nc" id="L139">		return _dblTransactionCost;</span>
 	}
 
 	/**
@@ -145,17 +147,17 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 
 	public double numExecutedUnit()
 	{
-<span class="nc" id="L148">		return _dblNumExecutedUnit;</span>
+<span class="nc" id="L150">		return _dblNumExecutedUnit;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblUnitDiscount)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUnitDiscount))</span>
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;GrossProfitExpectation::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUnitDiscount))</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;GrossProfitExpectation::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L158">		return dblUnitDiscount * _dblNumExecutedUnit - _dblTransactionCost;</span>
+<span class="nc" id="L160">		return dblUnitDiscount * _dblNumExecutedUnit - _dblTransactionCost;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

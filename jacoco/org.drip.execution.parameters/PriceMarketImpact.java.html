@@ -68,9 +68,9 @@ package org.drip.execution.parameters;
 
 /**
  * &lt;i&gt;PriceMarketImpact&lt;/i&gt; contains the Price Market Impact Inputs used in the Construction of the Impact
- *  Parameters for the Almgren and Chriss (2000) Optimal Trajectory Generation Scheme. The References are:
+ * Parameters for the Almgren and Chriss (2000) Optimal Trajectory Generation Scheme. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -93,33 +93,35 @@ package org.drip.execution.parameters;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class PriceMarketImpact {
-<span class="fc" id="L107">	private double _dblPermanentImpactFactor = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblTemporaryImpactFactor = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private org.drip.execution.parameters.AssetTransactionSettings _ats = null;</span>
+<span class="fc" id="L109">	private double _dblPermanentImpactFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblTemporaryImpactFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private org.drip.execution.parameters.AssetTransactionSettings _ats = null;</span>
 
 	protected PriceMarketImpact (
 		final org.drip.execution.parameters.AssetTransactionSettings ats,
 		final double dblPermanentImpactFactor,
 		final double dblTemporaryImpactFactor)
 		throws java.lang.Exception
-<span class="fc" id="L116">	{</span>
-<span class="pc bpc" id="L117" title="3 of 6 branches missed.">		if (null == (_ats = ats) || !org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpactFactor =</span>
+<span class="fc" id="L118">	{</span>
+<span class="pc bpc" id="L119" title="3 of 6 branches missed.">		if (null == (_ats = ats) || !org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpactFactor =</span>
 			dblPermanentImpactFactor) || 0. &gt; _dblPermanentImpactFactor ||
-<span class="pc bpc" id="L119" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpactFactor =</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpactFactor =</span>
 					dblTemporaryImpactFactor) || 0. &gt;= _dblTemporaryImpactFactor)
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;PriceMarketImpact Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L122">	}</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;PriceMarketImpact Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L124">	}</span>
 
 	/**
 	 * Retrieve the AssetTransactionSettings Instance
@@ -129,7 +131,7 @@ public abstract class PriceMarketImpact {
 
 	public org.drip.execution.parameters.AssetTransactionSettings ats()
 	{
-<span class="fc" id="L132">		return _ats;</span>
+<span class="fc" id="L134">		return _ats;</span>
 	}
 
 	/**
@@ -140,7 +142,7 @@ public abstract class PriceMarketImpact {
 
 	public double permanentImpactFactor()
 	{
-<span class="fc" id="L143">		return _dblPermanentImpactFactor;</span>
+<span class="fc" id="L145">		return _dblPermanentImpactFactor;</span>
 	}
 
 	/**
@@ -151,7 +153,7 @@ public abstract class PriceMarketImpact {
 
 	public double temporaryImpactFactor()
 	{
-<span class="fc" id="L154">		return _dblTemporaryImpactFactor;</span>
+<span class="fc" id="L156">		return _dblTemporaryImpactFactor;</span>
 	}
 
 	/**

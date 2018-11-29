@@ -71,21 +71,23 @@ package org.drip.function.r1tor1solver;
  */
 
 /**
- * 	&lt;i&gt;IteratedVariate&lt;/i&gt; holds the variate and the corresponding value for the objective function during
+ * &lt;i&gt;IteratedVariate&lt;/i&gt; holds the variate and the corresponding value for the objective function during
  * each iteration.
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class IteratedVariate {
-<span class="fc" id="L87">	private double _dblOF = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private double _dblVariate = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private double _dblOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _dblVariate = java.lang.Double.NaN;</span>
 
 	/**
 	 * IteratedVariate constructor
@@ -100,12 +102,12 @@ public class IteratedVariate {
 		final org.drip.function.r1tor1solver.ExecutionInitializationOutput eiop,
 		final double dblOF)
 		throws java.lang.Exception
-<span class="fc" id="L103">	{</span>
-<span class="pc bpc" id="L104" title="2 of 4 branches missed.">		if (null == eiop || !org.drip.quant.common.NumberUtil.IsValid (_dblOF = dblOF))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;IteratedVariate constructor: Invalid Inputs&quot;);</span>
+<span class="fc" id="L105">	{</span>
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">		if (null == eiop || !org.drip.quant.common.NumberUtil.IsValid (_dblOF = dblOF))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;IteratedVariate constructor: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L107">		_dblVariate = eiop.getStartingVariate();</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L109">		_dblVariate = eiop.getStartingVariate();</span>
+<span class="fc" id="L110">	}</span>
 
 	/**
 	 * Retrieve the variate
@@ -115,7 +117,7 @@ public class IteratedVariate {
 
 	public double getVariate()
 	{
-<span class="fc" id="L118">		return _dblVariate;</span>
+<span class="fc" id="L120">		return _dblVariate;</span>
 	}
 
 	/**
@@ -129,10 +131,10 @@ public class IteratedVariate {
 	public boolean setVariate (
 		final double dblVariate)
 	{
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate)) return false;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate)) return false;</span>
 
-<span class="fc" id="L134">		_dblVariate = dblVariate;</span>
-<span class="fc" id="L135">		return true;</span>
+<span class="fc" id="L136">		_dblVariate = dblVariate;</span>
+<span class="fc" id="L137">		return true;</span>
 	}
 
 	/**
@@ -143,7 +145,7 @@ public class IteratedVariate {
 
 	public double getOF()
 	{
-<span class="fc" id="L146">		return _dblOF;</span>
+<span class="fc" id="L148">		return _dblOF;</span>
 	}
 
 	/**
@@ -157,10 +159,10 @@ public class IteratedVariate {
 	public boolean setOF (
 		final double dblOF)
 	{
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOF)) return false;</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOF)) return false;</span>
 
-<span class="fc" id="L162">		_dblOF = dblOF;</span>
-<span class="fc" id="L163">		return true;</span>
+<span class="fc" id="L164">		_dblOF = dblOF;</span>
+<span class="fc" id="L165">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

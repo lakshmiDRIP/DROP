@@ -72,19 +72,21 @@ package org.drip.function.r1tor1;
 /**
  * &lt;i&gt;UnivariateConvolution&lt;/i&gt; provides the evaluation of the Convolution au1 * au2 and its derivatives for
  * a specified variate.
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L86">	private org.drip.function.definition.R1ToR1 _au1 = null;</span>
-<span class="fc" id="L87">	private org.drip.function.definition.R1ToR1 _au2 = null;</span>
+<span class="fc" id="L88">	private org.drip.function.definition.R1ToR1 _au1 = null;</span>
+<span class="fc" id="L89">	private org.drip.function.definition.R1ToR1 _au2 = null;</span>
 
 	/**
 	 * Construct a PolynomialMirrorCross instance
@@ -100,20 +102,20 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final org.drip.function.definition.R1ToR1 au2)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L103">		super (null);</span>
+<span class="fc" id="L105">		super (null);</span>
 
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (null == (_au1 = au1) || null == (_au2 = au2))</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;Convolution ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (null == (_au1 = au1) || null == (_au2 = au2))</span>
+<span class="nc" id="L108">			throw new java.lang.Exception (&quot;Convolution ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L109">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;Convolution::evaluate =&gt; Invalid Input&quot;);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;Convolution::evaluate =&gt; Invalid Input&quot;);</span>
 
-<span class="fc" id="L116">		return _au1.evaluate (dblVariate) * _au2.evaluate (dblVariate);</span>
+<span class="fc" id="L118">		return _au1.evaluate (dblVariate) * _au2.evaluate (dblVariate);</span>
 	}
 
 	@Override public double derivative (
@@ -121,13 +123,13 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L124">		double dblDerivative = _au1.evaluate (dblVariate) * _au2.derivative (dblVariate, iOrder);</span>
+<span class="fc" id="L126">		double dblDerivative = _au1.evaluate (dblVariate) * _au2.derivative (dblVariate, iOrder);</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 1; i &lt; iOrder; ++i)</span>
-<span class="fc" id="L127">			dblDerivative += org.drip.quant.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,</span>
-<span class="fc" id="L128">				i) * _au2.derivative (dblVariate, iOrder - i);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		for (int i = 1; i &lt; iOrder; ++i)</span>
+<span class="fc" id="L129">			dblDerivative += org.drip.quant.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,</span>
+<span class="fc" id="L130">				i) * _au2.derivative (dblVariate, iOrder - i);</span>
 
-<span class="fc" id="L130">		return dblDerivative + _au1.derivative (dblVariate, iOrder) * _au2.evaluate (dblVariate);</span>
+<span class="fc" id="L132">		return dblDerivative + _au1.derivative (dblVariate, iOrder) * _au2.evaluate (dblVariate);</span>
 	}
 
 	@Override public double integrate (
@@ -135,11 +137,11 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L142">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L144">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

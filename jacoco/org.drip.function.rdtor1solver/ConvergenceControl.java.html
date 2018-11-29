@@ -69,11 +69,13 @@ package org.drip.function.rdtor1solver;
 /**
  * &lt;i&gt;ConvergenceControl&lt;/i&gt; contains the R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Convergence Control/Tuning
  * Parameters.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -93,10 +95,10 @@ public class ConvergenceControl {
 
 	public static final int VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE = 2;
 
-<span class="fc" id="L96">	private int _iNumFinderSteps = -1;</span>
-<span class="fc" id="L97">	private double _dblAbsoluteTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L98">	private double _dblRelativeTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L99">	private int _iConvergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
+<span class="fc" id="L98">	private int _iNumFinderSteps = -1;</span>
+<span class="fc" id="L99">	private double _dblAbsoluteTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private double _dblRelativeTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private int _iConvergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
 
 	/**
 	 * Construct a Standard ConvergenceControl Instance
@@ -107,12 +109,12 @@ public class ConvergenceControl {
 	public static ConvergenceControl Standard()
 	{
 		try {
-<span class="fc" id="L110">			return new ConvergenceControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02, 1.0e-06, 70);</span>
-<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="fc" id="L112">			return new ConvergenceControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02, 1.0e-06, 70);</span>
+<span class="nc" id="L113">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L114">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L115">		return null;</span>
+<span class="nc" id="L117">		return null;</span>
 	}
 
 	/**
@@ -132,14 +134,14 @@ public class ConvergenceControl {
 		final double dblAbsoluteTolerance,
 		final int iNumFinderSteps)
 		throws java.lang.Exception
-<span class="fc" id="L135">	{</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||</span>
-<span class="pc bpc" id="L137" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 &gt;</span>
+<span class="fc" id="L137">	{</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 &gt;</span>
 				(_iNumFinderSteps = iNumFinderSteps))
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L141">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L141">		_iConvergenceType = iConvergenceType;</span>
-<span class="fc" id="L142">	}</span>
+<span class="fc" id="L143">		_iConvergenceType = iConvergenceType;</span>
+<span class="fc" id="L144">	}</span>
 
 	/**
 	 * Retrieve the Convergence Type
@@ -149,7 +151,7 @@ public class ConvergenceControl {
 
 	public int convergenceType()
 	{
-<span class="fc" id="L152">		return _iConvergenceType;</span>
+<span class="fc" id="L154">		return _iConvergenceType;</span>
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class ConvergenceControl {
 
 	public int numFinderSteps()
 	{
-<span class="nc" id="L163">		return _iNumFinderSteps;</span>
+<span class="nc" id="L165">		return _iNumFinderSteps;</span>
 	}
 
 	/**
@@ -171,7 +173,7 @@ public class ConvergenceControl {
 
 	public double relativeTolerance()
 	{
-<span class="fc" id="L174">		return _dblRelativeTolerance;</span>
+<span class="fc" id="L176">		return _dblRelativeTolerance;</span>
 	}
 
 	/**
@@ -182,7 +184,7 @@ public class ConvergenceControl {
 
 	public double absoluteTolerance()
 	{
-<span class="fc" id="L185">		return _dblAbsoluteTolerance;</span>
+<span class="fc" id="L187">		return _dblAbsoluteTolerance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

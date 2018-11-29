@@ -68,7 +68,7 @@ package org.drip.exposure.csatimeline;
  * &lt;i&gt;EventSequence&lt;/i&gt; holds the BCBS/IOSCO prescribed Events Time-line occurring Margin Period. The
  * References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
@@ -92,11 +92,13 @@ package org.drip.exposure.csatimeline;
  *  				Credit Risk&lt;/i&gt; &lt;b&gt;5 (4)&lt;/b&gt; 3-27
  *  		&lt;/li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline&quot;&gt;CSA Timeline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline&quot;&gt;CSA Time Line&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -104,19 +106,19 @@ package org.drip.exposure.csatimeline;
 
 public class EventSequence
 {
-<span class="nc" id="L107">	private int _curePeriod = -1;</span>
-<span class="nc" id="L108">	private int _marginFrequency = -1;</span>
-<span class="nc" id="L109">	private java.lang.String _calendarSet = &quot;&quot;;</span>
-<span class="nc" id="L110">	private org.drip.exposure.csatimeline.EventDate _ed = null;</span>
-<span class="nc" id="L111">	private org.drip.exposure.csatimeline.EventDate _etd = null;</span>
-<span class="nc" id="L112">	private org.drip.exposure.csatimeline.EventDate _ped = null;</span>
-<span class="nc" id="L113">	private org.drip.exposure.csatimeline.EventDate _honored = null;</span>
-<span class="nc" id="L114">	private org.drip.exposure.csatimeline.EventDate _valuation = null;</span>
-<span class="nc" id="L115">	private org.drip.exposure.csatimeline.EventDate _nonHonored = null;</span>
-<span class="nc" id="L116">	private org.drip.exposure.csatimeline.EventDate _etdDesignation = null;</span>
-<span class="nc" id="L117">	private org.drip.exposure.csatimeline.EventDate _edCommunication = null;</span>
-<span class="nc" id="L118">	private org.drip.exposure.csatimeline.EventDate _pedCommunication = null;</span>
-<span class="nc" id="L119">	private org.drip.exposure.csatimeline.EventDate _collateralTransferInitiation = null;</span>
+<span class="nc" id="L109">	private int _curePeriod = -1;</span>
+<span class="nc" id="L110">	private int _marginFrequency = -1;</span>
+<span class="nc" id="L111">	private java.lang.String _calendarSet = &quot;&quot;;</span>
+<span class="nc" id="L112">	private org.drip.exposure.csatimeline.EventDate _ed = null;</span>
+<span class="nc" id="L113">	private org.drip.exposure.csatimeline.EventDate _etd = null;</span>
+<span class="nc" id="L114">	private org.drip.exposure.csatimeline.EventDate _ped = null;</span>
+<span class="nc" id="L115">	private org.drip.exposure.csatimeline.EventDate _honored = null;</span>
+<span class="nc" id="L116">	private org.drip.exposure.csatimeline.EventDate _valuation = null;</span>
+<span class="nc" id="L117">	private org.drip.exposure.csatimeline.EventDate _nonHonored = null;</span>
+<span class="nc" id="L118">	private org.drip.exposure.csatimeline.EventDate _etdDesignation = null;</span>
+<span class="nc" id="L119">	private org.drip.exposure.csatimeline.EventDate _edCommunication = null;</span>
+<span class="nc" id="L120">	private org.drip.exposure.csatimeline.EventDate _pedCommunication = null;</span>
+<span class="nc" id="L121">	private org.drip.exposure.csatimeline.EventDate _collateralTransferInitiation = null;</span>
 
 	/**
 	 * Construct an Instance of Aggressive EventSequence
@@ -131,34 +133,34 @@ public class EventSequence
 		final org.drip.analytics.date.JulianDate valuationDate,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (null == valuationDate)</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (null == valuationDate)</span>
 		{
-<span class="nc" id="L136">			return null;</span>
+<span class="nc" id="L138">			return null;</span>
 		}
 
-<span class="nc" id="L139">		org.drip.exposure.csatimeline.EventDate valuation =</span>
-<span class="nc" id="L140">			org.drip.exposure.csatimeline.EventDateBuilder.Valuation (valuationDate);</span>
+<span class="nc" id="L141">		org.drip.exposure.csatimeline.EventDate valuation =</span>
+<span class="nc" id="L142">			org.drip.exposure.csatimeline.EventDateBuilder.Valuation (valuationDate);</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == valuation)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == valuation)</span>
 		{
-<span class="nc" id="L144">			return null;</span>
+<span class="nc" id="L146">			return null;</span>
 		}
 
-<span class="nc" id="L147">		org.drip.exposure.csatimeline.EventDate honored =</span>
-<span class="nc" id="L148">			org.drip.exposure.csatimeline.EventDateBuilder.Honored (</span>
+<span class="nc" id="L149">		org.drip.exposure.csatimeline.EventDate honored =</span>
+<span class="nc" id="L150">			org.drip.exposure.csatimeline.EventDateBuilder.Honored (</span>
 				valuation,
 				calendarSet
 			);
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (null == honored)</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (null == honored)</span>
 		{
-<span class="nc" id="L155">			return null;</span>
+<span class="nc" id="L157">			return null;</span>
 		}
 
-<span class="nc" id="L158">		org.drip.exposure.csatimeline.EventDate nonHonored =</span>
-<span class="nc" id="L159">			org.drip.exposure.csatimeline.EventDateBuilder.NonHonored (</span>
-<span class="nc" id="L160">				org.drip.exposure.csatimeline.EventDateBuilder.Valuation (</span>
-<span class="nc" id="L161">					valuation.date().addBusDays (</span>
+<span class="nc" id="L160">		org.drip.exposure.csatimeline.EventDate nonHonored =</span>
+<span class="nc" id="L161">			org.drip.exposure.csatimeline.EventDateBuilder.NonHonored (</span>
+<span class="nc" id="L162">				org.drip.exposure.csatimeline.EventDateBuilder.Valuation (</span>
+<span class="nc" id="L163">					valuation.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.MARGIN_FREQUENCY_DAILY,
 						calendarSet
 					)
@@ -166,74 +168,74 @@ public class EventSequence
 				calendarSet
 			);
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (null == nonHonored)</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (null == nonHonored)</span>
 		{
-<span class="nc" id="L171">			return null;</span>
+<span class="nc" id="L173">			return null;</span>
 		}
 
-<span class="nc" id="L174">		org.drip.exposure.csatimeline.EventDate ped = org.drip.exposure.csatimeline.EventDateBuilder.PED (</span>
-<span class="nc" id="L175">			nonHonored.date().addBusDays (</span>
+<span class="nc" id="L176">		org.drip.exposure.csatimeline.EventDate ped = org.drip.exposure.csatimeline.EventDateBuilder.PED (</span>
+<span class="nc" id="L177">			nonHonored.date().addBusDays (</span>
 				org.drip.exposure.csatimeline.EventDateBuilder.PED_CALL_OUT_DELAY_AGGRESSIVE,
 				calendarSet
 			)
 		);
 
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null == ped)</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == ped)</span>
 		{
-<span class="nc" id="L183">			return null;</span>
+<span class="nc" id="L185">			return null;</span>
 		}
 
-<span class="nc" id="L186">		org.drip.exposure.csatimeline.EventDate ed =</span>
-<span class="nc" id="L187">			org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (</span>
+<span class="nc" id="L188">		org.drip.exposure.csatimeline.EventDate ed =</span>
+<span class="nc" id="L189">			org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (</span>
 				ped,
 				calendarSet
 			);
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (null == ed)</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (null == ed)</span>
 		{
-<span class="nc" id="L194">			return null;</span>
+<span class="nc" id="L196">			return null;</span>
 		}
 
-<span class="nc" id="L197">		org.drip.exposure.csatimeline.EventDate etdDesignation =</span>
-<span class="nc" id="L198">			org.drip.exposure.csatimeline.EventDateBuilder.ETDDesignation (</span>
-<span class="nc" id="L199">				ped.date().addBusDays (</span>
+<span class="nc" id="L199">		org.drip.exposure.csatimeline.EventDate etdDesignation =</span>
+<span class="nc" id="L200">			org.drip.exposure.csatimeline.EventDateBuilder.ETDDesignation (</span>
+<span class="nc" id="L201">				ped.date().addBusDays (</span>
 					org.drip.exposure.csatimeline.EventDateBuilder.ETD_DESIGNATION_DELAY_AGGRESSIVE,
 					calendarSet
 				)
 			);
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (null == etdDesignation)</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (null == etdDesignation)</span>
 		{
-<span class="nc" id="L207">			return null;</span>
+<span class="nc" id="L209">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L212">			return new EventSequence (</span>
+<span class="nc" id="L214">			return new EventSequence (</span>
 				valuation,
 				honored,
-<span class="nc" id="L215">				org.drip.exposure.csatimeline.EventDateBuilder.RegularCollateralTransferInitiation (</span>
+<span class="nc" id="L217">				org.drip.exposure.csatimeline.EventDateBuilder.RegularCollateralTransferInitiation (</span>
 					honored,
 					calendarSet
 				),
 				nonHonored,
 				ped,
-<span class="nc" id="L221">				org.drip.exposure.csatimeline.EventDateBuilder.PEDCommunication (</span>
-<span class="nc" id="L222">					ped.date().addBusDays (</span>
+<span class="nc" id="L223">				org.drip.exposure.csatimeline.EventDateBuilder.PEDCommunication (</span>
+<span class="nc" id="L224">					ped.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.PED_COMMUNICATION_DELAY_AGGRESSIVE,
 						calendarSet
 					)
 				),
 				ed,
-<span class="nc" id="L228">				org.drip.exposure.csatimeline.EventDateBuilder.EDCommunication (</span>
-<span class="nc" id="L229">					ed.date().addBusDays (</span>
+<span class="nc" id="L230">				org.drip.exposure.csatimeline.EventDateBuilder.EDCommunication (</span>
+<span class="nc" id="L231">					ed.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.ED_COMMUNICATION_DELAY_AGGRESSIVE,
 						calendarSet
 					)
 				),
 				etdDesignation,
-<span class="nc" id="L235">				org.drip.exposure.csatimeline.EventDateBuilder.ETD (</span>
-<span class="nc" id="L236">					etdDesignation.date().addBusDays (</span>
+<span class="nc" id="L237">				org.drip.exposure.csatimeline.EventDateBuilder.ETD (</span>
+<span class="nc" id="L238">					etdDesignation.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.ETD_CALL_OUT_DELAY_AGGRESSIVE,
 						calendarSet
 					)
@@ -243,12 +245,12 @@ public class EventSequence
 				calendarSet
 			);
 		}
-<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L248">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L248">			e.printStackTrace();</span>
+<span class="nc" id="L250">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L251">		return null;</span>
+<span class="nc" id="L253">		return null;</span>
 	}
 
 	/**
@@ -264,34 +266,34 @@ public class EventSequence
 		final org.drip.analytics.date.JulianDate valuationDate,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L267" title="All 2 branches missed.">		if (null == valuationDate)</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (null == valuationDate)</span>
 		{
-<span class="nc" id="L269">			return null;</span>
+<span class="nc" id="L271">			return null;</span>
 		}
 
-<span class="nc" id="L272">		org.drip.exposure.csatimeline.EventDate valuation =</span>
-<span class="nc" id="L273">			org.drip.exposure.csatimeline.EventDateBuilder.Valuation (valuationDate);</span>
+<span class="nc" id="L274">		org.drip.exposure.csatimeline.EventDate valuation =</span>
+<span class="nc" id="L275">			org.drip.exposure.csatimeline.EventDateBuilder.Valuation (valuationDate);</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (null == valuation)</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (null == valuation)</span>
 		{
-<span class="nc" id="L277">			return null;</span>
+<span class="nc" id="L279">			return null;</span>
 		}
 
-<span class="nc" id="L280">		org.drip.exposure.csatimeline.EventDate honored =</span>
-<span class="nc" id="L281">			org.drip.exposure.csatimeline.EventDateBuilder.Honored (</span>
+<span class="nc" id="L282">		org.drip.exposure.csatimeline.EventDate honored =</span>
+<span class="nc" id="L283">			org.drip.exposure.csatimeline.EventDateBuilder.Honored (</span>
 				valuation,
 				calendarSet
 			);
 
-<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (null == honored)</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (null == honored)</span>
 		{
-<span class="nc" id="L288">			return null;</span>
+<span class="nc" id="L290">			return null;</span>
 		}
 
-<span class="nc" id="L291">		org.drip.exposure.csatimeline.EventDate nonHonored =</span>
-<span class="nc" id="L292">			org.drip.exposure.csatimeline.EventDateBuilder.NonHonored (</span>
-<span class="nc" id="L293">				org.drip.exposure.csatimeline.EventDateBuilder.Valuation (</span>
-<span class="nc" id="L294">					valuation.date().addBusDays (</span>
+<span class="nc" id="L293">		org.drip.exposure.csatimeline.EventDate nonHonored =</span>
+<span class="nc" id="L294">			org.drip.exposure.csatimeline.EventDateBuilder.NonHonored (</span>
+<span class="nc" id="L295">				org.drip.exposure.csatimeline.EventDateBuilder.Valuation (</span>
+<span class="nc" id="L296">					valuation.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.MARGIN_FREQUENCY_DAILY,
 						calendarSet
 					)
@@ -299,74 +301,74 @@ public class EventSequence
 				calendarSet
 			);
 
-<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (null == nonHonored)</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (null == nonHonored)</span>
 		{
-<span class="nc" id="L304">			return null;</span>
+<span class="nc" id="L306">			return null;</span>
 		}
 
-<span class="nc" id="L307">		org.drip.exposure.csatimeline.EventDate ped = org.drip.exposure.csatimeline.EventDateBuilder.PED (</span>
-<span class="nc" id="L308">			nonHonored.date().addBusDays (</span>
+<span class="nc" id="L309">		org.drip.exposure.csatimeline.EventDate ped = org.drip.exposure.csatimeline.EventDateBuilder.PED (</span>
+<span class="nc" id="L310">			nonHonored.date().addBusDays (</span>
 				org.drip.exposure.csatimeline.EventDateBuilder.PED_CALL_OUT_DELAY_CONSERVATIVE,
 				calendarSet
 			)
 		);
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (null == ped)</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		if (null == ped)</span>
 		{
-<span class="nc" id="L316">			return null;</span>
+<span class="nc" id="L318">			return null;</span>
 		}
 
-<span class="nc" id="L319">		org.drip.exposure.csatimeline.EventDate ed =</span>
-<span class="nc" id="L320">			org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (</span>
+<span class="nc" id="L321">		org.drip.exposure.csatimeline.EventDate ed =</span>
+<span class="nc" id="L322">			org.drip.exposure.csatimeline.EventDateBuilder.IMA2002ED (</span>
 				ped,
 				calendarSet
 			);
 
-<span class="nc bnc" id="L325" title="All 2 branches missed.">		if (null == ed)</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (null == ed)</span>
 		{
-<span class="nc" id="L327">			return null;</span>
+<span class="nc" id="L329">			return null;</span>
 		}
 
-<span class="nc" id="L330">		org.drip.exposure.csatimeline.EventDate etdDesignation =</span>
-<span class="nc" id="L331">			org.drip.exposure.csatimeline.EventDateBuilder.ETDDesignation (</span>
-<span class="nc" id="L332">				ped.date().addBusDays (</span>
+<span class="nc" id="L332">		org.drip.exposure.csatimeline.EventDate etdDesignation =</span>
+<span class="nc" id="L333">			org.drip.exposure.csatimeline.EventDateBuilder.ETDDesignation (</span>
+<span class="nc" id="L334">				ped.date().addBusDays (</span>
 					org.drip.exposure.csatimeline.EventDateBuilder.ETD_DESIGNATION_DELAY_CONSERVATIVE,
 					calendarSet
 				)
 			);
 
-<span class="nc bnc" id="L338" title="All 2 branches missed.">		if (null == etdDesignation)</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (null == etdDesignation)</span>
 		{
-<span class="nc" id="L340">			return null;</span>
+<span class="nc" id="L342">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L345">			return new EventSequence (</span>
+<span class="nc" id="L347">			return new EventSequence (</span>
 				valuation,
 				honored,
-<span class="nc" id="L348">				org.drip.exposure.csatimeline.EventDateBuilder.RegularCollateralTransferInitiation (</span>
+<span class="nc" id="L350">				org.drip.exposure.csatimeline.EventDateBuilder.RegularCollateralTransferInitiation (</span>
 					honored,
 					calendarSet
 				),
 				nonHonored,
 				ped,
-<span class="nc" id="L354">				org.drip.exposure.csatimeline.EventDateBuilder.PEDCommunication (</span>
-<span class="nc" id="L355">					ped.date().addBusDays (</span>
+<span class="nc" id="L356">				org.drip.exposure.csatimeline.EventDateBuilder.PEDCommunication (</span>
+<span class="nc" id="L357">					ped.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.PED_COMMUNICATION_DELAY_CONSERVATIVE,
 						calendarSet
 					)
 				),
 				ed,
-<span class="nc" id="L361">				org.drip.exposure.csatimeline.EventDateBuilder.EDCommunication (</span>
-<span class="nc" id="L362">					ed.date().addBusDays (</span>
+<span class="nc" id="L363">				org.drip.exposure.csatimeline.EventDateBuilder.EDCommunication (</span>
+<span class="nc" id="L364">					ed.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.ED_COMMUNICATION_DELAY_CONSERVATIVE,
 						calendarSet
 					)
 				),
 				etdDesignation,
-<span class="nc" id="L368">				org.drip.exposure.csatimeline.EventDateBuilder.ETD (</span>
-<span class="nc" id="L369">					etdDesignation.date().addBusDays (</span>
+<span class="nc" id="L370">				org.drip.exposure.csatimeline.EventDateBuilder.ETD (</span>
+<span class="nc" id="L371">					etdDesignation.date().addBusDays (</span>
 						org.drip.exposure.csatimeline.EventDateBuilder.ETD_CALL_OUT_DELAY_CONSERVATIVE,
 						calendarSet
 					)
@@ -376,12 +378,12 @@ public class EventSequence
 				calendarSet
 			);
 		}
-<span class="nc" id="L379">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L381">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L381">			e.printStackTrace();</span>
+<span class="nc" id="L383">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L384">		return null;</span>
+<span class="nc" id="L386">		return null;</span>
 	}
 
 	/**
@@ -417,8 +419,8 @@ public class EventSequence
 		final int curePeriod,
 		final java.lang.String calendarSet)
 		throws java.lang.Exception
-<span class="nc" id="L420">	{</span>
-<span class="nc bnc" id="L421" title="All 24 branches missed.">		if (null == (_valuation = valuation) ||</span>
+<span class="nc" id="L422">	{</span>
+<span class="nc bnc" id="L423" title="All 24 branches missed.">		if (null == (_valuation = valuation) ||</span>
 			null == (_honored = honored) ||
 			null == (_collateralTransferInitiation = collateralTransferInitiation) ||
 			null == (_nonHonored = nonHonored) ||
@@ -431,11 +433,11 @@ public class EventSequence
 			0 &gt;= (_marginFrequency = marginFrequency) ||
 			0 &gt;= (_curePeriod = curePeriod))
 		{
-<span class="nc" id="L434">			throw new java.lang.Exception (&quot;EventSequence Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L436">			throw new java.lang.Exception (&quot;EventSequence Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L437">		_calendarSet = calendarSet;</span>
-<span class="nc" id="L438">	}</span>
+<span class="nc" id="L439">		_calendarSet = calendarSet;</span>
+<span class="nc" id="L440">	}</span>
 
 	/**
 	 * Retrieve the CSA Calendar Set
@@ -445,7 +447,7 @@ public class EventSequence
 
 	public java.lang.String calendarSet()
 	{
-<span class="nc" id="L448">		return _calendarSet;</span>
+<span class="nc" id="L450">		return _calendarSet;</span>
 	}
 
 	/**
@@ -456,7 +458,7 @@ public class EventSequence
 
 	public int marginFrequency()
 	{
-<span class="nc" id="L459">		return _marginFrequency;</span>
+<span class="nc" id="L461">		return _marginFrequency;</span>
 	}
 
 	/**
@@ -467,7 +469,7 @@ public class EventSequence
 
 	public int curePeriod()
 	{
-<span class="nc" id="L470">		return _curePeriod;</span>
+<span class="nc" id="L472">		return _curePeriod;</span>
 	}
 
 	/**
@@ -478,7 +480,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate valuation()
 	{
-<span class="nc" id="L481">		return _valuation;</span>
+<span class="nc" id="L483">		return _valuation;</span>
 	}
 
 	/**
@@ -489,7 +491,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate honored()
 	{
-<span class="nc" id="L492">		return _honored;</span>
+<span class="nc" id="L494">		return _honored;</span>
 	}
 
 	/**
@@ -500,7 +502,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate collateralTransferInitiation()
 	{
-<span class="nc" id="L503">		return _collateralTransferInitiation;</span>
+<span class="nc" id="L505">		return _collateralTransferInitiation;</span>
 	}
 
 	/**
@@ -511,7 +513,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate nonHonored()
 	{
-<span class="nc" id="L514">		return _nonHonored;</span>
+<span class="nc" id="L516">		return _nonHonored;</span>
 	}
 
 	/**
@@ -522,7 +524,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate ped()
 	{
-<span class="nc" id="L525">		return _ped;</span>
+<span class="nc" id="L527">		return _ped;</span>
 	}
 
 	/**
@@ -533,7 +535,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate pedCommunication()
 	{
-<span class="nc" id="L536">		return _pedCommunication;</span>
+<span class="nc" id="L538">		return _pedCommunication;</span>
 	}
 
 	/**
@@ -544,7 +546,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate ed()
 	{
-<span class="nc" id="L547">		return _ed;</span>
+<span class="nc" id="L549">		return _ed;</span>
 	}
 
 	/**
@@ -555,7 +557,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate edCommunication()
 	{
-<span class="nc" id="L558">		return _edCommunication;</span>
+<span class="nc" id="L560">		return _edCommunication;</span>
 	}
 
 	/**
@@ -566,7 +568,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate etdDesignation()
 	{
-<span class="nc" id="L569">		return _etdDesignation;</span>
+<span class="nc" id="L571">		return _etdDesignation;</span>
 	}
 
 	/**
@@ -577,7 +579,7 @@ public class EventSequence
 
 	public org.drip.exposure.csatimeline.EventDate etd()
 	{
-<span class="nc" id="L580">		return _etd;</span>
+<span class="nc" id="L582">		return _etd;</span>
 	}
 
 	/**
@@ -588,7 +590,7 @@ public class EventSequence
 
 	public org.drip.analytics.date.JulianDate marginPeriodStart()
 	{
-<span class="nc" id="L591">		return _honored.date();</span>
+<span class="nc" id="L593">		return _honored.date();</span>
 	}
 
 	/**
@@ -599,7 +601,7 @@ public class EventSequence
 
 	public org.drip.analytics.date.JulianDate marginPeriodEnd()
 	{
-<span class="nc" id="L602">		return _etd.date();</span>
+<span class="nc" id="L604">		return _etd.date();</span>
 	}
 
 	/**
@@ -610,7 +612,7 @@ public class EventSequence
 
 	public int marginDuration()
 	{
-<span class="nc" id="L613">		return _etd.date().julian() - _honored.date().julian();</span>
+<span class="nc" id="L615">		return _etd.date().julian() - _honored.date().julian();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

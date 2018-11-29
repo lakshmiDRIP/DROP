@@ -68,11 +68,11 @@ package org.drip.execution.adaptive;
 
 /**
  * &lt;i&gt;CoordinatedVariationTrajectoryGenerator&lt;/i&gt; implements the Continuous HJB-based Single Step Optimal
- *  Cost Trajectory using the Coordinated Variation Version of the Stochastic Volatility and the Transaction
- *  Function arising from the Realization of the Market State Variable as described in the &quot;Trading Time&quot;
- *  Model. The References are:
+ * Cost Trajectory using the Coordinated Variation Version of the Stochastic Volatility and the Transaction
+ * Function arising from the Realization of the Market State Variable as described in the &quot;Trading Time&quot;
+ * Model. The References are:
  * 
- * 	&lt;br&gt;
+ * 	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -95,11 +95,13 @@ package org.drip.execution.adaptive;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -119,31 +121,31 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public static final int TRADE_RATE_ZERO_INITIALIZATION = 2;
 
-<span class="fc" id="L122">	private org.drip.execution.strategy.OrderSpecification _os = null;</span>
-<span class="fc" id="L123">	private int _iTradeRateInitializer = TRADE_RATE_ZERO_INITIALIZATION;</span>
-<span class="fc" id="L124">	private org.drip.execution.tradingtime.CoordinatedVariation _cv = null;</span>
-<span class="fc" id="L125">	private org.drip.execution.risk.MeanVarianceObjectiveUtility _mvou = null;</span>
-<span class="fc" id="L126">	private org.drip.execution.hjb.NonDimensionalCostEvolver _ndce = null;</span>
+<span class="fc" id="L124">	private org.drip.execution.strategy.OrderSpecification _os = null;</span>
+<span class="fc" id="L125">	private int _iTradeRateInitializer = TRADE_RATE_ZERO_INITIALIZATION;</span>
+<span class="fc" id="L126">	private org.drip.execution.tradingtime.CoordinatedVariation _cv = null;</span>
+<span class="fc" id="L127">	private org.drip.execution.risk.MeanVarianceObjectiveUtility _mvou = null;</span>
+<span class="fc" id="L128">	private org.drip.execution.hjb.NonDimensionalCostEvolver _ndce = null;</span>
 
 	private org.drip.execution.dynamics.LinearPermanentExpectationParameters realizedLPEP (
 		final double dblMarketState)
 	{
 		try {
-<span class="fc" id="L132">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (new</span>
+<span class="fc" id="L134">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (new</span>
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-<span class="fc" id="L134">					org.drip.function.r1tor1.FlatUnivariate (_cv.referenceVolatility() * java.lang.Math.exp</span>
-<span class="fc" id="L135">						(-0.5 * dblMarketState)), 0.), new</span>
+<span class="fc" id="L136">					org.drip.function.r1tor1.FlatUnivariate (_cv.referenceVolatility() * java.lang.Math.exp</span>
+<span class="fc" id="L137">						(-0.5 * dblMarketState)), 0.), new</span>
 							org.drip.execution.profiletime.UniformParticipationRateLinear
-<span class="fc" id="L137">								(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
+<span class="fc" id="L139">								(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
 									org.drip.execution.profiletime.UniformParticipationRateLinear
 										(org.drip.execution.impact.ParticipationRateLinear.SlopeOnly
-<span class="fc" id="L140">											(_cv.referenceLiquidity() * java.lang.Math.exp</span>
-<span class="fc" id="L141">												(dblMarketState))));</span>
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="fc" id="L142">											(_cv.referenceLiquidity() * java.lang.Math.exp</span>
+<span class="fc" id="L143">												(dblMarketState))));</span>
+<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	/**
@@ -165,13 +167,13 @@ public class CoordinatedVariationTrajectoryGenerator {
 		final org.drip.execution.hjb.NonDimensionalCostEvolver ndce,
 		final int iTradeRateInitializer)
 		throws java.lang.Exception
-<span class="fc" id="L168">	{</span>
-<span class="pc bpc" id="L169" title="5 of 12 branches missed.">		if (null == (_os = os) || null == (_cv = cv) || null == (_mvou = mvou) || null == (_ndce = ndce) ||</span>
+<span class="fc" id="L170">	{</span>
+<span class="pc bpc" id="L171" title="5 of 12 branches missed.">		if (null == (_os = os) || null == (_cv = cv) || null == (_mvou = mvou) || null == (_ndce = ndce) ||</span>
 			(TRADE_RATE_STATIC_INITIALIZATION != (_iTradeRateInitializer = iTradeRateInitializer) &amp;&amp;
 				TRADE_RATE_ZERO_INITIALIZATION != _iTradeRateInitializer))
-<span class="nc" id="L172">			throw new java.lang.Exception</span>
+<span class="nc" id="L174">			throw new java.lang.Exception</span>
 				(&quot;CoordinatedVariationTrajectoryGenerator Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L174">	}</span>
+<span class="fc" id="L176">	}</span>
 
 	/**
 	 * Retrieve the Trade Rate Initialization Indicator
@@ -181,7 +183,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public int tradeRateInitializer()
 	{
-<span class="nc" id="L184">		return _iTradeRateInitializer;</span>
+<span class="nc" id="L186">		return _iTradeRateInitializer;</span>
 	}
 
 	/**
@@ -192,7 +194,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public org.drip.execution.strategy.OrderSpecification orderSpecification()
 	{
-<span class="nc" id="L195">		return _os;</span>
+<span class="nc" id="L197">		return _os;</span>
 	}
 
 	/**
@@ -203,7 +205,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public org.drip.execution.tradingtime.CoordinatedVariation coordinatedVariationConstraint()
 	{
-<span class="nc" id="L206">		return _cv;</span>
+<span class="nc" id="L208">		return _cv;</span>
 	}
 
 	/**
@@ -214,7 +216,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public org.drip.execution.hjb.NonDimensionalCostEvolver evolver()
 	{
-<span class="nc" id="L217">		return _ndce;</span>
+<span class="nc" id="L219">		return _ndce;</span>
 	}
 
 	/**
@@ -225,7 +227,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public org.drip.execution.risk.MeanVarianceObjectiveUtility objectiveUtility()
 	{
-<span class="nc" id="L228">		return _mvou;</span>
+<span class="nc" id="L230">		return _mvou;</span>
 	}
 
 	/**
@@ -236,30 +238,30 @@ public class CoordinatedVariationTrajectoryGenerator {
 
 	public org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant trajectoryDeterminant()
 	{
-<span class="fc" id="L239">		double dblExecutionSize = _os.size();</span>
+<span class="fc" id="L241">		double dblExecutionSize = _os.size();</span>
 
-<span class="fc" id="L241">		double dblReferenceLiquidity = _cv.referenceLiquidity();</span>
+<span class="fc" id="L243">		double dblReferenceLiquidity = _cv.referenceLiquidity();</span>
 
-<span class="fc" id="L243">		double dblReferenceVolatility = _cv.referenceVolatility();</span>
+<span class="fc" id="L245">		double dblReferenceVolatility = _cv.referenceVolatility();</span>
 
-<span class="fc" id="L245">		double dblRelaxationTime = _ndce.ornsteinUnlenbeckProcess().referenceRelaxationTime();</span>
+<span class="fc" id="L247">		double dblRelaxationTime = _ndce.ornsteinUnlenbeckProcess().referenceRelaxationTime();</span>
 
-<span class="fc" id="L247">		double dblMeanMarketUrgency = _cv.referenceVolatility() * java.lang.Math.sqrt (_mvou.riskAversion() /</span>
+<span class="fc" id="L249">		double dblMeanMarketUrgency = _cv.referenceVolatility() * java.lang.Math.sqrt (_mvou.riskAversion() /</span>
 			dblReferenceLiquidity);
 
-<span class="fc" id="L250">		double dblTradeRateScale = dblExecutionSize / dblRelaxationTime;</span>
+<span class="fc" id="L252">		double dblTradeRateScale = dblExecutionSize / dblRelaxationTime;</span>
 
 		try {
-<span class="fc" id="L253">			return new org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant</span>
+<span class="fc" id="L255">			return new org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant</span>
 				(dblExecutionSize, dblRelaxationTime, dblReferenceLiquidity * dblExecutionSize *
 					dblExecutionSize / dblTradeRateScale, dblTradeRateScale, dblMeanMarketUrgency,
 						dblMeanMarketUrgency * dblRelaxationTime, dblReferenceLiquidity * dblExecutionSize /
-<span class="fc" id="L257">							dblReferenceVolatility * java.lang.Math.pow (_os.maxExecutionTime(), -1.5));</span>
-<span class="nc" id="L258">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L259">			e.printStackTrace();</span>
+<span class="fc" id="L259">							dblReferenceVolatility * java.lang.Math.pow (_os.maxExecutionTime(), -1.5));</span>
+<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L261">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L262">		return null;</span>
+<span class="nc" id="L264">		return null;</span>
 	}
 
 	/**
@@ -275,32 +277,32 @@ public class CoordinatedVariationTrajectoryGenerator {
 		final org.drip.execution.latent.MarketState ms,
 		final double dblTradeRateScale)
 	{
-<span class="fc bfc" id="L278" title="All 2 branches covered.">		if (TRADE_RATE_ZERO_INITIALIZATION == _iTradeRateInitializer)</span>
-<span class="fc" id="L279">			return org.drip.execution.hjb.NonDimensionalCostSystemic.Zero();</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">		if (TRADE_RATE_ZERO_INITIALIZATION == _iTradeRateInitializer)</span>
+<span class="fc" id="L281">			return org.drip.execution.hjb.NonDimensionalCostSystemic.Zero();</span>
 
-<span class="pc bpc" id="L281" title="2 of 4 branches missed.">		if (null == ms || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRateScale)) return null;</span>
+<span class="pc bpc" id="L283" title="2 of 4 branches missed.">		if (null == ms || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRateScale)) return null;</span>
 
 		try {
-<span class="fc" id="L284">			org.drip.execution.strategy.ContinuousTradingTrajectory ctt =</span>
+<span class="fc" id="L286">			org.drip.execution.strategy.ContinuousTradingTrajectory ctt =</span>
 				(org.drip.execution.strategy.ContinuousTradingTrajectory) new
 					org.drip.execution.nonadaptive.ContinuousAlmgrenChriss (_os,
 						org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder.ReferenceCoordinatedVariation
-<span class="fc" id="L288">						(_cv), _mvou).generate();</span>
+<span class="fc" id="L290">						(_cv), _mvou).generate();</span>
 
-<span class="pc bpc" id="L290" title="1 of 2 branches missed.">			if (null == ctt) return null;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">			if (null == ctt) return null;</span>
 
-<span class="fc" id="L292">			double dblNonDimensionalInstantTradeRate = ctt.tradeRate().evaluate (0.) / dblTradeRateScale;</span>
+<span class="fc" id="L294">			double dblNonDimensionalInstantTradeRate = ctt.tradeRate().evaluate (0.) / dblTradeRateScale;</span>
 
-<span class="fc" id="L294">			double dblNonDimensionalCostSensitivity = java.lang.Math.exp (ms.liquidity()) *</span>
+<span class="fc" id="L296">			double dblNonDimensionalCostSensitivity = java.lang.Math.exp (ms.liquidity()) *</span>
 				dblNonDimensionalInstantTradeRate;
 
-<span class="fc" id="L297">			return new org.drip.execution.hjb.NonDimensionalCostSystemic (0., dblNonDimensionalCostSensitivity,</span>
+<span class="fc" id="L299">			return new org.drip.execution.hjb.NonDimensionalCostSystemic (0., dblNonDimensionalCostSensitivity,</span>
 				dblNonDimensionalCostSensitivity, dblNonDimensionalInstantTradeRate);
-<span class="nc" id="L299">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L300">			e.printStackTrace();</span>
+<span class="nc" id="L301">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L302">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L303">		return null;</span>
+<span class="nc" id="L305">		return null;</span>
 	}
 
 	/**
@@ -314,62 +316,62 @@ public class CoordinatedVariationTrajectoryGenerator {
 	public org.drip.execution.adaptive.CoordinatedVariationDynamic adaptive (
 		final org.drip.execution.latent.MarketState[] aMS)
 	{
-<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		if (null == aMS) return null;</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		if (null == aMS) return null;</span>
 
-<span class="fc" id="L319">		int iNumTimeNode = aMS.length;</span>
+<span class="fc" id="L321">		int iNumTimeNode = aMS.length;</span>
 
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (1 &gt;= iNumTimeNode) return null;</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">		if (1 &gt;= iNumTimeNode) return null;</span>
 
-<span class="fc" id="L323">		double dblExecutionSize = _os.size();</span>
+<span class="fc" id="L325">		double dblExecutionSize = _os.size();</span>
 
-<span class="fc" id="L325">		double dblReferenceLiquidity = _cv.referenceLiquidity();</span>
+<span class="fc" id="L327">		double dblReferenceLiquidity = _cv.referenceLiquidity();</span>
 
-<span class="fc" id="L327">		double dblReferenceVolatility = _cv.referenceVolatility();</span>
+<span class="fc" id="L329">		double dblReferenceVolatility = _cv.referenceVolatility();</span>
 
-<span class="fc" id="L329">		double dblRelaxationTime = _ndce.ornsteinUnlenbeckProcess().referenceRelaxationTime();</span>
+<span class="fc" id="L331">		double dblRelaxationTime = _ndce.ornsteinUnlenbeckProcess().referenceRelaxationTime();</span>
 
-<span class="fc" id="L331">		double dblNonDimensionalTimeIncrement = _os.maxExecutionTime() / (iNumTimeNode - 1) /</span>
+<span class="fc" id="L333">		double dblNonDimensionalTimeIncrement = _os.maxExecutionTime() / (iNumTimeNode - 1) /</span>
 			dblRelaxationTime;
 
-<span class="fc" id="L334">		double dblMeanMarketUrgency = dblReferenceVolatility * java.lang.Math.sqrt (_mvou.riskAversion() /</span>
+<span class="fc" id="L336">		double dblMeanMarketUrgency = dblReferenceVolatility * java.lang.Math.sqrt (_mvou.riskAversion() /</span>
 			dblReferenceLiquidity);
 
-<span class="fc" id="L337">		org.drip.execution.hjb.NonDimensionalCost[] aNDC = new</span>
+<span class="fc" id="L339">		org.drip.execution.hjb.NonDimensionalCost[] aNDC = new</span>
 			org.drip.execution.hjb.NonDimensionalCost[iNumTimeNode];
-<span class="fc" id="L339">		double[] adblNonDimensionalScaledTradeRate = new double[iNumTimeNode];</span>
-<span class="fc" id="L340">		double dblTradeRateScale = dblExecutionSize / dblRelaxationTime;</span>
-<span class="fc" id="L341">		double[] adblNonDimensionalHoldings = new double[iNumTimeNode];</span>
-<span class="fc" id="L342">		adblNonDimensionalScaledTradeRate[0] = 0.;</span>
-<span class="fc" id="L343">		adblNonDimensionalHoldings[0] = 1.;</span>
+<span class="fc" id="L341">		double[] adblNonDimensionalScaledTradeRate = new double[iNumTimeNode];</span>
+<span class="fc" id="L342">		double dblTradeRateScale = dblExecutionSize / dblRelaxationTime;</span>
+<span class="fc" id="L343">		double[] adblNonDimensionalHoldings = new double[iNumTimeNode];</span>
+<span class="fc" id="L344">		adblNonDimensionalScaledTradeRate[0] = 0.;</span>
+<span class="fc" id="L345">		adblNonDimensionalHoldings[0] = 1.;</span>
 
-<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		if (null == (aNDC[0] = initializeNonDimensionalCost (aMS[0], dblTradeRateScale))) return null;</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">		if (null == (aNDC[0] = initializeNonDimensionalCost (aMS[0], dblTradeRateScale))) return null;</span>
 
-<span class="fc bfc" id="L347" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="pc bpc" id="L348" title="1 of 2 branches missed.">			if (null == (aNDC[i] = _ndce.evolve (aNDC[i - 1], aMS[i], dblMeanMarketUrgency *</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">			if (null == (aNDC[i] = _ndce.evolve (aNDC[i - 1], aMS[i], dblMeanMarketUrgency *</span>
 				dblRelaxationTime, (iNumTimeNode - i) * dblNonDimensionalTimeIncrement,
 					dblNonDimensionalTimeIncrement)))
-<span class="nc" id="L351">				return null;</span>
+<span class="nc" id="L353">				return null;</span>
 
-<span class="fc" id="L353">			adblNonDimensionalScaledTradeRate[i] = adblNonDimensionalHoldings[i - 1] *</span>
-<span class="fc" id="L354">				aNDC[i].nonDimensionalTradeRate();</span>
+<span class="fc" id="L355">			adblNonDimensionalScaledTradeRate[i] = adblNonDimensionalHoldings[i - 1] *</span>
+<span class="fc" id="L356">				aNDC[i].nonDimensionalTradeRate();</span>
 
-<span class="fc" id="L356">			adblNonDimensionalHoldings[i] = adblNonDimensionalHoldings[i - 1] -</span>
+<span class="fc" id="L358">			adblNonDimensionalHoldings[i] = adblNonDimensionalHoldings[i - 1] -</span>
 				adblNonDimensionalScaledTradeRate[i] * dblNonDimensionalTimeIncrement;
 		}
 
 		try {
-<span class="fc" id="L361">			return new org.drip.execution.adaptive.CoordinatedVariationDynamic (new</span>
+<span class="fc" id="L363">			return new org.drip.execution.adaptive.CoordinatedVariationDynamic (new</span>
 				org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant (dblExecutionSize,
 					dblRelaxationTime, dblReferenceLiquidity * dblExecutionSize * dblExecutionSize /
 						dblTradeRateScale, dblTradeRateScale, dblMeanMarketUrgency, dblMeanMarketUrgency *
 							dblRelaxationTime, dblReferenceLiquidity * dblExecutionSize /
-<span class="fc" id="L366">								dblReferenceVolatility * java.lang.Math.pow (_os.maxExecutionTime(), -1.5)),</span>
+<span class="fc" id="L368">								dblReferenceVolatility * java.lang.Math.pow (_os.maxExecutionTime(), -1.5)),</span>
 									adblNonDimensionalHoldings, adblNonDimensionalScaledTradeRate, aNDC);
-<span class="nc" id="L368">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L369">			e.printStackTrace();</span>
+<span class="nc" id="L370">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L371">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L372">		return null;</span>
+<span class="nc" id="L374">		return null;</span>
 	}
 
 	/**
@@ -381,16 +383,16 @@ public class CoordinatedVariationTrajectoryGenerator {
 	public org.drip.execution.adaptive.CoordinatedVariationStatic nonAdaptive()
 	{
 		try {
-<span class="fc" id="L384">			return new org.drip.execution.adaptive.CoordinatedVariationStatic (trajectoryDeterminant(),</span>
+<span class="fc" id="L386">			return new org.drip.execution.adaptive.CoordinatedVariationStatic (trajectoryDeterminant(),</span>
 				(org.drip.execution.optimum.EfficientTradingTrajectoryContinuous) new
 					org.drip.execution.nonadaptive.ContinuousAlmgrenChriss (_os,
 						org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder.ReferenceCoordinatedVariation
-<span class="fc" id="L388">						(_cv), _mvou).generate());</span>
-<span class="nc" id="L389">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L390">			e.printStackTrace();</span>
+<span class="fc" id="L390">						(_cv), _mvou).generate());</span>
+<span class="nc" id="L391">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L392">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L393">		return null;</span>
+<span class="nc" id="L395">		return null;</span>
 	}
 
 	/**
@@ -404,86 +406,86 @@ public class CoordinatedVariationTrajectoryGenerator {
 	public org.drip.execution.adaptive.CoordinatedVariationRollingHorizon rollingHorizon (
 		final org.drip.execution.latent.MarketState[] aMS)
 	{
-<span class="pc bpc" id="L407" title="1 of 2 branches missed.">		if (null == aMS) return null;</span>
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">		if (null == aMS) return null;</span>
 
-<span class="fc" id="L409">		int iNumTimeNode = aMS.length;</span>
-<span class="pc bpc" id="L410" title="1 of 2 branches missed.">		double[] adblNonDimensionalCost = 0 == iNumTimeNode ? null : new double[iNumTimeNode];</span>
-<span class="pc bpc" id="L411" title="1 of 2 branches missed.">		double[] adblNonDimensionalHoldings = 0 == iNumTimeNode ? null : new double[iNumTimeNode];</span>
-<span class="pc bpc" id="L412" title="1 of 2 branches missed.">		double[] adblNonDimensionalTradeRate = 0 == iNumTimeNode ? null : new double[iNumTimeNode];</span>
+<span class="fc" id="L411">		int iNumTimeNode = aMS.length;</span>
+<span class="pc bpc" id="L412" title="1 of 2 branches missed.">		double[] adblNonDimensionalCost = 0 == iNumTimeNode ? null : new double[iNumTimeNode];</span>
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">		double[] adblNonDimensionalHoldings = 0 == iNumTimeNode ? null : new double[iNumTimeNode];</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">		double[] adblNonDimensionalTradeRate = 0 == iNumTimeNode ? null : new double[iNumTimeNode];</span>
 
-<span class="pc bpc" id="L414" title="1 of 2 branches missed.">		if (0 == iNumTimeNode) return null;</span>
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">		if (0 == iNumTimeNode) return null;</span>
 
-<span class="fc" id="L416">		double dblExecutionSize = _os.size();</span>
+<span class="fc" id="L418">		double dblExecutionSize = _os.size();</span>
 
-<span class="fc" id="L418">		double dblRiskAversion = _mvou.riskAversion();</span>
+<span class="fc" id="L420">		double dblRiskAversion = _mvou.riskAversion();</span>
 
-<span class="fc" id="L420">		double dblExecutionTime = _os.maxExecutionTime();</span>
+<span class="fc" id="L422">		double dblExecutionTime = _os.maxExecutionTime();</span>
 
-<span class="fc" id="L422">		double dblReferenceLiquidity = _cv.referenceLiquidity();</span>
+<span class="fc" id="L424">		double dblReferenceLiquidity = _cv.referenceLiquidity();</span>
 
-<span class="fc" id="L424">		double dblReferenceVolatility = _cv.referenceVolatility();</span>
+<span class="fc" id="L426">		double dblReferenceVolatility = _cv.referenceVolatility();</span>
 
-<span class="fc" id="L426">		double dblRelaxationTime = _ndce.ornsteinUnlenbeckProcess().referenceRelaxationTime();</span>
+<span class="fc" id="L428">		double dblRelaxationTime = _ndce.ornsteinUnlenbeckProcess().referenceRelaxationTime();</span>
 
-<span class="fc" id="L428">		double dblMeanMarketUrgency = dblReferenceVolatility * java.lang.Math.sqrt (dblRiskAversion /</span>
+<span class="fc" id="L430">		double dblMeanMarketUrgency = dblReferenceVolatility * java.lang.Math.sqrt (dblRiskAversion /</span>
 			dblReferenceLiquidity);
 
-<span class="fc" id="L431">		double dblNonDimensionalTimeIncrement = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
-<span class="fc" id="L432">		double dblNonDimensionalExecutionTime = dblExecutionTime / dblRelaxationTime;</span>
-<span class="fc" id="L433">		double dblTradeRateScale = dblExecutionSize / dblRelaxationTime;</span>
-<span class="fc" id="L434">		adblNonDimensionalTradeRate[iNumTimeNode - 1] = 0.;</span>
-<span class="fc" id="L435">		adblNonDimensionalHoldings[0] = 1.;</span>
-<span class="fc" id="L436">		adblNonDimensionalCost[0] = 0.;</span>
+<span class="fc" id="L433">		double dblNonDimensionalTimeIncrement = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
+<span class="fc" id="L434">		double dblNonDimensionalExecutionTime = dblExecutionTime / dblRelaxationTime;</span>
+<span class="fc" id="L435">		double dblTradeRateScale = dblExecutionSize / dblRelaxationTime;</span>
+<span class="fc" id="L436">		adblNonDimensionalTradeRate[iNumTimeNode - 1] = 0.;</span>
+<span class="fc" id="L437">		adblNonDimensionalHoldings[0] = 1.;</span>
+<span class="fc" id="L438">		adblNonDimensionalCost[0] = 0.;</span>
 
-<span class="fc bfc" id="L438" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
-<span class="fc" id="L439">			org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep = realizedLPEP</span>
-<span class="fc" id="L440">				(aMS[i].liquidity());</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
+<span class="fc" id="L441">			org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep = realizedLPEP</span>
+<span class="fc" id="L442">				(aMS[i].liquidity());</span>
 
-<span class="pc bpc" id="L442" title="1 of 2 branches missed.">			if (null == lpep) return null;</span>
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">			if (null == lpep) return null;</span>
 
 			try {
-<span class="fc" id="L445">				double dblRealizedVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="fc" id="L447">				double dblRealizedVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
 
-<span class="fc" id="L447">				org.drip.execution.strategy.ContinuousTradingTrajectory ctt =</span>
+<span class="fc" id="L449">				org.drip.execution.strategy.ContinuousTradingTrajectory ctt =</span>
 					(org.drip.execution.strategy.ContinuousTradingTrajectory) new
 						org.drip.execution.nonadaptive.ContinuousAlmgrenChriss (new
 							org.drip.execution.strategy.OrderSpecification (adblNonDimensionalHoldings[i],
 								dblNonDimensionalExecutionTime - i * dblNonDimensionalTimeIncrement), lpep,
-<span class="fc" id="L452">									_mvou).generate();</span>
+<span class="fc" id="L454">									_mvou).generate();</span>
 
-<span class="pc bpc" id="L454" title="1 of 2 branches missed.">				if (null == ctt) return null;</span>
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">				if (null == ctt) return null;</span>
 
-<span class="fc" id="L456">				adblNonDimensionalTradeRate[i] = ctt.tradeRate().evaluate (0.);</span>
+<span class="fc" id="L458">				adblNonDimensionalTradeRate[i] = ctt.tradeRate().evaluate (0.);</span>
 
-<span class="fc" id="L458">				adblNonDimensionalHoldings[i + 1] = adblNonDimensionalHoldings[i] -</span>
+<span class="fc" id="L460">				adblNonDimensionalHoldings[i + 1] = adblNonDimensionalHoldings[i] -</span>
 					adblNonDimensionalTradeRate[i] * dblNonDimensionalTimeIncrement;
-<span class="fc" id="L460">				adblNonDimensionalCost[i + 1] = adblNonDimensionalCost[i] + (dblRiskAversion *</span>
+<span class="fc" id="L462">				adblNonDimensionalCost[i + 1] = adblNonDimensionalCost[i] + (dblRiskAversion *</span>
 					dblRealizedVolatility * dblRealizedVolatility * adblNonDimensionalHoldings[i] *
 						adblNonDimensionalHoldings[i] +
-<span class="fc" id="L463">							lpep.linearPermanentExpectation().epochLiquidityFunction().slope() *</span>
+<span class="fc" id="L465">							lpep.linearPermanentExpectation().epochLiquidityFunction().slope() *</span>
 								adblNonDimensionalTradeRate[i] * adblNonDimensionalTradeRate[i]) *
 									dblNonDimensionalTimeIncrement;
-<span class="nc" id="L466">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L467">				e.printStackTrace();</span>
+<span class="nc" id="L468">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L469">				e.printStackTrace();</span>
 
-<span class="nc" id="L469">				return null;</span>
-<span class="fc" id="L470">			}</span>
+<span class="nc" id="L471">				return null;</span>
+<span class="fc" id="L472">			}</span>
 		}
 
 		try {
-<span class="fc" id="L474">			return new org.drip.execution.adaptive.CoordinatedVariationRollingHorizon (new</span>
+<span class="fc" id="L476">			return new org.drip.execution.adaptive.CoordinatedVariationRollingHorizon (new</span>
 				org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant (dblExecutionSize,
 					dblRelaxationTime, dblReferenceLiquidity * dblExecutionSize * dblExecutionSize /
 						dblTradeRateScale, dblTradeRateScale, dblMeanMarketUrgency, dblMeanMarketUrgency *
 							dblRelaxationTime, dblReferenceLiquidity * dblExecutionSize /
-<span class="fc" id="L479">								dblReferenceVolatility * java.lang.Math.pow (_os.maxExecutionTime(), -1.5)),</span>
+<span class="fc" id="L481">								dblReferenceVolatility * java.lang.Math.pow (_os.maxExecutionTime(), -1.5)),</span>
 									adblNonDimensionalHoldings, adblNonDimensionalTradeRate,
 										adblNonDimensionalCost);
-<span class="nc" id="L482">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L483">			e.printStackTrace();</span>
+<span class="nc" id="L484">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L485">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L486">		return null;</span>
+<span class="nc" id="L488">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

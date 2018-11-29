@@ -94,20 +94,22 @@ package org.drip.function.r1tor1solver;
  * 		The lower bound on the variate shift between iterations that serves as the fall-back to the &quot;robust&quot;
  * 	&lt;/li&gt;
  * &lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FixedPointFinderBrent extends org.drip.function.r1tor1solver.FixedPointFinderBracketing {
-<span class="fc" id="L108">	private double _dblVariateIterativeShift = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private double _dblPreviousVariateIterativeShift = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private org.drip.function.r1tor1solver.VariateIterationSelectorParams _visp = null;</span>
+<span class="fc" id="L110">	private double _dblVariateIterativeShift = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblPreviousVariateIterativeShift = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private org.drip.function.r1tor1solver.VariateIterationSelectorParams _visp = null;</span>
 
 	@Override protected double iterateCompoundVariate (
 		final double dblCurrentVariate,
@@ -117,48 +119,48 @@ public class FixedPointFinderBrent extends org.drip.function.r1tor1solver.FixedP
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L120">		double dblNextVariate = calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF,</span>
-<span class="fc" id="L121">			dblContraPointOF, _visp.getFastVariateIteratorPrimitive(), rfop);</span>
+<span class="fc" id="L122">		double dblNextVariate = calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF,</span>
+<span class="fc" id="L123">			dblContraPointOF, _visp.getFastVariateIteratorPrimitive(), rfop);</span>
 
-<span class="fc" id="L123">		double dblVariateEstimateShift = java.lang.Math.abs (dblNextVariate - dblCurrentVariate);</span>
+<span class="fc" id="L125">		double dblVariateEstimateShift = java.lang.Math.abs (dblNextVariate - dblCurrentVariate);</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblVariateIterativeShift) ||</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			_visp.getRobustVariateIteratorPrimitive() == _iIteratorPrimitive) {</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">			if (dblVariateEstimateShift &lt; _visp.getRelativeVariateShift() * _dblVariateIterativeShift &amp;&amp;</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">				_dblVariateIterativeShift &gt; 0.5 * _visp.getVariateShiftLowerBound()) {</span>
-<span class="fc" id="L129">				_iIteratorPrimitive = _visp.getFastVariateIteratorPrimitive();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblVariateIterativeShift) ||</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			_visp.getRobustVariateIteratorPrimitive() == _iIteratorPrimitive) {</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">			if (dblVariateEstimateShift &lt; _visp.getRelativeVariateShift() * _dblVariateIterativeShift &amp;&amp;</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">				_dblVariateIterativeShift &gt; 0.5 * _visp.getVariateShiftLowerBound()) {</span>
+<span class="fc" id="L131">				_iIteratorPrimitive = _visp.getFastVariateIteratorPrimitive();</span>
 
-<span class="fc" id="L131">				_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
-<span class="fc" id="L132">				_dblVariateIterativeShift = dblVariateEstimateShift;</span>
-<span class="fc" id="L133">				return dblNextVariate;</span>
+<span class="fc" id="L133">				_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
+<span class="fc" id="L134">				_dblVariateIterativeShift = dblVariateEstimateShift;</span>
+<span class="fc" id="L135">				return dblNextVariate;</span>
 			}
 
-<span class="fc" id="L136">			_iIteratorPrimitive = _visp.getRobustVariateIteratorPrimitive();</span>
+<span class="fc" id="L138">			_iIteratorPrimitive = _visp.getRobustVariateIteratorPrimitive();</span>
 
-<span class="fc" id="L138">			_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
-<span class="fc" id="L139">			_dblVariateIterativeShift = dblVariateEstimateShift;</span>
+<span class="fc" id="L140">			_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
+<span class="fc" id="L141">			_dblVariateIterativeShift = dblVariateEstimateShift;</span>
 
-<span class="fc" id="L141">			return calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF, dblContraPointOF,</span>
-<span class="fc" id="L142">				_visp.getRobustVariateIteratorPrimitive(), rfop);</span>
+<span class="fc" id="L143">			return calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF, dblContraPointOF,</span>
+<span class="fc" id="L144">				_visp.getRobustVariateIteratorPrimitive(), rfop);</span>
 		}
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblPreviousVariateIterativeShift) &amp;&amp;</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			(dblVariateEstimateShift &lt; _visp.getRelativeVariateShift() * _dblPreviousVariateIterativeShift &amp;&amp;</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">				_dblPreviousVariateIterativeShift &gt; 0.5 * _visp.getVariateShiftLowerBound())) {</span>
-<span class="nc" id="L148">			_iIteratorPrimitive = _visp.getFastVariateIteratorPrimitive();</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblPreviousVariateIterativeShift) &amp;&amp;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			(dblVariateEstimateShift &lt; _visp.getRelativeVariateShift() * _dblPreviousVariateIterativeShift &amp;&amp;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				_dblPreviousVariateIterativeShift &gt; 0.5 * _visp.getVariateShiftLowerBound())) {</span>
+<span class="nc" id="L150">			_iIteratorPrimitive = _visp.getFastVariateIteratorPrimitive();</span>
 
-<span class="nc" id="L150">			_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
-<span class="nc" id="L151">			_dblVariateIterativeShift = dblVariateEstimateShift;</span>
-<span class="nc" id="L152">			return dblNextVariate;</span>
+<span class="nc" id="L152">			_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
+<span class="nc" id="L153">			_dblVariateIterativeShift = dblVariateEstimateShift;</span>
+<span class="nc" id="L154">			return dblNextVariate;</span>
 		}
 
-<span class="nc" id="L155">		_iIteratorPrimitive = _visp.getRobustVariateIteratorPrimitive();</span>
+<span class="nc" id="L157">		_iIteratorPrimitive = _visp.getRobustVariateIteratorPrimitive();</span>
 
-<span class="nc" id="L157">		_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
-<span class="nc" id="L158">		_dblVariateIterativeShift = dblVariateEstimateShift;</span>
+<span class="nc" id="L159">		_dblPreviousVariateIterativeShift = _dblVariateIterativeShift;</span>
+<span class="nc" id="L160">		_dblVariateIterativeShift = dblVariateEstimateShift;</span>
 
-<span class="nc" id="L160">		return calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF, dblContraPointOF,</span>
-<span class="nc" id="L161">			_visp.getRobustVariateIteratorPrimitive(), rfop);</span>
+<span class="nc" id="L162">		return calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF, dblContraPointOF,</span>
+<span class="nc" id="L163">			_visp.getRobustVariateIteratorPrimitive(), rfop);</span>
 	}
 
 	/**
@@ -177,9 +179,9 @@ public class FixedPointFinderBrent extends org.drip.function.r1tor1solver.FixedP
 		final boolean bWhine)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L180">		super (dblOFGoal, of, null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, bWhine);</span>
+<span class="fc" id="L182">		super (dblOFGoal, of, null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, bWhine);</span>
 
-<span class="fc" id="L182">		_visp = new org.drip.function.r1tor1solver.VariateIterationSelectorParams();</span>
-<span class="fc" id="L183">	}</span>
+<span class="fc" id="L184">		_visp = new org.drip.function.r1tor1solver.VariateIterationSelectorParams();</span>
+<span class="fc" id="L185">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

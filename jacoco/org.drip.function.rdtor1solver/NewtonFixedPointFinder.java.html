@@ -69,11 +69,13 @@ package org.drip.function.rdtor1solver;
 /**
  * &lt;i&gt;NewtonFixedPointFinder&lt;/i&gt; generates the Iterators for solving R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;
  * Convex/Non-Convex Functions Using the Multivariate Newton Method.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1solver&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -97,38 +99,38 @@ public class NewtonFixedPointFinder extends org.drip.function.rdtor1solver.Fixed
 		final org.drip.function.rdtor1solver.ConvergenceControl cc)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L100">		super (rdToR1ObjectiveFunction, lsec, cc);</span>
-<span class="fc" id="L101">	}</span>
+<span class="fc" id="L102">		super (rdToR1ObjectiveFunction, lsec, cc);</span>
+<span class="fc" id="L103">	}</span>
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent)
 	{
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (null == vcmtCurrent) return null;</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == vcmtCurrent) return null;</span>
 
-<span class="fc" id="L108">		double[] adblVariate = vcmtCurrent.variates();</span>
+<span class="fc" id="L110">		double[] adblVariate = vcmtCurrent.variates();</span>
 
-<span class="fc" id="L110">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
+<span class="fc" id="L112">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
 
-<span class="fc" id="L112">		double[] adblVariateIncrement = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L113">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="fc" id="L114">				(rdToR1ObjectiveFunction.hessian (adblVariate)), rdToR1ObjectiveFunction.jacobian</span>
-<span class="fc" id="L115">					(adblVariate));</span>
+<span class="fc" id="L114">		double[] adblVariateIncrement = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L115">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L116">				(rdToR1ObjectiveFunction.hessian (adblVariate)), rdToR1ObjectiveFunction.jacobian</span>
+<span class="fc" id="L117">					(adblVariate));</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (null == adblVariateIncrement) return null;</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (null == adblVariateIncrement) return null;</span>
 
-<span class="fc" id="L119">		int iVariateDimension = adblVariateIncrement.length;</span>
+<span class="fc" id="L121">		int iVariateDimension = adblVariateIncrement.length;</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		for (int i = 0; i &lt; iVariateDimension; ++i)</span>
-<span class="fc" id="L122">			adblVariateIncrement[i] = -1. * adblVariateIncrement[i];</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; iVariateDimension; ++i)</span>
+<span class="fc" id="L124">			adblVariateIncrement[i] = -1. * adblVariateIncrement[i];</span>
 
 		try {
-<span class="fc" id="L125">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (true,</span>
+<span class="fc" id="L127">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (true,</span>
 				adblVariateIncrement, null);
-<span class="nc" id="L127">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L128">			e.printStackTrace();</span>
+<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L130">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L131">		return null;</span>
+<span class="nc" id="L133">		return null;</span>
 	}
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
@@ -136,7 +138,7 @@ public class NewtonFixedPointFinder extends org.drip.function.rdtor1solver.Fixed
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtIncrement,
 		final double dblIncrementFraction)
 	{
-<span class="fc" id="L139">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (vcmtCurrent,</span>
+<span class="fc" id="L141">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (vcmtCurrent,</span>
 			vcmtIncrement, dblIncrementFraction, null);
 	}
 }

@@ -67,9 +67,9 @@ package org.drip.exposure.universe;
 
 /**
  * &lt;i&gt;MarketVertex&lt;/i&gt; holds the Market Realizations at a Market Trajectory Vertex needed for computing the
- *  Valuation Adjustment. The References are:
+ * Valuation Adjustment. The References are:
  *  
- *  &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  	&lt;ul&gt;
  *  		&lt;li&gt;
  *  			Burgard, C., and M. Kjaer (2013): Funding Costs, Funding Strategies &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;23
@@ -92,11 +92,13 @@ package org.drip.exposure.universe;
  *  		&lt;/li&gt;
  *  		&lt;li&gt;
  *  	&lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/universe&quot;&gt;Universe&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/Exposure&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/universe&quot;&gt;Universe&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -104,14 +106,14 @@ package org.drip.exposure.universe;
 
 public class MarketVertex
 {
-<span class="fc" id="L107">	private double _csaSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _csaReplicator = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private double _overnightRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _overnightReplicator = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private org.drip.analytics.date.JulianDate _anchorDate = null;</span>
-<span class="fc" id="L112">	private org.drip.exposure.universe.MarketVertexEntity _clientMarketVertex = null;</span>
-<span class="fc" id="L113">	private org.drip.exposure.universe.MarketVertexEntity _dealerMarketVertex = null;</span>
-<span class="fc" id="L114">	private org.drip.exposure.evolver.LatentStateVertexContainer _latentStateVertexContainer = null;</span>
+<span class="fc" id="L109">	private double _csaSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _csaReplicator = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _overnightRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _overnightReplicator = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private org.drip.analytics.date.JulianDate _anchorDate = null;</span>
+<span class="fc" id="L114">	private org.drip.exposure.universe.MarketVertexEntity _clientMarketVertex = null;</span>
+<span class="fc" id="L115">	private org.drip.exposure.universe.MarketVertexEntity _dealerMarketVertex = null;</span>
+<span class="fc" id="L116">	private org.drip.exposure.evolver.LatentStateVertexContainer _latentStateVertexContainer = null;</span>
 
 	/**
 	 * Generate an Initial Instance of MarketVertex
@@ -144,20 +146,20 @@ public class MarketVertex
 	{
 		try
 		{
-<span class="fc" id="L147">			return new org.drip.exposure.universe.MarketVertex (</span>
+<span class="fc" id="L149">			return new org.drip.exposure.universe.MarketVertex (</span>
 				anchorDate,
 				0.,
 				overnightReplicator,
 				0.,
 				csaReplicator,
-<span class="fc" id="L153">				org.drip.exposure.universe.MarketVertexEntity.Senior (</span>
+<span class="fc" id="L155">				org.drip.exposure.universe.MarketVertexEntity.Senior (</span>
 					0.,
 					dealerHazardRate,
 					dealerRecoveryRate,
 					dealerFundingSpread,
 					0.
 				),
-<span class="fc" id="L160">				org.drip.exposure.universe.MarketVertexEntity.Senior (</span>
+<span class="fc" id="L162">				org.drip.exposure.universe.MarketVertexEntity.Senior (</span>
 					0.,
 					clientHazardRate,
 					clientRecoveryRate,
@@ -167,12 +169,12 @@ public class MarketVertex
 				latentStateVertexContainer
 			);
 		}
-<span class="nc" id="L170">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L172">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L172">			e.printStackTrace();</span>
+<span class="nc" id="L174">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L175">		return null;</span>
+<span class="nc" id="L177">		return null;</span>
 	}
 
 	/**
@@ -209,13 +211,13 @@ public class MarketVertex
 		final org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainer)
 	{
 		try {
-<span class="nc" id="L212">			return new org.drip.exposure.universe.MarketVertex (</span>
+<span class="nc" id="L214">			return new org.drip.exposure.universe.MarketVertex (</span>
 				anchorDate,
 				0.,
 				overnightReplicator,
 				0.,
 				csaReplicator,
-<span class="nc" id="L218">				org.drip.exposure.universe.MarketVertexEntity.SeniorSubordinate (</span>
+<span class="nc" id="L220">				org.drip.exposure.universe.MarketVertexEntity.SeniorSubordinate (</span>
 					0.,
 					dealerHazardRate,
 					dealerSeniorRecoveryRate,
@@ -224,7 +226,7 @@ public class MarketVertex
 					dealerSubordinateFundingSpread,
 					0.
 				),
-<span class="nc" id="L227">				org.drip.exposure.universe.MarketVertexEntity.Senior (</span>
+<span class="nc" id="L229">				org.drip.exposure.universe.MarketVertexEntity.Senior (</span>
 					0.,
 					clientHazardRate,
 					clientRecoveryRate,
@@ -233,11 +235,11 @@ public class MarketVertex
 				),
 				latentStateVertexContainer
 			);
-<span class="nc" id="L236">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L237">			e.printStackTrace();</span>
+<span class="nc" id="L238">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L239">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L240">		return null;</span>
+<span class="nc" id="L242">		return null;</span>
 	}
 
 	/**
@@ -267,7 +269,7 @@ public class MarketVertex
 	{
 		try
 		{
-<span class="fc" id="L270">			return new MarketVertex (</span>
+<span class="fc" id="L272">			return new MarketVertex (</span>
 				anchorDate,
 				overnightRate,
 				overnightReplicator,
@@ -278,12 +280,12 @@ public class MarketVertex
 				latentStateVertexContainer
 			);
 		}
-<span class="nc" id="L281">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L283">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L283">			e.printStackTrace();</span>
+<span class="nc" id="L285">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L286">		return null;</span>
+<span class="nc" id="L288">		return null;</span>
 	}
 
 	/**
@@ -311,21 +313,21 @@ public class MarketVertex
 		final org.drip.exposure.universe.MarketVertexEntity clientMarketVertex,
 		final org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainer)
 		throws java.lang.Exception
-<span class="fc" id="L314">	{</span>
-<span class="pc bpc" id="L315" title="1 of 2 branches missed.">		if (null == (_anchorDate = anchorDate) ||</span>
-<span class="pc bpc" id="L316" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||</span>
-<span class="pc bpc" id="L317" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightReplicator = overnightReplicator) ||</span>
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||</span>
-<span class="pc bpc" id="L319" title="4 of 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaReplicator = csaReplicator) ||</span>
+<span class="fc" id="L316">	{</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		if (null == (_anchorDate = anchorDate) ||</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_overnightReplicator = overnightReplicator) ||</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||</span>
+<span class="pc bpc" id="L321" title="4 of 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_csaReplicator = csaReplicator) ||</span>
 			null == (_dealerMarketVertex = dealerMarketVertex) ||
 			null == (_clientMarketVertex = clientMarketVertex) ||
 			null == (_latentStateVertexContainer = latentStateVertexContainer))
 		{
-<span class="nc" id="L324">			throw new java.lang.Exception (&quot;MarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L326">			throw new java.lang.Exception (&quot;MarketVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L327">		_latentStateVertexContainer = latentStateVertexContainer;</span>
-<span class="fc" id="L328">	}</span>
+<span class="fc" id="L329">		_latentStateVertexContainer = latentStateVertexContainer;</span>
+<span class="fc" id="L330">	}</span>
 
 	/**
 	 * Retrieve the Date Anchor
@@ -335,7 +337,7 @@ public class MarketVertex
 
 	public org.drip.analytics.date.JulianDate anchorDate()
 	{
-<span class="fc" id="L338">		return _anchorDate;</span>
+<span class="fc" id="L340">		return _anchorDate;</span>
 	}
 
 	/**
@@ -346,7 +348,7 @@ public class MarketVertex
 
 	org.drip.exposure.evolver.LatentStateVertexContainer latentStateVertexContainer()
 	{
-<span class="fc" id="L349">		return _latentStateVertexContainer;</span>
+<span class="fc" id="L351">		return _latentStateVertexContainer;</span>
 	}
 
 	/**
@@ -363,7 +365,7 @@ public class MarketVertex
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L366">		return _latentStateVertexContainer.value (latentStateLabel);</span>
+<span class="fc" id="L368">		return _latentStateVertexContainer.value (latentStateLabel);</span>
 	}
 
 	/**
@@ -374,7 +376,7 @@ public class MarketVertex
 
 	public double overnightRate()
 	{
-<span class="fc" id="L377">		return _overnightRate;</span>
+<span class="fc" id="L379">		return _overnightRate;</span>
 	}
 
 	/**
@@ -385,7 +387,7 @@ public class MarketVertex
 
 	public double overnightReplicator()
 	{
-<span class="fc" id="L388">		return _overnightReplicator;</span>
+<span class="fc" id="L390">		return _overnightReplicator;</span>
 	}
 
 	/**
@@ -396,7 +398,7 @@ public class MarketVertex
 
 	public double csaSpread()
 	{
-<span class="fc" id="L399">		return _csaSpread;</span>
+<span class="fc" id="L401">		return _csaSpread;</span>
 	}
 
 	/**
@@ -407,7 +409,7 @@ public class MarketVertex
 
 	public double csaReplicator()
 	{
-<span class="fc" id="L410">		return _csaReplicator;</span>
+<span class="fc" id="L412">		return _csaReplicator;</span>
 	}
 
 	/**
@@ -418,7 +420,7 @@ public class MarketVertex
 
 	public double csaRate()
 	{
-<span class="fc" id="L421">		return _overnightRate + _csaSpread;</span>
+<span class="fc" id="L423">		return _overnightRate + _csaSpread;</span>
 	}
 
 	/**
@@ -429,7 +431,7 @@ public class MarketVertex
 
 	public org.drip.exposure.universe.MarketVertexEntity dealer()
 	{
-<span class="fc" id="L432">		return _dealerMarketVertex;</span>
+<span class="fc" id="L434">		return _dealerMarketVertex;</span>
 	}
 
 	/**
@@ -440,7 +442,7 @@ public class MarketVertex
 
 	public org.drip.exposure.universe.MarketVertexEntity client()
 	{
-<span class="fc" id="L443">		return _clientMarketVertex;</span>
+<span class="fc" id="L445">		return _clientMarketVertex;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

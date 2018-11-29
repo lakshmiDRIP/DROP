@@ -72,24 +72,26 @@ package org.drip.function.r1tor1solver;
 
 /**
  * &lt;i&gt;BracketingOutput&lt;/i&gt; carries the results of the bracketing initialization.
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	In addition to the fields of ExecutionInitializationOutput, BracketingOutput holds the left/right bracket
  *  	variates and the corresponding values for the objective function.
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; Solver&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionInitializationOutput {
-<span class="fc" id="L89">	private double _dblOFLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblOFRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L91">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">	private double _dblVariateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">	private double _dblOFLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">	private double _dblOFRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L93">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private double _dblVariateRight = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default BracketingOutput constructor: Initializes the output
@@ -97,8 +99,8 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public BracketingOutput()
 	{
-<span class="fc" id="L100">		super();</span>
-<span class="fc" id="L101">	}</span>
+<span class="fc" id="L102">		super();</span>
+<span class="fc" id="L103">	}</span>
 
 	/**
 	 * Return the left Variate
@@ -108,7 +110,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getVariateLeft()
 	{
-<span class="fc" id="L111">		return _dblVariateLeft;</span>
+<span class="fc" id="L113">		return _dblVariateLeft;</span>
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getVariateRight()
 	{
-<span class="fc" id="L122">		return _dblVariateRight;</span>
+<span class="fc" id="L124">		return _dblVariateRight;</span>
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getOFLeft()
 	{
-<span class="fc" id="L133">		return _dblOFLeft;</span>
+<span class="fc" id="L135">		return _dblOFLeft;</span>
 	}
 
 	/**
@@ -141,7 +143,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getOFRight()
 	{
-<span class="fc" id="L144">		return _dblOFRight;</span>
+<span class="fc" id="L146">		return _dblOFRight;</span>
 	}
 
 	/**
@@ -163,14 +165,14 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 		final double dblOFRight,
 		final double dblStartingVariate)
 	{
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||</span>
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">						!setStartingVariate (dblStartingVariate))</span>
-<span class="nc" id="L171">			return false;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">						!setStartingVariate (dblStartingVariate))</span>
+<span class="nc" id="L173">			return false;</span>
 
-<span class="fc" id="L173">		return done();</span>
+<span class="fc" id="L175">		return done();</span>
 	}
 
 	/**
@@ -181,32 +183,32 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public org.drip.function.r1tor1solver.ConvergenceOutput makeConvergenceVariate()
 	{
-<span class="nc" id="L184">		org.drip.function.r1tor1solver.ConvergenceOutput cop = null;</span>
+<span class="nc" id="L186">		org.drip.function.r1tor1solver.ConvergenceOutput cop = null;</span>
 
 		try {
-<span class="nc" id="L187">			cop = new org.drip.function.r1tor1solver.ConvergenceOutput (this);</span>
-<span class="nc" id="L188">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L189">			e.printStackTrace();</span>
-<span class="nc" id="L190">		}</span>
+<span class="nc" id="L189">			cop = new org.drip.function.r1tor1solver.ConvergenceOutput (this);</span>
+<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="nc" id="L192">		}</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		return cop.done (getStartingVariate()) ? cop : null;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		return cop.done (getStartingVariate()) ? cop : null;</span>
 	}
 
 	@Override public java.lang.String displayString()
 	{
-<span class="fc" id="L197">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L199">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L199">		sb.append (super.displayString());</span>
+<span class="fc" id="L201">		sb.append (super.displayString());</span>
 
-<span class="fc" id="L201">		sb.append (&quot;\n\t\tLeft Bracket: &quot; + getVariateLeft());</span>
+<span class="fc" id="L203">		sb.append (&quot;\n\t\tLeft Bracket: &quot; + getVariateLeft());</span>
 
-<span class="fc" id="L203">		sb.append (&quot;\n\t\tRight Bracket: &quot; + getVariateRight());</span>
+<span class="fc" id="L205">		sb.append (&quot;\n\t\tRight Bracket: &quot; + getVariateRight());</span>
 
-<span class="fc" id="L205">		sb.append (&quot;\n\t\tLeft OF: &quot; + getOFLeft());</span>
+<span class="fc" id="L207">		sb.append (&quot;\n\t\tLeft OF: &quot; + getOFLeft());</span>
 
-<span class="fc" id="L207">		sb.append (&quot;\n\t\tRight OF: &quot; + getOFRight());</span>
+<span class="fc" id="L209">		sb.append (&quot;\n\t\tRight OF: &quot; + getOFRight());</span>
 
-<span class="fc" id="L209">		return sb.toString();</span>
+<span class="fc" id="L211">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

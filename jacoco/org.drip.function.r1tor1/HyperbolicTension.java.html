@@ -72,11 +72,13 @@ package org.drip.function.r1tor1;
 /**
  * &lt;i&gt;HyperbolicTension&lt;/i&gt; provides the evaluation of the Hyperbolic Tension Function and its derivatives
  * for a specified variate.
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -96,8 +98,8 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 
 	public static final int COSH = 2;
 
-<span class="fc" id="L99">	private int _iType = -1;</span>
-<span class="fc" id="L100">	private double _dblTension = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private int _iType = -1;</span>
+<span class="fc" id="L102">	private double _dblTension = java.lang.Double.NaN;</span>
 
 	/**
 	 * HyperbolicTension constructor
@@ -113,22 +115,22 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L116">		super (null);</span>
+<span class="fc" id="L118">		super (null);</span>
 
-<span class="pc bpc" id="L118" title="1 of 4 branches missed.">		if ((SINH != (_iType = iType) &amp;&amp; COSH != _iType) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			(_dblTension = dblTension))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;HyperbolicTension ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L121">	}</span>
+<span class="pc bpc" id="L120" title="1 of 4 branches missed.">		if ((SINH != (_iType = iType) &amp;&amp; COSH != _iType) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			(_dblTension = dblTension))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;HyperbolicTension ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L123">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;HyperbolicTension::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;HyperbolicTension::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		return SINH == _iType ? java.lang.Math.sinh (_dblTension * dblVariate) : java.lang.Math.cosh</span>
-<span class="fc" id="L131">			(_dblTension * dblVariate);</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		return SINH == _iType ? java.lang.Math.sinh (_dblTension * dblVariate) : java.lang.Math.cosh</span>
+<span class="fc" id="L133">			(_dblTension * dblVariate);</span>
 	}
 
 	@Override public double derivative (
@@ -136,17 +138,17 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt; iOrder)</span>
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;HyperbolicTension::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt; iOrder)</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;HyperbolicTension::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L142">		double dblDerivFactor = 1.;</span>
+<span class="fc" id="L144">		double dblDerivFactor = 1.;</span>
 
-<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="fc" id="L145">			dblDerivFactor *= _dblTension;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="fc" id="L147">			dblDerivFactor *= _dblTension;</span>
 
-<span class="fc bfc" id="L147" title="All 4 branches covered.">		return (SINH == _iType) ? dblDerivFactor * (1 == iOrder % 2 ? java.lang.Math.cosh (_dblTension *</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">			dblVariate) : java.lang.Math.sinh (_dblTension * dblVariate)) : dblDerivFactor * (1 == iOrder % 2</span>
-<span class="fc" id="L149">				? java.lang.Math.sinh (_dblTension * dblVariate) : java.lang.Math.cosh (_dblTension *</span>
+<span class="fc bfc" id="L149" title="All 4 branches covered.">		return (SINH == _iType) ? dblDerivFactor * (1 == iOrder % 2 ? java.lang.Math.cosh (_dblTension *</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">			dblVariate) : java.lang.Math.sinh (_dblTension * dblVariate)) : dblDerivFactor * (1 == iOrder % 2</span>
+<span class="fc" id="L151">				? java.lang.Math.sinh (_dblTension * dblVariate) : java.lang.Math.cosh (_dblTension *</span>
 					dblVariate));
 	}
 
@@ -155,13 +157,13 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		return SINH == _iType ? (java.lang.Math.cosh (_dblTension * dblEnd) - java.lang.Math.cosh</span>
-<span class="nc" id="L163">			(_dblTension * dblBegin)) / _dblTension : (java.lang.Math.sinh (_dblTension * dblEnd) -</span>
-<span class="nc" id="L164">				java.lang.Math.sinh (_dblTension * dblBegin)) / _dblTension;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		return SINH == _iType ? (java.lang.Math.cosh (_dblTension * dblEnd) - java.lang.Math.cosh</span>
+<span class="nc" id="L165">			(_dblTension * dblBegin)) / _dblTension : (java.lang.Math.sinh (_dblTension * dblEnd) -</span>
+<span class="nc" id="L166">				java.lang.Math.sinh (_dblTension * dblBegin)) / _dblTension;</span>
 	}
 
 	/**
@@ -172,7 +174,7 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 
 	public int getType()
 	{
-<span class="nc" id="L175">		return _iType;</span>
+<span class="nc" id="L177">		return _iType;</span>
 	}
 
 	/**
@@ -183,26 +185,26 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 
 	public double getTension()
 	{
-<span class="nc" id="L186">		return _dblTension;</span>
+<span class="nc" id="L188">		return _dblTension;</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L193">		HyperbolicTension e = new HyperbolicTension (SINH, 2.);</span>
+<span class="nc" id="L195">		HyperbolicTension e = new HyperbolicTension (SINH, 2.);</span>
 
-<span class="nc" id="L195">		System.out.println (&quot;E[0.0] = &quot; + e.evaluate (0.0));</span>
+<span class="nc" id="L197">		System.out.println (&quot;E[0.0] = &quot; + e.evaluate (0.0));</span>
 
-<span class="nc" id="L197">		System.out.println (&quot;E[0.5] = &quot; + e.evaluate (0.5));</span>
+<span class="nc" id="L199">		System.out.println (&quot;E[0.5] = &quot; + e.evaluate (0.5));</span>
 
-<span class="nc" id="L199">		System.out.println (&quot;E[1.0] = &quot; + e.evaluate (1.0));</span>
+<span class="nc" id="L201">		System.out.println (&quot;E[1.0] = &quot; + e.evaluate (1.0));</span>
 
-<span class="nc" id="L201">		System.out.println (&quot;EDeriv[0.0] = &quot; + e.derivative (0.0, 2));</span>
+<span class="nc" id="L203">		System.out.println (&quot;EDeriv[0.0] = &quot; + e.derivative (0.0, 2));</span>
 
-<span class="nc" id="L203">		System.out.println (&quot;EDeriv[0.5] = &quot; + e.derivative (0.5, 2));</span>
+<span class="nc" id="L205">		System.out.println (&quot;EDeriv[0.5] = &quot; + e.derivative (0.5, 2));</span>
 
-<span class="nc" id="L205">		System.out.println (&quot;EDeriv[1.0] = &quot; + e.derivative (1.0, 2));</span>
-<span class="nc" id="L206">	}</span>
+<span class="nc" id="L207">		System.out.println (&quot;EDeriv[1.0] = &quot; + e.derivative (1.0, 2));</span>
+<span class="nc" id="L208">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

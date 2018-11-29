@@ -71,29 +71,31 @@ package org.drip.function.r1tor1;
 /**
  * &lt;i&gt;SABRLIBORCapVolatility&lt;/i&gt; implements the Deterministic, Non-local Cap Volatility Scheme detailed in:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Rebonato, R., K. McKay, and R. White (2009): &lt;i&gt;The SABR/LIBOR Market Model: Pricing,
  * 				Calibration, and Hedging for Complex Interest-Rate Derivatives&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
-* &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L92">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private double _dblB = java.lang.Double.NaN;</span>
-<span class="fc" id="L94">	private double _dblC = java.lang.Double.NaN;</span>
-<span class="fc" id="L95">	private double _dblD = java.lang.Double.NaN;</span>
-<span class="fc" id="L96">	private double _dblEpoch = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L95">	private double _dblB = java.lang.Double.NaN;</span>
+<span class="fc" id="L96">	private double _dblC = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double _dblD = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _dblEpoch = java.lang.Double.NaN;</span>
 
 	/**
 	 * SABRLIBORCapVolatility Constructor
@@ -115,26 +117,26 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 		final double dblD)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L118">		super (null);</span>
+<span class="fc" id="L120">		super (null);</span>
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) ||</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblC = dblC) ||</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblD = dblD))</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L126">	}</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) ||</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblC = dblC) ||</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblD = dblD))</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L128">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L133">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L135">		double dblDateGap = dblVariate - _dblEpoch;</span>
+<span class="fc" id="L137">		double dblDateGap = dblVariate - _dblEpoch;</span>
 
-<span class="fc" id="L137">		return (_dblB * dblDateGap + _dblA) * java.lang.Math.exp (-1. * _dblC * dblDateGap) + _dblD;</span>
+<span class="fc" id="L139">		return (_dblB * dblDateGap + _dblA) * java.lang.Math.exp (-1. * _dblC * dblDateGap) + _dblD;</span>
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double A()
 	{
-<span class="nc" id="L148">		return _dblA;</span>
+<span class="nc" id="L150">		return _dblA;</span>
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double B()
 	{
-<span class="nc" id="L159">		return _dblB;</span>
+<span class="nc" id="L161">		return _dblB;</span>
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double C()
 	{
-<span class="nc" id="L170">		return _dblC;</span>
+<span class="nc" id="L172">		return _dblC;</span>
 	}
 
 	/**
@@ -178,7 +180,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double D()
 	{
-<span class="nc" id="L181">		return _dblD;</span>
+<span class="nc" id="L183">		return _dblD;</span>
 	}
 
 	/**
@@ -189,7 +191,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double epoch()
 	{
-<span class="nc" id="L192">		return _dblEpoch;</span>
+<span class="nc" id="L194">		return _dblEpoch;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

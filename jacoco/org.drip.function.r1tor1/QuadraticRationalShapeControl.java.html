@@ -72,24 +72,26 @@ package org.drip.function.r1tor1;
 /**
  * &lt;i&gt;QuadraticRationalShapeControl&lt;/i&gt; implements the deterministic rational shape control functionality on
  * top of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 			y = 1 / [1 + lambda * x * (1-x)]
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *		where is the normalized ordinate mapped as
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 			x ==== (x - x_i-1) / (x_i - x_i-1)
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class QuadraticRationalShapeControl extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L92">	private double _dblLambda = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private double _dblLambda = java.lang.Double.NaN;</span>
 
 	/**
 	 * QuadraticRationalShapeControl constructor
@@ -103,17 +105,17 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L106">		super (null);</span>
+<span class="fc" id="L108">		super (null);</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;QuadraticRationalShapeControl ctr: Invalid tension&quot;);</span>
-<span class="fc" id="L110">	}</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;QuadraticRationalShapeControl ctr: Invalid tension&quot;);</span>
+<span class="fc" id="L112">	}</span>
 
 	@Override public double evaluate (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L116">		return 1. / (1. + _dblLambda * dblX * (1. - dblX));</span>
+<span class="fc" id="L118">		return 1. / (1. + _dblLambda * dblX * (1. - dblX));</span>
 	}
 
 	@Override public double derivative (
@@ -121,18 +123,18 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L124" title="All 2 branches covered.">		if (0. == _dblLambda) return 0.;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (0. == _dblLambda) return 0.;</span>
 
-<span class="fc" id="L126">		double dblD2BetaDX2 = -2. * _dblLambda;</span>
-<span class="fc" id="L127">		double dblDBetaDX = _dblLambda * (1. - 2. * dblX);</span>
-<span class="fc" id="L128">		double dblBeta = 1. + _dblLambda * dblX * (1. - dblX);</span>
+<span class="fc" id="L128">		double dblD2BetaDX2 = -2. * _dblLambda;</span>
+<span class="fc" id="L129">		double dblDBetaDX = _dblLambda * (1. - 2. * dblX);</span>
+<span class="fc" id="L130">		double dblBeta = 1. + _dblLambda * dblX * (1. - dblX);</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		if (1 == iOrder) return -1. * dblDBetaDX / (dblBeta * dblBeta);</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (1 == iOrder) return -1. * dblDBetaDX / (dblBeta * dblBeta);</span>
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (2 == iOrder)</span>
-<span class="fc" id="L133">			return (2. * dblDBetaDX * dblDBetaDX - dblBeta * dblD2BetaDX2) / (dblBeta * dblBeta * dblBeta);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if (2 == iOrder)</span>
+<span class="fc" id="L135">			return (2. * dblDBetaDX * dblDBetaDX - dblBeta * dblD2BetaDX2) / (dblBeta * dblBeta * dblBeta);</span>
 
-<span class="fc" id="L135">		return super.derivative (dblX, iOrder);</span>
+<span class="fc" id="L137">		return super.derivative (dblX, iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -140,13 +142,13 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;QuadraticRationalShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;QuadraticRationalShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L147">		double dblAlpha = java.lang.Math.sqrt (0.25 * (_dblLambda + 4.) / _dblLambda);</span>
+<span class="nc" id="L149">		double dblAlpha = java.lang.Math.sqrt (0.25 * (_dblLambda + 4.) / _dblLambda);</span>
 
-<span class="nc" id="L149">		return -0.5 * (java.lang.Math.log ((dblEnd - dblAlpha - 0.5) * (dblBegin + dblAlpha - 0.5) /</span>
+<span class="nc" id="L151">		return -0.5 * (java.lang.Math.log ((dblEnd - dblAlpha - 0.5) * (dblBegin + dblAlpha - 0.5) /</span>
 			(dblEnd + dblAlpha - 0.5) / (dblBegin - dblAlpha - 0.5))) / dblAlpha / _dblLambda;
 	}
 
@@ -158,18 +160,18 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 
 	public double getShapeControlCoefficient()
 	{
-<span class="nc" id="L161">		return _dblLambda;</span>
+<span class="nc" id="L163">		return _dblLambda;</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L168">		QuadraticRationalShapeControl qrsc = new QuadraticRationalShapeControl (1.);</span>
+<span class="nc" id="L170">		QuadraticRationalShapeControl qrsc = new QuadraticRationalShapeControl (1.);</span>
 
-<span class="nc" id="L170">		System.out.println (qrsc.derivative (0., 2));</span>
+<span class="nc" id="L172">		System.out.println (qrsc.derivative (0., 2));</span>
 
-<span class="nc" id="L172">		System.out.println (qrsc.derivative (1., 2));</span>
-<span class="nc" id="L173">	}</span>
+<span class="nc" id="L174">		System.out.println (qrsc.derivative (1., 2));</span>
+<span class="nc" id="L175">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

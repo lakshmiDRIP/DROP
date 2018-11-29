@@ -69,9 +69,9 @@ package org.drip.execution.tradingtime;
 /**
  * &lt;i&gt;CoordinatedMarketState&lt;/i&gt; implements the Coordinated Variation Version of the Volatility and the
  * Linear Transaction Function arising from the Realization of the Market State Variable as described in the
- *  &quot;Trading Time&quot; Model. The References are:
+ * &quot;Trading Time&quot; Model. The References are:
  * 
- * 	&lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -94,18 +94,20 @@ package org.drip.execution.tradingtime;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime&quot;&gt;Trading Time&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime&quot;&gt;Trading Time&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CoordinatedMarketState {
-<span class="fc" id="L108">	private org.drip.execution.tradingtime.CoordinatedVariation _cv = null;</span>
+<span class="fc" id="L110">	private org.drip.execution.tradingtime.CoordinatedVariation _cv = null;</span>
 
 	/**
 	 * CoordinatedParticipationRateLinear Constructor
@@ -118,10 +120,10 @@ public class CoordinatedMarketState {
 	public CoordinatedMarketState (
 		final org.drip.execution.tradingtime.CoordinatedVariation cv)
 		throws java.lang.Exception
-<span class="fc" id="L121">	{</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == (_cv = cv))</span>
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;CoordinatedMarketState Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L124">	}</span>
+<span class="fc" id="L123">	{</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == (_cv = cv))</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;CoordinatedMarketState Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L126">	}</span>
 
 	/**
 	 * Retrieve the Coordinated Variation Constraint
@@ -131,7 +133,7 @@ public class CoordinatedMarketState {
 
 	public org.drip.execution.tradingtime.CoordinatedVariation variationConstraint()
 	{
-<span class="nc" id="L134">		return _cv;</span>
+<span class="nc" id="L136">		return _cv;</span>
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class CoordinatedMarketState {
 	public double volatility (
 		final double dblMarketState)
 	{
-<span class="fc" id="L148">		return _cv.referenceVolatility() * java.lang.Math.exp (-0.5 * dblMarketState);</span>
+<span class="fc" id="L150">		return _cv.referenceVolatility() * java.lang.Math.exp (-0.5 * dblMarketState);</span>
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class CoordinatedMarketState {
 	public double liquidity (
 		final double dblMarketState)
 	{
-<span class="fc" id="L162">		return _cv.referenceLiquidity() * java.lang.Math.exp (dblMarketState);</span>
+<span class="fc" id="L164">		return _cv.referenceLiquidity() * java.lang.Math.exp (dblMarketState);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

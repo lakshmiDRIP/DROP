@@ -69,17 +69,19 @@ package org.drip.feed.metric;
 /**
  * &lt;i&gt;TreasuryBondPnLAttributor&lt;/i&gt; generates the Date Valuation and Position Change PnL Explain Attributions
  * for the Specified Treasury Bond.
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class TreasuryBondPnLAttributor {</span>
+<span class="nc" id="L84">public class TreasuryBondPnLAttributor {</span>
 
 	/**
 	 * Generate the Explain Components for the specified Treasury Bond
@@ -105,35 +107,35 @@ package org.drip.feed.metric;
 			final int[] aiGovvieTreasuryColumn,
 			final java.lang.String[] astrRollDownHorizonTenor)
 	{
-<span class="nc bnc" id="L108" title="All 4 branches missed.">		if (null == astrGovvieTreasuryTenor || null == aiGovvieTreasuryColumn) return null;</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (null == astrGovvieTreasuryTenor || null == aiGovvieTreasuryColumn) return null;</span>
 
-<span class="nc" id="L110">		int iNumGovvieTreasury = astrGovvieTreasuryTenor.length;</span>
-<span class="nc" id="L111">		double[][] aadblGovvieTreasuryClose = new double[iNumGovvieTreasury][];</span>
+<span class="nc" id="L112">		int iNumGovvieTreasury = astrGovvieTreasuryTenor.length;</span>
+<span class="nc" id="L113">		double[][] aadblGovvieTreasuryClose = new double[iNumGovvieTreasury][];</span>
 
-<span class="nc bnc" id="L113" title="All 4 branches missed.">		if (0 == iNumGovvieTreasury || iNumGovvieTreasury != aiGovvieTreasuryColumn.length) return null;</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		if (0 == iNumGovvieTreasury || iNumGovvieTreasury != aiGovvieTreasuryColumn.length) return null;</span>
 
-<span class="nc" id="L115">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid</span>
-<span class="nc" id="L116">			(strFeedTranformLocation, true);</span>
+<span class="nc" id="L117">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid</span>
+<span class="nc" id="L118">			(strFeedTranformLocation, true);</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == csvGrid) return null;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == csvGrid) return null;</span>
 
-<span class="nc" id="L120">		org.drip.analytics.date.JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
+<span class="nc" id="L122">		org.drip.analytics.date.JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
 
-<span class="nc" id="L122">		int iNumClose = adtClose.length;</span>
-<span class="nc" id="L123">		double[][] aadblGovvieTreasuryQuote = new double[iNumClose][iNumGovvieTreasury];</span>
-<span class="nc" id="L124">		org.drip.analytics.date.JulianDate[] adtSpot = new org.drip.analytics.date.JulianDate[iNumClose];</span>
+<span class="nc" id="L124">		int iNumClose = adtClose.length;</span>
+<span class="nc" id="L125">		double[][] aadblGovvieTreasuryQuote = new double[iNumClose][iNumGovvieTreasury];</span>
+<span class="nc" id="L126">		org.drip.analytics.date.JulianDate[] adtSpot = new org.drip.analytics.date.JulianDate[iNumClose];</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumGovvieTreasury; ++i)</span>
-<span class="nc" id="L127">			aadblGovvieTreasuryClose[i] = csvGrid.doubleArrayAtColumn (aiGovvieTreasuryColumn[i]);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumGovvieTreasury; ++i)</span>
+<span class="nc" id="L129">			aadblGovvieTreasuryClose[i] = csvGrid.doubleArrayAtColumn (aiGovvieTreasuryColumn[i]);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L130">			adtSpot[i] = adtClose[i];</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L132">			adtSpot[i] = adtClose[i];</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumGovvieTreasury; ++j)</span>
-<span class="nc" id="L133">				aadblGovvieTreasuryQuote[i][j] = aadblGovvieTreasuryClose[j][i];</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumGovvieTreasury; ++j)</span>
+<span class="nc" id="L135">				aadblGovvieTreasuryQuote[i][j] = aadblGovvieTreasuryClose[j][i];</span>
 		}
 
-<span class="nc" id="L136">		return org.drip.service.product.TreasuryAPI.HorizonChangeAttribution (adtSpot, iHorizonGap,</span>
+<span class="nc" id="L138">		return org.drip.service.product.TreasuryAPI.HorizonChangeAttribution (adtSpot, iHorizonGap,</span>
 			astrGovvieTreasuryTenor, aadblGovvieTreasuryQuote, strMaturityTenor, strCode,
 				astrRollDownHorizonTenor,
 					org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
@@ -162,34 +164,34 @@ package org.drip.feed.metric;
 		final int[] aiGovvieTreasuryColumn,
 		final java.lang.String[] astrRollDownHorizonTenor)
 	{
-<span class="nc" id="L165">		boolean bFirstRun = true;</span>
+<span class="nc" id="L167">		boolean bFirstRun = true;</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : astrMaturityTenor) {</span>
-<span class="nc bnc" id="L168" title="All 2 branches missed.">			for (int iHorizonGap : aiHorizonGap) {</span>
-<span class="nc" id="L169">				java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC =</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : astrMaturityTenor) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			for (int iHorizonGap : aiHorizonGap) {</span>
+<span class="nc" id="L171">				java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC =</span>
 					org.drip.feed.metric.TreasuryBondPnLAttributor.TenorHorizonExplainComponents
-<span class="nc" id="L171">						(strMaturityTenor, strCode, iHorizonGap, strFeedTranformLocation,</span>
+<span class="nc" id="L173">						(strMaturityTenor, strCode, iHorizonGap, strFeedTranformLocation,</span>
 							astrGovvieTreasuryTenor, aiGovvieTreasuryColumn, astrRollDownHorizonTenor);
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">				if (null != lsPCC) {</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">					java.lang.String strHorizonTenor = 1 == iHorizonGap ? &quot;1D&quot; : ((iHorizonGap / 22) + &quot;M&quot;);</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">				if (null != lsPCC) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">					java.lang.String strHorizonTenor = 1 == iHorizonGap ? &quot;1D&quot; : ((iHorizonGap / 22) + &quot;M&quot;);</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">					for (org.drip.historical.attribution.PositionChangeComponents pcc : lsPCC) {</span>
-<span class="nc bnc" id="L178" title="All 2 branches missed.">						if (null != pcc) {</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">							if (bFirstRun) {</span>
-<span class="nc" id="L180">								System.out.println (pcc.header() + &quot;horizontenor,&quot;);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">					for (org.drip.historical.attribution.PositionChangeComponents pcc : lsPCC) {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">						if (null != pcc) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">							if (bFirstRun) {</span>
+<span class="nc" id="L182">								System.out.println (pcc.header() + &quot;horizontenor,&quot;);</span>
 
-<span class="nc" id="L182">								bFirstRun = false;</span>
+<span class="nc" id="L184">								bFirstRun = false;</span>
 							}
 
-<span class="nc" id="L185">							System.out.println (pcc.content() + strHorizonTenor + &quot;,&quot;);</span>
+<span class="nc" id="L187">							System.out.println (pcc.content() + strHorizonTenor + &quot;,&quot;);</span>
 						}
-<span class="nc" id="L187">					}</span>
+<span class="nc" id="L189">					}</span>
 				}
 			}
 		}
 
-<span class="nc" id="L192">		return true;</span>
+<span class="nc" id="L194">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

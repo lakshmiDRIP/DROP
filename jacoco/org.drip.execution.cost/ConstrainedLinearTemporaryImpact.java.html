@@ -68,9 +68,9 @@ package org.drip.execution.cost;
 
 /**
  * &lt;i&gt;ConstrainedLinearTemporaryImpact&lt;/i&gt; computes and holds the Optimal Trajectory under Trading Rate Sign
- *  Constraints using Linear Temporary Impact Function for the given set of Inputs. The References are:
+ * Constraints using Linear Temporary Impact Function for the given set of Inputs. The References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
@@ -93,20 +93,22 @@ package org.drip.execution.cost;
  * 				Trading&lt;/i&gt; &lt;b&gt;1 (1)&lt;/b&gt; 12-21
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/cost&quot;&gt;Cost&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/cost&quot;&gt;Cost&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.LinearTemporaryImpact {
-<span class="fc" id="L107">	private double _dblCriticalDrift = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblTradeStartTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private double _dblTradeFinishTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblCriticalDrift = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblTradeStartTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblTradeFinishTime = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a ConstrainedLinearTemporaryImpact Instance
@@ -129,75 +131,75 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 		final double dblGrossPriceChange,
 		final org.drip.execution.impact.TransactionFunctionLinear tflTemporary)
 	{
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTime) ||</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) ||</span>
-<span class="pc bpc" id="L134" title="3 of 6 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTime) ||</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) ||</span>
+<span class="pc bpc" id="L136" title="3 of 6 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==</span>
 					tflTemporary)
-<span class="nc" id="L136">			return null;</span>
+<span class="nc" id="L138">			return null;</span>
 
-<span class="fc" id="L138">		final double dblLiquidityCoefficient = tflTemporary.slope();</span>
+<span class="fc" id="L140">		final double dblLiquidityCoefficient = tflTemporary.slope();</span>
 
-<span class="fc" id="L140">		org.drip.measure.gaussian.R1UnivariateNormal r1unPosterior = pcc.posteriorDriftDistribution</span>
-<span class="fc" id="L141">			(dblGrossPriceChange);</span>
+<span class="fc" id="L142">		org.drip.measure.gaussian.R1UnivariateNormal r1unPosterior = pcc.posteriorDriftDistribution</span>
+<span class="fc" id="L143">			(dblGrossPriceChange);</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (null == r1unPosterior) return null;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (null == r1unPosterior) return null;</span>
 
-<span class="fc" id="L145">		final double dblDriftEstimate = r1unPosterior.mean();</span>
+<span class="fc" id="L147">		final double dblDriftEstimate = r1unPosterior.mean();</span>
 
-<span class="fc" id="L147">		double dblTradeStartTime = dblSpotTime;</span>
-<span class="fc" id="L148">		double dblTradeFinishTime = dblFinishTime;</span>
-<span class="fc" id="L149">		double dblHorizon = dblFinishTime - dblSpotTime;</span>
-<span class="fc" id="L150">		double dblInstantaneousTradeRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L151">		double dblCriticalDrift = 4. * dblLiquidityCoefficient * dblSpotHoldings / (dblHorizon * dblHorizon);</span>
+<span class="fc" id="L149">		double dblTradeStartTime = dblSpotTime;</span>
+<span class="fc" id="L150">		double dblTradeFinishTime = dblFinishTime;</span>
+<span class="fc" id="L151">		double dblHorizon = dblFinishTime - dblSpotTime;</span>
+<span class="fc" id="L152">		double dblInstantaneousTradeRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L153">		double dblCriticalDrift = 4. * dblLiquidityCoefficient * dblSpotHoldings / (dblHorizon * dblHorizon);</span>
 
-<span class="fc bfc" id="L153" title="All 2 branches covered.">		if (dblDriftEstimate &gt; dblCriticalDrift) {</span>
-<span class="fc" id="L154">			dblTradeStartTime = dblSpotTime;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		if (dblDriftEstimate &gt; dblCriticalDrift) {</span>
+<span class="fc" id="L156">			dblTradeStartTime = dblSpotTime;</span>
 
-<span class="fc" id="L156">			dblInstantaneousTradeRate = java.lang.Math.sqrt (dblDriftEstimate * dblSpotHoldings /</span>
+<span class="fc" id="L158">			dblInstantaneousTradeRate = java.lang.Math.sqrt (dblDriftEstimate * dblSpotHoldings /</span>
 				dblLiquidityCoefficient);
 
-<span class="fc" id="L159">			dblTradeFinishTime = dblSpotTime + java.lang.Math.sqrt (4. * dblLiquidityCoefficient *</span>
+<span class="fc" id="L161">			dblTradeFinishTime = dblSpotTime + java.lang.Math.sqrt (4. * dblLiquidityCoefficient *</span>
 				dblSpotHoldings / dblDriftEstimate);
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		} else if (dblDriftEstimate &lt; -1. * dblCriticalDrift) {</span>
-<span class="fc" id="L162">			dblTradeFinishTime = dblFinishTime - java.lang.Math.sqrt (-4. * dblLiquidityCoefficient *</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		} else if (dblDriftEstimate &lt; -1. * dblCriticalDrift) {</span>
+<span class="fc" id="L164">			dblTradeFinishTime = dblFinishTime - java.lang.Math.sqrt (-4. * dblLiquidityCoefficient *</span>
 				dblSpotHoldings / dblDriftEstimate);
 
-<span class="fc" id="L165">			dblInstantaneousTradeRate = 0.;</span>
-<span class="fc" id="L166">			dblTradeFinishTime = dblFinishTime;</span>
+<span class="fc" id="L167">			dblInstantaneousTradeRate = 0.;</span>
+<span class="fc" id="L168">			dblTradeFinishTime = dblFinishTime;</span>
 		} else
-<span class="fc" id="L168">			dblInstantaneousTradeRate = dblSpotHoldings / dblHorizon + dblDriftEstimate * dblHorizon /</span>
+<span class="fc" id="L170">			dblInstantaneousTradeRate = dblSpotHoldings / dblHorizon + dblDriftEstimate * dblHorizon /</span>
 				dblLiquidityCoefficient;
 
-<span class="fc" id="L171">		final double dblt = dblTradeStartTime;</span>
-<span class="fc" id="L172">		final double dblT = dblTradeFinishTime;</span>
+<span class="fc" id="L173">		final double dblt = dblTradeStartTime;</span>
+<span class="fc" id="L174">		final double dblT = dblTradeFinishTime;</span>
 
-<span class="fc" id="L174">		org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L176">		org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTau)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTau))</span>
-<span class="nc" id="L180">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblTau))</span>
+<span class="nc" id="L182">					throw new java.lang.Exception</span>
 						(&quot;ConstrainedLinearTemporaryImpact::Holdings::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="fc bfc" id="L183" title="All 2 branches covered.">				if (dblTau &lt;= dblt) return dblSpotHoldings;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">				if (dblTau &lt;= dblt) return dblSpotHoldings;</span>
 
-<span class="fc bfc" id="L185" title="All 2 branches covered.">				if (dblTau &gt;= dblT) return 0.;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">				if (dblTau &gt;= dblT) return 0.;</span>
 
-<span class="fc" id="L187">				return (dblT - dblTau) * (dblSpotHoldings / (dblT - dblt) - 0.25 * dblDriftEstimate * (dblTau</span>
+<span class="fc" id="L189">				return (dblT - dblTau) * (dblSpotHoldings / (dblT - dblt) - 0.25 * dblDriftEstimate * (dblTau</span>
 					- dblt) / dblLiquidityCoefficient);
 			}
 		};
 
 		try {
-<span class="fc" id="L193">			return new ConstrainedLinearTemporaryImpact (dblSpotTime, dblFinishTime, dblSpotHoldings, pcc,</span>
+<span class="fc" id="L195">			return new ConstrainedLinearTemporaryImpact (dblSpotTime, dblFinishTime, dblSpotHoldings, pcc,</span>
 				dblGrossPriceChange, tflTemporary, r1ToR1Holdings, dblInstantaneousTradeRate,
 					dblCriticalDrift, dblTradeStartTime, dblTradeFinishTime);
-<span class="nc" id="L196">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="nc" id="L198">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L199">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L200">		return null;</span>
+<span class="nc" id="L202">		return null;</span>
 	}
 
 	protected ConstrainedLinearTemporaryImpact (
@@ -214,14 +216,14 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 		final double dblTradeFinishTime)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L217">		super (dblSpotTime, dblFinishTime, dblSpotHoldings, pcc, dblGrossPriceChange, tflTemporary,</span>
+<span class="fc" id="L219">		super (dblSpotTime, dblFinishTime, dblSpotHoldings, pcc, dblGrossPriceChange, tflTemporary,</span>
 			dblTradeFinishTime - dblTradeStartTime, r1ToR1Holdings, dblInstantaneousTradeRate);
 
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCriticalDrift = dblCriticalDrift) ||</span>
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeStartTime = dblTradeStartTime) ||</span>
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeFinishTime = dblTradeFinishTime))</span>
-<span class="nc" id="L223">			throw new java.lang.Exception (&quot;ConstrainedLinearTemporaryImpact Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L224">	}</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCriticalDrift = dblCriticalDrift) ||</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeStartTime = dblTradeStartTime) ||</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeFinishTime = dblTradeFinishTime))</span>
+<span class="nc" id="L225">			throw new java.lang.Exception (&quot;ConstrainedLinearTemporaryImpact Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L226">	}</span>
 
 	/**
 	 * Retrieve the Critical Drift
@@ -231,7 +233,7 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 
 	public double criticalDrift()
 	{
-<span class="fc" id="L234">		return _dblCriticalDrift;</span>
+<span class="fc" id="L236">		return _dblCriticalDrift;</span>
 	}
 
 	/**
@@ -242,7 +244,7 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 
 	public double tradeStartTime()
 	{
-<span class="fc" id="L245">		return _dblTradeStartTime;</span>
+<span class="fc" id="L247">		return _dblTradeStartTime;</span>
 	}
 
 	/**
@@ -253,7 +255,7 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 
 	public double tradeFinishTime()
 	{
-<span class="fc" id="L256">		return _dblTradeFinishTime;</span>
+<span class="fc" id="L258">		return _dblTradeFinishTime;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

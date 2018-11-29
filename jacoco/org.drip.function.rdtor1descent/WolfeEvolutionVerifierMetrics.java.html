@@ -87,11 +87,13 @@ package org.drip.function.rdtor1descent;
  * 				Review&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 185-188
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Descent&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -99,13 +101,13 @@ package org.drip.function.rdtor1descent;
 
 public class WolfeEvolutionVerifierMetrics extends
 	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-<span class="fc" id="L102">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L103">	private boolean _bStrongCurvatureCriterion = false;</span>
-<span class="fc" id="L104">	private double[] _adblNextVariateFunctionJacobian = null;</span>
-<span class="fc" id="L105">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L106">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L107">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">	private boolean _bMaximizerCheck = false;</span>
+<span class="fc" id="L105">	private boolean _bStrongCurvatureCriterion = false;</span>
+<span class="fc" id="L106">	private double[] _adblNextVariateFunctionJacobian = null;</span>
+<span class="fc" id="L107">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * WolfeEvolutionVerifierMetrics Constructor
@@ -139,20 +141,20 @@ public class WolfeEvolutionVerifierMetrics extends
 		final double[] adblNextVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L142">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+<span class="fc" id="L144">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="pc bpc" id="L145" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
 				null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
 						dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L149" title="2 of 4 branches missed.">							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||</span>
+<span class="pc bpc" id="L151" title="2 of 4 branches missed.">							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||</span>
 								adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
-<span class="nc" id="L151">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L153">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L153">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L154">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
-<span class="fc" id="L155">	}</span>
+<span class="fc" id="L155">		_bMaximizerCheck = bMaximizerCheck;</span>
+<span class="fc" id="L156">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
+<span class="fc" id="L157">	}</span>
 
 	/**
 	 * Retrieve the Armijo Parameter
@@ -162,7 +164,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L165">		return _dblArmijoParameter;</span>
+<span class="nc" id="L167">		return _dblArmijoParameter;</span>
 	}
 
 	/**
@@ -173,7 +175,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L176">		return _bMaximizerCheck;</span>
+<span class="nc" id="L178">		return _bMaximizerCheck;</span>
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double curvatureParameter()
 	{
-<span class="nc" id="L187">		return _dblCurvatureParameter;</span>
+<span class="nc" id="L189">		return _dblCurvatureParameter;</span>
 	}
 
 	/**
@@ -195,7 +197,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean strongCurvatureCriterion()
 	{
-<span class="nc" id="L198">		return _bStrongCurvatureCriterion;</span>
+<span class="nc" id="L200">		return _bStrongCurvatureCriterion;</span>
 	}
 
 	/**
@@ -206,7 +208,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double currentVariateFunctionValue()
 	{
-<span class="nc" id="L209">		return _dblCurrentVariateFunctionValue;</span>
+<span class="nc" id="L211">		return _dblCurrentVariateFunctionValue;</span>
 	}
 
 	/**
@@ -217,7 +219,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double nextVariateFunctionValue()
 	{
-<span class="nc" id="L220">		return _dblNextVariateFunctionValue;</span>
+<span class="nc" id="L222">		return _dblNextVariateFunctionValue;</span>
 	}
 
 	/**
@@ -228,7 +230,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double[] nextVariateFunctionJacobian()
 	{
-<span class="nc" id="L231">		return _adblNextVariateFunctionJacobian;</span>
+<span class="nc" id="L233">		return _adblNextVariateFunctionJacobian;</span>
 	}
 
 	/**
@@ -239,34 +241,34 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean verify()
 	{
-<span class="fc" id="L242">		double[] adblDirectionVector = targetDirection().component();</span>
+<span class="fc" id="L244">		double[] adblDirectionVector = targetDirection().component();</span>
 
-<span class="fc" id="L244">		double[] adblCurrentVariateFunctionJacobian = currentVariateFunctionJacobian();</span>
+<span class="fc" id="L246">		double[] adblCurrentVariateFunctionJacobian = currentVariateFunctionJacobian();</span>
 
 		try {
-<span class="fc" id="L247">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
-<span class="fc" id="L248">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L249">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
+<span class="fc" id="L250">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 					adblCurrentVariateFunctionJacobian);
 
-<span class="pc bpc" id="L251" title="4 of 8 branches missed.">			if ((_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &lt; dblGradientUpdatedFunctionValue) ||</span>
+<span class="pc bpc" id="L253" title="4 of 8 branches missed.">			if ((_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &lt; dblGradientUpdatedFunctionValue) ||</span>
 				(!_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &gt; dblGradientUpdatedFunctionValue))
-<span class="fc" id="L253">				return false;</span>
+<span class="fc" id="L255">				return false;</span>
 
-<span class="fc" id="L255">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
-<span class="fc" id="L256">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
+<span class="fc" id="L257">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="fc" id="L258">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
 
-<span class="fc" id="L258">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
-<span class="fc" id="L259">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L260">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
+<span class="fc" id="L261">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 					adblCurrentVariateFunctionJacobian);
 
-<span class="fc bfc" id="L262" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>
-<span class="fc bfc" id="L263" title="All 4 branches covered.">				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement &gt;=</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>
+<span class="fc bfc" id="L265" title="All 4 branches covered.">				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement &gt;=</span>
 					dblParametrizedCurrentFunctionIncrement;
-<span class="nc" id="L265">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L266">			e.printStackTrace();</span>
+<span class="nc" id="L267">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L268">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L269">		return false;</span>
+<span class="nc" id="L271">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

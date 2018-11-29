@@ -77,20 +77,21 @@ package org.drip.function.r1tor1;
  * 			Andersen and Piterbarg (2010): Interest Rate Modeling (3 Volumes), Atlantic Financial Press.
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AndersenPiterbargMeanReverter extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L92">	private org.drip.function.r1tor1.ExponentialDecay _auExpDecay = null;</span>
-<span class="fc" id="L93">	private org.drip.function.definition.R1ToR1 _auSteadyState = null;</span>
+<span class="fc" id="L93">	private org.drip.function.r1tor1.ExponentialDecay _auExpDecay = null;</span>
+<span class="fc" id="L94">	private org.drip.function.definition.R1ToR1 _auSteadyState = null;</span>
 
 	/**
 	 * AndersenPiterbargMeanReverter constructor
@@ -106,20 +107,20 @@ public class AndersenPiterbargMeanReverter extends org.drip.function.definition.
 		final org.drip.function.definition.R1ToR1 auSteadyState)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L109">		super (null);</span>
+<span class="fc" id="L110">		super (null);</span>
 
-<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == (_auExpDecay = auExpDecay) || null == (_auSteadyState = auSteadyState))</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L113">	}</span>
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_auExpDecay = auExpDecay) || null == (_auSteadyState = auSteadyState))</span>
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L114">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L122">		return (1. - _auExpDecay.evaluate (dblVariate)) * _auSteadyState.evaluate (dblVariate);</span>
+<span class="fc" id="L123">		return (1. - _auExpDecay.evaluate (dblVariate)) * _auSteadyState.evaluate (dblVariate);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

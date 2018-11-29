@@ -88,21 +88,23 @@ package org.drip.function.rdtor1descent;
  * 				Review&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 185-188
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Descent&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
-<span class="fc" id="L102">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L103">	private boolean _bStrongCurvatureCriterion = false;</span>
-<span class="fc" id="L104">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L105">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">	private boolean _bMaximizerCheck = false;</span>
+<span class="fc" id="L105">	private boolean _bStrongCurvatureCriterion = false;</span>
+<span class="fc" id="L106">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Nocedal-Wright Wolfe Evolution Verifier
@@ -118,16 +120,16 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 		final boolean bStrongCurvatureCriterion)
 	{
 		try {
-<span class="fc" id="L121">			return new WolfeEvolutionVerifier</span>
+<span class="fc" id="L123">			return new WolfeEvolutionVerifier</span>
 				(org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NOCEDAL_WRIGHT_ARMIJO_PARAMETER,
 					bMaximizerCheck,
 						org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NOCEDAL_WRIGHT_CURVATURE_PARAMETER,
 						bStrongCurvatureCriterion);
-<span class="nc" id="L126">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L127">			e.printStackTrace();</span>
+<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L129">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L130">		return null;</span>
+<span class="nc" id="L132">		return null;</span>
 	}
 
 	/**
@@ -147,14 +149,14 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 		final double dblCurvatureParameter,
 		final boolean bStrongCurvatureCriterion)
 		throws java.lang.Exception
-<span class="fc" id="L150">	{</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))</span>
-<span class="nc" id="L153">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L152">	{</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))</span>
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L155">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L156">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
-<span class="fc" id="L157">	}</span>
+<span class="fc" id="L157">		_bMaximizerCheck = bMaximizerCheck;</span>
+<span class="fc" id="L158">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
+<span class="fc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Armijo Parameter
@@ -164,7 +166,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L167">		return _dblArmijoParameter;</span>
+<span class="nc" id="L169">		return _dblArmijoParameter;</span>
 	}
 
 	/**
@@ -175,7 +177,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L178">		return _bMaximizerCheck;</span>
+<span class="nc" id="L180">		return _bMaximizerCheck;</span>
 	}
 
 	/**
@@ -186,7 +188,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public double curvatureParameter()
 	{
-<span class="nc" id="L189">		return _dblCurvatureParameter;</span>
+<span class="nc" id="L191">		return _dblCurvatureParameter;</span>
 	}
 
 	/**
@@ -197,7 +199,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public boolean strongCriterion()
 	{
-<span class="nc" id="L200">		return _bStrongCurvatureCriterion;</span>
+<span class="nc" id="L202">		return _bStrongCurvatureCriterion;</span>
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
@@ -206,20 +208,20 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final double dblStepLength)
 	{
-<span class="fc" id="L209">		double[] adblNextVariate = NextVariate (uvTargetDirection, adblCurrentVariate, dblStepLength);</span>
+<span class="fc" id="L211">		double[] adblNextVariate = NextVariate (uvTargetDirection, adblCurrentVariate, dblStepLength);</span>
 
 		try {
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">			return null == funcRdToR1 ? null : new</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">			return null == funcRdToR1 ? null : new</span>
 				org.drip.function.rdtor1descent.WolfeEvolutionVerifierMetrics (_dblArmijoParameter,
 					_bMaximizerCheck, _dblCurvatureParameter, _bStrongCurvatureCriterion, uvTargetDirection,
-<span class="fc" id="L215">						adblCurrentVariate, dblStepLength, funcRdToR1.evaluate (adblCurrentVariate),</span>
-<span class="fc" id="L216">							funcRdToR1.evaluate (adblNextVariate), funcRdToR1.jacobian (adblCurrentVariate),</span>
-<span class="fc" id="L217">								funcRdToR1.jacobian (adblNextVariate));</span>
-<span class="nc" id="L218">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L219">			e.printStackTrace();</span>
+<span class="fc" id="L217">						adblCurrentVariate, dblStepLength, funcRdToR1.evaluate (adblCurrentVariate),</span>
+<span class="fc" id="L218">							funcRdToR1.evaluate (adblNextVariate), funcRdToR1.jacobian (adblCurrentVariate),</span>
+<span class="fc" id="L219">								funcRdToR1.jacobian (adblNextVariate));</span>
+<span class="nc" id="L220">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L221">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L222">		return null;</span>
+<span class="nc" id="L224">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

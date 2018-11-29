@@ -68,19 +68,20 @@ package org.drip.feed.loader;
 
 /**
  * &lt;i&gt;InstrumentSetTenorQuote&lt;/i&gt; holds the Instrument Set Tenor and Closing Quote Group.
- * 
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class InstrumentSetTenorQuote {
-<span class="nc" id="L83">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.Integer,</span>
+<span class="nc" id="L84">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.Integer,</span>
 		org.drip.feed.loader.TenorQuote&gt;&gt; _mapOrderedInstrumentTenorQuote = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.Integer,
 				org.drip.feed.loader.TenorQuote&gt;&gt;();
@@ -90,8 +91,8 @@ public class InstrumentSetTenorQuote {
 	 */
 
 	public InstrumentSetTenorQuote()
-<span class="nc" id="L93">	{</span>
-<span class="nc" id="L94">	}</span>
+<span class="nc" id="L94">	{</span>
+<span class="nc" id="L95">	}</span>
 
 	/**
 	 * Add the Instrument/Tenor/Quote/Scale Field Set
@@ -110,27 +111,27 @@ public class InstrumentSetTenorQuote {
 		final double dblQuote,
 		final double dblScale)
 	{
-<span class="nc" id="L113">		int iTenorDays = -1;</span>
-<span class="nc" id="L114">		org.drip.feed.loader.TenorQuote tq = null;</span>
+<span class="nc" id="L114">		int iTenorDays = -1;</span>
+<span class="nc" id="L115">		org.drip.feed.loader.TenorQuote tq = null;</span>
 
 		try {
-<span class="nc" id="L117">			tq = new org.drip.feed.loader.TenorQuote (strTenor, dblQuote * dblScale);</span>
+<span class="nc" id="L118">			tq = new org.drip.feed.loader.TenorQuote (strTenor, dblQuote * dblScale);</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			if (0 &gt;= (iTenorDays = org.drip.analytics.support.Helper.TenorToDays (strTenor))) return false;</span>
-<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L121">			return false;</span>
-<span class="nc" id="L122">		}</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">			if (0 &gt;= (iTenorDays = org.drip.analytics.support.Helper.TenorToDays (strTenor))) return false;</span>
+<span class="nc" id="L121">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L122">			return false;</span>
+<span class="nc" id="L123">		}</span>
 
-<span class="nc" id="L124">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapOrderedTenorQuote =</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? _mapOrderedInstrumentTenorQuote.get</span>
-<span class="nc" id="L126">				(strInstrument) : new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="nc" id="L125">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapOrderedTenorQuote =</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? _mapOrderedInstrumentTenorQuote.get</span>
+<span class="nc" id="L127">				(strInstrument) : new java.util.TreeMap&lt;java.lang.Integer,</span>
 					org.drip.feed.loader.TenorQuote&gt;();
 
-<span class="nc" id="L129">		mapOrderedTenorQuote.put (iTenorDays, tq);</span>
+<span class="nc" id="L130">		mapOrderedTenorQuote.put (iTenorDays, tq);</span>
 
-<span class="nc" id="L131">		_mapOrderedInstrumentTenorQuote.put (strInstrument, mapOrderedTenorQuote);</span>
+<span class="nc" id="L132">		_mapOrderedInstrumentTenorQuote.put (strInstrument, mapOrderedTenorQuote);</span>
 
-<span class="nc" id="L133">		return true;</span>
+<span class="nc" id="L134">		return true;</span>
 	}
 
 	/**
@@ -144,8 +145,8 @@ public class InstrumentSetTenorQuote {
 	public java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; instrumentTenorQuote (
 		final java.lang.String strInstrument)
 	{
-<span class="nc bnc" id="L147" title="All 4 branches missed.">		return null == strInstrument || !_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? null :</span>
-<span class="nc" id="L148">			_mapOrderedInstrumentTenorQuote.get (strInstrument);</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		return null == strInstrument || !_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? null :</span>
+<span class="nc" id="L149">			_mapOrderedInstrumentTenorQuote.get (strInstrument);</span>
 	}
 
 	/**
@@ -159,23 +160,23 @@ public class InstrumentSetTenorQuote {
 	public java.lang.String[] instrumentTenor (
 		final java.lang.String strInstrument)
 	{
-<span class="nc" id="L162">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
-<span class="nc" id="L163">			instrumentTenorQuote (strInstrument);</span>
+<span class="nc" id="L163">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
+<span class="nc" id="L164">			instrumentTenorQuote (strInstrument);</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
 
-<span class="nc" id="L167">		int iNumTenor = mapTenorQuote.size();</span>
+<span class="nc" id="L168">		int iNumTenor = mapTenorQuote.size();</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L171">		int i = 0;</span>
-<span class="nc" id="L172">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
+<span class="nc" id="L172">		int i = 0;</span>
+<span class="nc" id="L173">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; meTQ :
-<span class="nc bnc" id="L175" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
-<span class="nc" id="L176">			astrTenor[i++] = meTQ.getValue().tenor();</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
+<span class="nc" id="L177">			astrTenor[i++] = meTQ.getValue().tenor();</span>
 
-<span class="nc" id="L178">		return astrTenor;</span>
+<span class="nc" id="L179">		return astrTenor;</span>
 	}
 
 	/**
@@ -189,23 +190,23 @@ public class InstrumentSetTenorQuote {
 	public double[] instrumentQuote (
 		final java.lang.String strInstrument)
 	{
-<span class="nc" id="L192">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
-<span class="nc" id="L193">			instrumentTenorQuote (strInstrument);</span>
+<span class="nc" id="L193">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
+<span class="nc" id="L194">			instrumentTenorQuote (strInstrument);</span>
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
 
-<span class="nc" id="L197">		int iNumTenor = mapTenorQuote.size();</span>
+<span class="nc" id="L198">		int iNumTenor = mapTenorQuote.size();</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L201">		int i = 0;</span>
-<span class="nc" id="L202">		double[] adblQuote = new double[iNumTenor];</span>
+<span class="nc" id="L202">		int i = 0;</span>
+<span class="nc" id="L203">		double[] adblQuote = new double[iNumTenor];</span>
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; meTQ :
-<span class="nc bnc" id="L205" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
-<span class="nc" id="L206">			adblQuote[i++] = meTQ.getValue().quote();</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
+<span class="nc" id="L207">			adblQuote[i++] = meTQ.getValue().quote();</span>
 
-<span class="nc" id="L208">		return adblQuote;</span>
+<span class="nc" id="L209">		return adblQuote;</span>
 	}
 
 	/**
@@ -216,7 +217,7 @@ public class InstrumentSetTenorQuote {
 
 	public boolean isEmpty()
 	{
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		return 0 == _mapOrderedInstrumentTenorQuote.size();</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		return 0 == _mapOrderedInstrumentTenorQuote.size();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

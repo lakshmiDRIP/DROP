@@ -70,7 +70,7 @@ package org.drip.execution.hjb;
  * &lt;i&gt;NonDimensionalCostCorrelated&lt;/i&gt; contains the Level, the Gradient, and the Jacobian of the HJB Non
  * dimensional Cost Value Function to the Individual Correlated Market States. The References are:
  * 
- * 	&lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
@@ -93,22 +93,24 @@ package org.drip.execution.hjb;
  * 				Financial Studies&lt;/i&gt; &lt;b&gt;7 (4)&lt;/b&gt; 631-651
  * 		&lt;/li&gt;
  *  &lt;/ul&gt;
- * 	&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb&quot;&gt;HJB&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb&quot;&gt;Hamilton Jacobin Bellman Based Optimal Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDimensionalCost {
-<span class="nc" id="L107">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
-<span class="nc" id="L108">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a Zero Sensitivity Correlated Non-dimensional Cost Instance
@@ -119,12 +121,12 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 	public static final NonDimensionalCostCorrelated Zero()
 	{
 		try {
-<span class="nc" id="L122">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
-<span class="nc" id="L123">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L124">			e.printStackTrace();</span>
+<span class="nc" id="L124">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
+<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L126">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L127">		return null;</span>
+<span class="nc" id="L129">		return null;</span>
 	}
 
 	/**
@@ -151,16 +153,16 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 		final double dblNonDimensionalTradeRate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L154">		super (dblRealization, dblNonDimensionalTradeRate);</span>
+<span class="nc" id="L156">		super (dblRealization, dblNonDimensionalTradeRate);</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
 						dblVolatilityJacobian) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L161" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
-<span class="nc" id="L162">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L163">	}</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
+<span class="nc" id="L164">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L165">	}</span>
 
 	/**
 	 * Retrieve the Non Dimensional Value Liquidity Gradient
@@ -170,7 +172,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityGradient()
 	{
-<span class="nc" id="L173">		return _dblLiquidityGradient;</span>
+<span class="nc" id="L175">		return _dblLiquidityGradient;</span>
 	}
 
 	/**
@@ -181,7 +183,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityJacobian()
 	{
-<span class="nc" id="L184">		return _dblLiquidityJacobian;</span>
+<span class="nc" id="L186">		return _dblLiquidityJacobian;</span>
 	}
 
 	/**
@@ -192,7 +194,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double volatilityGradient()
 	{
-<span class="nc" id="L195">		return _dblVolatilityGradient;</span>
+<span class="nc" id="L197">		return _dblVolatilityGradient;</span>
 	}
 
 	/**
@@ -203,7 +205,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double volatilityJacobian()
 	{
-<span class="nc" id="L206">		return _dblVolatilityJacobian;</span>
+<span class="nc" id="L208">		return _dblVolatilityJacobian;</span>
 	}
 
 	/**
@@ -214,7 +216,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityVolatilityGradient()
 	{
-<span class="nc" id="L217">		return _dblLiquidityVolatilityGradient;</span>
+<span class="nc" id="L219">		return _dblLiquidityVolatilityGradient;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

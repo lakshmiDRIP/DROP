@@ -71,7 +71,7 @@ package org.drip.execution.parameters;
  * the Impact Parameters for the Almgren and Chriss (2000) Optimal Trajectory Generation Scheme. The
  * References are:
  * 
- * &lt;br&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
  * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
@@ -94,11 +94,13 @@ package org.drip.execution.parameters;
  * 				265-292
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/TransactionCost&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -122,13 +124,13 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 		final double dblBidAskSpread)
 	{
 		try {
-<span class="nc" id="L125">			return new PriceMarketImpactLinear (new org.drip.execution.parameters.AssetTransactionSettings</span>
+<span class="nc" id="L127">			return new PriceMarketImpactLinear (new org.drip.execution.parameters.AssetTransactionSettings</span>
 				(dblPrice, dblDailyVolume, dblBidAskSpread), 0.1, 0.01);
-<span class="nc" id="L127">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L128">			e.printStackTrace();</span>
+<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L130">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L131">		return null;</span>
+<span class="nc" id="L133">		return null;</span>
 	}
 
 	/**
@@ -149,8 +151,8 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 		final double dblTemporaryImpactFactor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L152">		super (ats, dblPermanentImpactFactor, dblTemporaryImpactFactor);</span>
-<span class="fc" id="L153">	}</span>
+<span class="fc" id="L154">		super (ats, dblPermanentImpactFactor, dblTemporaryImpactFactor);</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Generate the Permanent Impact Transaction Function
@@ -160,16 +162,16 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 
 	public org.drip.execution.impact.TransactionFunction permanentTransactionFunction()
 	{
-<span class="fc" id="L163">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
+<span class="fc" id="L165">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
 
 		try {
-<span class="fc" id="L166">			return new org.drip.execution.impact.ParticipationRateLinear (0., ats.bidAskSpread() /</span>
-<span class="fc" id="L167">				(permanentImpactFactor() * ats.backgroundVolume()));</span>
-<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L169">			e.printStackTrace();</span>
+<span class="fc" id="L168">			return new org.drip.execution.impact.ParticipationRateLinear (0., ats.bidAskSpread() /</span>
+<span class="fc" id="L169">				(permanentImpactFactor() * ats.backgroundVolume()));</span>
+<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L172">		return null;</span>
+<span class="nc" id="L174">		return null;</span>
 	}
 
 	/**
@@ -180,18 +182,18 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 
 	public org.drip.execution.impact.TransactionFunction temporaryTransactionFunction()
 	{
-<span class="fc" id="L183">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
+<span class="fc" id="L185">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
 
-<span class="fc" id="L185">		double dblBidAskSpread = ats.bidAskSpread();</span>
+<span class="fc" id="L187">		double dblBidAskSpread = ats.bidAskSpread();</span>
 
 		try {
-<span class="fc" id="L188">			return new org.drip.execution.impact.ParticipationRateLinear (0.5 * dblBidAskSpread,</span>
-<span class="fc" id="L189">				dblBidAskSpread / (temporaryImpactFactor() * ats.backgroundVolume()));</span>
-<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="fc" id="L190">			return new org.drip.execution.impact.ParticipationRateLinear (0.5 * dblBidAskSpread,</span>
+<span class="fc" id="L191">				dblBidAskSpread / (temporaryImpactFactor() * ats.backgroundVolume()));</span>
+<span class="nc" id="L192">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L193">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L194">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
