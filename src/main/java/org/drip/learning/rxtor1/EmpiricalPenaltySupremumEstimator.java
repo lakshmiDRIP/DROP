@@ -71,14 +71,14 @@ package org.drip.learning.rxtor1;
  * <i>EmpiricalPenaltySupremumEstimator</i> contains the Implementation of the Empirical Penalty Supremum
  * Estimator dependent on Multivariate Random Variables where the Multivariate Function is a Linear
  * Combination of Bounded Univariate Functions acting on each Random Variate.
- * 
- * <br><br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module</b>        = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning">Learning</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1">R<sup>x</sup> To R<sup>1</sup></a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning">Statistical Learning Library</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning">Learning</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1">R<sup>x</sup> To R<sup>1</sup></a></li>
  *  </ul>
- * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
