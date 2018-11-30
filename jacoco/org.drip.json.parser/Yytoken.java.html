@@ -69,12 +69,13 @@ package org.drip.json.parser;
 /**
  * &lt;i&gt;Yytoken&lt;/i&gt; is an Adaptation of the Yytoken Class from the RFC4627 compliant JSON Simple
  * (https://code.google.com/p/json-simple/).
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Fang Yidong
@@ -91,43 +92,43 @@ public class Yytoken {
     public static final int TYPE_COLON=6;
     public static final int TYPE_EOF=-1;//end of file
     
-<span class="fc" id="L94">    public int type=0;</span>
-<span class="fc" id="L95">    public Object value=null;</span>
+<span class="fc" id="L95">    public int type=0;</span>
+<span class="fc" id="L96">    public Object value=null;</span>
     
-<span class="fc" id="L97">    public Yytoken(int type,Object value){</span>
-<span class="fc" id="L98">            this.type=type;</span>
-<span class="fc" id="L99">            this.value=value;</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L98">    public Yytoken(int type,Object value){</span>
+<span class="fc" id="L99">            this.type=type;</span>
+<span class="fc" id="L100">            this.value=value;</span>
+<span class="fc" id="L101">    }</span>
     
     public String toString(){
-<span class="fc" id="L103">            StringBuffer sb = new StringBuffer();</span>
-<span class="pc bpc" id="L104" title="8 of 9 branches missed.">            switch(type){</span>
+<span class="fc" id="L104">            StringBuffer sb = new StringBuffer();</span>
+<span class="pc bpc" id="L105" title="8 of 9 branches missed.">            switch(type){</span>
             case TYPE_VALUE:
-<span class="nc" id="L106">                    sb.append(&quot;VALUE(&quot;).append(value).append(&quot;)&quot;);</span>
-<span class="nc" id="L107">                    break;</span>
+<span class="nc" id="L107">                    sb.append(&quot;VALUE(&quot;).append(value).append(&quot;)&quot;);</span>
+<span class="nc" id="L108">                    break;</span>
             case TYPE_LEFT_BRACE:
-<span class="nc" id="L109">                    sb.append(&quot;LEFT BRACE({)&quot;);</span>
-<span class="nc" id="L110">                    break;</span>
+<span class="nc" id="L110">                    sb.append(&quot;LEFT BRACE({)&quot;);</span>
+<span class="nc" id="L111">                    break;</span>
             case TYPE_RIGHT_BRACE:
-<span class="fc" id="L112">                    sb.append(&quot;RIGHT BRACE(})&quot;);</span>
-<span class="fc" id="L113">                    break;</span>
+<span class="fc" id="L113">                    sb.append(&quot;RIGHT BRACE(})&quot;);</span>
+<span class="fc" id="L114">                    break;</span>
             case TYPE_LEFT_SQUARE:
-<span class="nc" id="L115">                    sb.append(&quot;LEFT SQUARE([)&quot;);</span>
-<span class="nc" id="L116">                    break;</span>
+<span class="nc" id="L116">                    sb.append(&quot;LEFT SQUARE([)&quot;);</span>
+<span class="nc" id="L117">                    break;</span>
             case TYPE_RIGHT_SQUARE:
-<span class="nc" id="L118">                    sb.append(&quot;RIGHT SQUARE(])&quot;);</span>
-<span class="nc" id="L119">                    break;</span>
+<span class="nc" id="L119">                    sb.append(&quot;RIGHT SQUARE(])&quot;);</span>
+<span class="nc" id="L120">                    break;</span>
             case TYPE_COMMA:
-<span class="nc" id="L121">                    sb.append(&quot;COMMA(,)&quot;);</span>
-<span class="nc" id="L122">                    break;</span>
+<span class="nc" id="L122">                    sb.append(&quot;COMMA(,)&quot;);</span>
+<span class="nc" id="L123">                    break;</span>
             case TYPE_COLON:
-<span class="nc" id="L124">                    sb.append(&quot;COLON(:)&quot;);</span>
-<span class="nc" id="L125">                    break;</span>
+<span class="nc" id="L125">                    sb.append(&quot;COLON(:)&quot;);</span>
+<span class="nc" id="L126">                    break;</span>
             case TYPE_EOF:
-<span class="nc" id="L127">                    sb.append(&quot;END OF FILE&quot;);</span>
+<span class="nc" id="L128">                    sb.append(&quot;END OF FILE&quot;);</span>
                     break;
             }
-<span class="fc" id="L130">            return sb.toString();</span>
+<span class="fc" id="L131">            return sb.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

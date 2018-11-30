@@ -69,17 +69,19 @@ package org.drip.json.assetallocation;
 /**
  * &lt;i&gt;PortfolioConstructionProcessor&lt;/i&gt; Sets Up and Executes a JSON Based In/Out Processing Service for
  * Constrained and Unconstrained Portfolio Construction.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/assetallocation&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class PortfolioConstructionProcessor {</span>
+<span class="nc" id="L84">public class PortfolioConstructionProcessor {</span>
 
 	/**
 	 * JSON Based in/out Budget Constrained Mean Variance Allocation Thunker
@@ -93,105 +95,105 @@ package org.drip.json.assetallocation;
 		BudgetConstrainedAllocator (
 			final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L96">		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
+<span class="fc" id="L98">		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
 			&quot;AssetSet&quot;);
 
-<span class="fc" id="L99">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;</span>
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;</span>
-<span class="fc" id="L101">		double[] adblAssetLowerBound = new double[iNumAsset];</span>
-<span class="fc" id="L102">		double[] adblAssetUpperBound = new double[iNumAsset];</span>
+<span class="fc" id="L101">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;</span>
+<span class="fc" id="L103">		double[] adblAssetLowerBound = new double[iNumAsset];</span>
+<span class="fc" id="L104">		double[] adblAssetUpperBound = new double[iNumAsset];</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
 
-<span class="fc" id="L106">		double[] adblAssetExpectedReturns = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L108">		double[] adblAssetExpectedReturns = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;AssetExpectedReturns&quot;);
 
-<span class="fc" id="L109">		double[][] aadblAssetReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
-<span class="fc" id="L110">			(jsonParameter, &quot;AssetReturnsCovariance&quot;);</span>
+<span class="fc" id="L111">		double[][] aadblAssetReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
+<span class="fc" id="L112">			(jsonParameter, &quot;AssetReturnsCovariance&quot;);</span>
 
-<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
 			try {
-<span class="fc" id="L114">				adblAssetLowerBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L116">				adblAssetLowerBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 					astrAssetID[i] + &quot;::LowerBound&quot;);
 
-<span class="fc" id="L117">				adblAssetUpperBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L119">				adblAssetUpperBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 					astrAssetID[i] + &quot;::UpperBound&quot;);
-<span class="nc" id="L119">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L120">				e.printStackTrace();</span>
+<span class="nc" id="L121">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L122">				e.printStackTrace();</span>
 
-<span class="nc" id="L122">				return null;</span>
-<span class="fc" id="L123">			}</span>
+<span class="nc" id="L124">				return null;</span>
+<span class="fc" id="L125">			}</span>
 		}
 
-<span class="fc" id="L126">		org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp =</span>
+<span class="fc" id="L128">		org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp =</span>
 			org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties.FromMultivariateMetrics
-<span class="fc" id="L128">				(org.drip.measure.statistics.MultivariateMoments.Standard (astrAssetID,</span>
+<span class="fc" id="L130">				(org.drip.measure.statistics.MultivariateMoments.Standard (astrAssetID,</span>
 					adblAssetExpectedReturns, aadblAssetReturnsCovariance));
 
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == ausp) return null;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (null == ausp) return null;</span>
 
-<span class="fc" id="L133">		org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer cmva = new</span>
+<span class="fc" id="L135">		org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer cmva = new</span>
 			org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer (null,
-<span class="fc" id="L135">				org.drip.function.rdtor1descent.LineStepEvolutionControl.NocedalWrightStrongWolfe (false));</span>
+<span class="fc" id="L137">				org.drip.function.rdtor1descent.LineStepEvolutionControl.NocedalWrightStrongWolfe (false));</span>
 
 		try {
-<span class="fc" id="L138">			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters</span>
+<span class="fc" id="L140">			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters</span>
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
 					0.), new org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
 						(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 						java.lang.Double.NaN));
-<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L144">			e.printStackTrace();</span>
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 
-<span class="nc" id="L146">			return null;</span>
-<span class="fc" id="L147">		}</span>
+<span class="nc" id="L148">			return null;</span>
+<span class="fc" id="L149">		}</span>
 
-<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;</span>
 		}
 
-<span class="fc" id="L153">		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);</span>
+<span class="fc" id="L155">		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);</span>
 
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (null == oo) return null;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (null == oo) return null;</span>
 
-<span class="fc" id="L157">		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();</span>
+<span class="fc" id="L159">		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();</span>
 
-<span class="fc" id="L159">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assets();</span>
+<span class="fc" id="L161">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assets();</span>
 
-<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (null == aAC || aAC.length != iNumAsset) return null;</span>
+<span class="pc bpc" id="L163" title="2 of 4 branches missed.">		if (null == aAC || aAC.length != iNumAsset) return null;</span>
 
-<span class="fc" id="L163">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L165">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L165">		jsonResponse.put (&quot;AssetSet&quot;, org.drip.json.parser.Converter.Array (astrAssetID));</span>
+<span class="fc" id="L167">		jsonResponse.put (&quot;AssetSet&quot;, org.drip.json.parser.Converter.Array (astrAssetID));</span>
 
-<span class="fc" id="L167">		jsonResponse.put (&quot;AssetExpectedReturns&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L168">			(adblAssetExpectedReturns));</span>
+<span class="fc" id="L169">		jsonResponse.put (&quot;AssetExpectedReturns&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L170">			(adblAssetExpectedReturns));</span>
 
-<span class="fc" id="L170">		jsonResponse.put (&quot;AssetReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L171">			(aadblAssetReturnsCovariance));</span>
+<span class="fc" id="L172">		jsonResponse.put (&quot;AssetReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L173">			(aadblAssetReturnsCovariance));</span>
 
-<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
-<span class="fc" id="L174">			jsonResponse.put (astrAssetID[i] + &quot;::LowerBound&quot;, adblAssetLowerBound[i]);</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="fc" id="L176">			jsonResponse.put (astrAssetID[i] + &quot;::LowerBound&quot;, adblAssetLowerBound[i]);</span>
 
-<span class="fc" id="L176">			jsonResponse.put (astrAssetID[i] + &quot;::UpperBound&quot;, adblAssetUpperBound[i]);</span>
+<span class="fc" id="L178">			jsonResponse.put (astrAssetID[i] + &quot;::UpperBound&quot;, adblAssetUpperBound[i]);</span>
 		}
 
-<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L180">			jsonResponse.put (aAC[i].id() + &quot;::WEIGHT&quot;, aAC[i].amount());</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
+<span class="fc" id="L182">			jsonResponse.put (aAC[i].id() + &quot;::WEIGHT&quot;, aAC[i].amount());</span>
 
-<span class="fc" id="L182">		jsonResponse.put (&quot;PortfolioNotional&quot;, pf.notional());</span>
+<span class="fc" id="L184">		jsonResponse.put (&quot;PortfolioNotional&quot;, pf.notional());</span>
 
 		try {
-<span class="fc" id="L185">			jsonResponse.put (&quot;PortfolioExpectedReturn&quot;, pf.expectedReturn (ausp));</span>
+<span class="fc" id="L187">			jsonResponse.put (&quot;PortfolioExpectedReturn&quot;, pf.expectedReturn (ausp));</span>
 
-<span class="fc" id="L187">			jsonResponse.put (&quot;PortfolioStandardDeviation&quot;, java.lang.Math.sqrt (pf.variance (ausp)));</span>
+<span class="fc" id="L189">			jsonResponse.put (&quot;PortfolioStandardDeviation&quot;, java.lang.Math.sqrt (pf.variance (ausp)));</span>
 
-<span class="fc" id="L189">			return jsonResponse;</span>
-<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="fc" id="L191">			return jsonResponse;</span>
+<span class="nc" id="L192">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L193">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L194">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	/**
@@ -206,110 +208,110 @@ package org.drip.json.assetallocation;
 		ReturnsConstrainedAllocator (
 			final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L209">    	java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
+<span class="fc" id="L211">    	java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
 			&quot;AssetSet&quot;);
 
-<span class="fc" id="L212">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;</span>
-<span class="pc bpc" id="L213" title="1 of 2 branches missed.">		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;</span>
-<span class="fc" id="L214">		double dblPortfolioDesignReturn = java.lang.Double.NaN;</span>
-<span class="fc" id="L215">		double[] adblAssetLowerBound = new double[iNumAsset];</span>
-<span class="fc" id="L216">		double[] adblAssetUpperBound = new double[iNumAsset];</span>
+<span class="fc" id="L214">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;</span>
+<span class="fc" id="L216">		double dblPortfolioDesignReturn = java.lang.Double.NaN;</span>
+<span class="fc" id="L217">		double[] adblAssetLowerBound = new double[iNumAsset];</span>
+<span class="fc" id="L218">		double[] adblAssetUpperBound = new double[iNumAsset];</span>
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
 
-<span class="fc" id="L220">		double[] adblAssetReturnsMean = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L222">		double[] adblAssetReturnsMean = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;AssetReturnsMean&quot;);
 
-<span class="fc" id="L223">		double[][] aadblAssetReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
-<span class="fc" id="L224">			(jsonParameter, &quot;AssetReturnsCovariance&quot;);</span>
+<span class="fc" id="L225">		double[][] aadblAssetReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
+<span class="fc" id="L226">			(jsonParameter, &quot;AssetReturnsCovariance&quot;);</span>
 
 		try {
-<span class="fc" id="L227">			dblPortfolioDesignReturn = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L229">			dblPortfolioDesignReturn = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 				&quot;PortfolioDesignReturn&quot;);
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L231">				adblAssetLowerBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="fc" id="L233">				adblAssetLowerBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 					astrAssetID[i] + &quot;::LowerBound&quot;);
 
-<span class="fc" id="L234">				adblAssetUpperBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L236">				adblAssetUpperBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 					astrAssetID[i] + &quot;::UpperBound&quot;);
 			}
-<span class="nc" id="L237">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L238">			e.printStackTrace();</span>
+<span class="nc" id="L239">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L240">			e.printStackTrace();</span>
 
-<span class="nc" id="L240">			return null;</span>
-<span class="fc" id="L241">		}</span>
+<span class="nc" id="L242">			return null;</span>
+<span class="fc" id="L243">		}</span>
 
-<span class="fc" id="L243">		org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp =</span>
+<span class="fc" id="L245">		org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp =</span>
 			org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties.FromMultivariateMetrics
-<span class="fc" id="L245">				(org.drip.measure.statistics.MultivariateMoments.Standard (astrAssetID,</span>
+<span class="fc" id="L247">				(org.drip.measure.statistics.MultivariateMoments.Standard (astrAssetID,</span>
 					adblAssetReturnsMean, aadblAssetReturnsCovariance));
 
-<span class="pc bpc" id="L248" title="1 of 2 branches missed.">		if (null == ausp) return null;</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">		if (null == ausp) return null;</span>
 
-<span class="fc" id="L250">		org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer cmva = new</span>
+<span class="fc" id="L252">		org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer cmva = new</span>
 			org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer (null, null);
 
 		try {
-<span class="fc" id="L254">			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters</span>
+<span class="fc" id="L256">			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters</span>
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
 					0.), new org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
 						(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
 						| org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
 						dblPortfolioDesignReturn));
-<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="nc" id="L262">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L263">			e.printStackTrace();</span>
 
-<span class="nc" id="L263">			return null;</span>
-<span class="fc" id="L264">		}</span>
+<span class="nc" id="L265">			return null;</span>
+<span class="fc" id="L266">		}</span>
 
-<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="pc bpc" id="L267" title="1 of 2 branches missed.">			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;</span>
 		}
 
-<span class="fc" id="L270">		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);</span>
+<span class="fc" id="L272">		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);</span>
 
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (null == oo) return null;</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">		if (null == oo) return null;</span>
 
-<span class="fc" id="L274">		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();</span>
+<span class="fc" id="L276">		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();</span>
 
-<span class="fc" id="L276">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assets();</span>
+<span class="fc" id="L278">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assets();</span>
 
-<span class="pc bpc" id="L278" title="2 of 4 branches missed.">		if (null == aAC || aAC.length != iNumAsset) return null;</span>
+<span class="pc bpc" id="L280" title="2 of 4 branches missed.">		if (null == aAC || aAC.length != iNumAsset) return null;</span>
 
-<span class="fc" id="L280">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L282">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L282">		jsonResponse.put (&quot;AssetSet&quot;, org.drip.json.parser.Converter.Array (astrAssetID));</span>
+<span class="fc" id="L284">		jsonResponse.put (&quot;AssetSet&quot;, org.drip.json.parser.Converter.Array (astrAssetID));</span>
 
-<span class="fc" id="L284">		jsonResponse.put (&quot;AssetReturnsMean&quot;, org.drip.json.parser.Converter.Array (adblAssetReturnsMean));</span>
+<span class="fc" id="L286">		jsonResponse.put (&quot;AssetReturnsMean&quot;, org.drip.json.parser.Converter.Array (adblAssetReturnsMean));</span>
 
-<span class="fc" id="L286">		jsonResponse.put (&quot;AssetReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L287">			(aadblAssetReturnsCovariance));</span>
+<span class="fc" id="L288">		jsonResponse.put (&quot;AssetReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L289">			(aadblAssetReturnsCovariance));</span>
 
-<span class="fc bfc" id="L289" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetReturnsMean.length; ++i) {</span>
-<span class="fc" id="L290">			jsonResponse.put (astrAssetID[i] + &quot;::LowerBound&quot;, adblAssetLowerBound[i]);</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetReturnsMean.length; ++i) {</span>
+<span class="fc" id="L292">			jsonResponse.put (astrAssetID[i] + &quot;::LowerBound&quot;, adblAssetLowerBound[i]);</span>
 
-<span class="fc" id="L292">			jsonResponse.put (astrAssetID[i] + &quot;::UpperBound&quot;, adblAssetUpperBound[i]);</span>
+<span class="fc" id="L294">			jsonResponse.put (astrAssetID[i] + &quot;::UpperBound&quot;, adblAssetUpperBound[i]);</span>
 		}
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L296">			jsonResponse.put (aAC[i].id() + &quot;::WEIGHT&quot;, aAC[i].amount());</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
+<span class="fc" id="L298">			jsonResponse.put (aAC[i].id() + &quot;::WEIGHT&quot;, aAC[i].amount());</span>
 
-<span class="fc" id="L298">		jsonResponse.put (&quot;PortfolioNotional&quot;, pf.notional());</span>
+<span class="fc" id="L300">		jsonResponse.put (&quot;PortfolioNotional&quot;, pf.notional());</span>
 
 		try {
-<span class="fc" id="L301">			jsonResponse.put (&quot;PortfolioDesignReturn&quot;, dblPortfolioDesignReturn);</span>
+<span class="fc" id="L303">			jsonResponse.put (&quot;PortfolioDesignReturn&quot;, dblPortfolioDesignReturn);</span>
 
-<span class="fc" id="L303">			jsonResponse.put (&quot;PortfolioExpectedReturn&quot;, pf.expectedReturn (ausp));</span>
+<span class="fc" id="L305">			jsonResponse.put (&quot;PortfolioExpectedReturn&quot;, pf.expectedReturn (ausp));</span>
 
-<span class="fc" id="L305">			jsonResponse.put (&quot;PortfolioStandardDeviation&quot;, java.lang.Math.sqrt (pf.variance (ausp)));</span>
+<span class="fc" id="L307">			jsonResponse.put (&quot;PortfolioStandardDeviation&quot;, java.lang.Math.sqrt (pf.variance (ausp)));</span>
 
-<span class="fc" id="L307">			return jsonResponse;</span>
-<span class="nc" id="L308">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L309">			e.printStackTrace();</span>
+<span class="fc" id="L309">			return jsonResponse;</span>
+<span class="nc" id="L310">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L311">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L312">		return null;</span>
+<span class="nc" id="L314">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

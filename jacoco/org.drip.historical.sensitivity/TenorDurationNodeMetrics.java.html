@@ -68,29 +68,31 @@ package org.drip.historical.sensitivity;
 
 /**
  * &lt;i&gt;TenorDurationNodeMetrics&lt;/i&gt; holds the KRD Duration Nodes and associated Metrics.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/sensitivity&quot;&gt;Sensitivity&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/sensitivity&quot;&gt;Sensitivity&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class TenorDurationNodeMetrics {
-<span class="nc" id="L82">	private org.drip.analytics.date.JulianDate _dtSnap = null;</span>
+<span class="nc" id="L84">	private org.drip.analytics.date.JulianDate _dtSnap = null;</span>
 
-<span class="nc" id="L84">	private java.util.Map&lt;java.lang.String, java.lang.String&gt; _mapCustomC1 = new</span>
+<span class="nc" id="L86">	private java.util.Map&lt;java.lang.String, java.lang.String&gt; _mapCustomC1 = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.String&gt;();
 
-<span class="nc" id="L87">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapCustomR1 = new</span>
+<span class="nc" id="L89">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _mapCustomR1 = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L90">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapKRD = new</span>
+<span class="nc" id="L92">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapKRD = new</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L93">	private java.util.Map&lt;java.lang.String, org.drip.analytics.date.JulianDate&gt; _mapCustomDate = new</span>
+<span class="nc" id="L95">	private java.util.Map&lt;java.lang.String, org.drip.analytics.date.JulianDate&gt; _mapCustomDate = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.analytics.date.JulianDate&gt;();
 
 	/**
@@ -104,10 +106,10 @@ public class TenorDurationNodeMetrics {
 	public TenorDurationNodeMetrics (
 		final org.drip.analytics.date.JulianDate dtSnap)
 		throws java.lang.Exception
-<span class="nc" id="L107">	{</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == (_dtSnap = dtSnap))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;TenorDurationNodeMetrics ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L110">	}</span>
+<span class="nc" id="L109">	{</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (null == (_dtSnap = dtSnap))</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;TenorDurationNodeMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L112">	}</span>
 
 	/**
 	 * Retrieve the KRD Date Snap
@@ -117,7 +119,7 @@ public class TenorDurationNodeMetrics {
 
 	public org.drip.analytics.date.JulianDate dateSnap()
 	{
-<span class="nc" id="L120">		return _dtSnap;</span>
+<span class="nc" id="L122">		return _dtSnap;</span>
 	}
 
 	/**
@@ -133,13 +135,13 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKRDNode,
 		final double dblKRDValue)
 	{
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == strKRDNode || strKRDNode.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">			(dblKRDValue))</span>
-<span class="nc" id="L138">			return false;</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == strKRDNode || strKRDNode.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			(dblKRDValue))</span>
+<span class="nc" id="L140">			return false;</span>
 
-<span class="nc" id="L140">		_mapKRD.put (strKRDNode, dblKRDValue);</span>
+<span class="nc" id="L142">		_mapKRD.put (strKRDNode, dblKRDValue);</span>
 
-<span class="nc" id="L142">		return true;</span>
+<span class="nc" id="L144">		return true;</span>
 	}
 
 	/**
@@ -150,7 +152,7 @@ public class TenorDurationNodeMetrics {
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; krdMap()
 	{
-<span class="nc" id="L153">		return _mapKRD;</span>
+<span class="nc" id="L155">		return _mapKRD;</span>
 	}
 
 	/**
@@ -166,11 +168,11 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKey,
 		final org.drip.analytics.date.JulianDate dtCustom)
 	{
-<span class="nc bnc" id="L169" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || null == dtCustom) return false;</span>
+<span class="nc bnc" id="L171" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || null == dtCustom) return false;</span>
 
-<span class="nc" id="L171">		_mapCustomDate.put (strKey, dtCustom);</span>
+<span class="nc" id="L173">		_mapCustomDate.put (strKey, dtCustom);</span>
 
-<span class="nc" id="L173">		return true;</span>
+<span class="nc" id="L175">		return true;</span>
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class TenorDurationNodeMetrics {
 	public org.drip.analytics.date.JulianDate date (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L187" title="All 4 branches missed.">		return null == strKey || !_mapCustomDate.containsKey (strKey) ? null : _mapCustomDate.get (strKey);</span>
+<span class="nc bnc" id="L189" title="All 4 branches missed.">		return null == strKey || !_mapCustomDate.containsKey (strKey) ? null : _mapCustomDate.get (strKey);</span>
 	}
 
 	/**
@@ -200,11 +202,11 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKey,
 		final java.lang.String strC1)
 	{
-<span class="nc bnc" id="L203" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strC1 || strC1.isEmpty()) return false;</span>
+<span class="nc bnc" id="L205" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strC1 || strC1.isEmpty()) return false;</span>
 
-<span class="nc" id="L205">		_mapCustomC1.put (strKey, strC1);</span>
+<span class="nc" id="L207">		_mapCustomC1.put (strKey, strC1);</span>
 
-<span class="nc" id="L207">		return true;</span>
+<span class="nc" id="L209">		return true;</span>
 	}
 
 	/**
@@ -218,7 +220,7 @@ public class TenorDurationNodeMetrics {
 	public java.lang.String c1 (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L221" title="All 4 branches missed.">		return null == strKey || !_mapCustomC1.containsKey (strKey) ? null : _mapCustomC1.get (strKey);</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">		return null == strKey || !_mapCustomC1.containsKey (strKey) ? null : _mapCustomC1.get (strKey);</span>
 	}
 
 	/**
@@ -234,12 +236,12 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKey,
 		final double dblR1)
 	{
-<span class="nc bnc" id="L237" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblR1))</span>
-<span class="nc" id="L238">			return false;</span>
+<span class="nc bnc" id="L239" title="All 6 branches missed.">		if (null == strKey || strKey.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblR1))</span>
+<span class="nc" id="L240">			return false;</span>
 
-<span class="nc" id="L240">		_mapCustomR1.put (strKey, dblR1);</span>
+<span class="nc" id="L242">		_mapCustomR1.put (strKey, dblR1);</span>
 
-<span class="nc" id="L242">		return true;</span>
+<span class="nc" id="L244">		return true;</span>
 	}
 
 	/**
@@ -256,10 +258,10 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKey)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L259" title="All 4 branches missed.">		if (null == strKey || !_mapCustomR1.containsKey (strKey))</span>
-<span class="nc" id="L260">			throw new java.lang.Exception (&quot;PositionMarketSnap::r1 =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L261" title="All 4 branches missed.">		if (null == strKey || !_mapCustomR1.containsKey (strKey))</span>
+<span class="nc" id="L262">			throw new java.lang.Exception (&quot;PositionMarketSnap::r1 =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L262">		return _mapCustomR1.get (strKey);</span>
+<span class="nc" id="L264">		return _mapCustomR1.get (strKey);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

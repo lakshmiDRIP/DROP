@@ -69,12 +69,13 @@ package org.drip.json.parser;
 /**
  * &lt;i&gt;ParseException&lt;/i&gt; is an Adaptation of the ParseException Class from the RFC4627 compliant JSON Simple
  * (https://code.google.com/p/json-simple/).
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/MachineLearning&quot;&gt;Machine Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Fang Yidong
@@ -93,26 +94,26 @@ public class ParseException extends java.lang.Exception {
     private int position;
     
     public ParseException(int errorType){
-<span class="nc" id="L96">            this(-1, errorType, null);</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L97">            this(-1, errorType, null);</span>
+<span class="nc" id="L98">    }</span>
     
     public ParseException(int errorType, Object unexpectedObject){
-<span class="nc" id="L100">            this(-1, errorType, unexpectedObject);</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L101">            this(-1, errorType, unexpectedObject);</span>
+<span class="nc" id="L102">    }</span>
     
-<span class="fc" id="L103">    public ParseException(int position, int errorType, Object unexpectedObject){</span>
-<span class="fc" id="L104">            this.position = position;</span>
-<span class="fc" id="L105">            this.errorType = errorType;</span>
-<span class="fc" id="L106">            this.unexpectedObject = unexpectedObject;</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L104">    public ParseException(int position, int errorType, Object unexpectedObject){</span>
+<span class="fc" id="L105">            this.position = position;</span>
+<span class="fc" id="L106">            this.errorType = errorType;</span>
+<span class="fc" id="L107">            this.unexpectedObject = unexpectedObject;</span>
+<span class="fc" id="L108">    }</span>
     
     public int getErrorType() {
-<span class="fc" id="L110">            return errorType;</span>
+<span class="fc" id="L111">            return errorType;</span>
     }
     
     public void setErrorType(int errorType) {
-<span class="nc" id="L114">            this.errorType = errorType;</span>
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L115">            this.errorType = errorType;</span>
+<span class="nc" id="L116">    }</span>
     
     /**
      * @see org.drip.json.parser.JSONParser#getPosition()
@@ -120,12 +121,12 @@ public class ParseException extends java.lang.Exception {
      * @return The character position (starting with 0) of the input where the error occurs.
      */
     public int getPosition() {
-<span class="fc" id="L123">            return position;</span>
+<span class="fc" id="L124">            return position;</span>
     }
     
     public void setPosition(int position) {
-<span class="nc" id="L127">            this.position = position;</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L128">            this.position = position;</span>
+<span class="nc" id="L129">    }</span>
     
     /**
      * @see org.drip.json.parser.Yytoken
@@ -136,31 +137,31 @@ public class ParseException extends java.lang.Exception {
      *                      ERROR_UNEXPECTED_EXCEPTION      java.lang.Exception
      */
     public Object getUnexpectedObject() {
-<span class="fc" id="L139">            return unexpectedObject;</span>
+<span class="fc" id="L140">            return unexpectedObject;</span>
     }
     
     public void setUnexpectedObject(Object unexpectedObject) {
-<span class="nc" id="L143">            this.unexpectedObject = unexpectedObject;</span>
-<span class="nc" id="L144">    }</span>
+<span class="nc" id="L144">            this.unexpectedObject = unexpectedObject;</span>
+<span class="nc" id="L145">    }</span>
     
     public String toString(){
-<span class="fc" id="L147">            StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L148">            StringBuffer sb = new StringBuffer();</span>
             
-<span class="pc bpc" id="L149" title="3 of 4 branches missed.">            switch(errorType){</span>
+<span class="pc bpc" id="L150" title="3 of 4 branches missed.">            switch(errorType){</span>
             case ERROR_UNEXPECTED_CHAR:
-<span class="fc" id="L151">                    sb.append(&quot;Unexpected character (&quot;).append(unexpectedObject).append(&quot;) at position &quot;).append(position).append(&quot;.&quot;);</span>
-<span class="fc" id="L152">                    break;</span>
+<span class="fc" id="L152">                    sb.append(&quot;Unexpected character (&quot;).append(unexpectedObject).append(&quot;) at position &quot;).append(position).append(&quot;.&quot;);</span>
+<span class="fc" id="L153">                    break;</span>
             case ERROR_UNEXPECTED_TOKEN:
-<span class="nc" id="L154">                    sb.append(&quot;Unexpected token &quot;).append(unexpectedObject).append(&quot; at position &quot;).append(position).append(&quot;.&quot;);</span>
-<span class="nc" id="L155">                    break;</span>
+<span class="nc" id="L155">                    sb.append(&quot;Unexpected token &quot;).append(unexpectedObject).append(&quot; at position &quot;).append(position).append(&quot;.&quot;);</span>
+<span class="nc" id="L156">                    break;</span>
             case ERROR_UNEXPECTED_EXCEPTION:
-<span class="nc" id="L157">                    sb.append(&quot;Unexpected exception at position &quot;).append(position).append(&quot;: &quot;).append(unexpectedObject);</span>
-<span class="nc" id="L158">                    break;</span>
+<span class="nc" id="L158">                    sb.append(&quot;Unexpected exception at position &quot;).append(position).append(&quot;: &quot;).append(unexpectedObject);</span>
+<span class="nc" id="L159">                    break;</span>
             default:
-<span class="nc" id="L160">                    sb.append(&quot;Unkown error at position &quot;).append(position).append(&quot;.&quot;);</span>
+<span class="nc" id="L161">                    sb.append(&quot;Unkown error at position &quot;).append(position).append(&quot;.&quot;);</span>
                     break;
             }
-<span class="fc" id="L163">            return sb.toString();</span>
+<span class="fc" id="L164">            return sb.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

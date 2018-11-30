@@ -57,18 +57,19 @@ package org.drip.measure.bayesian;
  * 			Theil, H. (1971): &lt;i&gt;Principles of Econometrics&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt;
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
- * 	&lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
- * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L71">public class TheilMixedEstimationModel {</span>
+<span class="nc" id="L72">public class TheilMixedEstimationModel {</span>
 
 	/**
 	 * Generate the Joint Mixed Estimation Model Joint/Posterior Metrics
@@ -87,92 +88,92 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl2,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
-<span class="pc bpc" id="L90" title="4 of 8 branches missed.">		if (null == meta || null == pdl1 || null == pdl2 || null == r1mnUnconditional) return null;</span>
+<span class="pc bpc" id="L91" title="4 of 8 branches missed.">		if (null == meta || null == pdl1 || null == pdl2 || null == r1mnUnconditional) return null;</span>
 
-<span class="fc" id="L92">		int iNumScopingVariate = meta.numVariable();</span>
+<span class="fc" id="L93">		int iNumScopingVariate = meta.numVariable();</span>
 
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (iNumScopingVariate != pdl1.numberOfScopingVariate() || iNumScopingVariate !=</span>
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">			pdl2.numberOfScopingVariate() || iNumScopingVariate != r1mnUnconditional.meta().numVariable())</span>
-<span class="nc" id="L96">			return null;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (iNumScopingVariate != pdl1.numberOfScopingVariate() || iNumScopingVariate !=</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">			pdl2.numberOfScopingVariate() || iNumScopingVariate != r1mnUnconditional.meta().numVariable())</span>
+<span class="nc" id="L97">			return null;</span>
 
-<span class="fc" id="L98">		org.drip.measure.continuous.R1Multivariate r1m1 = pdl1.distribution();</span>
+<span class="fc" id="L99">		org.drip.measure.continuous.R1Multivariate r1m1 = pdl1.distribution();</span>
 
-<span class="fc" id="L100">		org.drip.measure.continuous.R1Multivariate r1m2 = pdl2.distribution();</span>
+<span class="fc" id="L101">		org.drip.measure.continuous.R1Multivariate r1m2 = pdl2.distribution();</span>
 
-<span class="pc bpc" id="L102" title="2 of 4 branches missed.">		if (!(r1m1 instanceof org.drip.measure.gaussian.R1MultivariateNormal) || !(r1m2 instanceof</span>
+<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (!(r1m1 instanceof org.drip.measure.gaussian.R1MultivariateNormal) || !(r1m2 instanceof</span>
 			org.drip.measure.gaussian.R1MultivariateNormal))
-<span class="nc" id="L104">			return null;</span>
+<span class="nc" id="L105">			return null;</span>
 
-<span class="fc" id="L106">		double[] adblJointPrecisionWeightedMean = new double[iNumScopingVariate];</span>
-<span class="fc" id="L107">		double[][] aadblJointPrecision = new double[iNumScopingVariate][iNumScopingVariate];</span>
-<span class="fc" id="L108">		double[][] aadblPosteriorCovariance = new double[iNumScopingVariate][iNumScopingVariate];</span>
-<span class="fc" id="L109">		org.drip.measure.gaussian.R1MultivariateNormal r1mn1 =</span>
+<span class="fc" id="L107">		double[] adblJointPrecisionWeightedMean = new double[iNumScopingVariate];</span>
+<span class="fc" id="L108">		double[][] aadblJointPrecision = new double[iNumScopingVariate][iNumScopingVariate];</span>
+<span class="fc" id="L109">		double[][] aadblPosteriorCovariance = new double[iNumScopingVariate][iNumScopingVariate];</span>
+<span class="fc" id="L110">		org.drip.measure.gaussian.R1MultivariateNormal r1mn1 =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1m1;
-<span class="fc" id="L111">		org.drip.measure.gaussian.R1MultivariateNormal r1mn2 =</span>
+<span class="fc" id="L112">		org.drip.measure.gaussian.R1MultivariateNormal r1mn2 =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1m2;
 
-<span class="fc" id="L114">		double[][] aadblScopingLoading1 = pdl1.scopingLoading();</span>
+<span class="fc" id="L115">		double[][] aadblScopingLoading1 = pdl1.scopingLoading();</span>
 
-<span class="fc" id="L116">		double[][] aadblScopingLoading2 = pdl2.scopingLoading();</span>
+<span class="fc" id="L117">		double[][] aadblScopingLoading2 = pdl2.scopingLoading();</span>
 
-<span class="fc" id="L118">		double[][] aadblScopingWeightedPrecision1 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L119">			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading1),</span>
-<span class="fc" id="L120">				r1mn1.covariance().precisionMatrix());</span>
+<span class="fc" id="L119">		double[][] aadblScopingWeightedPrecision1 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L120">			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading1),</span>
+<span class="fc" id="L121">				r1mn1.covariance().precisionMatrix());</span>
 
-<span class="fc" id="L122">		double[][] aadblScopingWeightedPrecision2 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L123">			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading2),</span>
-<span class="fc" id="L124">				r1mn2.covariance().precisionMatrix());</span>
+<span class="fc" id="L123">		double[][] aadblScopingWeightedPrecision2 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L124">			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading2),</span>
+<span class="fc" id="L125">				r1mn2.covariance().precisionMatrix());</span>
 
-<span class="fc" id="L126">		double[][] aadblScopingSpacePrecision1 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L127">			(aadblScopingWeightedPrecision1, aadblScopingLoading1);</span>
+<span class="fc" id="L127">		double[][] aadblScopingSpacePrecision1 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L128">			(aadblScopingWeightedPrecision1, aadblScopingLoading1);</span>
 
-<span class="fc" id="L129">		double[][] aadblScopingSpacePrecision2 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L130">			(aadblScopingWeightedPrecision2, aadblScopingLoading2);</span>
+<span class="fc" id="L130">		double[][] aadblScopingSpacePrecision2 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L131">			(aadblScopingWeightedPrecision2, aadblScopingLoading2);</span>
 
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">		if (null == aadblScopingSpacePrecision1 || null == aadblScopingSpacePrecision2) return null;</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (null == aadblScopingSpacePrecision1 || null == aadblScopingSpacePrecision2) return null;</span>
 
-<span class="fc" id="L134">		double[] adblPrecisionWeightedMean1 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L135">			(aadblScopingWeightedPrecision1, r1mn1.mean());</span>
+<span class="fc" id="L135">		double[] adblPrecisionWeightedMean1 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L136">			(aadblScopingWeightedPrecision1, r1mn1.mean());</span>
 
-<span class="fc" id="L137">		double[] adblPrecisionWeightedMean2 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L138">			(aadblScopingWeightedPrecision2, r1mn2.mean());</span>
+<span class="fc" id="L138">		double[] adblPrecisionWeightedMean2 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L139">			(aadblScopingWeightedPrecision2, r1mn2.mean());</span>
 
-<span class="pc bpc" id="L140" title="2 of 4 branches missed.">		if (null == adblPrecisionWeightedMean1 || null == adblPrecisionWeightedMean2) return null;</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (null == adblPrecisionWeightedMean1 || null == adblPrecisionWeightedMean2) return null;</span>
 
-<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i) {</span>
-<span class="fc" id="L143">			adblJointPrecisionWeightedMean[i] = adblPrecisionWeightedMean1[i] +</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i) {</span>
+<span class="fc" id="L144">			adblJointPrecisionWeightedMean[i] = adblPrecisionWeightedMean1[i] +</span>
 				adblPrecisionWeightedMean2[i];
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumScopingVariate; ++j)</span>
-<span class="fc" id="L147">				aadblJointPrecision[i][j] = aadblScopingSpacePrecision1[i][j] +</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumScopingVariate; ++j)</span>
+<span class="fc" id="L148">				aadblJointPrecision[i][j] = aadblScopingSpacePrecision1[i][j] +</span>
 					aadblScopingSpacePrecision2[i][j];
 		}
 
-<span class="fc" id="L151">		double[][] aadblJointCovariance = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="fc" id="L152">			(aadblJointPrecision);</span>
+<span class="fc" id="L152">		double[][] aadblJointCovariance = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L153">			(aadblJointPrecision);</span>
 
-<span class="fc" id="L154">		double[] adblJointPosteriorMean = org.drip.quant.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
+<span class="fc" id="L155">		double[] adblJointPosteriorMean = org.drip.quant.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
 			adblJointPrecisionWeightedMean);
 
-<span class="fc" id="L157">		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();</span>
+<span class="fc" id="L158">		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();</span>
 
-<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i) {</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumScopingVariate; ++j)</span>
-<span class="fc" id="L161">				aadblPosteriorCovariance[i][j] = aadblJointCovariance[i][j] +</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i) {</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumScopingVariate; ++j)</span>
+<span class="fc" id="L162">				aadblPosteriorCovariance[i][j] = aadblJointCovariance[i][j] +</span>
 					aadblUnconditionalCovariance[i][j];
 		}
 
 		try {
-<span class="fc" id="L166">			return new org.drip.measure.bayesian.JointPosteriorMetrics (r1mn1, r1mnUnconditional, r1mn2, new</span>
+<span class="fc" id="L167">			return new org.drip.measure.bayesian.JointPosteriorMetrics (r1mn1, r1mnUnconditional, r1mn2, new</span>
 				org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
 					org.drip.measure.gaussian.Covariance (aadblJointCovariance)), new
 						org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
 							org.drip.measure.gaussian.Covariance (aadblPosteriorCovariance)));
-<span class="nc" id="L171">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L172">			e.printStackTrace();</span>
+<span class="nc" id="L172">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L173">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L175">		return null;</span>
+<span class="nc" id="L176">		return null;</span>
 	}
 
 	/**
@@ -192,9 +193,9 @@ package org.drip.measure.bayesian;
 		final java.lang.String strProjection2,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		return null == spvd ? null : GenerateComposite (spvd.scopingDistribution().meta(),</span>
-<span class="nc" id="L196">			spvd.projectionDistributionLoading (strProjection1), spvd.projectionDistributionLoading</span>
-<span class="nc" id="L197">				(strProjection2), r1mnUnconditional);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		return null == spvd ? null : GenerateComposite (spvd.scopingDistribution().meta(),</span>
+<span class="nc" id="L197">			spvd.projectionDistributionLoading (strProjection1), spvd.projectionDistributionLoading</span>
+<span class="nc" id="L198">				(strProjection2), r1mnUnconditional);</span>
 	}
 
 	/**
@@ -213,17 +214,17 @@ package org.drip.measure.bayesian;
 		final java.lang.String strProjection,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L218">		org.drip.measure.continuous.R1Multivariate r1m = spvd.scopingDistribution();</span>
+<span class="fc" id="L219">		org.drip.measure.continuous.R1Multivariate r1m = spvd.scopingDistribution();</span>
 
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!(r1m instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		if (!(r1m instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="fc" id="L222">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
+<span class="fc" id="L223">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1m;
 
-<span class="fc" id="L225">		return GenerateComposite (r1mnScoping.meta(), spvd.projectionDistributionLoading (&quot;NATIVE&quot;),</span>
-<span class="fc" id="L226">			spvd.projectionDistributionLoading (strProjection), r1mnUnconditional);</span>
+<span class="fc" id="L226">		return GenerateComposite (r1mnScoping.meta(), spvd.projectionDistributionLoading (&quot;NATIVE&quot;),</span>
+<span class="fc" id="L227">			spvd.projectionDistributionLoading (strProjection), r1mnUnconditional);</span>
 	}
 
 	/**
@@ -239,13 +240,13 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L242" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L244">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L245">			(strProjection);</span>
+<span class="nc" id="L245">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L246">			(strProjection);</span>
 
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
-<span class="nc" id="L248">			spvd.scopingDistribution().mean());</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
+<span class="nc" id="L249">			spvd.scopingDistribution().mean());</span>
 	}
 
 	/**
@@ -261,28 +262,28 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L266">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L267">			(strProjection);</span>
+<span class="nc" id="L267">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L268">			(strProjection);</span>
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L271">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L272">			(pdl.scopingLoading(), spvd.scopingDistribution().mean());</span>
+<span class="nc" id="L272">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L273">			(pdl.scopingLoading(), spvd.scopingDistribution().mean());</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
 
-<span class="nc" id="L276">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
-<span class="nc" id="L277">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
+<span class="nc" id="L277">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
+<span class="nc" id="L278">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
 
-<span class="nc" id="L279">		double[] adblProjectionMean = pdl.distribution().mean();</span>
+<span class="nc" id="L280">		double[] adblProjectionMean = pdl.distribution().mean();</span>
 
-<span class="nc bnc" id="L281" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
-<span class="nc" id="L282">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
+<span class="nc" id="L283">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="nc" id="L285">		return adblProjectionSpaceScopingDifferential;</span>
+<span class="nc" id="L286">		return adblProjectionSpaceScopingDifferential;</span>
 	}
 
 	/**
@@ -298,32 +299,32 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L303">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="nc" id="L304">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="nc" id="L307">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
+<span class="nc" id="L308">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-<span class="nc" id="L310">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L311">			(strProjection);</span>
+<span class="nc" id="L311">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L312">			(strProjection);</span>
 
-<span class="nc bnc" id="L313" title="All 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L315">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
+<span class="nc" id="L316">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
 		try {
-<span class="nc" id="L318">			return new org.drip.measure.gaussian.Covariance (org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L319">				(aadblScopingLoading, org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L320">					(r1mnScoping.covariance().covarianceMatrix(),</span>
-<span class="nc" id="L321">						org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading))));</span>
-<span class="nc" id="L322">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L323">			e.printStackTrace();</span>
+<span class="nc" id="L319">			return new org.drip.measure.gaussian.Covariance (org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L320">				(aadblScopingLoading, org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L321">					(r1mnScoping.covariance().covarianceMatrix(),</span>
+<span class="nc" id="L322">						org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading))));</span>
+<span class="nc" id="L323">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L324">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L326">		return null;</span>
+<span class="nc" id="L327">		return null;</span>
 	}
 
 	/**
@@ -339,18 +340,18 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L342" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L344">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="nc" id="L345">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="nc bnc" id="L346" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="nc" id="L348">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L349">			(strProjection);</span>
+<span class="nc" id="L349">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L350">			(strProjection);</span>
 
-<span class="nc bnc" id="L351" title="All 2 branches missed.">		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L352">			(((org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping).covariance().covarianceMatrix(),</span>
-<span class="nc" id="L353">				org.drip.quant.linearalgebra.Matrix.Transpose (pdl.scopingLoading()));</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L353">			(((org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping).covariance().covarianceMatrix(),</span>
+<span class="nc" id="L354">				org.drip.quant.linearalgebra.Matrix.Transpose (pdl.scopingLoading()));</span>
 	}
 
 	/**
@@ -366,17 +367,17 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L369" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L371">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="nc" id="L372">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="nc" id="L373">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L374">			(strProjection);</span>
+<span class="nc" id="L374">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L375">			(strProjection);</span>
 
-<span class="nc bnc" id="L376" title="All 4 branches missed.">		return !(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null == pdl ? null</span>
-<span class="nc" id="L377">			: org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
+<span class="nc bnc" id="L377" title="All 4 branches missed.">		return !(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null == pdl ? null</span>
+<span class="nc" id="L378">			: org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
 				((org.drip.measure.gaussian.R1MultivariateNormal)
-<span class="nc" id="L379">					r1mScoping).covariance().covarianceMatrix());</span>
+<span class="nc" id="L380">					r1mScoping).covariance().covarianceMatrix());</span>
 	}
 
 	/**
@@ -392,18 +393,18 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L397">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="fc" id="L398">			(strProjection);</span>
+<span class="fc" id="L398">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="fc" id="L399">			(strProjection);</span>
 
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="fc" id="L402">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
+<span class="fc" id="L403">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
 
-<span class="pc bpc" id="L404" title="1 of 2 branches missed.">		return !(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal) ? null :</span>
-<span class="fc" id="L405">			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
-<span class="fc" id="L406">				r1mProjection).covariance().precisionMatrix(), r1mProjection.mean());</span>
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">		return !(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal) ? null :</span>
+<span class="fc" id="L406">			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
+<span class="fc" id="L407">				r1mProjection).covariance().precisionMatrix(), r1mProjection.mean());</span>
 	}
 
 	/**
@@ -419,44 +420,44 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L422" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L424">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="nc" id="L425">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="nc bnc" id="L426" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="nc" id="L428">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
+<span class="nc" id="L429">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-<span class="nc" id="L431">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L432">			(strProjection);</span>
+<span class="nc" id="L432">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L433">			(strProjection);</span>
 
-<span class="nc bnc" id="L434" title="All 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L436">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
+<span class="nc" id="L437">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L438">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L439">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L440">				(aadblScopingLoading));</span>
+<span class="nc" id="L439">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L440">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L441">				(aadblScopingLoading));</span>
 
-<span class="nc" id="L442">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L443">			(aadblScopingLoading, r1mScoping.mean());</span>
+<span class="nc" id="L443">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L444">			(aadblScopingLoading, r1mScoping.mean());</span>
 
-<span class="nc bnc" id="L445" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
 
-<span class="nc" id="L447">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
-<span class="nc" id="L448">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
+<span class="nc" id="L448">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
+<span class="nc" id="L449">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
 
-<span class="nc" id="L450">		double[] adblProjectionMean = pdl.distribution().mean();</span>
+<span class="nc" id="L451">		double[] adblProjectionMean = pdl.distribution().mean();</span>
 
-<span class="nc bnc" id="L452" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
-<span class="nc" id="L453">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
+<span class="nc bnc" id="L453" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
+<span class="nc" id="L454">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="nc" id="L456">		return org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionScopingShadow,</span>
+<span class="nc" id="L457">		return org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionScopingShadow,</span>
 			org.drip.quant.linearalgebra.Matrix.Product
-<span class="nc" id="L458">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="nc" id="L459">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="nc" id="L459">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="nc" id="L460">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 	}
 
@@ -473,58 +474,58 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="pc bpc" id="L476" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="pc bpc" id="L477" title="1 of 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="fc" id="L478">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="fc" id="L479">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="fc" id="L480">		double[] adblScopingMean = r1mScoping.mean();</span>
+<span class="fc" id="L481">		double[] adblScopingMean = r1mScoping.mean();</span>
 
-<span class="fc" id="L482">		int iNumScopingVariate = r1mScoping.meta().numVariable();</span>
+<span class="fc" id="L483">		int iNumScopingVariate = r1mScoping.meta().numVariable();</span>
 
-<span class="pc bpc" id="L484" title="1 of 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="pc bpc" id="L485" title="1 of 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="fc" id="L486">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
+<span class="fc" id="L487">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-<span class="fc" id="L489">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="fc" id="L490">			(strProjection);</span>
+<span class="fc" id="L490">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="fc" id="L491">			(strProjection);</span>
 
-<span class="pc bpc" id="L492" title="1 of 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="fc" id="L494">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
+<span class="fc" id="L495">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="fc" id="L496">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L497">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="fc" id="L498">				(aadblScopingLoading));</span>
+<span class="fc" id="L497">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L498">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="fc" id="L499">				(aadblScopingLoading));</span>
 
-<span class="fc" id="L500">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L501">			(aadblScopingLoading, adblScopingMean);</span>
+<span class="fc" id="L501">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L502">			(aadblScopingLoading, adblScopingMean);</span>
 
-<span class="pc bpc" id="L503" title="1 of 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
+<span class="pc bpc" id="L504" title="1 of 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
 
-<span class="fc" id="L505">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
-<span class="fc" id="L506">		double[] adblProjectionInducedScopingMean = new double[iNumScopingVariate];</span>
-<span class="fc" id="L507">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
+<span class="fc" id="L506">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
+<span class="fc" id="L507">		double[] adblProjectionInducedScopingMean = new double[iNumScopingVariate];</span>
+<span class="fc" id="L508">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
 
-<span class="fc" id="L509">		double[] adblProjectionMean = pdl.distribution().mean();</span>
+<span class="fc" id="L510">		double[] adblProjectionMean = pdl.distribution().mean();</span>
 
-<span class="fc bfc" id="L511" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
-<span class="fc" id="L512">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
+<span class="fc bfc" id="L512" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
+<span class="fc" id="L513">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="fc" id="L515">		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L516">			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L517">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="fc" id="L518">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="fc" id="L516">		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L517">			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L518">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L519">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 
-<span class="pc bpc" id="L521" title="1 of 2 branches missed.">		if (null == adblProjectionInducedScopingDeviation) return null;</span>
+<span class="pc bpc" id="L522" title="1 of 2 branches missed.">		if (null == adblProjectionInducedScopingDeviation) return null;</span>
 
-<span class="fc bfc" id="L523" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i)</span>
-<span class="fc" id="L524">			adblProjectionInducedScopingMean[i] = adblScopingMean[i] +</span>
+<span class="fc bfc" id="L524" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumScopingVariate; ++i)</span>
+<span class="fc" id="L525">			adblProjectionInducedScopingMean[i] = adblScopingMean[i] +</span>
 				adblProjectionInducedScopingDeviation[i];
 
-<span class="fc" id="L527">		return adblProjectionInducedScopingMean;</span>
+<span class="fc" id="L528">		return adblProjectionInducedScopingMean;</span>
 	}
 
 	/**
@@ -540,23 +541,23 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L543" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L545">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L546">			(strProjection);</span>
+<span class="nc" id="L546">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L547">			(strProjection);</span>
 
-<span class="nc bnc" id="L548" title="All 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="nc bnc" id="L549" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L550">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
+<span class="nc" id="L551">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
 
-<span class="nc bnc" id="L552" title="All 2 branches missed.">		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="nc" id="L554">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
+<span class="nc" id="L555">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L556">		return org.drip.quant.linearalgebra.Matrix.Product (org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L557">			(aadblScopingLoading), org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L558">				(((org.drip.measure.gaussian.R1MultivariateNormal)</span>
-<span class="nc" id="L559">					r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading));</span>
+<span class="nc" id="L557">		return org.drip.quant.linearalgebra.Matrix.Product (org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L558">			(aadblScopingLoading), org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L559">				(((org.drip.measure.gaussian.R1MultivariateNormal)</span>
+<span class="nc" id="L560">					r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading));</span>
 	}
 
 	/**
@@ -572,23 +573,23 @@ package org.drip.measure.bayesian;
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection)
 	{
-<span class="nc bnc" id="L575" title="All 2 branches missed.">		if (null == spvd) return null;</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">		if (null == spvd) return null;</span>
 
-<span class="nc" id="L577">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="nc" id="L578">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="nc bnc" id="L579" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L580" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="nc" id="L581">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L582">			(strProjection);</span>
+<span class="nc" id="L582">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L583">			(strProjection);</span>
 
-<span class="nc bnc" id="L584" title="All 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L586">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
+<span class="nc" id="L587">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L588">		return org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
-<span class="nc" id="L589">			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
-<span class="nc" id="L590">				r1mScoping).covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L591">					(aadblScopingLoading)));</span>
+<span class="nc" id="L589">		return org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="nc" id="L590">			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
+<span class="nc" id="L591">				r1mScoping).covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L592">					(aadblScopingLoading)));</span>
 	}
 
 	/**
@@ -606,74 +607,74 @@ package org.drip.measure.bayesian;
 		final java.lang.String strProjection,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
-<span class="nc bnc" id="L609" title="All 4 branches missed.">		if (null == spvd || null == r1mnUnconditional) return null;</span>
+<span class="nc bnc" id="L610" title="All 4 branches missed.">		if (null == spvd || null == r1mnUnconditional) return null;</span>
 
-<span class="nc" id="L611">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
+<span class="nc" id="L612">		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();</span>
 
-<span class="nc" id="L613">		double[] adblScopingMean = r1mScoping.mean();</span>
+<span class="nc" id="L614">		double[] adblScopingMean = r1mScoping.mean();</span>
 
-<span class="nc" id="L615">		int iNumScopingVariate = r1mScoping.meta().numVariable();</span>
+<span class="nc" id="L616">		int iNumScopingVariate = r1mScoping.meta().numVariable();</span>
 
-<span class="nc bnc" id="L617" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L618" title="All 2 branches missed.">		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
-<span class="nc" id="L619">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
+<span class="nc" id="L620">		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-<span class="nc" id="L622">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
-<span class="nc" id="L623">			(strProjection);</span>
+<span class="nc" id="L623">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
+<span class="nc" id="L624">			(strProjection);</span>
 
-<span class="nc bnc" id="L625" title="All 2 branches missed.">		if (null == pdl) return null;</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L627">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
+<span class="nc" id="L628">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L629">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L630">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L631">				(aadblScopingLoading));</span>
+<span class="nc" id="L630">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L631">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L632">				(aadblScopingLoading));</span>
 
-<span class="nc" id="L633">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L634">			(aadblScopingLoading, adblScopingMean);</span>
+<span class="nc" id="L634">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L635">			(aadblScopingLoading, adblScopingMean);</span>
 
-<span class="nc bnc" id="L636" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
+<span class="nc bnc" id="L637" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
 
-<span class="nc" id="L638">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
-<span class="nc" id="L639">		double[] adblProjectionInducedScopingMean = new double[iNumScopingVariate];</span>
-<span class="nc" id="L640">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
+<span class="nc" id="L639">		int iNumProjection = adblProjectionSpaceScopingMean.length;</span>
+<span class="nc" id="L640">		double[] adblProjectionInducedScopingMean = new double[iNumScopingVariate];</span>
+<span class="nc" id="L641">		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];</span>
 
-<span class="nc" id="L642">		double[] adblProjectionMean = pdl.distribution().mean();</span>
+<span class="nc" id="L643">		double[] adblProjectionMean = pdl.distribution().mean();</span>
 
-<span class="nc bnc" id="L644" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
-<span class="nc" id="L645">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
+<span class="nc bnc" id="L645" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumProjection; ++i)</span>
+<span class="nc" id="L646">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="nc" id="L648">		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L649">			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L650">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="nc" id="L651">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="nc" id="L649">		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L650">			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L651">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="nc" id="L652">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 
-<span class="nc bnc" id="L654" title="All 2 branches missed.">		if (null == adblProjectionInducedScopingDeviation) return null;</span>
+<span class="nc bnc" id="L655" title="All 2 branches missed.">		if (null == adblProjectionInducedScopingDeviation) return null;</span>
 
-<span class="nc bnc" id="L656" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumScopingVariate; ++i)</span>
-<span class="nc" id="L657">			adblProjectionInducedScopingMean[i] = adblScopingMean[i] +</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumScopingVariate; ++i)</span>
+<span class="nc" id="L658">			adblProjectionInducedScopingMean[i] = adblScopingMean[i] +</span>
 				adblProjectionInducedScopingDeviation[i];
 
-<span class="nc" id="L660">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
+<span class="nc" id="L661">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
 
-<span class="nc bnc" id="L662" title="All 2 branches missed.">		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
+<span class="nc bnc" id="L663" title="All 2 branches missed.">		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;</span>
 
 		try {
-<span class="nc" id="L665">			return new org.drip.measure.gaussian.R1MultivariateNormal (r1mnUnconditional.meta(),</span>
+<span class="nc" id="L666">			return new org.drip.measure.gaussian.R1MultivariateNormal (r1mnUnconditional.meta(),</span>
 				adblProjectionInducedScopingMean, new org.drip.measure.gaussian.Covariance
 					(org.drip.quant.linearalgebra.Matrix.Product
-<span class="nc" id="L668">						(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading),</span>
+<span class="nc" id="L669">						(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading),</span>
 							org.drip.quant.linearalgebra.Matrix.Product
-<span class="nc" id="L670">								(((org.drip.measure.gaussian.R1MultivariateNormal)</span>
-<span class="nc" id="L671">									r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading))));</span>
-<span class="nc" id="L672">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L673">			e.printStackTrace();</span>
+<span class="nc" id="L671">								(((org.drip.measure.gaussian.R1MultivariateNormal)</span>
+<span class="nc" id="L672">									r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading))));</span>
+<span class="nc" id="L673">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L674">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L676">		return null;</span>
+<span class="nc" id="L677">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

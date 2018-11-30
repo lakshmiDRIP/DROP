@@ -68,23 +68,25 @@ package org.drip.historical.state;
 
 /**
  * &lt;i&gt;CreditCurveMetrics&lt;/i&gt; holds the computed Metrics associated the Credit Curve State.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/sensitivity&quot;&gt;Sensitivity&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CreditCurveMetrics {
-<span class="nc" id="L82">	private org.drip.analytics.date.JulianDate _dtClose = null;</span>
+<span class="nc" id="L84">	private org.drip.analytics.date.JulianDate _dtClose = null;</span>
 
-<span class="nc" id="L84">	private java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt; _mapSurvivalProbability =</span>
+<span class="nc" id="L86">	private java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt; _mapSurvivalProbability =</span>
 		new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt;();
 
-<span class="nc" id="L87">	private java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt; _mapRecoveryRate = new</span>
+<span class="nc" id="L89">	private java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt; _mapRecoveryRate = new</span>
 		java.util.TreeMap&lt;org.drip.analytics.date.JulianDate, java.lang.Double&gt;();
 
 	/**
@@ -98,10 +100,10 @@ public class CreditCurveMetrics {
 	public CreditCurveMetrics (
 		final org.drip.analytics.date.JulianDate dtClose)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (null == (_dtClose = dtClose))</span>
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;CreditCurveMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L104">	}</span>
+<span class="nc" id="L103">	{</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (null == (_dtClose = dtClose))</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;CreditCurveMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Closing Date
@@ -111,7 +113,7 @@ public class CreditCurveMetrics {
 
 	public org.drip.analytics.date.JulianDate close()
 	{
-<span class="nc" id="L114">		return _dtClose;</span>
+<span class="nc" id="L116">		return _dtClose;</span>
 	}
 
 	/**
@@ -127,11 +129,11 @@ public class CreditCurveMetrics {
 		final org.drip.analytics.date.JulianDate dt,
 		final double dblSurvivalProbability)
 	{
-<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == dt || !org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProbability)) return false;</span>
+<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (null == dt || !org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProbability)) return false;</span>
 
-<span class="nc" id="L132">		_mapSurvivalProbability.put (dt, dblSurvivalProbability);</span>
+<span class="nc" id="L134">		_mapSurvivalProbability.put (dt, dblSurvivalProbability);</span>
 
-<span class="nc" id="L134">		return true;</span>
+<span class="nc" id="L136">		return true;</span>
 	}
 
 	/**
@@ -147,11 +149,11 @@ public class CreditCurveMetrics {
 		final org.drip.analytics.date.JulianDate dt,
 		final double dblRecoveryRate)
 	{
-<span class="nc bnc" id="L150" title="All 4 branches missed.">		if (null == dt || !org.drip.quant.common.NumberUtil.IsValid (dblRecoveryRate)) return false;</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">		if (null == dt || !org.drip.quant.common.NumberUtil.IsValid (dblRecoveryRate)) return false;</span>
 
-<span class="nc" id="L152">		_mapRecoveryRate.put (dt, dblRecoveryRate);</span>
+<span class="nc" id="L154">		_mapRecoveryRate.put (dt, dblRecoveryRate);</span>
 
-<span class="nc" id="L154">		return true;</span>
+<span class="nc" id="L156">		return true;</span>
 	}
 
 	/**
@@ -168,10 +170,10 @@ public class CreditCurveMetrics {
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L171" title="All 4 branches missed.">		if (null == dt || !_mapSurvivalProbability.containsKey (dt))</span>
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;CreditCurveMetrics::survivalProbability =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == dt || !_mapSurvivalProbability.containsKey (dt))</span>
+<span class="nc" id="L174">			throw new java.lang.Exception (&quot;CreditCurveMetrics::survivalProbability =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L174">		return _mapSurvivalProbability.get (dt);</span>
+<span class="nc" id="L176">		return _mapSurvivalProbability.get (dt);</span>
 	}
 
 	/**
@@ -188,10 +190,10 @@ public class CreditCurveMetrics {
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L191" title="All 4 branches missed.">		if (null == dt || !_mapRecoveryRate.containsKey (dt))</span>
-<span class="nc" id="L192">			throw new java.lang.Exception (&quot;CreditCurveMetrics::recoveryRate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L193" title="All 4 branches missed.">		if (null == dt || !_mapRecoveryRate.containsKey (dt))</span>
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;CreditCurveMetrics::recoveryRate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L194">		return _mapRecoveryRate.get (dt);</span>
+<span class="nc" id="L196">		return _mapRecoveryRate.get (dt);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

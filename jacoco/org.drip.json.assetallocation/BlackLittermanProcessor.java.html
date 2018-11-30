@@ -69,17 +69,19 @@ package org.drip.json.assetallocation;
 /**
  * &lt;i&gt;BlackLittermanProcessor&lt;/i&gt; Sets Up and Executes a JSON Based In/Out Processing Service for the Black
  * Litterman Bayesian View Incorporation/Parameter Estimation.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/assetallocation&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class BlackLittermanProcessor {</span>
+<span class="nc" id="L84">public class BlackLittermanProcessor {</span>
 
 	/**
 	 * JSON Based in/out Bayesian Co-variance/Returns Estimation Thunker
@@ -92,120 +94,120 @@ package org.drip.json.assetallocation;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONObject Estimate (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L95">		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
+<span class="fc" id="L97">		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
 			&quot;AssetSet&quot;);
 
-<span class="fc" id="L98">		double[][] aadblAssetSpaceViewProjection = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
-<span class="fc" id="L99">			(jsonParameter, &quot;AssetSpaceViewProjection&quot;);</span>
+<span class="fc" id="L100">		double[][] aadblAssetSpaceViewProjection = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
+<span class="fc" id="L101">			(jsonParameter, &quot;AssetSpaceViewProjection&quot;);</span>
 
-<span class="fc" id="L101">		double dblTau = java.lang.Double.NaN;</span>
-<span class="fc" id="L102">		double dblRiskAversion = java.lang.Double.NaN;</span>
-<span class="fc" id="L103">		double dblRiskFreeRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L104">		org.drip.measure.gaussian.R1MultivariateNormal viewDistribution = null;</span>
-<span class="fc" id="L105">		org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine blce = null;</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		int iNumView = null == aadblAssetSpaceViewProjection ? 0 : aadblAssetSpaceViewProjection.length;</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		java.lang.String[] astrProjectionName = 0 == iNumView? null : new java.lang.String[iNumView];</span>
+<span class="fc" id="L103">		double dblTau = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">		double dblRiskAversion = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">		double dblRiskFreeRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">		org.drip.measure.gaussian.R1MultivariateNormal viewDistribution = null;</span>
+<span class="fc" id="L107">		org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine blce = null;</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		int iNumView = null == aadblAssetSpaceViewProjection ? 0 : aadblAssetSpaceViewProjection.length;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		java.lang.String[] astrProjectionName = 0 == iNumView? null : new java.lang.String[iNumView];</span>
 
-<span class="fc" id="L109">		double[] adblAssetEquilibriumWeight = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L111">		double[] adblAssetEquilibriumWeight = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,</span>
 			&quot;AssetEquilibriumWeight&quot;);
 
-<span class="fc" id="L112">		double[][] aadblAssetExcessReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
-<span class="fc" id="L113">			(jsonParameter, &quot;AssetExcessReturnsCovariance&quot;);</span>
+<span class="fc" id="L114">		double[][] aadblAssetExcessReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry</span>
+<span class="fc" id="L115">			(jsonParameter, &quot;AssetExcessReturnsCovariance&quot;);</span>
 
-<span class="fc" id="L115">		double[] adblProjectionExpectedExcessReturns = org.drip.json.parser.Converter.DoubleArrayEntry</span>
-<span class="fc" id="L116">			(jsonParameter, &quot;ProjectionExpectedExcessReturns&quot;);</span>
+<span class="fc" id="L117">		double[] adblProjectionExpectedExcessReturns = org.drip.json.parser.Converter.DoubleArrayEntry</span>
+<span class="fc" id="L118">			(jsonParameter, &quot;ProjectionExpectedExcessReturns&quot;);</span>
 
-<span class="fc" id="L118">		double[][] aadblProjectionExcessReturnsCovariance =</span>
-<span class="fc" id="L119">			org.drip.json.parser.Converter.DualDoubleArrayEntry (jsonParameter,</span>
+<span class="fc" id="L120">		double[][] aadblProjectionExcessReturnsCovariance =</span>
+<span class="fc" id="L121">			org.drip.json.parser.Converter.DualDoubleArrayEntry (jsonParameter,</span>
 				&quot;ProjectionExcessReturnsCovariance&quot;);
 
-<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView ; ++i)</span>
-<span class="fc" id="L123">			astrProjectionName[i] = &quot;PROJECTION #&quot; + i;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView ; ++i)</span>
+<span class="fc" id="L125">			astrProjectionName[i] = &quot;PROJECTION #&quot; + i;</span>
 
 		try {
-<span class="fc" id="L126">			dblTau = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Tau&quot;);</span>
+<span class="fc" id="L128">			dblTau = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Tau&quot;);</span>
 
-<span class="fc" id="L128">			dblRiskAversion = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Delta&quot;);</span>
+<span class="fc" id="L130">			dblRiskAversion = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Delta&quot;);</span>
 
-<span class="fc" id="L130">			dblRiskFreeRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;RiskFreeRate&quot;);</span>
+<span class="fc" id="L132">			dblRiskFreeRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;RiskFreeRate&quot;);</span>
 
-<span class="fc" id="L132">			viewDistribution = org.drip.measure.gaussian.R1MultivariateNormal.Standard (new</span>
+<span class="fc" id="L134">			viewDistribution = org.drip.measure.gaussian.R1MultivariateNormal.Standard (new</span>
 				org.drip.measure.continuous.MultivariateMeta (astrProjectionName),
 					adblProjectionExpectedExcessReturns, aadblProjectionExcessReturnsCovariance);
 
-<span class="fc" id="L136">			blce = new org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine</span>
+<span class="fc" id="L138">			blce = new org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine</span>
 				(org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Reverse
-<span class="fc" id="L138">					(org.drip.portfolioconstruction.asset.Portfolio.Standard (astrAssetID,</span>
+<span class="fc" id="L140">					(org.drip.portfolioconstruction.asset.Portfolio.Standard (astrAssetID,</span>
 						adblAssetEquilibriumWeight), aadblAssetExcessReturnsCovariance, dblRiskAversion), new
 							org.drip.portfolioconstruction.bayesian.PriorControlSpecification (false,
 								dblRiskFreeRate, dblTau), new
 									org.drip.portfolioconstruction.bayesian.ProjectionSpecification
 										(viewDistribution, aadblAssetSpaceViewProjection));
-<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L145">			e.printStackTrace();</span>
+<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L147">			e.printStackTrace();</span>
 
-<span class="nc" id="L147">			return null;</span>
-<span class="fc" id="L148">		}</span>
+<span class="nc" id="L149">			return null;</span>
+<span class="fc" id="L150">		}</span>
 
-<span class="fc" id="L150">		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blo = blce.customConfidenceRun();</span>
+<span class="fc" id="L152">		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blo = blce.customConfidenceRun();</span>
 
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (null == blo) return null;</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == blo) return null;</span>
 
-<span class="fc" id="L154">		org.drip.measure.bayesian.JointPosteriorMetrics jpm = blo.combinationMetrics();</span>
+<span class="fc" id="L156">		org.drip.measure.bayesian.JointPosteriorMetrics jpm = blo.combinationMetrics();</span>
 
-<span class="fc" id="L156">		org.drip.measure.continuous.R1Multivariate r1mPrior = jpm.prior();</span>
+<span class="fc" id="L158">		org.drip.measure.continuous.R1Multivariate r1mPrior = jpm.prior();</span>
 
-<span class="fc" id="L158">		org.drip.measure.continuous.R1Multivariate r1mJoint = jpm.joint();</span>
+<span class="fc" id="L160">		org.drip.measure.continuous.R1Multivariate r1mJoint = jpm.joint();</span>
 
-<span class="fc" id="L160">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();</span>
+<span class="fc" id="L162">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();</span>
 
-<span class="pc bpc" id="L162" title="6 of 12 branches missed.">		if (null == r1mPrior || !(r1mPrior instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null</span>
+<span class="pc bpc" id="L164" title="6 of 12 branches missed.">		if (null == r1mPrior || !(r1mPrior instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null</span>
 			== r1mJoint || !(r1mJoint instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null ==
 				r1mPosterior || !(r1mPosterior instanceof org.drip.measure.gaussian.R1MultivariateNormal))
-<span class="nc" id="L165">			return null;</span>
+<span class="nc" id="L167">			return null;</span>
 
-<span class="fc" id="L167">		org.drip.measure.gaussian.R1MultivariateNormal r1mnPrior =</span>
+<span class="fc" id="L169">		org.drip.measure.gaussian.R1MultivariateNormal r1mnPrior =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPrior;
-<span class="fc" id="L169">		org.drip.measure.gaussian.R1MultivariateNormal r1mnJoint =</span>
+<span class="fc" id="L171">		org.drip.measure.gaussian.R1MultivariateNormal r1mnJoint =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mJoint;
-<span class="fc" id="L171">		org.drip.measure.gaussian.R1MultivariateNormal r1mnPosterior =</span>
+<span class="fc" id="L173">		org.drip.measure.gaussian.R1MultivariateNormal r1mnPosterior =</span>
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPosterior;
 
-<span class="fc" id="L174">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L176">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L176">		jsonResponse.put (&quot;Tau&quot;, dblTau);</span>
+<span class="fc" id="L178">		jsonResponse.put (&quot;Tau&quot;, dblTau);</span>
 
-<span class="fc" id="L178">		jsonResponse.put (&quot;Delta&quot;, dblRiskAversion);</span>
+<span class="fc" id="L180">		jsonResponse.put (&quot;Delta&quot;, dblRiskAversion);</span>
 
-<span class="fc" id="L180">		jsonResponse.put (&quot;RiskFreeRate&quot;, dblRiskFreeRate);</span>
+<span class="fc" id="L182">		jsonResponse.put (&quot;RiskFreeRate&quot;, dblRiskFreeRate);</span>
 
-<span class="fc" id="L182">		jsonResponse.put (&quot;ScopingSet&quot;, org.drip.json.parser.Converter.Array (astrAssetID));</span>
+<span class="fc" id="L184">		jsonResponse.put (&quot;ScopingSet&quot;, org.drip.json.parser.Converter.Array (astrAssetID));</span>
 
-<span class="fc" id="L184">		jsonResponse.put (&quot;ScopingExpectedExcessReturns&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L185">			(r1mnPrior.mean()));</span>
+<span class="fc" id="L186">		jsonResponse.put (&quot;ScopingExpectedExcessReturns&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L187">			(r1mnPrior.mean()));</span>
 
-<span class="fc" id="L187">		jsonResponse.put (&quot;ScopingExcessReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L188">			(r1mnPrior.covariance().covarianceMatrix()));</span>
+<span class="fc" id="L189">		jsonResponse.put (&quot;ScopingExcessReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L190">			(r1mnPrior.covariance().covarianceMatrix()));</span>
 
-<span class="fc" id="L190">		jsonResponse.put (&quot;ProjectionExpectedExcessReturns&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L191">			(adblProjectionExpectedExcessReturns));</span>
+<span class="fc" id="L192">		jsonResponse.put (&quot;ProjectionExpectedExcessReturns&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L193">			(adblProjectionExpectedExcessReturns));</span>
 
-<span class="fc" id="L193">		jsonResponse.put (&quot;ViewScopingProjectionLoading&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L194">			(aadblAssetSpaceViewProjection));</span>
+<span class="fc" id="L195">		jsonResponse.put (&quot;ViewScopingProjectionLoading&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L196">			(aadblAssetSpaceViewProjection));</span>
 
-<span class="fc" id="L196">		jsonResponse.put (&quot;JointExcessReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L197">			(r1mnJoint.covariance().covarianceMatrix()));</span>
+<span class="fc" id="L198">		jsonResponse.put (&quot;JointExcessReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L199">			(r1mnJoint.covariance().covarianceMatrix()));</span>
 
-<span class="fc" id="L199">		jsonResponse.put (&quot;PosteriorExcessReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L200">			(r1mnPosterior.covariance().covarianceMatrix()));</span>
+<span class="fc" id="L201">		jsonResponse.put (&quot;PosteriorExcessReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L202">			(r1mnPosterior.covariance().covarianceMatrix()));</span>
 
-<span class="fc" id="L202">		jsonResponse.put (&quot;PriorExpectedExcessReturn&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L203">			(r1mPrior.mean()));</span>
+<span class="fc" id="L204">		jsonResponse.put (&quot;PriorExpectedExcessReturn&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L205">			(r1mPrior.mean()));</span>
 
-<span class="fc" id="L205">		jsonResponse.put (&quot;PosteriorExpectedExcessReturn&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="fc" id="L206">			(r1mPosterior.mean()));</span>
+<span class="fc" id="L207">		jsonResponse.put (&quot;PosteriorExpectedExcessReturn&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="fc" id="L208">			(r1mPosterior.mean()));</span>
 
-<span class="fc" id="L208">		return jsonResponse;</span>
+<span class="fc" id="L210">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

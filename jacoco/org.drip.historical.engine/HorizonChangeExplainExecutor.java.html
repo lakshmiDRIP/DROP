@@ -69,17 +69,19 @@ package org.drip.historical.engine;
 /**
  * &lt;i&gt;HorizonChangeExplainExecutor&lt;/i&gt; executes the Sequence of Calls for the Calculation of the Component's
  * Horizon Change Explain.
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class HorizonChangeExplainExecutor {</span>
+<span class="nc" id="L84">public class HorizonChangeExplainExecutor {</span>
 
 	/**
 	 * Generate the Attribution for the Component's Horizon Change Explain Processor
@@ -92,33 +94,33 @@ package org.drip.historical.engine;
 	public static final org.drip.historical.attribution.PositionChangeComponents GenerateAttribution (
 		final org.drip.historical.engine.HorizonChangeExplainProcessor hcep)
 	{
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == hcep) return null;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (null == hcep) return null;</span>
 
-<span class="nc" id="L97">		double dblMarketMeasureValue = hcep.marketMeasureValue();</span>
+<span class="nc" id="L99">		double dblMarketMeasureValue = hcep.marketMeasureValue();</span>
 
-<span class="nc" id="L99">		java.lang.String strMarketMeasureName = hcep.marketMeasureName();</span>
+<span class="nc" id="L101">		java.lang.String strMarketMeasureName = hcep.marketMeasureName();</span>
 
-<span class="nc" id="L101">		org.drip.historical.attribution.PositionMarketSnap pmsFirst = hcep.snapFirstMarketValue();</span>
+<span class="nc" id="L103">		org.drip.historical.attribution.PositionMarketSnap pmsFirst = hcep.snapFirstMarketValue();</span>
 
-<span class="nc bnc" id="L103" title="All 4 branches missed.">		if (null == pmsFirst || !pmsFirst.setMarketMeasureName (strMarketMeasureName) ||</span>
-<span class="nc bnc" id="L104" title="All 4 branches missed.">			!pmsFirst.setMarketMeasureValue (dblMarketMeasureValue) || !hcep.updateFixings())</span>
-<span class="nc" id="L105">			return null;</span>
+<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == pmsFirst || !pmsFirst.setMarketMeasureName (strMarketMeasureName) ||</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">			!pmsFirst.setMarketMeasureValue (dblMarketMeasureValue) || !hcep.updateFixings())</span>
+<span class="nc" id="L107">			return null;</span>
 
-<span class="nc" id="L107">		org.drip.historical.attribution.PositionMarketSnap pmsSecond = hcep.snapSecondMarketValue();</span>
+<span class="nc" id="L109">		org.drip.historical.attribution.PositionMarketSnap pmsSecond = hcep.snapSecondMarketValue();</span>
 
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == pmsSecond || !pmsSecond.setMarketMeasureName (strMarketMeasureName) ||</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			!pmsSecond.setMarketMeasureValue (dblMarketMeasureValue))</span>
-<span class="nc" id="L111">			return null;</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == pmsSecond || !pmsSecond.setMarketMeasureName (strMarketMeasureName) ||</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			!pmsSecond.setMarketMeasureValue (dblMarketMeasureValue))</span>
+<span class="nc" id="L113">			return null;</span>
 
 		try {
-<span class="nc" id="L114">			return new org.drip.historical.attribution.PositionChangeComponents (false, pmsFirst, pmsSecond,</span>
-<span class="nc" id="L115">				pmsSecond.cumulativeCouponAmount() - pmsFirst.cumulativeCouponAmount(),</span>
-<span class="nc" id="L116">					hcep.crossHorizonDifferentialMetrics (pmsFirst, pmsSecond));</span>
-<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L118">			e.printStackTrace();</span>
+<span class="nc" id="L116">			return new org.drip.historical.attribution.PositionChangeComponents (false, pmsFirst, pmsSecond,</span>
+<span class="nc" id="L117">				pmsSecond.cumulativeCouponAmount() - pmsFirst.cumulativeCouponAmount(),</span>
+<span class="nc" id="L118">					hcep.crossHorizonDifferentialMetrics (pmsFirst, pmsSecond));</span>
+<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L121">		return null;</span>
+<span class="nc" id="L123">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
