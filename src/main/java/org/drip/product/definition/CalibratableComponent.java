@@ -75,12 +75,13 @@ package org.drip.product.definition;
  * <i>CalibratableComponent</i> abstract class provides implementation of Component's calibration interface.
  * It exposes stubs for getting/setting the component’s calibration code, generate calibrated measure values
  * from the market inputs, and compute micro-Jacobians (QuoteDF and PVDF micro-Jacks).
- * 
- * <br><br>
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Project</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product">Product</a></li>
- *		<li><b>Package</b>       = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/definition">Definition</a></li>
- *		<li><b>Specification</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome">Fixed Income Analytics</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product">Product</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/credit">Credit</a></li>
  *  </ul>
  * <br><br>
  * 
