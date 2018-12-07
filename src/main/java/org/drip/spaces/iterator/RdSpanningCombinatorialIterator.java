@@ -57,7 +57,11 @@ package org.drip.spaces.iterator;
  *   	you may not use this file except in compliance with the License.
  *   
  *  You may obtain a copy of the License at
- *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  	http://www.apache.org/licenses/LICENSE-2.0 *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces">Spaces</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator">Iterator</a></li>
+
  *  
  *  Unless required by applicable law or agreed to in writing, software
  *  	distributed under the License is distributed on an "AS IS" BASIS,
