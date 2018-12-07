@@ -187,5 +187,7 @@ public class BondClientSecular {
 		System.out.println ("\n\t|---------------- JSON RESPONSE ----------------|\n");
 
 		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));
+
+		EnvManager.TerminateEnv();
 	}
 }

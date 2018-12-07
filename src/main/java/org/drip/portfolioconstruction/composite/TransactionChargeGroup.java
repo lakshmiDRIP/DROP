@@ -66,7 +66,7 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /**
- * <i>TransactionChargeGroup\</i> contains the Transaction Charge Values for the specified Set of Assets.
+ * <i>TransactionChargeGroup</i> contains the Transaction Charge Values for the specified Set of Assets.
  *
  *	<br><br>
  *  <ul>

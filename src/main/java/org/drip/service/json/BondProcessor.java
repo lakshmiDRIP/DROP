@@ -141,6 +141,12 @@ public class BondProcessor {
 		try {
 			double dblYield01 = bond.yield01FromPrice (valParams, csqc, null, dblCleanPrice);
 
+			double accrued = bond.accrued (valParams.valueDate(), csqc);
+
+			jsonResponse.put ("BondAccrued", accrued);
+
+			jsonResponse.put ("BondDirtyPrice", dblCleanPrice + accrued);
+
 			jsonResponse.put ("BondYield", bond.yieldFromPrice (valParams, csqc, null, dblCleanPrice));
 
 			jsonResponse.put ("BondMacaulayDuration", bond.macaulayDurationFromPrice (valParams, csqc, null,

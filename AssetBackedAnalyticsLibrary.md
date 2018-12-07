@@ -1,4 +1,4 @@
-
+﻿
 # Asset Backed Analytics Library
 
 
@@ -37,7 +37,6 @@ Asset Backed Analytics Library contains the Valuation and Risk Functionality for
 	* Empirical Results – Regressor Contribution Weights
 	* Empirical Analysis of Seasoning Effects
 	* Analysis of the Vintage/Cohort Effects
-
 	* Analysis of Empirical Seasonality Effects
 	* CPR And CDR Curve Estimation
 	* Credit Model Future Enhancements

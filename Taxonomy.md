@@ -63,7 +63,7 @@
 	* *Spline* => Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) }
- * ***Statistical Learning Library***
+ * [***Statistical Learning Library***](https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md) => Statistical Learning Analyzers and Machine Learning Schemes.
 	* *Learning* => Agnostic Learning Bounds under Empirical Loss Minimization Schemes.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Alearning) }
@@ -73,7 +73,7 @@
 	* *Spaces* => R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes off of them.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspaces) }
- * ***Numerical Optimizer Library***
+ * [***Numerical Optimizer Library***](https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md) => Functionality for Numerical Methods - including R<sup>x</sup> Solvers, Linear Algebra, and Constrained Optimizers.
 	* *Function* => Implementation and Solvers for a Suite of R<sup>x</sup> To R<sup>1</sup> Functions.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Afunction) }
