@@ -19,7 +19,7 @@ Asset Allocation Analytics Library implements Optimal Portfolio Construction and
 ## Component Projects
 
  * *Portfolio Construction* => Optimal and Constrained Portfolio Construction Functionality.
-	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction) | 
+	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aportfolioconstruction) }
 
 

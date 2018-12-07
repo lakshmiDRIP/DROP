@@ -18,7 +18,7 @@ XVA Analytics Library contains the Utilities to generate various Valuation Adjus
 ## Component Projects
 
  * *XVA* => Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead.
-	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva) | 
+	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Axva) }
 
 

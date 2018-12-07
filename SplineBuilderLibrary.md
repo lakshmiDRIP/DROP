@@ -19,7 +19,7 @@ Spline Builder Library contains the Functionality for constructing Spline Based 
 ## Component Projects
 
  * *Spline* => Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions.
-	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline) | 
+	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) }
 
 
