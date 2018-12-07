@@ -45,6 +45,7 @@ DROP Quant Linear Algebra Package implements the Linear Algebra Matrix Transform
  * Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * GitHub                   => https://github.com/lakshmiDRIP/DROP
  * Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
