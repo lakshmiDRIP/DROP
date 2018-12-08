@@ -11,7 +11,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v3.88.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v3.95.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -81,7 +81,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Evolution of SIMM Through the Regulatory Process
 	* SIMM and the Nested Variance/Covariance Formulas
 	* Rationale Behind the Nested Sequence Approach
-	* Explicit Expression for S<sup>a</sup>
+	* Explicit Expression for S<sub>a</sub>
 	* FRTB Approximation
 	* SIMM Approximation
 	* Testing the Approximations
@@ -89,6 +89,8 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Proof that the Elements of the Eigenvectors are smaller than One in Magnitude
 	* Numerical Example – Global Interest Rate Risk (GIRR)
 	* SIMM Curvature Formulas – Introduction
+	* ISDA SIMM Curvature Formula
+	* Numerical Tests
 	* References
  * ISDA SIMM Methodology
 	* Contextual Considerations

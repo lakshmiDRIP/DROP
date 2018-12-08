@@ -70,6 +70,15 @@ package org.drip.spaces.tensor;
 /**
  * <i>Cardinality</i> contains the Type and the Measure of the Cardinality of the given Vector Space.
  *
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces">Spaces</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor">Tensor</a></li>
+ *  </ul>
+ * <br><br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 
