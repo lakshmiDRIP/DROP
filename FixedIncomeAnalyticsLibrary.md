@@ -108,7 +108,7 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 	* Overview
 	* Discount Curves
 	* References
- * Curve Construction Metyhodology
+ * Curve Construction Methodology
 	* Approach
 	* State Span Design Components
 	* Curve Calibration from Instruments/Quotes
