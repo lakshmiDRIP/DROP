@@ -73,7 +73,7 @@ package org.drip.param.pricer;
 
 /**
  * <i>CreditPricerParams</i> contains the Credit Pricer Parameters - the discrete unit size, calibration mode
- * on/off, survival to pay/end date, and the discretization scheme
+ * on/off, survival to pay/end date, and the discretization scheme.
  *
  *	<br><br>
  *  <ul>

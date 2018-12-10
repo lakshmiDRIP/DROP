@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Optimization implements the Necessary, Sufficient, and Regulatiry Checks for Gradient Descent in a
+DROP Optimization implements the Necessary, Sufficient, and Regularity Checks for Gradient Descent in a
 	Constrained Optimization Setup.
 
 
