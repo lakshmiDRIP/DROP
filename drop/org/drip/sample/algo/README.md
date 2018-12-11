@@ -9,11 +9,11 @@ DROP Sample Algo illustrates the C<sup>x</sup> R<sup>x</sup> In-Place Manipulati
 
  |                  Sample                 | Source | Output |
  |-----------------------------------------|--------|--------|
- | C<sup>1</sup> Array Translate Shuffle   | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/C1ArrayTranslateShuffle.java) | [DROP](https://github.com/lakshmiDRIP/DROP/tree/master/drop/org/drip/sample/algo/C1ArrayTranslateShuffle.drop) |
- | R<sup>1</sup> Array In-situ Sort        | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R1ArrayInSituSort.java) | [DROP](https://github.com/lakshmiDRIP/DROP/tree/master/drop/org/drip/sample/algo/R1ArrayInSituSort.drop) |
- | R<sup>2</sup> Array Pathwise Processing | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R2ArrayPathwiseProcessing.java) | [DROP](https://github.com/lakshmiDRIP/DROP/tree/master/drop/org/drip/sample/algo/R2ArrayPathwiseProcessing.drop) |
- | Sub-Matrix Set Extraction               | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/SubMatrixSetExtraction.java) | [DROP](https://github.com/lakshmiDRIP/DROP/tree/master/drop/org/drip/sample/algo/SubMatrixSetExtraction.drop) |
- | Sub-String Set Extraction               | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/SubStringSetExtraction.java) | [DROP](https://github.com/lakshmiDRIP/DROP/tree/master/drop/org/drip/sample/algo/SubStringSetExtraction.drop) |
+ | C<sup>1</sup> Array Translate Shuffle   | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/C1ArrayTranslateShuffle.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/algo/C1ArrayTranslateShuffle.drop) |
+ | R<sup>1</sup> In-situ Sort              | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R1ArrayInSituSort.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/algo/R1ArrayInSituSort.drop) |
+ | R<sup>2</sup> Array Pathwise Processing | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R2ArrayPathwiseProcessing.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/algo/R2ArrayPathwiseProcessing.drop) |
+ | Sub-Matrix Set Extraction               | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/SubMatrixSetExtraction.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/algo/SubMatrixSetExtraction.drop) |
+ | Sub-String Set Extraction               | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/SubStringSetExtraction.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/algo/SubStringSetExtraction.drop) |
 
 
 ## Hierarchy
@@ -22,7 +22,7 @@ DROP Sample Algo illustrates the C<sup>x</sup> R<sup>x</sup> In-Place Manipulati
 	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
 	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
 	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
-	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md">"Big" Algorithm Support</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md">Algo</a></li>
  </ul>
 
 
