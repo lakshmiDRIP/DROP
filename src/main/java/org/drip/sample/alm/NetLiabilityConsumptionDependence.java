@@ -72,7 +72,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>NetLiabilityConsumptionDependence demonstrates the Dependence of the Outstanding Values on the Investor
+ * <i>NetLiabilityConsumptionDependence</i> demonstrates the Dependence of the Outstanding Values on the Investor
  * Consumption Settings.
  * 
  * <br><br>
