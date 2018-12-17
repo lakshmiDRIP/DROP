@@ -81,7 +81,7 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * <i>Zibo</I. demonstrates EOS Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
+ * <i>Zibo</i> demonstrates EOS Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
  * Zibo.
  *  
  * <br><br>

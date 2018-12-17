@@ -80,7 +80,7 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * <i>Raipur</o> demonstrates EOS Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
+ * <i>Raipur</i> demonstrates EOS Fixed Coupon Multi-flavor Pricing and Relative Value Measure Generation for
  * Raipur.
  *  
  * <br><br>
