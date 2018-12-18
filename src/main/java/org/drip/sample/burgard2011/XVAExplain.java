@@ -88,7 +88,7 @@ import org.drip.xva.pde.*;
  */
 
 /**
- * <i>XVAExplain</i> demonstrates the Trajectory Attribtuion of the Bank and Counter-Party Default Based
+ * <i>XVAExplain</i> demonstrates the Trajectory Attribution of the Bank and Counter-Party Default Based
  * Derivative Evolution of the Dynamic XVA Replication Porfolio. The References are:
  *  
  * <br><br>

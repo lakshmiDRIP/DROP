@@ -88,7 +88,7 @@ import org.drip.xva.pde.*;
  */
 
 /**
- * <i>CorrelatedNumeraireXVAReplicationPortfolio</I. calculates the XVA Replication Portfolio arising out of
+ * <i>CorrelatedNumeraireXVAReplicationPortfolio</i> calculates the XVA Replication Portfolio arising out of
  * the Joint Evolution of Numeraires - the Continuous Asset, the Collateral, the Bank, and the Counter-Party
  * Numeraires involved in the Dynamic XVA Replication Portfolio of the Burgard and Kjaer (2011) Methodology.
  * The References are:

@@ -88,8 +88,8 @@ import org.drip.xva.pde.*;
  */
 
 /**
- * <i>BilateralXVAReplicationPortfolio</i> demonstrates the Bank and Counter-Party Default Based Derivative
- * Evolution of the Dynamic XVA Replication Porfolio. The References are:
+ * <i>XVAReplicationPortfolio</i> demonstrates the Bank and Counter-Party Default Based Derivative Evolution
+ * of the Dynamic XVA Replication Porfolio. The References are:
  *  
  * <br><br>
  *  <ul>
