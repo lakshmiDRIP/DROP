@@ -81,9 +81,10 @@ package org.drip.state.curve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -91,7 +92,7 @@ package org.drip.state.curve;
  */
 
 public class BasisSplineBasisCurve extends org.drip.state.basis.BasisCurve {
-<span class="fc" id="L94">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L95">	private org.drip.spline.grid.Span _span = null;</span>
 
 	/**
 	 * BasisSplineBasisCurve constructor
@@ -111,31 +112,31 @@ public class BasisSplineBasisCurve extends org.drip.state.basis.BasisCurve {
 		final org.drip.spline.grid.Span span)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L114">		super ((int) span.left(), friReference, friDerived, bBasisOnReference);</span>
+<span class="fc" id="L115">		super ((int) span.left(), friReference, friDerived, bBasisOnReference);</span>
 
-<span class="fc" id="L116">		_span = span;</span>
-<span class="fc" id="L117">	}</span>
+<span class="fc" id="L117">		_span = span;</span>
+<span class="fc" id="L118">	}</span>
 
 	@Override public double basis (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L123">		double dblSpanLeft = _span.left();</span>
+<span class="fc" id="L124">		double dblSpanLeft = _span.left();</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (iDate &lt;= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (iDate &lt;= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);</span>
 
-<span class="fc" id="L127">		double dblSpanRight = _span.right();</span>
+<span class="fc" id="L128">		double dblSpanRight = _span.right();</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		if (iDate &gt;= dblSpanRight) return _span.calcResponseValue (dblSpanRight);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		if (iDate &gt;= dblSpanRight) return _span.calcResponseValue (dblSpanRight);</span>
 
-<span class="fc" id="L131">		return _span.calcResponseValue (iDate);</span>
+<span class="fc" id="L132">		return _span.calcResponseValue (iDate);</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{
-<span class="nc" id="L138">		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
+<span class="nc" id="L139">		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -89,9 +89,10 @@ package org.drip.regression.spline;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -99,12 +100,12 @@ package org.drip.regression.spline;
  */
 
 public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressionExecutor {
-<span class="fc" id="L102">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L103">	private org.drip.spline.segment.LatentStateResponseModel _seg1 = null;</span>
-<span class="fc" id="L104">	private org.drip.spline.segment.LatentStateResponseModel _seg2 = null;</span>
-<span class="fc" id="L105">	private org.drip.quant.calculus.WengertJacobian _wjLeft = null;</span>
-<span class="fc" id="L106">	private org.drip.quant.calculus.WengertJacobian _wjRight = null;</span>
-<span class="fc" id="L107">	private org.drip.quant.calculus.WengertJacobian _wjValue = null;</span>
+<span class="fc" id="L103">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L104">	private org.drip.spline.segment.LatentStateResponseModel _seg1 = null;</span>
+<span class="fc" id="L105">	private org.drip.spline.segment.LatentStateResponseModel _seg2 = null;</span>
+<span class="fc" id="L106">	private org.drip.quant.calculus.WengertJacobian _wjLeft = null;</span>
+<span class="fc" id="L107">	private org.drip.quant.calculus.WengertJacobian _wjRight = null;</span>
+<span class="fc" id="L108">	private org.drip.quant.calculus.WengertJacobian _wjValue = null;</span>
 
 	/**
 	 * Create an instance of Polynomial BasisSplineRegressor
@@ -124,16 +125,16 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iCk)
 	{
 		try {
-<span class="fc" id="L127">			org.drip.spline.basis.FunctionSet fs =</span>
-<span class="fc" id="L128">				org.drip.spline.basis.FunctionSetBuilder.PolynomialBasisSet (new</span>
+<span class="fc" id="L128">			org.drip.spline.basis.FunctionSet fs =</span>
+<span class="fc" id="L129">				org.drip.spline.basis.FunctionSetBuilder.PolynomialBasisSet (new</span>
 					org.drip.spline.basis.PolynomialFunctionSetParams (iNumBasis));
 
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, iCk);</span>
-<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L133">			e.printStackTrace();</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, iCk);</span>
+<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L134">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L136">		return null;</span>
+<span class="nc" id="L137">		return null;</span>
 	}
 
 	/**
@@ -154,16 +155,16 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iCk)
 	{
 		try {
-<span class="fc" id="L157">			org.drip.spline.basis.FunctionSet fs =</span>
-<span class="fc" id="L158">				org.drip.spline.basis.FunctionSetBuilder.BernsteinPolynomialBasisSet (new</span>
+<span class="fc" id="L158">			org.drip.spline.basis.FunctionSet fs =</span>
+<span class="fc" id="L159">				org.drip.spline.basis.FunctionSetBuilder.BernsteinPolynomialBasisSet (new</span>
 					org.drip.spline.basis.PolynomialFunctionSetParams (iNumBasis));
 
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, iCk);</span>
-<span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L163">			e.printStackTrace();</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, iCk);</span>
+<span class="nc" id="L163">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L166">		return null;</span>
+<span class="nc" id="L167">		return null;</span>
 	}
 
 	/**
@@ -182,16 +183,16 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final double dblTension)
 	{
 		try {
-<span class="fc" id="L185">			org.drip.spline.basis.FunctionSet fs =</span>
-<span class="fc" id="L186">				org.drip.spline.basis.FunctionSetBuilder.ExponentialTensionBasisSet (new</span>
+<span class="fc" id="L186">			org.drip.spline.basis.FunctionSet fs =</span>
+<span class="fc" id="L187">				org.drip.spline.basis.FunctionSetBuilder.ExponentialTensionBasisSet (new</span>
 					org.drip.spline.basis.ExponentialTensionSetParams (dblTension));
 
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);</span>
-<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);</span>
+<span class="nc" id="L191">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L192">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L194">		return null;</span>
+<span class="nc" id="L195">		return null;</span>
 	}
 
 	/**
@@ -210,16 +211,16 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final double dblTension)
 	{
 		try {
-<span class="fc" id="L213">			org.drip.spline.basis.FunctionSet fs =</span>
-<span class="fc" id="L214">				org.drip.spline.basis.FunctionSetBuilder.HyperbolicTensionBasisSet (new</span>
+<span class="fc" id="L214">			org.drip.spline.basis.FunctionSet fs =</span>
+<span class="fc" id="L215">				org.drip.spline.basis.FunctionSetBuilder.HyperbolicTensionBasisSet (new</span>
 					org.drip.spline.basis.ExponentialTensionSetParams (dblTension));
 
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);</span>
-<span class="nc" id="L218">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L219">			e.printStackTrace();</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);</span>
+<span class="nc" id="L219">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L220">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L222">		return null;</span>
+<span class="nc" id="L223">		return null;</span>
 	}
 
 	/**
@@ -238,16 +239,16 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iKPPolynomialTension)
 	{
 		try {
-<span class="fc" id="L241">			org.drip.spline.basis.FunctionSet fs =</span>
-<span class="fc" id="L242">				org.drip.spline.basis.FunctionSetBuilder.KaklisPandelisBasisSet (new</span>
+<span class="fc" id="L242">			org.drip.spline.basis.FunctionSet fs =</span>
+<span class="fc" id="L243">				org.drip.spline.basis.FunctionSetBuilder.KaklisPandelisBasisSet (new</span>
 					org.drip.spline.basis.KaklisPandelisSetParams (iKPPolynomialTension));
 
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);</span>
-<span class="nc" id="L246">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L247">			e.printStackTrace();</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);</span>
+<span class="nc" id="L247">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L248">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L250">		return null;</span>
+<span class="nc" id="L251">		return null;</span>
 	}
 
 	protected BasisSplineRegressor (
@@ -257,70 +258,70 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iCk)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L260">		super (strName, strScenarioName);</span>
+<span class="fc" id="L261">		super (strName, strScenarioName);</span>
 
-<span class="fc" id="L262">		org.drip.spline.params.SegmentInelasticDesignControl segParams =</span>
-<span class="fc" id="L263">			org.drip.spline.params.SegmentInelasticDesignControl.Create (iCk, 2);</span>
+<span class="fc" id="L263">		org.drip.spline.params.SegmentInelasticDesignControl segParams =</span>
+<span class="fc" id="L264">			org.drip.spline.params.SegmentInelasticDesignControl.Create (iCk, 2);</span>
 
-<span class="fc" id="L265">		org.drip.spline.params.ResponseScalingShapeControl rssc = new</span>
+<span class="fc" id="L266">		org.drip.spline.params.ResponseScalingShapeControl rssc = new</span>
 			org.drip.spline.params.ResponseScalingShapeControl (true, new
 				org.drip.function.r1tor1.QuadraticRationalShapeControl (1.));
 
-<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (null == (_seg1 = org.drip.spline.segment.LatentStateResponseModel.Create (1.0, 3.0, fs, rssc,</span>
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">			segParams)) || null == (_seg2 = org.drip.spline.segment.LatentStateResponseModel.Create (3.0,</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">		if (null == (_seg1 = org.drip.spline.segment.LatentStateResponseModel.Create (1.0, 3.0, fs, rssc,</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">			segParams)) || null == (_seg2 = org.drip.spline.segment.LatentStateResponseModel.Create (3.0,</span>
 				6.0, fs, rssc, segParams)))
-<span class="nc" id="L272">			throw new java.lang.Exception (&quot;BasisSplineRegressor ctr: Cant create the segments&quot;);</span>
-<span class="fc" id="L273">	}</span>
+<span class="nc" id="L273">			throw new java.lang.Exception (&quot;BasisSplineRegressor ctr: Cant create the segments&quot;);</span>
+<span class="fc" id="L274">	}</span>
 
 	@Override public boolean preRegression()
 	{
-<span class="fc" id="L277">		return true;</span>
+<span class="fc" id="L278">		return true;</span>
 	}
 
 	@Override public boolean execRegression()
 	{
 		try {
-<span class="pc bpc" id="L283" title="1 of 2 branches missed.">			return null != (_wjLeft = _seg1.jackDCoeffDEdgeParams (25., 0., 20.25, null)) &amp;&amp; null !=</span>
-<span class="pc bpc" id="L284" title="1 of 2 branches missed.">				(_wjRight = _seg2.jackDCoeffDEdgeParams (_seg1, &quot;Default&quot;, 16., null, java.lang.Double.NaN,</span>
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">					null)) &amp;&amp; _seg2.calibrate (_seg1, 14., null) &amp;&amp; null != (_wjValue =</span>
-<span class="pc bpc" id="L286" title="1 of 2 branches missed.">						_seg2.jackDResponseDEdgeInput (5., 1));</span>
-<span class="nc" id="L287">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L288">			e.printStackTrace();</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">			return null != (_wjLeft = _seg1.jackDCoeffDEdgeParams (25., 0., 20.25, null)) &amp;&amp; null !=</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">				(_wjRight = _seg2.jackDCoeffDEdgeParams (_seg1, &quot;Default&quot;, 16., null, java.lang.Double.NaN,</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">					null)) &amp;&amp; _seg2.calibrate (_seg1, 14., null) &amp;&amp; null != (_wjValue =</span>
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">						_seg2.jackDResponseDEdgeInput (5., 1));</span>
+<span class="nc" id="L288">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L289">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L291">		return false;</span>
+<span class="nc" id="L292">		return false;</span>
 	}
 
 	@Override public boolean postRegression (
 		final org.drip.regression.core.RegressionRunDetail rnvd)
 	{
 		try {
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_1_0&quot;, &quot;&quot; + _seg1.responseValue (1.))) return false;</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_1_0&quot;, &quot;&quot; + _seg1.responseValue (1.))) return false;</span>
 
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_3_0&quot;, &quot;&quot; + _seg1.responseValue (3.))) return false;</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_3_0&quot;, &quot;&quot; + _seg1.responseValue (3.))) return false;</span>
 
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_Jack&quot;, _wjLeft.displayString()));</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_Jack&quot;, _wjLeft.displayString()));</span>
 
-<span class="pc bpc" id="L304" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_Head_Jack&quot;, _seg1.jackDCoeffDEdgeInputs().displayString()));</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_Head_Jack&quot;, _seg1.jackDCoeffDEdgeInputs().displayString()));</span>
 
-<span class="pc bpc" id="L306" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_Monotone&quot;, _seg1.monotoneType().toString()));</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg1_Monotone&quot;, _seg1.monotoneType().toString()));</span>
 
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_3_0&quot;, &quot;&quot; + _seg2.responseValue (3.))) return false;</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_3_0&quot;, &quot;&quot; + _seg2.responseValue (3.))) return false;</span>
 
-<span class="pc bpc" id="L310" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_6_0&quot;, &quot;&quot; + _seg2.responseValue (6.))) return false;</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_6_0&quot;, &quot;&quot; + _seg2.responseValue (6.))) return false;</span>
 
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_Jack&quot;, _wjRight.displayString()));</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_Jack&quot;, _wjRight.displayString()));</span>
 
-<span class="pc bpc" id="L314" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_Head_Jack&quot;, _seg2.jackDCoeffDEdgeInputs().displayString()));</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_Head_Jack&quot;, _seg2.jackDCoeffDEdgeInputs().displayString()));</span>
 
-<span class="pc bpc" id="L316" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_Monotone&quot;, _seg2.monotoneType().toString()));</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">			if (!rnvd.set (_strName + &quot;_Seg2_Monotone&quot;, _seg2.monotoneType().toString()));</span>
 
-<span class="fc" id="L318">			return rnvd.set (_strName + &quot;_Seg2_Value_Jack&quot;, _wjValue.displayString());</span>
-<span class="nc" id="L319">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L320">			e.printStackTrace();</span>
+<span class="fc" id="L319">			return rnvd.set (_strName + &quot;_Seg2_Value_Jack&quot;, _wjValue.displayString());</span>
+<span class="nc" id="L320">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L321">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L323">		return false;</span>
+<span class="nc" id="L324">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

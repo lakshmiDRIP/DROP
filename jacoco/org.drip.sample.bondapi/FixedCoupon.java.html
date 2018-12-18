@@ -12,33 +12,52 @@ import org.drip.service.product.FixedBondAPI;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -55,29 +74,38 @@ import org.drip.service.product.FixedBondAPI;
  */
 
 /**
- * FixedCoupon demonstrates the Invocation and Examination of the Metrics for the Fixed Coupon Bond.
+ * &lt;i&gt;FixedCoupon&lt;/i&gt; demonstrates the Invocation and Examination of the Metrics for the Fixed Coupon Bond.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondapi/README.md&quot;&gt;Bond API&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L63">public class FixedCoupon {</span>
+<span class="nc" id="L91">public class FixedCoupon {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L69">		EnvManager.InitEnv (</span>
+<span class="fc" id="L97">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L74">		int iSpotDate = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L102">		int iSpotDate = DateUtil.CreateFromYMD (</span>
 			2015,
 			DateUtil.NOVEMBER,
 			18
-<span class="fc" id="L78">		).julian();</span>
+<span class="fc" id="L106">		).julian();</span>
 
-<span class="fc" id="L80">		String[] astrFundingCurveDepositTenor = new String[] {</span>
+<span class="fc" id="L108">		String[] astrFundingCurveDepositTenor = new String[] {</span>
 			&quot;2D&quot;,
 			&quot;1W&quot;,
 			&quot;1M&quot;,
@@ -85,7 +113,7 @@ import org.drip.service.product.FixedBondAPI;
 			&quot;3M&quot;
 		};
 
-<span class="fc" id="L88">		double[] adblFundingCurveDepositQuote = new double[] {</span>
+<span class="fc" id="L116">		double[] adblFundingCurveDepositQuote = new double[] {</span>
 			0.00195, // 2D
 			0.00176, // 1W
 			0.00301, // 1M
@@ -93,16 +121,16 @@ import org.drip.service.product.FixedBondAPI;
 			0.00492  // 3M
 		};
 
-<span class="fc" id="L96">		String strFundingCurveDepositMeasure = &quot;ForwardRate&quot;;</span>
+<span class="fc" id="L124">		String strFundingCurveDepositMeasure = &quot;ForwardRate&quot;;</span>
 
-<span class="fc" id="L98">		double[] adblFundingCurveFuturesQuote = new double[] {</span>
+<span class="fc" id="L126">		double[] adblFundingCurveFuturesQuote = new double[] {</span>
 			0.00609,
 			0.00687
 		};
 
-<span class="fc" id="L103">		String strFundingCurveFuturesMeasure = &quot;ForwardRate&quot;;</span>
+<span class="fc" id="L131">		String strFundingCurveFuturesMeasure = &quot;ForwardRate&quot;;</span>
 
-<span class="fc" id="L105">		String[] astrFundingCurveFixFloatTenor = new String[] {</span>
+<span class="fc" id="L133">		String[] astrFundingCurveFixFloatTenor = new String[] {</span>
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
@@ -123,7 +151,7 @@ import org.drip.service.product.FixedBondAPI;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L126">		double[] adblFundingCurveFixFloatQuote = new double[] {</span>
+<span class="fc" id="L154">		double[] adblFundingCurveFixFloatQuote = new double[] {</span>
 			0.00762, //  1Y
 			0.01055, //  2Y
 			0.01300, //  3Y
@@ -144,9 +172,9 @@ import org.drip.service.product.FixedBondAPI;
 			0.02632  // 50Y
 		};
 
-<span class="fc" id="L147">		String strFundingFixFloatMeasure = &quot;SwapRate&quot;;</span>
+<span class="fc" id="L175">		String strFundingFixFloatMeasure = &quot;SwapRate&quot;;</span>
 
-<span class="fc" id="L149">		int[] aiGovvieCurveTreasuryEffectiveDate = new int[] {</span>
+<span class="fc" id="L177">		int[] aiGovvieCurveTreasuryEffectiveDate = new int[] {</span>
 			iSpotDate,
 			iSpotDate,
 			iSpotDate,
@@ -156,17 +184,17 @@ import org.drip.service.product.FixedBondAPI;
 			iSpotDate
 		};
 
-<span class="fc" id="L159">		int[] aiGovvieCurveTreasuryMaturityDate = new int[] {</span>
-<span class="fc" id="L160">			new JulianDate (iSpotDate).addTenor (&quot;1Y&quot;).julian(),</span>
-<span class="fc" id="L161">			new JulianDate (iSpotDate).addTenor (&quot;2Y&quot;).julian(),</span>
-<span class="fc" id="L162">			new JulianDate (iSpotDate).addTenor (&quot;3Y&quot;).julian(),</span>
-<span class="fc" id="L163">			new JulianDate (iSpotDate).addTenor (&quot;5Y&quot;).julian(),</span>
-<span class="fc" id="L164">			new JulianDate (iSpotDate).addTenor (&quot;7Y&quot;).julian(),</span>
-<span class="fc" id="L165">			new JulianDate (iSpotDate).addTenor (&quot;10Y&quot;).julian(),</span>
-<span class="fc" id="L166">			new JulianDate (iSpotDate).addTenor (&quot;30Y&quot;).julian()</span>
+<span class="fc" id="L187">		int[] aiGovvieCurveTreasuryMaturityDate = new int[] {</span>
+<span class="fc" id="L188">			new JulianDate (iSpotDate).addTenor (&quot;1Y&quot;).julian(),</span>
+<span class="fc" id="L189">			new JulianDate (iSpotDate).addTenor (&quot;2Y&quot;).julian(),</span>
+<span class="fc" id="L190">			new JulianDate (iSpotDate).addTenor (&quot;3Y&quot;).julian(),</span>
+<span class="fc" id="L191">			new JulianDate (iSpotDate).addTenor (&quot;5Y&quot;).julian(),</span>
+<span class="fc" id="L192">			new JulianDate (iSpotDate).addTenor (&quot;7Y&quot;).julian(),</span>
+<span class="fc" id="L193">			new JulianDate (iSpotDate).addTenor (&quot;10Y&quot;).julian(),</span>
+<span class="fc" id="L194">			new JulianDate (iSpotDate).addTenor (&quot;30Y&quot;).julian()</span>
 		};
 
-<span class="fc" id="L169">		double[] adblGovvieCurveTreasuryCoupon = new double[] {</span>
+<span class="fc" id="L197">		double[] adblGovvieCurveTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -176,7 +204,7 @@ import org.drip.service.product.FixedBondAPI;
 			0.0300
 		};
 
-<span class="fc" id="L179">		double[] adblGovvieCurveTreasuryYield = new double[] {</span>
+<span class="fc" id="L207">		double[] adblGovvieCurveTreasuryYield = new double[] {</span>
 			0.00692,
 			0.00945,
 			0.01257,
@@ -186,9 +214,9 @@ import org.drip.service.product.FixedBondAPI;
 			0.02972
 		};
 
-<span class="fc" id="L189">		String strGovvieCurveTreasuryMeasure = &quot;Yield&quot;;</span>
+<span class="fc" id="L217">		String strGovvieCurveTreasuryMeasure = &quot;Yield&quot;;</span>
 
-<span class="fc" id="L191">		String[] astrCreditCurveCDSTenor = new String[] {</span>
+<span class="fc" id="L219">		String[] astrCreditCurveCDSTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -199,7 +227,7 @@ import org.drip.service.product.FixedBondAPI;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L202">		double[] adblCreditCurveCDSCoupon = new double[] {</span>
+<span class="fc" id="L230">		double[] adblCreditCurveCDSCoupon = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -210,28 +238,28 @@ import org.drip.service.product.FixedBondAPI;
 			188.	// 10Y
 		};
 
-<span class="fc" id="L213">		String strIssuerName = &quot;AEG&quot;;</span>
-<span class="fc" id="L214">		double dblBondCoupon = 0.0560;</span>
-<span class="fc" id="L215">		int iBondCouponFrequency = 2;</span>
-<span class="fc" id="L216">		String strBondCouponDayCount = &quot;30/360&quot;;</span>
-<span class="fc" id="L217">		String strBondCouponCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L218">		String strBondMarketQuoteName = &quot;Price&quot;;</span>
-<span class="fc" id="L219">		double dblBondMarketQuote = 1.17460;</span>
-<span class="fc" id="L220">		String strGovvieCode = &quot;UST&quot;;</span>
+<span class="fc" id="L241">		String strIssuerName = &quot;AEG&quot;;</span>
+<span class="fc" id="L242">		double dblBondCoupon = 0.0560;</span>
+<span class="fc" id="L243">		int iBondCouponFrequency = 2;</span>
+<span class="fc" id="L244">		String strBondCouponDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L245">		String strBondCouponCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L246">		String strBondMarketQuoteName = &quot;Price&quot;;</span>
+<span class="fc" id="L247">		double dblBondMarketQuote = 1.17460;</span>
+<span class="fc" id="L248">		String strGovvieCode = &quot;UST&quot;;</span>
 
-<span class="fc" id="L222">		int iBondEffectiveDate = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L250">		int iBondEffectiveDate = DateUtil.CreateFromYMD (</span>
 			2011,
 			DateUtil.JULY,
 			21
-<span class="fc" id="L226">		).julian();</span>
+<span class="fc" id="L254">		).julian();</span>
 
-<span class="fc" id="L228">		int iBondMaturityDate = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L256">		int iBondMaturityDate = DateUtil.CreateFromYMD (</span>
 			2041,
 			DateUtil.JULY,
 			15
-<span class="fc" id="L232">		).julian();</span>
+<span class="fc" id="L260">		).julian();</span>
 
-<span class="fc" id="L234">		Map&lt;String, Double&gt; mapBondMetrics = FixedBondAPI.ValuationMetrics (</span>
+<span class="fc" id="L262">		Map&lt;String, Double&gt; mapBondMetrics = FixedBondAPI.ValuationMetrics (</span>
 			strIssuerName,
 			iBondEffectiveDate,
 			iBondMaturityDate,
@@ -263,10 +291,10 @@ import org.drip.service.product.FixedBondAPI;
 			dblBondMarketQuote
 		);
 
-<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapBondMetrics.entrySet())</span>
-<span class="fc" id="L267">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapBondMetrics.entrySet())</span>
+<span class="fc" id="L295">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
 
-<span class="fc" id="L269">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L270">	}</span>
+<span class="fc" id="L297">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L298">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

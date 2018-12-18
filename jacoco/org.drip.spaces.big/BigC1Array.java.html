@@ -73,9 +73,10 @@ package org.drip.spaces.big;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,17 +84,17 @@ package org.drip.spaces.big;
  */
 
 public class BigC1Array {
-<span class="fc" id="L86">	private int _iLength = -1;</span>
-<span class="fc" id="L87">	private char[] _ach = null;</span>
+<span class="fc" id="L87">	private int _iLength = -1;</span>
+<span class="fc" id="L88">	private char[] _ach = null;</span>
 
 	private int WrapIndex (
 		final int iIndex)
 	{
-<span class="fc bfc" id="L92" title="All 2 branches covered.">		if (iIndex &gt;= _iLength) return iIndex - _iLength;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if (iIndex &gt;= _iLength) return iIndex - _iLength;</span>
 
-<span class="fc bfc" id="L94" title="All 2 branches covered.">		if (iIndex &lt; 0) return iIndex + _iLength;</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		if (iIndex &lt; 0) return iIndex + _iLength;</span>
 
-<span class="fc" id="L96">		return iIndex;</span>
+<span class="fc" id="L97">		return iIndex;</span>
 	}
 
 	/**
@@ -107,10 +108,10 @@ public class BigC1Array {
 	public BigC1Array (
 		final char[] ach)
 		throws java.lang.Exception
-<span class="fc" id="L110">	{</span>
-<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == (_ach = ach) || 0 == (_iLength = _ach.length))</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;BigC1Array ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L111">	{</span>
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_ach = ach) || 0 == (_iLength = _ach.length))</span>
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;BigC1Array ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Character Array
@@ -120,7 +121,7 @@ public class BigC1Array {
 
 	public char[] charArray()
 	{
-<span class="fc" id="L123">		return _ach;</span>
+<span class="fc" id="L124">		return _ach;</span>
 	}
 
 	/**
@@ -136,23 +137,23 @@ public class BigC1Array {
 		final int iPivotIndex,
 		final int iBlockSize)
 	{
-<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (0 &gt;= iPivotIndex || 0 &gt;= iBlockSize) return false;</span>
+<span class="pc bpc" id="L140" title="2 of 4 branches missed.">		if (0 &gt;= iPivotIndex || 0 &gt;= iBlockSize) return false;</span>
 
-<span class="fc" id="L141">		int iLength = _ach.length;</span>
-<span class="fc" id="L142">		char[] achTemp = new char[iBlockSize];</span>
+<span class="fc" id="L142">		int iLength = _ach.length;</span>
+<span class="fc" id="L143">		char[] achTemp = new char[iBlockSize];</span>
 
-<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (iPivotIndex &gt;= iLength || iBlockSize &gt;= iLength - iPivotIndex - 1) return false;</span>
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">		if (iPivotIndex &gt;= iLength || iBlockSize &gt;= iLength - iPivotIndex - 1) return false;</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = iPivotIndex - iBlockSize; i &lt; iPivotIndex; ++i)</span>
-<span class="fc" id="L147">			achTemp[i - iPivotIndex + iBlockSize] = _ach[i];</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = iPivotIndex - iBlockSize; i &lt; iPivotIndex; ++i)</span>
+<span class="fc" id="L148">			achTemp[i - iPivotIndex + iBlockSize] = _ach[i];</span>
 
-<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; iLength - iBlockSize; ++i)</span>
-<span class="fc" id="L150">			_ach[WrapIndex (iPivotIndex - iBlockSize + i)] = _ach[WrapIndex (iPivotIndex + i)];</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; iLength - iBlockSize; ++i)</span>
+<span class="fc" id="L151">			_ach[WrapIndex (iPivotIndex - iBlockSize + i)] = _ach[WrapIndex (iPivotIndex + i)];</span>
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int i = 0; i &lt; iBlockSize; ++i)</span>
-<span class="fc" id="L153">			_ach[WrapIndex (iPivotIndex - 2 * iBlockSize + i)] = achTemp[i];</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for (int i = 0; i &lt; iBlockSize; ++i)</span>
+<span class="fc" id="L154">			_ach[WrapIndex (iPivotIndex - 2 * iBlockSize + i)] = achTemp[i];</span>
 
-<span class="fc" id="L155">		return true;</span>
+<span class="fc" id="L156">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

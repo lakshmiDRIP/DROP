@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.objective;
 /**
  * &lt;i&gt;FixedChargeSellTerm&lt;/i&gt; implements the Objective Term that optimizes the Charge incurred by the Sell
  * Trades in the Target Portfolio under a Fixed Charge from the Starting Allocation.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -99,52 +100,52 @@ public class FixedChargeSellTerm extends org.drip.portfolioconstruction.objectiv
 		final org.drip.portfolioconstruction.cost.TransactionChargeFixed[] aTCF)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (</span>
+<span class="nc" id="L103">		super (</span>
 			strName,
 			&quot;OT_FIXED_SELL_CHARGE&quot;,
 			&quot;Fixed Charge Sell Only Transaction Charge Objective Function&quot;,
 			adblInitialHoldings,
 			aTCF
 		);
-<span class="nc" id="L109">	}</span>
+<span class="nc" id="L110">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L113">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L114">		{</span>
+<span class="nc" id="L114">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L115">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L117">				return initialHoldings().length;</span>
+<span class="nc" id="L118">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L124" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L125">					throw new java.lang.Exception (&quot;FixedChargeSellTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L126">					throw new java.lang.Exception (&quot;FixedChargeSellTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
 
-<span class="nc" id="L127">				org.drip.portfolioconstruction.cost.TransactionChargeFixed[] aTCF =</span>
-<span class="nc" id="L128">					(org.drip.portfolioconstruction.cost.TransactionChargeFixed[]) transactionCharge();</span>
+<span class="nc" id="L128">				org.drip.portfolioconstruction.cost.TransactionChargeFixed[] aTCF =</span>
+<span class="nc" id="L129">					(org.drip.portfolioconstruction.cost.TransactionChargeFixed[]) transactionCharge();</span>
 
-<span class="nc" id="L130">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L131">				double[] adblInitialHoldings = initialHoldings();</span>
 
-<span class="nc" id="L132">				int iNumAsset = aTCF.length;</span>
-<span class="nc" id="L133">				double dblFixedChargeSellTerm = 0.;</span>
+<span class="nc" id="L133">				int iNumAsset = aTCF.length;</span>
+<span class="nc" id="L134">				double dblFixedChargeSellTerm = 0.;</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L136">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
+<span class="nc" id="L137">					throw new java.lang.Exception</span>
 						(&quot;FixedChargeSellTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">					if (adblVariate[i] &lt; adblInitialHoldings[i])</span>
-<span class="nc" id="L141">						dblFixedChargeSellTerm += aTCF[i].estimate (</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">					if (adblVariate[i] &lt; adblInitialHoldings[i])</span>
+<span class="nc" id="L142">						dblFixedChargeSellTerm += aTCF[i].estimate (</span>
 							adblInitialHoldings[i],
 							adblVariate[i]
 						);
 				}
 
-<span class="nc" id="L147">				return dblFixedChargeSellTerm;</span>
+<span class="nc" id="L148">				return dblFixedChargeSellTerm;</span>
 			}
 		};
 	}

@@ -73,22 +73,23 @@ package org.drip.service.env;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Env&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Environment Shell&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class CacheManager {</span>
+<span class="nc" id="L86">public class CacheManager {</span>
 	private static final boolean s_bLog = true;
-<span class="fc" id="L87">	private static java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt; s_mapCache =</span>
+<span class="fc" id="L88">	private static java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt; s_mapCache =</span>
 		null;
 
-<span class="fc" id="L90">	private static final java.util.concurrent.ScheduledExecutorService _ses =</span>
-<span class="fc" id="L91">		java.util.concurrent.Executors.newScheduledThreadPool (1);</span>
+<span class="fc" id="L91">	private static final java.util.concurrent.ScheduledExecutorService _ses =</span>
+<span class="fc" id="L92">		java.util.concurrent.Executors.newScheduledThreadPool (1);</span>
 
 	/**
 	 * Initialize the Cache Manager
@@ -98,11 +99,11 @@ package org.drip.service.env;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L101" title="All 2 branches covered.">		if (null != s_mapCache) return true;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		if (null != s_mapCache) return true;</span>
 
-<span class="fc" id="L103">		s_mapCache = new java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt;();</span>
+<span class="fc" id="L104">		s_mapCache = new java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt;();</span>
 
-<span class="fc" id="L105">		return true;</span>
+<span class="fc" id="L106">		return true;</span>
 	}
 
 	/**
@@ -120,23 +121,23 @@ package org.drip.service.env;
 		final java.lang.String strValue,
 		final long lSecondsToExpiry)
 	{
-<span class="nc bnc" id="L123" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;</span>
+<span class="nc bnc" id="L124" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (0 &lt; lSecondsToExpiry) {</span>
-<span class="nc" id="L126">			java.lang.Runnable timedTask = new java.lang.Runnable() {</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 &lt; lSecondsToExpiry) {</span>
+<span class="nc" id="L127">			java.lang.Runnable timedTask = new java.lang.Runnable() {</span>
 				@Override public void run() {
 					if (s_bLog)
-<span class="nc" id="L129">						System.out.println (&quot;\t\t[&quot; + new java.util.Date() + &quot;] Removing &quot; + strKey +</span>
-<span class="nc" id="L130">							&quot; from Thread &quot; + java.lang.Thread.currentThread());</span>
+<span class="nc" id="L130">						System.out.println (&quot;\t\t[&quot; + new java.util.Date() + &quot;] Removing &quot; + strKey +</span>
+<span class="nc" id="L131">							&quot; from Thread &quot; + java.lang.Thread.currentThread());</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);</span>
-<span class="nc" id="L133">				}</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);</span>
+<span class="nc" id="L134">				}</span>
 			};
 
-<span class="nc" id="L136">			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);</span>
+<span class="nc" id="L137">			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);</span>
 		}
 
-<span class="nc" id="L139">		return s_mapCache.put (strKey, strValue);</span>
+<span class="nc" id="L140">		return s_mapCache.put (strKey, strValue);</span>
 	}
 
 	/**
@@ -150,9 +151,9 @@ package org.drip.service.env;
 	public static final boolean Contains (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L153" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return false;</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return false;</span>
 
-<span class="nc" id="L155">		return s_mapCache.contains (strKey);</span>
+<span class="nc" id="L156">		return s_mapCache.contains (strKey);</span>
 	}
 
 	/**
@@ -166,9 +167,9 @@ package org.drip.service.env;
 	public static final java.lang.String Get (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return null;</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return null;</span>
 
-<span class="nc" id="L171">		return s_mapCache.get (strKey);</span>
+<span class="nc" id="L172">		return s_mapCache.get (strKey);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

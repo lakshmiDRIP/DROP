@@ -73,9 +73,10 @@ package org.drip.product.option;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/option&quot;&gt;Option&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/option&quot;&gt;Option&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +84,8 @@ package org.drip.product.option;
  */
 
 public class FixFloatEuropeanOption extends org.drip.product.option.OptionComponent {
-<span class="fc" id="L86">	private boolean _bIsReceiver = false;</span>
-<span class="fc" id="L87">	private org.drip.product.rates.FixFloatComponent _stir = null;</span>
+<span class="fc" id="L87">	private boolean _bIsReceiver = false;</span>
+<span class="fc" id="L88">	private org.drip.product.rates.FixFloatComponent _stir = null;</span>
 
 	/**
 	 * FixFloatEuropeanOption constructor
@@ -112,25 +113,25 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L115">		super (strName, stir, strManifestMeasure, dblStrike, dblNotional, ltds, csp);</span>
+<span class="fc" id="L116">		super (strName, stir, strManifestMeasure, dblStrike, dblNotional, ltds, csp);</span>
 
-<span class="fc" id="L117">		_stir = stir;</span>
-<span class="fc" id="L118">		_bIsReceiver = bIsReceiver;</span>
-<span class="fc" id="L119">	}</span>
+<span class="fc" id="L118">		_stir = stir;</span>
+<span class="fc" id="L119">		_bIsReceiver = bIsReceiver;</span>
+<span class="fc" id="L120">	}</span>
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; couponCurrency()
 	{
-<span class="nc" id="L123">		return _stir.couponCurrency();</span>
+<span class="nc" id="L124">		return _stir.couponCurrency();</span>
 	}
 
 	@Override public java.lang.String payCurrency()
 	{
-<span class="nc" id="L128">		return _stir.payCurrency();</span>
+<span class="nc" id="L129">		return _stir.payCurrency();</span>
 	}
 
 	@Override public java.lang.String principalCurrency()
 	{
-<span class="nc" id="L133">		return _stir.principalCurrency();</span>
+<span class="nc" id="L134">		return _stir.principalCurrency();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -139,210 +140,210 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
 
-<span class="fc" id="L144">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L145">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L146">		int iExerciseDate = exerciseDate().julian();</span>
+<span class="fc" id="L147">		int iExerciseDate = exerciseDate().julian();</span>
 
-<span class="fc" id="L148">		org.drip.analytics.date.JulianDate dtEffective = _stir.effectiveDate();</span>
+<span class="fc" id="L149">		org.drip.analytics.date.JulianDate dtEffective = _stir.effectiveDate();</span>
 
-<span class="fc" id="L150">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
-
-		try {
-<span class="pc bpc" id="L153" title="2 of 4 branches missed.">			if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (dtEffective.julian(),</span>
-<span class="fc" id="L154">				_stir.referenceStream().calendar()))</span>
-<span class="nc" id="L155">				return null;</span>
-<span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L157">			e.printStackTrace();</span>
-
-<span class="nc" id="L159">			return null;</span>
-<span class="fc" id="L160">		}</span>
-
-<span class="fc" id="L162">		java.lang.String strPayCurrency = _stir.payCurrency();</span>
-
-<span class="fc" id="L164">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="fc" id="L165">			(org.drip.state.identifier.FundingLabel.Standard (strPayCurrency));</span>
-
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
-
-<span class="fc" id="L169">		long lStart = System.nanoTime();</span>
-
-<span class="fc" id="L171">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapSTIROutput = _stir.value</span>
-<span class="fc" id="L172">			(valParams, pricerParams, csqs, quotingParams);</span>
-
-<span class="fc" id="L174">		java.lang.String strManifestMeasure = manifestMeasure();</span>
-
-<span class="pc bpc" id="L176" title="2 of 4 branches missed.">		if (null == mapSTIROutput || !mapSTIROutput.containsKey (strManifestMeasure)) return null;</span>
-
-<span class="fc" id="L178">		double dblFixedCleanDV01 = mapSTIROutput.get (&quot;CleanFixedDV01&quot;);</span>
-
-<span class="fc" id="L180">		double dblATMManifestMeasure = mapSTIROutput.get (strManifestMeasure);</span>
-
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure)) return null;</span>
+<span class="fc" id="L151">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
 
 		try {
-<span class="fc" id="L185">			double dblSTIRIntegratedSurfaceVariance =</span>
-<span class="fc" id="L186">				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
-<span class="fc" id="L187">					(org.drip.state.identifier.CustomLabel.Standard (_stir.name() + &quot;_&quot; +</span>
+<span class="pc bpc" id="L154" title="2 of 4 branches missed.">			if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (dtEffective.julian(),</span>
+<span class="fc" id="L155">				_stir.referenceStream().calendar()))</span>
+<span class="nc" id="L156">				return null;</span>
+<span class="nc" id="L157">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L158">			e.printStackTrace();</span>
+
+<span class="nc" id="L160">			return null;</span>
+<span class="fc" id="L161">		}</span>
+
+<span class="fc" id="L163">		java.lang.String strPayCurrency = _stir.payCurrency();</span>
+
+<span class="fc" id="L165">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="fc" id="L166">			(org.drip.state.identifier.FundingLabel.Standard (strPayCurrency));</span>
+
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+
+<span class="fc" id="L170">		long lStart = System.nanoTime();</span>
+
+<span class="fc" id="L172">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapSTIROutput = _stir.value</span>
+<span class="fc" id="L173">			(valParams, pricerParams, csqs, quotingParams);</span>
+
+<span class="fc" id="L175">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">		if (null == mapSTIROutput || !mapSTIROutput.containsKey (strManifestMeasure)) return null;</span>
+
+<span class="fc" id="L179">		double dblFixedCleanDV01 = mapSTIROutput.get (&quot;CleanFixedDV01&quot;);</span>
+
+<span class="fc" id="L181">		double dblATMManifestMeasure = mapSTIROutput.get (strManifestMeasure);</span>
+
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure)) return null;</span>
+
+		try {
+<span class="fc" id="L186">			double dblSTIRIntegratedSurfaceVariance =</span>
+<span class="fc" id="L187">				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
+<span class="fc" id="L188">					(org.drip.state.identifier.CustomLabel.Standard (_stir.name() + &quot;_&quot; +</span>
 						strManifestMeasure)), iValueDate, iExerciseDate);
 
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance)) return null;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance)) return null;</span>
 
-<span class="fc" id="L192">			double dblSTIRIntegratedSurfaceVolatility = java.lang.Math.sqrt</span>
-<span class="fc" id="L193">				(dblSTIRIntegratedSurfaceVariance);</span>
+<span class="fc" id="L193">			double dblSTIRIntegratedSurfaceVolatility = java.lang.Math.sqrt</span>
+<span class="fc" id="L194">				(dblSTIRIntegratedSurfaceVariance);</span>
 
-<span class="fc" id="L195">			double dblStrike = strike();</span>
+<span class="fc" id="L196">			double dblStrike = strike();</span>
 
-<span class="fc" id="L197">			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
+<span class="fc" id="L198">			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
 
-<span class="fc" id="L199">			double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);</span>
+<span class="fc" id="L200">			double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);</span>
 
-<span class="fc" id="L201">			double dblForwardIntrinsic = java.lang.Double.NaN;</span>
-<span class="fc" id="L202">			double dblForwardATMIntrinsic = java.lang.Double.NaN;</span>
-<span class="fc" id="L203">			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
-<span class="fc bfc" id="L204" title="All 2 branches covered.">			double dblManifestMeasureIntrinsic = _bIsReceiver ? dblATMManifestMeasure - dblStrike : dblStrike</span>
+<span class="fc" id="L202">			double dblForwardIntrinsic = java.lang.Double.NaN;</span>
+<span class="fc" id="L203">			double dblForwardATMIntrinsic = java.lang.Double.NaN;</span>
+<span class="fc" id="L204">			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">			double dblManifestMeasureIntrinsic = _bIsReceiver ? dblATMManifestMeasure - dblStrike : dblStrike</span>
 				- dblATMManifestMeasure;
-<span class="fc" id="L206">			double dblATMDPlus = 0.5 * dblSTIRIntegratedSurfaceVariance / dblSTIRIntegratedSurfaceVolatility;</span>
-<span class="fc" id="L207">			double dblATMDMinus = -1. * dblATMDPlus;</span>
-<span class="fc" id="L208">			double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
+<span class="fc" id="L207">			double dblATMDPlus = 0.5 * dblSTIRIntegratedSurfaceVariance / dblSTIRIntegratedSurfaceVolatility;</span>
+<span class="fc" id="L208">			double dblATMDMinus = -1. * dblATMDPlus;</span>
+<span class="fc" id="L209">			double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
 				dblSTIRIntegratedSurfaceVolatility;
-<span class="fc" id="L210">			double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
+<span class="fc" id="L211">			double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
 				dblSTIRIntegratedSurfaceVolatility;
 
-<span class="pc bpc" id="L213" title="2 of 4 branches missed.">			if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L214">				dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
-<span class="fc bfc" id="L215" title="All 2 branches covered.">			else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">				strManifestMeasure.equalsIgnoreCase (&quot;SwapRate&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="nc bnc" id="L217" title="All 2 branches missed.">					(&quot;Rate&quot;))</span>
-<span class="fc" id="L218">				dblManifestMeasurePriceTransformer = 10000. * dblFixedCleanDV01;</span>
+<span class="pc bpc" id="L214" title="2 of 4 branches missed.">			if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L215">				dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">			else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">				strManifestMeasure.equalsIgnoreCase (&quot;SwapRate&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">					(&quot;Rate&quot;))</span>
+<span class="fc" id="L219">				dblManifestMeasurePriceTransformer = 10000. * dblFixedCleanDV01;</span>
 
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">			if (_bIsReceiver) {</span>
-<span class="fc" id="L223">				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF</span>
-<span class="fc" id="L224">					(dblDPlus) - dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDMinus);</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (_bIsReceiver) {</span>
+<span class="fc" id="L224">				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF</span>
+<span class="fc" id="L225">					(dblDPlus) - dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDMinus);</span>
 
-<span class="fc" id="L226">				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF</span>
-<span class="fc" id="L227">					(dblATMDPlus) - dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblATMDMinus);</span>
+<span class="fc" id="L227">				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF</span>
+<span class="fc" id="L228">					(dblATMDPlus) - dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblATMDMinus);</span>
 			} else {
-<span class="fc" id="L229">				dblForwardIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDMinus) -</span>
-<span class="fc" id="L230">					dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDPlus);</span>
+<span class="fc" id="L230">				dblForwardIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDMinus) -</span>
+<span class="fc" id="L231">					dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDPlus);</span>
 
-<span class="fc" id="L232">				dblForwardATMIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblATMDMinus)</span>
-<span class="fc" id="L233">					- dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblATMDPlus);</span>
+<span class="fc" id="L233">				dblForwardATMIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblATMDMinus)</span>
+<span class="fc" id="L234">					- dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblATMDPlus);</span>
 			}
 
-<span class="fc" id="L236">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L237">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L239">			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
+<span class="fc" id="L240">			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
 
-<span class="fc" id="L241">			mapResult.put (&quot;ATMSwapRate&quot;, dblATMManifestMeasure);</span>
+<span class="fc" id="L242">			mapResult.put (&quot;ATMSwapRate&quot;, dblATMManifestMeasure);</span>
 
-<span class="fc" id="L243">			mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L244">			mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L245">			mapResult.put (&quot;ForwardATMIntrinsic&quot;, dblForwardATMIntrinsic);</span>
+<span class="fc" id="L246">			mapResult.put (&quot;ForwardATMIntrinsic&quot;, dblForwardATMIntrinsic);</span>
 
-<span class="fc" id="L247">			mapResult.put (&quot;ForwardIntrinsic&quot;, dblForwardIntrinsic);</span>
+<span class="fc" id="L248">			mapResult.put (&quot;ForwardIntrinsic&quot;, dblForwardIntrinsic);</span>
 
-<span class="fc" id="L249">			mapResult.put (&quot;IntegratedSurfaceVariance&quot;, dblSTIRIntegratedSurfaceVariance);</span>
+<span class="fc" id="L250">			mapResult.put (&quot;IntegratedSurfaceVariance&quot;, dblSTIRIntegratedSurfaceVariance);</span>
 
-<span class="fc" id="L251">			mapResult.put (&quot;ManifestMeasureIntrinsic&quot;, dblManifestMeasureIntrinsic);</span>
+<span class="fc" id="L252">			mapResult.put (&quot;ManifestMeasureIntrinsic&quot;, dblManifestMeasureIntrinsic);</span>
 
-<span class="fc" id="L253">			mapResult.put (&quot;ManifestMeasureIntrinsicValue&quot;, dblManifestMeasureIntrinsic *</span>
+<span class="fc" id="L254">			mapResult.put (&quot;ManifestMeasureIntrinsicValue&quot;, dblManifestMeasureIntrinsic *</span>
 				dblManifestMeasurePriceTransformer);
 
-<span class="fc" id="L256">			mapResult.put (&quot;MoneynessFactor&quot;, dblMoneynessFactor);</span>
+<span class="fc" id="L257">			mapResult.put (&quot;MoneynessFactor&quot;, dblMoneynessFactor);</span>
 
-<span class="fc" id="L258">			mapResult.put (&quot;Price&quot;, dblSpotPrice);</span>
+<span class="fc" id="L259">			mapResult.put (&quot;Price&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L260">			mapResult.put (&quot;PV&quot;, dblSpotPrice);</span>
+<span class="fc" id="L261">			mapResult.put (&quot;PV&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L262">			org.drip.market.otc.SwapOptionSettlement sos =</span>
+<span class="fc" id="L263">			org.drip.market.otc.SwapOptionSettlement sos =</span>
 				org.drip.market.otc.SwapOptionSettlementContainer.ConventionFromJurisdiction
-<span class="fc" id="L264">					(strPayCurrency);</span>
+<span class="fc" id="L265">					(strPayCurrency);</span>
 
-<span class="pc bpc" id="L266" title="1 of 2 branches missed.">			if (null != sos) {</span>
-<span class="fc" id="L267">				int iSettlementType = sos.settlementType();</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">			if (null != sos) {</span>
+<span class="fc" id="L268">				int iSettlementType = sos.settlementType();</span>
 
-<span class="fc" id="L269">				int iSettlementQuote = sos.settlementQuote();</span>
+<span class="fc" id="L270">				int iSettlementQuote = sos.settlementQuote();</span>
 
-<span class="fc" id="L271">				mapResult.put (&quot;SettleType&quot;, (double) iSettlementType);</span>
+<span class="fc" id="L272">				mapResult.put (&quot;SettleType&quot;, (double) iSettlementType);</span>
 
-<span class="fc" id="L273">				mapResult.put (&quot;SettleQuote&quot;, (double) iSettlementQuote);</span>
+<span class="fc" id="L274">				mapResult.put (&quot;SettleQuote&quot;, (double) iSettlementQuote);</span>
 
-<span class="fc bfc" id="L275" title="All 2 branches covered.">				if (org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED == iSettlementType)</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">				if (org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED == iSettlementType)</span>
 				{
-<span class="pc bpc" id="L277" title="1 of 2 branches missed.">					if (org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_EXACT_CURVE ==</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">					if (org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_EXACT_CURVE ==</span>
 						iSettlementQuote)
-<span class="nc" id="L279">						mapResult.put (&quot;SettleAmount&quot;, dblSpotPrice);</span>
-<span class="pc bpc" id="L280" title="1 of 2 branches missed.">					else if (org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR ==</span>
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">						iSettlementQuote &amp;&amp; (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
-<span class="pc bpc" id="L282" title="1 of 2 branches missed.">							strManifestMeasure.equalsIgnoreCase (&quot;SwapRate&quot;) ||</span>
-<span class="nc bnc" id="L283" title="All 2 branches missed.">								strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))) {</span>
-<span class="fc" id="L284">						org.drip.product.rates.Stream streamDerived = _stir.derivedStream();</span>
+<span class="nc" id="L280">						mapResult.put (&quot;SettleAmount&quot;, dblSpotPrice);</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">					else if (org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR ==</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">						iSettlementQuote &amp;&amp; (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">							strManifestMeasure.equalsIgnoreCase (&quot;SwapRate&quot;) ||</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">								strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))) {</span>
+<span class="fc" id="L285">						org.drip.product.rates.Stream streamDerived = _stir.derivedStream();</span>
 
-<span class="fc" id="L286">						if (csqs.setFundingState</span>
-<span class="pc bpc" id="L287" title="1 of 2 branches missed.">							(org.drip.state.creator.ScenarioDiscountCurveBuilder.CreateFromFlatYield</span>
-<span class="fc" id="L288">								(dtEffective, strPayCurrency, dblATMManifestMeasure,</span>
-<span class="fc" id="L289">									streamDerived.couponDC(), streamDerived.freq())) &amp;&amp; null !=</span>
-<span class="pc bpc" id="L290" title="1 of 2 branches missed.">										(mapSTIROutput = _stir.value (valParams, pricerParams, csqs,</span>
+<span class="fc" id="L287">						if (csqs.setFundingState</span>
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">							(org.drip.state.creator.ScenarioDiscountCurveBuilder.CreateFromFlatYield</span>
+<span class="fc" id="L289">								(dtEffective, strPayCurrency, dblATMManifestMeasure,</span>
+<span class="fc" id="L290">									streamDerived.couponDC(), streamDerived.freq())) &amp;&amp; null !=</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">										(mapSTIROutput = _stir.value (valParams, pricerParams, csqs,</span>
 											quotingParams)))
-<span class="fc" id="L292">								mapResult.put (&quot;SettleAmount&quot;, dblForwardIntrinsic * 10000. *</span>
-<span class="fc" id="L293">									mapSTIROutput.get (&quot;CleanFixedDV01&quot;));</span>
+<span class="fc" id="L293">								mapResult.put (&quot;SettleAmount&quot;, dblForwardIntrinsic * 10000. *</span>
+<span class="fc" id="L294">									mapSTIROutput.get (&quot;CleanFixedDV01&quot;));</span>
 					}
 				}
-<span class="fc" id="L296">			} else</span>
-<span class="nc" id="L297">				mapResult.put (&quot;SettleAmount&quot;, dblSpotPrice);</span>
+<span class="fc" id="L297">			} else</span>
+<span class="nc" id="L298">				mapResult.put (&quot;SettleAmount&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L299">			mapResult.put (&quot;SpotPrice&quot;, dblSpotPrice);</span>
+<span class="fc" id="L300">			mapResult.put (&quot;SpotPrice&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L301">			mapResult.put (&quot;Upfront&quot;, dblSpotPrice);</span>
+<span class="fc" id="L302">			mapResult.put (&quot;Upfront&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L303">			return mapResult;</span>
-<span class="nc" id="L304">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L305">			e.printStackTrace();</span>
+<span class="fc" id="L304">			return mapResult;</span>
+<span class="nc" id="L305">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L306">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L308">		return null;</span>
+<span class="nc" id="L309">		return null;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L313">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L314">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L315">		setstrMeasureNames.add (&quot;ATMSwapRate&quot;);</span>
+<span class="nc" id="L316">		setstrMeasureNames.add (&quot;ATMSwapRate&quot;);</span>
 
-<span class="nc" id="L317">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L318">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L319">		setstrMeasureNames.add (&quot;ForwardATMIntrinsic&quot;);</span>
+<span class="nc" id="L320">		setstrMeasureNames.add (&quot;ForwardATMIntrinsic&quot;);</span>
 
-<span class="nc" id="L321">		setstrMeasureNames.add (&quot;ForwardIntrinsic&quot;);</span>
+<span class="nc" id="L322">		setstrMeasureNames.add (&quot;ForwardIntrinsic&quot;);</span>
 
-<span class="nc" id="L323">		setstrMeasureNames.add (&quot;IntegratedSurfaceVariance&quot;);</span>
+<span class="nc" id="L324">		setstrMeasureNames.add (&quot;IntegratedSurfaceVariance&quot;);</span>
 
-<span class="nc" id="L325">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsic&quot;);</span>
+<span class="nc" id="L326">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsic&quot;);</span>
 
-<span class="nc" id="L327">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
+<span class="nc" id="L328">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
 
-<span class="nc" id="L329">		setstrMeasureNames.add (&quot;MoneynessFactor&quot;);</span>
+<span class="nc" id="L330">		setstrMeasureNames.add (&quot;MoneynessFactor&quot;);</span>
 
-<span class="nc" id="L331">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+<span class="nc" id="L332">		setstrMeasureNames.add (&quot;Price&quot;);</span>
 
-<span class="nc" id="L333">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+<span class="nc" id="L334">		setstrMeasureNames.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L335">		setstrMeasureNames.add (&quot;SettleAmount&quot;);</span>
+<span class="nc" id="L336">		setstrMeasureNames.add (&quot;SettleAmount&quot;);</span>
 
-<span class="nc" id="L337">		setstrMeasureNames.add (&quot;SettleQuote&quot;);</span>
+<span class="nc" id="L338">		setstrMeasureNames.add (&quot;SettleQuote&quot;);</span>
 
-<span class="nc" id="L339">		setstrMeasureNames.add (&quot;SettleType&quot;);</span>
+<span class="nc" id="L340">		setstrMeasureNames.add (&quot;SettleType&quot;);</span>
 
-<span class="nc" id="L341">		setstrMeasureNames.add (&quot;SpotPrice&quot;);</span>
+<span class="nc" id="L342">		setstrMeasureNames.add (&quot;SpotPrice&quot;);</span>
 
-<span class="nc" id="L343">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L344">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L345">		return setstrMeasureNames;</span>
+<span class="nc" id="L346">		return setstrMeasureNames;</span>
 	}
 
 	@Override public double pv (
@@ -352,95 +353,95 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L355" title="All 2 branches missed.">		if (null == valParams)</span>
-<span class="nc" id="L356">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">		if (null == valParams)</span>
+<span class="nc" id="L357">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L358">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L359">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L360">		int iExerciseDate = exerciseDate().julian();</span>
+<span class="nc" id="L361">		int iExerciseDate = exerciseDate().julian();</span>
 
-<span class="nc" id="L362">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
+<span class="nc" id="L363">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
 
-<span class="nc bnc" id="L364" title="All 4 branches missed.">		if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_stir.effectiveDate().julian(),</span>
-<span class="nc" id="L365">			_stir.referenceStream().calendar()))</span>
-<span class="nc" id="L366">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);;</span>
+<span class="nc bnc" id="L365" title="All 4 branches missed.">		if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_stir.effectiveDate().julian(),</span>
+<span class="nc" id="L366">			_stir.referenceStream().calendar()))</span>
+<span class="nc" id="L367">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);;</span>
 
-<span class="nc" id="L368">		java.lang.String strPayCurrency = _stir.payCurrency();</span>
+<span class="nc" id="L369">		java.lang.String strPayCurrency = _stir.payCurrency();</span>
 
-<span class="nc" id="L370">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="nc" id="L371">			(org.drip.state.identifier.FundingLabel.Standard (strPayCurrency));</span>
+<span class="nc" id="L371">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="nc" id="L372">			(org.drip.state.identifier.FundingLabel.Standard (strPayCurrency));</span>
 
-<span class="nc bnc" id="L373" title="All 2 branches missed.">		if (null == dcFunding)</span>
-<span class="nc" id="L374">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">		if (null == dcFunding)</span>
+<span class="nc" id="L375">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L376">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapSTIROutput = _stir.value</span>
-<span class="nc" id="L377">			(valParams, pricerParams, csqs, quotingParams);</span>
+<span class="nc" id="L377">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapSTIROutput = _stir.value</span>
+<span class="nc" id="L378">			(valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="nc" id="L379">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+<span class="nc" id="L380">		java.lang.String strManifestMeasure = manifestMeasure();</span>
 
-<span class="nc bnc" id="L381" title="All 4 branches missed.">		if (null == mapSTIROutput || !mapSTIROutput.containsKey (strManifestMeasure))</span>
-<span class="nc" id="L382">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L382" title="All 4 branches missed.">		if (null == mapSTIROutput || !mapSTIROutput.containsKey (strManifestMeasure))</span>
+<span class="nc" id="L383">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L384">		double dblFixedCleanDV01 = mapSTIROutput.get (&quot;CleanFixedDV01&quot;);</span>
+<span class="nc" id="L385">		double dblFixedCleanDV01 = mapSTIROutput.get (&quot;CleanFixedDV01&quot;);</span>
 
-<span class="nc" id="L386">		double dblATMManifestMeasure = mapSTIROutput.get (strManifestMeasure);</span>
+<span class="nc" id="L387">		double dblATMManifestMeasure = mapSTIROutput.get (strManifestMeasure);</span>
 
-<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure))</span>
-<span class="nc" id="L389">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure))</span>
+<span class="nc" id="L390">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L391">		double dblSTIRIntegratedSurfaceVariance =</span>
-<span class="nc" id="L392">			org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
-<span class="nc" id="L393">				(org.drip.state.identifier.CustomLabel.Standard (_stir.name() + &quot;_&quot; + strManifestMeasure)),</span>
+<span class="nc" id="L392">		double dblSTIRIntegratedSurfaceVariance =</span>
+<span class="nc" id="L393">			org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
+<span class="nc" id="L394">				(org.drip.state.identifier.CustomLabel.Standard (_stir.name() + &quot;_&quot; + strManifestMeasure)),</span>
 					iValueDate, iExerciseDate);
 
-<span class="nc bnc" id="L396" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance))</span>
-<span class="nc" id="L397">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance))</span>
+<span class="nc" id="L398">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L399">		double dblSTIRIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblSTIRIntegratedSurfaceVariance);</span>
+<span class="nc" id="L400">		double dblSTIRIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblSTIRIntegratedSurfaceVariance);</span>
 
-<span class="nc" id="L401">		double dblStrike = strike();</span>
+<span class="nc" id="L402">		double dblStrike = strike();</span>
 
-<span class="nc" id="L403">		double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
+<span class="nc" id="L404">		double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
 
-<span class="nc" id="L405">		double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);</span>
+<span class="nc" id="L406">		double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);</span>
 
-<span class="nc" id="L407">		double dblForwardIntrinsic = java.lang.Double.NaN;</span>
-<span class="nc" id="L408">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
-<span class="nc" id="L409">		double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
+<span class="nc" id="L408">		double dblForwardIntrinsic = java.lang.Double.NaN;</span>
+<span class="nc" id="L409">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="nc" id="L410">		double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
 			dblSTIRIntegratedSurfaceVolatility;
-<span class="nc" id="L411">		double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
+<span class="nc" id="L412">		double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblSTIRIntegratedSurfaceVariance) /</span>
 			dblSTIRIntegratedSurfaceVolatility;
 
-<span class="nc bnc" id="L414" title="All 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L415">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
-<span class="nc bnc" id="L416" title="All 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
-<span class="nc bnc" id="L417" title="All 2 branches missed.">			strManifestMeasure.equalsIgnoreCase (&quot;SwapRate&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="nc bnc" id="L418" title="All 2 branches missed.">				(&quot;Rate&quot;))</span>
-<span class="nc" id="L419">			dblManifestMeasurePriceTransformer = 10000. * dblFixedCleanDV01;</span>
+<span class="nc bnc" id="L415" title="All 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L416">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">			strManifestMeasure.equalsIgnoreCase (&quot;SwapRate&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">				(&quot;Rate&quot;))</span>
+<span class="nc" id="L420">			dblManifestMeasurePriceTransformer = 10000. * dblFixedCleanDV01;</span>
 
-<span class="nc bnc" id="L421" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
-<span class="nc" id="L422">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
+<span class="nc" id="L423">			throw new java.lang.Exception (&quot;FixFloatEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L424" title="All 2 branches missed.">		if (_bIsReceiver)</span>
-<span class="nc" id="L425">			dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF</span>
-<span class="nc" id="L426">				(dblDPlus) - dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDMinus);</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">		if (_bIsReceiver)</span>
+<span class="nc" id="L426">			dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF</span>
+<span class="nc" id="L427">				(dblDPlus) - dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDMinus);</span>
 		else
-<span class="nc" id="L428">			dblForwardIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDMinus) -</span>
-<span class="nc" id="L429">				dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDPlus);</span>
+<span class="nc" id="L429">			dblForwardIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDMinus) -</span>
+<span class="nc" id="L430">				dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDPlus);</span>
 
-<span class="nc" id="L431">		return dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
+<span class="nc" id="L432">		return dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="nc" id="L438">			return new org.drip.product.calib.ProductQuoteSet (aLSS);</span>
-<span class="nc" id="L439">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L440">			e.printStackTrace();</span>
+<span class="nc" id="L439">			return new org.drip.product.calib.ProductQuoteSet (aLSS);</span>
+<span class="nc" id="L440">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L441">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L443">		return null;</span>
+<span class="nc" id="L444">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -450,7 +451,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L453">		return null;</span>
+<span class="nc" id="L454">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

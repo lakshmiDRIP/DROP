@@ -70,12 +70,13 @@ package org.drip.product.fra;
 
 /**
  * &lt;i&gt;FRAStandardCapFloorlet&lt;/i&gt; implements the Standard FRA Caplet and Floorlet.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fra&quot;&gt;FRA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fra&quot;&gt;FRA&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,9 +84,9 @@ package org.drip.product.fra;
  */
 
 public class FRAStandardCapFloorlet extends org.drip.product.option.OptionComponent {
-<span class="fc" id="L86">	private boolean _bIsCaplet = false;</span>
-<span class="fc" id="L87">	private org.drip.product.fra.FRAStandardComponent _fra = null;</span>
-<span class="fc" id="L88">	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = null;</span>
+<span class="fc" id="L87">	private boolean _bIsCaplet = false;</span>
+<span class="fc" id="L88">	private org.drip.product.fra.FRAStandardComponent _fra = null;</span>
+<span class="fc" id="L89">	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = null;</span>
 
 	/**
 	 * FRAStandardCapFloorlet constructor
@@ -115,14 +116,14 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L118">		super (strName, fra, strManifestMeasure, dblStrike, dblNotional, ltds, csp);</span>
+<span class="fc" id="L119">		super (strName, fra, strManifestMeasure, dblStrike, dblNotional, ltds, csp);</span>
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == (_fpg = fpg))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet ctr: Invalid Option Pricer&quot;);</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == (_fpg = fpg))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet ctr: Invalid Option Pricer&quot;);</span>
 
-<span class="fc" id="L123">		_fra = fra;</span>
-<span class="fc" id="L124">		_bIsCaplet = bIsCaplet;</span>
-<span class="fc" id="L125">	}</span>
+<span class="fc" id="L124">		_fra = fra;</span>
+<span class="fc" id="L125">		_bIsCaplet = bIsCaplet;</span>
+<span class="fc" id="L126">	}</span>
 
 	/**
 	 * Retrieve the Underlying FRA Instance
@@ -132,7 +133,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 	public org.drip.product.fra.FRAStandardComponent fra()
 	{
-<span class="nc" id="L135">		return _fra;</span>
+<span class="nc" id="L136">		return _fra;</span>
 	}
 
 	/**
@@ -143,7 +144,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 	public boolean isCaplet()
 	{
-<span class="nc" id="L146">		return _bIsCaplet;</span>
+<span class="nc" id="L147">		return _bIsCaplet;</span>
 	}
 
 	/**
@@ -154,7 +155,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 	public org.drip.pricer.option.FokkerPlanckGenerator pricer()
 	{
-<span class="fc" id="L157">		return _fpg;</span>
+<span class="fc" id="L158">		return _fpg;</span>
 	}
 
 	/**
@@ -176,149 +177,149 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblIntegratedSurfaceVariance)
 	{
-<span class="pc bpc" id="L179" title="2 of 4 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">			(dblIntegratedSurfaceVariance))</span>
-<span class="nc" id="L181">			return null;</span>
+<span class="pc bpc" id="L180" title="2 of 4 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">			(dblIntegratedSurfaceVariance))</span>
+<span class="nc" id="L182">			return null;</span>
 
-<span class="fc" id="L183">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="fc" id="L184">			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));</span>
+<span class="fc" id="L184">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="fc" id="L185">			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));</span>
 
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="fc" id="L188">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L189">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L190">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
-
-		try {
-<span class="pc bpc" id="L193" title="1 of 4 branches missed.">			if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_fra.effectiveDate().julian(),</span>
-<span class="fc" id="L194">				_fra.stream().calendar()))</span>
-<span class="fc" id="L195">				return null;</span>
-<span class="nc" id="L196">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L197">			e.printStackTrace();</span>
-
-<span class="nc" id="L199">			return null;</span>
-<span class="fc" id="L200">		}</span>
-
-<span class="fc" id="L202">		long lStart = System.nanoTime();</span>
-
-<span class="fc" id="L204">		int iExerciseDate = exerciseDate().julian();</span>
-
-<span class="fc" id="L206">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAOutput = _fra.value</span>
-<span class="fc" id="L207">			(valParams, pricerParams, csqs, vcp);</span>
-
-<span class="fc" id="L209">		java.lang.String strManifestMeasure = manifestMeasure();</span>
-
-<span class="pc bpc" id="L211" title="2 of 4 branches missed.">		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure)) return null;</span>
-
-<span class="fc" id="L213">		double dblFRADV01 = mapFRAOutput.get (&quot;DV01&quot;);</span>
-
-<span class="fc" id="L215">		double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);</span>
-
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure) ||</span>
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFRADV01))</span>
-<span class="nc" id="L219">			return null;</span>
+<span class="fc" id="L191">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
 
 		try {
-<span class="fc" id="L222">			double dblStrike = strike();</span>
+<span class="pc bpc" id="L194" title="1 of 4 branches missed.">			if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_fra.effectiveDate().julian(),</span>
+<span class="fc" id="L195">				_fra.stream().calendar()))</span>
+<span class="fc" id="L196">				return null;</span>
+<span class="nc" id="L197">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L198">			e.printStackTrace();</span>
 
-<span class="fc" id="L224">			double dblNotional = notional();</span>
+<span class="nc" id="L200">			return null;</span>
+<span class="fc" id="L201">		}</span>
 
-<span class="fc" id="L226">			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
-<span class="fc" id="L227">			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
-<span class="fc bfc" id="L228" title="All 2 branches covered.">			double dblManifestMeasureIntrinsic = _bIsCaplet ? dblATMManifestMeasure - dblStrike : dblStrike -</span>
+<span class="fc" id="L203">		long lStart = System.nanoTime();</span>
+
+<span class="fc" id="L205">		int iExerciseDate = exerciseDate().julian();</span>
+
+<span class="fc" id="L207">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAOutput = _fra.value</span>
+<span class="fc" id="L208">			(valParams, pricerParams, csqs, vcp);</span>
+
+<span class="fc" id="L210">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+
+<span class="pc bpc" id="L212" title="2 of 4 branches missed.">		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure)) return null;</span>
+
+<span class="fc" id="L214">		double dblFRADV01 = mapFRAOutput.get (&quot;DV01&quot;);</span>
+
+<span class="fc" id="L216">		double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);</span>
+
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure) ||</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFRADV01))</span>
+<span class="nc" id="L220">			return null;</span>
+
+		try {
+<span class="fc" id="L223">			double dblStrike = strike();</span>
+
+<span class="fc" id="L225">			double dblNotional = notional();</span>
+
+<span class="fc" id="L227">			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
+<span class="fc" id="L228">			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">			double dblManifestMeasureIntrinsic = _bIsCaplet ? dblATMManifestMeasure - dblStrike : dblStrike -</span>
 				dblATMManifestMeasure;
 
-<span class="pc bpc" id="L231" title="2 of 4 branches missed.">			if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L232">				dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
-<span class="pc bpc" id="L233" title="1 of 2 branches missed.">			else if (strManifestMeasure.equalsIgnoreCase (&quot;ForwardRate&quot;) ||</span>
-<span class="fc bfc" id="L234" title="All 2 branches covered.">				strManifestMeasure.equalsIgnoreCase (&quot;ParForward&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="pc bpc" id="L235" title="2 of 4 branches missed.">					(&quot;ParForwardRate&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;QuantoAdjustedParForward&quot;) ||</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">						strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))</span>
-<span class="fc" id="L237">				dblManifestMeasurePriceTransformer = 10000. * dblFRADV01;</span>
+<span class="pc bpc" id="L232" title="2 of 4 branches missed.">			if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L233">				dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">			else if (strManifestMeasure.equalsIgnoreCase (&quot;ForwardRate&quot;) ||</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">				strManifestMeasure.equalsIgnoreCase (&quot;ParForward&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="pc bpc" id="L236" title="2 of 4 branches missed.">					(&quot;ParForwardRate&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;QuantoAdjustedParForward&quot;) ||</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">						strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))</span>
+<span class="fc" id="L238">				dblManifestMeasurePriceTransformer = 10000. * dblFRADV01;</span>
 
-<span class="pc bpc" id="L239" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
 
-<span class="fc bfc" id="L241" title="All 2 branches covered.">			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (iValueDate, iExerciseDate, dblStrike,</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (iValueDate, iExerciseDate, dblStrike,</span>
 				dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblIntegratedSurfaceVariance);
 
-<span class="fc" id="L244">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L245">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L247">			double dblForwardIntrinsic = optGreek.expectedPayoff();</span>
+<span class="fc" id="L248">			double dblForwardIntrinsic = optGreek.expectedPayoff();</span>
 
-<span class="fc" id="L249">			double dblForwardATMIntrinsic = optGreek.expectedATMPayoff();</span>
+<span class="fc" id="L250">			double dblForwardATMIntrinsic = optGreek.expectedATMPayoff();</span>
 
-<span class="fc" id="L251">			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
+<span class="fc" id="L252">			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
 
-<span class="fc" id="L253">			mapResult.put (&quot;ATMFRA&quot;, dblATMManifestMeasure);</span>
+<span class="fc" id="L254">			mapResult.put (&quot;ATMFRA&quot;, dblATMManifestMeasure);</span>
 
-<span class="fc" id="L255">			mapResult.put (&quot;ATMPrice&quot;, dblForwardATMIntrinsic * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L256">			mapResult.put (&quot;ATMPrice&quot;, dblForwardATMIntrinsic * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L257">			mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L258">			mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L259">			mapResult.put (&quot;Charm&quot;, optGreek.charm() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L260">			mapResult.put (&quot;Charm&quot;, optGreek.charm() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L261">			mapResult.put (&quot;Color&quot;, optGreek.color() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L262">			mapResult.put (&quot;Color&quot;, optGreek.color() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L263">			mapResult.put (&quot;Delta&quot;, optGreek.delta() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L264">			mapResult.put (&quot;Delta&quot;, optGreek.delta() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L265">			mapResult.put (&quot;EffectiveVolatility&quot;, optGreek.effectiveVolatility());</span>
+<span class="fc" id="L266">			mapResult.put (&quot;EffectiveVolatility&quot;, optGreek.effectiveVolatility());</span>
 
-<span class="fc" id="L267">			mapResult.put (&quot;ExpectedATMPayoff&quot;, optGreek.expectedATMPayoff());</span>
+<span class="fc" id="L268">			mapResult.put (&quot;ExpectedATMPayoff&quot;, optGreek.expectedATMPayoff());</span>
 
-<span class="fc" id="L269">			mapResult.put (&quot;ExpectedPayoff&quot;, optGreek.expectedPayoff());</span>
+<span class="fc" id="L270">			mapResult.put (&quot;ExpectedPayoff&quot;, optGreek.expectedPayoff());</span>
 
-<span class="fc" id="L271">			mapResult.put (&quot;ForwardATMIntrinsic&quot;, dblForwardATMIntrinsic);</span>
+<span class="fc" id="L272">			mapResult.put (&quot;ForwardATMIntrinsic&quot;, dblForwardATMIntrinsic);</span>
 
-<span class="fc" id="L273">			mapResult.put (&quot;ForwardIntrinsic&quot;, dblForwardIntrinsic);</span>
+<span class="fc" id="L274">			mapResult.put (&quot;ForwardIntrinsic&quot;, dblForwardIntrinsic);</span>
 
-<span class="fc" id="L275">			mapResult.put (&quot;Gamma&quot;, optGreek.gamma() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L276">			mapResult.put (&quot;Gamma&quot;, optGreek.gamma() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L277">			mapResult.put (&quot;IntegratedSurfaceVariance&quot;, dblIntegratedSurfaceVariance);</span>
+<span class="fc" id="L278">			mapResult.put (&quot;IntegratedSurfaceVariance&quot;, dblIntegratedSurfaceVariance);</span>
 
-<span class="fc" id="L279">			mapResult.put (&quot;ManifestMeasureIntrinsic&quot;, dblManifestMeasureIntrinsic);</span>
+<span class="fc" id="L280">			mapResult.put (&quot;ManifestMeasureIntrinsic&quot;, dblManifestMeasureIntrinsic);</span>
 
-<span class="fc" id="L281">			mapResult.put (&quot;ManifestMeasureIntrinsicValue&quot;, dblManifestMeasureIntrinsic *</span>
+<span class="fc" id="L282">			mapResult.put (&quot;ManifestMeasureIntrinsicValue&quot;, dblManifestMeasureIntrinsic *</span>
 				dblManifestMeasurePriceTransformer);
 
-<span class="fc" id="L284">			mapResult.put (&quot;ManifestMeasureTransformer&quot;, dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L285">			mapResult.put (&quot;ManifestMeasureTransformer&quot;, dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L286">			mapResult.put (&quot;MoneynessFactor&quot;, dblMoneynessFactor);</span>
+<span class="fc" id="L287">			mapResult.put (&quot;MoneynessFactor&quot;, dblMoneynessFactor);</span>
 
-<span class="fc" id="L288">			mapResult.put (&quot;Price&quot;, dblSpotPrice);</span>
+<span class="fc" id="L289">			mapResult.put (&quot;Price&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L290">			mapResult.put (&quot;Prob1&quot;, optGreek.prob1());</span>
+<span class="fc" id="L291">			mapResult.put (&quot;Prob1&quot;, optGreek.prob1());</span>
 
-<span class="fc" id="L292">			mapResult.put (&quot;Prob2&quot;, optGreek.prob2());</span>
+<span class="fc" id="L293">			mapResult.put (&quot;Prob2&quot;, optGreek.prob2());</span>
 
-<span class="fc" id="L294">			mapResult.put (&quot;PV&quot;, dblSpotPrice * dblNotional);</span>
+<span class="fc" id="L295">			mapResult.put (&quot;PV&quot;, dblSpotPrice * dblNotional);</span>
 
-<span class="fc" id="L296">			mapResult.put (&quot;Rho&quot;, optGreek.rho() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L297">			mapResult.put (&quot;Rho&quot;, optGreek.rho() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L298">			mapResult.put (&quot;Speed&quot;, optGreek.speed() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L299">			mapResult.put (&quot;Speed&quot;, optGreek.speed() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L300">			mapResult.put (&quot;SpotPrice&quot;, dblSpotPrice);</span>
+<span class="fc" id="L301">			mapResult.put (&quot;SpotPrice&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L302">			mapResult.put (&quot;Theta&quot;, optGreek.theta() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L303">			mapResult.put (&quot;Theta&quot;, optGreek.theta() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L304">			mapResult.put (&quot;Ultima&quot;, optGreek.ultima() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L305">			mapResult.put (&quot;Ultima&quot;, optGreek.ultima() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L306">			mapResult.put (&quot;Upfront&quot;, dblSpotPrice);</span>
+<span class="fc" id="L307">			mapResult.put (&quot;Upfront&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L308">			mapResult.put (&quot;Vanna&quot;, optGreek.vanna() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L309">			mapResult.put (&quot;Vanna&quot;, optGreek.vanna() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L310">			mapResult.put (&quot;Vega&quot;, optGreek.vega() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L311">			mapResult.put (&quot;Vega&quot;, optGreek.vega() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L312">			mapResult.put (&quot;Veta&quot;, optGreek.veta() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L313">			mapResult.put (&quot;Veta&quot;, optGreek.veta() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L314">			mapResult.put (&quot;Vomma&quot;, optGreek.vomma() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L315">			mapResult.put (&quot;Vomma&quot;, optGreek.vomma() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L316">			return mapResult;</span>
-<span class="nc" id="L317">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L317">			return mapResult;</span>
+<span class="nc" id="L318">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
 		}
 
-<span class="nc" id="L321">		return null;</span>
+<span class="nc" id="L322">		return null;</span>
 	}
 
 	/**
@@ -343,45 +344,45 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final double dblVolatility)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L346" title="3 of 6 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblVolatility))</span>
-<span class="nc" id="L347">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L347" title="3 of 6 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblVolatility))</span>
+<span class="nc" id="L348">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L349">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="fc" id="L350">			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));</span>
+<span class="fc" id="L350">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="fc" id="L351">			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));</span>
 
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		if (null == dcFunding)</span>
-<span class="nc" id="L353">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">		if (null == dcFunding)</span>
+<span class="nc" id="L354">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L355">		int iExerciseDate = exerciseDate().julian();</span>
+<span class="fc" id="L356">		int iExerciseDate = exerciseDate().julian();</span>
 
-<span class="fc" id="L357">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAOutput = _fra.value</span>
-<span class="fc" id="L358">			(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L358">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAOutput = _fra.value</span>
+<span class="fc" id="L359">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="fc" id="L360">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+<span class="fc" id="L361">		java.lang.String strManifestMeasure = manifestMeasure();</span>
 
-<span class="pc bpc" id="L362" title="2 of 4 branches missed.">		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))</span>
-<span class="nc" id="L363">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; No ATM Metric&quot;);</span>
+<span class="pc bpc" id="L363" title="2 of 4 branches missed.">		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))</span>
+<span class="nc" id="L364">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; No ATM Metric&quot;);</span>
 
-<span class="fc" id="L365">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="fc" id="L366">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
 
-<span class="pc bpc" id="L367" title="2 of 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L368">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
-<span class="pc bpc" id="L369" title="1 of 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;ForwardRate&quot;) ||</span>
-<span class="fc bfc" id="L370" title="All 2 branches covered.">			strManifestMeasure.equalsIgnoreCase (&quot;ParForward&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="pc bpc" id="L371" title="2 of 4 branches missed.">				(&quot;ParForwardRate&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;QuantoAdjustedParForward&quot;) ||</span>
-<span class="nc bnc" id="L372" title="All 2 branches missed.">					strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;)) {</span>
-<span class="pc bpc" id="L373" title="1 of 2 branches missed.">			if (!mapFRAOutput.containsKey (&quot;DV01&quot;))</span>
-<span class="nc" id="L374">				throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; No FRA DV01&quot;);</span>
+<span class="pc bpc" id="L368" title="2 of 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L369">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;ForwardRate&quot;) ||</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">			strManifestMeasure.equalsIgnoreCase (&quot;ParForward&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="pc bpc" id="L372" title="2 of 4 branches missed.">				(&quot;ParForwardRate&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;QuantoAdjustedParForward&quot;) ||</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">					strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;)) {</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">			if (!mapFRAOutput.containsKey (&quot;DV01&quot;))</span>
+<span class="nc" id="L375">				throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; No FRA DV01&quot;);</span>
 
-<span class="fc" id="L376">			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get (&quot;DV01&quot;);</span>
+<span class="fc" id="L377">			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get (&quot;DV01&quot;);</span>
 		}
 
-<span class="pc bpc" id="L379" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
-<span class="nc" id="L380">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
+<span class="nc" id="L381">			throw new java.lang.Exception</span>
 				(&quot;FRAStandardCapFloorlet::price =&gt; No Manifest Measure Price Transformer&quot;);
 
-<span class="fc" id="L383">		return dblManifestMeasurePriceTransformer * _fpg.payoff (valParams.valueDate(), iExerciseDate,</span>
-<span class="fc bfc" id="L384" title="All 2 branches covered.">			strike(), dcFunding, mapFRAOutput.get (strManifestMeasure), !_bIsCaplet, true, dblVolatility,</span>
+<span class="fc" id="L384">		return dblManifestMeasurePriceTransformer * _fpg.payoff (valParams.valueDate(), iExerciseDate,</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">			strike(), dcFunding, mapFRAOutput.get (strManifestMeasure), !_bIsCaplet, true, dblVolatility,</span>
 				false);
 	}
 
@@ -409,84 +410,84 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final double dblCalibValue)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L412" title="4 of 8 branches missed.">		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||</span>
-<span class="pc bpc" id="L413" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))</span>
-<span class="nc" id="L414">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L413" title="4 of 8 branches missed.">		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))</span>
+<span class="nc" id="L415">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L416">		final double dblStrike = strike();</span>
+<span class="fc" id="L417">		final double dblStrike = strike();</span>
 
-<span class="fc" id="L418">		final int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L419">		final int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L420">		final int iExerciseDate = exerciseDate().julian();</span>
+<span class="fc" id="L421">		final int iExerciseDate = exerciseDate().julian();</span>
 
-<span class="fc" id="L422">		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="fc" id="L423">			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));</span>
+<span class="fc" id="L423">		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="fc" id="L424">			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));</span>
 
-<span class="fc" id="L425">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAOutput = _fra.value</span>
-<span class="fc" id="L426">			(valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L426">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFRAOutput = _fra.value</span>
+<span class="fc" id="L427">			(valParams, pricerParams, csqs, vcp);</span>
 
-<span class="fc" id="L428">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+<span class="fc" id="L429">		java.lang.String strManifestMeasure = manifestMeasure();</span>
 
-<span class="pc bpc" id="L430" title="2 of 4 branches missed.">		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))</span>
-<span class="nc" id="L431">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No ATM Metric&quot;);</span>
+<span class="pc bpc" id="L431" title="2 of 4 branches missed.">		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))</span>
+<span class="nc" id="L432">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No ATM Metric&quot;);</span>
 
-<span class="fc" id="L433">		final double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);</span>
+<span class="fc" id="L434">		final double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);</span>
 
-<span class="fc" id="L435">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="fc" id="L436">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
 
-<span class="pc bpc" id="L437" title="2 of 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L438">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
-<span class="pc bpc" id="L439" title="1 of 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;ForwardRate&quot;) ||</span>
-<span class="pc bpc" id="L440" title="1 of 2 branches missed.">			strManifestMeasure.equalsIgnoreCase (&quot;ParForward&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="pc bpc" id="L441" title="2 of 4 branches missed.">				(&quot;ParForwardRate&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;QuantoAdjustedParForward&quot;) ||</span>
-<span class="nc bnc" id="L442" title="All 2 branches missed.">					strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;)) {</span>
-<span class="pc bpc" id="L443" title="1 of 2 branches missed.">			if (!mapFRAOutput.containsKey (&quot;DV01&quot;))</span>
-<span class="nc" id="L444">				throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No DV01&quot;);</span>
+<span class="pc bpc" id="L438" title="2 of 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L439">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
+<span class="pc bpc" id="L440" title="1 of 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;ForwardRate&quot;) ||</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">			strManifestMeasure.equalsIgnoreCase (&quot;ParForward&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="pc bpc" id="L442" title="2 of 4 branches missed.">				(&quot;ParForwardRate&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;QuantoAdjustedParForward&quot;) ||</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">					strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;)) {</span>
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">			if (!mapFRAOutput.containsKey (&quot;DV01&quot;))</span>
+<span class="nc" id="L445">				throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No DV01&quot;);</span>
 
-<span class="fc" id="L446">			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get (&quot;DV01&quot;);</span>
+<span class="fc" id="L447">			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get (&quot;DV01&quot;);</span>
 		}
 
-<span class="fc" id="L449">		final double dblManifestMeasurePriceTransformerCalib = dblManifestMeasurePriceTransformer;</span>
+<span class="fc" id="L450">		final double dblManifestMeasurePriceTransformerCalib = dblManifestMeasurePriceTransformer;</span>
 
-<span class="pc bpc" id="L451" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
-<span class="nc" id="L452">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No Transformer&quot;);</span>
+<span class="pc bpc" id="L452" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
+<span class="nc" id="L453">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No Transformer&quot;);</span>
 
-<span class="fc" id="L454">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L455">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVolatility)
 				throws java.lang.Exception
 			{
-<span class="fc bfc" id="L459" title="All 2 branches covered.">				if (&quot;Price&quot;.equals (strCalibMeasure))</span>
-<span class="fc" id="L460">					return dblManifestMeasurePriceTransformerCalib * _fpg.payoff (iValueDate, iExerciseDate,</span>
-<span class="fc bfc" id="L461" title="All 2 branches covered.">						dblStrike, dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblVolatility,</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">				if (&quot;Price&quot;.equals (strCalibMeasure))</span>
+<span class="fc" id="L461">					return dblManifestMeasurePriceTransformerCalib * _fpg.payoff (iValueDate, iExerciseDate,</span>
+<span class="fc bfc" id="L462" title="All 2 branches covered.">						dblStrike, dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblVolatility,</span>
 							false);
 
-<span class="pc bpc" id="L464" title="1 of 2 branches missed.">				if (&quot;ATMPrice&quot;.equals (strCalibMeasure))</span>
-<span class="fc" id="L465">					return dblManifestMeasurePriceTransformerCalib * _fpg.payoff (iValueDate, iExerciseDate,</span>
-<span class="fc bfc" id="L466" title="All 2 branches covered.">						dblStrike, dcFunding, dblStrike, !_bIsCaplet, true, dblVolatility, false);</span>
+<span class="pc bpc" id="L465" title="1 of 2 branches missed.">				if (&quot;ATMPrice&quot;.equals (strCalibMeasure))</span>
+<span class="fc" id="L466">					return dblManifestMeasurePriceTransformerCalib * _fpg.payoff (iValueDate, iExerciseDate,</span>
+<span class="fc bfc" id="L467" title="All 2 branches covered.">						dblStrike, dcFunding, dblStrike, !_bIsCaplet, true, dblVolatility, false);</span>
 
-<span class="nc" id="L468">				java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapOutput = valueFromSurfaceVariance </span>
-<span class="nc" id="L469">					(valParams, pricerParams, csqs, vcp, dblVolatility * dblVolatility * (iExerciseDate -</span>
+<span class="nc" id="L469">				java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapOutput = valueFromSurfaceVariance </span>
+<span class="nc" id="L470">					(valParams, pricerParams, csqs, vcp, dblVolatility * dblVolatility * (iExerciseDate -</span>
 						iValueDate) / 365.25);
 
-<span class="nc bnc" id="L472" title="All 4 branches missed.">				if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))</span>
-<span class="nc" id="L473">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L473" title="All 4 branches missed.">				if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))</span>
+<span class="nc" id="L474">					throw new java.lang.Exception</span>
 						(&quot;FRAStandardCapFloorlet::implyVolatility =&gt; Cannot generate Calibration Measure&quot;);
 
-<span class="nc" id="L476">				return mapOutput.get (strCalibMeasure);</span>
+<span class="nc" id="L477">				return mapOutput.get (strCalibMeasure);</span>
 
 			}
 		};
 
-<span class="fc" id="L481">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
+<span class="fc" id="L482">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderBrent (dblCalibValue, funcVolPricer,
-<span class="fc" id="L483">				false)).findRoot();</span>
+<span class="fc" id="L484">				false)).findRoot();</span>
 
-<span class="pc bpc" id="L485" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L486">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L486" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L487">			throw new java.lang.Exception</span>
 				(&quot;FRAStandardCapFloorlet::implyVolatility =&gt; Cannot calibrate the Vol&quot;);
 
-<span class="fc" id="L489">		return fpfo.getRoot();</span>
+<span class="fc" id="L490">		return fpfo.getRoot();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -495,84 +496,84 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L498" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+<span class="pc bpc" id="L499" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
 
 		try {
-<span class="fc" id="L501">			return valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
-<span class="fc" id="L502">				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.forwardVolatility</span>
-<span class="fc" id="L503">					(_fra.forwardLabel().get (&quot;DERIVED&quot;)), valParams.valueDate(), exerciseDate().julian()));</span>
-<span class="nc" id="L504">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L505">			e.printStackTrace();</span>
+<span class="fc" id="L502">			return valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
+<span class="fc" id="L503">				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.forwardVolatility</span>
+<span class="fc" id="L504">					(_fra.forwardLabel().get (&quot;DERIVED&quot;)), valParams.valueDate(), exerciseDate().julian()));</span>
+<span class="nc" id="L505">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L506">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L508">		return null;</span>
+<span class="nc" id="L509">		return null;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L513">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L514">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L515">		setstrMeasureNames.add (&quot;ATMFRA&quot;);</span>
+<span class="nc" id="L516">		setstrMeasureNames.add (&quot;ATMFRA&quot;);</span>
 
-<span class="nc" id="L517">		setstrMeasureNames.add (&quot;ATMPrice&quot;);</span>
+<span class="nc" id="L518">		setstrMeasureNames.add (&quot;ATMPrice&quot;);</span>
 
-<span class="nc" id="L519">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L520">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L521">		setstrMeasureNames.add (&quot;Charm&quot;);</span>
+<span class="nc" id="L522">		setstrMeasureNames.add (&quot;Charm&quot;);</span>
 
-<span class="nc" id="L523">		setstrMeasureNames.add (&quot;Color&quot;);</span>
+<span class="nc" id="L524">		setstrMeasureNames.add (&quot;Color&quot;);</span>
 
-<span class="nc" id="L525">		setstrMeasureNames.add (&quot;Delta&quot;);</span>
+<span class="nc" id="L526">		setstrMeasureNames.add (&quot;Delta&quot;);</span>
 
-<span class="nc" id="L527">		setstrMeasureNames.add (&quot;EffectiveVolatility&quot;);</span>
+<span class="nc" id="L528">		setstrMeasureNames.add (&quot;EffectiveVolatility&quot;);</span>
 
-<span class="nc" id="L529">		setstrMeasureNames.add (&quot;ExpectedATMPayoff&quot;);</span>
+<span class="nc" id="L530">		setstrMeasureNames.add (&quot;ExpectedATMPayoff&quot;);</span>
 
-<span class="nc" id="L531">		setstrMeasureNames.add (&quot;ExpectedPayoff&quot;);</span>
+<span class="nc" id="L532">		setstrMeasureNames.add (&quot;ExpectedPayoff&quot;);</span>
 
-<span class="nc" id="L533">		setstrMeasureNames.add (&quot;ForwardATMIntrinsic&quot;);</span>
+<span class="nc" id="L534">		setstrMeasureNames.add (&quot;ForwardATMIntrinsic&quot;);</span>
 
-<span class="nc" id="L535">		setstrMeasureNames.add (&quot;ForwardIntrinsic&quot;);</span>
+<span class="nc" id="L536">		setstrMeasureNames.add (&quot;ForwardIntrinsic&quot;);</span>
 
-<span class="nc" id="L537">		setstrMeasureNames.add (&quot;Gamma&quot;);</span>
+<span class="nc" id="L538">		setstrMeasureNames.add (&quot;Gamma&quot;);</span>
 
-<span class="nc" id="L539">		setstrMeasureNames.add (&quot;IntegratedSurfaceVariance&quot;);</span>
+<span class="nc" id="L540">		setstrMeasureNames.add (&quot;IntegratedSurfaceVariance&quot;);</span>
 
-<span class="nc" id="L541">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsic&quot;);</span>
+<span class="nc" id="L542">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsic&quot;);</span>
 
-<span class="nc" id="L543">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
+<span class="nc" id="L544">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
 
-<span class="nc" id="L545">		setstrMeasureNames.add (&quot;MoneynessFactor&quot;);</span>
+<span class="nc" id="L546">		setstrMeasureNames.add (&quot;MoneynessFactor&quot;);</span>
 
-<span class="nc" id="L547">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+<span class="nc" id="L548">		setstrMeasureNames.add (&quot;Price&quot;);</span>
 
-<span class="nc" id="L549">		setstrMeasureNames.add (&quot;Prob1&quot;);</span>
+<span class="nc" id="L550">		setstrMeasureNames.add (&quot;Prob1&quot;);</span>
 
-<span class="nc" id="L551">		setstrMeasureNames.add (&quot;Prob2&quot;);</span>
+<span class="nc" id="L552">		setstrMeasureNames.add (&quot;Prob2&quot;);</span>
 
-<span class="nc" id="L553">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+<span class="nc" id="L554">		setstrMeasureNames.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L555">		setstrMeasureNames.add (&quot;Rho&quot;);</span>
+<span class="nc" id="L556">		setstrMeasureNames.add (&quot;Rho&quot;);</span>
 
-<span class="nc" id="L557">		setstrMeasureNames.add (&quot;Speed&quot;);</span>
+<span class="nc" id="L558">		setstrMeasureNames.add (&quot;Speed&quot;);</span>
 
-<span class="nc" id="L559">		setstrMeasureNames.add (&quot;SpotPrice&quot;);</span>
+<span class="nc" id="L560">		setstrMeasureNames.add (&quot;SpotPrice&quot;);</span>
 
-<span class="nc" id="L561">		setstrMeasureNames.add (&quot;Theta&quot;);</span>
+<span class="nc" id="L562">		setstrMeasureNames.add (&quot;Theta&quot;);</span>
 
-<span class="nc" id="L563">		setstrMeasureNames.add (&quot;Ultima&quot;);</span>
+<span class="nc" id="L564">		setstrMeasureNames.add (&quot;Ultima&quot;);</span>
 
-<span class="nc" id="L565">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L566">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L567">		setstrMeasureNames.add (&quot;Vanna&quot;);</span>
+<span class="nc" id="L568">		setstrMeasureNames.add (&quot;Vanna&quot;);</span>
 
-<span class="nc" id="L569">		setstrMeasureNames.add (&quot;Vega&quot;);</span>
+<span class="nc" id="L570">		setstrMeasureNames.add (&quot;Vega&quot;);</span>
 
-<span class="nc" id="L571">		setstrMeasureNames.add (&quot;Veta&quot;);</span>
+<span class="nc" id="L572">		setstrMeasureNames.add (&quot;Veta&quot;);</span>
 
-<span class="nc" id="L573">		setstrMeasureNames.add (&quot;Vomma&quot;);</span>
+<span class="nc" id="L574">		setstrMeasureNames.add (&quot;Vomma&quot;);</span>
 
-<span class="nc" id="L575">		return setstrMeasureNames;</span>
+<span class="nc" id="L576">		return setstrMeasureNames;</span>
 	}
 
 	@Override public double pv (
@@ -582,14 +583,14 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L585" title="All 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L586" title="All 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L587">		org.drip.state.volatility.VolatilityCurve vc = csqc.forwardVolatility (_fra.forwardLabel().get</span>
-<span class="nc" id="L588">			(&quot;DERIVED&quot;));</span>
+<span class="nc" id="L588">		org.drip.state.volatility.VolatilityCurve vc = csqc.forwardVolatility (_fra.forwardLabel().get</span>
+<span class="nc" id="L589">			(&quot;DERIVED&quot;));</span>
 
-<span class="nc bnc" id="L590" title="All 2 branches missed.">		if (null == vc) throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">		if (null == vc) throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L592">		return price (valParams, pricerParams, csqc, vcp, vc.impliedVol (exerciseDate().julian()));</span>
+<span class="nc" id="L593">		return price (valParams, pricerParams, csqc, vcp, vc.impliedVol (exerciseDate().julian()));</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -599,38 +600,38 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L602" title="All 6 branches missed.">		if (null == pqs || null == valParams || !(pqs instanceof</span>
+<span class="nc bnc" id="L603" title="All 6 branches missed.">		if (null == pqs || null == valParams || !(pqs instanceof</span>
 			org.drip.product.calib.VolatilityProductQuoteSet))
-<span class="nc" id="L604">			return null;</span>
+<span class="nc" id="L605">			return null;</span>
 
-<span class="nc" id="L606">		double dblEndDate = maturityDate().julian();</span>
+<span class="nc" id="L607">		double dblEndDate = maturityDate().julian();</span>
 
-<span class="nc bnc" id="L608" title="All 2 branches missed.">		if (valParams.valueDate() &gt; dblEndDate) return null;</span>
+<span class="nc bnc" id="L609" title="All 2 branches missed.">		if (valParams.valueDate() &gt; dblEndDate) return null;</span>
 
-<span class="nc" id="L610">		double dblOptionPV = 0.;</span>
-<span class="nc" id="L611">		org.drip.product.calib.VolatilityProductQuoteSet vpqs =</span>
+<span class="nc" id="L611">		double dblOptionPV = 0.;</span>
+<span class="nc" id="L612">		org.drip.product.calib.VolatilityProductQuoteSet vpqs =</span>
 			(org.drip.product.calib.VolatilityProductQuoteSet) pqs;
 
-<span class="nc bnc" id="L614" title="All 2 branches missed.">		if (!vpqs.containsOptionPV()) return null;</span>
+<span class="nc bnc" id="L615" title="All 2 branches missed.">		if (!vpqs.containsOptionPV()) return null;</span>
 
 		try {
-<span class="nc" id="L617">			dblOptionPV = vpqs.optionPV();</span>
-<span class="nc" id="L618">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L619">			e.printStackTrace();</span>
+<span class="nc" id="L618">			dblOptionPV = vpqs.optionPV();</span>
+<span class="nc" id="L619">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L620">			e.printStackTrace();</span>
 
-<span class="nc" id="L621">			return null;</span>
-<span class="nc" id="L622">		}</span>
+<span class="nc" id="L622">			return null;</span>
+<span class="nc" id="L623">		}</span>
 
-<span class="nc" id="L624">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = _fra.stream().volatilityPRWC</span>
-<span class="nc" id="L625">			(valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="nc" id="L625">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = _fra.stream().volatilityPRWC</span>
+<span class="nc" id="L626">			(valParams, pricerParams, csqs, vcp, pqs);</span>
 
-<span class="nc bnc" id="L627" title="All 2 branches missed.">		if (null == prwc) return null;</span>
+<span class="nc bnc" id="L628" title="All 2 branches missed.">		if (null == prwc) return null;</span>
 
-<span class="nc bnc" id="L629" title="All 2 branches missed.">		if (!prwc.addPredictorResponseWeight (dblEndDate, 1.)) return null;</span>
+<span class="nc bnc" id="L630" title="All 2 branches missed.">		if (!prwc.addPredictorResponseWeight (dblEndDate, 1.)) return null;</span>
 
-<span class="nc bnc" id="L631" title="All 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;OptionPV&quot;, dblEndDate, 1.)) return null;</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;OptionPV&quot;, dblEndDate, 1.)) return null;</span>
 
-<span class="nc bnc" id="L633" title="All 4 branches missed.">		return !prwc.updateValue (dblOptionPV) || !prwc.updateDValueDManifestMeasure (&quot;OptionPV&quot;, 1.) ? null</span>
+<span class="nc bnc" id="L634" title="All 4 branches missed.">		return !prwc.updateValue (dblOptionPV) || !prwc.updateDValueDManifestMeasure (&quot;OptionPV&quot;, 1.) ? null</span>
 			: prwc;
 	}
 }

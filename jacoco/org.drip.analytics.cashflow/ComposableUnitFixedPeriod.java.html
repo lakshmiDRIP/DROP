@@ -14,12 +14,12 @@ package org.drip.analytics.cashflow;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -46,6 +46,7 @@ package org.drip.analytics.cashflow;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -77,15 +78,15 @@ package org.drip.analytics.cashflow;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.ComposableUnitPeriod {
-<span class="fc" id="L88">	private org.drip.param.period.ComposableFixedUnitSetting _cfus = null;</span>
+<span class="fc" id="L89">	private org.drip.param.period.ComposableFixedUnitSetting _cfus = null;</span>
 
 	/**
 	 * The ComposableUnitFixedPeriod constructor
@@ -105,32 +106,32 @@ public class ComposableUnitFixedPeriod extends org.drip.analytics.cashflow.Compo
 		final org.drip.param.period.ComposableFixedUnitSetting cfus)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L108">		super (</span>
+<span class="fc" id="L109">		super (</span>
 			iStartDate,
 			iEndDate,
-<span class="fc" id="L111">			cfus.tenor(),</span>
+<span class="fc" id="L112">			cfus.tenor(),</span>
 			ucas
 		);
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == (_cfus = cfus))</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;ComposableUnitFixedPeriod Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L117">	}</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == (_cfus = cfus))</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;ComposableUnitFixedPeriod Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L118">	}</span>
 
 	@Override public double baseRate (
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L123">		return _cfus.fixedCoupon();</span>
+<span class="fc" id="L124">		return _cfus.fixedCoupon();</span>
 	}
 
 	@Override public double basis()
 	{
-<span class="fc" id="L128">		return _cfus.basis();</span>
+<span class="fc" id="L129">		return _cfus.basis();</span>
 	}
 
 	@Override public java.lang.String couponCurrency()
 	{
-<span class="fc" id="L133">		return _cfus.couponCurrency();</span>
+<span class="fc" id="L134">		return _cfus.couponCurrency();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

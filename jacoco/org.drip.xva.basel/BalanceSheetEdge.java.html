@@ -95,9 +95,10 @@ package org.drip.xva.basel;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -106,8 +107,8 @@ package org.drip.xva.basel;
 
 public class BalanceSheetEdge
 {
-<span class="nc" id="L109">	private org.drip.xva.basel.BalanceSheetVertex _headBalanceSheetVertex = null;</span>
-<span class="nc" id="L110">	private org.drip.xva.basel.BalanceSheetVertex _tailBalanceSheetVertex = null;</span>
+<span class="nc" id="L110">	private org.drip.xva.basel.BalanceSheetVertex _headBalanceSheetVertex = null;</span>
+<span class="nc" id="L111">	private org.drip.xva.basel.BalanceSheetVertex _tailBalanceSheetVertex = null;</span>
 
 	/**
 	 * BalanceSheetEdge Constructor
@@ -122,13 +123,13 @@ public class BalanceSheetEdge
 		final org.drip.xva.basel.BalanceSheetVertex headBalanceSheetVertex,
 		final org.drip.xva.basel.BalanceSheetVertex tailBalanceSheetVertex)
 		throws java.lang.Exception
-<span class="nc" id="L125">	{</span>
-<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (null == (_headBalanceSheetVertex = headBalanceSheetVertex) ||</span>
+<span class="nc" id="L126">	{</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == (_headBalanceSheetVertex = headBalanceSheetVertex) ||</span>
 			null == (_tailBalanceSheetVertex = tailBalanceSheetVertex))
 		{
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;BalanceSheetEdge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;BalanceSheetEdge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Balance Sheet Account Vertex Head Instance
@@ -138,7 +139,7 @@ public class BalanceSheetEdge
 
 	public org.drip.xva.basel.BalanceSheetVertex head()
 	{
-<span class="nc" id="L141">		return _headBalanceSheetVertex;</span>
+<span class="nc" id="L142">		return _headBalanceSheetVertex;</span>
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class BalanceSheetEdge
 
 	public org.drip.xva.basel.BalanceSheetVertex tail()
 	{
-<span class="nc" id="L152">		return _tailBalanceSheetVertex;</span>
+<span class="nc" id="L153">		return _tailBalanceSheetVertex;</span>
 	}
 
 	/**
@@ -160,8 +161,8 @@ public class BalanceSheetEdge
 
 	public double cet1Change()
 	{
-<span class="nc" id="L163">		return _tailBalanceSheetVertex.retainedEarnings() - _tailBalanceSheetVertex.contraAsset() -</span>
-<span class="nc" id="L164">			_headBalanceSheetVertex.retainedEarnings() + _headBalanceSheetVertex.contraAsset();</span>
+<span class="nc" id="L164">		return _tailBalanceSheetVertex.retainedEarnings() - _tailBalanceSheetVertex.contraAsset() -</span>
+<span class="nc" id="L165">			_headBalanceSheetVertex.retainedEarnings() + _headBalanceSheetVertex.contraAsset();</span>
 	}
 
 	/**
@@ -172,9 +173,9 @@ public class BalanceSheetEdge
 
 	public double income()
 	{
-<span class="nc" id="L175">		return _tailBalanceSheetVertex.retainedEarnings() + _tailBalanceSheetVertex.contraLiability() -</span>
-<span class="nc" id="L176">			_tailBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.retainedEarnings() +</span>
-<span class="nc" id="L177">			_headBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.contraLiability();</span>
+<span class="nc" id="L176">		return _tailBalanceSheetVertex.retainedEarnings() + _tailBalanceSheetVertex.contraLiability() -</span>
+<span class="nc" id="L177">			_tailBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.retainedEarnings() +</span>
+<span class="nc" id="L178">			_headBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.contraLiability();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

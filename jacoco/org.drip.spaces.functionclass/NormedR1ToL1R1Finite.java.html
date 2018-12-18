@@ -81,9 +81,10 @@ package org.drip.spaces.functionclass;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass&quot;&gt;Function Class&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass&quot;&gt;Function Class&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -110,31 +111,31 @@ public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1
 		final double dblPredictorSupport,
 		final double dblResponseBound)
 	{
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == aR1ToR1) return null;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (null == aR1ToR1) return null;</span>
 
-<span class="nc" id="L115">		int iNumFunction = aR1ToR1.length;</span>
-<span class="nc" id="L116">		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace = new</span>
+<span class="nc" id="L116">		int iNumFunction = aR1ToR1.length;</span>
+<span class="nc" id="L117">		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace = new</span>
 			org.drip.spaces.rxtor1.NormedR1ToNormedR1[iNumFunction];
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (0 == iNumFunction) return null;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (0 == iNumFunction) return null;</span>
 
 		try {
-<span class="nc" id="L122">			org.drip.spaces.metric.R1Continuous r1ContinuousInput = new org.drip.spaces.metric.R1Continuous</span>
+<span class="nc" id="L123">			org.drip.spaces.metric.R1Continuous r1ContinuousInput = new org.drip.spaces.metric.R1Continuous</span>
 				(-0.5 * dblPredictorSupport, 0.5 * dblPredictorSupport, null, 1);
 
-<span class="nc" id="L125">			org.drip.spaces.metric.R1Continuous r1ContinuousOutput = new org.drip.spaces.metric.R1Continuous</span>
+<span class="nc" id="L126">			org.drip.spaces.metric.R1Continuous r1ContinuousOutput = new org.drip.spaces.metric.R1Continuous</span>
 				(-0.5 * dblResponseBound, 0.5 * dblResponseBound, null, 1);
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFunction; ++i)</span>
-<span class="nc" id="L129">				aR1ToR1FunctionSpace[i] = new org.drip.spaces.rxtor1.NormedR1ContinuousToR1Continuous</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFunction; ++i)</span>
+<span class="nc" id="L130">				aR1ToR1FunctionSpace[i] = new org.drip.spaces.rxtor1.NormedR1ContinuousToR1Continuous</span>
 					(r1ContinuousInput, r1ContinuousOutput, aR1ToR1[i]);
 
-<span class="nc" id="L132">			return new NormedR1ToL1R1Finite (dblMaureyConstant, aR1ToR1FunctionSpace);</span>
-<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="nc" id="L133">			return new NormedR1ToL1R1Finite (dblMaureyConstant, aR1ToR1FunctionSpace);</span>
+<span class="nc" id="L134">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L135">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L138">		return null;</span>
 	}
 
 	protected NormedR1ToL1R1Finite (
@@ -142,76 +143,76 @@ public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1
 		final org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L145">		super (dblMaureyConstant, aR1ToR1FunctionSpace);</span>
-<span class="nc" id="L146">	}</span>
+<span class="nc" id="L146">		super (dblMaureyConstant, aR1ToR1FunctionSpace);</span>
+<span class="nc" id="L147">	}</span>
 
 	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
 	{
-<span class="nc" id="L150">		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =</span>
-<span class="nc" id="L151">			(org.drip.spaces.rxtor1.NormedR1ToNormedR1[]) functionSpaces();</span>
+<span class="nc" id="L151">		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =</span>
+<span class="nc" id="L152">			(org.drip.spaces.rxtor1.NormedR1ToNormedR1[]) functionSpaces();</span>
 
-<span class="nc" id="L153">		int iNumFunction = aNormedR1ToNormedR1.length;</span>
-<span class="nc" id="L154">		double dblResponseLowerBound = java.lang.Double.NaN;</span>
-<span class="nc" id="L155">		double dblResponseUpperBound = java.lang.Double.NaN;</span>
-<span class="nc" id="L156">		double dblPredictorLowerBound = java.lang.Double.NaN;</span>
-<span class="nc" id="L157">		double dblPredictorUpperBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L154">		int iNumFunction = aNormedR1ToNormedR1.length;</span>
+<span class="nc" id="L155">		double dblResponseLowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L156">		double dblResponseUpperBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L157">		double dblPredictorLowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L158">		double dblPredictorUpperBound = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFunction; ++i) {</span>
-<span class="nc" id="L160">			org.drip.spaces.rxtor1.NormedR1ToNormedR1 r1Tor1 = aNormedR1ToNormedR1[i];</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFunction; ++i) {</span>
+<span class="nc" id="L161">			org.drip.spaces.rxtor1.NormedR1ToNormedR1 r1Tor1 = aNormedR1ToNormedR1[i];</span>
 
-<span class="nc" id="L162">			org.drip.spaces.metric.R1Normed runsInput = r1Tor1.inputMetricVectorSpace();</span>
+<span class="nc" id="L163">			org.drip.spaces.metric.R1Normed runsInput = r1Tor1.inputMetricVectorSpace();</span>
 
-<span class="nc" id="L164">			org.drip.spaces.metric.R1Normed runsOutput = r1Tor1.outputMetricVectorSpace();</span>
+<span class="nc" id="L165">			org.drip.spaces.metric.R1Normed runsOutput = r1Tor1.outputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L166" title="All 4 branches missed.">			if (!runsInput.isPredictorBounded() || !runsOutput.isPredictorBounded()) return null;</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">			if (!runsInput.isPredictorBounded() || !runsOutput.isPredictorBounded()) return null;</span>
 
-<span class="nc" id="L168">			double dblResponseLeftBound = runsOutput.leftEdge();</span>
+<span class="nc" id="L169">			double dblResponseLeftBound = runsOutput.leftEdge();</span>
 
-<span class="nc" id="L170">			double dblPredictorLeftBound = runsInput.leftEdge();</span>
+<span class="nc" id="L171">			double dblPredictorLeftBound = runsInput.leftEdge();</span>
 
-<span class="nc" id="L172">			double dblResponseRightBound = runsOutput.rightEdge();</span>
+<span class="nc" id="L173">			double dblResponseRightBound = runsOutput.rightEdge();</span>
 
-<span class="nc" id="L174">			double dblPredictorRightBound = runsInput.rightEdge();</span>
+<span class="nc" id="L175">			double dblPredictorRightBound = runsInput.rightEdge();</span>
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorLowerBound))</span>
-<span class="nc" id="L177">				dblPredictorLowerBound = dblPredictorLeftBound;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorLowerBound))</span>
+<span class="nc" id="L178">				dblPredictorLowerBound = dblPredictorLeftBound;</span>
 			else {
-<span class="nc bnc" id="L179" title="All 2 branches missed.">				if (dblPredictorLowerBound &gt; dblPredictorLeftBound)</span>
-<span class="nc" id="L180">					dblPredictorLowerBound = dblPredictorLeftBound;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">				if (dblPredictorLowerBound &gt; dblPredictorLeftBound)</span>
+<span class="nc" id="L181">					dblPredictorLowerBound = dblPredictorLeftBound;</span>
 			}
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorUpperBound))</span>
-<span class="nc" id="L184">				dblPredictorUpperBound = dblPredictorRightBound;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorUpperBound))</span>
+<span class="nc" id="L185">				dblPredictorUpperBound = dblPredictorRightBound;</span>
 			else {
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				if (dblPredictorUpperBound &lt; dblPredictorRightBound)</span>
-<span class="nc" id="L187">					dblPredictorUpperBound = dblPredictorRightBound;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">				if (dblPredictorUpperBound &lt; dblPredictorRightBound)</span>
+<span class="nc" id="L188">					dblPredictorUpperBound = dblPredictorRightBound;</span>
 			}
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseLowerBound))</span>
-<span class="nc" id="L191">				dblResponseLowerBound = dblResponseLeftBound;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseLowerBound))</span>
+<span class="nc" id="L192">				dblResponseLowerBound = dblResponseLeftBound;</span>
 			else {
-<span class="nc bnc" id="L193" title="All 2 branches missed.">				if (dblResponseLowerBound &gt; dblResponseLeftBound)</span>
-<span class="nc" id="L194">					dblResponseLowerBound = dblResponseLeftBound;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				if (dblResponseLowerBound &gt; dblResponseLeftBound)</span>
+<span class="nc" id="L195">					dblResponseLowerBound = dblResponseLeftBound;</span>
 			}
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseUpperBound))</span>
-<span class="nc" id="L198">				dblResponseUpperBound = dblResponseRightBound;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseUpperBound))</span>
+<span class="nc" id="L199">				dblResponseUpperBound = dblResponseRightBound;</span>
 			else {
-<span class="nc bnc" id="L200" title="All 2 branches missed.">				if (dblResponseUpperBound &lt; dblResponseRightBound)</span>
-<span class="nc" id="L201">					dblResponseUpperBound = dblResponseRightBound;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">				if (dblResponseUpperBound &lt; dblResponseRightBound)</span>
+<span class="nc" id="L202">					dblResponseUpperBound = dblResponseRightBound;</span>
 			}
 		}
 
-<span class="nc" id="L205">		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;</span>
+<span class="nc" id="L206">		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;</span>
 
 		try {
-<span class="nc" id="L208">			return new org.drip.spaces.cover.L1R1CoveringBounds (dblPredictorUpperBound -</span>
+<span class="nc" id="L209">			return new org.drip.spaces.cover.L1R1CoveringBounds (dblPredictorUpperBound -</span>
 				dblPredictorLowerBound, dblVariation, dblVariation);
-<span class="nc" id="L210">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L211">			e.printStackTrace();</span>
+<span class="nc" id="L211">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L212">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L215">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -12,12 +12,12 @@ package org.drip.execution.optimum;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.optimum;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -99,16 +100,16 @@ package org.drip.execution.optimum;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/optimum&quot;&gt;Optimum&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/optimum/README.md&quot;&gt;Optimum&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TradingEnhancedDiscrete extends org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete {
-<span class="fc" id="L110">	private double _dblCharacteristicSize = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _dblCharacteristicTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblCharacteristicSize = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _dblCharacteristicTime = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Standard TradingEnhancedDiscrete Instance
@@ -127,23 +128,23 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		final double dblCharacteristicTime,
 		final double dblCharacteristicSize)
 	{
-<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == dtt || null == apep) return null;</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (null == dtt || null == apep) return null;</span>
 
 		try {
-<span class="fc" id="L133">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
+<span class="fc" id="L134">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
 				org.drip.execution.capture.TrajectoryShortfallEstimator (dtt)).totalCostDistributionSynopsis
-<span class="fc" id="L135">					(apep);</span>
+<span class="fc" id="L136">					(apep);</span>
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			return null == r1un ? null : new TradingEnhancedDiscrete (dtt.executionTimeNode(),</span>
-<span class="fc" id="L138">				dtt.holdings(), dtt.tradeList(), r1un.mean(), r1un.variance(), dblCharacteristicTime,</span>
-<span class="fc" id="L139">					dblCharacteristicSize, apep.temporaryExpectation().epochImpactFunction().evaluate</span>
-<span class="fc" id="L140">						(dtt.instantTradeRate()) / (apep.arithmeticPriceDynamicsSettings().epochVolatility()</span>
-<span class="fc" id="L141">							* java.lang.Math.sqrt (dtt.executionTime())));</span>
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			return null == r1un ? null : new TradingEnhancedDiscrete (dtt.executionTimeNode(),</span>
+<span class="fc" id="L139">				dtt.holdings(), dtt.tradeList(), r1un.mean(), r1un.variance(), dblCharacteristicTime,</span>
+<span class="fc" id="L140">					dblCharacteristicSize, apep.temporaryExpectation().epochImpactFunction().evaluate</span>
+<span class="fc" id="L141">						(dtt.instantTradeRate()) / (apep.arithmeticPriceDynamicsSettings().epochVolatility()</span>
+<span class="fc" id="L142">							* java.lang.Math.sqrt (dtt.executionTime())));</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	/**
@@ -172,13 +173,13 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		final double dblMarketPower)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L175">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,</span>
+<span class="fc" id="L176">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,</span>
 			dblTransactionCostVariance, dblMarketPower);
 
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))</span>
-<span class="nc" id="L180">			throw new java.lang.Exception (&quot;TradingEnhancedDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L181">	}</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))</span>
+<span class="nc" id="L181">			throw new java.lang.Exception (&quot;TradingEnhancedDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L182">	}</span>
 
 	/**
 	 * Retrieve the Optimal Trajectory Characteristic Size
@@ -188,7 +189,7 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 
 	public double characteristicSize()
 	{
-<span class="fc" id="L191">		return _dblCharacteristicSize;</span>
+<span class="fc" id="L192">		return _dblCharacteristicSize;</span>
 	}
 
 	/**
@@ -199,7 +200,7 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 
 	public double characteristicTime()
 	{
-<span class="fc" id="L202">		return _dblCharacteristicTime;</span>
+<span class="fc" id="L203">		return _dblCharacteristicTime;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

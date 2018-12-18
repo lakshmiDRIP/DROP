@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.constraint;
 /**
  * &lt;i&gt;LimitRiskTermMarginal&lt;/i&gt; holds the Details of a Relative Marginal Contribution Based Limit Risk
  * Constraint Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,7 +83,7 @@ package org.drip.portfolioconstruction.constraint;
 
 public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
 {
-<span class="nc" id="L85">	private double[] _adblInitialHoldings = null;</span>
+<span class="nc" id="L86">	private double[] _adblInitialHoldings = null;</span>
 
 	/**
 	 * LimitRiskTermMarginal Constructor
@@ -108,7 +109,7 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 		final double[] adblInitialHoldings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (</span>
+<span class="nc" id="L112">		super (</span>
 			strName,
 			&quot;CT_LIMIT_MARGINAL_RISK_CONTRIBUTION&quot;,
 			&quot;Limits the Marginal Contribution to the Total Risk&quot;,
@@ -119,11 +120,11 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 			aadblAssetCovariance
 		);
 
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) ||</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) ||</span>
 			_adblInitialHoldings.length != aadblAssetCovariance[0].length ||
-<span class="nc bnc" id="L124" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;LimitRiskTermMarginal Constructor =&gt; Invalid Initial Holdings&quot;);</span>
-<span class="nc" id="L126">	}</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;LimitRiskTermMarginal Constructor =&gt; Invalid Initial Holdings&quot;);</span>
+<span class="nc" id="L127">	}</span>
 
 	/**
 	 * Retrieve the Initial Holdings Array
@@ -133,42 +134,42 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 
 	public double[] initialHoldings()
 	{
-<span class="nc" id="L136">		return _adblInitialHoldings;</span>
+<span class="nc" id="L137">		return _adblInitialHoldings;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L141">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L142">		{</span>
+<span class="nc" id="L142">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L143">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L145">				return assetCovariance().length;</span>
+<span class="nc" id="L146">				return assetCovariance().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L152">				double[][] aadblAssetCovariance = assetCovariance();</span>
+<span class="nc" id="L153">				double[][] aadblAssetCovariance = assetCovariance();</span>
 
-<span class="nc" id="L154">				int iNumAsset = aadblAssetCovariance.length;</span>
-<span class="nc" id="L155">				double dblMarginalVariance = 0;</span>
+<span class="nc" id="L155">				int iNumAsset = aadblAssetCovariance.length;</span>
+<span class="nc" id="L156">				double dblMarginalVariance = 0;</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L158" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L159">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
+<span class="nc" id="L160">					throw new java.lang.Exception</span>
 						(&quot;LimitRiskTermMarginal::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
 				{
-<span class="nc" id="L164">					double dblHoldingsDifferentialI = adblFinalHoldings[i] - _adblInitialHoldings[i];</span>
+<span class="nc" id="L165">					double dblHoldingsDifferentialI = adblFinalHoldings[i] - _adblInitialHoldings[i];</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="nc" id="L167">						dblMarginalVariance += dblHoldingsDifferentialI * aadblAssetCovariance[i][j] *</span>
-<span class="nc" id="L168">							(adblFinalHoldings[j] - _adblInitialHoldings[j]);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="nc" id="L168">						dblMarginalVariance += dblHoldingsDifferentialI * aadblAssetCovariance[i][j] *</span>
+<span class="nc" id="L169">							(adblFinalHoldings[j] - _adblInitialHoldings[j]);</span>
 				}
 
-<span class="nc" id="L171">				return dblMarginalVariance;</span>
+<span class="nc" id="L172">				return dblMarginalVariance;</span>
 			}
 		};
 	}

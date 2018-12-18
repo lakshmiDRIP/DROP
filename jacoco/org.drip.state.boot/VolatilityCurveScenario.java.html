@@ -73,16 +73,17 @@ package org.drip.state.boot;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot&quot;&gt;Boot&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot&quot;&gt;Boot&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class VolatilityCurveScenario {</span>
+<span class="nc" id="L86">public class VolatilityCurveScenario {</span>
 
 	/**
 	 * Calibrate a Volatility Curve
@@ -115,49 +116,49 @@ package org.drip.state.boot;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L118" title="5 of 10 branches missed.">		if (null == valParams || null == aFRACapFloor || null == adblCalibQuote || null == astrCalibMeasure</span>
+<span class="pc bpc" id="L119" title="5 of 10 branches missed.">		if (null == valParams || null == aFRACapFloor || null == adblCalibQuote || null == astrCalibMeasure</span>
 			|| null == dc)
-<span class="nc" id="L120">			return null;</span>
+<span class="nc" id="L121">			return null;</span>
 
-<span class="fc" id="L122">		int iNumComp = aFRACapFloor.length;</span>
-<span class="fc" id="L123">		int aiPillarDate[] = new int[iNumComp];</span>
-<span class="fc" id="L124">		double adblVolatility[] = new double[iNumComp];</span>
-<span class="fc" id="L125">		org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc = null;</span>
+<span class="fc" id="L123">		int iNumComp = aFRACapFloor.length;</span>
+<span class="fc" id="L124">		int aiPillarDate[] = new int[iNumComp];</span>
+<span class="fc" id="L125">		double adblVolatility[] = new double[iNumComp];</span>
+<span class="fc" id="L126">		org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc = null;</span>
 
-<span class="pc bpc" id="L127" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
-<span class="nc" id="L128">			return null;</span>
+<span class="pc bpc" id="L128" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="nc" id="L129">			return null;</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			if (null == aFRACapFloor[i]) return null;</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			if (null == aFRACapFloor[i]) return null;</span>
 
-<span class="fc" id="L133">			adblVolatility[i] = 0.001;</span>
+<span class="fc" id="L134">			adblVolatility[i] = 0.001;</span>
 
-<span class="fc" id="L135">			aiPillarDate[i] = aFRACapFloor[i].stream().maturity().julian();</span>
+<span class="fc" id="L136">			aiPillarDate[i] = aFRACapFloor[i].stream().maturity().julian();</span>
 		}
 
 		try {
-<span class="fc" id="L139">			ebvc = new org.drip.state.nonlinear.FlatForwardVolatilityCurve (dc.epoch().julian(),</span>
-<span class="fc" id="L140">				org.drip.state.identifier.VolatilityLabel.Standard (lslUnderlying), dc.currency(),</span>
+<span class="fc" id="L140">			ebvc = new org.drip.state.nonlinear.FlatForwardVolatilityCurve (dc.epoch().julian(),</span>
+<span class="fc" id="L141">				org.drip.state.identifier.VolatilityLabel.Standard (lslUnderlying), dc.currency(),</span>
 					aiPillarDate, adblVolatility);
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 
-<span class="nc" id="L145">			return null;</span>
-<span class="fc" id="L146">		}</span>
+<span class="nc" id="L146">			return null;</span>
+<span class="fc" id="L147">		}</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
 			try {
-<span class="fc" id="L150">				org.drip.state.nonlinear.NonlinearCurveBuilder.VolatilityCurveNode (valParams,</span>
+<span class="fc" id="L151">				org.drip.state.nonlinear.NonlinearCurveBuilder.VolatilityCurveNode (valParams,</span>
 					aFRACapFloor[i], adblCalibQuote[i], astrCalibMeasure[i], bFlat, i, ebvc, dc, fc, lsfc,
 						vcp);
-<span class="nc" id="L153">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L154">				e.printStackTrace();</span>
+<span class="nc" id="L154">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L155">				e.printStackTrace();</span>
 
-<span class="nc" id="L156">				return null;</span>
-<span class="fc" id="L157">			}</span>
+<span class="nc" id="L157">				return null;</span>
+<span class="fc" id="L158">			}</span>
 		}
 
-<span class="fc" id="L160">		return ebvc;</span>
+<span class="fc" id="L161">		return ebvc;</span>
 	}
 
 	/**
@@ -193,26 +194,26 @@ package org.drip.state.boot;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (null == aFRACapFloor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+<span class="nc bnc" id="L197" title="All 4 branches missed.">		if (null == aFRACapFloor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
 
-<span class="nc" id="L198">		int iNumComp = aFRACapFloor.length;</span>
-<span class="nc" id="L199">		org.drip.state.volatility.VolatilityCurve[] aVolatilityCurve = new</span>
+<span class="nc" id="L199">		int iNumComp = aFRACapFloor.length;</span>
+<span class="nc" id="L200">		org.drip.state.volatility.VolatilityCurve[] aVolatilityCurve = new</span>
 			org.drip.state.volatility.VolatilityCurve[iNumComp];
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
-<span class="nc bnc" id="L204" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L205">			double[] adblTenorQuote = new double [iNumComp];</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L206">			double[] adblTenorQuote = new double [iNumComp];</span>
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
-<span class="nc bnc" id="L208" title="All 2 branches missed.">				adblTenorQuote[j] += (j == i ? dblBump : 0.);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">				adblTenorQuote[j] += (j == i ? dblBump : 0.);</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (null == (aVolatilityCurve[i] = Standard (strName, valParams, lslUnderlying, aFRACapFloor,</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			if (null == (aVolatilityCurve[i] = Standard (strName, valParams, lslUnderlying, aFRACapFloor,</span>
 				adblTenorQuote, astrCalibMeasure, bFlat, dc, fc, lsfc, vcp)))
-<span class="nc" id="L212">				return null;</span>
+<span class="nc" id="L213">				return null;</span>
 		}
 
-<span class="nc" id="L215">		return aVolatilityCurve;</span>
+<span class="nc" id="L216">		return aVolatilityCurve;</span>
 	}
 
 	/**
@@ -249,32 +250,32 @@ package org.drip.state.boot;
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L252" title="All 4 branches missed.">		if (null == aFRACapFloor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+<span class="nc bnc" id="L253" title="All 4 branches missed.">		if (null == aFRACapFloor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
 
-<span class="nc" id="L254">		int iNumComp = aFRACapFloor.length;</span>
+<span class="nc" id="L255">		int iNumComp = aFRACapFloor.length;</span>
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.volatility.VolatilityCurve&gt;
-<span class="nc" id="L259">			mapTenorVolatilityCurve = new</span>
+<span class="nc" id="L260">			mapTenorVolatilityCurve = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.volatility.VolatilityCurve&gt;();
 
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L263">			double[] adblTenorQuote = new double[iNumComp];</span>
-<span class="nc" id="L264">			org.drip.state.volatility.VolatilityCurve volCurve = null;</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L264">			double[] adblTenorQuote = new double[iNumComp];</span>
+<span class="nc" id="L265">			org.drip.state.volatility.VolatilityCurve volCurve = null;</span>
 
-<span class="nc bnc" id="L266" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
-<span class="nc bnc" id="L267" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">			if (null == (volCurve = Standard (strName, valParams, lslUnderlying, aFRACapFloor, adblTenorQuote,</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">			if (null == (volCurve = Standard (strName, valParams, lslUnderlying, aFRACapFloor, adblTenorQuote,</span>
 				astrCalibMeasure, bFlat, dc, fc, lsfc, vcp)))
-<span class="nc" id="L271">				return null;</span>
+<span class="nc" id="L272">				return null;</span>
 
-<span class="nc" id="L273">			mapTenorVolatilityCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD</span>
-<span class="nc" id="L274">				(aFRACapFloor[i].maturityDate().julian()), volCurve);</span>
+<span class="nc" id="L274">			mapTenorVolatilityCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD</span>
+<span class="nc" id="L275">				(aFRACapFloor[i].maturityDate().julian()), volCurve);</span>
 		}
 
-<span class="nc" id="L277">		return mapTenorVolatilityCurve;</span>
+<span class="nc" id="L278">		return mapTenorVolatilityCurve;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

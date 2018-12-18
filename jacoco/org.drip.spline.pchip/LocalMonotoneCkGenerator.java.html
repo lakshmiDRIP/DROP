@@ -95,9 +95,10 @@ package org.drip.spline.pchip;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -166,9 +167,9 @@ public class LocalMonotoneCkGenerator {
 
 	public static final java.lang.String C1_VAN_LEER = &quot;C1_VAN_LEER&quot;;
 
-<span class="fc" id="L169">	private double[] _adblC1 = null;</span>
-<span class="fc" id="L170">	private double[] _adblResponseValue = null;</span>
-<span class="fc" id="L171">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L170">	private double[] _adblC1 = null;</span>
+<span class="fc" id="L171">	private double[] _adblResponseValue = null;</span>
+<span class="fc" id="L172">	private double[] _adblPredictorOrdinate = null;</span>
 
 	/**
 	 * Eliminate the Spurious Extrema in the Input C1 Entry
@@ -183,22 +184,22 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblC1,
 		final double[] adblLinearC1)
 	{
-<span class="pc bpc" id="L186" title="2 of 4 branches missed.">		if (null == adblC1 || null == adblLinearC1) return null;</span>
+<span class="pc bpc" id="L187" title="2 of 4 branches missed.">		if (null == adblC1 || null == adblLinearC1) return null;</span>
 
-<span class="fc" id="L188">		int iNumEntries = adblC1.length;</span>
-<span class="fc" id="L189">		double[] adblUpdatedC1 = new double[iNumEntries];</span>
-<span class="fc" id="L190">		adblUpdatedC1[0] = adblC1[0];</span>
-<span class="fc" id="L191">		adblUpdatedC1[iNumEntries - 1] = adblC1[iNumEntries - 1];</span>
+<span class="fc" id="L189">		int iNumEntries = adblC1.length;</span>
+<span class="fc" id="L190">		double[] adblUpdatedC1 = new double[iNumEntries];</span>
+<span class="fc" id="L191">		adblUpdatedC1[0] = adblC1[0];</span>
+<span class="fc" id="L192">		adblUpdatedC1[iNumEntries - 1] = adblC1[iNumEntries - 1];</span>
 
-<span class="pc bpc" id="L193" title="2 of 4 branches missed.">		if (1 &gt;= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;</span>
+<span class="pc bpc" id="L194" title="2 of 4 branches missed.">		if (1 &gt;= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;</span>
 
-<span class="fc bfc" id="L195" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEntries - 1; ++i)</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			adblUpdatedC1[i] = 0. &lt; adblLinearC1[i] ? java.lang.Math.min (java.lang.Math.max (0., adblC1[i]),</span>
-<span class="fc" id="L197">				java.lang.Math.min (adblLinearC1[i], adblLinearC1[i - 1])) : java.lang.Math.max</span>
-<span class="fc" id="L198">					(java.lang.Math.min (0., adblC1[i]), java.lang.Math.max (adblLinearC1[i],</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEntries - 1; ++i)</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			adblUpdatedC1[i] = 0. &lt; adblLinearC1[i] ? java.lang.Math.min (java.lang.Math.max (0., adblC1[i]),</span>
+<span class="fc" id="L198">				java.lang.Math.min (adblLinearC1[i], adblLinearC1[i - 1])) : java.lang.Math.max</span>
+<span class="fc" id="L199">					(java.lang.Math.min (0., adblC1[i]), java.lang.Math.max (adblLinearC1[i],</span>
 						adblLinearC1[i - 1]));
 
-<span class="fc" id="L201">		return adblUpdatedC1;</span>
+<span class="fc" id="L202">		return adblUpdatedC1;</span>
 	}
 
 	/**
@@ -214,32 +215,32 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblC1,
 		final double[] adblLinearC1)
 	{
-<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == adblC1 || null == adblLinearC1) return null;</span>
+<span class="pc bpc" id="L218" title="2 of 4 branches missed.">		if (null == adblC1 || null == adblLinearC1) return null;</span>
 
-<span class="fc" id="L219">		int iNumEntries = adblC1.length;</span>
-<span class="fc" id="L220">		double[] adblUpdatedC1 = new double[iNumEntries];</span>
-<span class="fc" id="L221">		adblUpdatedC1[0] = adblC1[0];</span>
+<span class="fc" id="L220">		int iNumEntries = adblC1.length;</span>
+<span class="fc" id="L221">		double[] adblUpdatedC1 = new double[iNumEntries];</span>
+<span class="fc" id="L222">		adblUpdatedC1[0] = adblC1[0];</span>
 
-<span class="pc bpc" id="L223" title="2 of 4 branches missed.">		if (1 &gt;= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;</span>
+<span class="pc bpc" id="L224" title="2 of 4 branches missed.">		if (1 &gt;= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntries; ++i) {</span>
-<span class="fc bfc" id="L226" title="All 2 branches covered.">			if (0 == i) {</span>
-<span class="pc bpc" id="L227" title="1 of 4 branches missed.">				if (adblC1[0] * adblLinearC1[0] &gt; 0. &amp;&amp; adblLinearC1[0] * adblLinearC1[1] &gt; 0. &amp;&amp;</span>
-<span class="fc bfc" id="L228" title="All 2 branches covered.">					java.lang.Math.abs (adblC1[0]) &lt; 3. * java.lang.Math.abs (adblLinearC1[0]))</span>
-<span class="fc" id="L229">					adblUpdatedC1[0] = 3. * adblLinearC1[0];</span>
-<span class="fc bfc" id="L230" title="All 2 branches covered.">				else if (adblC1[0] * adblLinearC1[0] &lt;= 0.)</span>
-<span class="fc" id="L231">					adblUpdatedC1[0] = 0.;</span>
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">			} else if (iNumEntries == i) {</span>
-<span class="nc bnc" id="L233" title="All 4 branches missed.">				if (adblC1[i] * adblLinearC1[i - 1] &gt; 0. &amp;&amp; adblLinearC1[i - 1] * adblLinearC1[i - 2] &gt; 0. &amp;&amp;</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">					java.lang.Math.abs (adblC1[i]) &lt; 3. * java.lang.Math.abs (adblLinearC1[i - 1]))</span>
-<span class="nc" id="L235">					adblUpdatedC1[i] = 3. * adblLinearC1[i - 1];</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">				else if (adblC1[i] * adblLinearC1[i - 1] &lt;= 0.)</span>
-<span class="nc" id="L237">					adblUpdatedC1[i] = 0.;</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntries; ++i) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="pc bpc" id="L228" title="1 of 4 branches missed.">				if (adblC1[0] * adblLinearC1[0] &gt; 0. &amp;&amp; adblLinearC1[0] * adblLinearC1[1] &gt; 0. &amp;&amp;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">					java.lang.Math.abs (adblC1[0]) &lt; 3. * java.lang.Math.abs (adblLinearC1[0]))</span>
+<span class="fc" id="L230">					adblUpdatedC1[0] = 3. * adblLinearC1[0];</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">				else if (adblC1[0] * adblLinearC1[0] &lt;= 0.)</span>
+<span class="fc" id="L232">					adblUpdatedC1[0] = 0.;</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">			} else if (iNumEntries == i) {</span>
+<span class="nc bnc" id="L234" title="All 4 branches missed.">				if (adblC1[i] * adblLinearC1[i - 1] &gt; 0. &amp;&amp; adblLinearC1[i - 1] * adblLinearC1[i - 2] &gt; 0. &amp;&amp;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">					java.lang.Math.abs (adblC1[i]) &lt; 3. * java.lang.Math.abs (adblLinearC1[i - 1]))</span>
+<span class="nc" id="L236">					adblUpdatedC1[i] = 3. * adblLinearC1[i - 1];</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">				else if (adblC1[i] * adblLinearC1[i - 1] &lt;= 0.)</span>
+<span class="nc" id="L238">					adblUpdatedC1[i] = 0.;</span>
 			} else
-<span class="fc" id="L239">				adblUpdatedC1[i] = adblC1[i];</span>
+<span class="fc" id="L240">				adblUpdatedC1[i] = adblC1[i];</span>
 		}
 
-<span class="fc" id="L242">		return adblUpdatedC1;</span>
+<span class="fc" id="L243">		return adblUpdatedC1;</span>
 	}
 
 	/**
@@ -255,14 +256,14 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L258">		int iNumSegment = adblResponseValue.length - 1;</span>
-<span class="fc" id="L259">		double[] adblLinearC1 = new double[iNumSegment];</span>
+<span class="fc" id="L259">		int iNumSegment = adblResponseValue.length - 1;</span>
+<span class="fc" id="L260">		double[] adblLinearC1 = new double[iNumSegment];</span>
 
-<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
-<span class="fc" id="L262">			adblLinearC1[i] = (adblResponseValue[i + 1] - adblResponseValue[i]) /</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
+<span class="fc" id="L263">			adblLinearC1[i] = (adblResponseValue[i + 1] - adblResponseValue[i]) /</span>
 				(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);
 
-<span class="fc" id="L265">		return adblLinearC1;</span>
+<span class="fc" id="L266">		return adblLinearC1;</span>
 	}
 
 	/**
@@ -278,43 +279,43 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L281">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L282">		double[] adblBesselC1 = new double[iNumResponse];</span>
+<span class="fc" id="L282">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L283">		double[] adblBesselC1 = new double[iNumResponse];</span>
 
-<span class="fc bfc" id="L284" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc bfc" id="L285" title="All 2 branches covered.">			if (0 == i) {</span>
-<span class="fc" id="L286">				adblBesselC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L287">				adblBesselC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
 					adblPredictorOrdinate[0]) * (adblResponseValue[1] - adblResponseValue[0]) /
 						(adblPredictorOrdinate[1] - adblPredictorOrdinate[0]);
-<span class="fc" id="L289">				adblBesselC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
+<span class="fc" id="L290">				adblBesselC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
 					(adblResponseValue[2] - adblResponseValue[1]) / (adblPredictorOrdinate[2] -
 						adblPredictorOrdinate[1]);
-<span class="fc" id="L292">				adblBesselC1[i] /= (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);</span>
-<span class="fc bfc" id="L293" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
-<span class="fc" id="L294">				adblBesselC1[i] = (adblPredictorOrdinate[iNumResponse - 1] -</span>
+<span class="fc" id="L293">				adblBesselC1[i] /= (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L295">				adblBesselC1[i] = (adblPredictorOrdinate[iNumResponse - 1] -</span>
 					adblPredictorOrdinate[iNumResponse - 2]) * (adblResponseValue[iNumResponse - 2] -
 						adblResponseValue[iNumResponse - 3]) / (adblPredictorOrdinate[iNumResponse - 2] -
 							adblPredictorOrdinate[iNumResponse - 3]);
-<span class="fc" id="L298">				adblBesselC1[i] -= (2. * adblPredictorOrdinate[iNumResponse - 1] -</span>
+<span class="fc" id="L299">				adblBesselC1[i] -= (2. * adblPredictorOrdinate[iNumResponse - 1] -</span>
 					adblPredictorOrdinate[iNumResponse - 2] - adblPredictorOrdinate[iNumResponse - 3]) *
 						(adblResponseValue[iNumResponse - 1] - adblResponseValue[iNumResponse - 2]) /
 							(adblPredictorOrdinate[iNumResponse - 1] -
 								adblPredictorOrdinate[iNumResponse - 2]);
-<span class="fc" id="L303">				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -</span>
+<span class="fc" id="L304">				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -</span>
 					adblPredictorOrdinate[iNumResponse - 3]);
 			} else {
-<span class="fc" id="L306">				adblBesselC1[i] = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) *</span>
+<span class="fc" id="L307">				adblBesselC1[i] = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) *</span>
 					(adblResponseValue[i] - adblResponseValue[i - 1]) / (adblPredictorOrdinate[i] -
 						adblPredictorOrdinate[i - 1]);
-<span class="fc" id="L309">				adblBesselC1[i] += (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+<span class="fc" id="L310">				adblBesselC1[i] += (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
 					(adblResponseValue[i + 1] - adblResponseValue[i]) / (adblPredictorOrdinate[i + 1] -
 						adblPredictorOrdinate[i]);
-<span class="fc" id="L312">				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -</span>
+<span class="fc" id="L313">				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -</span>
 					adblPredictorOrdinate[iNumResponse - 3]);
 			}
 		}
 
-<span class="fc" id="L317">		return adblBesselC1;</span>
+<span class="fc" id="L318">		return adblBesselC1;</span>
 	}
 
 	/**
@@ -333,27 +334,27 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L336">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L337">		double dblLinearSlopePrev = java.lang.Double.NaN;</span>
-<span class="fc" id="L338">		double[] adblHyman83C1 = new double[iNumResponse];</span>
+<span class="fc" id="L337">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L338">		double dblLinearSlopePrev = java.lang.Double.NaN;</span>
+<span class="fc" id="L339">		double[] adblHyman83C1 = new double[iNumResponse];</span>
 
-<span class="fc bfc" id="L340" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc" id="L341">			adblHyman83C1[i] = 0.;</span>
-<span class="fc bfc" id="L342" title="All 2 branches covered.">			double dblLinearSlope = iNumResponse - 1 != i ? (adblResponseValue[i + 1] - adblResponseValue[i])</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc" id="L342">			adblHyman83C1[i] = 0.;</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">			double dblLinearSlope = iNumResponse - 1 != i ? (adblResponseValue[i + 1] - adblResponseValue[i])</span>
 				/ (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) : java.lang.Double.NaN;
 
-<span class="fc bfc" id="L345" title="All 4 branches covered.">			if (0 != i &amp;&amp; iNumResponse - 1 != i) {</span>
-<span class="fc" id="L346">				double dblMonotoneIndicator = dblLinearSlopePrev * dblLinearSlope;</span>
+<span class="fc bfc" id="L346" title="All 4 branches covered.">			if (0 != i &amp;&amp; iNumResponse - 1 != i) {</span>
+<span class="fc" id="L347">				double dblMonotoneIndicator = dblLinearSlopePrev * dblLinearSlope;</span>
 
-<span class="fc bfc" id="L348" title="All 2 branches covered.">				if (0. &lt;= dblMonotoneIndicator)</span>
-<span class="fc" id="L349">					adblHyman83C1[i] = 3. * dblMonotoneIndicator / (java.lang.Math.max (dblLinearSlope,</span>
-<span class="fc" id="L350">						dblLinearSlopePrev) + 2. * java.lang.Math.min (dblLinearSlope, dblLinearSlopePrev));</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">				if (0. &lt;= dblMonotoneIndicator)</span>
+<span class="fc" id="L350">					adblHyman83C1[i] = 3. * dblMonotoneIndicator / (java.lang.Math.max (dblLinearSlope,</span>
+<span class="fc" id="L351">						dblLinearSlopePrev) + 2. * java.lang.Math.min (dblLinearSlope, dblLinearSlopePrev));</span>
 			}
 
-<span class="fc" id="L353">			dblLinearSlopePrev = dblLinearSlope;</span>
+<span class="fc" id="L354">			dblLinearSlopePrev = dblLinearSlope;</span>
 		}
 
-<span class="fc" id="L356">		return adblHyman83C1;</span>
+<span class="fc" id="L357">		return adblHyman83C1;</span>
 	}
 
 	/**
@@ -372,58 +373,58 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L375">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L376">		double[] adblHyman89C1 = new double[iNumResponse];</span>
+<span class="fc" id="L376">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L377">		double[] adblHyman89C1 = new double[iNumResponse];</span>
 
-<span class="fc" id="L378">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L379">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="fc" id="L380">		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L381">		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="fc bfc" id="L382" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc bfc" id="L383" title="All 4 branches covered.">			if (i &lt; 2 || i &gt;= iNumResponse - 2)</span>
-<span class="fc" id="L384">				adblHyman89C1[i] = adblBesselC1[i];</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L384" title="All 4 branches covered.">			if (i &lt; 2 || i &gt;= iNumResponse - 2)</span>
+<span class="fc" id="L385">				adblHyman89C1[i] = adblBesselC1[i];</span>
 			else {
-<span class="fc" id="L386">				double dMuMinus = (adblNodeC1[i - 1] * (2. * (adblPredictorOrdinate[i] -</span>
+<span class="fc" id="L387">				double dMuMinus = (adblNodeC1[i - 1] * (2. * (adblPredictorOrdinate[i] -</span>
 					adblPredictorOrdinate[i - 1]) + adblPredictorOrdinate[i - 1] -
 						adblPredictorOrdinate[i - 2]) - adblNodeC1[i - 2] * (adblPredictorOrdinate[i] -
 							adblPredictorOrdinate[i - 1])) / (adblPredictorOrdinate[i] -
 								adblPredictorOrdinate[i - 2]);
-<span class="fc" id="L391">				double dMu0 = (adblNodeC1[i - 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])</span>
+<span class="fc" id="L392">				double dMu0 = (adblNodeC1[i - 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])</span>
 					+ adblNodeC1[i] * (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1])) /
 						(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i - 1]);
-<span class="fc" id="L394">				double dMuPlus = (adblNodeC1[i] * (2. * (adblPredictorOrdinate[i + 1] -</span>
+<span class="fc" id="L395">				double dMuPlus = (adblNodeC1[i] * (2. * (adblPredictorOrdinate[i + 1] -</span>
 					adblPredictorOrdinate[i]) + adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i + 1])
 						- adblNodeC1[i + 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) /
 							(adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i]);
 
 				try {
-<span class="fc" id="L400">					double dblM = 3 * org.drip.quant.common.NumberUtil.Minimum (new double[]</span>
-<span class="fc" id="L401">						{java.lang.Math.abs (adblNodeC1[i - 1]), java.lang.Math.abs (adblNodeC1[i]),</span>
-<span class="fc" id="L402">							java.lang.Math.abs (dMu0), java.lang.Math.abs (dMuPlus)});</span>
+<span class="fc" id="L401">					double dblM = 3 * org.drip.quant.common.NumberUtil.Minimum (new double[]</span>
+<span class="fc" id="L402">						{java.lang.Math.abs (adblNodeC1[i - 1]), java.lang.Math.abs (adblNodeC1[i]),</span>
+<span class="fc" id="L403">							java.lang.Math.abs (dMu0), java.lang.Math.abs (dMuPlus)});</span>
 
-<span class="fc bfc" id="L404" title="All 2 branches covered.">					if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {dMu0, dMuMinus,</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">					if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {dMu0, dMuMinus,</span>
 							adblNodeC1[i - 1] - adblNodeC1[i - 2], adblNodeC1[i] - adblNodeC1[i - 1]}))
-<span class="fc" id="L406">						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),</span>
-<span class="fc" id="L407">							java.lang.Math.abs (dMuMinus)));</span>
-<span class="pc bpc" id="L408" title="1 of 2 branches missed.">					else if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {-dMu0, -dMuPlus,</span>
+<span class="fc" id="L407">						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),</span>
+<span class="fc" id="L408">							java.lang.Math.abs (dMuMinus)));</span>
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">					else if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {-dMu0, -dMuPlus,</span>
 							adblNodeC1[i] - adblNodeC1[i - 1], adblNodeC1[i + 1] - adblNodeC1[i]}))
-<span class="fc" id="L410">						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),</span>
-<span class="fc" id="L411">							java.lang.Math.abs (dMuPlus)));</span>
+<span class="fc" id="L411">						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),</span>
+<span class="fc" id="L412">							java.lang.Math.abs (dMuPlus)));</span>
 
-<span class="fc" id="L413">					adblHyman89C1[i] = 0.;</span>
+<span class="fc" id="L414">					adblHyman89C1[i] = 0.;</span>
 
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">					if (adblBesselC1[i] * dMu0 &gt; 0.)</span>
-<span class="fc" id="L416">						adblHyman89C1[i] = adblBesselC1[i] / java.lang.Math.abs (adblBesselC1[i]) *</span>
-<span class="fc" id="L417">							java.lang.Math.min (java.lang.Math.abs (adblBesselC1[i]), dblM);</span>
-<span class="nc" id="L418">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L419">					e.printStackTrace();</span>
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">					if (adblBesselC1[i] * dMu0 &gt; 0.)</span>
+<span class="fc" id="L417">						adblHyman89C1[i] = adblBesselC1[i] / java.lang.Math.abs (adblBesselC1[i]) *</span>
+<span class="fc" id="L418">							java.lang.Math.min (java.lang.Math.abs (adblBesselC1[i]), dblM);</span>
+<span class="nc" id="L419">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L420">					e.printStackTrace();</span>
 
-<span class="nc" id="L421">					return null;</span>
-<span class="fc" id="L422">				}</span>
+<span class="nc" id="L422">					return null;</span>
+<span class="fc" id="L423">				}</span>
 			}
 		}
 
-<span class="fc" id="L426">		return adblHyman89C1;</span>
+<span class="fc" id="L427">		return adblHyman89C1;</span>
 	}
 
 	/**
@@ -442,40 +443,40 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L445">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L446">		double[] adblHarmonicC1 = new double[iNumResponse];</span>
+<span class="fc" id="L446">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L447">		double[] adblHarmonicC1 = new double[iNumResponse];</span>
 
-<span class="fc" id="L448">		double[] adblLinearC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L449">		double[] adblLinearC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="fc bfc" id="L450" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc bfc" id="L451" title="All 2 branches covered.">			if (0 == i) {</span>
-<span class="fc" id="L452">				adblHarmonicC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+<span class="fc bfc" id="L451" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L453">				adblHarmonicC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
 					adblPredictorOrdinate[0]) * adblLinearC1[0] / (adblPredictorOrdinate[2] -
 						adblPredictorOrdinate[0]);
-<span class="fc" id="L455">				adblHarmonicC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) * adblLinearC1[1]</span>
+<span class="fc" id="L456">				adblHarmonicC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) * adblLinearC1[1]</span>
 					/ (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-<span class="fc bfc" id="L457" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
-<span class="fc" id="L458">				adblHarmonicC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+<span class="fc bfc" id="L458" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L459">				adblHarmonicC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
 					adblLinearC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
-<span class="fc" id="L460">				adblHarmonicC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -</span>
+<span class="fc" id="L461">				adblHarmonicC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -</span>
 					adblPredictorOrdinate[i - 2]) * adblLinearC1[i - 1] / (adblPredictorOrdinate[i] -
 						adblPredictorOrdinate[i - 2]);
 			} else {
-<span class="fc bfc" id="L464" title="All 2 branches covered.">				if (adblLinearC1[i - 1] * adblLinearC1[i] &lt;= 0.)</span>
-<span class="fc" id="L465">					adblHarmonicC1[i] = 0.;</span>
+<span class="fc bfc" id="L465" title="All 2 branches covered.">				if (adblLinearC1[i - 1] * adblLinearC1[i] &lt;= 0.)</span>
+<span class="fc" id="L466">					adblHarmonicC1[i] = 0.;</span>
 				else {
-<span class="fc" id="L467">					adblHarmonicC1[i] = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] + 2. *</span>
+<span class="fc" id="L468">					adblHarmonicC1[i] = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] + 2. *</span>
 						(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / (3. *
 							(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / adblLinearC1[i - 1];
-<span class="fc" id="L470">					adblHarmonicC1[i] += (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i] + 2. *</span>
+<span class="fc" id="L471">					adblHarmonicC1[i] += (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i] + 2. *</span>
 						(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1])) / (3. *
 							(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / adblLinearC1[i];
-<span class="fc" id="L473">					adblHarmonicC1[i] = 1. / adblHarmonicC1[i];</span>
+<span class="fc" id="L474">					adblHarmonicC1[i] = 1. / adblHarmonicC1[i];</span>
 				}
 			}
 		}
 
-<span class="fc" id="L478">		return adblHarmonicC1;</span>
+<span class="fc" id="L479">		return adblHarmonicC1;</span>
 	}
 
 	/**
@@ -495,39 +496,39 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L498">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L499">		double[] dblVanLeerLimiterC1 = new double[iNumResponse];</span>
+<span class="fc" id="L499">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L500">		double[] dblVanLeerLimiterC1 = new double[iNumResponse];</span>
 
-<span class="fc" id="L501">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L502">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="fc bfc" id="L503" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc bfc" id="L504" title="All 2 branches covered.">			if (0 == i) {</span>
-<span class="fc" id="L505">				dblVanLeerLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L505" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L506">				dblVanLeerLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
 					adblPredictorOrdinate[0]) * adblNodeC1[0] / (adblPredictorOrdinate[2] -
 						adblPredictorOrdinate[0]);
-<span class="fc" id="L508">				dblVanLeerLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
+<span class="fc" id="L509">				dblVanLeerLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
 					adblNodeC1[1] / (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-<span class="fc bfc" id="L510" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
-<span class="fc" id="L511">				dblVanLeerLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L512">				dblVanLeerLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
 					adblNodeC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
-<span class="fc" id="L513">				dblVanLeerLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -</span>
+<span class="fc" id="L514">				dblVanLeerLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -</span>
 					adblPredictorOrdinate[i - 2]) * adblNodeC1[i - 1] / (adblPredictorOrdinate[i] -
 						adblPredictorOrdinate[i - 2]);
 			} else {
-<span class="pc bpc" id="L517" title="1 of 2 branches missed.">				if (0. != adblNodeC1[i - 1]) {</span>
-<span class="fc" id="L518">					double dblR = adblNodeC1[i] / adblNodeC1[i - 1];</span>
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">				if (0. != adblNodeC1[i - 1]) {</span>
+<span class="fc" id="L519">					double dblR = adblNodeC1[i] / adblNodeC1[i - 1];</span>
 
-<span class="fc" id="L520">					double dblRAbsolute = java.lang.Math.abs (dblR);</span>
+<span class="fc" id="L521">					double dblRAbsolute = java.lang.Math.abs (dblR);</span>
 
-<span class="fc" id="L522">					dblVanLeerLimiterC1[i] = adblNodeC1[i] * (dblR + dblRAbsolute) / (1. + dblRAbsolute);</span>
-<span class="pc bnc" id="L523" title="All 2 branches missed.">				} else if (0. &gt;= adblNodeC1[i])</span>
-<span class="nc" id="L524">					dblVanLeerLimiterC1[i] = 0.;</span>
-<span class="nc bnc" id="L525" title="All 2 branches missed.">				else if (0. &lt; adblNodeC1[i])</span>
-<span class="nc" id="L526">					dblVanLeerLimiterC1[i] = 2. * adblNodeC1[i];</span>
+<span class="fc" id="L523">					dblVanLeerLimiterC1[i] = adblNodeC1[i] * (dblR + dblRAbsolute) / (1. + dblRAbsolute);</span>
+<span class="pc bnc" id="L524" title="All 2 branches missed.">				} else if (0. &gt;= adblNodeC1[i])</span>
+<span class="nc" id="L525">					dblVanLeerLimiterC1[i] = 0.;</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">				else if (0. &lt; adblNodeC1[i])</span>
+<span class="nc" id="L527">					dblVanLeerLimiterC1[i] = 2. * adblNodeC1[i];</span>
 			}
 		}
 
-<span class="fc" id="L530">		return dblVanLeerLimiterC1;</span>
+<span class="fc" id="L531">		return dblVanLeerLimiterC1;</span>
 	}
 
 	/**
@@ -546,37 +547,37 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L549">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L550">		double[] adblHuynhLeFlochLimiterC1 = new double[iNumResponse];</span>
+<span class="fc" id="L550">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L551">		double[] adblHuynhLeFlochLimiterC1 = new double[iNumResponse];</span>
 
-<span class="fc" id="L552">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L553">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="fc bfc" id="L554" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc bfc" id="L555" title="All 2 branches covered.">			if (0 == i) {</span>
-<span class="fc" id="L556">				adblHuynhLeFlochLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
+<span class="fc bfc" id="L555" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L556" title="All 2 branches covered.">			if (0 == i) {</span>
+<span class="fc" id="L557">				adblHuynhLeFlochLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *</span>
 					adblPredictorOrdinate[0]) * adblNodeC1[0] / (adblPredictorOrdinate[2] -
 						adblPredictorOrdinate[0]);
-<span class="fc" id="L559">				adblHuynhLeFlochLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
+<span class="fc" id="L560">				adblHuynhLeFlochLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *</span>
 					adblNodeC1[1] / (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-<span class="fc bfc" id="L561" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
-<span class="fc" id="L562">				adblHuynhLeFlochLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
+<span class="fc bfc" id="L562" title="All 2 branches covered.">			} else if (iNumResponse - 1 == i) {</span>
+<span class="fc" id="L563">				adblHuynhLeFlochLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *</span>
 					adblNodeC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
-<span class="fc" id="L564">				adblHuynhLeFlochLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]</span>
+<span class="fc" id="L565">				adblHuynhLeFlochLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]</span>
 					- adblPredictorOrdinate[i - 2]) * adblNodeC1[i - 1] / (adblPredictorOrdinate[i] -
 						adblPredictorOrdinate[i - 2]);
 			} else {
-<span class="fc" id="L568">				double dblMonotoneIndicator = adblNodeC1[i] * adblNodeC1[i - 1];</span>
+<span class="fc" id="L569">				double dblMonotoneIndicator = adblNodeC1[i] * adblNodeC1[i - 1];</span>
 
-<span class="fc bfc" id="L570" title="All 2 branches covered.">				if (0. &lt; dblMonotoneIndicator)</span>
-<span class="fc" id="L571">					adblHuynhLeFlochLimiterC1[i] = 3. * dblMonotoneIndicator * (adblNodeC1[i] +</span>
+<span class="fc bfc" id="L571" title="All 2 branches covered.">				if (0. &lt; dblMonotoneIndicator)</span>
+<span class="fc" id="L572">					adblHuynhLeFlochLimiterC1[i] = 3. * dblMonotoneIndicator * (adblNodeC1[i] +</span>
 						adblNodeC1[i - 1]) / (adblNodeC1[i] * adblNodeC1[i] + adblNodeC1[i - 1] *
 							adblNodeC1[i - 1] * 4. * dblMonotoneIndicator);
 				else
-<span class="fc" id="L575">					adblHuynhLeFlochLimiterC1[i] = 0.;</span>
+<span class="fc" id="L576">					adblHuynhLeFlochLimiterC1[i] = 0.;</span>
 			}
 		}
 
-<span class="fc" id="L579">		return adblHuynhLeFlochLimiterC1;</span>
+<span class="fc" id="L580">		return adblHuynhLeFlochLimiterC1;</span>
 	}
 
 	/**
@@ -595,26 +596,26 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L598">		int iNumResponse = adblResponseValue.length;</span>
-<span class="fc" id="L599">		double[] adblKrugerSlope = new double[iNumResponse];</span>
+<span class="fc" id="L599">		int iNumResponse = adblResponseValue.length;</span>
+<span class="fc" id="L600">		double[] adblKrugerSlope = new double[iNumResponse];</span>
 
-<span class="fc" id="L601">		double[] adblSlopeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L602">		double[] adblSlopeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="pc bpc" id="L603" title="2 of 4 branches missed.">		if (null == adblSlopeC1 || adblSlopeC1.length != iNumResponse - 1) return null;</span>
+<span class="pc bpc" id="L604" title="2 of 4 branches missed.">		if (null == adblSlopeC1 || adblSlopeC1.length != iNumResponse - 1) return null;</span>
 
-<span class="fc bfc" id="L605" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
-<span class="fc bfc" id="L606" title="All 4 branches covered.">			if (0 != i &amp;&amp; iNumResponse - 1 != i) {</span>
-<span class="fc bfc" id="L607" title="All 2 branches covered.">				if (adblSlopeC1[i - 1] * adblSlopeC1[i] &lt;= 0.)</span>
-<span class="fc" id="L608">					adblKrugerSlope[i] = 0.;</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponse; ++i) {</span>
+<span class="fc bfc" id="L607" title="All 4 branches covered.">			if (0 != i &amp;&amp; iNumResponse - 1 != i) {</span>
+<span class="fc bfc" id="L608" title="All 2 branches covered.">				if (adblSlopeC1[i - 1] * adblSlopeC1[i] &lt;= 0.)</span>
+<span class="fc" id="L609">					adblKrugerSlope[i] = 0.;</span>
 				else
-<span class="fc" id="L610">					adblKrugerSlope[i] = 2. / ((1. / adblSlopeC1[i - 1]) + (1. / adblSlopeC1[i]));</span>
+<span class="fc" id="L611">					adblKrugerSlope[i] = 2. / ((1. / adblSlopeC1[i - 1]) + (1. / adblSlopeC1[i]));</span>
 			}
 		}
 
-<span class="fc" id="L614">		adblKrugerSlope[0] = 3.5 * adblSlopeC1[0] - 0.5 * adblKrugerSlope[1];</span>
-<span class="fc" id="L615">		adblKrugerSlope[iNumResponse - 1] = 3.5 * adblSlopeC1[iNumResponse - 2] - 0.5 *</span>
+<span class="fc" id="L615">		adblKrugerSlope[0] = 3.5 * adblSlopeC1[0] - 0.5 * adblKrugerSlope[1];</span>
+<span class="fc" id="L616">		adblKrugerSlope[iNumResponse - 1] = 3.5 * adblSlopeC1[iNumResponse - 2] - 0.5 *</span>
 			adblKrugerSlope[iNumResponse - 2];
-<span class="fc" id="L617">		return adblKrugerSlope;</span>
+<span class="fc" id="L618">		return adblKrugerSlope;</span>
 	}
 
 	/**
@@ -633,10 +634,10 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L636">		org.drip.spline.pchip.AkimaLocalC1Generator alcr =</span>
-<span class="fc" id="L637">			org.drip.spline.pchip.AkimaLocalC1Generator.Create (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="fc" id="L637">		org.drip.spline.pchip.AkimaLocalC1Generator alcr =</span>
+<span class="fc" id="L638">			org.drip.spline.pchip.AkimaLocalC1Generator.Create (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="pc bpc" id="L639" title="1 of 2 branches missed.">		return null == alcr ? null : alcr.C1();</span>
+<span class="pc bpc" id="L640" title="1 of 2 branches missed.">		return null == alcr ? null : alcr.C1();</span>
 	}
 
 	/**
@@ -662,37 +663,37 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblSecondDerivative)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L665" title="All 8 branches missed.">		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null</span>
+<span class="nc bnc" id="L666" title="All 8 branches missed.">		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null</span>
 			== adblSecondDerivative)
-<span class="nc" id="L667">			throw new java.lang.Exception</span>
+<span class="nc" id="L668">			throw new java.lang.Exception</span>
 				(&quot;LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L670">		int iNumPredictor = adblPredictorOrdinate.length;</span>
+<span class="nc" id="L671">		int iNumPredictor = adblPredictorOrdinate.length;</span>
 
-<span class="nc bnc" id="L672" title="All 8 branches missed.">		if (1 &gt;= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=</span>
+<span class="nc bnc" id="L673" title="All 8 branches missed.">		if (1 &gt;= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=</span>
 			adblResponseValue.length || iNumPredictor != adblResponseValue.length)
-<span class="nc" id="L674">			throw new java.lang.Exception</span>
+<span class="nc" id="L675">			throw new java.lang.Exception</span>
 				(&quot;LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L677" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumPredictor - 1; ++i) {</span>
-<span class="nc" id="L678">			double dblAbsoluteResponseValue = java.lang.Math.abs (adblResponseValue[i]);</span>
+<span class="nc bnc" id="L678" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumPredictor - 1; ++i) {</span>
+<span class="nc" id="L679">			double dblAbsoluteResponseValue = java.lang.Math.abs (adblResponseValue[i]);</span>
 
-<span class="nc bnc" id="L680" title="All 2 branches missed.">			double dblResponseValueSign = adblResponseValue[i] &gt; 0. ? 1. : -1.;</span>
-<span class="nc" id="L681">			double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);</span>
-<span class="nc" id="L682">			double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">			double dblResponseValueSign = adblResponseValue[i] &gt; 0. ? 1. : -1.;</span>
+<span class="nc" id="L682">			double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);</span>
+<span class="nc" id="L683">			double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);</span>
 
-<span class="nc bnc" id="L684" title="All 4 branches missed.">			if (-5. * dblAbsoluteResponseValue / dblHPlus &gt; dblResponseValueSign * adblFirstDerivative[i] ||</span>
+<span class="nc bnc" id="L685" title="All 4 branches missed.">			if (-5. * dblAbsoluteResponseValue / dblHPlus &gt; dblResponseValueSign * adblFirstDerivative[i] ||</span>
 				5. * dblAbsoluteResponseValue / dblHMinus &lt; dblResponseValueSign * adblFirstDerivative[i])
-<span class="nc" id="L686">				return false;</span>
+<span class="nc" id="L687">				return false;</span>
 
-<span class="nc" id="L688">			if (dblResponseValueSign * adblSecondDerivative[i] &lt; dblResponseValueSign * java.lang.Math.max</span>
-<span class="nc bnc" id="L689" title="All 2 branches missed.">				(8. * adblFirstDerivative[i] / dblHMinus - 20. * adblResponseValue[i] / dblHMinus /</span>
+<span class="nc" id="L689">			if (dblResponseValueSign * adblSecondDerivative[i] &lt; dblResponseValueSign * java.lang.Math.max</span>
+<span class="nc bnc" id="L690" title="All 2 branches missed.">				(8. * adblFirstDerivative[i] / dblHMinus - 20. * adblResponseValue[i] / dblHMinus /</span>
 					dblHMinus, -8. * adblFirstDerivative[i] / dblHPlus - 20. * adblResponseValue[i] /
 						dblHPlus / dblHPlus))
-<span class="nc" id="L692">				return false;</span>
+<span class="nc" id="L693">				return false;</span>
 		}
 
-<span class="nc" id="L695">		return true;</span>
+<span class="nc" id="L696">		return true;</span>
 	}
 
 	/**
@@ -715,68 +716,68 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblFirstDerivative,
 		final double[] adblSecondDerivative)
 	{
-<span class="nc bnc" id="L718" title="All 8 branches missed.">		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null</span>
+<span class="nc bnc" id="L719" title="All 8 branches missed.">		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null</span>
 			== adblSecondDerivative)
-<span class="nc" id="L720">			return null;</span>
+<span class="nc" id="L721">			return null;</span>
 
-<span class="nc" id="L722">		int iNumPredictor = adblPredictorOrdinate.length;</span>
+<span class="nc" id="L723">		int iNumPredictor = adblPredictorOrdinate.length;</span>
 
-<span class="nc bnc" id="L724" title="All 8 branches missed.">		if (1 &gt;= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=</span>
+<span class="nc bnc" id="L725" title="All 8 branches missed.">		if (1 &gt;= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=</span>
 			adblResponseValue.length || iNumPredictor != adblResponseValue.length)
-<span class="nc" id="L726">			return null;</span>
+<span class="nc" id="L727">			return null;</span>
 
-<span class="nc" id="L728">		double[] adblAdjFirstDerivative = new double[iNumPredictor];</span>
+<span class="nc" id="L729">		double[] adblAdjFirstDerivative = new double[iNumPredictor];</span>
 
-<span class="nc" id="L730">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="nc" id="L731">		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="nc" id="L732">		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="nc" id="L733">		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);</span>
 
-<span class="nc bnc" id="L734" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictor; ++i) {</span>
-<span class="nc bnc" id="L735" title="All 4 branches missed.">			if (i &lt; 2 || i &gt;= iNumPredictor - 2)</span>
-<span class="nc" id="L736">				adblAdjFirstDerivative[i] = adblBesselC1[i];</span>
+<span class="nc bnc" id="L735" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictor; ++i) {</span>
+<span class="nc bnc" id="L736" title="All 4 branches missed.">			if (i &lt; 2 || i &gt;= iNumPredictor - 2)</span>
+<span class="nc" id="L737">				adblAdjFirstDerivative[i] = adblBesselC1[i];</span>
 			else {
-<span class="nc" id="L738">				double dblSign = 0.;</span>
-<span class="nc" id="L739">				double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);</span>
-<span class="nc" id="L740">				double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);</span>
+<span class="nc" id="L739">				double dblSign = 0.;</span>
+<span class="nc" id="L740">				double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);</span>
+<span class="nc" id="L741">				double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);</span>
 
-<span class="nc bnc" id="L742" title="All 2 branches missed.">				if (adblFirstDerivative[i - 1] * adblFirstDerivative[i] &lt; 0.)</span>
-<span class="nc bnc" id="L743" title="All 2 branches missed.">					dblSign = adblResponseValue[i] &gt; 0. ? 1. : -1.;</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">				if (adblFirstDerivative[i - 1] * adblFirstDerivative[i] &lt; 0.)</span>
+<span class="nc bnc" id="L744" title="All 2 branches missed.">					dblSign = adblResponseValue[i] &gt; 0. ? 1. : -1.;</span>
 
-<span class="nc" id="L745">				double dblMinSlope = java.lang.Math.min (java.lang.Math.abs (adblFirstDerivative[i - 1]),</span>
-<span class="nc" id="L746">					java.lang.Math.abs (adblFirstDerivative[i]));</span>
+<span class="nc" id="L746">				double dblMinSlope = java.lang.Math.min (java.lang.Math.abs (adblFirstDerivative[i - 1]),</span>
+<span class="nc" id="L747">					java.lang.Math.abs (adblFirstDerivative[i]));</span>
 
-<span class="nc bnc" id="L748" title="All 2 branches missed.">				if (dblSign &gt;= 0.)</span>
-<span class="nc" id="L749">					adblAdjFirstDerivative[i] = java.lang.Math.min (java.lang.Math.max (0.,</span>
+<span class="nc bnc" id="L749" title="All 2 branches missed.">				if (dblSign &gt;= 0.)</span>
+<span class="nc" id="L750">					adblAdjFirstDerivative[i] = java.lang.Math.min (java.lang.Math.max (0.,</span>
 						adblFirstDerivative[i]), 5. * dblMinSlope);
 				else
-<span class="nc" id="L752">					adblAdjFirstDerivative[i] = java.lang.Math.max (java.lang.Math.min (0.,</span>
+<span class="nc" id="L753">					adblAdjFirstDerivative[i] = java.lang.Math.max (java.lang.Math.min (0.,</span>
 						adblFirstDerivative[i]), -5. * dblMinSlope);
 
-<span class="nc" id="L755">				double dblA = java.lang.Math.max (0., adblAdjFirstDerivative[i] / adblNodeC1[i - 1]);</span>
+<span class="nc" id="L756">				double dblA = java.lang.Math.max (0., adblAdjFirstDerivative[i] / adblNodeC1[i - 1]);</span>
 
-<span class="nc" id="L757">				double dblB = java.lang.Math.max (0., adblAdjFirstDerivative[i + 1] / adblNodeC1[i]);</span>
+<span class="nc" id="L758">				double dblB = java.lang.Math.max (0., adblAdjFirstDerivative[i + 1] / adblNodeC1[i]);</span>
 
-<span class="nc bnc" id="L759" title="All 2 branches missed.">				double dblDPlus = adblAdjFirstDerivative[i] * adblNodeC1[i] &gt; 0. ? adblAdjFirstDerivative[i]</span>
+<span class="nc bnc" id="L760" title="All 2 branches missed.">				double dblDPlus = adblAdjFirstDerivative[i] * adblNodeC1[i] &gt; 0. ? adblAdjFirstDerivative[i]</span>
 					: 0.;
-<span class="nc bnc" id="L761" title="All 2 branches missed.">				double dblDMinus = adblAdjFirstDerivative[i] * adblNodeC1[i - 1] &gt; 0. ?</span>
+<span class="nc bnc" id="L762" title="All 2 branches missed.">				double dblDMinus = adblAdjFirstDerivative[i] * adblNodeC1[i - 1] &gt; 0. ?</span>
 					adblAdjFirstDerivative[i] : 0.;
-<span class="nc" id="L763">				double dblALeft = (-7.9 * dblDPlus - 0.26 * dblDPlus * dblB) / dblHPlus;</span>
-<span class="nc" id="L764">				double dblARight = ((20. - 2. * dblB) * adblNodeC1[i] - 8. * dblDPlus - 0.48 * dblDPlus *</span>
+<span class="nc" id="L764">				double dblALeft = (-7.9 * dblDPlus - 0.26 * dblDPlus * dblB) / dblHPlus;</span>
+<span class="nc" id="L765">				double dblARight = ((20. - 2. * dblB) * adblNodeC1[i] - 8. * dblDPlus - 0.48 * dblDPlus *</span>
 					dblB) / dblHPlus;
-<span class="nc" id="L766">				double dblBLeft = ((2. * dblA - 20.) * adblNodeC1[i - 1] + 8. * dblDMinus - 0.48 * dblDMinus</span>
+<span class="nc" id="L767">				double dblBLeft = ((2. * dblA - 20.) * adblNodeC1[i - 1] + 8. * dblDMinus - 0.48 * dblDMinus</span>
 					* dblA) / dblHMinus;
-<span class="nc" id="L768">				double dblBRight = (7.9 * dblDMinus + 0.26 * dblDMinus * dblA) / dblHMinus;</span>
+<span class="nc" id="L769">				double dblBRight = (7.9 * dblDMinus + 0.26 * dblDMinus * dblA) / dblHMinus;</span>
 
-<span class="nc bnc" id="L770" title="All 4 branches missed.">				if (dblARight &lt;= dblBLeft || dblALeft &gt;= dblBRight) {</span>
-<span class="nc" id="L771">					double dblDenom = ((8. + 0.48 * dblB) / dblHPlus) + ((8. + 0.48 * dblA) / dblHMinus);</span>
-<span class="nc" id="L772">					adblAdjFirstDerivative[i] = (20. - 2. * dblB) * adblNodeC1[i] / dblHPlus;</span>
-<span class="nc" id="L773">					adblAdjFirstDerivative[i] += (20. - 2. * dblA) * adblNodeC1[i - 1] / dblHMinus;</span>
-<span class="nc" id="L774">					adblAdjFirstDerivative[i] /= dblDenom;</span>
+<span class="nc bnc" id="L771" title="All 4 branches missed.">				if (dblARight &lt;= dblBLeft || dblALeft &gt;= dblBRight) {</span>
+<span class="nc" id="L772">					double dblDenom = ((8. + 0.48 * dblB) / dblHPlus) + ((8. + 0.48 * dblA) / dblHMinus);</span>
+<span class="nc" id="L773">					adblAdjFirstDerivative[i] = (20. - 2. * dblB) * adblNodeC1[i] / dblHPlus;</span>
+<span class="nc" id="L774">					adblAdjFirstDerivative[i] += (20. - 2. * dblA) * adblNodeC1[i - 1] / dblHMinus;</span>
+<span class="nc" id="L775">					adblAdjFirstDerivative[i] /= dblDenom;</span>
 				}
 			}
 		}
 
-<span class="nc" id="L779">		return adblAdjFirstDerivative;</span>
+<span class="nc" id="L780">		return adblAdjFirstDerivative;</span>
 	}
 
 	/**
@@ -799,23 +800,23 @@ public class LocalMonotoneCkGenerator {
 		final boolean bApplyMonotoneFilter)
 	{
 		try {
-<span class="fc" id="L802">			LocalMonotoneCkGenerator lcr = new LocalMonotoneCkGenerator (adblPredictorOrdinate,</span>
+<span class="fc" id="L803">			LocalMonotoneCkGenerator lcr = new LocalMonotoneCkGenerator (adblPredictorOrdinate,</span>
 				adblResponseValue);
 
-<span class="pc bpc" id="L805" title="1 of 2 branches missed.">			if (!lcr.generateC1 (strGeneratorType)) return null;</span>
+<span class="pc bpc" id="L806" title="1 of 2 branches missed.">			if (!lcr.generateC1 (strGeneratorType)) return null;</span>
 
-<span class="pc bpc" id="L807" title="1 of 4 branches missed.">			if (bEliminateSpuriousExtrema &amp;&amp; !lcr.eliminateSpuriousExtrema()) return null;</span>
+<span class="pc bpc" id="L808" title="1 of 4 branches missed.">			if (bEliminateSpuriousExtrema &amp;&amp; !lcr.eliminateSpuriousExtrema()) return null;</span>
 
-<span class="fc bfc" id="L809" title="All 2 branches covered.">			if (bApplyMonotoneFilter) {</span>
-<span class="pc bpc" id="L810" title="1 of 2 branches missed.">				if (!lcr.applyMonotoneFilter()) return null;</span>
+<span class="fc bfc" id="L810" title="All 2 branches covered.">			if (bApplyMonotoneFilter) {</span>
+<span class="pc bpc" id="L811" title="1 of 2 branches missed.">				if (!lcr.applyMonotoneFilter()) return null;</span>
 			}
 
-<span class="fc" id="L813">			return lcr;</span>
-<span class="nc" id="L814">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L815">			e.printStackTrace();</span>
+<span class="fc" id="L814">			return lcr;</span>
+<span class="nc" id="L815">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L816">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L818">		return null;</span>
+<span class="nc" id="L819">		return null;</span>
 	}
 
 	/**
@@ -837,17 +838,17 @@ public class LocalMonotoneCkGenerator {
 		final boolean bEliminateSpuriousExtrema,
 		final boolean bApplyMonotoneFilter)
 	{
-<span class="pc bpc" id="L840" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L841" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
 
-<span class="fc" id="L842">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
-<span class="fc" id="L843">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L843">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
+<span class="fc" id="L844">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
 
-<span class="pc bpc" id="L845" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L846" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
 
-<span class="fc bfc" id="L847" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
-<span class="fc" id="L848">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
+<span class="fc bfc" id="L848" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
+<span class="fc" id="L849">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
 
-<span class="fc" id="L850">		return Create (adblPredictorOrdinate, adblResponseValue, strGeneratorType, bEliminateSpuriousExtrema,</span>
+<span class="fc" id="L851">		return Create (adblPredictorOrdinate, adblResponseValue, strGeneratorType, bEliminateSpuriousExtrema,</span>
 			bApplyMonotoneFilter);
 	}
 
@@ -855,74 +856,74 @@ public class LocalMonotoneCkGenerator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 		throws java.lang.Exception
-<span class="fc" id="L858">	{</span>
-<span class="pc bpc" id="L859" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =</span>
+<span class="fc" id="L859">	{</span>
+<span class="pc bpc" id="L860" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =</span>
 			adblResponseValue))
-<span class="nc" id="L861">			throw new java.lang.Exception (&quot;LocalMonotoneCkGenerator ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L862">			throw new java.lang.Exception (&quot;LocalMonotoneCkGenerator ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L863">		int iSize = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L864">		int iSize = _adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L865" title="2 of 4 branches missed.">		if (0 == iSize || iSize != _adblResponseValue.length)</span>
-<span class="nc" id="L866">			throw new java.lang.Exception (&quot;LocalMonotoneCkGenerator ctr: Invalid Inputs!&quot;);</span>
-<span class="fc" id="L867">	}</span>
+<span class="pc bpc" id="L866" title="2 of 4 branches missed.">		if (0 == iSize || iSize != _adblResponseValue.length)</span>
+<span class="nc" id="L867">			throw new java.lang.Exception (&quot;LocalMonotoneCkGenerator ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L868">	}</span>
 
 	private boolean generateC1 (
 		final java.lang.String strGeneratorType)
 	{
-<span class="pc bpc" id="L872" title="2 of 4 branches missed.">		if (null == strGeneratorType || strGeneratorType.isEmpty()) return false;</span>
+<span class="pc bpc" id="L873" title="2 of 4 branches missed.">		if (null == strGeneratorType || strGeneratorType.isEmpty()) return false;</span>
 
-<span class="fc bfc" id="L874" title="All 2 branches covered.">		if (C1_AKIMA.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L875" title="2 of 4 branches missed.">			return null != (_adblC1 = AkimaC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L875" title="All 2 branches covered.">		if (C1_AKIMA.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L876" title="2 of 4 branches missed.">			return null != (_adblC1 = AkimaC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="fc bfc" id="L878" title="All 2 branches covered.">		if (C1_BESSEL.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L879" title="2 of 4 branches missed.">			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L879" title="All 2 branches covered.">		if (C1_BESSEL.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L880" title="2 of 4 branches missed.">			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="fc bfc" id="L882" title="All 2 branches covered.">		if (C1_HARMONIC.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L883" title="2 of 4 branches missed.">			return null != (_adblC1 = HarmonicC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L883" title="All 2 branches covered.">		if (C1_HARMONIC.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L884" title="2 of 4 branches missed.">			return null != (_adblC1 = HarmonicC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="fc bfc" id="L886" title="All 2 branches covered.">		if (C1_HUYNH_LE_FLOCH.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L887" title="2 of 4 branches missed.">			return null != (_adblC1 = HuynhLeFlochLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp;</span>
+<span class="fc bfc" id="L887" title="All 2 branches covered.">		if (C1_HUYNH_LE_FLOCH.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L888" title="2 of 4 branches missed.">			return null != (_adblC1 = HuynhLeFlochLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp;</span>
 				0 != _adblC1.length;
 
-<span class="fc bfc" id="L890" title="All 2 branches covered.">		if (C1_HYMAN83.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L891" title="2 of 4 branches missed.">			return null != (_adblC1 = Hyman83C1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L891" title="All 2 branches covered.">		if (C1_HYMAN83.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L892" title="2 of 4 branches missed.">			return null != (_adblC1 = Hyman83C1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="fc bfc" id="L894" title="All 2 branches covered.">		if (C1_HYMAN89.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L895" title="2 of 4 branches missed.">			return null != (_adblC1 = Hyman89C1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L895" title="All 2 branches covered.">		if (C1_HYMAN89.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L896" title="2 of 4 branches missed.">			return null != (_adblC1 = Hyman89C1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="fc bfc" id="L898" title="All 2 branches covered.">		if (C1_KRUGER.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L899" title="2 of 4 branches missed.">			return null != (_adblC1 = KrugerC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L899" title="All 2 branches covered.">		if (C1_KRUGER.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L900" title="2 of 4 branches missed.">			return null != (_adblC1 = KrugerC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="fc bfc" id="L902" title="All 2 branches covered.">		if (C1_MONOTONE_CONVEX.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L903" title="2 of 4 branches missed.">			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="fc bfc" id="L903" title="All 2 branches covered.">		if (C1_MONOTONE_CONVEX.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L904" title="2 of 4 branches missed.">			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 			_adblC1.length;
 
-<span class="pc bpc" id="L906" title="1 of 2 branches missed.">		if (C1_VANILLA.equalsIgnoreCase (strGeneratorType))</span>
-<span class="nc bnc" id="L907" title="All 4 branches missed.">			return null != (_adblC1 = LinearC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="pc bpc" id="L907" title="1 of 2 branches missed.">		if (C1_VANILLA.equalsIgnoreCase (strGeneratorType))</span>
+<span class="nc bnc" id="L908" title="All 4 branches missed.">			return null != (_adblC1 = LinearC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="pc bpc" id="L910" title="1 of 2 branches missed.">		if (C1_VAN_LEER.equalsIgnoreCase (strGeneratorType))</span>
-<span class="pc bpc" id="L911" title="2 of 4 branches missed.">			return null != (_adblC1 = VanLeerLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
+<span class="pc bpc" id="L911" title="1 of 2 branches missed.">		if (C1_VAN_LEER.equalsIgnoreCase (strGeneratorType))</span>
+<span class="pc bpc" id="L912" title="2 of 4 branches missed.">			return null != (_adblC1 = VanLeerLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &amp;&amp; 0 !=</span>
 				_adblC1.length;
 
-<span class="nc" id="L914">		return false;</span>
+<span class="nc" id="L915">		return false;</span>
 	}
 
 	private boolean eliminateSpuriousExtrema()
 	{
-<span class="pc bpc" id="L919" title="2 of 4 branches missed.">		return null != (_adblC1 = EliminateSpuriousExtrema (_adblC1, LinearC1 (_adblPredictorOrdinate,</span>
+<span class="pc bpc" id="L920" title="2 of 4 branches missed.">		return null != (_adblC1 = EliminateSpuriousExtrema (_adblC1, LinearC1 (_adblPredictorOrdinate,</span>
 			_adblResponseValue))) &amp;&amp; 0 != _adblC1.length; 
 	}
 
 	private boolean applyMonotoneFilter()
 	{
-<span class="pc bpc" id="L925" title="2 of 4 branches missed.">		return null != (_adblC1 = ApplyMonotoneFilter (_adblC1, LinearC1 (_adblPredictorOrdinate,</span>
+<span class="pc bpc" id="L926" title="2 of 4 branches missed.">		return null != (_adblC1 = ApplyMonotoneFilter (_adblC1, LinearC1 (_adblPredictorOrdinate,</span>
 			_adblResponseValue))) &amp;&amp; 0 != _adblC1.length; 
 	}
 
@@ -934,7 +935,7 @@ public class LocalMonotoneCkGenerator {
 
 	public double[] C1()
 	{
-<span class="fc" id="L937">		return _adblC1;</span>
+<span class="fc" id="L938">		return _adblC1;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

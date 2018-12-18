@@ -96,9 +96,10 @@ package org.drip.xva.strategy;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -123,7 +124,7 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	{
 		try
 		{
-<span class="fc" id="L126">			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (</span>
+<span class="fc" id="L127">			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (</span>
 				new org.drip.xva.netting.CreditDebtGroupPath[]
 				{
 					creditDebtGroupPath
@@ -131,12 +132,12 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 				marketPath
 			);
 		}
-<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L135">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L136">			e.printStackTrace();</span>
+<span class="nc" id="L137">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L140">		return null;</span>
 	}
 
 	/**
@@ -153,50 +154,50 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L156">		super (</span>
+<span class="fc" id="L157">		super (</span>
 			creditDebtGroupPathArray,
 			marketPath
 		);
-<span class="fc" id="L160">	}</span>
+<span class="fc" id="L161">	}</span>
 
 	@Override public double fundingValueAdjustment()
 	{
-<span class="fc" id="L164">		return unilateralFundingValueAdjustment();</span>
+<span class="fc" id="L165">		return unilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double fundingDebtAdjustment()
 	{
-<span class="fc" id="L169">		return unilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L170">		return unilateralFundingDebtAdjustment();</span>
 	}
 
 	@Override public double fundingCostAdjustment()
 	{
-<span class="fc" id="L174">		return unilateralFundingValueAdjustment();</span>
+<span class="fc" id="L175">		return unilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double fundingBenefitAdjustment()
 	{
-<span class="fc" id="L179">		return unilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L180">		return unilateralFundingDebtAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingValueAdjustment()
 	{
-<span class="fc" id="L184">		return periodBilateralFundingValueAdjustment();</span>
+<span class="fc" id="L185">		return periodBilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingDebtAdjustment()
 	{
-<span class="fc" id="L189">		return periodBilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L190">		return periodBilateralFundingDebtAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingCostAdjustment()
 	{
-<span class="fc" id="L194">		return periodUnilateralFundingValueAdjustment();</span>
+<span class="fc" id="L195">		return periodUnilateralFundingValueAdjustment();</span>
 	}
 
 	@Override public double[] periodFundingBenefitAdjustment()
 	{
-<span class="fc" id="L199">		return periodUnilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L200">		return periodUnilateralFundingDebtAdjustment();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

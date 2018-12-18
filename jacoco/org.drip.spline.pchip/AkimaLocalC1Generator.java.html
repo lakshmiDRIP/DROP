@@ -82,9 +82,10 @@ package org.drip.spline.pchip;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -92,10 +93,10 @@ package org.drip.spline.pchip;
  */
 
 public class AkimaLocalC1Generator {
-<span class="fc" id="L95">	private double[] _adblResponseValue = null;</span>
-<span class="fc" id="L96">	private double[] _adblPredictorOrdinate = null;</span>
-<span class="fc" id="L97">	private double[] _adblExtendedResponseValue = null;</span>
-<span class="fc" id="L98">	private double[] _adblExtendedPredictorOrdinate = null;</span>
+<span class="fc" id="L96">	private double[] _adblResponseValue = null;</span>
+<span class="fc" id="L97">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L98">	private double[] _adblExtendedResponseValue = null;</span>
+<span class="fc" id="L99">	private double[] _adblExtendedPredictorOrdinate = null;</span>
 
 	/**
 	 * Construct an Instance of AkimaLocalC1Generator from the Array of the supplied Predictor Ordinates
@@ -111,121 +112,121 @@ public class AkimaLocalC1Generator {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-<span class="fc" id="L114">		AkimaLocalC1Generator alcr = null;</span>
+<span class="fc" id="L115">		AkimaLocalC1Generator alcr = null;</span>
 
 		try {
-<span class="fc" id="L117">			alcr = new AkimaLocalC1Generator (adblPredictorOrdinate, adblResponseValue);</span>
-<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L119">			e.printStackTrace();</span>
+<span class="fc" id="L118">			alcr = new AkimaLocalC1Generator (adblPredictorOrdinate, adblResponseValue);</span>
+<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
 
-<span class="nc" id="L121">			return null;</span>
-<span class="fc" id="L122">		}</span>
+<span class="nc" id="L122">			return null;</span>
+<span class="fc" id="L123">		}</span>
 
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		return alcr.extendPredictorOrdinate() &amp;&amp; alcr.extendResponseValue() ? alcr : null;</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		return alcr.extendPredictorOrdinate() &amp;&amp; alcr.extendResponseValue() ? alcr : null;</span>
 	}
 
 	private AkimaLocalC1Generator (
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 		throws java.lang.Exception
-<span class="fc" id="L131">	{</span>
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =</span>
+<span class="fc" id="L132">	{</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =</span>
 			adblResponseValue))
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;AkimaLocalC1Generator ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;AkimaLocalC1Generator ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L136">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L137">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L138" title="2 of 4 branches missed.">		if (2 &gt;= iNumPredictorOrdinate || iNumPredictorOrdinate != _adblResponseValue.length)</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;AkimaLocalC1Generator ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L140">	}</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (2 &gt;= iNumPredictorOrdinate || iNumPredictorOrdinate != _adblResponseValue.length)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;AkimaLocalC1Generator ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L141">	}</span>
 
 	private boolean extendPredictorOrdinate()
 	{
-<span class="fc" id="L144">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
-<span class="fc" id="L145">		int iNumExtendedPredictorOrdinate = iNumPredictorOrdinate + 4;</span>
-<span class="fc" id="L146">		_adblExtendedPredictorOrdinate = new double[iNumExtendedPredictorOrdinate];</span>
+<span class="fc" id="L145">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L146">		int iNumExtendedPredictorOrdinate = iNumPredictorOrdinate + 4;</span>
+<span class="fc" id="L147">		_adblExtendedPredictorOrdinate = new double[iNumExtendedPredictorOrdinate];</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumExtendedPredictorOrdinate; ++i) {</span>
-<span class="fc bfc" id="L149" title="All 4 branches covered.">			if (2 &lt;= i &amp;&amp; iNumExtendedPredictorOrdinate - 3 &gt;= i)</span>
-<span class="fc" id="L150">				_adblExtendedPredictorOrdinate[i] = _adblPredictorOrdinate[i - 2];</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumExtendedPredictorOrdinate; ++i) {</span>
+<span class="fc bfc" id="L150" title="All 4 branches covered.">			if (2 &lt;= i &amp;&amp; iNumExtendedPredictorOrdinate - 3 &gt;= i)</span>
+<span class="fc" id="L151">				_adblExtendedPredictorOrdinate[i] = _adblPredictorOrdinate[i - 2];</span>
 		}
 
-<span class="fc" id="L153">		double dblSkippedLeftPredictorWidth = _adblPredictorOrdinate[2] - _adblPredictorOrdinate[0];</span>
-<span class="fc" id="L154">		_adblExtendedPredictorOrdinate[0] = _adblPredictorOrdinate[0] - dblSkippedLeftPredictorWidth;</span>
-<span class="fc" id="L155">		_adblExtendedPredictorOrdinate[1] = _adblPredictorOrdinate[1] - dblSkippedLeftPredictorWidth;</span>
-<span class="fc" id="L156">		double dblSkippedRightPredictorWidth = _adblPredictorOrdinate[iNumPredictorOrdinate - 1] -</span>
+<span class="fc" id="L154">		double dblSkippedLeftPredictorWidth = _adblPredictorOrdinate[2] - _adblPredictorOrdinate[0];</span>
+<span class="fc" id="L155">		_adblExtendedPredictorOrdinate[0] = _adblPredictorOrdinate[0] - dblSkippedLeftPredictorWidth;</span>
+<span class="fc" id="L156">		_adblExtendedPredictorOrdinate[1] = _adblPredictorOrdinate[1] - dblSkippedLeftPredictorWidth;</span>
+<span class="fc" id="L157">		double dblSkippedRightPredictorWidth = _adblPredictorOrdinate[iNumPredictorOrdinate - 1] -</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 3];
-<span class="fc" id="L158">		_adblExtendedPredictorOrdinate[iNumExtendedPredictorOrdinate - 2] =</span>
+<span class="fc" id="L159">		_adblExtendedPredictorOrdinate[iNumExtendedPredictorOrdinate - 2] =</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 2] + dblSkippedRightPredictorWidth;
-<span class="fc" id="L160">		_adblExtendedPredictorOrdinate[iNumExtendedPredictorOrdinate - 1] =</span>
+<span class="fc" id="L161">		_adblExtendedPredictorOrdinate[iNumExtendedPredictorOrdinate - 1] =</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] + dblSkippedRightPredictorWidth;
-<span class="fc" id="L162">		return true;</span>
+<span class="fc" id="L163">		return true;</span>
 	}
 
 	private boolean setExtendedResponseValue (
 		final int i,
 		final boolean bRight)
 	{
-<span class="fc bfc" id="L169" title="All 2 branches covered.">		if (bRight) {</span>
-<span class="fc" id="L170">			_adblExtendedResponseValue[i] = 2. * (_adblExtendedResponseValue[i - 1] -</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		if (bRight) {</span>
+<span class="fc" id="L171">			_adblExtendedResponseValue[i] = 2. * (_adblExtendedResponseValue[i - 1] -</span>
 				_adblExtendedResponseValue[i - 2]) / (_adblExtendedPredictorOrdinate[i - 1] -
 					_adblExtendedPredictorOrdinate[i - 2]) - ((_adblExtendedResponseValue[i - 2] -
 						_adblExtendedResponseValue[i - 3]) / (_adblExtendedPredictorOrdinate[i - 2] -
 							_adblExtendedPredictorOrdinate[i - 3]));
-<span class="fc" id="L175">			_adblExtendedResponseValue[i] = _adblExtendedResponseValue[i] * (_adblExtendedResponseValue[i] -</span>
+<span class="fc" id="L176">			_adblExtendedResponseValue[i] = _adblExtendedResponseValue[i] * (_adblExtendedResponseValue[i] -</span>
 				_adblExtendedResponseValue[i - 1]) + _adblExtendedResponseValue[i - 1];
 		} else {
-<span class="fc" id="L178">			_adblExtendedResponseValue[i] = 2. * (_adblExtendedResponseValue[i + 2] -</span>
+<span class="fc" id="L179">			_adblExtendedResponseValue[i] = 2. * (_adblExtendedResponseValue[i + 2] -</span>
 				_adblExtendedResponseValue[i + 1]) / (_adblExtendedPredictorOrdinate[i + 2] -
 					_adblExtendedPredictorOrdinate[i + 1]) - ((_adblExtendedResponseValue[i + 3] -
 						_adblExtendedResponseValue[i + 2]) / (_adblExtendedPredictorOrdinate[i + 3] -
 							_adblExtendedPredictorOrdinate[i + 2]));
-<span class="fc" id="L183">			_adblExtendedResponseValue[i] = _adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]</span>
+<span class="fc" id="L184">			_adblExtendedResponseValue[i] = _adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]</span>
 				* (_adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]);
 		}
 
-<span class="fc" id="L187">		return true;</span>
+<span class="fc" id="L188">		return true;</span>
 	}
 
 	private boolean extendResponseValue()
 	{
-<span class="fc" id="L192">		int iNumResponseValue = _adblResponseValue.length;</span>
-<span class="fc" id="L193">		int iNumExtendedResponseValue = iNumResponseValue + 4;</span>
-<span class="fc" id="L194">		_adblExtendedResponseValue = new double[iNumExtendedResponseValue];</span>
+<span class="fc" id="L193">		int iNumResponseValue = _adblResponseValue.length;</span>
+<span class="fc" id="L194">		int iNumExtendedResponseValue = iNumResponseValue + 4;</span>
+<span class="fc" id="L195">		_adblExtendedResponseValue = new double[iNumExtendedResponseValue];</span>
 
-<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumExtendedResponseValue; ++i) {</span>
-<span class="fc bfc" id="L197" title="All 4 branches covered.">			if (2 &lt;= i &amp;&amp; iNumExtendedResponseValue - 3 &gt;= i)</span>
-<span class="fc" id="L198">				_adblExtendedResponseValue[i] = _adblResponseValue[i - 2];</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumExtendedResponseValue; ++i) {</span>
+<span class="fc bfc" id="L198" title="All 4 branches covered.">			if (2 &lt;= i &amp;&amp; iNumExtendedResponseValue - 3 &gt;= i)</span>
+<span class="fc" id="L199">				_adblExtendedResponseValue[i] = _adblResponseValue[i - 2];</span>
 		}
 
-<span class="pc bpc" id="L201" title="2 of 4 branches missed.">		return setExtendedResponseValue (1, false) &amp;&amp; setExtendedResponseValue (0, false) &amp;&amp;</span>
-<span class="pc bpc" id="L202" title="1 of 2 branches missed.">			setExtendedResponseValue (iNumExtendedResponseValue - 2, true) &amp;&amp; setExtendedResponseValue</span>
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">				(iNumExtendedResponseValue - 1, true) ? true : false;</span>
+<span class="pc bpc" id="L202" title="2 of 4 branches missed.">		return setExtendedResponseValue (1, false) &amp;&amp; setExtendedResponseValue (0, false) &amp;&amp;</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">			setExtendedResponseValue (iNumExtendedResponseValue - 2, true) &amp;&amp; setExtendedResponseValue</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">				(iNumExtendedResponseValue - 1, true) ? true : false;</span>
 	}
 
 	public double[] C1()
 	{
-<span class="fc" id="L208">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
-<span class="fc" id="L209">		double[] adblC1 = new double[iNumPredictorOrdinate];</span>
-<span class="fc" id="L210">		double[] adblExtendedSlope = new double[iNumPredictorOrdinate + 3];</span>
+<span class="fc" id="L209">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L210">		double[] adblC1 = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L211">		double[] adblExtendedSlope = new double[iNumPredictorOrdinate + 3];</span>
 
-<span class="fc bfc" id="L212" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate + 3; ++i)</span>
-<span class="fc" id="L213">			adblExtendedSlope[i] = (_adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]) /</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate + 3; ++i)</span>
+<span class="fc" id="L214">			adblExtendedSlope[i] = (_adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]) /</span>
 				(_adblExtendedPredictorOrdinate[i + 1] - _adblExtendedPredictorOrdinate[i]);
 
-<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="fc" id="L217">			double dblSlope10 = java.lang.Math.abs (adblExtendedSlope[i + 1] - adblExtendedSlope[i]);</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="fc" id="L218">			double dblSlope10 = java.lang.Math.abs (adblExtendedSlope[i + 1] - adblExtendedSlope[i]);</span>
 
-<span class="fc" id="L219">			double dblSlope32 = java.lang.Math.abs (adblExtendedSlope[i + 3] - adblExtendedSlope[i + 2]);</span>
+<span class="fc" id="L220">			double dblSlope32 = java.lang.Math.abs (adblExtendedSlope[i + 3] - adblExtendedSlope[i + 2]);</span>
 
-<span class="pc bpc" id="L221" title="3 of 4 branches missed.">			if (0. == dblSlope10 &amp;&amp; 0. == dblSlope32)</span>
-<span class="nc" id="L222">				adblC1[i] = 0.5 * (adblExtendedSlope[i + 1] + adblExtendedSlope[i + 2]);</span>
+<span class="pc bpc" id="L222" title="3 of 4 branches missed.">			if (0. == dblSlope10 &amp;&amp; 0. == dblSlope32)</span>
+<span class="nc" id="L223">				adblC1[i] = 0.5 * (adblExtendedSlope[i + 1] + adblExtendedSlope[i + 2]);</span>
 			else
-<span class="fc" id="L224">				adblC1[i] = (dblSlope32 * adblExtendedSlope[i + 1] + dblSlope10 * adblExtendedSlope[i + 2]) /</span>
+<span class="fc" id="L225">				adblC1[i] = (dblSlope32 * adblExtendedSlope[i + 1] + dblSlope10 * adblExtendedSlope[i + 2]) /</span>
 					(dblSlope10 + dblSlope32);
 		}
 
-<span class="fc" id="L228">		return adblC1;</span>
+<span class="fc" id="L229">		return adblC1;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

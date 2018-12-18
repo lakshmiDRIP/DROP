@@ -96,9 +96,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -116,7 +117,7 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 
 	public static final CurvatureEstimatorFRTB Standard()
 	{
-<span class="nc" id="L119">		return new CurvatureEstimatorFRTB();</span>
+<span class="nc" id="L120">		return new CurvatureEstimatorFRTB();</span>
 	}
 
 	/**
@@ -124,8 +125,8 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 	 */
 
 	public CurvatureEstimatorFRTB()
-<span class="nc" id="L127">	{</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc" id="L129">	}</span>
 
 	@Override public double margin (
 		final double cumulativeRiskFactorSensitivity,
@@ -133,14 +134,14 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
 			0. &gt; riskFactorSensitivityVariance)
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;CurvatureEstimatorFRTB::margin =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;CurvatureEstimatorFRTB::margin =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L142">		return java.lang.Math.sqrt (</span>
-<span class="nc" id="L143">			java.lang.Math.max (</span>
+<span class="nc" id="L143">		return java.lang.Math.sqrt (</span>
+<span class="nc" id="L144">			java.lang.Math.max (</span>
 				cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance,
 				0.
 			)
@@ -149,7 +150,7 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 
 	@Override public boolean isCorrelatorQuadratric()
 	{
-<span class="nc" id="L152">		return false;</span>
+<span class="nc" id="L153">		return false;</span>
 	}
 
 	@Override public double varianceModulator (
@@ -159,7 +160,7 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 		final double bucketVariance2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L162">		return 1.;</span>
+<span class="nc" id="L163">		return 1.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

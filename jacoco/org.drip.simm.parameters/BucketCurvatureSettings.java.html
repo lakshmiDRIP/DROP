@@ -96,9 +96,10 @@ package org.drip.simm.parameters;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,7 +108,7 @@ package org.drip.simm.parameters;
 
 public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVegaSettings
 {
-<span class="nc" id="L110">	private double _tenorScalingFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _tenorScalingFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the ISDA Standard BucketCurvatureSettings
@@ -128,20 +129,20 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 	{
 		try
 		{
-<span class="nc" id="L131">			return new BucketCurvatureSettings (</span>
+<span class="nc" id="L132">			return new BucketCurvatureSettings (</span>
 				riskWeight,
 				memberCorrelation,
 				impliedVolatility,
-<span class="nc" id="L135">				org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard().evaluate</span>
-<span class="nc" id="L136">					(vegaDurationDays)</span>
+<span class="nc" id="L136">				org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard().evaluate</span>
+<span class="nc" id="L137">					(vegaDurationDays)</span>
 			);
 		}
-<span class="nc" id="L139">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L140">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L141">			e.printStackTrace();</span>
+<span class="nc" id="L142">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L144">		return null;</span>
+<span class="nc" id="L145">		return null;</span>
 	}
 
 	/**
@@ -158,24 +159,24 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final int vegaDurationDays)
 	{
 		org.drip.simm.equity.EQBucket equityBucket =
-<span class="nc" id="L161">			org.drip.simm.equity.EQSettingsContainer20.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L162">			org.drip.simm.equity.EQSettingsContainer20.BucketMap().get (bucketIndex);</span>
 
 		try
 		{
-<span class="nc bnc" id="L165" title="All 2 branches missed.">			return null == equityBucket ? null : BucketCurvatureSettings.ISDA (</span>
-<span class="nc" id="L166">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L167">				equityBucket.memberCorrelation(),</span>
-<span class="nc" id="L168">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L169">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			return null == equityBucket ? null : BucketCurvatureSettings.ISDA (</span>
+<span class="nc" id="L167">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L168">				equityBucket.memberCorrelation(),</span>
+<span class="nc" id="L169">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L170">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				vegaDurationDays
 			);
 		}
-<span class="nc" id="L173">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L174">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L175">			e.printStackTrace();</span>
+<span class="nc" id="L176">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L179">		return null;</span>
 	}
 
 	/**
@@ -192,24 +193,24 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final int vegaDurationDays)
 	{
 		org.drip.simm.equity.EQBucket equityBucket =
-<span class="nc" id="L195">			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L196">			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);</span>
 
 		try
 		{
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			return null == equityBucket ? null : BucketCurvatureSettings.ISDA (</span>
-<span class="nc" id="L200">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L201">				equityBucket.memberCorrelation(),</span>
-<span class="nc" id="L202">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L203">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			return null == equityBucket ? null : BucketCurvatureSettings.ISDA (</span>
+<span class="nc" id="L201">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L202">				equityBucket.memberCorrelation(),</span>
+<span class="nc" id="L203">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L204">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				vegaDurationDays
 			);
 		}
-<span class="nc" id="L207">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L209">			e.printStackTrace();</span>
+<span class="nc" id="L210">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L212">		return null;</span>
+<span class="nc" id="L213">		return null;</span>
 	}
 
 	/**
@@ -226,24 +227,24 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final int vegaDurationDays)
 	{
 		org.drip.simm.commodity.CTBucket commodityBucket =
-<span class="nc" id="L229">			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L230">			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);</span>
 
 		try
 		{
-<span class="nc bnc" id="L233" title="All 2 branches missed.">			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (</span>
-<span class="nc" id="L234">				org.drip.simm.commodity.CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L235">				commodityBucket.memberCorrelation(),</span>
-<span class="nc" id="L236">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L237">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (</span>
+<span class="nc" id="L235">				org.drip.simm.commodity.CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L236">				commodityBucket.memberCorrelation(),</span>
+<span class="nc" id="L237">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L238">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				vegaDurationDays
 			);
 		}
-<span class="nc" id="L241">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L242">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L243">			e.printStackTrace();</span>
+<span class="nc" id="L244">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L246">		return null;</span>
+<span class="nc" id="L247">		return null;</span>
 	}
 
 	/**
@@ -260,24 +261,24 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final int vegaDurationDays)
 	{
 		org.drip.simm.commodity.CTBucket commodityBucket =
-<span class="nc" id="L263">			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L264">			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);</span>
 
 		try
 		{
-<span class="nc bnc" id="L267" title="All 2 branches missed.">			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (</span>
-<span class="nc" id="L268">				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L269">				commodityBucket.memberCorrelation(),</span>
-<span class="nc" id="L270">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L271">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (</span>
+<span class="nc" id="L269">				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L270">				commodityBucket.memberCorrelation(),</span>
+<span class="nc" id="L271">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L272">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				vegaDurationDays
 			);
 		}
-<span class="nc" id="L275">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L276">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L277">			e.printStackTrace();</span>
+<span class="nc" id="L278">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L280">		return null;</span>
+<span class="nc" id="L281">		return null;</span>
 	}
 
 	/**
@@ -294,25 +295,25 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final int vegaDurationDays)
 	{
 		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fxConcentrationCategoryVegaMap =
-<span class="nc" id="L297">			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryVegaMap();</span>
+<span class="nc" id="L298">			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryVegaMap();</span>
 
 		try {
-<span class="nc bnc" id="L300" title="All 2 branches missed.">			return !fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ? null :</span>
-<span class="nc" id="L301">				BucketCurvatureSettings.ISDA (</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			return !fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ? null :</span>
+<span class="nc" id="L302">				BucketCurvatureSettings.ISDA (</span>
 					org.drip.simm.fx.FXSystemics20.VEGA_RISK_WEIGHT *
 						org.drip.simm.fx.FXSystemics20.DELTA_RISK_WEIGHT,
 					org.drip.simm.fx.FXSystemics20.CORRELATION,
-<span class="nc" id="L305">					java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L306">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L306">					java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L307">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 					vegaDurationDays
 				);
 		}
-<span class="nc" id="L310">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L311">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L312">			e.printStackTrace();</span>
+<span class="nc" id="L313">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L315">		return null;</span>
+<span class="nc" id="L316">		return null;</span>
 	}
 
 	/**
@@ -329,25 +330,25 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final int vegaDurationDays)
 	{
 		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fxConcentrationCategoryVegaMap =
-<span class="nc" id="L332">			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();</span>
+<span class="nc" id="L333">			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();</span>
 
 		try {
-<span class="nc bnc" id="L335" title="All 2 branches missed.">			return !fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ? null :</span>
-<span class="nc" id="L336">				BucketCurvatureSettings.ISDA (</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">			return !fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ? null :</span>
+<span class="nc" id="L337">				BucketCurvatureSettings.ISDA (</span>
 					org.drip.simm.fx.FXSystemics21.VEGA_RISK_WEIGHT *
 						org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
 					org.drip.simm.fx.FXSystemics21.CORRELATION,
-<span class="nc" id="L340">					java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L341">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L341">					java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L342">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 					vegaDurationDays
 				);
 		}
-<span class="nc" id="L345">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L346">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L347">			e.printStackTrace();</span>
+<span class="nc" id="L348">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L350">		return null;</span>
+<span class="nc" id="L351">		return null;</span>
 	}
 
 	/**
@@ -368,7 +369,7 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 		final double tenorScalingFactor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L371">		super (</span>
+<span class="nc" id="L372">		super (</span>
 			riskWeight,
 			1.,
 			memberCorrelation,
@@ -376,11 +377,11 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 			1.
 		);
 
-<span class="nc bnc" id="L379" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))</span>
 		{
-<span class="nc" id="L381">			throw new java.lang.Exception (&quot;BucketCurvatureSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L382">			throw new java.lang.Exception (&quot;BucketCurvatureSettings Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L383">	}</span>
+<span class="nc" id="L384">	}</span>
 
 	/**
 	 * Retrieve the Tenor Scaling Factor
@@ -390,7 +391,7 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 
 	public double tenorScalingFactor()
 	{
-<span class="nc" id="L393">		return _tenorScalingFactor;</span>
+<span class="nc" id="L394">		return _tenorScalingFactor;</span>
 	}
 
 	/**
@@ -401,12 +402,12 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 
 	public double vegaRiskWeight()
 	{
-<span class="nc" id="L404">		return super.riskWeight();</span>
+<span class="nc" id="L405">		return super.riskWeight();</span>
 	}
 
 	@Override public double riskWeight()
 	{
-<span class="nc" id="L409">		return super.riskWeight() * _tenorScalingFactor;</span>
+<span class="nc" id="L410">		return super.riskWeight() * _tenorScalingFactor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

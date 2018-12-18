@@ -73,9 +73,10 @@ package org.drip.sequence.random;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,10 +84,10 @@ package org.drip.sequence.random;
  */
 
 public class BoundedUniformInteger extends org.drip.sequence.random.UnivariateSequenceGenerator {
-<span class="fc" id="L86">	private int _iStart = -1;</span>
-<span class="fc" id="L87">	private int _iFinish = -1;</span>
+<span class="fc" id="L87">	private int _iStart = -1;</span>
+<span class="fc" id="L88">	private int _iFinish = -1;</span>
 
-<span class="fc" id="L89">	private java.util.Random _rng = new java.util.Random();</span>
+<span class="fc" id="L90">	private java.util.Random _rng = new java.util.Random();</span>
 
 	/**
 	 * BoundedUniformInteger Distribution Constructor
@@ -101,10 +102,10 @@ public class BoundedUniformInteger extends org.drip.sequence.random.UnivariateSe
 		final int iStart,
 		final int iFinish)
 		throws java.lang.Exception
-<span class="fc" id="L104">	{</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if ((_iFinish = iFinish) &lt;= (_iStart = iStart))</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;BoundedUniformInteger constructor: Invalid inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="fc" id="L105">	{</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if ((_iFinish = iFinish) &lt;= (_iStart = iStart))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;BoundedUniformInteger constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L108">	}</span>
 
 	/**
 	 * Retrieve the Start
@@ -114,7 +115,7 @@ public class BoundedUniformInteger extends org.drip.sequence.random.UnivariateSe
 
 	public int start()
 	{
-<span class="nc" id="L117">		return _iStart;</span>
+<span class="nc" id="L118">		return _iStart;</span>
 	}
 
 	/**
@@ -125,30 +126,30 @@ public class BoundedUniformInteger extends org.drip.sequence.random.UnivariateSe
 
 	public int finish()
 	{
-<span class="nc" id="L128">		return _iFinish;</span>
+<span class="nc" id="L129">		return _iFinish;</span>
 	}
 
 	@Override public double random()
 	{
-<span class="fc" id="L133">		return (int) (_iStart + _rng.nextDouble() * (_iFinish - _iStart) + 0.5);</span>
+<span class="fc" id="L134">		return (int) (_iStart + _rng.nextDouble() * (_iFinish - _iStart) + 0.5);</span>
 	}
 
 	@Override public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics sequence (
 		final int iNumEntry,
 		final org.drip.measure.continuous.R1 distPopulation)
 	{
-<span class="fc" id="L140">		double[] adblSequence = new double[iNumEntry];</span>
+<span class="fc" id="L141">		double[] adblSequence = new double[iNumEntry];</span>
 
-<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntry; ++i)</span>
-<span class="fc" id="L143">			adblSequence[i] = random();</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntry; ++i)</span>
+<span class="fc" id="L144">			adblSequence[i] = random();</span>
 
 		try {
-<span class="fc" id="L146">			return new org.drip.sequence.metrics.IntegerSequenceAgnosticMetrics (adblSequence, distPopulation);</span>
-<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="fc" id="L147">			return new org.drip.sequence.metrics.IntegerSequenceAgnosticMetrics (adblSequence, distPopulation);</span>
+<span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L149">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L151">		return null;</span>
+<span class="nc" id="L152">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

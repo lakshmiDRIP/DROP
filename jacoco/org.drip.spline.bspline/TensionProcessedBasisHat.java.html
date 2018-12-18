@@ -75,9 +75,10 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,8 +86,8 @@ package org.drip.spline.bspline;
  */
 
 public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBasisHat {
-<span class="fc" id="L88">	private int _iDerivOrder = -1;</span>
-<span class="fc" id="L89">	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;</span>
+<span class="fc" id="L89">	private int _iDerivOrder = -1;</span>
+<span class="fc" id="L90">	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;</span>
 
 	/**
 	 * TensionProcessedBasisHat constructor
@@ -102,17 +103,17 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final int iDerivOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L105">		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());</span>
+<span class="fc" id="L106">		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());</span>
 
-<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (null == (_tbhRaw = tbhRaw) || 0 &gt;= (_iDerivOrder = iDerivOrder))</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat ctr: Invalid Input&quot;);</span>
-<span class="fc" id="L109">	}</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (null == (_tbhRaw = tbhRaw) || 0 &gt;= (_iDerivOrder = iDerivOrder))</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat ctr: Invalid Input&quot;);</span>
+<span class="fc" id="L110">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L115" title="All 2 branches covered.">		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;</span>
 	}
 
 	@Override public double derivative (
@@ -120,12 +121,12 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (0 &gt; iOrder)</span>
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (0 &gt; iOrder)</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="fc" id="L128">		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);</span>
+<span class="fc" id="L129">		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -133,28 +134,28 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L140">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
+<span class="fc" id="L141">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
 
-<span class="fc" id="L142">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
+<span class="fc" id="L143">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);</span>
 
-<span class="fc" id="L148">		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,</span>
+<span class="fc" id="L149">		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,</span>
 			_iDerivOrder - 1);
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (right()) - _tbhRaw.evaluate (left());</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (right()) - _tbhRaw.evaluate (left());</span>
 
-<span class="nc" id="L157">		return _tbhRaw.derivative (right(), _iDerivOrder - 1) - _tbhRaw.derivative (left(), _iDerivOrder -</span>
+<span class="nc" id="L158">		return _tbhRaw.derivative (right(), _iDerivOrder - 1) - _tbhRaw.derivative (left(), _iDerivOrder -</span>
 			1);
 	}
 }

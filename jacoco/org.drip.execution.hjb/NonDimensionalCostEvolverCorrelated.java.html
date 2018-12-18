@@ -12,12 +12,12 @@ package org.drip.execution.hjb;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.hjb;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -100,8 +101,8 @@ package org.drip.execution.hjb;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb&quot;&gt;Hamilton Jacobin Bellman Based Optimal Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb/README.md&quot;&gt;Hamilton Jacobin Bellman Based Optimal Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -117,38 +118,38 @@ public class NonDimensionalCostEvolverCorrelated extends
 		final double dblNonDimensionalRiskAversion)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L120">		org.drip.execution.hjb.NonDimensionalCostCorrelated ndcc =</span>
+<span class="nc" id="L121">		org.drip.execution.hjb.NonDimensionalCostCorrelated ndcc =</span>
 			(org.drip.execution.hjb.NonDimensionalCostCorrelated) ndc;
 
-<span class="nc" id="L123">		org.drip.measure.process.OrnsteinUhlenbeckPair oup2D =</span>
-<span class="nc" id="L124">			(org.drip.measure.process.OrnsteinUhlenbeckPair) ornsteinUnlenbeckProcess();</span>
+<span class="nc" id="L124">		org.drip.measure.process.OrnsteinUhlenbeckPair oup2D =</span>
+<span class="nc" id="L125">			(org.drip.measure.process.OrnsteinUhlenbeckPair) ornsteinUnlenbeckProcess();</span>
 
-<span class="nc" id="L126">		org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck oup1DLiquidity = oup2D.reference();</span>
+<span class="nc" id="L127">		org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck oup1DLiquidity = oup2D.reference();</span>
 
-<span class="nc" id="L128">		org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck oup1DVolatility = oup2D.derived();</span>
+<span class="nc" id="L129">		org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck oup1DVolatility = oup2D.derived();</span>
 
-<span class="nc" id="L130">		double dblVolatilityMarketState = ms.volatility() + adblMarketStateTweak[1];</span>
+<span class="nc" id="L131">		double dblVolatilityMarketState = ms.volatility() + adblMarketStateTweak[1];</span>
 
-<span class="nc" id="L132">		double dblLiquidityMarketState = ms.liquidity() + adblMarketStateTweak[0];</span>
+<span class="nc" id="L133">		double dblLiquidityMarketState = ms.liquidity() + adblMarketStateTweak[0];</span>
 
-<span class="nc" id="L134">		double dblMu = oup1DLiquidity.relaxationTime() / oup1DVolatility.relaxationTime();</span>
+<span class="nc" id="L135">		double dblMu = oup1DLiquidity.relaxationTime() / oup1DVolatility.relaxationTime();</span>
 
-<span class="nc" id="L136">		double dblVolatilityBurstiness = oup1DVolatility.burstiness();</span>
+<span class="nc" id="L137">		double dblVolatilityBurstiness = oup1DVolatility.burstiness();</span>
 
-<span class="nc" id="L138">		double dblLiquidityBurstiness = oup1DLiquidity.burstiness();</span>
+<span class="nc" id="L139">		double dblLiquidityBurstiness = oup1DLiquidity.burstiness();</span>
 
-<span class="nc" id="L140">		double dblNonDimensionalCost = ndc.realization();</span>
+<span class="nc" id="L141">		double dblNonDimensionalCost = ndc.realization();</span>
 
-<span class="nc" id="L142">		return</span>
-<span class="nc" id="L143">			dblNonDimensionalRiskAversion * dblNonDimensionalRiskAversion * java.lang.Math.exp (2. *</span>
+<span class="nc" id="L143">		return</span>
+<span class="nc" id="L144">			dblNonDimensionalRiskAversion * dblNonDimensionalRiskAversion * java.lang.Math.exp (2. *</span>
 				dblVolatilityMarketState) -
-<span class="nc" id="L145">			dblNonDimensionalCost * dblNonDimensionalCost * java.lang.Math.exp (-dblLiquidityMarketState) +</span>
-<span class="nc" id="L146">			oup2D.correlation() + java.lang.Math.sqrt (dblMu) * dblLiquidityBurstiness *</span>
-<span class="nc" id="L147">				dblVolatilityBurstiness * ndcc.liquidityVolatilityGradient() +</span>
-<span class="nc" id="L148">			0.5 * dblLiquidityBurstiness * dblLiquidityBurstiness * ndcc.liquidityJacobian() +</span>
-<span class="nc" id="L149">			0.5 * dblMu * dblVolatilityBurstiness * dblVolatilityBurstiness * ndcc.volatilityJacobian() -</span>
-<span class="nc" id="L150">			dblLiquidityMarketState * ndcc.liquidityGradient() -</span>
-<span class="nc" id="L151">			dblMu * dblVolatilityMarketState * ndcc.volatilityGradient();</span>
+<span class="nc" id="L146">			dblNonDimensionalCost * dblNonDimensionalCost * java.lang.Math.exp (-dblLiquidityMarketState) +</span>
+<span class="nc" id="L147">			oup2D.correlation() + java.lang.Math.sqrt (dblMu) * dblLiquidityBurstiness *</span>
+<span class="nc" id="L148">				dblVolatilityBurstiness * ndcc.liquidityVolatilityGradient() +</span>
+<span class="nc" id="L149">			0.5 * dblLiquidityBurstiness * dblLiquidityBurstiness * ndcc.liquidityJacobian() +</span>
+<span class="nc" id="L150">			0.5 * dblMu * dblVolatilityBurstiness * dblVolatilityBurstiness * ndcc.volatilityJacobian() -</span>
+<span class="nc" id="L151">			dblLiquidityMarketState * ndcc.liquidityGradient() -</span>
+<span class="nc" id="L152">			dblMu * dblVolatilityMarketState * ndcc.volatilityGradient();</span>
 	}
 
 	/**
@@ -167,8 +168,8 @@ public class NonDimensionalCostEvolverCorrelated extends
 		final boolean bAsymptoticEnhancedEulerCorrection)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L170">		super (oup2D, dblAsymptoticEulerUrgencyThreshold, bAsymptoticEnhancedEulerCorrection);</span>
-<span class="nc" id="L171">	}</span>
+<span class="nc" id="L171">		super (oup2D, dblAsymptoticEulerUrgencyThreshold, bAsymptoticEnhancedEulerCorrection);</span>
+<span class="nc" id="L172">	}</span>
 
 	@Override public org.drip.execution.hjb.NonDimensionalCost evolve (
 		final org.drip.execution.hjb.NonDimensionalCost ndc,
@@ -177,49 +178,49 @@ public class NonDimensionalCostEvolverCorrelated extends
 		final double dblNonDimensionalTime,
 		final double dblNonDimensionalTimeIncrement)
 	{
-<span class="nc bnc" id="L180" title="All 6 branches missed.">		if (null == ndc || !(ndc instanceof org.drip.execution.hjb.NonDimensionalCostCorrelated) || null</span>
-<span class="nc bnc" id="L181" title="All 2 branches missed.">			== ms || !org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalRiskAversion) ||</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTime) ||</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTimeIncrement))</span>
-<span class="nc" id="L184">			return null;</span>
+<span class="nc bnc" id="L181" title="All 6 branches missed.">		if (null == ndc || !(ndc instanceof org.drip.execution.hjb.NonDimensionalCostCorrelated) || null</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			== ms || !org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalRiskAversion) ||</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTime) ||</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTimeIncrement))</span>
+<span class="nc" id="L185">			return null;</span>
 
-<span class="nc" id="L186">		double dblLiquidityMarketState = ms.liquidity();</span>
+<span class="nc" id="L187">		double dblLiquidityMarketState = ms.liquidity();</span>
 
-<span class="nc" id="L188">		double dblLiquidityMarketStateIncrement = 0.01 * dblLiquidityMarketState;</span>
+<span class="nc" id="L189">		double dblLiquidityMarketStateIncrement = 0.01 * dblLiquidityMarketState;</span>
 
-<span class="nc" id="L190">		double dblVolatilityMarketStateIncrement = 0.01 * ms.volatility();</span>
+<span class="nc" id="L191">		double dblVolatilityMarketStateIncrement = 0.01 * ms.volatility();</span>
 
 		try {
-<span class="nc" id="L193">			double dblCostIncrementMid = advance (ndc, ms, new double[] {0., 0.},</span>
+<span class="nc" id="L194">			double dblCostIncrementMid = advance (ndc, ms, new double[] {0., 0.},</span>
 				dblNonDimensionalRiskAversion) * dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L196">			double dblCostIncrementLiquidityUp = advance (ndc, ms, new double[]</span>
+<span class="nc" id="L197">			double dblCostIncrementLiquidityUp = advance (ndc, ms, new double[]</span>
 				{dblLiquidityMarketStateIncrement, 0.}, dblNonDimensionalRiskAversion) *
 					dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L200">			double dblCostIncrementLiquidityDown = advance (ndc, ms, new double[]</span>
+<span class="nc" id="L201">			double dblCostIncrementLiquidityDown = advance (ndc, ms, new double[]</span>
 				{-dblLiquidityMarketStateIncrement, 0.}, dblNonDimensionalRiskAversion) *
 					dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L204">			double dblCostIncrementVolatilityUp = advance (ndc, ms, new double[] {0.,</span>
+<span class="nc" id="L205">			double dblCostIncrementVolatilityUp = advance (ndc, ms, new double[] {0.,</span>
 				dblVolatilityMarketStateIncrement}, dblNonDimensionalRiskAversion) *
 					dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L208">			double dblCostIncrementVolatilityDown = advance (ndc, ms, new double[] {0.,</span>
+<span class="nc" id="L209">			double dblCostIncrementVolatilityDown = advance (ndc, ms, new double[] {0.,</span>
 				-dblVolatilityMarketStateIncrement}, dblNonDimensionalRiskAversion) *
 					dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L212">			double dblCostIncrementCrossUp = advance (ndc, ms, new double[]</span>
+<span class="nc" id="L213">			double dblCostIncrementCrossUp = advance (ndc, ms, new double[]</span>
 				{dblLiquidityMarketStateIncrement, dblVolatilityMarketStateIncrement},
 					dblNonDimensionalRiskAversion) * dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L216">			double dblCostIncrementCrossDown = advance (ndc, ms, new double[]</span>
+<span class="nc" id="L217">			double dblCostIncrementCrossDown = advance (ndc, ms, new double[]</span>
 				{-dblLiquidityMarketStateIncrement, -dblVolatilityMarketStateIncrement},
 					dblNonDimensionalRiskAversion) * dblNonDimensionalTimeIncrement;
 
-<span class="nc" id="L220">			double dblNonDimensionalCost = ndc.realization() + dblCostIncrementMid;</span>
+<span class="nc" id="L221">			double dblNonDimensionalCost = ndc.realization() + dblCostIncrementMid;</span>
 
-<span class="nc" id="L222">			return new org.drip.execution.hjb.NonDimensionalCostCorrelated (</span>
+<span class="nc" id="L223">			return new org.drip.execution.hjb.NonDimensionalCostCorrelated (</span>
 				dblNonDimensionalCost,
 				0.5 * (dblCostIncrementLiquidityUp - dblCostIncrementLiquidityDown) /
 					dblLiquidityMarketStateIncrement,
@@ -231,12 +232,12 @@ public class NonDimensionalCostEvolverCorrelated extends
 					(dblVolatilityMarketStateIncrement * dblVolatilityMarketStateIncrement),
 				0.25 * (dblCostIncrementCrossUp - dblCostIncrementCrossDown) /
 					(dblLiquidityMarketStateIncrement * dblVolatilityMarketStateIncrement),
-<span class="nc" id="L234">				dblNonDimensionalCost * java.lang.Math.exp (-dblLiquidityMarketState));</span>
-<span class="nc" id="L235">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L236">			e.printStackTrace();</span>
+<span class="nc" id="L235">				dblNonDimensionalCost * java.lang.Math.exp (-dblLiquidityMarketState));</span>
+<span class="nc" id="L236">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L237">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L239">		return null;</span>
+<span class="nc" id="L240">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

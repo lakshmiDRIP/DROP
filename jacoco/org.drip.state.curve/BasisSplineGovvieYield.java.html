@@ -74,9 +74,10 @@ package org.drip.state.curve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,7 +85,7 @@ package org.drip.state.curve;
  */
 
 public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
-<span class="fc" id="L87">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L88">	private org.drip.spline.grid.Span _span = null;</span>
 
 	/**
 	 * BasisSplineGovvieYield Constructor
@@ -102,31 +103,31 @@ public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
 		final org.drip.spline.grid.Span span)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L105">		super ((int) span.left(), strTreasuryCode, strCurrency);</span>
+<span class="fc" id="L106">		super ((int) span.left(), strTreasuryCode, strCurrency);</span>
 
-<span class="fc" id="L107">		_span = span;</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L108">		_span = span;</span>
+<span class="fc" id="L109">	}</span>
 
 	@Override public double yield (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L114">		double dblSpanLeft = _span.left();</span>
+<span class="fc" id="L115">		double dblSpanLeft = _span.left();</span>
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (iDate &lt;= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		if (iDate &lt;= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);</span>
 
-<span class="fc" id="L118">		double dblSpanRight = _span.right();</span>
+<span class="fc" id="L119">		double dblSpanRight = _span.right();</span>
 
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		if (iDate &gt;= dblSpanRight) return _span.calcResponseValue (dblSpanRight);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (iDate &gt;= dblSpanRight) return _span.calcResponseValue (dblSpanRight);</span>
 
-<span class="fc" id="L122">		return _span.calcResponseValue (iDate);</span>
+<span class="fc" id="L123">		return _span.calcResponseValue (iDate);</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{
-<span class="nc" id="L129">		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
+<span class="nc" id="L130">		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
 	}
 
 	/**
@@ -140,7 +141,7 @@ public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
 	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatForward (
 		final int[] aiDate)
 	{
-<span class="nc" id="L143">		return flatForward (dayCount(), freq(), aiDate);</span>
+<span class="nc" id="L144">		return flatForward (dayCount(), freq(), aiDate);</span>
 	}
 
 	/**
@@ -154,24 +155,24 @@ public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
 	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatForward (
 		final java.lang.String[] astrTenor)
 	{
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L159">		int iNumTenor = astrTenor.length;</span>
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		int[] aiDate = 0 == iNumTenor ? null : new int[iNumTenor];</span>
+<span class="fc" id="L160">		int iNumTenor = astrTenor.length;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		int[] aiDate = 0 == iNumTenor ? null : new int[iNumTenor];</span>
 
-<span class="fc" id="L162">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+<span class="fc" id="L163">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
 			try {
-<span class="fc" id="L166">				aiDate[i] = dtEpoch.addTenor (astrTenor[i]).julian();</span>
-<span class="nc" id="L167">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">				e.printStackTrace();</span>
+<span class="fc" id="L167">				aiDate[i] = dtEpoch.addTenor (astrTenor[i]).julian();</span>
+<span class="nc" id="L168">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L169">				e.printStackTrace();</span>
 
-<span class="nc" id="L170">				return null;</span>
-<span class="fc" id="L171">			}</span>
+<span class="nc" id="L171">				return null;</span>
+<span class="fc" id="L172">			}</span>
 		}
 
-<span class="fc" id="L174">		return flatForward (dayCount(), freq(), aiDate);</span>
+<span class="fc" id="L175">		return flatForward (dayCount(), freq(), aiDate);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

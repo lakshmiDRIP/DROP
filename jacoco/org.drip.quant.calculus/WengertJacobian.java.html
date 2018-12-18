@@ -98,9 +98,10 @@ package org.drip.quant.calculus;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus&quot;&gt;Calculus&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus&quot;&gt;Calculus&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -108,8 +109,8 @@ package org.drip.quant.calculus;
  */
 
 public class WengertJacobian {
-<span class="fc" id="L111">	private double[] _adblWengert = null;</span>
-<span class="fc" id="L112">	private double[][] _aadblDWengertDParameter = null;</span>
+<span class="fc" id="L112">	private double[] _adblWengert = null;</span>
+<span class="fc" id="L113">	private double[][] _aadblDWengertDParameter = null;</span>
 
 	/**
 	 * WengertJacobian constructor
@@ -124,19 +125,19 @@ public class WengertJacobian {
 		final int iNumWengerts,
 		final int iNumParameters)
 		throws java.lang.Exception
-<span class="fc" id="L127">	{</span>
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (0 &gt;= iNumWengerts || 0 &gt;= iNumParameters)</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;WengertJacobian constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L128">	{</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (0 &gt;= iNumWengerts || 0 &gt;= iNumParameters)</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;WengertJacobian constructor: Invalid inputs&quot;);</span>
 
-<span class="fc" id="L131">		_adblWengert = new double[iNumWengerts];</span>
-<span class="fc" id="L132">		_aadblDWengertDParameter = new double[iNumWengerts][iNumParameters];</span>
+<span class="fc" id="L132">		_adblWengert = new double[iNumWengerts];</span>
+<span class="fc" id="L133">		_aadblDWengertDParameter = new double[iNumWengerts][iNumParameters];</span>
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="fc bfc" id="L135" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="fc" id="L136">				++iParameterIndex)</span>
-<span class="fc" id="L137">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] = 0.;</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="fc" id="L137">				++iParameterIndex)</span>
+<span class="fc" id="L138">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] = 0.;</span>
 		}
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L140">	}</span>
 
 	/**
 	 * Retrieve the number of Wengert Variables
@@ -146,7 +147,7 @@ public class WengertJacobian {
 
 	public int numWengerts()
 	{
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		return null == _adblWengert ? 0 : _adblWengert.length;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		return null == _adblWengert ? 0 : _adblWengert.length;</span>
 	}
 
 	/**
@@ -157,7 +158,7 @@ public class WengertJacobian {
 
 	public int numParameters()
 	{
-<span class="pc bpc" id="L160" title="2 of 4 branches missed.">		return (null == _aadblDWengertDParameter || null == _aadblDWengertDParameter[0]) ? 0 :</span>
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		return (null == _aadblDWengertDParameter || null == _aadblDWengertDParameter[0]) ? 0 :</span>
 			_aadblDWengertDParameter[0].length;
 	}
 
@@ -174,12 +175,12 @@ public class WengertJacobian {
 		final int iWengertIndex,
 		final double dblWengert)
 	{
-<span class="pc bpc" id="L177" title="2 of 4 branches missed.">		if (0 &gt; iWengertIndex || iWengertIndex &gt;= _adblWengert.length ||</span>
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblWengert))</span>
-<span class="nc" id="L179">			return false;</span>
+<span class="pc bpc" id="L178" title="2 of 4 branches missed.">		if (0 &gt; iWengertIndex || iWengertIndex &gt;= _adblWengert.length ||</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblWengert))</span>
+<span class="nc" id="L180">			return false;</span>
 
-<span class="fc" id="L181">		_adblWengert[iWengertIndex] = dblWengert;</span>
-<span class="fc" id="L182">		return true;</span>
+<span class="fc" id="L182">		_adblWengert[iWengertIndex] = dblWengert;</span>
+<span class="fc" id="L183">		return true;</span>
 	}
 
 	/**
@@ -196,10 +197,10 @@ public class WengertJacobian {
 		final int iIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (0 &gt; iIndex || iIndex &gt;= _adblWengert.length)</span>
-<span class="nc" id="L200">			throw new java.lang.Exception (&quot;WengertJacobian::wengert =&gt; Invalid Wengert Variable Index!&quot;);</span>
+<span class="nc bnc" id="L200" title="All 4 branches missed.">		if (0 &gt; iIndex || iIndex &gt;= _adblWengert.length)</span>
+<span class="nc" id="L201">			throw new java.lang.Exception (&quot;WengertJacobian::wengert =&gt; Invalid Wengert Variable Index!&quot;);</span>
 
-<span class="nc" id="L202">		return _adblWengert[iIndex];</span>
+<span class="nc" id="L203">		return _adblWengert[iIndex];</span>
 	}
 
 	/**
@@ -217,13 +218,13 @@ public class WengertJacobian {
 		final int iParameterIndex,
 		final double dblDWengertDParameter)
 	{
-<span class="pc bpc" id="L220" title="4 of 8 branches missed.">		if (0 &gt; iParameterIndex || iParameterIndex &gt;= _aadblDWengertDParameter[0].length || 0 &gt; iWengertIndex</span>
+<span class="pc bpc" id="L221" title="4 of 8 branches missed.">		if (0 &gt; iParameterIndex || iParameterIndex &gt;= _aadblDWengertDParameter[0].length || 0 &gt; iWengertIndex</span>
 			|| iWengertIndex &gt;= _adblWengert.length || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">				(dblDWengertDParameter))</span>
-<span class="nc" id="L223">			return false;</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">				(dblDWengertDParameter))</span>
+<span class="nc" id="L224">			return false;</span>
 
-<span class="fc" id="L225">		_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += dblDWengertDParameter;</span>
-<span class="fc" id="L226">		return true;</span>
+<span class="fc" id="L226">		_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += dblDWengertDParameter;</span>
+<span class="fc" id="L227">		return true;</span>
 	}
 
 	/**
@@ -239,7 +240,7 @@ public class WengertJacobian {
 		final int iWengertIndex,
 		final int iParameterIndex)
 	{
-<span class="fc" id="L242">		return _aadblDWengertDParameter[iWengertIndex][iParameterIndex];</span>
+<span class="fc" id="L243">		return _aadblDWengertDParameter[iWengertIndex][iParameterIndex];</span>
 	}
 
 	/**
@@ -253,16 +254,16 @@ public class WengertJacobian {
 	public boolean cumulativeMerge (
 		final org.drip.quant.calculus.WengertJacobian wjOther)
 	{
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (null == wjOther) return false;</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (null == wjOther) return false;</span>
 
-<span class="nc bnc" id="L258" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="nc bnc" id="L259" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="nc" id="L260">				++iParameterIndex)</span>
-<span class="nc" id="L261">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
-<span class="nc" id="L262">					(iWengertIndex, iParameterIndex);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="nc" id="L261">				++iParameterIndex)</span>
+<span class="nc" id="L262">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
+<span class="nc" id="L263">					(iWengertIndex, iParameterIndex);</span>
 		}
 
-<span class="nc" id="L265">		return true;</span>
+<span class="nc" id="L266">		return true;</span>
 	}
 
 	/**
@@ -278,16 +279,16 @@ public class WengertJacobian {
 		final org.drip.quant.calculus.WengertJacobian wjOther,
 		final double dblWeight)
 	{
-<span class="nc bnc" id="L281" title="All 4 branches missed.">		if (null == wjOther || !org.drip.quant.common.NumberUtil.IsValid (dblWeight)) return false;</span>
+<span class="nc bnc" id="L282" title="All 4 branches missed.">		if (null == wjOther || !org.drip.quant.common.NumberUtil.IsValid (dblWeight)) return false;</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="nc bnc" id="L284" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="nc" id="L285">				++iParameterIndex)</span>
-<span class="nc" id="L286">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
-<span class="nc" id="L287">					(iWengertIndex, iParameterIndex) * dblWeight;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="nc" id="L286">				++iParameterIndex)</span>
+<span class="nc" id="L287">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
+<span class="nc" id="L288">					(iWengertIndex, iParameterIndex) * dblWeight;</span>
 		}
 
-<span class="nc" id="L290">		return true;</span>
+<span class="nc" id="L291">		return true;</span>
 	}
 
 	/**
@@ -301,15 +302,15 @@ public class WengertJacobian {
 	public boolean scale (
 		final double dblScale)
 	{
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (0 &gt;= dblScale) return false;</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (0 &gt;= dblScale) return false;</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="nc bnc" id="L307" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="nc" id="L308">				++iParameterIndex)</span>
-<span class="nc" id="L309">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] *= dblScale;</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="nc" id="L309">				++iParameterIndex)</span>
+<span class="nc" id="L310">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] *= dblScale;</span>
 		}
 
-<span class="nc" id="L312">		return true;</span>
+<span class="nc" id="L313">		return true;</span>
 	}
 
 	/**
@@ -320,25 +321,25 @@ public class WengertJacobian {
 
 	public java.lang.String displayString()
 	{
-<span class="fc" id="L323">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L324">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="fc" id="L326">			java.lang.StringBuffer sbDWengertDParameter = new java.lang.StringBuffer();</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="fc" id="L327">			java.lang.StringBuffer sbDWengertDParameter = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L328">			sbDWengertDParameter.append (&quot;Wengert{&quot; + iWengertIndex + &quot;} =&gt; [&quot;);</span>
+<span class="fc" id="L329">			sbDWengertDParameter.append (&quot;Wengert{&quot; + iWengertIndex + &quot;} =&gt; [&quot;);</span>
 
-<span class="fc bfc" id="L330" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="fc" id="L331">				++iParameterIndex) {</span>
-<span class="fc bfc" id="L332" title="All 2 branches covered.">				if (0 != iParameterIndex) sbDWengertDParameter.append (&quot;, &quot;);</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="fc" id="L332">				++iParameterIndex) {</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">				if (0 != iParameterIndex) sbDWengertDParameter.append (&quot;, &quot;);</span>
 
-<span class="fc" id="L334">				sbDWengertDParameter.append (org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="fc" id="L335">					(_aadblDWengertDParameter[iWengertIndex][iParameterIndex], 1, 3, 1.));</span>
+<span class="fc" id="L335">				sbDWengertDParameter.append (org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L336">					(_aadblDWengertDParameter[iWengertIndex][iParameterIndex], 1, 3, 1.));</span>
 			}
 
-<span class="fc" id="L338">			sb.append (sbDWengertDParameter).append (&quot;]\n&quot;);</span>
+<span class="fc" id="L339">			sb.append (sbDWengertDParameter).append (&quot;]\n&quot;);</span>
 		}
 
-<span class="fc" id="L341">		return sb.toString();</span>
+<span class="fc" id="L342">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

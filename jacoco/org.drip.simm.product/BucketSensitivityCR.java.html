@@ -96,9 +96,10 @@ package org.drip.simm.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,80 +108,80 @@ package org.drip.simm.product;
 
 public class BucketSensitivityCR
 {
-<span class="nc" id="L110">	private org.drip.simm.product.RiskFactorTenorSensitivity _cumulativeTenorSensitivityMap = null;</span>
-<span class="nc" id="L111">	private java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;</span>
+<span class="nc" id="L111">	private org.drip.simm.product.RiskFactorTenorSensitivity _cumulativeTenorSensitivityMap = null;</span>
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;</span>
 		_tenorSensitivityMap = null;
 
 	private org.drip.simm.margin.BucketAggregateCR linearAggregate (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
 	{
-<span class="nc" id="L117">		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate</span>
-<span class="nc" id="L118">			(bucketSensitivitySettings);</span>
+<span class="nc" id="L118">		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate</span>
+<span class="nc" id="L119">			(bucketSensitivitySettings);</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == riskFactorAggregate)</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == riskFactorAggregate)</span>
 		{
-<span class="nc" id="L122">			return null;</span>
+<span class="nc" id="L123">			return null;</span>
 		}
 
-<span class="nc" id="L125">		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate = riskFactorAggregate.linearMargin</span>
-<span class="nc" id="L126">			(bucketSensitivitySettings);</span>
+<span class="nc" id="L126">		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate = riskFactorAggregate.linearMargin</span>
+<span class="nc" id="L127">			(bucketSensitivitySettings);</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == sensitivityAggregate)</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (null == sensitivityAggregate)</span>
 		{
-<span class="nc" id="L130">			return null;</span>
+<span class="nc" id="L131">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L135">			return new org.drip.simm.margin.BucketAggregateCR (</span>
+<span class="nc" id="L136">			return new org.drip.simm.margin.BucketAggregateCR (</span>
 				riskFactorAggregate,
 				sensitivityAggregate,
-<span class="nc" id="L138">				sensitivityAggregate.cumulativeMarginCovariance(),</span>
-<span class="nc" id="L139">				riskFactorAggregate.cumulativeSensitivityMargin()</span>
+<span class="nc" id="L139">				sensitivityAggregate.cumulativeMarginCovariance(),</span>
+<span class="nc" id="L140">				riskFactorAggregate.cumulativeSensitivityMargin()</span>
 			);
 		}
-<span class="nc" id="L142">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L143">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L144">			e.printStackTrace();</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L147">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	private org.drip.simm.margin.BucketAggregateCR curvatureAggregate (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
 	{
-<span class="nc" id="L153">		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate</span>
-<span class="nc" id="L154">			(bucketSensitivitySettings);</span>
+<span class="nc" id="L154">		org.drip.simm.margin.RiskFactorAggregateCR riskFactorAggregate = curveAggregate</span>
+<span class="nc" id="L155">			(bucketSensitivitySettings);</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (null == riskFactorAggregate)</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (null == riskFactorAggregate)</span>
 		{
-<span class="nc" id="L158">			return null;</span>
+<span class="nc" id="L159">			return null;</span>
 		}
 
-<span class="nc" id="L161">		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate =</span>
-<span class="nc" id="L162">			riskFactorAggregate.curvatureMargin (bucketSensitivitySettings);</span>
+<span class="nc" id="L162">		org.drip.simm.margin.SensitivityAggregateCR sensitivityAggregate =</span>
+<span class="nc" id="L163">			riskFactorAggregate.curvatureMargin (bucketSensitivitySettings);</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (null == sensitivityAggregate)</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (null == sensitivityAggregate)</span>
 		{
-<span class="nc" id="L166">			return null;</span>
+<span class="nc" id="L167">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L171">			return new org.drip.simm.margin.BucketAggregateCR (</span>
+<span class="nc" id="L172">			return new org.drip.simm.margin.BucketAggregateCR (</span>
 				riskFactorAggregate,
 				sensitivityAggregate,
-<span class="nc" id="L174">				sensitivityAggregate.cumulativeMarginCovariance(),</span>
-<span class="nc" id="L175">				riskFactorAggregate.cumulativeSensitivityMargin()</span>
+<span class="nc" id="L175">				sensitivityAggregate.cumulativeMarginCovariance(),</span>
+<span class="nc" id="L176">				riskFactorAggregate.cumulativeSensitivityMargin()</span>
 			);
 		}
-<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L179">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L180">			e.printStackTrace();</span>
+<span class="nc" id="L181">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L183">		return null;</span>
+<span class="nc" id="L184">		return null;</span>
 	}
 
 	/**
@@ -195,48 +196,48 @@ public class BucketSensitivityCR
 		final java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;
 			tenorSensitivityMap)
 		throws java.lang.Exception
-<span class="nc" id="L198">	{</span>
-<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == (_tenorSensitivityMap = tenorSensitivityMap) || 0 == _tenorSensitivityMap.size())</span>
+<span class="nc" id="L199">	{</span>
+<span class="nc bnc" id="L200" title="All 4 branches missed.">		if (null == (_tenorSensitivityMap = tenorSensitivityMap) || 0 == _tenorSensitivityMap.size())</span>
 		{
-<span class="nc" id="L201">			throw new java.lang.Exception (&quot;BucketSensitivityCR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L202">			throw new java.lang.Exception (&quot;BucketSensitivityCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L204">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; riskFactorTenorSensitivityMap = new</span>
+<span class="nc" id="L205">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; riskFactorTenorSensitivityMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			tenorSensitivityMapEntry : _tenorSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">			tenorSensitivityMapEntry : _tenorSensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L210">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentRiskFactorTenorSensitivityMap =</span>
-<span class="nc" id="L211">				tenorSensitivityMapEntry.getValue().sensitivityMap();</span>
+<span class="nc" id="L211">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentRiskFactorTenorSensitivityMap =</span>
+<span class="nc" id="L212">				tenorSensitivityMapEntry.getValue().sensitivityMap();</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
 				componentRiskFactorTenorSensitivityMapEntry :
-<span class="nc bnc" id="L215" title="All 2 branches missed.">				componentRiskFactorTenorSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">				componentRiskFactorTenorSensitivityMap.entrySet())</span>
 			{
-<span class="nc" id="L217">				java.lang.String tenor = componentRiskFactorTenorSensitivityMapEntry.getKey();</span>
+<span class="nc" id="L218">				java.lang.String tenor = componentRiskFactorTenorSensitivityMapEntry.getKey();</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">				if (riskFactorTenorSensitivityMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (riskFactorTenorSensitivityMap.containsKey (tenor))</span>
 				{
-<span class="nc" id="L221">					riskFactorTenorSensitivityMap.put (</span>
+<span class="nc" id="L222">					riskFactorTenorSensitivityMap.put (</span>
 						tenor,
-<span class="nc" id="L223">						riskFactorTenorSensitivityMap.get (tenor) +</span>
-<span class="nc" id="L224">							componentRiskFactorTenorSensitivityMap.get (tenor)</span>
+<span class="nc" id="L224">						riskFactorTenorSensitivityMap.get (tenor) +</span>
+<span class="nc" id="L225">							componentRiskFactorTenorSensitivityMap.get (tenor)</span>
 					);
 				}
 				else
 				{
-<span class="nc" id="L229">					riskFactorTenorSensitivityMap.put (</span>
+<span class="nc" id="L230">					riskFactorTenorSensitivityMap.put (</span>
 						tenor,
-<span class="nc" id="L231">						componentRiskFactorTenorSensitivityMap.get (tenor)</span>
+<span class="nc" id="L232">						componentRiskFactorTenorSensitivityMap.get (tenor)</span>
 					);
 				}
-<span class="nc" id="L234">			}</span>
-<span class="nc" id="L235">		}</span>
+<span class="nc" id="L235">			}</span>
+<span class="nc" id="L236">		}</span>
 
-<span class="nc" id="L237">		_cumulativeTenorSensitivityMap = new org.drip.simm.product.RiskFactorTenorSensitivity</span>
+<span class="nc" id="L238">		_cumulativeTenorSensitivityMap = new org.drip.simm.product.RiskFactorTenorSensitivity</span>
 			(riskFactorTenorSensitivityMap);
-<span class="nc" id="L239">	}</span>
+<span class="nc" id="L240">	}</span>
 
 	/**
 	 * Retrieve the Cumulative Risk Factor Tenor Sensitivity Map
@@ -246,7 +247,7 @@ public class BucketSensitivityCR
 
 	public org.drip.simm.product.RiskFactorTenorSensitivity cumulativeTenorSensitivityMap()
 	{
-<span class="nc" id="L249">		return _cumulativeTenorSensitivityMap;</span>
+<span class="nc" id="L250">		return _cumulativeTenorSensitivityMap;</span>
 	}
 
 	/**
@@ -258,7 +259,7 @@ public class BucketSensitivityCR
 	public java.util.Map&lt;java.lang.String, org.drip.simm.product.RiskFactorTenorSensitivity&gt;
 		tenorSensitivityMap()
 	{
-<span class="nc" id="L261">		return _tenorSensitivityMap;</span>
+<span class="nc" id="L262">		return _tenorSensitivityMap;</span>
 	}
 
 	/**
@@ -269,7 +270,7 @@ public class BucketSensitivityCR
 
 	public double cumulativeTenorSensitivity()
 	{
-<span class="nc" id="L272">		return _cumulativeTenorSensitivityMap.cumulative();</span>
+<span class="nc" id="L273">		return _cumulativeTenorSensitivityMap.cumulative();</span>
 	}
 
 	/**
@@ -286,16 +287,16 @@ public class BucketSensitivityCR
 		final double sensitivityConcentrationThreshold)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L289" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (sensitivityConcentrationThreshold))</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (sensitivityConcentrationThreshold))</span>
 		{
-<span class="nc" id="L291">			throw new java.lang.Exception</span>
+<span class="nc" id="L292">			throw new java.lang.Exception</span>
 				(&quot;BucketSensitivityCR::sensitivityConcentrationRiskFactor =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L295">		return java.lang.Math.max (</span>
-<span class="nc" id="L296">			java.lang.Math.sqrt (</span>
-<span class="nc" id="L297">				java.lang.Math.max (</span>
-<span class="nc" id="L298">					cumulativeTenorSensitivity(),</span>
+<span class="nc" id="L296">		return java.lang.Math.max (</span>
+<span class="nc" id="L297">			java.lang.Math.sqrt (</span>
+<span class="nc" id="L298">				java.lang.Math.max (</span>
+<span class="nc" id="L299">					cumulativeTenorSensitivity(),</span>
 					0.
 				) / sensitivityConcentrationThreshold
 			),
@@ -314,45 +315,45 @@ public class BucketSensitivityCR
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
 	{
-<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (null == bucketSensitivitySettings)</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		if (null == bucketSensitivitySettings)</span>
 		{
-<span class="nc" id="L319">			return null;</span>
+<span class="nc" id="L320">			return null;</span>
 		}
 
-<span class="nc" id="L322">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin =</span>
-<span class="nc" id="L323">			_cumulativeTenorSensitivityMap.sensitivityMargin (bucketSensitivitySettings.tenorRiskWeight());</span>
+<span class="nc" id="L323">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin =</span>
+<span class="nc" id="L324">			_cumulativeTenorSensitivityMap.sensitivityMargin (bucketSensitivitySettings.tenorRiskWeight());</span>
 
-<span class="nc bnc" id="L325" title="All 2 branches missed.">		if (null == tenorSensitivityMargin)</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">		if (null == tenorSensitivityMargin)</span>
 		{
-<span class="nc" id="L327">			return tenorSensitivityMargin;</span>
+<span class="nc" id="L328">			return tenorSensitivityMargin;</span>
 		}
 
-<span class="nc" id="L330">		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L331">		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;</span>
 
 		try
 		{
-<span class="nc" id="L334">			sensitivityConcentrationRiskFactor = sensitivityConcentrationRiskFactor</span>
-<span class="nc" id="L335">				(bucketSensitivitySettings.concentrationThreshold());</span>
+<span class="nc" id="L335">			sensitivityConcentrationRiskFactor = sensitivityConcentrationRiskFactor</span>
+<span class="nc" id="L336">				(bucketSensitivitySettings.concentrationThreshold());</span>
 		}
-<span class="nc" id="L337">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L338">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L339">			e.printStackTrace();</span>
+<span class="nc" id="L340">			e.printStackTrace();</span>
 
-<span class="nc" id="L341">			return null;</span>
-<span class="nc" id="L342">		}</span>
+<span class="nc" id="L342">			return null;</span>
+<span class="nc" id="L343">		}</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMarginEntry :
-<span class="nc bnc" id="L345" title="All 2 branches missed.">			tenorSensitivityMargin.entrySet())</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			tenorSensitivityMargin.entrySet())</span>
 		{
-<span class="nc" id="L347">			java.lang.String tenor = tenorSensitivityMarginEntry.getKey();</span>
+<span class="nc" id="L348">			java.lang.String tenor = tenorSensitivityMarginEntry.getKey();</span>
 
-<span class="nc" id="L349">			tenorSensitivityMargin.put (</span>
+<span class="nc" id="L350">			tenorSensitivityMargin.put (</span>
 				tenor,
-<span class="nc" id="L351">				tenorSensitivityMargin.get (tenor) * sensitivityConcentrationRiskFactor</span>
+<span class="nc" id="L352">				tenorSensitivityMargin.get (tenor) * sensitivityConcentrationRiskFactor</span>
 			);
-<span class="nc" id="L353">		}</span>
+<span class="nc" id="L354">		}</span>
 
-<span class="nc" id="L355">		return tenorSensitivityMargin;</span>
+<span class="nc" id="L356">		return tenorSensitivityMargin;</span>
 	}
 
 	/**
@@ -366,70 +367,70 @@ public class BucketSensitivityCR
 	public org.drip.simm.margin.RiskFactorAggregateCR curveAggregate (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettings)
 	{
-<span class="nc bnc" id="L369" title="All 2 branches missed.">		if (null == bucketSensitivitySettings)</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">		if (null == bucketSensitivitySettings)</span>
 		{
-<span class="nc" id="L371">			return null;</span>
+<span class="nc" id="L372">			return null;</span>
 		}
 
-<span class="nc" id="L374">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _tenorSensitivityMap.keySet();</span>
+<span class="nc" id="L375">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _tenorSensitivityMap.keySet();</span>
 
 		java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;
-<span class="nc" id="L377">			componentTenorSensitivityMargin = new</span>
+<span class="nc" id="L378">			componentTenorSensitivityMargin = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.String,
 					java.lang.Double&gt;&gt;();
 
-<span class="nc" id="L381">		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L382">		double sensitivityConcentrationRiskFactor = java.lang.Double.NaN;</span>
 
 		try
 		{
-<span class="nc" id="L385">			sensitivityConcentrationRiskFactor = sensitivityConcentrationRiskFactor</span>
-<span class="nc" id="L386">				(bucketSensitivitySettings.concentrationThreshold());</span>
+<span class="nc" id="L386">			sensitivityConcentrationRiskFactor = sensitivityConcentrationRiskFactor</span>
+<span class="nc" id="L387">				(bucketSensitivitySettings.concentrationThreshold());</span>
 		}
-<span class="nc" id="L388">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L389">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L390">			e.printStackTrace();</span>
+<span class="nc" id="L391">			e.printStackTrace();</span>
 
-<span class="nc" id="L392">			return null;</span>
-<span class="nc" id="L393">		}</span>
+<span class="nc" id="L393">			return null;</span>
+<span class="nc" id="L394">		}</span>
 
-<span class="nc bnc" id="L395" title="All 2 branches missed.">		for (java.lang.String componentName : componentNameSet)</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">		for (java.lang.String componentName : componentNameSet)</span>
 		{
-<span class="nc" id="L397">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivity = _tenorSensitivityMap.get</span>
-<span class="nc" id="L398">				(componentName).sensitivityMap();</span>
+<span class="nc" id="L398">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivity = _tenorSensitivityMap.get</span>
+<span class="nc" id="L399">				(componentName).sensitivityMap();</span>
 
-<span class="nc" id="L400">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin = new</span>
+<span class="nc" id="L401">			java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityMargin = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorSensitivityEntry :
-<span class="nc bnc" id="L404" title="All 2 branches missed.">				tenorSensitivity.entrySet())</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">				tenorSensitivity.entrySet())</span>
 			{
-<span class="nc" id="L406">				java.lang.String tenor = tenorSensitivityEntry.getKey();</span>
+<span class="nc" id="L407">				java.lang.String tenor = tenorSensitivityEntry.getKey();</span>
 
-<span class="nc" id="L408">				tenorSensitivityMargin.put (</span>
+<span class="nc" id="L409">				tenorSensitivityMargin.put (</span>
 					tenor,
-<span class="nc" id="L410">					tenorSensitivity.get (tenor) * sensitivityConcentrationRiskFactor</span>
+<span class="nc" id="L411">					tenorSensitivity.get (tenor) * sensitivityConcentrationRiskFactor</span>
 				);
-<span class="nc" id="L412">			}</span>
+<span class="nc" id="L413">			}</span>
 
-<span class="nc" id="L414">			componentTenorSensitivityMargin.put (</span>
+<span class="nc" id="L415">			componentTenorSensitivityMargin.put (</span>
 				componentName,
 				tenorSensitivityMargin
 			);
-<span class="nc" id="L418">		}</span>
+<span class="nc" id="L419">		}</span>
 
 		try
 		{
-<span class="nc" id="L422">			return new org.drip.simm.margin.RiskFactorAggregateCR (</span>
+<span class="nc" id="L423">			return new org.drip.simm.margin.RiskFactorAggregateCR (</span>
 				componentTenorSensitivityMargin,
 				sensitivityConcentrationRiskFactor
 			);
 		}
-<span class="nc" id="L427">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L428">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L429">			e.printStackTrace();</span>
+<span class="nc" id="L430">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L432">		return null;</span>
+<span class="nc" id="L433">		return null;</span>
 	}
 
 	/**
@@ -443,13 +444,13 @@ public class BucketSensitivityCR
 	public org.drip.simm.margin.BucketAggregateCR aggregate (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
 	{
-<span class="nc bnc" id="L446" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR)</span>
 		{
-<span class="nc" id="L448">			return null;</span>
+<span class="nc" id="L449">			return null;</span>
 		}
 
-<span class="nc bnc" id="L451" title="All 2 branches missed.">		return bucketSensitivitySettingsCR instanceof org.drip.simm.parameters.BucketCurvatureSettingsCR ?</span>
-<span class="nc" id="L452">			curvatureAggregate (bucketSensitivitySettingsCR) : linearAggregate (bucketSensitivitySettingsCR);</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">		return bucketSensitivitySettingsCR instanceof org.drip.simm.parameters.BucketCurvatureSettingsCR ?</span>
+<span class="nc" id="L453">			curvatureAggregate (bucketSensitivitySettingsCR) : linearAggregate (bucketSensitivitySettingsCR);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

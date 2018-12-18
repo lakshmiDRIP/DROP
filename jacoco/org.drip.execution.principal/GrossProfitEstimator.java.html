@@ -11,12 +11,12 @@ package org.drip.execution.principal;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -33,16 +33,17 @@ package org.drip.execution.principal;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,15 +96,15 @@ package org.drip.execution.principal;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/principal/README.md&quot;&gt;Principal&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class GrossProfitEstimator {
-<span class="fc" id="L106">	private org.drip.execution.optimum.EfficientTradingTrajectory _ett = null;</span>
+<span class="fc" id="L107">	private org.drip.execution.optimum.EfficientTradingTrajectory _ett = null;</span>
 
 	/**
 	 * GrossProfitEstimator Constructor
@@ -116,10 +117,10 @@ public class GrossProfitEstimator {
 	public GrossProfitEstimator (
 		final org.drip.execution.optimum.EfficientTradingTrajectory ett)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == (_ett = ett))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;GrossProfitEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L122">	}</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == (_ett = ett))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;GrossProfitEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Optimal Efficient Trajectory
@@ -129,7 +130,7 @@ public class GrossProfitEstimator {
 
 	public org.drip.execution.optimum.EfficientTradingTrajectory efficientTrajectory()
 	{
-<span class="fc" id="L132">		return _ett;</span>
+<span class="fc" id="L133">		return _ett;</span>
 	}
 
 	/**
@@ -144,13 +145,13 @@ public class GrossProfitEstimator {
 		final double dblPrincipalDiscount)
 	{
 		try {
-<span class="fc" id="L147">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
-<span class="fc" id="L148">				- _ett.transactionCostExpectation(), java.lang.Math.sqrt (_ett.transactionCostVariance()));</span>
-<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L150">			e.printStackTrace();</span>
+<span class="fc" id="L148">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
+<span class="fc" id="L149">				- _ett.transactionCostExpectation(), java.lang.Math.sqrt (_ett.transactionCostVariance()));</span>
+<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L151">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L153">		return null;</span>
+<span class="nc" id="L154">		return null;</span>
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class GrossProfitEstimator {
 	public double breakevenPrincipalDiscount()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L167">		return _ett.transactionCostExpectation() / _ett.tradeSize();</span>
+<span class="fc" id="L168">		return _ett.transactionCostExpectation() / _ett.tradeSize();</span>
 	}
 
 	/**
@@ -178,19 +179,19 @@ public class GrossProfitEstimator {
 	public org.drip.measure.gaussian.R1UnivariateNormal horizonPrincipalMeasure (
 		final double dblPrincipalDiscount)
 	{
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount)) return null;</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount)) return null;</span>
 
-<span class="fc" id="L183">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
+<span class="fc" id="L184">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
 
 		try {
-<span class="fc" id="L186">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
-<span class="fc" id="L187">				- _ett.transactionCostExpectation() * dblInverseHorizon, java.lang.Math.sqrt</span>
-<span class="fc" id="L188">					(_ett.transactionCostVariance() * dblInverseHorizon));</span>
-<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L190">			e.printStackTrace();</span>
+<span class="fc" id="L187">			return new org.drip.measure.gaussian.R1UnivariateNormal (dblPrincipalDiscount * _ett.tradeSize()</span>
+<span class="fc" id="L188">				- _ett.transactionCostExpectation() * dblInverseHorizon, java.lang.Math.sqrt</span>
+<span class="fc" id="L189">					(_ett.transactionCostVariance() * dblInverseHorizon));</span>
+<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L191">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L193">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	/**
@@ -207,14 +208,14 @@ public class GrossProfitEstimator {
 		final double dblPrincipalDiscount)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount))</span>
-<span class="nc" id="L211">			throw new java.lang.Exception (&quot;GrossProfitEstimator::informationRatio =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount))</span>
+<span class="nc" id="L212">			throw new java.lang.Exception (&quot;GrossProfitEstimator::informationRatio =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L213">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
+<span class="fc" id="L214">		double dblInverseHorizon = 1. / _ett.executionTime();</span>
 
-<span class="fc" id="L215">		return dblInverseHorizon * (dblPrincipalDiscount * _ett.tradeSize() -</span>
-<span class="fc" id="L216">			_ett.transactionCostExpectation()) / java.lang.Math.sqrt (dblInverseHorizon *</span>
-<span class="fc" id="L217">				_ett.transactionCostVariance());</span>
+<span class="fc" id="L216">		return dblInverseHorizon * (dblPrincipalDiscount * _ett.tradeSize() -</span>
+<span class="fc" id="L217">			_ett.transactionCostExpectation()) / java.lang.Math.sqrt (dblInverseHorizon *</span>
+<span class="fc" id="L218">				_ett.transactionCostVariance());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

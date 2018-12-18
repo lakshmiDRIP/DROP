@@ -71,45 +71,46 @@ package org.drip.service.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product&quot;&gt;Product API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L83">public class CreditIndexAPI {</span>
+<span class="nc" id="L84">public class CreditIndexAPI {</span>
 
 	static class ParCDS {
-<span class="nc" id="L86">		double _dblFairPremium = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">		double _dblFixedCoupon = java.lang.Double.NaN;</span>
-<span class="nc" id="L88">		org.drip.product.definition.CreditDefaultSwap _cds = null;</span>
+<span class="nc" id="L87">		double _dblFairPremium = java.lang.Double.NaN;</span>
+<span class="nc" id="L88">		double _dblFixedCoupon = java.lang.Double.NaN;</span>
+<span class="nc" id="L89">		org.drip.product.definition.CreditDefaultSwap _cds = null;</span>
 
 		ParCDS (
 			final org.drip.product.definition.CreditDefaultSwap cds,
 			final double dblFixedCoupon,
 			final double dblFairPremium)
-<span class="nc" id="L94">		{</span>
-<span class="nc" id="L95">			_cds = cds;</span>
-<span class="nc" id="L96">			_dblFixedCoupon = dblFixedCoupon;</span>
-<span class="nc" id="L97">			_dblFairPremium = dblFairPremium;</span>
-<span class="nc" id="L98">		}</span>
+<span class="nc" id="L95">		{</span>
+<span class="nc" id="L96">			_cds = cds;</span>
+<span class="nc" id="L97">			_dblFixedCoupon = dblFixedCoupon;</span>
+<span class="nc" id="L98">			_dblFairPremium = dblFairPremium;</span>
+<span class="nc" id="L99">		}</span>
 
 		double fairPremium()
 		{
-<span class="nc" id="L102">			return _dblFairPremium;</span>
+<span class="nc" id="L103">			return _dblFairPremium;</span>
 		}
 
 		double fixedCoupon()
 		{
-<span class="nc" id="L107">			return _dblFixedCoupon;</span>
+<span class="nc" id="L108">			return _dblFixedCoupon;</span>
 		}
 
 		org.drip.product.definition.CreditDefaultSwap cds()
 		{
-<span class="nc" id="L112">			return _cds;</span>
+<span class="nc" id="L113">			return _cds;</span>
 		}
 	};
 
@@ -118,32 +119,32 @@ package org.drip.service.product;
 		final org.drip.state.credit.CreditCurve cc,
 		final java.lang.String strFullCreditIndexName)
 	{
-<span class="nc" id="L121">		org.drip.market.otc.CreditIndexConvention cic =</span>
+<span class="nc" id="L122">		org.drip.market.otc.CreditIndexConvention cic =</span>
 			org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-<span class="nc" id="L123">				(strFullCreditIndexName);</span>
+<span class="nc" id="L124">				(strFullCreditIndexName);</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == cic) return null;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == cic) return null;</span>
 
-<span class="nc" id="L127">		org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();</span>
+<span class="nc" id="L128">		org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (null == cdsIndex) return null;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == cdsIndex) return null;</span>
 
-<span class="nc" id="L131">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="nc" id="L132">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">			!csqc.setCreditState (cc))</span>
-<span class="nc" id="L136">			return null;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			!csqc.setCreditState (cc))</span>
+<span class="nc" id="L137">			return null;</span>
 
 		try {
-<span class="nc" id="L139">			return new ParCDS (cdsIndex, cic.fixedCoupon(), 0.0001 * cdsIndex.measureValue</span>
-<span class="nc" id="L140">				(org.drip.param.valuation.ValuationParams.Spot (dc.epoch().julian()), null, csqc, null,</span>
+<span class="nc" id="L140">			return new ParCDS (cdsIndex, cic.fixedCoupon(), 0.0001 * cdsIndex.measureValue</span>
+<span class="nc" id="L141">				(org.drip.param.valuation.ValuationParams.Spot (dc.epoch().julian()), null, csqc, null,</span>
 					&quot;FairPremium&quot;));
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	private static final org.drip.historical.attribution.CDSMarketSnap MarketValuationSnap (
@@ -153,49 +154,49 @@ package org.drip.service.product;
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
 		final double dblRollDownFairPremium)
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			!csqc.setCreditState (cc))</span>
-<span class="nc" id="L158">			return null;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			!csqc.setCreditState (cc))</span>
+<span class="nc" id="L159">			return null;</span>
 
-<span class="nc" id="L160">		org.drip.analytics.date.JulianDate dt = dc.epoch();</span>
+<span class="nc" id="L161">		org.drip.analytics.date.JulianDate dt = dc.epoch();</span>
 
-<span class="nc" id="L162">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCDS = cds.value</span>
-<span class="nc" id="L163">			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), null, csqc, null);</span>
+<span class="nc" id="L163">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCDS = cds.value</span>
+<span class="nc" id="L164">			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), null, csqc, null);</span>
 
-<span class="nc bnc" id="L165" title="All 6 branches missed.">		if (null == mapCDS || !mapCDS.containsKey (&quot;Accrued&quot;) || !mapCDS.containsKey (&quot;CleanDV01&quot;) ||</span>
-<span class="nc bnc" id="L166" title="All 4 branches missed.">			!mapCDS.containsKey (&quot;CleanPV&quot;) || !mapCDS.containsKey (&quot;CleanCouponPV&quot;) || !mapCDS.containsKey</span>
-<span class="nc bnc" id="L167" title="All 4 branches missed.">				(&quot;CumulativeCouponAmount&quot;) || !mapCDS.containsKey (&quot;FairPremium&quot;) || !mapCDS.containsKey</span>
-<span class="nc bnc" id="L168" title="All 2 branches missed.">					(&quot;LossPV&quot;))</span>
-<span class="nc" id="L169">			return null;</span>
+<span class="nc bnc" id="L166" title="All 6 branches missed.">		if (null == mapCDS || !mapCDS.containsKey (&quot;Accrued&quot;) || !mapCDS.containsKey (&quot;CleanDV01&quot;) ||</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">			!mapCDS.containsKey (&quot;CleanPV&quot;) || !mapCDS.containsKey (&quot;CleanCouponPV&quot;) || !mapCDS.containsKey</span>
+<span class="nc bnc" id="L168" title="All 4 branches missed.">				(&quot;CumulativeCouponAmount&quot;) || !mapCDS.containsKey (&quot;FairPremium&quot;) || !mapCDS.containsKey</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">					(&quot;LossPV&quot;))</span>
+<span class="nc" id="L170">			return null;</span>
 
-<span class="nc" id="L171">		double dblCleanPV = mapCDS.get (&quot;CleanPV&quot;);</span>
+<span class="nc" id="L172">		double dblCleanPV = mapCDS.get (&quot;CleanPV&quot;);</span>
 
-<span class="nc" id="L173">		double dblFairPremium = 0.0001 * mapCDS.get (&quot;FairPremium&quot;);</span>
+<span class="nc" id="L174">		double dblFairPremium = 0.0001 * mapCDS.get (&quot;FairPremium&quot;);</span>
 
-<span class="nc" id="L175">		org.drip.analytics.date.JulianDate dtEffective = cds.effectiveDate();</span>
+<span class="nc" id="L176">		org.drip.analytics.date.JulianDate dtEffective = cds.effectiveDate();</span>
 
-<span class="nc" id="L177">		double dblFairPremiumSensitivity = 10000. * mapCDS.get (&quot;CleanDV01&quot;);</span>
+<span class="nc" id="L178">		double dblFairPremiumSensitivity = 10000. * mapCDS.get (&quot;CleanDV01&quot;);</span>
 
 		try {
-<span class="nc" id="L180">			org.drip.historical.attribution.CDSMarketSnap cdsms = new</span>
+<span class="nc" id="L181">			org.drip.historical.attribution.CDSMarketSnap cdsms = new</span>
 				org.drip.historical.attribution.CDSMarketSnap (dt, dblCleanPV);
 
-<span class="nc bnc" id="L183" title="All 4 branches missed.">			return cdsms.setEffectiveDate (dtEffective) &amp;&amp; cdsms.setMaturityDate (cds.maturityDate()) &amp;&amp;</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">				cdsms.setCleanDV01 (dblFairPremiumSensitivity) &amp;&amp; cdsms.setCurrentFairPremium</span>
-<span class="nc bnc" id="L185" title="All 4 branches missed.">					(dblFairPremium) &amp;&amp; cdsms.setRollDownFairPremium (dblRollDownFairPremium) &amp;&amp;</span>
-<span class="nc bnc" id="L186" title="All 2 branches missed.">						cdsms.setAccrued (mapCDS.get (&quot;Accrued&quot;)) &amp;&amp; cdsms.setCumulativeCouponAmount</span>
-<span class="nc bnc" id="L187" title="All 2 branches missed.">							(mapCDS.get (&quot;CumulativeCouponAmount&quot;)) &amp;&amp; cdsms.setCreditLabel</span>
-<span class="nc bnc" id="L188" title="All 2 branches missed.">								(cds.creditLabel().fullyQualifiedName()) &amp;&amp; cdsms.setRecoveryRate</span>
-<span class="nc bnc" id="L189" title="All 2 branches missed.">									(cds.recovery (dtEffective.julian(), cc)) &amp;&amp; cdsms.setCouponPV</span>
-<span class="nc bnc" id="L190" title="All 4 branches missed.">										(mapCDS.get (&quot;CleanCouponPV&quot;)) &amp;&amp; cdsms.setLossPV (mapCDS.get</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">											(&quot;LossPV&quot;)) &amp;&amp; cdsms.setFairPremiumMarketFactor (dblFairPremium,</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">			return cdsms.setEffectiveDate (dtEffective) &amp;&amp; cdsms.setMaturityDate (cds.maturityDate()) &amp;&amp;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">				cdsms.setCleanDV01 (dblFairPremiumSensitivity) &amp;&amp; cdsms.setCurrentFairPremium</span>
+<span class="nc bnc" id="L186" title="All 4 branches missed.">					(dblFairPremium) &amp;&amp; cdsms.setRollDownFairPremium (dblRollDownFairPremium) &amp;&amp;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">						cdsms.setAccrued (mapCDS.get (&quot;Accrued&quot;)) &amp;&amp; cdsms.setCumulativeCouponAmount</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">							(mapCDS.get (&quot;CumulativeCouponAmount&quot;)) &amp;&amp; cdsms.setCreditLabel</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">								(cds.creditLabel().fullyQualifiedName()) &amp;&amp; cdsms.setRecoveryRate</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">									(cds.recovery (dtEffective.julian(), cc)) &amp;&amp; cdsms.setCouponPV</span>
+<span class="nc bnc" id="L191" title="All 4 branches missed.">										(mapCDS.get (&quot;CleanCouponPV&quot;)) &amp;&amp; cdsms.setLossPV (mapCDS.get</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">											(&quot;LossPV&quot;)) &amp;&amp; cdsms.setFairPremiumMarketFactor (dblFairPremium,</span>
 												-1. * dblFairPremiumSensitivity, dblRollDownFairPremium) ?
 													cdsms : null;
-<span class="nc" id="L194">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">			e.printStackTrace();</span>
+<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L198">		return null;</span>
+<span class="nc" id="L199">		return null;</span>
 	}
 
 	private static final double RollDownFairPremium (
@@ -206,17 +207,17 @@ package org.drip.service.product;
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dcPrevious) ||</span>
-<span class="nc bnc" id="L210" title="All 2 branches missed.">			!csqc.setCreditState (ccPrevious))</span>
-<span class="nc" id="L211">			throw new java.lang.Exception (&quot;CreditIndexAPI::RollDownFairPremium =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dcPrevious) ||</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			!csqc.setCreditState (ccPrevious))</span>
+<span class="nc" id="L212">			throw new java.lang.Exception (&quot;CreditIndexAPI::RollDownFairPremium =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L213">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCDS = cds.value</span>
-<span class="nc" id="L214">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null);</span>
+<span class="nc" id="L214">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCDS = cds.value</span>
+<span class="nc" id="L215">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null);</span>
 
-<span class="nc bnc" id="L216" title="All 4 branches missed.">		if (null == mapCDS || !mapCDS.containsKey (&quot;FairPremium&quot;))</span>
-<span class="nc" id="L217">			throw new java.lang.Exception (&quot;CreditIndexAPI::RollDownFairPremium =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (null == mapCDS || !mapCDS.containsKey (&quot;FairPremium&quot;))</span>
+<span class="nc" id="L218">			throw new java.lang.Exception (&quot;CreditIndexAPI::RollDownFairPremium =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L219">		return 0.0001 * mapCDS.get (&quot;FairPremium&quot;);</span>
+<span class="nc" id="L220">		return 0.0001 * mapCDS.get (&quot;FairPremium&quot;);</span>
 	}
 
 	/**
@@ -238,68 +239,68 @@ package org.drip.service.product;
 		final org.drip.state.credit.CreditCurve ccSecond,
 		final java.lang.String strFullCreditIndexName)
 	{
-<span class="nc bnc" id="L241" title="All 8 branches missed.">		if (null == dcFirst || null == ccFirst || null == dcSecond || null == ccSecond) return null;</span>
+<span class="nc bnc" id="L242" title="All 8 branches missed.">		if (null == dcFirst || null == ccFirst || null == dcSecond || null == ccSecond) return null;</span>
 
-<span class="nc" id="L243">		int iFirstDate = dcFirst.epoch().julian();</span>
+<span class="nc" id="L244">		int iFirstDate = dcFirst.epoch().julian();</span>
 
-<span class="nc" id="L245">		int iSecondDate = dcSecond.epoch().julian();</span>
+<span class="nc" id="L246">		int iSecondDate = dcSecond.epoch().julian();</span>
 
-<span class="nc" id="L247">		java.lang.String strCurrency = dcSecond.currency();</span>
+<span class="nc" id="L248">		java.lang.String strCurrency = dcSecond.currency();</span>
 
-<span class="nc bnc" id="L249" title="All 4 branches missed.">		if (!strCurrency.equalsIgnoreCase (dcFirst.currency()) || iFirstDate &gt;= iSecondDate ||</span>
-<span class="nc bnc" id="L250" title="All 4 branches missed.">			ccFirst.epoch().julian() != iFirstDate || ccSecond.epoch().julian() != iSecondDate)</span>
-<span class="nc" id="L251">			return null;</span>
+<span class="nc bnc" id="L250" title="All 4 branches missed.">		if (!strCurrency.equalsIgnoreCase (dcFirst.currency()) || iFirstDate &gt;= iSecondDate ||</span>
+<span class="nc bnc" id="L251" title="All 4 branches missed.">			ccFirst.epoch().julian() != iFirstDate || ccSecond.epoch().julian() != iSecondDate)</span>
+<span class="nc" id="L252">			return null;</span>
 
-<span class="nc" id="L253">		ParCDS parCDS = HorizonCreditIndex (dcFirst, ccFirst, strFullCreditIndexName);</span>
+<span class="nc" id="L254">		ParCDS parCDS = HorizonCreditIndex (dcFirst, ccFirst, strFullCreditIndexName);</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		if (null == parCDS) return null;</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (null == parCDS) return null;</span>
 
-<span class="nc" id="L257">		org.drip.product.definition.CreditDefaultSwap cds = parCDS.cds();</span>
+<span class="nc" id="L258">		org.drip.product.definition.CreditDefaultSwap cds = parCDS.cds();</span>
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		if (null == cds) return null;</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (null == cds) return null;</span>
 
-<span class="nc" id="L261">		double dblFixedCoupon = parCDS.fixedCoupon();</span>
+<span class="nc" id="L262">		double dblFixedCoupon = parCDS.fixedCoupon();</span>
 
-<span class="nc" id="L263">		double dblInitialFairPremium = parCDS.fairPremium();</span>
+<span class="nc" id="L264">		double dblInitialFairPremium = parCDS.fairPremium();</span>
 
-<span class="nc" id="L265">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="nc" id="L266">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc" id="L268">		double dblRollDownFairPremium = java.lang.Double.NaN;</span>
+<span class="nc" id="L269">		double dblRollDownFairPremium = java.lang.Double.NaN;</span>
 
 		try {
-<span class="nc" id="L271">			dblRollDownFairPremium = RollDownFairPremium (cds, iSecondDate, dcFirst, ccFirst, csqc);</span>
-<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L273">			e.printStackTrace();</span>
+<span class="nc" id="L272">			dblRollDownFairPremium = RollDownFairPremium (cds, iSecondDate, dcFirst, ccFirst, csqc);</span>
+<span class="nc" id="L273">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L274">			e.printStackTrace();</span>
 
-<span class="nc" id="L275">			return null;</span>
-<span class="nc" id="L276">		}</span>
+<span class="nc" id="L276">			return null;</span>
+<span class="nc" id="L277">		}</span>
 
-<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblRollDownFairPremium)) return null;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblRollDownFairPremium)) return null;</span>
 
-<span class="nc" id="L280">		org.drip.historical.attribution.CDSMarketSnap cdsmsFirst = MarketValuationSnap (cds, dcFirst,</span>
+<span class="nc" id="L281">		org.drip.historical.attribution.CDSMarketSnap cdsmsFirst = MarketValuationSnap (cds, dcFirst,</span>
 			ccFirst, csqc, dblRollDownFairPremium);
 
-<span class="nc bnc" id="L283" title="All 4 branches missed.">		if (null == cdsmsFirst || !cdsmsFirst.setInitialFairPremium (dblInitialFairPremium) ||</span>
-<span class="nc bnc" id="L284" title="All 2 branches missed.">			!cdsmsFirst.setFixedCoupon (dblFixedCoupon))</span>
-<span class="nc" id="L285">			return null;</span>
+<span class="nc bnc" id="L284" title="All 4 branches missed.">		if (null == cdsmsFirst || !cdsmsFirst.setInitialFairPremium (dblInitialFairPremium) ||</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">			!cdsmsFirst.setFixedCoupon (dblFixedCoupon))</span>
+<span class="nc" id="L286">			return null;</span>
 
-<span class="nc" id="L287">		org.drip.historical.attribution.CDSMarketSnap cdsmsSecond = MarketValuationSnap (cds, dcSecond,</span>
+<span class="nc" id="L288">		org.drip.historical.attribution.CDSMarketSnap cdsmsSecond = MarketValuationSnap (cds, dcSecond,</span>
 			ccSecond, csqc, dblRollDownFairPremium);
 
-<span class="nc bnc" id="L290" title="All 4 branches missed.">		if (null == cdsmsSecond || !cdsmsSecond.setInitialFairPremium (dblInitialFairPremium) ||</span>
-<span class="nc bnc" id="L291" title="All 2 branches missed.">			!cdsmsSecond.setFixedCoupon (dblFixedCoupon))</span>
-<span class="nc" id="L292">			return null;</span>
+<span class="nc bnc" id="L291" title="All 4 branches missed.">		if (null == cdsmsSecond || !cdsmsSecond.setInitialFairPremium (dblInitialFairPremium) ||</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">			!cdsmsSecond.setFixedCoupon (dblFixedCoupon))</span>
+<span class="nc" id="L293">			return null;</span>
 
 		try {
-<span class="nc" id="L295">			return new org.drip.historical.attribution.PositionChangeComponents (false, cdsmsFirst,</span>
-<span class="nc" id="L296">				cdsmsSecond, cdsmsSecond.cumulativeCouponAmount() - cdsmsFirst.cumulativeCouponAmount(),</span>
+<span class="nc" id="L296">			return new org.drip.historical.attribution.PositionChangeComponents (false, cdsmsFirst,</span>
+<span class="nc" id="L297">				cdsmsSecond, cdsmsSecond.cumulativeCouponAmount() - cdsmsFirst.cumulativeCouponAmount(),</span>
 					null);
-<span class="nc" id="L298">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L299">			e.printStackTrace();</span>
+<span class="nc" id="L299">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L300">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L302">		return null;</span>
+<span class="nc" id="L303">		return null;</span>
 	}
 
 	/**
@@ -324,64 +325,64 @@ package org.drip.service.product;
 			final java.lang.String[] astrFullCreditIndexName,
 			final double[] adblCreditIndexQuotedSpread)
 	{
-<span class="nc bnc" id="L327" title="All 12 branches missed.">		if (null == adtSpot || 0 &gt;= iHorizonGap || null == astrFundingFixingMaturityTenor || null ==</span>
+<span class="nc bnc" id="L328" title="All 12 branches missed.">		if (null == adtSpot || 0 &gt;= iHorizonGap || null == astrFundingFixingMaturityTenor || null ==</span>
 			aadblFundingFixingQuote || null == astrFullCreditIndexName || null ==
 				adblCreditIndexQuotedSpread)
-<span class="nc" id="L330">			return null;</span>
+<span class="nc" id="L331">			return null;</span>
 
-<span class="nc" id="L332">		int iNumClose = adtSpot.length;</span>
-<span class="nc" id="L333">		int iNumFundingInstrument = astrFundingFixingMaturityTenor.length;</span>
+<span class="nc" id="L333">		int iNumClose = adtSpot.length;</span>
+<span class="nc" id="L334">		int iNumFundingInstrument = astrFundingFixingMaturityTenor.length;</span>
 
-<span class="nc" id="L335">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
+<span class="nc" id="L336">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
 			java.util.ArrayList&lt;org.drip.historical.attribution.PositionChangeComponents&gt;();
 
-<span class="nc bnc" id="L338" title="All 2 branches missed.">		for (int i = iHorizonGap; i &lt; iNumClose; ++i) {</span>
-<span class="nc bnc" id="L339" title="All 2 branches missed.">			int iNumSecondFundingQuote = null == aadblFundingFixingQuote[i] ? 0 :</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">		for (int i = iHorizonGap; i &lt; iNumClose; ++i) {</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">			int iNumSecondFundingQuote = null == aadblFundingFixingQuote[i] ? 0 :</span>
 				aadblFundingFixingQuote[i].length;
-<span class="nc bnc" id="L341" title="All 2 branches missed.">			int iNumFirstFundingQuote = null == aadblFundingFixingQuote[i - iHorizonGap] ? 0 :</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">			int iNumFirstFundingQuote = null == aadblFundingFixingQuote[i - iHorizonGap] ? 0 :</span>
 				aadblFundingFixingQuote[i - iHorizonGap].length;
 
-<span class="nc bnc" id="L344" title="All 8 branches missed.">			if (0 == iNumFirstFundingQuote || iNumFirstFundingQuote != iNumFundingInstrument || 0 ==</span>
+<span class="nc bnc" id="L345" title="All 8 branches missed.">			if (0 == iNumFirstFundingQuote || iNumFirstFundingQuote != iNumFundingInstrument || 0 ==</span>
 				iNumSecondFundingQuote || iNumSecondFundingQuote != iNumFundingInstrument)
-<span class="nc" id="L346">				continue;</span>
+<span class="nc" id="L347">				continue;</span>
 
-<span class="nc" id="L348">			org.drip.market.otc.CreditIndexConvention cic =</span>
+<span class="nc" id="L349">			org.drip.market.otc.CreditIndexConvention cic =</span>
 				org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-<span class="nc" id="L350">					(astrFullCreditIndexName[i]);</span>
+<span class="nc" id="L351">					(astrFullCreditIndexName[i]);</span>
 
-<span class="nc bnc" id="L352" title="All 2 branches missed.">			if (null == cic) return null;</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">			if (null == cic) return null;</span>
 
-<span class="nc" id="L354">			java.lang.String strCurrency = cic.currency();</span>
+<span class="nc" id="L355">			java.lang.String strCurrency = cic.currency();</span>
 
-<span class="nc" id="L356">			org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();</span>
+<span class="nc" id="L357">			org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();</span>
 
-<span class="nc" id="L358">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingFirst =</span>
-<span class="nc" id="L359">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i - iHorizonGap],</span>
+<span class="nc" id="L359">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingFirst =</span>
+<span class="nc" id="L360">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i - iHorizonGap],</span>
 					strCurrency, null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;,
 						astrFundingFixingMaturityTenor, aadblFundingFixingQuote[i - iHorizonGap], &quot;SwapRate&quot;,
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-<span class="nc" id="L364">			org.drip.state.credit.CreditCurve ccFirst =</span>
-<span class="nc" id="L365">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i - iHorizonGap], new</span>
+<span class="nc" id="L365">			org.drip.state.credit.CreditCurve ccFirst =</span>
+<span class="nc" id="L366">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i - iHorizonGap], new</span>
 					org.drip.product.definition.CreditDefaultSwap[] {cdsIndex}, new double[]
 						{adblCreditIndexQuotedSpread[i - iHorizonGap]}, &quot;FairPremium&quot;, dcFundingFixingFirst);
 
-<span class="nc" id="L369">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingSecond =</span>
-<span class="nc" id="L370">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], strCurrency,</span>
+<span class="nc" id="L370">			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingSecond =</span>
+<span class="nc" id="L371">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], strCurrency,</span>
 					null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;, astrFundingFixingMaturityTenor,
 						aadblFundingFixingQuote[i], &quot;SwapRate&quot;,
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-<span class="nc" id="L375">			org.drip.state.credit.CreditCurve ccSecond =</span>
-<span class="nc" id="L376">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new</span>
+<span class="nc" id="L376">			org.drip.state.credit.CreditCurve ccSecond =</span>
+<span class="nc" id="L377">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new</span>
 					org.drip.product.definition.CreditDefaultSwap[] {cdsIndex}, new double[]
 						{adblCreditIndexQuotedSpread[i]}, &quot;FairPremium&quot;, dcFundingFixingSecond);
 
-<span class="nc" id="L380">			lsPCC.add (HorizonChangeAttribution (dcFundingFixingFirst, ccFirst, dcFundingFixingSecond,</span>
+<span class="nc" id="L381">			lsPCC.add (HorizonChangeAttribution (dcFundingFixingFirst, ccFirst, dcFundingFixingSecond,</span>
 				ccSecond, astrFullCreditIndexName[i]));
 		}
 
-<span class="nc" id="L384">		return lsPCC;</span>
+<span class="nc" id="L385">		return lsPCC;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

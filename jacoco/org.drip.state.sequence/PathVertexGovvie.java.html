@@ -70,9 +70,10 @@ package org.drip.state.sequence;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -80,54 +81,54 @@ package org.drip.state.sequence;
  */
 
 public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
-<span class="fc" id="L83">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
+<span class="fc" id="L84">	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;</span>
 
 	private org.drip.state.govvie.GovvieCurve[][] curveVertex (
 		final double[][][] aaadblPathForward)
 	{
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (null == aaadblPathForward) return null;</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (null == aaadblPathForward) return null;</span>
 
-<span class="fc" id="L90">		org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd = cpvd();</span>
+<span class="fc" id="L91">		org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd = cpvd();</span>
 
-<span class="fc" id="L92">		int iNumPath = cpvd.numPath();</span>
+<span class="fc" id="L93">		int iNumPath = cpvd.numPath();</span>
 
-<span class="fc" id="L94">		int iNumVertex = cpvd.numVertex();</span>
+<span class="fc" id="L95">		int iNumVertex = cpvd.numVertex();</span>
 
-<span class="fc" id="L96">		java.lang.String[] astrTenor = _gbs.tenors();</span>
+<span class="fc" id="L97">		java.lang.String[] astrTenor = _gbs.tenors();</span>
 
-<span class="fc" id="L98">		java.lang.String strTreasuryCode = _gbs.code();</span>
+<span class="fc" id="L99">		java.lang.String strTreasuryCode = _gbs.code();</span>
 
-<span class="fc" id="L100">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
+<span class="fc" id="L101">		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();</span>
 
-<span class="fc" id="L102">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
+<span class="fc" id="L103">		java.lang.String strCurrency = _gbs.groundState().currency();</span>
 
-<span class="fc" id="L104">		org.drip.state.nonlinear.FlatForwardGovvieCurve[][] aaFFGC = new</span>
+<span class="fc" id="L105">		org.drip.state.nonlinear.FlatForwardGovvieCurve[][] aaFFGC = new</span>
 			org.drip.state.nonlinear.FlatForwardGovvieCurve[iNumPath][iNumVertex];
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
-<span class="fc" id="L108">			org.drip.analytics.date.JulianDate dtEvent = dtSpot.addYears (iTimeVertex + 1);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (int iTimeVertex = 0; iTimeVertex &lt; iNumVertex; ++iTimeVertex) {</span>
+<span class="fc" id="L109">			org.drip.analytics.date.JulianDate dtEvent = dtSpot.addYears (iTimeVertex + 1);</span>
 
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			if (null == dtEvent) return null;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			if (null == dtEvent) return null;</span>
 
-<span class="fc" id="L112">			int iEventDate = dtEvent.julian();</span>
+<span class="fc" id="L113">			int iEventDate = dtEvent.julian();</span>
 
-<span class="fc" id="L114">			int[] aiDate = org.drip.analytics.support.Helper.TenorToDate (dtEvent, astrTenor);</span>
+<span class="fc" id="L115">			int[] aiDate = org.drip.analytics.support.Helper.TenorToDate (dtEvent, astrTenor);</span>
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">			for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">			for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
 				try {
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">					if (null == (aaFFGC[iPath][iTimeVertex] = new</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">					if (null == (aaFFGC[iPath][iTimeVertex] = new</span>
 						org.drip.state.nonlinear.FlatForwardGovvieCurve (iEventDate, strTreasuryCode,
 							strCurrency, aiDate, aaadblPathForward[iPath][iTimeVertex])))
-<span class="nc" id="L121">						return null;</span>
-<span class="nc" id="L122">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L123">					e.printStackTrace();</span>
+<span class="nc" id="L122">						return null;</span>
+<span class="nc" id="L123">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L124">					e.printStackTrace();</span>
 
-<span class="nc" id="L125">					return null;</span>
-<span class="fc" id="L126">				}</span>
+<span class="nc" id="L126">					return null;</span>
+<span class="fc" id="L127">				}</span>
 			}
 		}
 
-<span class="fc" id="L130">		return aaFFGC;</span>
+<span class="fc" id="L131">		return aaFFGC;</span>
 	}
 
 	/**
@@ -145,23 +146,23 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
 		final org.drip.measure.process.DiffusionEvolver de)
 	{
-<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == cpvd || null == de) return null;</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">		if (null == cpvd || null == de) return null;</span>
 
-<span class="fc" id="L150">		int iNumDimension = cpvd.numDimension();</span>
+<span class="fc" id="L151">		int iNumDimension = cpvd.numDimension();</span>
 
-<span class="fc" id="L152">		org.drip.measure.process.DiffusionEvolver[] aDE = new</span>
+<span class="fc" id="L153">		org.drip.measure.process.DiffusionEvolver[] aDE = new</span>
 			org.drip.measure.process.DiffusionEvolver[iNumDimension];
 
-<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
-<span class="fc" id="L156">			aDE[iDimension] = de;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension)</span>
+<span class="fc" id="L157">			aDE[iDimension] = de;</span>
 
 		try {
-<span class="fc" id="L159">			return new PathVertexGovvie (gbs, cpvd, aDE);</span>
-<span class="nc" id="L160">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L161">			e.printStackTrace();</span>
+<span class="fc" id="L160">			return new PathVertexGovvie (gbs, cpvd, aDE);</span>
+<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L162">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L164">		return null;</span>
+<span class="nc" id="L165">		return null;</span>
 	}
 
 	/**
@@ -180,11 +181,11 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 		final org.drip.measure.process.DiffusionEvolver[] aDE)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L183">		super (cpvd, aDE);</span>
+<span class="fc" id="L184">		super (cpvd, aDE);</span>
 
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (null == (_gbs = gbs))</span>
-<span class="nc" id="L186">			throw new java.lang.Exception (&quot;PathVertexGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L187">	}</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (null == (_gbs = gbs))</span>
+<span class="nc" id="L187">			throw new java.lang.Exception (&quot;PathVertexGovvie Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L188">	}</span>
 
 	/**
 	 * Generate the Govvie Builder Settings Instance
@@ -194,7 +195,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 
 	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSettings()
 	{
-<span class="fc" id="L197">		return _gbs;</span>
+<span class="fc" id="L198">		return _gbs;</span>
 	}
 
 	/**
@@ -208,7 +209,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final double[] adblTimeIncrement)
 	{
-<span class="nc" id="L211">		return curveVertex (pathVertex (_gbs.groundForwardYield(), adblTimeIncrement));</span>
+<span class="nc" id="L212">		return curveVertex (pathVertex (_gbs.groundForwardYield(), adblTimeIncrement));</span>
 	}
 
 	/**
@@ -222,7 +223,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final double dblTimeIncrement)
 	{
-<span class="fc" id="L225">		return curveVertex (pathVertex (_gbs.groundForwardYield(), dblTimeIncrement));</span>
+<span class="fc" id="L226">		return curveVertex (pathVertex (_gbs.groundForwardYield(), dblTimeIncrement));</span>
 	}
 
 	/**
@@ -236,7 +237,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final java.lang.String[] astrEventTenor)
 	{
-<span class="nc" id="L239">		return curveVertex (pathVertex (_gbs.groundForwardYield(), astrEventTenor));</span>
+<span class="nc" id="L240">		return curveVertex (pathVertex (_gbs.groundForwardYield(), astrEventTenor));</span>
 	}
 
 	/**
@@ -250,7 +251,7 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
 		final int[] aiEventDate)
 	{
-<span class="fc" id="L253">		return curveVertex (pathVertex (_gbs.groundForwardYield(), _gbs.spot().julian(), aiEventDate));</span>
+<span class="fc" id="L254">		return curveVertex (pathVertex (_gbs.groundForwardYield(), _gbs.spot().julian(), aiEventDate));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

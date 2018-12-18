@@ -74,9 +74,10 @@ package org.drip.service.api;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -84,8 +85,8 @@ package org.drip.service.api;
  */
 
 public class InstrMetric {
-<span class="nc" id="L87">	private org.drip.service.api.ForwardRates _fwdMetric = null;</span>
-<span class="nc" id="L88">	private org.drip.service.api.ProductDailyPnL _pnlMetric = null;</span>
+<span class="nc" id="L88">	private org.drip.service.api.ForwardRates _fwdMetric = null;</span>
+<span class="nc" id="L89">	private org.drip.service.api.ProductDailyPnL _pnlMetric = null;</span>
 
 	/**
 	 * InstrMetric constructor
@@ -100,10 +101,10 @@ public class InstrMetric {
 		final org.drip.service.api.ForwardRates fwdMetric,
 		final org.drip.service.api.ProductDailyPnL pnlMetric)
 		throws java.lang.Exception
-<span class="nc" id="L103">	{</span>
-<span class="nc bnc" id="L104" title="All 4 branches missed.">		if (null == (_fwdMetric = fwdMetric) || null == (_pnlMetric = pnlMetric))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;InstrMetric ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L106">	}</span>
+<span class="nc" id="L104">	{</span>
+<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == (_fwdMetric = fwdMetric) || null == (_pnlMetric = pnlMetric))</span>
+<span class="nc" id="L106">			throw new java.lang.Exception (&quot;InstrMetric ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L107">	}</span>
 
 	/**
 	 * Retrieve the Forward Metric
@@ -113,7 +114,7 @@ public class InstrMetric {
 
 	public org.drip.service.api.ForwardRates fwdMetric()
 	{
-<span class="nc" id="L116">		return _fwdMetric;</span>
+<span class="nc" id="L117">		return _fwdMetric;</span>
 	}
 
 	/**
@@ -124,7 +125,7 @@ public class InstrMetric {
 
 	public org.drip.service.api.ProductDailyPnL pnlMetric()
 	{
-<span class="nc" id="L127">		return _pnlMetric;</span>
+<span class="nc" id="L128">		return _pnlMetric;</span>
 	}
 
 	/**
@@ -135,38 +136,38 @@ public class InstrMetric {
 
 	public double[] toArray()
 	{
-<span class="nc" id="L138">		double[] adblPnLMetric = _pnlMetric.toArray();</span>
+<span class="nc" id="L139">		double[] adblPnLMetric = _pnlMetric.toArray();</span>
 
-<span class="nc" id="L140">		double[] adblFwdMetric = _fwdMetric.toArray();</span>
+<span class="nc" id="L141">		double[] adblFwdMetric = _fwdMetric.toArray();</span>
 
-<span class="nc" id="L142">		int i = 0;</span>
-<span class="nc" id="L143">		double[] adblInstrMetric = new double[adblFwdMetric.length + adblPnLMetric.length];</span>
+<span class="nc" id="L143">		int i = 0;</span>
+<span class="nc" id="L144">		double[] adblInstrMetric = new double[adblFwdMetric.length + adblPnLMetric.length];</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (double dbl : adblPnLMetric)</span>
-<span class="nc" id="L146">			adblInstrMetric[i++] = dbl;</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (double dbl : adblPnLMetric)</span>
+<span class="nc" id="L147">			adblInstrMetric[i++] = dbl;</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (double dbl : adblFwdMetric)</span>
-<span class="nc" id="L149">			adblInstrMetric[i++] = dbl;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (double dbl : adblFwdMetric)</span>
+<span class="nc" id="L150">			adblInstrMetric[i++] = dbl;</span>
 
-<span class="nc" id="L151">		return adblInstrMetric;</span>
+<span class="nc" id="L152">		return adblInstrMetric;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L156">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L157">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc" id="L158">		boolean bStart = true;</span>
+<span class="nc" id="L159">		boolean bStart = true;</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (double dbl : toArray()) {</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			if (bStart)</span>
-<span class="nc" id="L162">				bStart = false;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (double dbl : toArray()) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (bStart)</span>
+<span class="nc" id="L163">				bStart = false;</span>
 			else
-<span class="nc" id="L164">				sb.append (&quot;,&quot;);</span>
+<span class="nc" id="L165">				sb.append (&quot;,&quot;);</span>
 
-<span class="nc" id="L166">			sb.append (dbl);</span>
+<span class="nc" id="L167">			sb.append (dbl);</span>
 		}
 
-<span class="nc" id="L169">		return sb.toString();</span>
+<span class="nc" id="L170">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

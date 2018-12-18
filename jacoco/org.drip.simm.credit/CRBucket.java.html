@@ -96,9 +96,10 @@ package org.drip.simm.credit;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,10 +108,10 @@ package org.drip.simm.credit;
 
 public class CRBucket
 {
-<span class="fc" id="L110">	private int _number = -1;</span>
-<span class="fc" id="L111">	private java.lang.String _quality = &quot;&quot;;</span>
-<span class="fc" id="L112">	private java.lang.String[] _sectorArray = null;</span>
-<span class="fc" id="L113">	private double _riskWeight = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private int _number = -1;</span>
+<span class="fc" id="L112">	private java.lang.String _quality = &quot;&quot;;</span>
+<span class="fc" id="L113">	private java.lang.String[] _sectorArray = null;</span>
+<span class="fc" id="L114">	private double _riskWeight = java.lang.Double.NaN;</span>
 
 	/**
 	 * CRBucket Constructor
@@ -129,16 +130,16 @@ public class CRBucket
 		final java.lang.String[] sectorArray,
 		final double riskWeight)
 		throws java.lang.Exception
-<span class="fc" id="L132">	{</span>
-<span class="pc bpc" id="L133" title="4 of 8 branches missed.">		if (null == (_quality = quality) || _quality.isEmpty() ||</span>
+<span class="fc" id="L133">	{</span>
+<span class="pc bpc" id="L134" title="4 of 8 branches missed.">		if (null == (_quality = quality) || _quality.isEmpty() ||</span>
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight))</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight))</span>
 		{
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;CRBucket Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;CRBucket Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L140">		_number = number;</span>
-<span class="fc" id="L141">	}</span>
+<span class="fc" id="L141">		_number = number;</span>
+<span class="fc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the SIMM 2.0 Bucket Number
@@ -148,7 +149,7 @@ public class CRBucket
 
 	public int number()
 	{
-<span class="nc" id="L151">		return _number;</span>
+<span class="nc" id="L152">		return _number;</span>
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class CRBucket
 
 	public java.lang.String quality()
 	{
-<span class="nc" id="L162">		return _quality;</span>
+<span class="nc" id="L163">		return _quality;</span>
 	}
 
 	/**
@@ -170,7 +171,7 @@ public class CRBucket
 
 	public java.lang.String[] sectorArray()
 	{
-<span class="nc" id="L173">		return _sectorArray;</span>
+<span class="nc" id="L174">		return _sectorArray;</span>
 	}
 
 	/**
@@ -181,7 +182,7 @@ public class CRBucket
 
 	public double riskWeight()
 	{
-<span class="nc" id="L184">		return _riskWeight;</span>
+<span class="nc" id="L185">		return _riskWeight;</span>
 	}
 
 	/**
@@ -195,24 +196,24 @@ public class CRBucket
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMap (
 		final java.util.Set&lt;java.lang.String&gt; tenorSet)
 	{
-<span class="nc bnc" id="L198" title="All 4 branches missed.">		if (null == tenorSet || 0 == tenorSet.size())</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (null == tenorSet || 0 == tenorSet.size())</span>
 		{
-<span class="nc" id="L200">			return null;</span>
+<span class="nc" id="L201">			return null;</span>
 		}
 
-<span class="nc" id="L203">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMap = new</span>
+<span class="nc" id="L204">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorWeightMap = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorWeightEntry :
-<span class="nc bnc" id="L207" title="All 2 branches missed.">			tenorWeightMap.entrySet())</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			tenorWeightMap.entrySet())</span>
 		{
-<span class="nc" id="L209">			tenorWeightMap.put (</span>
-<span class="nc" id="L210">				tenorWeightEntry.getKey(),</span>
-<span class="nc" id="L211">				_riskWeight</span>
+<span class="nc" id="L210">			tenorWeightMap.put (</span>
+<span class="nc" id="L211">				tenorWeightEntry.getKey(),</span>
+<span class="nc" id="L212">				_riskWeight</span>
 			);
-<span class="nc" id="L213">		}</span>
+<span class="nc" id="L214">		}</span>
 
-<span class="nc" id="L215">		return tenorWeightMap;</span>
+<span class="nc" id="L216">		return tenorWeightMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

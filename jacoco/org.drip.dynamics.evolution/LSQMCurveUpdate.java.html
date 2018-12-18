@@ -13,12 +13,12 @@ package org.drip.dynamics.evolution;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -45,6 +45,7 @@ package org.drip.dynamics.evolution;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,18 +76,18 @@ package org.drip.dynamics.evolution;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LSQMCurveUpdate {
-<span class="fc" id="L86">	private int _iFinalDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L87">	private int _iInitialDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L88">	private org.drip.dynamics.evolution.LSQMCurveSnapshot _snapshot = null;</span>
-<span class="fc" id="L89">	private org.drip.dynamics.evolution.LSQMCurveIncrement _increment = null;</span>
+<span class="fc" id="L87">	private int _iFinalDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L88">	private int _iInitialDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L89">	private org.drip.dynamics.evolution.LSQMCurveSnapshot _snapshot = null;</span>
+<span class="fc" id="L90">	private org.drip.dynamics.evolution.LSQMCurveIncrement _increment = null;</span>
 
 	/**
 	 * LSQMCurveUpdate Constructor
@@ -105,12 +106,12 @@ public class LSQMCurveUpdate {
 		final org.drip.dynamics.evolution.LSQMCurveSnapshot snapshot,
 		final org.drip.dynamics.evolution.LSQMCurveIncrement increment)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (null == (_snapshot = snapshot) || (_iFinalDate = iFinalDate) &lt; (_iInitialDate = iInitialDate))</span>
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;LSQMCurveUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L109">	{</span>
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (null == (_snapshot = snapshot) || (_iFinalDate = iFinalDate) &lt; (_iInitialDate = iInitialDate))</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LSQMCurveUpdate ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L112">		_increment = increment;</span>
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L113">		_increment = increment;</span>
+<span class="fc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Initial Date
@@ -120,7 +121,7 @@ public class LSQMCurveUpdate {
 
 	public int initialDate()
 	{
-<span class="nc" id="L123">		return _iInitialDate;</span>
+<span class="nc" id="L124">		return _iInitialDate;</span>
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class LSQMCurveUpdate {
 
 	public int finalDate()
 	{
-<span class="nc" id="L134">		return _iFinalDate;</span>
+<span class="nc" id="L135">		return _iFinalDate;</span>
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class LSQMCurveUpdate {
 
 	public org.drip.dynamics.evolution.LSQMCurveSnapshot snapshot()
 	{
-<span class="fc" id="L145">		return _snapshot;</span>
+<span class="fc" id="L146">		return _snapshot;</span>
 	}
 
 	/**
@@ -153,7 +154,7 @@ public class LSQMCurveUpdate {
 
 	public org.drip.dynamics.evolution.LSQMCurveIncrement increment()
 	{
-<span class="fc" id="L156">		return _increment;</span>
+<span class="fc" id="L157">		return _increment;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

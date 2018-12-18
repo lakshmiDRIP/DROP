@@ -76,9 +76,10 @@ package org.drip.regression.fixedpointfinder;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/fixedpointfinder&quot;&gt;Fixed Point Finder&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/fixedpointfinder&quot;&gt;Fixed Point Finder&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -86,22 +87,22 @@ package org.drip.regression.fixedpointfinder;
  */
 
 public class OpenRegressorSet implements org.drip.regression.core.RegressorSet {
-<span class="fc" id="L89">	private org.drip.function.definition.R1ToR1 _of = null;</span>
-<span class="fc" id="L90">	private java.lang.String _strRegressionScenario = &quot;org.drip.math.solver1D.FixedPointFinderNewton&quot;;</span>
+<span class="fc" id="L90">	private org.drip.function.definition.R1ToR1 _of = null;</span>
+<span class="fc" id="L91">	private java.lang.String _strRegressionScenario = &quot;org.drip.math.solver1D.FixedPointFinderNewton&quot;;</span>
 
-<span class="fc" id="L92">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+<span class="fc" id="L93">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
 		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
 
 	public OpenRegressorSet()
-<span class="fc" id="L96">	{</span>
-<span class="fc" id="L97">		_of = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="fc" id="L98">		{</span>
+<span class="fc" id="L97">	{</span>
+<span class="fc" id="L98">		_of = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="fc" id="L99">		{</span>
 			public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">				if (java.lang.Double.isNaN (dblVariate))</span>
-<span class="nc" id="L104">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">				if (java.lang.Double.isNaN (dblVariate))</span>
+<span class="nc" id="L105">					throw new java.lang.Exception</span>
 						(&quot;FixedPointFinderRegressorOF.evalTarget =&gt; Invalid variate!&quot;);
 
 				/* return java.lang.Math.cos (dblVariate) - dblVariate * dblVariate * dblVariate;
@@ -115,7 +116,7 @@ public class OpenRegressorSet implements org.drip.regression.core.RegressorSet {
 					- 48. * dblVariate * dblVariate * dblVariate * dblVariate + 18. * dblVariate *
 						dblVariate - 1.; */
 
-<span class="fc" id="L118">				return 1. + 3. * dblVariate - 2. * java.lang.Math.sin (dblVariate);</span>
+<span class="fc" id="L119">				return 1. + 3. * dblVariate - 2. * java.lang.Math.sin (dblVariate);</span>
 			}
 
 			@Override public double integrate (
@@ -123,63 +124,63 @@ public class OpenRegressorSet implements org.drip.regression.core.RegressorSet {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L126">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L127">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L130">	}</span>
 
 	@Override public boolean setupRegressors()
 	{
 		try {
-<span class="fc" id="L134">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
+<span class="fc" id="L135">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor</span>
 				(&quot;NewtonFixedPointFinder&quot;, _strRegressionScenario)
-<span class="fc" id="L136">			{</span>
-<span class="fc" id="L137">				org.drip.function.r1tor1solver.FixedPointFinderNewton fpfbNewton = null;</span>
-<span class="fc" id="L138">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopNewton = null;</span>
+<span class="fc" id="L137">			{</span>
+<span class="fc" id="L138">				org.drip.function.r1tor1solver.FixedPointFinderNewton fpfbNewton = null;</span>
+<span class="fc" id="L139">				org.drip.function.r1tor1solver.FixedPointFinderOutput fpfopNewton = null;</span>
 
 				@Override public boolean preRegression()
 				{
 					try {
-<span class="fc" id="L143">						fpfbNewton = new org.drip.function.r1tor1solver.FixedPointFinderNewton (0., _of, true);</span>
+<span class="fc" id="L144">						fpfbNewton = new org.drip.function.r1tor1solver.FixedPointFinderNewton (0., _of, true);</span>
 
-<span class="fc" id="L145">						return true;</span>
-<span class="nc" id="L146">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L147">						e.printStackTrace();</span>
+<span class="fc" id="L146">						return true;</span>
+<span class="nc" id="L147">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L148">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L150">					return false;</span>
+<span class="nc" id="L151">					return false;</span>
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">					if (null == (fpfopNewton = fpfbNewton.findRoot())) return false;</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">					if (null == (fpfopNewton = fpfbNewton.findRoot())) return false;</span>
 
-<span class="fc" id="L157">					return true;</span>
+<span class="fc" id="L158">					return true;</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc" id="L163">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopNewton.getRoot());</span>
+<span class="fc" id="L164">					rnvd.set (&quot;FixedPoint&quot;, &quot;&quot; + fpfopNewton.getRoot());</span>
 
-<span class="fc" id="L165">					return true;</span>
+<span class="fc" id="L166">					return true;</span>
 				}
 			});
-<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L169">			e.printStackTrace();</span>
-<span class="fc" id="L170">		}</span>
+<span class="nc" id="L169">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
+<span class="fc" id="L171">		}</span>
 
-<span class="fc" id="L172">		return true;</span>
+<span class="fc" id="L173">		return true;</span>
 	}
 
 	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
 	{
-<span class="fc" id="L177">		return _setRegressors;</span>
+<span class="fc" id="L178">		return _setRegressors;</span>
 	}
 
 	@Override public java.lang.String getSetName()
 	{
-<span class="fc" id="L182">		return _strRegressionScenario;</span>
+<span class="fc" id="L183">		return _strRegressionScenario;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

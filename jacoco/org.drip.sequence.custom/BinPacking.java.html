@@ -73,70 +73,71 @@ package org.drip.sequence.custom;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/custom&quot;&gt;Custom&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/custom&quot;&gt;Custom&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class BinPacking {</span>
+<span class="nc" id="L86">public class BinPacking {</span>
 
 	private static final boolean UpdateBin (
 		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapBin,
 		final double dblVariate)
 	{
-<span class="fc bfc" id="L91" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meBin : mapBin.entrySet()) {</span>
-<span class="fc" id="L92">			double dblBinCapacity = meBin.getValue();</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meBin : mapBin.entrySet()) {</span>
+<span class="fc" id="L93">			double dblBinCapacity = meBin.getValue();</span>
 
-<span class="fc bfc" id="L94" title="All 2 branches covered.">			if (dblBinCapacity &gt; dblVariate) {</span>
-<span class="fc" id="L95">				meBin.setValue (dblBinCapacity - dblVariate);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">			if (dblBinCapacity &gt; dblVariate) {</span>
+<span class="fc" id="L96">				meBin.setValue (dblBinCapacity - dblVariate);</span>
 
-<span class="fc" id="L97">				return true;</span>
+<span class="fc" id="L98">				return true;</span>
 			}
-<span class="fc" id="L99">		}</span>
+<span class="fc" id="L100">		}</span>
 
-<span class="fc" id="L101">		return false;</span>
+<span class="fc" id="L102">		return false;</span>
 	}
 
 	public static final org.drip.sequence.functional.BoundedMultivariateRandom MinimumNumberOfBins()
 	{
-<span class="fc" id="L106">		org.drip.sequence.functional.BoundedMultivariateRandom funcMinBins = new</span>
-<span class="fc" id="L107">			org.drip.sequence.functional.BoundedMultivariateRandom() {</span>
+<span class="fc" id="L107">		org.drip.sequence.functional.BoundedMultivariateRandom funcMinBins = new</span>
+<span class="fc" id="L108">			org.drip.sequence.functional.BoundedMultivariateRandom() {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L110">				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
+<span class="nc" id="L111">				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L117">				java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapBin = new</span>
+<span class="fc" id="L118">				java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapBin = new</span>
 					java.util.HashMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="fc" id="L120">				int iLastEntry = -1;</span>
-<span class="fc" id="L121">				int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L121">				int iLastEntry = -1;</span>
+<span class="fc" id="L122">				int iNumVariate = adblVariate.length;</span>
 
-<span class="fc bfc" id="L123" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="fc bfc" id="L124" title="All 4 branches covered.">					if (0 == i || !UpdateBin (mapBin, adblVariate[i]))</span>
-<span class="fc" id="L125">						mapBin.put (++iLastEntry, 1. - adblVariate[i]);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="fc bfc" id="L125" title="All 4 branches covered.">					if (0 == i || !UpdateBin (mapBin, adblVariate[i]))</span>
+<span class="fc" id="L126">						mapBin.put (++iLastEntry, 1. - adblVariate[i]);</span>
 				}
 
-<span class="fc" id="L128">				return mapBin.size();</span>
+<span class="fc" id="L129">				return mapBin.size();</span>
 			}
 
 			@Override public double targetVariateVarianceBound (
 				final int iTargetVariateIndex)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L135">				return 1.;</span>
+<span class="fc" id="L136">				return 1.;</span>
 			}
 		};
 
-<span class="fc" id="L139">		return funcMinBins;</span>
+<span class="fc" id="L140">		return funcMinBins;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

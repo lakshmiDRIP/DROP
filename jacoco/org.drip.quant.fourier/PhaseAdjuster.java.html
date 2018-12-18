@@ -73,16 +73,17 @@ package org.drip.quant.fourier;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/fourier&quot;&gt;Fourier&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/fourier&quot;&gt;Fourier Analysis&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class PhaseAdjuster {</span>
+<span class="nc" id="L86">public class PhaseAdjuster {</span>
 
 	/**
 	 * No Multi-Valued Principal Branch Tracking
@@ -120,21 +121,21 @@ package org.drip.quant.fourier;
 		final int iN,
 		final int iM)
 	{
-<span class="pc bpc" id="L123" title="4 of 8 branches missed.">		if (null == cnGNumerator || null == cnGNumerator || iN &lt; 0 || iM &lt; 0) return null;</span>
+<span class="pc bpc" id="L124" title="4 of 8 branches missed.">		if (null == cnGNumerator || null == cnGNumerator || iN &lt; 0 || iM &lt; 0) return null;</span>
 
-<span class="fc" id="L125">		double dblAbsDenominator = cnGDenominator.abs();</span>
+<span class="fc" id="L126">		double dblAbsDenominator = cnGDenominator.abs();</span>
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (0. == dblAbsDenominator) return null;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (0. == dblAbsDenominator) return null;</span>
 
 		try {
-<span class="fc" id="L130">			return new org.drip.quant.fourier.ComplexNumber (java.lang.Math.log (cnGNumerator.abs() /</span>
-<span class="fc" id="L131">				dblAbsDenominator), cnGNumerator.argument() - cnGDenominator.argument() + 2. *</span>
+<span class="fc" id="L131">			return new org.drip.quant.fourier.ComplexNumber (java.lang.Math.log (cnGNumerator.abs() /</span>
+<span class="fc" id="L132">				dblAbsDenominator), cnGNumerator.argument() - cnGDenominator.argument() + 2. *</span>
 					java.lang.Math.PI * (iN - iM));
-<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="nc" id="L134">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L135">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L138">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

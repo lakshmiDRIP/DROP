@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.objective;
 /**
  * &lt;i&gt;RiskTerm&lt;/i&gt; holds the Details of the Portfolio Risk Objective Term. Risk can be Absolute or in
  * relation to a Benchmark, and can be measured as Variance or Standard Deviation.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -81,8 +82,8 @@ package org.drip.portfolioconstruction.objective;
  */
 
 public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-<span class="nc" id="L84">	private double[][] _aadblAssetCovariance = null;</span>
-<span class="nc" id="L85">	private double[] _adblBenchmarkConstrictedHoldings = null;</span>
+<span class="nc" id="L85">	private double[][] _aadblAssetCovariance = null;</span>
+<span class="nc" id="L86">	private double[] _adblBenchmarkConstrictedHoldings = null;</span>
 
 	protected RiskTerm (
 		final java.lang.String strName,
@@ -93,7 +94,7 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L96">		super (</span>
+<span class="nc" id="L97">		super (</span>
 			strName,
 			strID,
 			strDescription,
@@ -101,23 +102,23 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 			adblInitialHoldings
 		);
 
-<span class="nc" id="L104">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L105">		int iNumAsset = adblInitialHoldings.length;</span>
 
-<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=</span>
+<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=</span>
 			_aadblAssetCovariance.length)
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			if (null == _aadblAssetCovariance[i] || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L112" title="All 4 branches missed.">				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)</span>
-<span class="nc" id="L113">				throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			if (null == _aadblAssetCovariance[i] || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)</span>
+<span class="nc" id="L114">				throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) &amp;&amp; (iNumAsset !=</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) &amp;&amp; (iNumAsset !=</span>
 			_adblBenchmarkConstrictedHoldings.length || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L118" title="All 2 branches missed.">				(_adblBenchmarkConstrictedHoldings)))</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L120">	}</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">				(_adblBenchmarkConstrictedHoldings)))</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L121">	}</span>
 
 	/**
 	 * Retrieve the Asset Co-variance Matrix
@@ -127,7 +128,7 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 
 	public double[][] assetCovariance()
 	{
-<span class="nc" id="L130">		return _aadblAssetCovariance;</span>
+<span class="nc" id="L131">		return _aadblAssetCovariance;</span>
 	}
 
 	/**
@@ -138,7 +139,7 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 
 	public double[] benchmarkConstrictedHoldings()
 	{
-<span class="nc" id="L141">		return _adblBenchmarkConstrictedHoldings;</span>
+<span class="nc" id="L142">		return _adblBenchmarkConstrictedHoldings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

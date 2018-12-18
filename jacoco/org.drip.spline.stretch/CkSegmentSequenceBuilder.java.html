@@ -85,9 +85,10 @@ package org.drip.spline.stretch;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch&quot;&gt;Stretch&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch&quot;&gt;Stretch&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -95,11 +96,11 @@ package org.drip.spline.stretch;
  */
 
 public class CkSegmentSequenceBuilder implements org.drip.spline.stretch.SegmentSequenceBuilder {
-<span class="fc" id="L98">	private org.drip.spline.stretch.BoundarySettings _bs = null;</span>
-<span class="fc" id="L99">	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;</span>
-<span class="fc" id="L100">	private org.drip.spline.params.StretchBestFitResponse _rbfr = null;</span>
-<span class="fc" id="L101">	private org.drip.spline.params.SegmentResponseValueConstraint[] _aSRVC = null;</span>
-<span class="fc" id="L102">	private org.drip.spline.params.SegmentResponseValueConstraint _srvcLeading = null;</span>
+<span class="fc" id="L99">	private org.drip.spline.stretch.BoundarySettings _bs = null;</span>
+<span class="fc" id="L100">	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;</span>
+<span class="fc" id="L101">	private org.drip.spline.params.StretchBestFitResponse _rbfr = null;</span>
+<span class="fc" id="L102">	private org.drip.spline.params.SegmentResponseValueConstraint[] _aSRVC = null;</span>
+<span class="fc" id="L103">	private org.drip.spline.params.SegmentResponseValueConstraint _srvcLeading = null;</span>
 
 	/**
 	 * CkSegmentSequenceBuilder constructor
@@ -118,65 +119,65 @@ public class CkSegmentSequenceBuilder implements org.drip.spline.stretch.Segment
 		final org.drip.spline.params.StretchBestFitResponse rbfr,
 		final org.drip.spline.stretch.BoundarySettings bs)
 		throws java.lang.Exception
-<span class="fc" id="L121">	{</span>
-<span class="fc" id="L122">		_rbfr = rbfr;</span>
-<span class="fc" id="L123">		_aSRVC = aSRVC;</span>
-<span class="fc" id="L124">		_srvcLeading = srvcLeading;</span>
+<span class="fc" id="L122">	{</span>
+<span class="fc" id="L123">		_rbfr = rbfr;</span>
+<span class="fc" id="L124">		_aSRVC = aSRVC;</span>
+<span class="fc" id="L125">		_srvcLeading = srvcLeading;</span>
 
-<span class="pc bpc" id="L126" title="4 of 8 branches missed.">		if (null == _srvcLeading &amp;&amp; (null == _aSRVC || 0 == _aSRVC.length) &amp;&amp; null == _rbfr)</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L127" title="4 of 8 branches missed.">		if (null == _srvcLeading &amp;&amp; (null == _aSRVC || 0 == _aSRVC.length) &amp;&amp; null == _rbfr)</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
 
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (null == (_bs = bs))</span>
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
-<span class="fc" id="L131">	}</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (null == (_bs = bs))</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;CkSegmentSequenceBuilder ctr: Invalid inputs!&quot;);</span>
+<span class="fc" id="L132">	}</span>
 
 	@Override public boolean setStretch (
 		final org.drip.spline.stretch.MultiSegmentSequence mss)
 	{
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == mss) return false;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (null == mss) return false;</span>
 
-<span class="fc" id="L138">		_mss = mss;</span>
-<span class="fc" id="L139">		return true;</span>
+<span class="fc" id="L139">		_mss = mss;</span>
+<span class="fc" id="L140">		return true;</span>
 	}
 
 	@Override public org.drip.spline.stretch.BoundarySettings getCalibrationBoundaryCondition()
 	{
-<span class="fc" id="L144">		return _bs;</span>
+<span class="fc" id="L145">		return _bs;</span>
 	}
 
 	@Override public boolean calibStartingSegment (
 		final double dblLeftSlope)
 	{
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
 
-<span class="fc" id="L152">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
+<span class="fc" id="L153">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
 
-<span class="pc bpc" id="L154" title="3 of 10 branches missed.">		return null != aCS &amp;&amp; 0 &lt; aCS.length &amp;&amp; aCS[0].calibrate (_srvcLeading, dblLeftSlope, null == _aSRVC</span>
-<span class="fc" id="L155">			? null : _aSRVC[0], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[0]));</span>
+<span class="pc bpc" id="L155" title="3 of 10 branches missed.">		return null != aCS &amp;&amp; 0 &lt; aCS.length &amp;&amp; aCS[0].calibrate (_srvcLeading, dblLeftSlope, null == _aSRVC</span>
+<span class="fc" id="L156">			? null : _aSRVC[0], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[0]));</span>
 	}
 
 	@Override public boolean calibSegmentSequence (
 		final int iStartingSegment)
 	{
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (null == _mss) return false;</span>
 
-<span class="fc" id="L163">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
+<span class="fc" id="L164">		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();</span>
 
-<span class="fc" id="L165">		int iNumSegment = aCS.length;</span>
+<span class="fc" id="L166">		int iNumSegment = aCS.length;</span>
 
-<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (int iSegment = iStartingSegment; iSegment &lt; iNumSegment; ++iSegment) {</span>
-<span class="pc bpc" id="L168" title="2 of 8 branches missed.">			if (!aCS[iSegment].calibrate (0 == iSegment ? null : aCS[iSegment - 1], null == _aSRVC ? null :</span>
-<span class="fc" id="L169">				_aSRVC[iSegment], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[iSegment])))</span>
-<span class="nc" id="L170">				return false;</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int iSegment = iStartingSegment; iSegment &lt; iNumSegment; ++iSegment) {</span>
+<span class="pc bpc" id="L169" title="2 of 8 branches missed.">			if (!aCS[iSegment].calibrate (0 == iSegment ? null : aCS[iSegment - 1], null == _aSRVC ? null :</span>
+<span class="fc" id="L170">				_aSRVC[iSegment], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[iSegment])))</span>
+<span class="nc" id="L171">				return false;</span>
 		}
 
-<span class="fc" id="L173">		return true;</span>
+<span class="fc" id="L174">		return true;</span>
 	}
 
 	@Override public boolean manifestMeasureSensitivity (
 		final double dblLeftSlopeSensitivity)
 	{
-<span class="fc" id="L179">		return true;</span>
+<span class="fc" id="L180">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

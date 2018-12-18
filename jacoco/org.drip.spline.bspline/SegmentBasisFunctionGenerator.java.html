@@ -86,16 +86,17 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L98">public class SegmentBasisFunctionGenerator {</span>
+<span class="nc" id="L99">public class SegmentBasisFunctionGenerator {</span>
 
 	/**
 	 * Create a Tension Monic B Spline Basis Function
@@ -116,20 +117,20 @@ package org.drip.spline.bspline;
 		final int iDerivOrder,
 		final double dblTension)
 	{
-<span class="fc" id="L119">		org.drip.spline.bspline.TensionBasisHat[] aTBH =</span>
-<span class="fc" id="L120">			org.drip.spline.bspline.BasisHatPairGenerator.GenerateHatPair (strHatType, strShapeControlType,</span>
+<span class="fc" id="L120">		org.drip.spline.bspline.TensionBasisHat[] aTBH =</span>
+<span class="fc" id="L121">			org.drip.spline.bspline.BasisHatPairGenerator.GenerateHatPair (strHatType, strShapeControlType,</span>
 				adblPredictorOrdinate[0], adblPredictorOrdinate[1], adblPredictorOrdinate[2], iDerivOrder,
 					dblTension);
 
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == aTBH || 2 != aTBH.length) return null;</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		if (null == aTBH || 2 != aTBH.length) return null;</span>
 
 		try {
-<span class="fc" id="L127">			return new org.drip.spline.bspline.SegmentMonicBasisFunction (aTBH[0], aTBH[1]);</span>
-<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L129">			e.printStackTrace();</span>
+<span class="fc" id="L128">			return new org.drip.spline.bspline.SegmentMonicBasisFunction (aTBH[0], aTBH[1]);</span>
+<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L130">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L132">		return null;</span>
+<span class="nc" id="L133">		return null;</span>
 	}
 
 	/**
@@ -151,31 +152,31 @@ package org.drip.spline.bspline;
 		final int iDerivOrder,
 		final double dblTension)
 	{
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == adblPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (null == adblPredictorOrdinate) return null;</span>
 
-<span class="fc" id="L156">		int iNumMonic = adblPredictorOrdinate.length - 2;</span>
-<span class="fc" id="L157">		org.drip.spline.bspline.SegmentBasisFunction[] aSBFMonic = new</span>
+<span class="fc" id="L157">		int iNumMonic = adblPredictorOrdinate.length - 2;</span>
+<span class="fc" id="L158">		org.drip.spline.bspline.SegmentBasisFunction[] aSBFMonic = new</span>
 			org.drip.spline.bspline.SegmentBasisFunction[iNumMonic];
 
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (0 &gt;= iNumMonic) return null;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (0 &gt;= iNumMonic) return null;</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumMonic; ++i) {</span>
-<span class="fc" id="L163">			TensionBasisHat[] aTBH = BasisHatPairGenerator.GenerateHatPair (strHatType, strShapeControlType,</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumMonic; ++i) {</span>
+<span class="fc" id="L164">			TensionBasisHat[] aTBH = BasisHatPairGenerator.GenerateHatPair (strHatType, strShapeControlType,</span>
 				adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1], adblPredictorOrdinate[i + 2],
 					iDerivOrder, dblTension);
 
-<span class="pc bpc" id="L167" title="2 of 4 branches missed.">			if (null == aTBH || 2 != aTBH.length) return null;</span>
+<span class="pc bpc" id="L168" title="2 of 4 branches missed.">			if (null == aTBH || 2 != aTBH.length) return null;</span>
 
 			try {
-<span class="fc" id="L170">				aSBFMonic[i] = new org.drip.spline.bspline.SegmentMonicBasisFunction (aTBH[0], aTBH[1]);</span>
-<span class="nc" id="L171">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L172">				e.printStackTrace();</span>
+<span class="fc" id="L171">				aSBFMonic[i] = new org.drip.spline.bspline.SegmentMonicBasisFunction (aTBH[0], aTBH[1]);</span>
+<span class="nc" id="L172">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L173">				e.printStackTrace();</span>
 
-<span class="nc" id="L174">				return null;</span>
-<span class="fc" id="L175">			}</span>
+<span class="nc" id="L175">				return null;</span>
+<span class="fc" id="L176">			}</span>
 		}
 
-<span class="fc" id="L178">		return aSBFMonic;</span>
+<span class="fc" id="L179">		return aSBFMonic;</span>
 	}
 
 	/**
@@ -191,26 +192,26 @@ package org.drip.spline.bspline;
 		final int iTargetBSplineOrder,
 		final org.drip.spline.bspline.SegmentBasisFunction[] aSBFPrev)
 	{
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">		if (2 &gt;= iTargetBSplineOrder || null == aSBFPrev) return null;</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">		if (2 &gt;= iTargetBSplineOrder || null == aSBFPrev) return null;</span>
 
-<span class="fc" id="L196">		int iNumSBF = aSBFPrev.length - 1;</span>
-<span class="fc" id="L197">		org.drip.spline.bspline.SegmentBasisFunction[] aSBF = new</span>
+<span class="fc" id="L197">		int iNumSBF = aSBFPrev.length - 1;</span>
+<span class="fc" id="L198">		org.drip.spline.bspline.SegmentBasisFunction[] aSBF = new</span>
 			org.drip.spline.bspline.SegmentBasisFunction[iNumSBF];
 
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (1 &gt; iNumSBF) return null;</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		if (1 &gt; iNumSBF) return null;</span>
 
-<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSBF; ++i) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSBF; ++i) {</span>
 			try {
-<span class="fc" id="L204">				aSBF[i] = new org.drip.spline.bspline.SegmentMulticBasisFunction (aSBFPrev[i],</span>
+<span class="fc" id="L205">				aSBF[i] = new org.drip.spline.bspline.SegmentMulticBasisFunction (aSBFPrev[i],</span>
 					aSBFPrev[i + 1]);
-<span class="nc" id="L206">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L207">				e.printStackTrace();</span>
+<span class="nc" id="L207">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L208">				e.printStackTrace();</span>
 
-<span class="nc" id="L209">				return null;</span>
-<span class="fc" id="L210">			}</span>
+<span class="nc" id="L210">				return null;</span>
+<span class="fc" id="L211">			}</span>
 		}
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">		return iTargetBSplineOrder == aSBF[0].bSplineOrder() ? aSBF : MulticSequence (iTargetBSplineOrder,</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		return iTargetBSplineOrder == aSBF[0].bSplineOrder() ? aSBF : MulticSequence (iTargetBSplineOrder,</span>
 			aSBF);
 	}
 }

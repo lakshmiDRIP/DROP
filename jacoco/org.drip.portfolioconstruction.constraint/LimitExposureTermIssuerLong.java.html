@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.constraint;
 
 /**
  * &lt;i&gt;LimitExposureTermIssuerLong&lt;/i&gt; holds the Details of a Limit Issuer Long Exposure Constraint Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -107,7 +108,7 @@ public class LimitExposureTermIssuerLong extends
 		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L110">		super (</span>
+<span class="nc" id="L111">		super (</span>
 			strName,
 			&quot;CT_LIMIT_ISSUER_LONG_EXPOSURE&quot;,
 			&quot;Constrains the Issuer Long Exposure&quot;,
@@ -118,40 +119,40 @@ public class LimitExposureTermIssuerLong extends
 			adblPrice,
 			adblIssuerSelection
 		);
-<span class="nc" id="L121">	}</span>
+<span class="nc" id="L122">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L125">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L126">		{</span>
+<span class="nc" id="L126">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L127">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L129">				return price().length;</span>
+<span class="nc" id="L130">				return price().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L136">				double[] adblPrice = price();</span>
+<span class="nc" id="L137">				double[] adblPrice = price();</span>
 
-<span class="nc" id="L138">				double dblConstraintValue = 0.;</span>
-<span class="nc" id="L139">				int iNumAsset = adblPrice.length;</span>
+<span class="nc" id="L139">				double dblConstraintValue = 0.;</span>
+<span class="nc" id="L140">				int iNumAsset = adblPrice.length;</span>
 
-<span class="nc" id="L141">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L142">				double[] adblIssuerSelection = issuerSelection();</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L144" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L145">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
+<span class="nc" id="L146">					throw new java.lang.Exception</span>
 						(&quot;LimitExposureTermIssuerLong::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
 				{
-<span class="nc bnc" id="L150" title="All 2 branches missed.">					if (adblFinalHoldings[i] &gt; 0.)</span>
-<span class="nc" id="L151">						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblFinalHoldings[i];</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">					if (adblFinalHoldings[i] &gt; 0.)</span>
+<span class="nc" id="L152">						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblFinalHoldings[i];</span>
 				}
 
-<span class="nc" id="L154">				return dblConstraintValue;</span>
+<span class="nc" id="L155">				return dblConstraintValue;</span>
 			}
 		};
 	}

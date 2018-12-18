@@ -69,12 +69,13 @@ package org.drip.portfolioconstruction.objective;
  * &lt;i&gt;GoldmanSachsShortfallTerm&lt;/i&gt; implements the Objective Term that optimizes the Charge incurred by the
  * Buy/Sell Trades in the Target Portfolio using the Goldman Sachs Shortfall Model from the Starting
  * Allocation.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -100,52 +101,52 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 		final org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L103">		super (</span>
+<span class="nc" id="L104">		super (</span>
 			strName,
 			&quot;OT_GOLDMAN_SACHS_SHORTFALL_TRANSACTION_CHARGE&quot;,
 			&quot;Goldman Sachs Shortfall Objective Function&quot;,
 			adblInitialHoldings,
 			aTCGSS
 		);
-<span class="nc" id="L110">	}</span>
+<span class="nc" id="L111">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L114">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L115">		{</span>
+<span class="nc" id="L115">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L116">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L118">				return initialHoldings().length;</span>
+<span class="nc" id="L119">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L126">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L127">					throw new java.lang.Exception</span>
 						(&quot;GoldmanSachsShortfallTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);
 
-<span class="nc" id="L129">				org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS =</span>
+<span class="nc" id="L130">				org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS =</span>
 					(org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[])
-<span class="nc" id="L131">						transactionCharge();</span>
+<span class="nc" id="L132">						transactionCharge();</span>
 
-<span class="nc" id="L133">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L134">				double[] adblInitialHoldings = initialHoldings();</span>
 
-<span class="nc" id="L135">				int iNumAsset = aTCGSS.length;</span>
-<span class="nc" id="L136">				double dblGoldmanSachsShortfallChargeTerm = 0.;</span>
+<span class="nc" id="L136">				int iNumAsset = aTCGSS.length;</span>
+<span class="nc" id="L137">				double dblGoldmanSachsShortfallChargeTerm = 0.;</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L139">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
+<span class="nc" id="L140">					throw new java.lang.Exception</span>
 						(&quot;GoldmanSachsShortfallTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L143">					dblGoldmanSachsShortfallChargeTerm += aTCGSS[i].estimate (</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc" id="L144">					dblGoldmanSachsShortfallChargeTerm += aTCGSS[i].estimate (</span>
 						adblInitialHoldings[i],
 						adblVariate[i]
 					);
 
-<span class="nc" id="L148">				return dblGoldmanSachsShortfallChargeTerm;</span>
+<span class="nc" id="L149">				return dblGoldmanSachsShortfallChargeTerm;</span>
 			}
 		};
 	}

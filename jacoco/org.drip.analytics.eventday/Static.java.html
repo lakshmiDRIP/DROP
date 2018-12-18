@@ -17,12 +17,12 @@ package org.drip.analytics.eventday;
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -49,6 +49,7 @@ package org.drip.analytics.eventday;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,15 +79,15 @@ package org.drip.analytics.eventday;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/README.md&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class Static extends Base {
-<span class="fc" id="L89">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L90">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
 
 	/**
 	 * Create a static holiday from the date string and the description
@@ -101,18 +102,18 @@ public class Static extends Base {
 		final java.lang.String strDate,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L104">		org.drip.analytics.date.JulianDate dtHol = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
-<span class="nc" id="L105">			(strDate);</span>
+<span class="nc" id="L105">		org.drip.analytics.date.JulianDate dtHol = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
+<span class="nc" id="L106">			(strDate);</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == dtHol) return null;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == dtHol) return null;</span>
 
 		try {
-<span class="nc" id="L110">			return new Static (dtHol, strDescription);</span>
-<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="nc" id="L111">			return new Static (dtHol, strDescription);</span>
+<span class="nc" id="L112">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L113">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L115">		return null;</span>
+<span class="nc" id="L116">		return null;</span>
 	}
 
 	/**
@@ -129,18 +130,18 @@ public class Static extends Base {
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L132">		super (strDescription);</span>
+<span class="fc" id="L133">		super (strDescription);</span>
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;Static ctr: Null date into Static Holiday&quot;);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;Static ctr: Null date into Static Holiday&quot;);</span>
 
-<span class="fc" id="L136">		_iDate = dt.julian();</span>
-<span class="fc" id="L137">	}</span>
+<span class="fc" id="L137">		_iDate = dt.julian();</span>
+<span class="fc" id="L138">	}</span>
 
 	@Override public int dateInYear (
 		final int iYear,
 		final boolean bAdjusted)
 	{
-<span class="fc" id="L143">		return _iDate;</span>
+<span class="fc" id="L144">		return _iDate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

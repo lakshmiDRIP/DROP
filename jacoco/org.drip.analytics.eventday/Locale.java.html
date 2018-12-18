@@ -17,12 +17,12 @@ package org.drip.analytics.eventday;
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -49,6 +49,7 @@ package org.drip.analytics.eventday;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -79,25 +80,25 @@ package org.drip.analytics.eventday;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/README.md&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Locale {
-<span class="fc" id="L90">	private Weekend _wkend = null;</span>
+<span class="fc" id="L91">	private Weekend _wkend = null;</span>
 
-<span class="fc" id="L92">	private java.util.Set&lt;Base&gt; _setHolidays = new java.util.HashSet&lt;Base&gt;();</span>
+<span class="fc" id="L93">	private java.util.Set&lt;Base&gt; _setHolidays = new java.util.HashSet&lt;Base&gt;();</span>
 
 	/**
 	 * Construct an empty LocHolidays instance
 	 */
 
 	public Locale()
-<span class="fc" id="L99">	{</span>
-<span class="fc" id="L100">	}</span>
+<span class="fc" id="L100">	{</span>
+<span class="fc" id="L101">	}</span>
 
 	/**
 	 * Add the array of weekend days
@@ -111,12 +112,12 @@ public class Locale {
 		final int[] aiDays)
 	{
 		try {
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			return null != (_wkend = new Weekend (aiDays));</span>
-<span class="nc" id="L115">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L116">			e.printStackTrace();</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">			return null != (_wkend = new Weekend (aiDays));</span>
+<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L117">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L119">		return false;</span>
+<span class="nc" id="L120">		return false;</span>
 	}
 
 	/**
@@ -127,9 +128,9 @@ public class Locale {
 
 	public boolean addStandardWeekend()
 	{
-<span class="fc" id="L130">		_wkend = Weekend.StandardWeekend();</span>
+<span class="fc" id="L131">		_wkend = Weekend.StandardWeekend();</span>
 
-<span class="fc" id="L132">		return true;</span>
+<span class="fc" id="L133">		return true;</span>
 	}
 
 	/**
@@ -145,17 +146,17 @@ public class Locale {
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strDescription)
 	{
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (null == dt) return false;</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (null == dt) return false;</span>
 
 		try {
-<span class="fc" id="L151">			_setHolidays.add (new Static (dt, strDescription));</span>
+<span class="fc" id="L152">			_setHolidays.add (new Static (dt, strDescription));</span>
 
-<span class="fc" id="L153">			return true;</span>
-<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L155">			System.out.println (e.getMessage());</span>
+<span class="fc" id="L154">			return true;</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			System.out.println (e.getMessage());</span>
 		}
 
-<span class="nc" id="L158">		return false;</span>
+<span class="nc" id="L159">		return false;</span>
 	}
 
 	/**
@@ -171,14 +172,14 @@ public class Locale {
 		final java.lang.String strDate,
 		final java.lang.String strDescription)
 	{
-<span class="pc bpc" id="L174" title="2 of 4 branches missed.">		if (null == strDate || strDate.isEmpty()) return false;</span>
+<span class="pc bpc" id="L175" title="2 of 4 branches missed.">		if (null == strDate || strDate.isEmpty()) return false;</span>
 
-<span class="fc" id="L176">		org.drip.analytics.date.JulianDate dtStaticHoliday =</span>
-<span class="fc" id="L177">			org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (strDate);</span>
+<span class="fc" id="L177">		org.drip.analytics.date.JulianDate dtStaticHoliday =</span>
+<span class="fc" id="L178">			org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (strDate);</span>
 
-<span class="fc bfc" id="L179" title="All 2 branches covered.">		if (null == dtStaticHoliday) return false;</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		if (null == dtStaticHoliday) return false;</span>
 
-<span class="fc" id="L181">		return addStaticHoliday (dtStaticHoliday, strDescription);</span>
+<span class="fc" id="L182">		return addStaticHoliday (dtStaticHoliday, strDescription);</span>
 	}
 
 	/**
@@ -196,9 +197,9 @@ public class Locale {
 		final int iMonth,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L199">		_setHolidays.add (new Fixed (iDay, iMonth, _wkend, strDescription));</span>
+<span class="nc" id="L200">		_setHolidays.add (new Fixed (iDay, iMonth, _wkend, strDescription));</span>
 
-<span class="nc" id="L201">		return true;</span>
+<span class="nc" id="L202">		return true;</span>
 	}
 
 	/**
@@ -221,10 +222,10 @@ public class Locale {
 		final boolean bFromFront,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L224">		_setHolidays.add (new Variable (iWeekInMonth, iWeekDay, iMonth, bFromFront, _wkend,</span>
+<span class="nc" id="L225">		_setHolidays.add (new Variable (iWeekInMonth, iWeekDay, iMonth, bFromFront, _wkend,</span>
 			strDescription));
 
-<span class="nc" id="L227">		return true;</span>
+<span class="nc" id="L228">		return true;</span>
 	}
 
 	/**
@@ -235,7 +236,7 @@ public class Locale {
 
 	public Weekend weekendDays()
 	{
-<span class="fc" id="L238">		return _wkend;</span>
+<span class="fc" id="L239">		return _wkend;</span>
 	}
 
 	/**
@@ -246,7 +247,7 @@ public class Locale {
 
 	public java.util.Set&lt;Base&gt; holidays()
 	{
-<span class="fc" id="L249">		return _setHolidays;</span>
+<span class="fc" id="L250">		return _setHolidays;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

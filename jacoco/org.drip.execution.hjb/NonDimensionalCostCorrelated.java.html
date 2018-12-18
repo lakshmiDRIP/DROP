@@ -12,12 +12,12 @@ package org.drip.execution.hjb;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.hjb;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,19 +99,19 @@ package org.drip.execution.hjb;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb&quot;&gt;Hamilton Jacobin Bellman Based Optimal Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb/README.md&quot;&gt;Hamilton Jacobin Bellman Based Optimal Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDimensionalCost {
-<span class="nc" id="L109">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblLiquidityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dblLiquidityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dblVolatilityGradient = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _dblVolatilityJacobian = java.lang.Double.NaN;</span>
+<span class="nc" id="L114">	private double _dblLiquidityVolatilityGradient = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a Zero Sensitivity Correlated Non-dimensional Cost Instance
@@ -121,12 +122,12 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 	public static final NonDimensionalCostCorrelated Zero()
 	{
 		try {
-<span class="nc" id="L124">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
-<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L126">			e.printStackTrace();</span>
+<span class="nc" id="L125">			return new NonDimensionalCostCorrelated (0., 0., 0., 0., 0., 0., 0.);</span>
+<span class="nc" id="L126">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L127">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L129">		return null;</span>
+<span class="nc" id="L130">		return null;</span>
 	}
 
 	/**
@@ -153,16 +154,16 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 		final double dblNonDimensionalTradeRate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L156">		super (dblRealization, dblNonDimensionalTradeRate);</span>
+<span class="nc" id="L157">		super (dblRealization, dblNonDimensionalTradeRate);</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =</span>
 						dblVolatilityJacobian) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L163" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
-<span class="nc" id="L164">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L165">	}</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))</span>
+<span class="nc" id="L165">			throw new java.lang.Exception (&quot;NonDimensionalCostCorrelated Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L166">	}</span>
 
 	/**
 	 * Retrieve the Non Dimensional Value Liquidity Gradient
@@ -172,7 +173,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityGradient()
 	{
-<span class="nc" id="L175">		return _dblLiquidityGradient;</span>
+<span class="nc" id="L176">		return _dblLiquidityGradient;</span>
 	}
 
 	/**
@@ -183,7 +184,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityJacobian()
 	{
-<span class="nc" id="L186">		return _dblLiquidityJacobian;</span>
+<span class="nc" id="L187">		return _dblLiquidityJacobian;</span>
 	}
 
 	/**
@@ -194,7 +195,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double volatilityGradient()
 	{
-<span class="nc" id="L197">		return _dblVolatilityGradient;</span>
+<span class="nc" id="L198">		return _dblVolatilityGradient;</span>
 	}
 
 	/**
@@ -205,7 +206,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double volatilityJacobian()
 	{
-<span class="nc" id="L208">		return _dblVolatilityJacobian;</span>
+<span class="nc" id="L209">		return _dblVolatilityJacobian;</span>
 	}
 
 	/**
@@ -216,7 +217,7 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 
 	public double liquidityVolatilityGradient()
 	{
-<span class="nc" id="L219">		return _dblLiquidityVolatilityGradient;</span>
+<span class="nc" id="L220">		return _dblLiquidityVolatilityGradient;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

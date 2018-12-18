@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 /**
  * &lt;i&gt;ConstraintHierarchy&lt;/i&gt; holds the Details of a given set of Constraint Terms.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -80,8 +81,8 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public class ConstraintHierarchy {
-<span class="nc" id="L83">	public int[] _aiOrder = null;</span>
-<span class="nc" id="L84">	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _aCT = null;</span>
+<span class="nc" id="L84">	public int[] _aiOrder = null;</span>
+<span class="nc" id="L85">	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _aCT = null;</span>
 
 	/**
 	 * Construct a Flat Non-Feudal Instance of ConstraintHierarchy
@@ -94,21 +95,21 @@ public class ConstraintHierarchy {
 	public static final ConstraintHierarchy NonFeudal (
 		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] aCT)
 	{
-<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (null == aCT) return null;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (null == aCT) return null;</span>
 
-<span class="nc" id="L99">		int iNumConstraint = aCT.length;</span>
-<span class="nc" id="L100">		int[] aiOrder = new int[iNumConstraint];</span>
+<span class="nc" id="L100">		int iNumConstraint = aCT.length;</span>
+<span class="nc" id="L101">		int[] aiOrder = new int[iNumConstraint];</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
-<span class="nc" id="L103">			aiOrder[i] = 0;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
+<span class="nc" id="L104">			aiOrder[i] = 0;</span>
 
 		try {
-<span class="nc" id="L106">			return new ConstraintHierarchy (aCT, aiOrder);</span>
-<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L108">			e.printStackTrace();</span>
+<span class="nc" id="L107">			return new ConstraintHierarchy (aCT, aiOrder);</span>
+<span class="nc" id="L108">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L109">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L111">		return null;</span>
+<span class="nc" id="L112">		return null;</span>
 	}
 
 	/**
@@ -124,21 +125,21 @@ public class ConstraintHierarchy {
 		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] aCT,
 		final int[] aiOrder)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 8 branches missed.">		if ((null == (_aCT = aCT) &amp;&amp; null != (_aiOrder = aiOrder)) &amp;&amp; (null != (_aCT = aCT) &amp;&amp; null ==</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 8 branches missed.">		if ((null == (_aCT = aCT) &amp;&amp; null != (_aiOrder = aiOrder)) &amp;&amp; (null != (_aCT = aCT) &amp;&amp; null ==</span>
 			(_aiOrder = aiOrder)))
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L132">		int iNumConstraint = _aCT.length;</span>
+<span class="nc" id="L133">		int iNumConstraint = _aCT.length;</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (iNumConstraint != _aiOrder.length)</span>
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (iNumConstraint != _aiOrder.length)</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (null == _aCT[i])</span>
-<span class="nc" id="L139">				throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			if (null == _aCT[i])</span>
+<span class="nc" id="L140">				throw new java.lang.Exception (&quot;ConstraintHierarchy Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L141">	}</span>
+<span class="nc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Array of Constraint Term Order
@@ -148,7 +149,7 @@ public class ConstraintHierarchy {
 
 	public int[] order()
 	{
-<span class="nc" id="L151">		return _aiOrder;</span>
+<span class="nc" id="L152">		return _aiOrder;</span>
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class ConstraintHierarchy {
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraints()
 	{
-<span class="nc" id="L162">		return _aCT;</span>
+<span class="nc" id="L163">		return _aCT;</span>
 	}
 
 	/**
@@ -170,15 +171,15 @@ public class ConstraintHierarchy {
 
 	public boolean nonFeudal()
 	{
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == _aCT) return true;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (null == _aCT) return true;</span>
 
-<span class="nc" id="L175">		int iNumConstraint = _aCT.length;</span>
+<span class="nc" id="L176">		int iNumConstraint = _aCT.length;</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
-<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (0 != _aiOrder[i]) return false;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			if (0 != _aiOrder[i]) return false;</span>
 		}
 
-<span class="nc" id="L181">		return true;</span>
+<span class="nc" id="L182">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

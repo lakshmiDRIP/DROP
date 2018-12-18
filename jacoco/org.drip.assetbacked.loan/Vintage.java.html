@@ -12,12 +12,12 @@ package org.drip.assetbacked.loan;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -44,6 +44,7 @@ package org.drip.assetbacked.loan;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,16 +74,16 @@ package org.drip.assetbacked.loan;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetBackedAnalyticsLibrary.md&quot;&gt;Asset Backed Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked&quot;&gt;Asset Backed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan&quot;&gt;Loan&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/README.md&quot;&gt;Asset Backed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/README.md&quot;&gt;Loan&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Vintage {
-<span class="nc" id="L84">	private int _iOriginationYear = -1;</span>
-<span class="nc" id="L85">	private int _iOriginationMonth = -1;</span>
+<span class="nc" id="L85">	private int _iOriginationYear = -1;</span>
+<span class="nc" id="L86">	private int _iOriginationMonth = -1;</span>
 
 	/**
 	 * Construct a Vintage Instance from the Origination Date
@@ -95,18 +96,18 @@ public class Vintage {
 	public static final Vintage Standard (
 		final org.drip.analytics.date.JulianDate dtOrigination)
 	{
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (null == dtOrigination) return null;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == dtOrigination) return null;</span>
 
 		try {
-<span class="nc" id="L101">			int iDate = dtOrigination.julian();</span>
+<span class="nc" id="L102">			int iDate = dtOrigination.julian();</span>
 
-<span class="nc" id="L103">			return new Vintage (org.drip.analytics.date.DateUtil.Year (iDate),</span>
-<span class="nc" id="L104">				org.drip.analytics.date.DateUtil.Month (iDate));</span>
-<span class="nc" id="L105">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L106">			e.printStackTrace();</span>
+<span class="nc" id="L104">			return new Vintage (org.drip.analytics.date.DateUtil.Year (iDate),</span>
+<span class="nc" id="L105">				org.drip.analytics.date.DateUtil.Month (iDate));</span>
+<span class="nc" id="L106">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L107">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L109">		return null;</span>
+<span class="nc" id="L110">		return null;</span>
 	}
 
 	/**
@@ -122,10 +123,10 @@ public class Vintage {
 		final int iOriginationYear,
 		final int iOriginationMonth)
 		throws java.lang.Exception
-<span class="nc" id="L125">	{</span>
-<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (0 &gt; (_iOriginationYear = iOriginationYear) || 0 &gt; (_iOriginationMonth = iOriginationMonth))</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;Vintage Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L126">	{</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (0 &gt; (_iOriginationYear = iOriginationYear) || 0 &gt; (_iOriginationMonth = iOriginationMonth))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;Vintage Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">	}</span>
 
 	/**
 	 * Retrieve the Origination Year
@@ -135,7 +136,7 @@ public class Vintage {
 
 	public int originationYear()
 	{
-<span class="nc" id="L138">		return _iOriginationYear;</span>
+<span class="nc" id="L139">		return _iOriginationYear;</span>
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class Vintage {
 
 	public int originationMonth()
 	{
-<span class="nc" id="L149">		return _iOriginationMonth;</span>
+<span class="nc" id="L150">		return _iOriginationMonth;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

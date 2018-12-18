@@ -14,12 +14,12 @@ package org.drip.analytics.definition;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -46,6 +46,7 @@ package org.drip.analytics.definition;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -76,74 +77,74 @@ package org.drip.analytics.definition;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class NodeStructure implements org.drip.analytics.definition.Curve {
-<span class="fc" id="L87">	protected java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L88">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L89">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L90">	protected org.drip.state.identifier.LatentStateLabel _label = null;</span>
+<span class="fc" id="L88">	protected java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L89">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L90">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L91">	protected org.drip.state.identifier.LatentStateLabel _label = null;</span>
 
 	protected NodeStructure (
 		final int iEpochDate,
 		final org.drip.state.identifier.LatentStateLabel label,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
-<span class="fc" id="L97">	{</span>
-<span class="pc bpc" id="L98" title="3 of 6 branches missed.">		if (null == (_label = label) || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
-<span class="nc" id="L99">			throw new java.lang.Exception (&quot;NodeStructure ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L98">	{</span>
+<span class="pc bpc" id="L99" title="3 of 6 branches missed.">		if (null == (_label = label) || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
+<span class="nc" id="L100">			throw new java.lang.Exception (&quot;NodeStructure ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L101">		_iEpochDate = iEpochDate;</span>
-<span class="fc" id="L102">	}</span>
+<span class="fc" id="L102">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L103">	}</span>
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="fc" id="L106">		return _label;</span>
+<span class="fc" id="L107">		return _label;</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="nc" id="L111">		return _strCurrency;</span>
+<span class="nc" id="L112">		return _strCurrency;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
 		try {
-<span class="fc" id="L117">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
-<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L119">			e.printStackTrace();</span>
+<span class="fc" id="L118">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L122">		return null;</span>
+<span class="nc" id="L123">		return null;</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L128">		return false;</span>
+<span class="nc" id="L129">		return false;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L133">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L140">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
@@ -151,26 +152,26 @@ public abstract class NodeStructure implements org.drip.analytics.definition.Cur
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L154">		return null;</span>
+<span class="nc" id="L155">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L161">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L167">		return null;</span>
+<span class="nc" id="L168">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L173">		return null;</span>
+<span class="nc" id="L174">		return null;</span>
 	}
 
 	/**
@@ -217,9 +218,9 @@ public abstract class NodeStructure implements org.drip.analytics.definition.Cur
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;NodeStructure::node =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;NodeStructure::node =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L222">		return node (dt.julian());</span>
+<span class="nc" id="L223">		return node (dt.julian());</span>
 	}
 
 	/**
@@ -236,10 +237,10 @@ public abstract class NodeStructure implements org.drip.analytics.definition.Cur
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L239" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L240">			throw new java.lang.Exception (&quot;NodeStructure::node =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L240" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L241">			throw new java.lang.Exception (&quot;NodeStructure::node =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L242">		return node (epoch().addTenor (strTenor).julian());</span>
+<span class="fc" id="L243">		return node (epoch().addTenor (strTenor).julian());</span>
 	}
 
 	/**
@@ -258,9 +259,9 @@ public abstract class NodeStructure implements org.drip.analytics.definition.Cur
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;TermStructure::nodeDerivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;TermStructure::nodeDerivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L263">		return nodeDerivative (dt.julian(), iOrder);</span>
+<span class="nc" id="L264">		return nodeDerivative (dt.julian(), iOrder);</span>
 	}
 
 	/**
@@ -279,10 +280,10 @@ public abstract class NodeStructure implements org.drip.analytics.definition.Cur
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L282" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L283">			throw new java.lang.Exception (&quot;TermStructure::nodeDerivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L283" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L284">			throw new java.lang.Exception (&quot;TermStructure::nodeDerivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L285">		return nodeDerivative (epoch().addTenor (strTenor).julian(), iOrder);</span>
+<span class="fc" id="L286">		return nodeDerivative (epoch().addTenor (strTenor).julian(), iOrder);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

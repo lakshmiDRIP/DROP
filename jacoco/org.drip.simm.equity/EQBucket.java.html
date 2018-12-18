@@ -96,9 +96,10 @@ package org.drip.simm.equity;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity&quot;&gt;Equity&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity&quot;&gt;Equity&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,13 +108,13 @@ package org.drip.simm.equity;
 
 public class EQBucket
 {
-<span class="fc" id="L110">	private int _number = -1;</span>
-<span class="fc" id="L111">	private java.lang.String _size = &quot;&quot;;</span>
-<span class="fc" id="L112">	private java.lang.String _region = &quot;&quot;;</span>
-<span class="fc" id="L113">	private java.lang.String[] _sectorArray = null;</span>
-<span class="fc" id="L114">	private double _vegaRiskWeight = java.lang.Double.NaN;</span>
-<span class="fc" id="L115">	private double _deltaRiskWeight = java.lang.Double.NaN;</span>
-<span class="fc" id="L116">	private double _memberCorrelation = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private int _number = -1;</span>
+<span class="fc" id="L112">	private java.lang.String _size = &quot;&quot;;</span>
+<span class="fc" id="L113">	private java.lang.String _region = &quot;&quot;;</span>
+<span class="fc" id="L114">	private java.lang.String[] _sectorArray = null;</span>
+<span class="fc" id="L115">	private double _vegaRiskWeight = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private double _deltaRiskWeight = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">	private double _memberCorrelation = java.lang.Double.NaN;</span>
 
 	/**
 	 * EQBucket Constructor
@@ -138,19 +139,19 @@ public class EQBucket
 		final double memberCorrelation,
 		final double vegaRiskWeight)
 		throws java.lang.Exception
-<span class="fc" id="L141">	{</span>
-<span class="pc bpc" id="L142" title="3 of 6 branches missed.">		if (null == (_size = size) || _size.isEmpty() ||</span>
-<span class="pc bpc" id="L143" title="3 of 6 branches missed.">			null == (_region = region) || _region.isEmpty() ||</span>
+<span class="fc" id="L142">	{</span>
+<span class="pc bpc" id="L143" title="3 of 6 branches missed.">		if (null == (_size = size) || _size.isEmpty() ||</span>
+<span class="pc bpc" id="L144" title="3 of 6 branches missed.">			null == (_region = region) || _region.isEmpty() ||</span>
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||</span>
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||</span>
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))</span>
 		{
-<span class="nc" id="L149">			throw new java.lang.Exception (&quot;EQBucket Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L150">			throw new java.lang.Exception (&quot;EQBucket Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L152">		_number = number;</span>
-<span class="fc" id="L153">	}</span>
+<span class="fc" id="L153">		_number = number;</span>
+<span class="fc" id="L154">	}</span>
 
 	/**
 	 * Retrieve the Bucket Number
@@ -160,7 +161,7 @@ public class EQBucket
 
 	public int number()
 	{
-<span class="nc" id="L163">		return _number;</span>
+<span class="nc" id="L164">		return _number;</span>
 	}
 
 	/**
@@ -171,7 +172,7 @@ public class EQBucket
 
 	public java.lang.String size()
 	{
-<span class="nc" id="L174">		return _size;</span>
+<span class="nc" id="L175">		return _size;</span>
 	}
 
 	/**
@@ -182,7 +183,7 @@ public class EQBucket
 
 	public java.lang.String region()
 	{
-<span class="nc" id="L185">		return _region;</span>
+<span class="nc" id="L186">		return _region;</span>
 	}
 
 	/**
@@ -193,7 +194,7 @@ public class EQBucket
 
 	public java.lang.String[] sectorArray()
 	{
-<span class="nc" id="L196">		return _sectorArray;</span>
+<span class="nc" id="L197">		return _sectorArray;</span>
 	}
 
 	/**
@@ -204,7 +205,7 @@ public class EQBucket
 
 	public double deltaRiskWeight()
 	{
-<span class="nc" id="L207">		return _deltaRiskWeight;</span>
+<span class="nc" id="L208">		return _deltaRiskWeight;</span>
 	}
 
 	/**
@@ -215,7 +216,7 @@ public class EQBucket
 
 	public double memberCorrelation()
 	{
-<span class="nc" id="L218">		return _memberCorrelation;</span>
+<span class="nc" id="L219">		return _memberCorrelation;</span>
 	}
 
 	/**
@@ -226,7 +227,7 @@ public class EQBucket
 
 	public double vegaRiskWeight()
 	{
-<span class="nc" id="L229">		return _vegaRiskWeight;</span>
+<span class="nc" id="L230">		return _vegaRiskWeight;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

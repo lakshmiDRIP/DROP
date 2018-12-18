@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.constraint;
 
 /**
  * &lt;i&gt;LimitRiskTerm&lt;/i&gt; holds the Details of a Limit Risk Constraint Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -81,7 +82,7 @@ package org.drip.portfolioconstruction.constraint;
 
 public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L84">	private double[][] _aadblAssetCovariance = null;</span>
+<span class="nc" id="L85">	private double[][] _aadblAssetCovariance = null;</span>
 
 	protected LimitRiskTerm (
 		final java.lang.String strName,
@@ -94,7 +95,7 @@ public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optim
 		final double[][] aadblAssetCovariance)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L97">		super (</span>
+<span class="nc" id="L98">		super (</span>
 			strName,
 			strID,
 			strDescription,
@@ -105,22 +106,22 @@ public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optim
 			dblMaximum
 		);
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance))</span>
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
 
-<span class="nc" id="L111">		int iNumAsset = _aadblAssetCovariance.length;</span>
+<span class="nc" id="L112">		int iNumAsset = _aadblAssetCovariance.length;</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (0 == iNumAsset)</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (0 == iNumAsset)</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
 		{
-<span class="nc bnc" id="L118" title="All 4 branches missed.">			if (null == _aadblAssetCovariance[i] ||</span>
+<span class="nc bnc" id="L119" title="All 4 branches missed.">			if (null == _aadblAssetCovariance[i] ||</span>
 				iNumAsset != _aadblAssetCovariance[i].length ||
-<span class="nc bnc" id="L120" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))</span>
-<span class="nc" id="L121">				throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))</span>
+<span class="nc" id="L122">				throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
 		}
-<span class="nc" id="L123">	}</span>
+<span class="nc" id="L124">	}</span>
 
 	/**
 	 * Retrieve the Asset Co-variance
@@ -130,7 +131,7 @@ public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optim
 
 	public double[][] assetCovariance()
 	{
-<span class="nc" id="L133">		return _aadblAssetCovariance;</span>
+<span class="nc" id="L134">		return _aadblAssetCovariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -77,9 +77,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -87,10 +88,10 @@ package org.drip.product.params;
  */
 
 public class IdentifierSet implements org.drip.product.params.Validatable {
-<span class="fc" id="L90">	private java.lang.String _strID = &quot;&quot;;</span>
-<span class="fc" id="L91">	private java.lang.String _strISIN = &quot;&quot;;</span>
-<span class="fc" id="L92">	private java.lang.String _strCUSIP = &quot;&quot;;</span>
-<span class="fc" id="L93">	private java.lang.String _strTicker = &quot;&quot;;</span>
+<span class="fc" id="L91">	private java.lang.String _strID = &quot;&quot;;</span>
+<span class="fc" id="L92">	private java.lang.String _strISIN = &quot;&quot;;</span>
+<span class="fc" id="L93">	private java.lang.String _strCUSIP = &quot;&quot;;</span>
+<span class="fc" id="L94">	private java.lang.String _strTicker = &quot;&quot;;</span>
 
 	/**
 	 * Construct the IdentifierSet from ISIN, CUSIP, ID, and ticker.
@@ -106,23 +107,23 @@ public class IdentifierSet implements org.drip.product.params.Validatable {
 		final java.lang.String strCUSIP,
 		final java.lang.String strID,
 		final java.lang.String strTicker)
-<span class="fc" id="L109">	{</span>
-<span class="fc" id="L110">		_strISIN = strISIN;</span>
-<span class="fc" id="L111">		_strCUSIP = strCUSIP;</span>
-<span class="fc" id="L112">		_strID = strID;</span>
-<span class="fc" id="L113">		_strTicker = strTicker;</span>
-<span class="fc" id="L114">	}</span>
+<span class="fc" id="L110">	{</span>
+<span class="fc" id="L111">		_strISIN = strISIN;</span>
+<span class="fc" id="L112">		_strCUSIP = strCUSIP;</span>
+<span class="fc" id="L113">		_strID = strID;</span>
+<span class="fc" id="L114">		_strTicker = strTicker;</span>
+<span class="fc" id="L115">	}</span>
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L118" title="6 of 8 branches missed.">		if ((null == _strISIN || _strISIN.isEmpty()) &amp;&amp; (null == _strCUSIP || _strCUSIP.isEmpty()))</span>
-<span class="nc" id="L119">			return false;</span>
+<span class="pc bpc" id="L119" title="6 of 8 branches missed.">		if ((null == _strISIN || _strISIN.isEmpty()) &amp;&amp; (null == _strCUSIP || _strCUSIP.isEmpty()))</span>
+<span class="nc" id="L120">			return false;</span>
 
-<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (null == _strID || _strID.isEmpty()) {</span>
-<span class="nc bnc" id="L122" title="All 4 branches missed.">			if (null == (_strID = _strISIN) || _strID.isEmpty()) _strID = _strCUSIP;</span>
+<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (null == _strID || _strID.isEmpty()) {</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">			if (null == (_strID = _strISIN) || _strID.isEmpty()) _strID = _strCUSIP;</span>
 		}
 
-<span class="fc" id="L125">		return true;</span>
+<span class="fc" id="L126">		return true;</span>
 	}
 
 	/**
@@ -133,7 +134,7 @@ public class IdentifierSet implements org.drip.product.params.Validatable {
 
 	public java.lang.String id()
 	{
-<span class="fc" id="L136">		return _strID;</span>
+<span class="fc" id="L137">		return _strID;</span>
 	}
 
 	/**
@@ -144,7 +145,7 @@ public class IdentifierSet implements org.drip.product.params.Validatable {
 
 	public java.lang.String isin()
 	{
-<span class="nc" id="L147">		return _strISIN;</span>
+<span class="nc" id="L148">		return _strISIN;</span>
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class IdentifierSet implements org.drip.product.params.Validatable {
 
 	public java.lang.String cusip()
 	{
-<span class="nc" id="L158">		return _strCUSIP;</span>
+<span class="nc" id="L159">		return _strCUSIP;</span>
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class IdentifierSet implements org.drip.product.params.Validatable {
 
 	public java.lang.String ticker()
 	{
-<span class="nc" id="L169">		return _strTicker;</span>
+<span class="nc" id="L170">		return _strTicker;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

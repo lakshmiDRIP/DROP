@@ -73,9 +73,10 @@ package org.drip.sequence.metrics;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/metrics&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/metrics&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +84,8 @@ package org.drip.sequence.metrics;
  */
 
 public class DualSequenceAgnosticMetrics {
-<span class="fc" id="L86">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics _ssam1 = null;</span>
-<span class="fc" id="L87">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics _ssam2 = null;</span>
+<span class="fc" id="L87">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics _ssam1 = null;</span>
+<span class="fc" id="L88">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics _ssam2 = null;</span>
 
 	/**
 	 * DualSequenceAgnosticMetrics Constructor
@@ -99,11 +100,11 @@ public class DualSequenceAgnosticMetrics {
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssam1,
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics ssam2)
 		throws java.lang.Exception
-<span class="fc" id="L102">	{</span>
-<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (null == (_ssam1 = ssam1) || null == (_ssam2 = ssam2) || _ssam1.sequence().length !=</span>
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">			_ssam2.sequence().length)</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;DualSequenceAgnosticMetrics ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L103">	{</span>
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">		if (null == (_ssam1 = ssam1) || null == (_ssam2 = ssam2) || _ssam1.sequence().length !=</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">			_ssam2.sequence().length)</span>
+<span class="nc" id="L106">			throw new java.lang.Exception (&quot;DualSequenceAgnosticMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L107">	}</span>
 
 	/**
 	 * Retrieve the Array of the Component Single Sequences
@@ -113,7 +114,7 @@ public class DualSequenceAgnosticMetrics {
 
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] components()
 	{
-<span class="nc" id="L116">		return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] {_ssam1, _ssam2};</span>
+<span class="nc" id="L117">		return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] {_ssam1, _ssam2};</span>
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class DualSequenceAgnosticMetrics {
 	public double cauchySchwarzAbsoluteBound()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L130">		return java.lang.Math.sqrt (_ssam1.empiricalRawMoment (2, true) * _ssam2.empiricalRawMoment (2,</span>
+<span class="fc" id="L131">		return java.lang.Math.sqrt (_ssam1.empiricalRawMoment (2, true) * _ssam2.empiricalRawMoment (2,</span>
 			true));
 	}
 }

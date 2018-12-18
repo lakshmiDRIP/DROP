@@ -14,12 +14,12 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -36,16 +36,17 @@ package org.drip.function.r1tor1;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -83,19 +84,19 @@ package org.drip.function.r1tor1;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L94">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="fc" id="L95">	private double _dblB = java.lang.Double.NaN;</span>
-<span class="fc" id="L96">	private double _dblC = java.lang.Double.NaN;</span>
-<span class="fc" id="L97">	private double _dblD = java.lang.Double.NaN;</span>
-<span class="fc" id="L98">	private double _dblEpoch = java.lang.Double.NaN;</span>
+<span class="fc" id="L95">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L96">	private double _dblB = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double _dblC = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _dblD = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblEpoch = java.lang.Double.NaN;</span>
 
 	/**
 	 * SABRLIBORCapVolatility Constructor
@@ -117,26 +118,26 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 		final double dblD)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L120">		super (null);</span>
+<span class="fc" id="L121">		super (null);</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) ||</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblC = dblC) ||</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblD = dblD))</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L128">	}</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) ||</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblC = dblC) ||</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">							!org.drip.quant.common.NumberUtil.IsValid (_dblD = dblD))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L129">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;SABRLIBORCapVolatility::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L137">		double dblDateGap = dblVariate - _dblEpoch;</span>
+<span class="fc" id="L138">		double dblDateGap = dblVariate - _dblEpoch;</span>
 
-<span class="fc" id="L139">		return (_dblB * dblDateGap + _dblA) * java.lang.Math.exp (-1. * _dblC * dblDateGap) + _dblD;</span>
+<span class="fc" id="L140">		return (_dblB * dblDateGap + _dblA) * java.lang.Math.exp (-1. * _dblC * dblDateGap) + _dblD;</span>
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double A()
 	{
-<span class="nc" id="L150">		return _dblA;</span>
+<span class="nc" id="L151">		return _dblA;</span>
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double B()
 	{
-<span class="nc" id="L161">		return _dblB;</span>
+<span class="nc" id="L162">		return _dblB;</span>
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double C()
 	{
-<span class="nc" id="L172">		return _dblC;</span>
+<span class="nc" id="L173">		return _dblC;</span>
 	}
 
 	/**
@@ -180,7 +181,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double D()
 	{
-<span class="nc" id="L183">		return _dblD;</span>
+<span class="nc" id="L184">		return _dblD;</span>
 	}
 
 	/**
@@ -191,7 +192,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 
 	public double epoch()
 	{
-<span class="nc" id="L194">		return _dblEpoch;</span>
+<span class="nc" id="L195">		return _dblEpoch;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

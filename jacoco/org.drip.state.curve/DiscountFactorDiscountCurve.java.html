@@ -101,9 +101,10 @@ package org.drip.state.curve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -111,13 +112,13 @@ package org.drip.state.curve;
  */
 
 public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-<span class="fc" id="L114">	private org.drip.spline.grid.Span _span = null;</span>
-<span class="fc" id="L115">	private double _dblRightFlatForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L116">	private double _dblRightFlatForwardRate = java.lang.Double.NaN;</span>
 
 	private DiscountFactorDiscountCurve shiftManifestMeasure (
 		final double[] adblShiftedManifestMeasure)
 	{
-<span class="nc" id="L120">		return null;</span>
+<span class="nc" id="L121">		return null;</span>
 	}
 
 	/**
@@ -134,22 +135,22 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 		final org.drip.spline.grid.Span span)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L137">		super ((int) span.left(), strCurrency, null);</span>
+<span class="fc" id="L138">		super ((int) span.left(), strCurrency, null);</span>
 
-<span class="fc" id="L139">		_dblRightFlatForwardRate = -365.25 * java.lang.Math.log ((_span = span).calcResponseValue</span>
-<span class="fc" id="L140">			(_span.right())) / (_span.right() - _span.left());</span>
-<span class="fc" id="L141">	}</span>
+<span class="fc" id="L140">		_dblRightFlatForwardRate = -365.25 * java.lang.Math.log ((_span = span).calcResponseValue</span>
+<span class="fc" id="L141">			(_span.right())) / (_span.right() - _span.left());</span>
+<span class="fc" id="L142">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L147">		int iEpochDate = epoch().julian();</span>
+<span class="fc" id="L148">		int iEpochDate = epoch().julian();</span>
 
-<span class="fc bfc" id="L149" title="All 2 branches covered.">		if (iDate &lt;= iEpochDate) return 1.;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (iDate &lt;= iEpochDate) return 1.;</span>
 
-<span class="fc bfc" id="L151" title="All 2 branches covered.">		return (iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : java.lang.Math.exp (-1. *</span>
-<span class="fc" id="L152">			_dblRightFlatForwardRate * (iDate - iEpochDate) / 365.25)) * turnAdjust (iEpochDate, iDate);</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		return (iDate &lt;= _span.right() ? _span.calcResponseValue (iDate) : java.lang.Math.exp (-1. *</span>
+<span class="fc" id="L153">			_dblRightFlatForwardRate * (iDate - iEpochDate) / 365.25)) * turnAdjust (iEpochDate, iDate);</span>
 	}
 
 	@Override public double forward (
@@ -157,96 +158,96 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L160">		int iEpochDate = epoch().julian();</span>
+<span class="fc" id="L161">		int iEpochDate = epoch().julian();</span>
 
-<span class="pc bpc" id="L162" title="1 of 4 branches missed.">		if (iDate1 &lt; iEpochDate || iDate2 &lt; iEpochDate) return 0.;</span>
+<span class="pc bpc" id="L163" title="1 of 4 branches missed.">		if (iDate1 &lt; iEpochDate || iDate2 &lt; iEpochDate) return 0.;</span>
 
-<span class="fc" id="L164">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="fc" id="L165">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L171">		int iEpochDate = epoch().julian();</span>
+<span class="fc" id="L172">		int iEpochDate = epoch().julian();</span>
 
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if (iDate &lt; iEpochDate) return 0.;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (iDate &lt; iEpochDate) return 0.;</span>
 
-<span class="fc" id="L175">		return -365.25 / (iDate - iEpochDate) * java.lang.Math.log (df (iDate));</span>
+<span class="fc" id="L176">		return -365.25 / (iDate - iEpochDate) * java.lang.Math.log (df (iDate));</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc bnc" id="L182" title="All 4 branches missed.">		if (null == _span || !_span.isMergeState (iDate, fri)) return null;</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">		if (null == _span || !_span.isMergeState (iDate, fri)) return null;</span>
 
-<span class="nc" id="L184">		return new org.drip.state.forward.ForwardRateEstimator() {</span>
+<span class="nc" id="L185">		return new org.drip.state.forward.ForwardRateEstimator() {</span>
 			@Override public org.drip.state.identifier.ForwardLabel index()
 			{
-<span class="nc" id="L187">				return fri;</span>
+<span class="nc" id="L188">				return fri;</span>
 			}
 
 			@Override public java.lang.String tenor()
 			{
-<span class="nc" id="L192">				return fri.tenor();</span>
+<span class="nc" id="L193">				return fri.tenor();</span>
 			}
 
 			@Override public double forward (
 				final org.drip.analytics.date.JulianDate dt)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L199" title="All 2 branches missed.">				if (null == dt)</span>
-<span class="nc" id="L200">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">				if (null == dt)</span>
+<span class="nc" id="L201">					throw new java.lang.Exception</span>
 						(&quot;DiscountFactorDiscountCurve::ForwardEstimator::forward =&gt; Invalid Inputs!&quot;);
 
-<span class="nc" id="L203">				java.lang.String strTenor = fri.tenor();</span>
+<span class="nc" id="L204">				java.lang.String strTenor = fri.tenor();</span>
 
-<span class="nc" id="L205">				return libor (dt.subtractTenor (strTenor).julian(), strTenor);</span>
+<span class="nc" id="L206">				return libor (dt.subtractTenor (strTenor).julian(), strTenor);</span>
 			}
 
 			@Override public double forward (
 				final int iDate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L212">				return forward (new org.drip.analytics.date.JulianDate (iDate));</span>
+<span class="nc" id="L213">				return forward (new org.drip.analytics.date.JulianDate (iDate));</span>
 			}
 
 			@Override public double forward (
 				final java.lang.String strTenor)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L219" title="All 4 branches missed.">				if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L220">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">				if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L221">					throw new java.lang.Exception</span>
 						(&quot;DiscountFactorDiscountCurve::ForwardEstimator::forward =&gt; Invalid Inputs!&quot;);
 
-<span class="nc" id="L223">				return forward (epoch().addTenor (strTenor));</span>
+<span class="nc" id="L224">				return forward (epoch().addTenor (strTenor));</span>
 			}
 		};
 	}
 
 	@Override public java.lang.String latentStateQuantificationMetric()
 	{
-<span class="nc" id="L230">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR;</span>
+<span class="nc" id="L231">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="nc" id="L239">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="nc" id="L240">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		if (null == aCC) return null;</span>
 
-<span class="nc" id="L243">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L244">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
+<span class="nc" id="L244">		int iNumComp = aCC.length;</span>
+<span class="nc" id="L245">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L246" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc" id="L247">			adblShiftedManifestMeasure[i] += dblShift;</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L248">			adblShiftedManifestMeasure[i] += dblShift;</span>
 
-<span class="nc" id="L249">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
+<span class="nc" id="L250">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve shiftManifestMeasure (
@@ -254,83 +255,83 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="nc" id="L259">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="nc" id="L260">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">		if (null == aCC) return null;</span>
 
-<span class="nc" id="L263">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L264">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
+<span class="nc" id="L264">		int iNumComp = aCC.length;</span>
+<span class="nc" id="L265">		double[] adblShiftedManifestMeasure = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (iSpanIndex &gt;= iNumComp) return null;</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		if (iSpanIndex &gt;= iNumComp) return null;</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc bnc" id="L269" title="All 2 branches missed.">			adblShiftedManifestMeasure[i] += (i == iSpanIndex ? dblShift : 0.);</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">			adblShiftedManifestMeasure[i] += (i == iSpanIndex ? dblShift : 0.);</span>
 
-<span class="nc" id="L271">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
+<span class="nc" id="L272">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
 	}
 
 	@Override public org.drip.state.discount.MergedDiscountForwardCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (null == rvtp) return null;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (null == rvtp) return null;</span>
 
-<span class="nc" id="L280">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
+<span class="nc" id="L281">		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();</span>
 
-<span class="nc bnc" id="L282" title="All 2 branches missed.">		if (null == aCC) return null;</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">		if (null == aCC) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="nc" id="L285">			mapQuote = _ccis.quoteMap();</span>
+<span class="nc" id="L286">			mapQuote = _ccis.quoteMap();</span>
 
-<span class="nc" id="L287">		int iNumComp = aCC.length;</span>
-<span class="nc" id="L288">		double[] adblQuote = new double[iNumComp];</span>
+<span class="nc" id="L288">		int iNumComp = aCC.length;</span>
+<span class="nc" id="L289">		double[] adblQuote = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L290" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
-<span class="nc" id="L291">			adblQuote[i] = mapQuote.get (aCC[i].primaryCode()).get (strManifestMeasure);</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="nc" id="L292">			adblQuote[i] = mapQuote.get (aCC[i].primaryCode()).get (strManifestMeasure);</span>
 
-<span class="nc" id="L293">		double[] adblShiftedManifestMeasure = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
-<span class="nc" id="L294">			(adblQuote, rvtp);</span>
+<span class="nc" id="L294">		double[] adblShiftedManifestMeasure = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L295">			(adblQuote, rvtp);</span>
 
-<span class="nc" id="L296">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
+<span class="nc" id="L297">		return shiftManifestMeasure (adblShiftedManifestMeasure);</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="fc" id="L302">		return null;</span>
+<span class="fc" id="L303">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L308">		return null;</span>
+<span class="nc" id="L309">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L315" title="1 of 2 branches missed.">		return null == _span ? null : _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">		return null == _span ? null : _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="pc bpc" id="L320" title="1 of 2 branches missed.">		return null == _ccis ? null : _ccis.components();</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		return null == _ccis ? null : _ccis.components();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstrumentCode)
 	{
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">		if (null == _ccis) return null;</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">		if (null == _ccis) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="fc" id="L329">			mapQuote = _ccis.quoteMap();</span>
+<span class="fc" id="L330">			mapQuote = _ccis.quoteMap();</span>
 
-<span class="pc bpc" id="L331" title="2 of 4 branches missed.">		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;</span>
+<span class="pc bpc" id="L332" title="2 of 4 branches missed.">		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;</span>
 
-<span class="fc" id="L333">		return mapQuote.get (strInstrumentCode);</span>
+<span class="fc" id="L334">		return mapQuote.get (strInstrumentCode);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

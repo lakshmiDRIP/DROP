@@ -16,12 +16,12 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -38,16 +38,17 @@ package org.drip.function.r1tor1solver;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,8 +95,8 @@ package org.drip.function.r1tor1solver;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -106,26 +107,26 @@ public class ConvergenceControlParams {
 	 * Convergence Zone Locator Determination
 	 */
 
-<span class="pc" id="L109">	private int _iFixedPointConvergenceIterations = 0;</span>
-<span class="pc" id="L110">	private double _dblConvergenceZoneEdgeLimit = java.lang.Double.NaN;</span>
-<span class="pc" id="L111">	private double _dblConvergenceZoneVariateBegin = java.lang.Double.NaN;</span>
-<span class="pc" id="L112">	private double _dblConvergenceZoneVariateBumpFactor = java.lang.Double.NaN;</span>
+<span class="pc" id="L110">	private int _iFixedPointConvergenceIterations = 0;</span>
+<span class="pc" id="L111">	private double _dblConvergenceZoneEdgeLimit = java.lang.Double.NaN;</span>
+<span class="pc" id="L112">	private double _dblConvergenceZoneVariateBegin = java.lang.Double.NaN;</span>
+<span class="pc" id="L113">	private double _dblConvergenceZoneVariateBumpFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default Convergence Control Parameters constructor
 	 */
 
 	public ConvergenceControlParams()
-<span class="fc" id="L119">	{</span>
+<span class="fc" id="L120">	{</span>
 		/*
 		 * Convergence Zone Locator Determination Initialization
 		 */
 
-<span class="fc" id="L124">		_iFixedPointConvergenceIterations = 100;</span>
-<span class="fc" id="L125">		_dblConvergenceZoneEdgeLimit = 0.01;</span>
-<span class="fc" id="L126">		_dblConvergenceZoneVariateBegin = 1.0e-30;</span>
-<span class="fc" id="L127">		_dblConvergenceZoneVariateBumpFactor = 3.;</span>
-<span class="fc" id="L128">	}</span>
+<span class="fc" id="L125">		_iFixedPointConvergenceIterations = 100;</span>
+<span class="fc" id="L126">		_dblConvergenceZoneEdgeLimit = 0.01;</span>
+<span class="fc" id="L127">		_dblConvergenceZoneVariateBegin = 1.0e-30;</span>
+<span class="fc" id="L128">		_dblConvergenceZoneVariateBumpFactor = 3.;</span>
+<span class="fc" id="L129">	}</span>
 
 	/**
 	 * ConvergenceControlParams constructor
@@ -144,15 +145,15 @@ public class ConvergenceControlParams {
 		final double dblConvergenceZoneEdgeLimit,
 		final double dblConvergenceZoneVariateBumpFactor)
 		throws java.lang.Exception
-<span class="nc" id="L147">	{</span>
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (0 &gt;= (_iFixedPointConvergenceIterations = iFixedPointConvergenceIterations) ||</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBegin =</span>
+<span class="nc" id="L148">	{</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (0 &gt;= (_iFixedPointConvergenceIterations = iFixedPointConvergenceIterations) ||</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBegin =</span>
 				dblConvergenceZoneVariateBegin) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L151" title="All 2 branches missed.">					(_dblConvergenceZoneEdgeLimit = dblConvergenceZoneEdgeLimit) ||</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBumpFactor =</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">					(_dblConvergenceZoneEdgeLimit = dblConvergenceZoneEdgeLimit) ||</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBumpFactor =</span>
 							dblConvergenceZoneVariateBumpFactor))
-<span class="nc" id="L154">			throw new java.lang.Exception (&quot;ConvergenceControlParams constructor: Invalid inputs&quot;);</span>
-<span class="nc" id="L155">	}</span>
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;ConvergenceControlParams constructor: Invalid inputs&quot;);</span>
+<span class="nc" id="L156">	}</span>
 
 	/**
 	 * Return the number of fixed point convergence iterations
@@ -162,7 +163,7 @@ public class ConvergenceControlParams {
 
 	public int getFixedPointConvergenceIterations()
 	{
-<span class="nc" id="L165">		return _iFixedPointConvergenceIterations;</span>
+<span class="nc" id="L166">		return _iFixedPointConvergenceIterations;</span>
 	}
 
 	/**
@@ -173,7 +174,7 @@ public class ConvergenceControlParams {
 
 	public double getConvergenceZoneEdgeLimit()
 	{
-<span class="nc" id="L176">		return _dblConvergenceZoneEdgeLimit;</span>
+<span class="nc" id="L177">		return _dblConvergenceZoneEdgeLimit;</span>
 	}
 
 	/**
@@ -184,7 +185,7 @@ public class ConvergenceControlParams {
 
 	public double getConvergenceZoneVariateBegin()
 	{
-<span class="nc" id="L187">		return _dblConvergenceZoneVariateBegin;</span>
+<span class="nc" id="L188">		return _dblConvergenceZoneVariateBegin;</span>
 	}
 
 	/**
@@ -195,7 +196,7 @@ public class ConvergenceControlParams {
 
 	public double getConvergenceZoneVariateBumpFactor()
 	{
-<span class="nc" id="L198">		return _dblConvergenceZoneVariateBumpFactor;</span>
+<span class="nc" id="L199">		return _dblConvergenceZoneVariateBumpFactor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -73,16 +73,17 @@ package org.drip.spaces.big;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class SubStringSetExtractor {</span>
+<span class="nc" id="L86">public class SubStringSetExtractor {</span>
 
 	/**
 	 * Locate the String Set of the Target Size using a Receeding Permutation Scan
@@ -97,31 +98,31 @@ package org.drip.spaces.big;
 		final java.lang.String strMaster,
 		final int iTargetStringSize)
 	{
-<span class="nc" id="L100">		int[] aiMax = new int[iTargetStringSize];</span>
-<span class="nc" id="L101">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
+<span class="nc" id="L101">		int[] aiMax = new int[iTargetStringSize];</span>
+<span class="nc" id="L102">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
 
-<span class="nc" id="L103">		int iMasterStringSize = strMaster.length();</span>
+<span class="nc" id="L104">		int iMasterStringSize = strMaster.length();</span>
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
-<span class="nc" id="L106">			aiMax[i] = iMasterStringSize;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
+<span class="nc" id="L107">			aiMax[i] = iMasterStringSize;</span>
 
 		try {
-<span class="nc" id="L109">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
-<span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L111">			e.printStackTrace();</span>
-<span class="nc" id="L112">		}</span>
+<span class="nc" id="L110">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
+<span class="nc" id="L111">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L112">			e.printStackTrace();</span>
+<span class="nc" id="L113">		}</span>
 
-<span class="nc" id="L114">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L115">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L116">		int[] aiIndex = mdIter.stateIndexCursor();</span>
+<span class="nc" id="L117">		int[] aiIndex = mdIter.stateIndexCursor();</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		while (null != aiIndex) {</span>
-<span class="nc" id="L119">			lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster, aiIndex));</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		while (null != aiIndex) {</span>
+<span class="nc" id="L120">			lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster, aiIndex));</span>
 
-<span class="nc" id="L121">			aiIndex = mdIter.nextStateIndexCursor();</span>
+<span class="nc" id="L122">			aiIndex = mdIter.nextStateIndexCursor();</span>
 		}
 
-<span class="nc" id="L124">		return lsTarget;</span>
+<span class="nc" id="L125">		return lsTarget;</span>
 	}
 
 	/**
@@ -137,33 +138,33 @@ package org.drip.spaces.big;
 		final java.lang.String strMaster,
 		final int iTargetStringSize)
 	{
-<span class="fc" id="L140">		int[] aiMax = new int[iTargetStringSize];</span>
-<span class="fc" id="L141">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
+<span class="fc" id="L141">		int[] aiMax = new int[iTargetStringSize];</span>
+<span class="fc" id="L142">		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;</span>
 
-<span class="fc" id="L143">		int iMasterStringSize = strMaster.length();</span>
+<span class="fc" id="L144">		int iMasterStringSize = strMaster.length();</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
-<span class="fc" id="L146">			aiMax[i] = iMasterStringSize;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iTargetStringSize; ++i)</span>
+<span class="fc" id="L147">			aiMax[i] = iMasterStringSize;</span>
 
 		try {
-<span class="fc" id="L149">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
-<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L151">			e.printStackTrace();</span>
-<span class="fc" id="L152">		}</span>
+<span class="fc" id="L150">			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);</span>
+<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="fc" id="L153">		}</span>
 
-<span class="fc" id="L154">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L155">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="fc" id="L156">		int[] aiIndex = mdIter.stateIndexCursor();</span>
+<span class="fc" id="L157">		int[] aiIndex = mdIter.stateIndexCursor();</span>
 
-<span class="fc bfc" id="L158" title="All 2 branches covered.">		while (null != aiIndex) {</span>
-<span class="fc bfc" id="L159" title="All 2 branches covered.">			if (!org.drip.spaces.iterator.IterationHelper.CheckForRepeatingIndex (aiIndex))</span>
-<span class="fc" id="L160">				lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster,</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		while (null != aiIndex) {</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">			if (!org.drip.spaces.iterator.IterationHelper.CheckForRepeatingIndex (aiIndex))</span>
+<span class="fc" id="L161">				lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster,</span>
 					aiIndex));
 
-<span class="fc" id="L163">			aiIndex = mdIter.nextStateIndexCursor();</span>
+<span class="fc" id="L164">			aiIndex = mdIter.nextStateIndexCursor();</span>
 		}
 
-<span class="fc" id="L166">		return lsTarget;</span>
+<span class="fc" id="L167">		return lsTarget;</span>
 	}
 
 	/**
@@ -177,20 +178,20 @@ package org.drip.spaces.big;
 	public static final java.util.List&lt;java.lang.String&gt; Contiguous (
 		final java.lang.String strMaster)
 	{
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (null == strMaster) return null;</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (null == strMaster) return null;</span>
 
-<span class="fc" id="L182">		int iMasterStringLength = strMaster.length();</span>
+<span class="fc" id="L183">		int iMasterStringLength = strMaster.length();</span>
 
-<span class="fc" id="L184">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L185">		java.util.List&lt;java.lang.String&gt; lsTarget = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (0 == iMasterStringLength) return lsTarget;</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">		if (0 == iMasterStringLength) return lsTarget;</span>
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (int iStartIndex = 0; iStartIndex &lt; iMasterStringLength; ++iStartIndex) {</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">			for (int iFinishIndex = iStartIndex + 1; iFinishIndex &lt;= iMasterStringLength; ++iFinishIndex)</span>
-<span class="fc" id="L190">				lsTarget.add (strMaster.substring (iStartIndex, iFinishIndex));</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int iStartIndex = 0; iStartIndex &lt; iMasterStringLength; ++iStartIndex) {</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">			for (int iFinishIndex = iStartIndex + 1; iFinishIndex &lt;= iMasterStringLength; ++iFinishIndex)</span>
+<span class="fc" id="L191">				lsTarget.add (strMaster.substring (iStartIndex, iFinishIndex));</span>
 		}
 
-<span class="fc" id="L193">		return lsTarget;</span>
+<span class="fc" id="L194">		return lsTarget;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

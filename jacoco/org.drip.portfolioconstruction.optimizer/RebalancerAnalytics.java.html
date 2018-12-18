@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 /**
  * &lt;i&gt;RebalancerAnalytics&lt;/i&gt; holds the Analytics from a given Rebalancing Run.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -81,13 +82,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 public class RebalancerAnalytics
 {
-<span class="nc" id="L84">	private double _dblObjectiveValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.composite.Holdings _holdingsFinal = null;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _portfolioMetrics = null;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics _portfolioBenchmarkMetrics = null;</span>
-<span class="nc" id="L88">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapObjectiveTermRealization</span>
+<span class="nc" id="L85">	private double _dblObjectiveValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.composite.Holdings _holdingsFinal = null;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _portfolioMetrics = null;</span>
+<span class="nc" id="L88">	private org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics _portfolioBenchmarkMetrics = null;</span>
+<span class="nc" id="L89">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapObjectiveTermRealization</span>
 		= null;
-<span class="nc" id="L90">	private</span>
+<span class="nc" id="L91">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.optimizer.ConstraintRealization&gt;
 			_mapConstraintRealization = null;
 
@@ -115,16 +116,16 @@ public class RebalancerAnalytics
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics portfolioMetrics,
 		final org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics portfolioBenchmarkMetrics)
 		throws java.lang.Exception
-<span class="nc" id="L118">	{</span>
-<span class="nc bnc" id="L119" title="All 8 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblObjectiveValue = dblObjectiveValue) ||</span>
+<span class="nc" id="L119">	{</span>
+<span class="nc bnc" id="L120" title="All 8 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblObjectiveValue = dblObjectiveValue) ||</span>
 			null == (_holdingsFinal = holdingsFinal) ||
 			null == (_mapObjectiveTermRealization = mapObjectiveTermRealization) ||
 			null == (_mapConstraintRealization = mapConstraintRealization))
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;RebalancerAnalytics Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;RebalancerAnalytics Constructor =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L125">		_portfolioMetrics = portfolioMetrics;</span>
-<span class="nc" id="L126">		_portfolioBenchmarkMetrics = portfolioBenchmarkMetrics;</span>
-<span class="nc" id="L127">	}</span>
+<span class="nc" id="L126">		_portfolioMetrics = portfolioMetrics;</span>
+<span class="nc" id="L127">		_portfolioBenchmarkMetrics = portfolioBenchmarkMetrics;</span>
+<span class="nc" id="L128">	}</span>
 
 	/**
 	 * Retrieve the Objective Term
@@ -134,7 +135,7 @@ public class RebalancerAnalytics
 
 	public double objectiveValue()
 	{
-<span class="nc" id="L137">		return _dblObjectiveValue;</span>
+<span class="nc" id="L138">		return _dblObjectiveValue;</span>
 	}
 
 	/**
@@ -145,7 +146,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics portfolioMetrics()
 	{
-<span class="nc" id="L148">		return _portfolioMetrics;</span>
+<span class="nc" id="L149">		return _portfolioMetrics;</span>
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics portfolioBenchmarkMetrics()
 	{
-<span class="nc" id="L159">		return _portfolioBenchmarkMetrics;</span>
+<span class="nc" id="L160">		return _portfolioBenchmarkMetrics;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.composite.Holdings finalHoldings()
 	{
-<span class="nc" id="L170">		return _holdingsFinal;</span>
+<span class="nc" id="L171">		return _holdingsFinal;</span>
 	}
 
 	/**
@@ -179,7 +180,7 @@ public class RebalancerAnalytics
 	public java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.optimizer.ConstraintRealization&gt;
 		constraintRealizaton()
 	{
-<span class="nc" id="L182">		return _mapConstraintRealization;</span>
+<span class="nc" id="L183">		return _mapConstraintRealization;</span>
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class RebalancerAnalytics
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; objectiveTermRealizaton()
 	{
-<span class="nc" id="L193">		return _mapObjectiveTermRealization;</span>
+<span class="nc" id="L194">		return _mapObjectiveTermRealization;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

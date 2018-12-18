@@ -75,9 +75,10 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,32 +86,32 @@ package org.drip.spline.bspline;
  */
 
 public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
-<span class="fc" id="L88">	protected double _dblTension = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	protected double _dblTension = java.lang.Double.NaN;</span>
 
 	private static final org.drip.function.definition.R1ToR1[] responseBasis (
 		final int iNumBasisToUse,
 		final org.drip.function.definition.R1ToR1[] aAUHat)
 	{
-<span class="pc bpc" id="L94" title="2 of 4 branches missed.">		if (null == aAUHat || iNumBasisToUse &gt; aAUHat.length) return null;</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">		if (null == aAUHat || iNumBasisToUse &gt; aAUHat.length) return null;</span>
 
 		try {
-<span class="fc" id="L97">			org.drip.function.definition.R1ToR1[] aAU = new</span>
+<span class="fc" id="L98">			org.drip.function.definition.R1ToR1[] aAU = new</span>
 				org.drip.function.definition.R1ToR1[iNumBasisToUse + 2];
 
-<span class="fc" id="L100">			aAU[0] = new org.drip.function.r1tor1.Polynomial (0);</span>
+<span class="fc" id="L101">			aAU[0] = new org.drip.function.r1tor1.Polynomial (0);</span>
 
-<span class="fc" id="L102">			aAU[1] = new org.drip.function.r1tor1.UnivariateReflection (new</span>
+<span class="fc" id="L103">			aAU[1] = new org.drip.function.r1tor1.UnivariateReflection (new</span>
 				org.drip.function.r1tor1.Polynomial (1));
 
-<span class="fc bfc" id="L105" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumBasisToUse; ++i)</span>
-<span class="fc" id="L106">				aAU[2 + i] = aAUHat[i];</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumBasisToUse; ++i)</span>
+<span class="fc" id="L107">				aAU[2 + i] = aAUHat[i];</span>
 
-<span class="fc" id="L108">			return aAU;</span>
-<span class="nc" id="L109">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L110">			e.printStackTrace();</span>
+<span class="fc" id="L109">			return aAU;</span>
+<span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L111">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L113">		return null;</span>
+<span class="nc" id="L114">		return null;</span>
 	}
 
 	/**
@@ -129,11 +130,11 @@ public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
 		final org.drip.function.definition.R1ToR1[] aAUHat)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L132">		super (responseBasis (iNumBasisToUse, aAUHat));</span>
+<span class="fc" id="L133">		super (responseBasis (iNumBasisToUse, aAUHat));</span>
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))</span>
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;SegmentBasisFunctionSet ctr: Invalid Inputs!&quot;);</span>
-<span class="fc" id="L136">	}</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;SegmentBasisFunctionSet ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the Tension Parameter
@@ -143,7 +144,7 @@ public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
 
 	public double tension()
 	{
-<span class="nc" id="L146">		return _dblTension;</span>
+<span class="nc" id="L147">		return _dblTension;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -78,9 +78,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -88,11 +89,11 @@ package org.drip.product.params;
  */
 
 public class QuoteConvention implements org.drip.product.params.Validatable {
-<span class="fc" id="L91">	private java.lang.String _strCalculationType = &quot;&quot;;</span>
-<span class="fc" id="L92">	private double _dblRedemptionValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private int _iFirstSettleDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L94">	private org.drip.param.valuation.CashSettleParams _cashSettleParams = null;</span>
-<span class="fc" id="L95">	private org.drip.param.valuation.ValuationCustomizationParams _valuationCustomizationParams = null;</span>
+<span class="fc" id="L92">	private java.lang.String _strCalculationType = &quot;&quot;;</span>
+<span class="fc" id="L93">	private double _dblRedemptionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private int _iFirstSettleDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L95">	private org.drip.param.valuation.CashSettleParams _cashSettleParams = null;</span>
+<span class="fc" id="L96">	private org.drip.param.valuation.ValuationCustomizationParams _valuationCustomizationParams = null;</span>
 
 	/**
 	 * Construct the QuoteConvention object from the valuation Customization Parameters, the calculation
@@ -115,30 +116,30 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 		final int iSettleLag,
 		final java.lang.String strSettleCalendar,
 		final int iSettleAdjustMode)
-<span class="fc" id="L118">	{</span>
-<span class="fc" id="L119">		_iFirstSettleDate = iFirstSettleDate;</span>
-<span class="fc" id="L120">		_dblRedemptionValue = dblRedemptionValue;</span>
-<span class="fc" id="L121">		_strCalculationType = strCalculationType;</span>
-<span class="fc" id="L122">		_valuationCustomizationParams = valuationCustomizationParams;</span>
+<span class="fc" id="L119">	{</span>
+<span class="fc" id="L120">		_iFirstSettleDate = iFirstSettleDate;</span>
+<span class="fc" id="L121">		_dblRedemptionValue = dblRedemptionValue;</span>
+<span class="fc" id="L122">		_strCalculationType = strCalculationType;</span>
+<span class="fc" id="L123">		_valuationCustomizationParams = valuationCustomizationParams;</span>
 		
-<span class="fc" id="L124">		_cashSettleParams = new org.drip.param.valuation.CashSettleParams (iSettleLag, strSettleCalendar,</span>
+<span class="fc" id="L125">		_cashSettleParams = new org.drip.param.valuation.CashSettleParams (iSettleLag, strSettleCalendar,</span>
 			iSettleAdjustMode);
-<span class="fc" id="L126">	}</span>
+<span class="fc" id="L127">	}</span>
 
 	public int settleDate (
 		final org.drip.param.valuation.ValuationParams valParams)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == valParams)</span>
-<span class="nc" id="L133">			throw new java.lang.Exception (&quot;QuoteConvention::settleDate =&gt; Invalid inputs&quot;);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (null == valParams)</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;QuoteConvention::settleDate =&gt; Invalid inputs&quot;);</span>
 
-<span class="fc" id="L135">		return _cashSettleParams.cashSettleDate (valParams.valueDate());</span>
+<span class="fc" id="L136">		return _cashSettleParams.cashSettleDate (valParams.valueDate());</span>
 	}
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (_iFirstSettleDate) &amp;&amp;</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			org.drip.quant.common.NumberUtil.IsValid (_dblRedemptionValue);</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (_iFirstSettleDate) &amp;&amp;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			org.drip.quant.common.NumberUtil.IsValid (_dblRedemptionValue);</span>
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 
 	public java.lang.String calculationType()
 	{
-<span class="nc" id="L152">		return _strCalculationType;</span>
+<span class="nc" id="L153">		return _strCalculationType;</span>
 	}
 
 	/**
@@ -160,7 +161,7 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 
 	public int firstSettleDate()
 	{
-<span class="nc" id="L163">		return _iFirstSettleDate;</span>
+<span class="nc" id="L164">		return _iFirstSettleDate;</span>
 	}
 
 	/**
@@ -171,7 +172,7 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 
 	public double redemptionValue()
 	{
-<span class="nc" id="L174">		return _dblRedemptionValue;</span>
+<span class="nc" id="L175">		return _dblRedemptionValue;</span>
 	}
 
 	/**
@@ -182,7 +183,7 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 
 	public org.drip.param.valuation.CashSettleParams cashSettleParams()
 	{
-<span class="nc" id="L185">		return _cashSettleParams;</span>
+<span class="nc" id="L186">		return _cashSettleParams;</span>
 	}
 
 	/**
@@ -193,7 +194,7 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 
 	public org.drip.param.valuation.ValuationCustomizationParams valuationCustomizationParams()
 	{
-<span class="fc" id="L196">		return _valuationCustomizationParams;</span>
+<span class="fc" id="L197">		return _valuationCustomizationParams;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

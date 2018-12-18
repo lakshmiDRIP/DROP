@@ -81,9 +81,10 @@ package org.drip.spaces.rxtor1;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -108,48 +109,48 @@ public class NormedRdContinuousToR1Continuous extends org.drip.spaces.rxtor1.Nor
 		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (rdContinuousInput, r1ContinuousOutput, funcRdToR1);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc" id="L112">		super (rdContinuousInput, r1ContinuousOutput, funcRdToR1);</span>
+<span class="nc" id="L113">	}</span>
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L117">		final int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L118">		final int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();</span>
 
-<span class="nc" id="L121">		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =</span>
-<span class="nc" id="L122">			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();</span>
+<span class="nc" id="L122">		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =</span>
+<span class="nc" id="L123">			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();</span>
 
-<span class="nc" id="L124">		final org.drip.measure.continuous.Rd distRd = rdContinuousInput.borelSigmaMeasure();</span>
+<span class="nc" id="L125">		final org.drip.measure.continuous.Rd distRd = rdContinuousInput.borelSigmaMeasure();</span>
 
-<span class="nc" id="L126">		final org.drip.function.definition.RdToR1 funcRdToR1 = function();</span>
+<span class="nc" id="L127">		final org.drip.function.definition.RdToR1 funcRdToR1 = function();</span>
 
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == distRd || null == funcRdToR1)</span>
-<span class="nc" id="L129">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == distRd || null == funcRdToR1)</span>
+<span class="nc" id="L130">			throw new java.lang.Exception</span>
 				(&quot;NormedRdContinuousToR1Continuous::populationMetricNorm =&gt; Measure/Function not specified&quot;);
 
-<span class="nc" id="L132">		org.drip.function.definition.RdToR1 am = new</span>
-<span class="nc" id="L133">			org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L133">		org.drip.function.definition.RdToR1 am = new</span>
+<span class="nc" id="L134">			org.drip.function.definition.RdToR1 (null) {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L136">				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
+<span class="nc" id="L137">				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L143">				return java.lang.Math.pow (java.lang.Math.abs (funcRdToR1.evaluate (adblX)), iPNorm) *</span>
-<span class="nc" id="L144">					distRd.density (adblX);</span>
+<span class="nc" id="L144">				return java.lang.Math.pow (java.lang.Math.abs (funcRdToR1.evaluate (adblX)), iPNorm) *</span>
+<span class="nc" id="L145">					distRd.density (adblX);</span>
 			}
 		};
 
-<span class="nc" id="L148">		double[] adblLeft = rdContinuousInput.leftDimensionEdge();</span>
+<span class="nc" id="L149">		double[] adblLeft = rdContinuousInput.leftDimensionEdge();</span>
 
-<span class="nc" id="L150">		double[] adblRight = rdContinuousInput.rightDimensionEdge();</span>
+<span class="nc" id="L151">		double[] adblRight = rdContinuousInput.rightDimensionEdge();</span>
 
-<span class="nc" id="L152">		return java.lang.Math.pow (am.integrate (adblLeft, adblRight) / distRd.incremental(adblLeft,</span>
+<span class="nc" id="L153">		return java.lang.Math.pow (am.integrate (adblLeft, adblRight) / distRd.incremental(adblLeft,</span>
 			adblRight), 1. / iPNorm);
 	}
 }

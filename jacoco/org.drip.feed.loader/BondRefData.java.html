@@ -17,12 +17,12 @@ package org.drip.feed.loader;
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -39,16 +39,17 @@ package org.drip.feed.loader;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,278 +93,278 @@ package org.drip.feed.loader;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L102">class BondRefData {</span>
+<span class="nc" id="L103">class BondRefData {</span>
 	private static final boolean m_bBlog = false;
 	private static final boolean m_bDBExec = true;
 
 	private static final org.drip.product.creator.BondRefDataBuilder MakeBRDB (
 		final java.lang.String[] astrFODATA)
 	{
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == astrFODATA || 88 != astrFODATA.length) return null;</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (null == astrFODATA || 88 != astrFODATA.length) return null;</span>
 
-<span class="nc" id="L111">		org.drip.product.creator.BondRefDataBuilder brdb = new org.drip.product.creator.BondRefDataBuilder();</span>
+<span class="nc" id="L112">		org.drip.product.creator.BondRefDataBuilder brdb = new org.drip.product.creator.BondRefDataBuilder();</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (!brdb.setISIN (astrFODATA[40])) {</span>
-<span class="nc" id="L114">			System.out.println (&quot;Bad ISIN &quot; + astrFODATA[40]);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (!brdb.setISIN (astrFODATA[40])) {</span>
+<span class="nc" id="L115">			System.out.println (&quot;Bad ISIN &quot; + astrFODATA[40]);</span>
 
-<span class="nc" id="L116">			return null;</span>
+<span class="nc" id="L117">			return null;</span>
 		}
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!brdb.setCUSIP (astrFODATA[42])) {</span>
-<span class="nc" id="L120">			System.out.println (&quot;Bad CUSIP &quot; + astrFODATA[42]);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (!brdb.setCUSIP (astrFODATA[42])) {</span>
+<span class="nc" id="L121">			System.out.println (&quot;Bad CUSIP &quot; + astrFODATA[42]);</span>
 
-<span class="nc" id="L122">			return null;</span>
+<span class="nc" id="L123">			return null;</span>
 		}
 
-<span class="nc" id="L125">		brdb.setBBGID (astrFODATA[1]);</span>
+<span class="nc" id="L126">		brdb.setBBGID (astrFODATA[1]);</span>
 
-<span class="nc" id="L127">		brdb.setIssuerCategory (astrFODATA[2]);</span>
+<span class="nc" id="L128">		brdb.setIssuerCategory (astrFODATA[2]);</span>
 
-<span class="nc" id="L129">		brdb.setTicker (astrFODATA[3]);</span>
+<span class="nc" id="L130">		brdb.setTicker (astrFODATA[3]);</span>
 
-<span class="nc" id="L131">		brdb.setSeries (astrFODATA[7]);</span>
+<span class="nc" id="L132">		brdb.setSeries (astrFODATA[7]);</span>
 
-<span class="nc" id="L133">		brdb.setName (astrFODATA[8]);</span>
+<span class="nc" id="L134">		brdb.setName (astrFODATA[8]);</span>
 
-<span class="nc" id="L135">		brdb.setShortName (astrFODATA[9]);</span>
+<span class="nc" id="L136">		brdb.setShortName (astrFODATA[9]);</span>
 
-<span class="nc" id="L137">		brdb.setIssuerIndustry (astrFODATA[10]);</span>
+<span class="nc" id="L138">		brdb.setIssuerIndustry (astrFODATA[10]);</span>
 
-<span class="nc" id="L139">		brdb.setCouponType (astrFODATA[13]);</span>
+<span class="nc" id="L140">		brdb.setCouponType (astrFODATA[13]);</span>
 
-<span class="nc" id="L141">		brdb.setMaturityType (astrFODATA[14]);</span>
+<span class="nc" id="L142">		brdb.setMaturityType (astrFODATA[14]);</span>
 
-<span class="nc" id="L143">		brdb.setCalculationType (astrFODATA[15]);</span>
+<span class="nc" id="L144">		brdb.setCalculationType (astrFODATA[15]);</span>
 
-<span class="nc" id="L145">		brdb.setDayCountCode (astrFODATA[16]);</span>
+<span class="nc" id="L146">		brdb.setDayCountCode (astrFODATA[16]);</span>
 
-<span class="nc" id="L147">		brdb.setMarketIssueType (astrFODATA[17]);</span>
+<span class="nc" id="L148">		brdb.setMarketIssueType (astrFODATA[17]);</span>
 
-<span class="nc" id="L149">		brdb.setIssueCountryCode (astrFODATA[18]);</span>
+<span class="nc" id="L150">		brdb.setIssueCountryCode (astrFODATA[18]);</span>
 
-<span class="nc" id="L151">		brdb.setIssueCountry (astrFODATA[19]);</span>
+<span class="nc" id="L152">		brdb.setIssueCountry (astrFODATA[19]);</span>
 
-<span class="nc" id="L153">		brdb.setCollateralType (astrFODATA[20]);</span>
+<span class="nc" id="L154">		brdb.setCollateralType (astrFODATA[20]);</span>
 
-<span class="nc" id="L155">		brdb.setIssueAmount (astrFODATA[21]);</span>
+<span class="nc" id="L156">		brdb.setIssueAmount (astrFODATA[21]);</span>
 
-<span class="nc" id="L157">		brdb.setOutstandingAmount (astrFODATA[22]);</span>
+<span class="nc" id="L158">		brdb.setOutstandingAmount (astrFODATA[22]);</span>
 
-<span class="nc" id="L159">		brdb.setMinimumPiece (astrFODATA[23]);</span>
+<span class="nc" id="L160">		brdb.setMinimumPiece (astrFODATA[23]);</span>
 
-<span class="nc" id="L161">		brdb.setMinimumIncrement (astrFODATA[24]);</span>
+<span class="nc" id="L162">		brdb.setMinimumIncrement (astrFODATA[24]);</span>
 
-<span class="nc" id="L163">		brdb.setParAmount (astrFODATA[25]);</span>
+<span class="nc" id="L164">		brdb.setParAmount (astrFODATA[25]);</span>
 
-<span class="nc" id="L165">		brdb.setLeadManager (astrFODATA[26]);</span>
+<span class="nc" id="L166">		brdb.setLeadManager (astrFODATA[26]);</span>
 
-<span class="nc" id="L167">		brdb.setExchangeCode (astrFODATA[27]);</span>
+<span class="nc" id="L168">		brdb.setExchangeCode (astrFODATA[27]);</span>
 
-<span class="nc" id="L169">		brdb.setRedemptionValue (astrFODATA[28]);</span>
+<span class="nc" id="L170">		brdb.setRedemptionValue (astrFODATA[28]);</span>
 
-<span class="nc" id="L171">		brdb.setAnnounce (astrFODATA[29]);</span>
+<span class="nc" id="L172">		brdb.setAnnounce (astrFODATA[29]);</span>
 
-<span class="nc" id="L173">		brdb.setFirstSettle (astrFODATA[31]);</span>
+<span class="nc" id="L174">		brdb.setFirstSettle (astrFODATA[31]);</span>
 
-<span class="nc" id="L175">		brdb.setFirstCoupon (astrFODATA[33]);</span>
+<span class="nc" id="L176">		brdb.setFirstCoupon (astrFODATA[33]);</span>
 
-<span class="nc" id="L177">		brdb.setInterestAccrualStart (astrFODATA[35]);</span>
+<span class="nc" id="L178">		brdb.setInterestAccrualStart (astrFODATA[35]);</span>
 
-<span class="nc" id="L179">		brdb.setIssue (astrFODATA[37]);</span>
+<span class="nc" id="L180">		brdb.setIssue (astrFODATA[37]);</span>
 
-<span class="nc" id="L181">		brdb.setIssuePrice (astrFODATA[39]);</span>
+<span class="nc" id="L182">		brdb.setIssuePrice (astrFODATA[39]);</span>
 
-<span class="nc" id="L183">		brdb.setNextCouponDate (astrFODATA[43]);</span>
+<span class="nc" id="L184">		brdb.setNextCouponDate (astrFODATA[43]);</span>
 
-<span class="nc" id="L185">		brdb.setIsCallable (astrFODATA[45]);</span>
+<span class="nc" id="L186">		brdb.setIsCallable (astrFODATA[45]);</span>
 
-<span class="nc" id="L187">		brdb.setIsSinkable (astrFODATA[46]);</span>
+<span class="nc" id="L188">		brdb.setIsSinkable (astrFODATA[46]);</span>
 
-<span class="nc" id="L189">		brdb.setIsPutable (astrFODATA[47]);</span>
+<span class="nc" id="L190">		brdb.setIsPutable (astrFODATA[47]);</span>
 
-<span class="nc" id="L191">		brdb.setBBGParent (astrFODATA[48]);</span>
+<span class="nc" id="L192">		brdb.setBBGParent (astrFODATA[48]);</span>
 
-<span class="nc" id="L193">		brdb.setCountryOfIncorporation (astrFODATA[53]);</span>
+<span class="nc" id="L194">		brdb.setCountryOfIncorporation (astrFODATA[53]);</span>
 
-<span class="nc" id="L195">		brdb.setIndustrySector (astrFODATA[54]);</span>
+<span class="nc" id="L196">		brdb.setIndustrySector (astrFODATA[54]);</span>
 
-<span class="nc" id="L197">		brdb.setIndustryGroup (astrFODATA[55]);</span>
+<span class="nc" id="L198">		brdb.setIndustryGroup (astrFODATA[55]);</span>
 
-<span class="nc" id="L199">		brdb.setIndustrySubgroup (astrFODATA[56]);</span>
+<span class="nc" id="L200">		brdb.setIndustrySubgroup (astrFODATA[56]);</span>
 
-<span class="nc" id="L201">		brdb.setCountryOfGuarantor (astrFODATA[57]);</span>
+<span class="nc" id="L202">		brdb.setCountryOfGuarantor (astrFODATA[57]);</span>
 
-<span class="nc" id="L203">		brdb.setCountryOfDomicile (astrFODATA[58]);</span>
+<span class="nc" id="L204">		brdb.setCountryOfDomicile (astrFODATA[58]);</span>
 
-<span class="nc" id="L205">		brdb.setDescription (astrFODATA[59]);</span>
+<span class="nc" id="L206">		brdb.setDescription (astrFODATA[59]);</span>
 
-<span class="nc" id="L207">		brdb.setSecurityType (astrFODATA[60]);</span>
+<span class="nc" id="L208">		brdb.setSecurityType (astrFODATA[60]);</span>
 
-<span class="nc" id="L209">		brdb.setPrevCouponDate (astrFODATA[61]);</span>
+<span class="nc" id="L210">		brdb.setPrevCouponDate (astrFODATA[61]);</span>
 
-<span class="nc" id="L211">		brdb.setBBGUniqueID (astrFODATA[63]);</span>
+<span class="nc" id="L212">		brdb.setBBGUniqueID (astrFODATA[63]);</span>
 
-<span class="nc" id="L213">		brdb.setLongCompanyName (astrFODATA[64]);</span>
+<span class="nc" id="L214">		brdb.setLongCompanyName (astrFODATA[64]);</span>
 
-<span class="nc" id="L215">		brdb.setRedemptionCurrency (astrFODATA[66]);</span>
+<span class="nc" id="L216">		brdb.setRedemptionCurrency (astrFODATA[66]);</span>
 
-<span class="nc" id="L217">		brdb.setCouponCurrency (astrFODATA[67]);</span>
+<span class="nc" id="L218">		brdb.setCouponCurrency (astrFODATA[67]);</span>
 
-<span class="nc" id="L219">		brdb.setIsStructuredNote (astrFODATA[68]);</span>
+<span class="nc" id="L220">		brdb.setIsStructuredNote (astrFODATA[68]);</span>
 
-<span class="nc" id="L221">		brdb.setIsUnitTraded (astrFODATA[69]);</span>
+<span class="nc" id="L222">		brdb.setIsUnitTraded (astrFODATA[69]);</span>
 
-<span class="nc" id="L223">		brdb.setIsReversibleConvertible (astrFODATA[70]);</span>
+<span class="nc" id="L224">		brdb.setIsReversibleConvertible (astrFODATA[70]);</span>
 
-<span class="nc" id="L225">		brdb.setTradeCurrency (astrFODATA[71]);</span>
+<span class="nc" id="L226">		brdb.setTradeCurrency (astrFODATA[71]);</span>
 
-<span class="nc" id="L227">		brdb.setIsBearer (astrFODATA[72]);</span>
+<span class="nc" id="L228">		brdb.setIsBearer (astrFODATA[72]);</span>
 
-<span class="nc" id="L229">		brdb.setIsRegistered (astrFODATA[73]);</span>
+<span class="nc" id="L230">		brdb.setIsRegistered (astrFODATA[73]);</span>
 
-<span class="nc" id="L231">		brdb.setHasBeenCalled (astrFODATA[74]);</span>
+<span class="nc" id="L232">		brdb.setHasBeenCalled (astrFODATA[74]);</span>
 
-<span class="nc" id="L233">		brdb.setIssuer (astrFODATA[75]);</span>
+<span class="nc" id="L234">		brdb.setIssuer (astrFODATA[75]);</span>
 
-<span class="nc" id="L235">		brdb.setPenultimateCouponDate (astrFODATA[76]);</span>
+<span class="nc" id="L236">		brdb.setPenultimateCouponDate (astrFODATA[76]);</span>
 
-<span class="nc" id="L237">		brdb.setFloatCouponConvention (astrFODATA[77]);</span>
+<span class="nc" id="L238">		brdb.setFloatCouponConvention (astrFODATA[77]);</span>
 
-<span class="nc" id="L239">		brdb.setCurrentCoupon (astrFODATA[78]);</span>
+<span class="nc" id="L240">		brdb.setCurrentCoupon (astrFODATA[78]);</span>
 
-<span class="nc" id="L241">		brdb.setIsFloater (astrFODATA[79]);</span>
+<span class="nc" id="L242">		brdb.setIsFloater (astrFODATA[79]);</span>
 
-<span class="nc" id="L243">		brdb.setTradeStatus (astrFODATA[80]);</span>
+<span class="nc" id="L244">		brdb.setTradeStatus (astrFODATA[80]);</span>
 
-<span class="nc" id="L245">		brdb.setCDRCountryCode (astrFODATA[81]);</span>
+<span class="nc" id="L246">		brdb.setCDRCountryCode (astrFODATA[81]);</span>
 
-<span class="nc" id="L247">		brdb.setCDRSettleCode (astrFODATA[82]);</span>
+<span class="nc" id="L248">		brdb.setCDRSettleCode (astrFODATA[82]);</span>
 
-<span class="nc" id="L249">		brdb.setFinalMaturity (astrFODATA[83]);</span>
+<span class="nc" id="L250">		brdb.setFinalMaturity (astrFODATA[83]);</span>
 
-<span class="nc" id="L251">		brdb.setIsPrivatePlacement (astrFODATA[85]);</span>
+<span class="nc" id="L252">		brdb.setIsPrivatePlacement (astrFODATA[85]);</span>
 
-<span class="nc" id="L253">		brdb.setIsPerpetual (astrFODATA[86]);</span>
+<span class="nc" id="L254">		brdb.setIsPerpetual (astrFODATA[86]);</span>
 
-<span class="nc" id="L255">		brdb.setIsDefaulted (astrFODATA[87]);</span>
+<span class="nc" id="L256">		brdb.setIsDefaulted (astrFODATA[87]);</span>
 
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (!brdb.validate()) return null;</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (!brdb.validate()) return null;</span>
 
-<span class="nc" id="L259">		return brdb;</span>
+<span class="nc" id="L260">		return brdb;</span>
 	}
 
 	private static final org.drip.product.creator.BondProductBuilder MakeBPB (
 		final java.lang.String[] astrFODATA,
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 	{
-<span class="nc bnc" id="L266" title="All 6 branches missed.">		if (null == astrFODATA || 88 != astrFODATA.length || null == mpc) return null;</span>
+<span class="nc bnc" id="L267" title="All 6 branches missed.">		if (null == astrFODATA || 88 != astrFODATA.length || null == mpc) return null;</span>
 
-<span class="nc" id="L268">		org.drip.product.creator.BondProductBuilder bpb = new org.drip.product.creator.BondProductBuilder();</span>
+<span class="nc" id="L269">		org.drip.product.creator.BondProductBuilder bpb = new org.drip.product.creator.BondProductBuilder();</span>
 
-<span class="nc bnc" id="L270" title="All 2 branches missed.">		if (!bpb.setISIN (astrFODATA[40])) {</span>
-<span class="nc" id="L271">			System.out.println (&quot;Bad ISIN &quot; + astrFODATA[40]);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (!bpb.setISIN (astrFODATA[40])) {</span>
+<span class="nc" id="L272">			System.out.println (&quot;Bad ISIN &quot; + astrFODATA[40]);</span>
 
-<span class="nc" id="L273">			return null;</span>
+<span class="nc" id="L274">			return null;</span>
 		}
 
-<span class="nc bnc" id="L276" title="All 2 branches missed.">		if (!bpb.setCUSIP (astrFODATA[42])) {</span>
-<span class="nc" id="L277">			System.out.println (&quot;Bad CUSIP &quot; + astrFODATA[42]);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (!bpb.setCUSIP (astrFODATA[42])) {</span>
+<span class="nc" id="L278">			System.out.println (&quot;Bad CUSIP &quot; + astrFODATA[42]);</span>
 
-<span class="nc" id="L279">			return null;</span>
+<span class="nc" id="L280">			return null;</span>
 		}
 
-<span class="nc" id="L282">		bpb.setTicker (astrFODATA[3]);</span>
+<span class="nc" id="L283">		bpb.setTicker (astrFODATA[3]);</span>
 
-<span class="nc" id="L284">		bpb.setCoupon (astrFODATA[4]);</span>
+<span class="nc" id="L285">		bpb.setCoupon (astrFODATA[4]);</span>
 
-<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (!bpb.setMaturity (astrFODATA[5])) {</span>
-<span class="nc" id="L287">			System.out.println (&quot;Bad Maturity &quot; + astrFODATA[5]);</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		if (!bpb.setMaturity (astrFODATA[5])) {</span>
+<span class="nc" id="L288">			System.out.println (&quot;Bad Maturity &quot; + astrFODATA[5]);</span>
 
-<span class="nc" id="L289">			return null;</span>
+<span class="nc" id="L290">			return null;</span>
 		}
 
-<span class="nc bnc" id="L292" title="All 2 branches missed.">		if (!bpb.setCouponFreq (astrFODATA[12])) {</span>
-<span class="nc" id="L293">			System.out.println (&quot;Bad Cpn Freq &quot; + astrFODATA[12]);</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">		if (!bpb.setCouponFreq (astrFODATA[12])) {</span>
+<span class="nc" id="L294">			System.out.println (&quot;Bad Cpn Freq &quot; + astrFODATA[12]);</span>
 
-<span class="nc" id="L295">			return null;</span>
+<span class="nc" id="L296">			return null;</span>
 		}
 
-<span class="nc" id="L298">		bpb.setCouponType (astrFODATA[13]);</span>
+<span class="nc" id="L299">		bpb.setCouponType (astrFODATA[13]);</span>
 
-<span class="nc" id="L300">		bpb.setMaturityType (astrFODATA[14]);</span>
+<span class="nc" id="L301">		bpb.setMaturityType (astrFODATA[14]);</span>
 
-<span class="nc" id="L302">		bpb.setCalculationType (astrFODATA[15]);</span>
+<span class="nc" id="L303">		bpb.setCalculationType (astrFODATA[15]);</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (!bpb.setDayCountCode (astrFODATA[16])) {</span>
-<span class="nc" id="L305">			System.out.println (&quot;Bad Day Count &quot; + astrFODATA[40]);</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (!bpb.setDayCountCode (astrFODATA[16])) {</span>
+<span class="nc" id="L306">			System.out.println (&quot;Bad Day Count &quot; + astrFODATA[40]);</span>
 
-<span class="nc" id="L307">			return null;</span>
+<span class="nc" id="L308">			return null;</span>
 		}
 
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (!bpb.setRedemptionValue (astrFODATA[28])) {</span>
-<span class="nc" id="L311">			System.out.println (&quot;Bad Redemp Value &quot; + astrFODATA[40]);</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		if (!bpb.setRedemptionValue (astrFODATA[28])) {</span>
+<span class="nc" id="L312">			System.out.println (&quot;Bad Redemp Value &quot; + astrFODATA[40]);</span>
 
-<span class="nc" id="L313">			return null;</span>
+<span class="nc" id="L314">			return null;</span>
 		}
 
-<span class="nc" id="L316">		bpb.setAnnounce (astrFODATA[29]);</span>
+<span class="nc" id="L317">		bpb.setAnnounce (astrFODATA[29]);</span>
 
-<span class="nc" id="L318">		bpb.setFirstSettle (astrFODATA[31]);</span>
+<span class="nc" id="L319">		bpb.setFirstSettle (astrFODATA[31]);</span>
 
-<span class="nc" id="L320">		bpb.setFirstCoupon (astrFODATA[33]);</span>
+<span class="nc" id="L321">		bpb.setFirstCoupon (astrFODATA[33]);</span>
 
-<span class="nc" id="L322">		bpb.setInterestAccrualStart (astrFODATA[35]);</span>
+<span class="nc" id="L323">		bpb.setInterestAccrualStart (astrFODATA[35]);</span>
 
-<span class="nc" id="L324">		bpb.setIssue (astrFODATA[37]);</span>
+<span class="nc" id="L325">		bpb.setIssue (astrFODATA[37]);</span>
 
-<span class="nc" id="L326">		bpb.setIsCallable (astrFODATA[45]);</span>
+<span class="nc" id="L327">		bpb.setIsCallable (astrFODATA[45]);</span>
 
-<span class="nc" id="L328">		bpb.setIsSinkable (astrFODATA[46]);</span>
+<span class="nc" id="L329">		bpb.setIsSinkable (astrFODATA[46]);</span>
 
-<span class="nc" id="L330">		bpb.setIsPutable (astrFODATA[47]);</span>
+<span class="nc" id="L331">		bpb.setIsPutable (astrFODATA[47]);</span>
 
-<span class="nc bnc" id="L332" title="All 2 branches missed.">		if (!bpb.setRedemptionCurrency (astrFODATA[66])) {</span>
-<span class="nc" id="L333">			System.out.println (&quot;Bad Redemp Ccy &quot; + astrFODATA[66]);</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">		if (!bpb.setRedemptionCurrency (astrFODATA[66])) {</span>
+<span class="nc" id="L334">			System.out.println (&quot;Bad Redemp Ccy &quot; + astrFODATA[66]);</span>
 
-<span class="nc" id="L335">			return null;</span>
+<span class="nc" id="L336">			return null;</span>
 		}
 
-<span class="nc bnc" id="L338" title="All 2 branches missed.">		if (!bpb.setCouponCurrency (astrFODATA[67])) {</span>
-<span class="nc" id="L339">			System.out.println (&quot;Bad Cpn Ccy &quot; + astrFODATA[40]);</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">		if (!bpb.setCouponCurrency (astrFODATA[67])) {</span>
+<span class="nc" id="L340">			System.out.println (&quot;Bad Cpn Ccy &quot; + astrFODATA[40]);</span>
 
-<span class="nc" id="L341">			return null;</span>
+<span class="nc" id="L342">			return null;</span>
 		}
 
-<span class="nc bnc" id="L344" title="All 2 branches missed.">		if (!bpb.setTradeCurrency (astrFODATA[71])) {</span>
-<span class="nc" id="L345">			System.out.println (&quot;Bad Trade ccy &quot; + astrFODATA[40]);</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">		if (!bpb.setTradeCurrency (astrFODATA[71])) {</span>
+<span class="nc" id="L346">			System.out.println (&quot;Bad Trade ccy &quot; + astrFODATA[40]);</span>
 
-<span class="nc" id="L347">			return null;</span>
+<span class="nc" id="L348">			return null;</span>
 		}
 
-<span class="nc" id="L350">		bpb.setHasBeenCalled (astrFODATA[74]);</span>
+<span class="nc" id="L351">		bpb.setHasBeenCalled (astrFODATA[74]);</span>
 
-<span class="nc" id="L352">		bpb.setFloatCouponConvention (astrFODATA[77]);</span>
+<span class="nc" id="L353">		bpb.setFloatCouponConvention (astrFODATA[77]);</span>
 
-<span class="nc" id="L354">		bpb.setCurrentCoupon (astrFODATA[78]);</span>
+<span class="nc" id="L355">		bpb.setCurrentCoupon (astrFODATA[78]);</span>
 
-<span class="nc" id="L356">		bpb.setIsFloater (astrFODATA[79]);</span>
+<span class="nc" id="L357">		bpb.setIsFloater (astrFODATA[79]);</span>
 
-<span class="nc" id="L358">		bpb.setFinalMaturity (astrFODATA[83]);</span>
+<span class="nc" id="L359">		bpb.setFinalMaturity (astrFODATA[83]);</span>
 
-<span class="nc" id="L360">		bpb.setIsPerpetual (astrFODATA[86]);</span>
+<span class="nc" id="L361">		bpb.setIsPerpetual (astrFODATA[86]);</span>
 
-<span class="nc" id="L362">		bpb.setIsDefaulted (astrFODATA[87]);</span>
+<span class="nc" id="L363">		bpb.setIsDefaulted (astrFODATA[87]);</span>
 
-<span class="nc bnc" id="L364" title="All 2 branches missed.">		if (!bpb.validate (mpc)) return null;</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">		if (!bpb.validate (mpc)) return null;</span>
 
-<span class="nc" id="L366">		return bpb;</span>
+<span class="nc" id="L367">		return bpb;</span>
 	}
 
 	public static final void UploadBondFromFODATA (
@@ -372,71 +373,71 @@ package org.drip.feed.loader;
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L375">		int iNumBonds = 0;</span>
-<span class="nc" id="L376">		int iNumFloaters = 0;</span>
-<span class="nc" id="L377">		int iNumFailedToLoad = 0;</span>
-<span class="nc" id="L378">		java.lang.String strBondFODATALine = &quot;&quot;;</span>
+<span class="nc" id="L376">		int iNumBonds = 0;</span>
+<span class="nc" id="L377">		int iNumFloaters = 0;</span>
+<span class="nc" id="L378">		int iNumFailedToLoad = 0;</span>
+<span class="nc" id="L379">		java.lang.String strBondFODATALine = &quot;&quot;;</span>
 
-<span class="nc" id="L380">		java.io.BufferedReader inBondFODATA = new java.io.BufferedReader (new java.io.FileReader</span>
+<span class="nc" id="L381">		java.io.BufferedReader inBondFODATA = new java.io.BufferedReader (new java.io.FileReader</span>
 			(strFODATAFile));
 
-<span class="nc bnc" id="L383" title="All 2 branches missed.">		while (null != (strBondFODATALine = inBondFODATA.readLine())) {</span>
-<span class="nc" id="L384">			++iNumBonds;</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		while (null != (strBondFODATALine = inBondFODATA.readLine())) {</span>
+<span class="nc" id="L385">			++iNumBonds;</span>
 
-<span class="nc" id="L386">			java.lang.String[] astrBondFODATARecord = strBondFODATALine.split (&quot;,&quot;);</span>
+<span class="nc" id="L387">			java.lang.String[] astrBondFODATARecord = strBondFODATALine.split (&quot;,&quot;);</span>
 
-<span class="nc" id="L388">			org.drip.product.creator.BondRefDataBuilder brdb = MakeBRDB (astrBondFODATARecord);</span>
+<span class="nc" id="L389">			org.drip.product.creator.BondRefDataBuilder brdb = MakeBRDB (astrBondFODATARecord);</span>
 
-<span class="nc bnc" id="L390" title="All 2 branches missed.">			if (null != brdb) {</span>
-<span class="nc" id="L391">				System.out.println (&quot;Doing #&quot; + iNumBonds + &quot;: &quot; + brdb._strCUSIP);</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">			if (null != brdb) {</span>
+<span class="nc" id="L392">				System.out.println (&quot;Doing #&quot; + iNumBonds + &quot;: &quot; + brdb._strCUSIP);</span>
 
-<span class="nc" id="L393">				java.lang.String strSQLBRDBDelete = brdb.makeSQLDelete();</span>
+<span class="nc" id="L394">				java.lang.String strSQLBRDBDelete = brdb.makeSQLDelete();</span>
 
-<span class="nc bnc" id="L395" title="All 2 branches missed.">				if (null != strSQLBRDBDelete) {</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">				if (null != strSQLBRDBDelete) {</span>
 					if (m_bBlog) System.out.println (strSQLBRDBDelete);
 
-<span class="nc" id="L398">					if (m_bDBExec) stmt.executeUpdate (strSQLBRDBDelete);</span>
+<span class="nc" id="L399">					if (m_bDBExec) stmt.executeUpdate (strSQLBRDBDelete);</span>
 				}
 
-<span class="nc" id="L401">				java.lang.String strSQLBRDBInsert = brdb.makeSQLInsert();</span>
+<span class="nc" id="L402">				java.lang.String strSQLBRDBInsert = brdb.makeSQLInsert();</span>
 
-<span class="nc bnc" id="L403" title="All 2 branches missed.">				if (null != strSQLBRDBInsert) {</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">				if (null != strSQLBRDBInsert) {</span>
 					if (m_bBlog) System.out.println (strSQLBRDBInsert);
 
-<span class="nc" id="L406">					if (m_bDBExec) stmt.executeUpdate (strSQLBRDBInsert);</span>
+<span class="nc" id="L407">					if (m_bDBExec) stmt.executeUpdate (strSQLBRDBInsert);</span>
 				}
 			}
 
-<span class="nc" id="L410">			org.drip.product.creator.BondProductBuilder bpb = MakeBPB (astrBondFODATARecord, mpc);</span>
+<span class="nc" id="L411">			org.drip.product.creator.BondProductBuilder bpb = MakeBPB (astrBondFODATARecord, mpc);</span>
 
-<span class="nc bnc" id="L412" title="All 2 branches missed.">			if (null != bpb) {</span>
-<span class="nc bnc" id="L413" title="All 2 branches missed.">				if (null != bpb.getFloaterParams()) ++iNumFloaters;</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">			if (null != bpb) {</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">				if (null != bpb.getFloaterParams()) ++iNumFloaters;</span>
 
-<span class="nc" id="L415">				java.lang.String strSQLBPBDelete = bpb.makeSQLDelete();</span>
+<span class="nc" id="L416">				java.lang.String strSQLBPBDelete = bpb.makeSQLDelete();</span>
 
-<span class="nc bnc" id="L417" title="All 2 branches missed.">				if (null != strSQLBPBDelete) {</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">				if (null != strSQLBPBDelete) {</span>
 					if (m_bBlog) System.out.println (strSQLBPBDelete);
 
-<span class="nc" id="L420">					if (m_bDBExec) stmt.executeUpdate (strSQLBPBDelete);</span>
+<span class="nc" id="L421">					if (m_bDBExec) stmt.executeUpdate (strSQLBPBDelete);</span>
 				}
 
-<span class="nc" id="L423">				java.lang.String strSQLBPBInsert = bpb.makeSQLInsert();</span>
+<span class="nc" id="L424">				java.lang.String strSQLBPBInsert = bpb.makeSQLInsert();</span>
 
-<span class="nc bnc" id="L425" title="All 2 branches missed.">				if (null != strSQLBPBInsert) {</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">				if (null != strSQLBPBInsert) {</span>
 					if (m_bBlog) System.out.println (strSQLBPBInsert);
 
-<span class="nc" id="L428">					if (m_bDBExec) stmt.executeUpdate (strSQLBPBInsert);</span>
+<span class="nc" id="L429">					if (m_bDBExec) stmt.executeUpdate (strSQLBPBInsert);</span>
 				}
 			}
 
-<span class="nc bnc" id="L432" title="All 4 branches missed.">			if (null == brdb || null == bpb) ++iNumFailedToLoad;</span>
-<span class="nc" id="L433">		}</span>
+<span class="nc bnc" id="L433" title="All 4 branches missed.">			if (null == brdb || null == bpb) ++iNumFailedToLoad;</span>
+<span class="nc" id="L434">		}</span>
 
-<span class="nc" id="L435">		inBondFODATA.close();</span>
+<span class="nc" id="L436">		inBondFODATA.close();</span>
 
-<span class="nc" id="L437">		System.out.println (iNumFailedToLoad + &quot; out of &quot; + iNumBonds + &quot; failed to load&quot;);</span>
+<span class="nc" id="L438">		System.out.println (iNumFailedToLoad + &quot; out of &quot; + iNumBonds + &quot; failed to load&quot;);</span>
 
-<span class="nc" id="L439">		System.out.println (&quot;There were &quot; + iNumFloaters + &quot; floaters!&quot;);</span>
-<span class="nc" id="L440">	}</span>
+<span class="nc" id="L440">		System.out.println (&quot;There were &quot; + iNumFloaters + &quot; floaters!&quot;);</span>
+<span class="nc" id="L441">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -12,12 +12,12 @@ package org.drip.feed.loader;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.feed.loader;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,16 +74,16 @@ package org.drip.feed.loader;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TenorQuote {
-<span class="nc" id="L84">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="nc" id="L85">	private double _dblQuote = java.lang.Double.NaN;</span>
+<span class="nc" id="L85">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="nc" id="L86">	private double _dblQuote = java.lang.Double.NaN;</span>
 
 	/**
 	 * TenorQuote Constructor
@@ -97,11 +98,11 @@ public class TenorQuote {
 		final java.lang.String strTenor,
 		final double dblQuote)
 		throws java.lang.Exception
-<span class="nc" id="L100">	{</span>
-<span class="nc bnc" id="L101" title="All 4 branches missed.">		if (null == (_strTenor = strTenor) || _strTenor.isEmpty() ||</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblQuote = dblQuote))</span>
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;TenorQuote Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L104">	}</span>
+<span class="nc" id="L101">	{</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">		if (null == (_strTenor = strTenor) || _strTenor.isEmpty() ||</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblQuote = dblQuote))</span>
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;TenorQuote Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L105">	}</span>
 
 	/**
 	 * Retrieve the Closing Tenor
@@ -111,7 +112,7 @@ public class TenorQuote {
 
 	public java.lang.String tenor()
 	{
-<span class="nc" id="L114">		return _strTenor;</span>
+<span class="nc" id="L115">		return _strTenor;</span>
 	}
 
 	/**
@@ -122,12 +123,12 @@ public class TenorQuote {
 
 	public double quote()
 	{
-<span class="nc" id="L125">		return _dblQuote;</span>
+<span class="nc" id="L126">		return _dblQuote;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L130">		return _strTenor + &quot;=&quot; + _dblQuote;</span>
+<span class="nc" id="L131">		return _strTenor + &quot;=&quot; + _dblQuote;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

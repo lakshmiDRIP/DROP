@@ -73,9 +73,10 @@ package org.drip.state.nonlinear;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non Linear&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non-Linear&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +84,8 @@ package org.drip.state.nonlinear;
  */
 
 public class FlatForwardVolatilityCurve extends org.drip.state.volatility.ExplicitBootVolatilityCurve {
-<span class="fc" id="L86">	private int[] _aiPillarDate = null;</span>
-<span class="fc" id="L87">	private double[] _adblImpliedVolatility = null;</span>
+<span class="fc" id="L87">	private int[] _aiPillarDate = null;</span>
+<span class="fc" id="L88">	private double[] _adblImpliedVolatility = null;</span>
 
 	/**
 	 * FlatForwardVolatilityCurve Constructor
@@ -106,46 +107,46 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 		final double[] adblImpliedVolatility)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L109">		super (iEpochDate, label, strCurrency);</span>
+<span class="fc" id="L110">		super (iEpochDate, label, strCurrency);</span>
 
-<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblImpliedVolatility =</span>
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblImpliedVolatility =</span>
 			adblImpliedVolatility))
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L115">		int iNumPillar = _aiPillarDate.length;</span>
+<span class="fc" id="L116">		int iNumPillar = _aiPillarDate.length;</span>
 
-<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (0 == iNumPillar || iNumPillar != _adblImpliedVolatility.length)</span>
-<span class="nc" id="L118">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L119">	}</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (0 == iNumPillar || iNumPillar != _adblImpliedVolatility.length)</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L120">	}</span>
 
 	@Override public double impliedVol (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (iDate &lt;= _aiPillarDate[0]) return _adblImpliedVolatility[0];</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (iDate &lt;= _aiPillarDate[0]) return _adblImpliedVolatility[0];</span>
 
-<span class="fc" id="L127">		int iNumPillar = _adblImpliedVolatility.length;</span>
+<span class="fc" id="L128">		int iNumPillar = _adblImpliedVolatility.length;</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
-<span class="pc bpc" id="L130" title="1 of 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt;= iDate)</span>
-<span class="fc" id="L131">				return _adblImpliedVolatility[i];</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
+<span class="pc bpc" id="L131" title="1 of 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt;= iDate)</span>
+<span class="fc" id="L132">				return _adblImpliedVolatility[i];</span>
 		}
 
-<span class="fc" id="L134">		return _adblImpliedVolatility[iNumPillar - 1];</span>
+<span class="fc" id="L135">		return _adblImpliedVolatility[iNumPillar - 1];</span>
 	}
 
 	@Override public double node (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L141">		return 0.;</span>
+<span class="nc" id="L142">		return 0.;</span>
 	}
 
 	@Override public double vol (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L148">		return node (iDate);</span>
+<span class="nc" id="L149">		return node (iDate);</span>
 	}
 
 	@Override public double nodeDerivative (
@@ -153,55 +154,55 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L156">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L157">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L161">				return node ((int) dblX);</span>
+<span class="nc" id="L162">				return node ((int) dblX);</span>
 			}
 		};
 
-<span class="nc" id="L165">		return au.derivative (iDate, iOrder);</span>
+<span class="nc" id="L166">		return au.derivative (iDate, iOrder);</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
+<span class="pc bpc" id="L173" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
 			_adblImpliedVolatility.length)
-<span class="nc" id="L174">			return false;</span>
+<span class="nc" id="L175">			return false;</span>
 
-<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
-<span class="fc" id="L177">			_adblImpliedVolatility[i] = dblValue;</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
+<span class="fc" id="L178">			_adblImpliedVolatility[i] = dblValue;</span>
 
-<span class="fc" id="L179">		return true;</span>
+<span class="fc" id="L180">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L186" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
+<span class="nc bnc" id="L187" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
 			_adblImpliedVolatility.length)
-<span class="nc" id="L188">			return false;</span>
+<span class="nc" id="L189">			return false;</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
-<span class="nc" id="L191">			_adblImpliedVolatility[i] += dblValue;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
+<span class="nc" id="L192">			_adblImpliedVolatility[i] += dblValue;</span>
 
-<span class="nc" id="L193">		return true;</span>
+<span class="nc" id="L194">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblImpliedVolatility.length; ++i)</span>
-<span class="nc" id="L202">			_adblImpliedVolatility[i] = dblValue;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblImpliedVolatility.length; ++i)</span>
+<span class="nc" id="L203">			_adblImpliedVolatility[i] = dblValue;</span>
 
-<span class="nc" id="L204">		return true;</span>
+<span class="nc" id="L205">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

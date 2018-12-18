@@ -81,16 +81,17 @@ package org.drip.spaces.rxtord;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L93">public abstract class NormedRxToNormedRd {</span>
+<span class="nc" id="L94">public abstract class NormedRxToNormedRd {</span>
 
 	/**
 	 * Retrieve the Input Metric Vector Space
@@ -143,23 +144,23 @@ package org.drip.spaces.rxtord;
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
-<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
 
-<span class="nc" id="L148">		double[] adblSampleMetricNorm = sampleMetricNorm (gvvi);</span>
+<span class="nc" id="L149">		double[] adblSampleMetricNorm = sampleMetricNorm (gvvi);</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (null == adblSampleMetricNorm) return null;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == adblSampleMetricNorm) return null;</span>
 
-<span class="nc" id="L152">		int iOutputDimensionality = adblSampleMetricNorm.length;</span>
-<span class="nc" id="L153">		double[] adblSampleCoveringNumber = new double[iOutputDimensionality];</span>
+<span class="nc" id="L153">		int iOutputDimensionality = adblSampleMetricNorm.length;</span>
+<span class="nc" id="L154">		double[] adblSampleCoveringNumber = new double[iOutputDimensionality];</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
 
-<span class="nc" id="L157">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+<span class="nc" id="L158">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
-<span class="nc" id="L160">			adblSampleCoveringNumber[i] = adblSampleMetricNorm[i] / dblCoverBallVolume;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L161">			adblSampleCoveringNumber[i] = adblSampleMetricNorm[i] / dblCoverBallVolume;</span>
 
-<span class="nc" id="L162">		return adblSampleCoveringNumber;</span>
+<span class="nc" id="L163">		return adblSampleCoveringNumber;</span>
 	}
 
 	/**
@@ -175,23 +176,23 @@ package org.drip.spaces.rxtord;
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
-<span class="nc bnc" id="L178" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
 
-<span class="nc" id="L180">		double[] adblSampleSupremumNorm = sampleSupremumNorm (gvvi);</span>
+<span class="nc" id="L181">		double[] adblSampleSupremumNorm = sampleSupremumNorm (gvvi);</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == adblSampleSupremumNorm) return null;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == adblSampleSupremumNorm) return null;</span>
 
-<span class="nc" id="L184">		int iOutputDimensionality = adblSampleSupremumNorm.length;</span>
-<span class="nc" id="L185">		double[] adblSampleSupremumCoveringNumber = new double[iOutputDimensionality];</span>
+<span class="nc" id="L185">		int iOutputDimensionality = adblSampleSupremumNorm.length;</span>
+<span class="nc" id="L186">		double[] adblSampleSupremumCoveringNumber = new double[iOutputDimensionality];</span>
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
 
-<span class="nc" id="L189">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+<span class="nc" id="L190">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
-<span class="nc" id="L192">			adblSampleSupremumCoveringNumber[i] = adblSampleSupremumNorm[i] / dblCoverBallVolume;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L193">			adblSampleSupremumCoveringNumber[i] = adblSampleSupremumNorm[i] / dblCoverBallVolume;</span>
 
-<span class="nc" id="L194">		return adblSampleSupremumCoveringNumber;</span>
+<span class="nc" id="L195">		return adblSampleSupremumCoveringNumber;</span>
 	}
 
 	/**
@@ -218,7 +219,7 @@ package org.drip.spaces.rxtord;
 
 	public double[] populationSupremumNorm()
 	{
-<span class="nc" id="L221">		return populationMetricNorm();</span>
+<span class="nc" id="L222">		return populationMetricNorm();</span>
 	}
 
 	/**
@@ -232,23 +233,23 @@ package org.drip.spaces.rxtord;
 	public double[] populationCoveringNumber (
 		final double dblCover)
 	{
-<span class="nc bnc" id="L235" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+<span class="nc bnc" id="L236" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
 
-<span class="nc" id="L237">		double[] adblPopulationMetricNorm = populationMetricNorm();</span>
+<span class="nc" id="L238">		double[] adblPopulationMetricNorm = populationMetricNorm();</span>
 
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (null == adblPopulationMetricNorm) return null;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (null == adblPopulationMetricNorm) return null;</span>
 
-<span class="nc" id="L241">		int iOutputDimensionality = adblPopulationMetricNorm.length;</span>
-<span class="nc" id="L242">		double[] adblPopulationCoveringNumber = new double[iOutputDimensionality];</span>
+<span class="nc" id="L242">		int iOutputDimensionality = adblPopulationMetricNorm.length;</span>
+<span class="nc" id="L243">		double[] adblPopulationCoveringNumber = new double[iOutputDimensionality];</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
 
-<span class="nc" id="L246">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+<span class="nc" id="L247">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
 
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
-<span class="nc" id="L249">			adblPopulationCoveringNumber[i] = adblPopulationMetricNorm[i] / dblCoverBallVolume;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L250">			adblPopulationCoveringNumber[i] = adblPopulationMetricNorm[i] / dblCoverBallVolume;</span>
 
-<span class="nc" id="L251">		return adblPopulationCoveringNumber;</span>
+<span class="nc" id="L252">		return adblPopulationCoveringNumber;</span>
 	}
 
 	/**
@@ -262,23 +263,23 @@ package org.drip.spaces.rxtord;
 	public double[] populationSupremumCoveringNumber (
 		final double dblCover)
 	{
-<span class="nc bnc" id="L265" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
+<span class="nc bnc" id="L266" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. &gt;= dblCover) return null;</span>
 
-<span class="nc" id="L267">		double[] adblPopulationSupremumNorm = populationSupremumNorm();</span>
+<span class="nc" id="L268">		double[] adblPopulationSupremumNorm = populationSupremumNorm();</span>
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (null == adblPopulationSupremumNorm) return null;</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		if (null == adblPopulationSupremumNorm) return null;</span>
 
-<span class="nc" id="L271">		int iOutputDimensionality = adblPopulationSupremumNorm.length;</span>
-<span class="nc" id="L272">		double[] adblPopulationSupremumCoveringNumber = new double[iOutputDimensionality];</span>
+<span class="nc" id="L272">		int iOutputDimensionality = adblPopulationSupremumNorm.length;</span>
+<span class="nc" id="L273">		double[] adblPopulationSupremumCoveringNumber = new double[iOutputDimensionality];</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (0 == iOutputDimensionality) return null;</span>
 
-<span class="nc" id="L276">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
+<span class="nc" id="L277">		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());</span>
 
-<span class="nc bnc" id="L278" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
-<span class="nc" id="L279">			adblPopulationSupremumCoveringNumber[i] = adblPopulationSupremumNorm[i] / dblCoverBallVolume;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimensionality; ++i)</span>
+<span class="nc" id="L280">			adblPopulationSupremumCoveringNumber[i] = adblPopulationSupremumNorm[i] / dblCoverBallVolume;</span>
 
-<span class="nc" id="L281">		return adblPopulationSupremumCoveringNumber;</span>
+<span class="nc" id="L282">		return adblPopulationSupremumCoveringNumber;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

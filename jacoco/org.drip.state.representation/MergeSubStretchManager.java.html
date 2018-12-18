@@ -75,9 +75,10 @@ package org.drip.state.representation;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation&quot;&gt;Representation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation&quot;&gt;Representation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,16 +86,16 @@ package org.drip.state.representation;
  */
 
 public class MergeSubStretchManager {
-<span class="fc" id="L88">	private java.util.List&lt;org.drip.state.representation.LatentStateMergeSubStretch&gt; _lsLSMS = null;</span>
+<span class="fc" id="L89">	private java.util.List&lt;org.drip.state.representation.LatentStateMergeSubStretch&gt; _lsLSMS = null;</span>
 
 	/**
 	 * Empty MergeSubStretchManager constructor
 	 */
 
 	public MergeSubStretchManager()
-<span class="fc" id="L95">	{</span>
-<span class="fc" id="L96">		_lsLSMS = new java.util.ArrayList&lt;org.drip.state.representation.LatentStateMergeSubStretch&gt;();</span>
-<span class="fc" id="L97">	}</span>
+<span class="fc" id="L96">	{</span>
+<span class="fc" id="L97">		_lsLSMS = new java.util.ArrayList&lt;org.drip.state.representation.LatentStateMergeSubStretch&gt;();</span>
+<span class="fc" id="L98">	}</span>
 
 	/**
 	 * Indicates whether the specified Latent State Label is Part of the Merge Stretch
@@ -109,14 +110,14 @@ public class MergeSubStretchManager {
 		final double dblDate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc bnc" id="L112" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate) || null == lsl || null == _lsLSMS)</span>
-<span class="nc" id="L113">			return false;</span>
+<span class="nc bnc" id="L113" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate) || null == lsl || null == _lsLSMS)</span>
+<span class="nc" id="L114">			return false;</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateMergeSubStretch lsms : _lsLSMS) {</span>
-<span class="nc bnc" id="L116" title="All 6 branches missed.">			if (null != lsms &amp;&amp; lsms.in (dblDate) &amp;&amp; lsms.label().match (lsl)) return true;</span>
-<span class="nc" id="L117">		}</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (org.drip.state.representation.LatentStateMergeSubStretch lsms : _lsLSMS) {</span>
+<span class="nc bnc" id="L117" title="All 6 branches missed.">			if (null != lsms &amp;&amp; lsms.in (dblDate) &amp;&amp; lsms.label().match (lsl)) return true;</span>
+<span class="nc" id="L118">		}</span>
 
-<span class="nc" id="L119">		return false;</span>
+<span class="nc" id="L120">		return false;</span>
 	}
 
 	/**
@@ -130,26 +131,26 @@ public class MergeSubStretchManager {
 	public boolean addMergeStretch (
 		final org.drip.state.representation.LatentStateMergeSubStretch lsms)
 	{
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (null == lsms) return false;</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == lsms) return false;</span>
 
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (org.drip.state.representation.LatentStateMergeSubStretch lsmsConstituent : _lsLSMS) {</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			if (null == lsmsConstituent) continue;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (org.drip.state.representation.LatentStateMergeSubStretch lsmsConstituent : _lsLSMS) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			if (null == lsmsConstituent) continue;</span>
 
-<span class="fc" id="L138">			org.drip.state.representation.LatentStateMergeSubStretch lsmsCoalesced = lsmsConstituent.coalesce</span>
-<span class="fc" id="L139">				(lsms);</span>
+<span class="fc" id="L139">			org.drip.state.representation.LatentStateMergeSubStretch lsmsCoalesced = lsmsConstituent.coalesce</span>
+<span class="fc" id="L140">				(lsms);</span>
 
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			if (null == lsmsCoalesced) continue;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (null == lsmsCoalesced) continue;</span>
 
-<span class="nc" id="L143">			_lsLSMS.remove (lsmsConstituent);</span>
+<span class="nc" id="L144">			_lsLSMS.remove (lsmsConstituent);</span>
 
-<span class="nc" id="L145">			_lsLSMS.add (lsmsCoalesced);</span>
+<span class="nc" id="L146">			_lsLSMS.add (lsmsCoalesced);</span>
 
-<span class="nc" id="L147">			return true;</span>
+<span class="nc" id="L148">			return true;</span>
 		}
 
-<span class="fc" id="L150">		_lsLSMS.add (lsms);</span>
+<span class="fc" id="L151">		_lsLSMS.add (lsms);</span>
 
-<span class="fc" id="L152">		return true;</span>
+<span class="fc" id="L153">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

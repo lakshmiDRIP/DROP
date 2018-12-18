@@ -16,33 +16,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -59,52 +78,78 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * ContinuousTrajectoryLinearImpact reconciles the Characteristic Times of the Optimal Continuous Trading
- *  Trajectory resulting from the Application of the Almgren (2003) Scheme to a Linear Power Law Temporary
- *  Market Impact Function. The Power Exponent Considered here is k=1.0. The References are:
+ * &lt;i&gt;ContinuousTrajectoryLinearImpact&lt;/i&gt; reconciles the Characteristic Times of the Optimal Continuous
+ * Trading Trajectory resulting from the Application of the Almgren (2003) Scheme to a Linear Power Law
+ * Temporary Market Impact Function. The Power Exponent Considered here is
  * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
+ * k = 1.0
  * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
+ * The References are:
  * 
- * 	- Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk,
- * 		Applied Mathematical Finance 10 (1) 1-18.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ *  	&lt;/li&gt;
  * 
- * 	- Almgren, R., and N. Chriss (2003): Bidding Principles, Risk 97-102.
+ *  	&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ *  	&lt;/li&gt;
  * 
- * 	- Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs, Journal of Financial Markets,
- * 		1, 1-50.
+ *  	&lt;li&gt;
+ * 			Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk
+ * 				&lt;i&gt;Applied Mathematical Finance&lt;/i&gt; &lt;b&gt;10 (1)&lt;/b&gt; 1-18.
+ *  	&lt;/li&gt;
+ * 
+ *  	&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2003): Bidding Principles &lt;i&gt;Risk&lt;/i&gt; 97-102
+ *  	&lt;/li&gt;
+ * 
+ *  	&lt;li&gt;
+ * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs &lt;i&gt;Journal of Financial
+ * 				Markets&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 1-50
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2003/README.md&quot;&gt;Almgren (2003)&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class ContinuousTrajectoryLinearImpact {</span>
+<span class="nc" id="L127">public class ContinuousTrajectoryLinearImpact {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L88">		EnvManager.InitEnv (</span>
+<span class="fc" id="L133">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L93">		double dblS0 = 50.;</span>
-<span class="fc" id="L94">		double dblDailyVolume = 1000000.;</span>
-<span class="fc" id="L95">		double dblBidAskSpread = 0.;</span>
-<span class="fc" id="L96">		double dblPermanentImpactFactor = 0.;</span>
-<span class="fc" id="L97">		double dblTemporaryImpactFactor = 0.01;</span>
-<span class="fc" id="L98">		double dblK = 1.0;</span>
-<span class="fc" id="L99">		double dblGamma = 0.;</span>
-<span class="fc" id="L100">		double dblDailyVolumeExecutionFactor = 0.1;</span>
-<span class="fc" id="L101">		double dblDrift = 0.;</span>
-<span class="fc" id="L102">		double dblVolatility = 1.;</span>
-<span class="fc" id="L103">		double dblSerialCorrelation = 0.;</span>
-<span class="fc" id="L104">		double dblX = 100000.;</span>
-<span class="fc" id="L105">		double dblFinishTime = 1.;</span>
+<span class="fc" id="L138">		double dblS0 = 50.;</span>
+<span class="fc" id="L139">		double dblDailyVolume = 1000000.;</span>
+<span class="fc" id="L140">		double dblBidAskSpread = 0.;</span>
+<span class="fc" id="L141">		double dblPermanentImpactFactor = 0.;</span>
+<span class="fc" id="L142">		double dblTemporaryImpactFactor = 0.01;</span>
+<span class="fc" id="L143">		double dblK = 1.0;</span>
+<span class="fc" id="L144">		double dblGamma = 0.;</span>
+<span class="fc" id="L145">		double dblDailyVolumeExecutionFactor = 0.1;</span>
+<span class="fc" id="L146">		double dblDrift = 0.;</span>
+<span class="fc" id="L147">		double dblVolatility = 1.;</span>
+<span class="fc" id="L148">		double dblSerialCorrelation = 0.;</span>
+<span class="fc" id="L149">		double dblX = 100000.;</span>
+<span class="fc" id="L150">		double dblFinishTime = 1.;</span>
 
-<span class="fc" id="L107">		double[] adblLambda = new double[] {</span>
+<span class="fc" id="L152">		double[] adblLambda = new double[] {</span>
 			1.e-03,
 			1.e-04,
 			1.e-05,
@@ -112,7 +157,7 @@ import org.drip.service.env.EnvManager;
 			1.e-07
 		};
 
-<span class="fc" id="L115">		double[][] aadblAlmgren2003Reconciler = new double[][] {</span>
+<span class="fc" id="L160">		double[][] aadblAlmgren2003Reconciler = new double[][] {</span>
 			{0.07, 354.,  19.},
 			{0.22, 112.,  33.},
 			{0.71,  35.,  59.},
@@ -120,7 +165,7 @@ import org.drip.service.env.EnvManager;
 			{7.07,   4., 188.}
 		};
 
-<span class="fc" id="L123">		PriceMarketImpactPower pmip = new PriceMarketImpactPower (</span>
+<span class="fc" id="L168">		PriceMarketImpactPower pmip = new PriceMarketImpactPower (</span>
 			new AssetTransactionSettings (
 				dblS0,
 				dblDailyVolume,
@@ -132,7 +177,7 @@ import org.drip.service.env.EnvManager;
 			dblK
 		);
 
-<span class="fc" id="L135">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (</span>
+<span class="fc" id="L180">		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (</span>
 			new ArithmeticPriceDynamicsSettings (
 				dblDrift,
 				new FlatUnivariate (dblVolatility),
@@ -144,60 +189,60 @@ import org.drip.service.env.EnvManager;
 					dblGamma
 				)
 			),
-<span class="fc" id="L147">			new UniformParticipationRate ((ParticipationRatePower) pmip.temporaryTransactionFunction())</span>
+<span class="fc" id="L192">			new UniformParticipationRate ((ParticipationRatePower) pmip.temporaryTransactionFunction())</span>
 		);
 
-<span class="fc" id="L150">		System.out.println (&quot;\n\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L195">		System.out.println (&quot;\n\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L152">		System.out.println (&quot;\t|                  COMPUTED                 ||&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;\t|                  COMPUTED                 ||&quot;);</span>
 
-<span class="fc" id="L154">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L199">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L156">		System.out.println (&quot;\t| LAMBDAINV || T_STAR | COST_EXP | COST_STD ||&quot;);</span>
+<span class="fc" id="L201">		System.out.println (&quot;\t| LAMBDAINV || T_STAR | COST_EXP | COST_STD ||&quot;);</span>
 
-<span class="fc" id="L158">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L203">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; adblLambda.length; ++i) {</span>
-<span class="fc" id="L161">			ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		for (int i = 0; i &lt; adblLambda.length; ++i) {</span>
+<span class="fc" id="L206">			ContinuousPowerImpact cpi = ContinuousPowerImpact.Standard (</span>
 				dblX,
 				dblFinishTime,
 				lpep,
 				adblLambda[i]
 			);
 
-<span class="fc" id="L168">			PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
+<span class="fc" id="L213">			PowerImpactContinuous pic = (PowerImpactContinuous) cpi.generate();</span>
 
-<span class="fc" id="L170">			System.out.println (&quot;\t|  &quot; +</span>
-<span class="fc" id="L171">				FormatUtil.FormatDouble (1. / adblLambda[i], 5, 0, 1.e-03) + &quot;   || &quot; +</span>
-<span class="fc" id="L172">				FormatUtil.FormatDouble (pic.characteristicTime(), 1, 2, 1.) + &quot;      &quot; +</span>
-<span class="fc" id="L173">				FormatUtil.FormatDouble (pic.transactionCostExpectation(), 3, 0, 1.e-03) + &quot;       &quot; +</span>
-<span class="fc" id="L174">				FormatUtil.FormatDouble (Math.sqrt (pic.transactionCostVariance()), 3, 0, 1.e-03) + &quot;   ||&quot;</span>
+<span class="fc" id="L215">			System.out.println (&quot;\t|  &quot; +</span>
+<span class="fc" id="L216">				FormatUtil.FormatDouble (1. / adblLambda[i], 5, 0, 1.e-03) + &quot;   || &quot; +</span>
+<span class="fc" id="L217">				FormatUtil.FormatDouble (pic.characteristicTime(), 1, 2, 1.) + &quot;      &quot; +</span>
+<span class="fc" id="L218">				FormatUtil.FormatDouble (pic.transactionCostExpectation(), 3, 0, 1.e-03) + &quot;       &quot; +</span>
+<span class="fc" id="L219">				FormatUtil.FormatDouble (Math.sqrt (pic.transactionCostVariance()), 3, 0, 1.e-03) + &quot;   ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L178">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L223">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L180">		System.out.println (&quot;\n\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L225">		System.out.println (&quot;\n\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L182">		System.out.println (&quot;\t|               ALMGREN (2003)              ||&quot;);</span>
+<span class="fc" id="L227">		System.out.println (&quot;\t|               ALMGREN (2003)              ||&quot;);</span>
 
-<span class="fc" id="L184">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L229">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L186">		System.out.println (&quot;\t| LAMBDAINV || T_STAR | COST_EXP | COST_STD ||&quot;);</span>
+<span class="fc" id="L231">		System.out.println (&quot;\t| LAMBDAINV || T_STAR | COST_EXP | COST_STD ||&quot;);</span>
 
-<span class="fc" id="L188">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L233">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L190" title="All 2 branches covered.">		for (int i = 0; i &lt; adblLambda.length; ++i)</span>
-<span class="fc" id="L191">			System.out.println (&quot;\t|  &quot; +</span>
-<span class="fc" id="L192">				FormatUtil.FormatDouble (1. / adblLambda[i], 5, 0, 1.e-03) + &quot;   || &quot; +</span>
-<span class="fc" id="L193">				FormatUtil.FormatDouble (aadblAlmgren2003Reconciler[i][0], 1, 2, 1.) + &quot;      &quot; +</span>
-<span class="fc" id="L194">				FormatUtil.FormatDouble (aadblAlmgren2003Reconciler[i][1], 3, 0, 1.) + &quot;       &quot; +</span>
-<span class="fc" id="L195">				FormatUtil.FormatDouble (aadblAlmgren2003Reconciler[i][2], 3, 0, 1.) + &quot;   ||&quot;</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; adblLambda.length; ++i)</span>
+<span class="fc" id="L236">			System.out.println (&quot;\t|  &quot; +</span>
+<span class="fc" id="L237">				FormatUtil.FormatDouble (1. / adblLambda[i], 5, 0, 1.e-03) + &quot;   || &quot; +</span>
+<span class="fc" id="L238">				FormatUtil.FormatDouble (aadblAlmgren2003Reconciler[i][0], 1, 2, 1.) + &quot;      &quot; +</span>
+<span class="fc" id="L239">				FormatUtil.FormatDouble (aadblAlmgren2003Reconciler[i][1], 3, 0, 1.) + &quot;       &quot; +</span>
+<span class="fc" id="L240">				FormatUtil.FormatDouble (aadblAlmgren2003Reconciler[i][2], 3, 0, 1.) + &quot;   ||&quot;</span>
 			);
 
-<span class="fc" id="L198">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L243">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L200">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L201">	}</span>
+<span class="fc" id="L245">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L246">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

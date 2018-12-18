@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.objective;
 /**
  * &lt;i&gt;StandardDeviationTerm&lt;/i&gt; holds the Details of the Portfolio Risk (Standard Deviation) Objective Term.
  * Standard Deviation can be Absolute or in relation to a Benchmark.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -101,7 +102,7 @@ public class StandardDeviationTerm extends org.drip.portfolioconstruction.object
 		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L104">		super (</span>
+<span class="nc" id="L105">		super (</span>
 			strName,
 			&quot;OT_STANDARD_DEVIATION&quot;,
 			&quot;Standard Deviation Objective Term&quot;,
@@ -109,47 +110,47 @@ public class StandardDeviationTerm extends org.drip.portfolioconstruction.object
 			aadblAssetCovariance,
 			adblBenchmarkConstrictedHoldings
 		);
-<span class="nc" id="L112">	}</span>
+<span class="nc" id="L113">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L116">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L117">		{</span>
+<span class="nc" id="L117">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L118">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L120">				return initialHoldings().length;</span>
+<span class="nc" id="L121">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L127" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L128">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L129">					throw new java.lang.Exception</span>
 						(&quot;StandardDeviationTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);
 
-<span class="nc" id="L131">				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();</span>
+<span class="nc" id="L132">				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();</span>
 
-<span class="nc" id="L133">				double[][] aadblCovariance = assetCovariance();</span>
+<span class="nc" id="L134">				double[][] aadblCovariance = assetCovariance();</span>
 
-<span class="nc" id="L135">				int iNumAsset = aadblCovariance.length;</span>
-<span class="nc" id="L136">				double dblCovariance = 0.;</span>
+<span class="nc" id="L136">				int iNumAsset = aadblCovariance.length;</span>
+<span class="nc" id="L137">				double dblCovariance = 0.;</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L139">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
+<span class="nc" id="L140">					throw new java.lang.Exception</span>
 						(&quot;StandardDeviationTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">					double dblOuterAdjustedVariate = null == adblBenchmarkHoldings ? adblVariate[i] :</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">					double dblOuterAdjustedVariate = null == adblBenchmarkHoldings ? adblVariate[i] :</span>
 						adblVariate[i] - adblBenchmarkHoldings[i];
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">						dblCovariance += aadblCovariance[i][j] * dblOuterAdjustedVariate * (null ==</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">						dblCovariance += aadblCovariance[i][j] * dblOuterAdjustedVariate * (null ==</span>
 							adblBenchmarkHoldings ? adblVariate[j] : adblVariate[j] -
 								adblBenchmarkHoldings[j]);
 				}
 
-<span class="nc" id="L152">				return java.lang.Math.sqrt (dblCovariance);</span>
+<span class="nc" id="L153">				return java.lang.Math.sqrt (dblCovariance);</span>
 			}
 		};
 	}

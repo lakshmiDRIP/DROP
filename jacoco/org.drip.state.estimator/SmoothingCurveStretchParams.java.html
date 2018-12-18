@@ -88,9 +88,10 @@ package org.drip.state.estimator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -98,12 +99,12 @@ package org.drip.state.estimator;
  */
 
 public abstract class SmoothingCurveStretchParams {
-<span class="fc" id="L101">	private int _iCalibrationDetail = -1;</span>
-<span class="fc" id="L102">	private java.lang.String _strSmootheningQuantificationMetric = &quot;&quot;;</span>
-<span class="fc" id="L103">	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;</span>
-<span class="fc" id="L104">	private org.drip.spline.params.StretchBestFitResponse _sbfrSensitivity = null;</span>
+<span class="fc" id="L102">	private int _iCalibrationDetail = -1;</span>
+<span class="fc" id="L103">	private java.lang.String _strSmootheningQuantificationMetric = &quot;&quot;;</span>
+<span class="fc" id="L104">	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;</span>
+<span class="fc" id="L105">	private org.drip.spline.params.StretchBestFitResponse _sbfrSensitivity = null;</span>
 
-<span class="fc" id="L106">	private</span>
+<span class="fc" id="L107">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.params.SegmentCustomBuilderControl&gt;
 			_mapSCBC = new
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.params.SegmentCustomBuilderControl&gt;();
@@ -127,17 +128,17 @@ public abstract class SmoothingCurveStretchParams {
 		final org.drip.spline.params.StretchBestFitResponse sbfr,
 		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity)
 		throws java.lang.Exception
-<span class="fc" id="L130">	{</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == scbcDefault)</span>
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;SmoothingCurveStretchParams ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L131">	{</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == scbcDefault)</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;SmoothingCurveStretchParams ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L134">		_sbfr = sbfr;</span>
-<span class="fc" id="L135">		_sbfrSensitivity = sbfrSensitivity;</span>
-<span class="fc" id="L136">		_iCalibrationDetail = iCalibrationDetail;</span>
-<span class="fc" id="L137">		_strSmootheningQuantificationMetric = strSmootheningQuantificationMetric;</span>
+<span class="fc" id="L135">		_sbfr = sbfr;</span>
+<span class="fc" id="L136">		_sbfrSensitivity = sbfrSensitivity;</span>
+<span class="fc" id="L137">		_iCalibrationDetail = iCalibrationDetail;</span>
+<span class="fc" id="L138">		_strSmootheningQuantificationMetric = strSmootheningQuantificationMetric;</span>
 
-<span class="fc" id="L139">		_mapSCBC.put (&quot;default&quot;, scbcDefault);</span>
-<span class="fc" id="L140">	}</span>
+<span class="fc" id="L140">		_mapSCBC.put (&quot;default&quot;, scbcDefault);</span>
+<span class="fc" id="L141">	}</span>
 
 	/**
 	 * Set the Stretch's Segment Builder Control
@@ -152,11 +153,11 @@ public abstract class SmoothingCurveStretchParams {
 		final java.lang.String strStretchName,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L155" title="3 of 6 branches missed.">		if (null == strStretchName || strStretchName.isEmpty() || null == scbc) return false;</span>
+<span class="pc bpc" id="L156" title="3 of 6 branches missed.">		if (null == strStretchName || strStretchName.isEmpty() || null == scbc) return false;</span>
 
-<span class="fc" id="L157">		_mapSCBC.put (strStretchName, scbc);</span>
+<span class="fc" id="L158">		_mapSCBC.put (strStretchName, scbc);</span>
 
-<span class="fc" id="L159">		return true;</span>
+<span class="fc" id="L160">		return true;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public java.lang.String smootheningQuantificationMetric()
 	{
-<span class="fc" id="L170">		return _strSmootheningQuantificationMetric;</span>
+<span class="fc" id="L171">		return _strSmootheningQuantificationMetric;</span>
 	}
 
 	/**
@@ -178,7 +179,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public int calibrationDetail()
 	{
-<span class="fc" id="L181">		return _iCalibrationDetail;</span>
+<span class="fc" id="L182">		return _iCalibrationDetail;</span>
 	}
 
 	/**
@@ -189,7 +190,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public org.drip.spline.params.SegmentCustomBuilderControl defaultSegmentBuilderControl()
 	{
-<span class="fc" id="L192">		return _mapSCBC.get (&quot;default&quot;);</span>
+<span class="fc" id="L193">		return _mapSCBC.get (&quot;default&quot;);</span>
 	}
 
 	/**
@@ -203,8 +204,8 @@ public abstract class SmoothingCurveStretchParams {
 	public org.drip.spline.params.SegmentCustomBuilderControl segmentBuilderControl (
 		final java.lang.String strStretchName)
 	{
-<span class="fc bfc" id="L206" title="All 2 branches covered.">		return _mapSCBC.containsKey (strStretchName) ? _mapSCBC.get (strStretchName) : _mapSCBC.get</span>
-<span class="fc" id="L207">			(&quot;default&quot;);</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		return _mapSCBC.containsKey (strStretchName) ? _mapSCBC.get (strStretchName) : _mapSCBC.get</span>
+<span class="fc" id="L208">			(&quot;default&quot;);</span>
 	}
 
 	/**
@@ -215,7 +216,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public org.drip.spline.params.StretchBestFitResponse bestFitWeightedResponse()
 	{
-<span class="fc" id="L218">		return _sbfr;</span>
+<span class="fc" id="L219">		return _sbfr;</span>
 	}
 
 	/**
@@ -226,7 +227,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public org.drip.spline.params.StretchBestFitResponse bestFitWeightedResponseSensitivity()
 	{
-<span class="fc" id="L229">		return _sbfrSensitivity;</span>
+<span class="fc" id="L230">		return _sbfrSensitivity;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

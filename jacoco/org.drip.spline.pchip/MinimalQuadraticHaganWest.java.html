@@ -75,9 +75,10 @@ package org.drip.spline.pchip;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip&quot;&gt;PCHIP&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,12 +86,12 @@ package org.drip.spline.pchip;
  */
 
 public class MinimalQuadraticHaganWest {
-<span class="nc" id="L88">	private double[] _adblA = null;</span>
-<span class="nc" id="L89">	private double[] _adblB = null;</span>
-<span class="nc" id="L90">	private double[] _adblC = null;</span>
-<span class="nc" id="L91">	private double[] _adblObservation = null;</span>
-<span class="nc" id="L92">	private double[] _adblPredictorOrdinate = null;</span>
-<span class="nc" id="L93">	private double _dblWeight = java.lang.Double.NaN;</span>
+<span class="nc" id="L89">	private double[] _adblA = null;</span>
+<span class="nc" id="L90">	private double[] _adblB = null;</span>
+<span class="nc" id="L91">	private double[] _adblC = null;</span>
+<span class="nc" id="L92">	private double[] _adblObservation = null;</span>
+<span class="nc" id="L93">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="nc" id="L94">	private double _dblWeight = java.lang.Double.NaN;</span>
 
 	/**
 	 * Create an instance of MinimalQuadraticHaganWest
@@ -107,17 +108,17 @@ public class MinimalQuadraticHaganWest {
 		final double[] adblObservation,
 		final double dblWeight)
 	{
-<span class="nc" id="L110">		MinimalQuadraticHaganWest mchw = null;</span>
+<span class="nc" id="L111">		MinimalQuadraticHaganWest mchw = null;</span>
 
 		try {
-<span class="nc" id="L113">			mchw = new MinimalQuadraticHaganWest (adblPredictorOrdinate, adblObservation, dblWeight);</span>
-<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L115">			e.printStackTrace();</span>
+<span class="nc" id="L114">			mchw = new MinimalQuadraticHaganWest (adblPredictorOrdinate, adblObservation, dblWeight);</span>
+<span class="nc" id="L115">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L116">			e.printStackTrace();</span>
 
-<span class="nc" id="L117">			return null;</span>
-<span class="nc" id="L118">		}</span>
+<span class="nc" id="L118">			return null;</span>
+<span class="nc" id="L119">		}</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		return mchw.setupCoefficients() ? mchw : null;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		return mchw.setupCoefficients() ? mchw : null;</span>
 	}
 
 	private MinimalQuadraticHaganWest (
@@ -125,36 +126,36 @@ public class MinimalQuadraticHaganWest {
 		final double[] adblObservation,
 		final double dblWeight)
 		throws java.lang.Exception
-<span class="nc" id="L128">	{</span>
-<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">			adblPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight = dblWeight))</span>
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;MinimalQuadraticHaganWest ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L129">	{</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			adblPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight = dblWeight))</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;MinimalQuadraticHaganWest ctr: Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L133">		int iNumObservation = _adblObservation.length;</span>
+<span class="nc" id="L134">		int iNumObservation = _adblObservation.length;</span>
 
-<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (1 &gt;= iNumObservation || iNumObservation + 1 != _adblPredictorOrdinate.length)</span>
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;MinimalQuadraticHaganWest ctr: Invalid Inputs!&quot;);</span>
-<span class="nc" id="L137">	}</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (1 &gt;= iNumObservation || iNumObservation + 1 != _adblPredictorOrdinate.length)</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;MinimalQuadraticHaganWest ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L138">	}</span>
 
 	private boolean setupCoefficients()
 	{
-<span class="nc" id="L141">		int iNumObservation = _adblObservation.length;</span>
-<span class="nc" id="L142">		_adblA = new double[iNumObservation];</span>
-<span class="nc" id="L143">		_adblB = new double[iNumObservation];</span>
-<span class="nc" id="L144">		_adblC = new double[iNumObservation];</span>
-<span class="nc" id="L145">		double[] adblH = new double[iNumObservation];</span>
-<span class="nc" id="L146">		double[] adblRHS = new double[3 * iNumObservation];</span>
-<span class="nc" id="L147">		double[][] aadblCoeffMatrix = new double[3 * iNumObservation][3 * iNumObservation];</span>
+<span class="nc" id="L142">		int iNumObservation = _adblObservation.length;</span>
+<span class="nc" id="L143">		_adblA = new double[iNumObservation];</span>
+<span class="nc" id="L144">		_adblB = new double[iNumObservation];</span>
+<span class="nc" id="L145">		_adblC = new double[iNumObservation];</span>
+<span class="nc" id="L146">		double[] adblH = new double[iNumObservation];</span>
+<span class="nc" id="L147">		double[] adblRHS = new double[3 * iNumObservation];</span>
+<span class="nc" id="L148">		double[][] aadblCoeffMatrix = new double[3 * iNumObservation][3 * iNumObservation];</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int i = 0; i &lt; 3 * iNumObservation; ++i) {</span>
-<span class="nc" id="L150">			adblRHS[i] = 0.;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (int i = 0; i &lt; 3 * iNumObservation; ++i) {</span>
+<span class="nc" id="L151">			adblRHS[i] = 0.;</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">			for (int j = 0; j &lt; 3 * iNumObservation; ++j)</span>
-<span class="nc" id="L153">				aadblCoeffMatrix[i][j] = 0.;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			for (int j = 0; j &lt; 3 * iNumObservation; ++j)</span>
+<span class="nc" id="L154">				aadblCoeffMatrix[i][j] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObservation; ++i)</span>
-<span class="nc" id="L157">			adblH[i] = _adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i];</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObservation; ++i)</span>
+<span class="nc" id="L158">			adblH[i] = _adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i];</span>
 
 		/*
 		 * Setting up the coefficient linear constraint equation set
@@ -168,12 +169,12 @@ public class MinimalQuadraticHaganWest {
 		 * 		A_i + (H_i / 2.) * B_i + (H_i * H_i / 3.) * C_i = Observation_i
 		 */
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		for (int iEq = 0; iEq &lt; iNumObservation; ++iEq) {</span>
-<span class="nc" id="L172">			int iSegmentIndex = iEq;</span>
-<span class="nc" id="L173">			adblRHS[iEq] = _adblObservation[iEq]; // Z_i</span>
-<span class="nc" id="L174">			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i</span>
-<span class="nc" id="L175">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = 0.5 * adblH[iSegmentIndex]; // B_i</span>
-<span class="nc" id="L176">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex] / 3.; // C_i</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int iEq = 0; iEq &lt; iNumObservation; ++iEq) {</span>
+<span class="nc" id="L173">			int iSegmentIndex = iEq;</span>
+<span class="nc" id="L174">			adblRHS[iEq] = _adblObservation[iEq]; // Z_i</span>
+<span class="nc" id="L175">			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i</span>
+<span class="nc" id="L176">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = 0.5 * adblH[iSegmentIndex]; // B_i</span>
+<span class="nc" id="L177">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex] / 3.; // C_i</span>
 		}
 
 		/*
@@ -181,13 +182,13 @@ public class MinimalQuadraticHaganWest {
 		 * 		A_i + H_i * B_i + (H_i * H_i) * C_i - A_i+1 = 0.
 		 */
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (int iEq = iNumObservation; iEq &lt; 2 * iNumObservation - 1; ++iEq) {</span>
-<span class="nc" id="L185">			adblRHS[iEq] = 0.;</span>
-<span class="nc" id="L186">			int iSegmentIndex = iEq - iNumObservation;</span>
-<span class="nc" id="L187">			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i</span>
-<span class="nc" id="L188">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = adblH[iSegmentIndex]; // B_i</span>
-<span class="nc" id="L189">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex]; // C_i</span>
-<span class="nc" id="L190">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 3] = -1.; // A_i+1</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (int iEq = iNumObservation; iEq &lt; 2 * iNumObservation - 1; ++iEq) {</span>
+<span class="nc" id="L186">			adblRHS[iEq] = 0.;</span>
+<span class="nc" id="L187">			int iSegmentIndex = iEq - iNumObservation;</span>
+<span class="nc" id="L188">			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i</span>
+<span class="nc" id="L189">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = adblH[iSegmentIndex]; // B_i</span>
+<span class="nc" id="L190">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex]; // C_i</span>
+<span class="nc" id="L191">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 3] = -1.; // A_i+1</span>
 		}
 
 		/*
@@ -195,52 +196,52 @@ public class MinimalQuadraticHaganWest {
 		 * 		w * B_i + (2. * H_i) * C_i - w * B_i+1 = 0.
 		 */
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int iEq = 2 * iNumObservation - 1; iEq &lt; 3 * iNumObservation - 2; ++iEq) {</span>
-<span class="nc" id="L199">			adblRHS[iEq] = 0.;</span>
-<span class="nc" id="L200">			int iSegmentIndex = iEq - 2 * iNumObservation + 1;</span>
-<span class="nc" id="L201">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = _dblWeight; // B_i</span>
-<span class="nc" id="L202">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = 2. * adblH[iSegmentIndex]; // C_i</span>
-<span class="nc" id="L203">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 4] = -1. * _dblWeight; // B_i+1</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int iEq = 2 * iNumObservation - 1; iEq &lt; 3 * iNumObservation - 2; ++iEq) {</span>
+<span class="nc" id="L200">			adblRHS[iEq] = 0.;</span>
+<span class="nc" id="L201">			int iSegmentIndex = iEq - 2 * iNumObservation + 1;</span>
+<span class="nc" id="L202">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = _dblWeight; // B_i</span>
+<span class="nc" id="L203">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = 2. * adblH[iSegmentIndex]; // C_i</span>
+<span class="nc" id="L204">			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 4] = -1. * _dblWeight; // B_i+1</span>
 		}
 
 		/*
 		 * Left Boundary Condition: Starting Left Slope is zero, i.e., B_0 = 0.
 		 */
 
-<span class="nc" id="L210">		adblRHS[3 * iNumObservation - 2] = 0.;</span>
-<span class="nc" id="L211">		aadblCoeffMatrix[3 * iNumObservation - 2][1] = 1.;</span>
+<span class="nc" id="L211">		adblRHS[3 * iNumObservation - 2] = 0.;</span>
+<span class="nc" id="L212">		aadblCoeffMatrix[3 * iNumObservation - 2][1] = 1.;</span>
 
 		/*
 		 * Right Boundary Condition: Final First Derivative is zero, i.e., B_n-1 = 0.
 		 */
 
-<span class="nc" id="L217">		adblRHS[3 * iNumObservation - 1] = 0.;</span>
-<span class="nc" id="L218">		aadblCoeffMatrix[3 * iNumObservation - 1][3 * iNumObservation - 2] = 1.;</span>
+<span class="nc" id="L218">		adblRHS[3 * iNumObservation - 1] = 0.;</span>
+<span class="nc" id="L219">		aadblCoeffMatrix[3 * iNumObservation - 1][3 * iNumObservation - 2] = 1.;</span>
 
-<span class="nc" id="L220">		org.drip.quant.linearalgebra.LinearizationOutput lssGaussianElimination =</span>
-<span class="nc" id="L221">			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,</span>
+<span class="nc" id="L221">		org.drip.quant.linearalgebra.LinearizationOutput lssGaussianElimination =</span>
+<span class="nc" id="L222">			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,</span>
 				adblRHS);
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (null == lssGaussianElimination) return false;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		if (null == lssGaussianElimination) return false;</span>
 
-<span class="nc" id="L226">		double[] adblCoeff = lssGaussianElimination.getTransformedRHS();</span>
+<span class="nc" id="L227">		double[] adblCoeff = lssGaussianElimination.getTransformedRHS();</span>
 
-<span class="nc bnc" id="L228" title="All 4 branches missed.">		if (null == adblCoeff || 3 * iNumObservation != adblCoeff.length) return false;</span>
+<span class="nc bnc" id="L229" title="All 4 branches missed.">		if (null == adblCoeff || 3 * iNumObservation != adblCoeff.length) return false;</span>
 
-<span class="nc" id="L230">		int iSegment = 0;</span>
+<span class="nc" id="L231">		int iSegment = 0;</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (int i = 0; i &lt; 3 * iNumObservation; ++i) {</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">			if (0 == i % 3)</span>
-<span class="nc" id="L234">				_adblA[iSegment] = adblCoeff[i];</span>
-<span class="nc bnc" id="L235" title="All 2 branches missed.">			else if (1 == i % 3)</span>
-<span class="nc" id="L236">				_adblB[iSegment] = adblCoeff[i];</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			else if (2 == i % 3) {</span>
-<span class="nc" id="L238">				_adblC[iSegment] = adblCoeff[i];</span>
-<span class="nc" id="L239">				++iSegment;</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (int i = 0; i &lt; 3 * iNumObservation; ++i) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			if (0 == i % 3)</span>
+<span class="nc" id="L235">				_adblA[iSegment] = adblCoeff[i];</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			else if (1 == i % 3)</span>
+<span class="nc" id="L237">				_adblB[iSegment] = adblCoeff[i];</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">			else if (2 == i % 3) {</span>
+<span class="nc" id="L239">				_adblC[iSegment] = adblCoeff[i];</span>
+<span class="nc" id="L240">				++iSegment;</span>
 			}
 		}
 
-<span class="nc" id="L243">		return true;</span>
+<span class="nc" id="L244">		return true;</span>
 	}
 
 	private int containingIndex (
@@ -249,19 +250,19 @@ public class MinimalQuadraticHaganWest {
 		final boolean bIncludeRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L252">		int iNumSegment = _adblA.length;</span>
+<span class="nc" id="L253">		int iNumSegment = _adblA.length;</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (int i = 0 ; i &lt; iNumSegment; ++i) {</span>
-<span class="nc bnc" id="L255" title="All 6 branches missed.">			boolean bLeftValid = bIncludeLeft ? _adblPredictorOrdinate[i] &lt;= dblPredictorOrdinate :</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (int i = 0 ; i &lt; iNumSegment; ++i) {</span>
+<span class="nc bnc" id="L256" title="All 6 branches missed.">			boolean bLeftValid = bIncludeLeft ? _adblPredictorOrdinate[i] &lt;= dblPredictorOrdinate :</span>
 				_adblPredictorOrdinate[i] &lt; dblPredictorOrdinate;
 
-<span class="nc bnc" id="L258" title="All 6 branches missed.">			boolean bRightValid = bIncludeRight ? _adblPredictorOrdinate[i + 1] &gt;= dblPredictorOrdinate :</span>
+<span class="nc bnc" id="L259" title="All 6 branches missed.">			boolean bRightValid = bIncludeRight ? _adblPredictorOrdinate[i + 1] &gt;= dblPredictorOrdinate :</span>
 				_adblPredictorOrdinate[i + 1] &gt; dblPredictorOrdinate;
 
-<span class="nc bnc" id="L261" title="All 4 branches missed.">			if (bLeftValid &amp;&amp; bRightValid) return i;</span>
+<span class="nc bnc" id="L262" title="All 4 branches missed.">			if (bLeftValid &amp;&amp; bRightValid) return i;</span>
 		}
 
-<span class="nc" id="L264">		throw new java.lang.Exception</span>
+<span class="nc" id="L265">		throw new java.lang.Exception</span>
 			(&quot;MinimalQuadraticHaganWest::containingIndex =&gt; Cannot locate Containing Index&quot;);
 	}
 
@@ -279,43 +280,43 @@ public class MinimalQuadraticHaganWest {
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L282">		int i = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="nc" id="L283">		int i = containingIndex (dblPredictorOrdinate, true, true);</span>
 
-<span class="nc" id="L284">		return _adblA[i] + _adblB[i] * (dblPredictorOrdinate - _adblPredictorOrdinate[i]) + _adblC[i] *</span>
+<span class="nc" id="L285">		return _adblA[i] + _adblB[i] * (dblPredictorOrdinate - _adblPredictorOrdinate[i]) + _adblC[i] *</span>
 			(dblPredictorOrdinate - _adblPredictorOrdinate[i]) * (dblPredictorOrdinate -
 				_adblPredictorOrdinate[i]);
 	}
 
 	public double[] calcConservedConstraint()
 	{
-<span class="nc" id="L291">		int iNumObservation = _adblObservation.length;</span>
-<span class="nc" id="L292">		double[] adblConservedConstraint = new double[iNumObservation];</span>
+<span class="nc" id="L292">		int iNumObservation = _adblObservation.length;</span>
+<span class="nc" id="L293">		double[] adblConservedConstraint = new double[iNumObservation];</span>
 
-<span class="nc bnc" id="L294" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObservation; ++i)</span>
-<span class="nc" id="L295">			adblConservedConstraint[i] = _adblA[i] + _adblB[i] * 0.5 + _adblC[i] / 3.;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumObservation; ++i)</span>
+<span class="nc" id="L296">			adblConservedConstraint[i] = _adblA[i] + _adblB[i] * 0.5 + _adblC[i] / 3.;</span>
 
-<span class="nc" id="L297">		return adblConservedConstraint;</span>
+<span class="nc" id="L298">		return adblConservedConstraint;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L304">		double[] adblTime = new double[] {0., 1.0, 2.0};</span>
-<span class="nc" id="L305">		double[] adblForwardRate = new double[] {0.02, 0.026};</span>
+<span class="nc" id="L305">		double[] adblTime = new double[] {0., 1.0, 2.0};</span>
+<span class="nc" id="L306">		double[] adblForwardRate = new double[] {0.02, 0.026};</span>
 
-<span class="nc" id="L307">		MinimalQuadraticHaganWest mqhw = MinimalQuadraticHaganWest.Create (adblTime, adblForwardRate, 0.5);</span>
+<span class="nc" id="L308">		MinimalQuadraticHaganWest mqhw = MinimalQuadraticHaganWest.Create (adblTime, adblForwardRate, 0.5);</span>
 
-<span class="nc" id="L309">		double[] adblConservedConstraint = mqhw.calcConservedConstraint();</span>
+<span class="nc" id="L310">		double[] adblConservedConstraint = mqhw.calcConservedConstraint();</span>
 
-<span class="nc bnc" id="L311" title="All 2 branches missed.">		for (int i = 0; i &lt; adblConservedConstraint.length; ++i)</span>
-<span class="nc" id="L312">			System.out.println (&quot;Conserved Constraint[&quot; + i + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L313">				org.drip.quant.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">		for (int i = 0; i &lt; adblConservedConstraint.length; ++i)</span>
+<span class="nc" id="L313">			System.out.println (&quot;Conserved Constraint[&quot; + i + &quot;] =&gt; &quot; +</span>
+<span class="nc" id="L314">				org.drip.quant.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));</span>
 
-<span class="nc bnc" id="L315" title="All 2 branches missed.">		for (double dblTime = adblTime[0]; dblTime &lt;= adblTime[adblTime.length - 1]; dblTime += 0.25)</span>
-<span class="nc" id="L316">			System.out.println (&quot;Response[&quot; + org.drip.quant.common.FormatUtil.FormatDouble (dblTime, 2, 2,</span>
-<span class="nc" id="L317">				1.) + &quot;] = &quot; + org.drip.quant.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		for (double dblTime = adblTime[0]; dblTime &lt;= adblTime[adblTime.length - 1]; dblTime += 0.25)</span>
+<span class="nc" id="L317">			System.out.println (&quot;Response[&quot; + org.drip.quant.common.FormatUtil.FormatDouble (dblTime, 2, 2,</span>
+<span class="nc" id="L318">				1.) + &quot;] = &quot; + org.drip.quant.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,</span>
 					6, 1.));
-<span class="nc" id="L319">	}</span>
+<span class="nc" id="L320">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

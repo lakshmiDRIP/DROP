@@ -73,9 +73,10 @@ package org.drip.spline.multidimensional;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional&quot;&gt;Multidimensional&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional&quot;&gt;Multidimensional&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +84,8 @@ package org.drip.spline.multidimensional;
  */
 
 public class WireSurfaceStretch {
-<span class="fc" id="L86">	private org.drip.spline.params.SegmentCustomBuilderControl _scbc = null;</span>
-<span class="fc" id="L87">	private java.util.TreeMap&lt;java.lang.Double, org.drip.spline.grid.Span&gt; _mapWireSpan = null;</span>
+<span class="fc" id="L87">	private org.drip.spline.params.SegmentCustomBuilderControl _scbc = null;</span>
+<span class="fc" id="L88">	private java.util.TreeMap&lt;java.lang.Double, org.drip.spline.grid.Span&gt; _mapWireSpan = null;</span>
 
 	/**
 	 * WireSurfaceStretch Constructor
@@ -101,10 +102,10 @@ public class WireSurfaceStretch {
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
 		final java.util.TreeMap&lt;java.lang.Double, org.drip.spline.grid.Span&gt; mapWireSpan)
 		throws java.lang.Exception
-<span class="fc" id="L104">	{</span>
-<span class="pc bpc" id="L105" title="3 of 6 branches missed.">		if (null == (_mapWireSpan = mapWireSpan) || 0 == _mapWireSpan.size() || null == (_scbc = scbc))</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;WireSurfaceStretch ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="fc" id="L105">	{</span>
+<span class="pc bpc" id="L106" title="3 of 6 branches missed.">		if (null == (_mapWireSpan = mapWireSpan) || 0 == _mapWireSpan.size() || null == (_scbc = scbc))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;WireSurfaceStretch ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L108">	}</span>
 
 	/**
 	 * Compute the Bivariate Surface Response Value
@@ -122,58 +123,58 @@ public class WireSurfaceStretch {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L125">		int iSize = _mapWireSpan.size();</span>
+<span class="fc" id="L126">		int iSize = _mapWireSpan.size();</span>
 
-<span class="fc" id="L127">		int i = 0;</span>
-<span class="fc" id="L128">		double[] adblX = new double[iSize];</span>
-<span class="fc" id="L129">		double[] adblZ = new double[iSize];</span>
-<span class="fc" id="L130">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L128">		int i = 0;</span>
+<span class="fc" id="L129">		double[] adblX = new double[iSize];</span>
+<span class="fc" id="L130">		double[] adblZ = new double[iSize];</span>
+<span class="fc" id="L131">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iSize - 1];
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			if (null == me)</span>
-<span class="nc" id="L135">				throw new java.lang.Exception (&quot;WireSurfaceStretch::responseValue =&gt; Invalid Wire Span Map&quot;);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			if (null == me)</span>
+<span class="nc" id="L136">				throw new java.lang.Exception (&quot;WireSurfaceStretch::responseValue =&gt; Invalid Wire Span Map&quot;);</span>
 
-<span class="fc bfc" id="L137" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = _scbc;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = _scbc;</span>
 
-<span class="fc" id="L139">			adblX[i] = me.getKey();</span>
+<span class="fc" id="L140">			adblX[i] = me.getKey();</span>
 
-<span class="fc" id="L141">			org.drip.spline.grid.Span wireSpan = me.getValue();</span>
+<span class="fc" id="L142">			org.drip.spline.grid.Span wireSpan = me.getValue();</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			if (null == wireSpan)</span>
-<span class="nc" id="L144">				throw new java.lang.Exception (&quot;WireSurfaceStretch::responseValue =&gt; Invalid Wire Span Map&quot;);</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			if (null == wireSpan)</span>
+<span class="nc" id="L145">				throw new java.lang.Exception (&quot;WireSurfaceStretch::responseValue =&gt; Invalid Wire Span Map&quot;);</span>
 
-<span class="fc" id="L146">			double dblLeftY = wireSpan.left();</span>
+<span class="fc" id="L147">			double dblLeftY = wireSpan.left();</span>
 
-<span class="fc" id="L148">			double dblRightY = wireSpan.right();</span>
+<span class="fc" id="L149">			double dblRightY = wireSpan.right();</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">			if (dblY &lt;= dblLeftY)</span>
-<span class="fc" id="L151">				adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);</span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">			else if (dblY &gt;= dblRightY)</span>
-<span class="fc" id="L153">				adblZ[i++] = wireSpan.calcResponseValue (dblRightY);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			if (dblY &lt;= dblLeftY)</span>
+<span class="fc" id="L152">				adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">			else if (dblY &gt;= dblRightY)</span>
+<span class="fc" id="L154">				adblZ[i++] = wireSpan.calcResponseValue (dblRightY);</span>
 			else
-<span class="fc" id="L155">				adblZ[i++] = wireSpan.calcResponseValue (dblY);</span>
-<span class="fc" id="L156">		}</span>
+<span class="fc" id="L156">				adblZ[i++] = wireSpan.calcResponseValue (dblY);</span>
+<span class="fc" id="L157">		}</span>
 
-<span class="fc" id="L158">		org.drip.spline.stretch.MultiSegmentSequence mss =</span>
+<span class="fc" id="L159">		org.drip.spline.stretch.MultiSegmentSequence mss =</span>
 			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L160">				(&quot;org.drip.spline.multidimensional.WireSurfaceStretch@&quot; +</span>
-<span class="fc" id="L161">					org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,</span>
-<span class="fc" id="L162">						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L161">				(&quot;org.drip.spline.multidimensional.WireSurfaceStretch@&quot; +</span>
+<span class="fc" id="L162">					org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,</span>
+<span class="fc" id="L163">						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 							org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
 
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (null == mss)</span>
-<span class="nc" id="L166">			throw new java.lang.Exception (&quot;WireSurfaceStretch::responseValue =&gt; Cannot extract MSS&quot;);</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (null == mss)</span>
+<span class="nc" id="L167">			throw new java.lang.Exception (&quot;WireSurfaceStretch::responseValue =&gt; Cannot extract MSS&quot;);</span>
 
-<span class="fc" id="L168">		double dblLeftX = mss.getLeftPredictorOrdinateEdge();</span>
+<span class="fc" id="L169">		double dblLeftX = mss.getLeftPredictorOrdinateEdge();</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">		if (dblX &lt;= dblLeftX) return mss.responseValue (dblLeftX);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (dblX &lt;= dblLeftX) return mss.responseValue (dblLeftX);</span>
 
-<span class="fc" id="L172">		double dblRightX = mss.getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L173">		double dblRightX = mss.getRightPredictorOrdinateEdge();</span>
 
-<span class="fc bfc" id="L174" title="All 2 branches covered.">		if (dblX &gt;= dblRightX) return mss.responseValue (dblRightX);</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		if (dblX &gt;= dblRightX) return mss.responseValue (dblRightX);</span>
 
-<span class="fc" id="L176">		return mss.responseValue (dblX);</span>
+<span class="fc" id="L177">		return mss.responseValue (dblX);</span>
 	}
 
 	/**
@@ -187,57 +188,57 @@ public class WireSurfaceStretch {
 	public org.drip.spline.grid.Span wireSpanYAnchor (
 		final double dblYAnchor)
 	{
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYAnchor)) return null;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYAnchor)) return null;</span>
 
-<span class="fc" id="L192">		int iSize = _mapWireSpan.size();</span>
+<span class="fc" id="L193">		int iSize = _mapWireSpan.size();</span>
 
-<span class="fc" id="L194">		int i = 0;</span>
-<span class="fc" id="L195">		double[] adblX = new double[iSize];</span>
-<span class="fc" id="L196">		double[] adblZ = new double[iSize];</span>
-<span class="fc" id="L197">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L195">		int i = 0;</span>
+<span class="fc" id="L196">		double[] adblX = new double[iSize];</span>
+<span class="fc" id="L197">		double[] adblZ = new double[iSize];</span>
+<span class="fc" id="L198">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iSize - 1];
 
-<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">			if (null == me) return null;</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">			if (null == me) return null;</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = _scbc;</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = _scbc;</span>
 
-<span class="fc" id="L205">			adblX[i] = me.getKey();</span>
+<span class="fc" id="L206">			adblX[i] = me.getKey();</span>
 
-<span class="fc" id="L207">			org.drip.spline.grid.Span wireSpan = me.getValue();</span>
+<span class="fc" id="L208">			org.drip.spline.grid.Span wireSpan = me.getValue();</span>
 
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">			if (null == wireSpan) return null;</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">			if (null == wireSpan) return null;</span>
 
 			try {
-<span class="fc" id="L212">				double dblLeftY = wireSpan.left();</span>
+<span class="fc" id="L213">				double dblLeftY = wireSpan.left();</span>
 
-<span class="fc" id="L214">				double dblRightY = wireSpan.right();</span>
+<span class="fc" id="L215">				double dblRightY = wireSpan.right();</span>
 
-<span class="fc bfc" id="L216" title="All 2 branches covered.">				if (dblYAnchor &lt;= dblLeftY)</span>
-<span class="fc" id="L217">					adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);</span>
-<span class="fc bfc" id="L218" title="All 2 branches covered.">				else if (dblYAnchor &gt;= dblRightY)</span>
-<span class="fc" id="L219">					adblZ[i++] = wireSpan.calcResponseValue (dblRightY);</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">				if (dblYAnchor &lt;= dblLeftY)</span>
+<span class="fc" id="L218">					adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">				else if (dblYAnchor &gt;= dblRightY)</span>
+<span class="fc" id="L220">					adblZ[i++] = wireSpan.calcResponseValue (dblRightY);</span>
 				else
-<span class="fc" id="L221">					adblZ[i++] = wireSpan.calcResponseValue (dblYAnchor);</span>
-<span class="nc" id="L222">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L223">				e.printStackTrace();</span>
+<span class="fc" id="L222">					adblZ[i++] = wireSpan.calcResponseValue (dblYAnchor);</span>
+<span class="nc" id="L223">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L224">				e.printStackTrace();</span>
 
-<span class="nc" id="L225">				return null;</span>
-<span class="fc" id="L226">			}</span>
-<span class="fc" id="L227">		}</span>
+<span class="nc" id="L226">				return null;</span>
+<span class="fc" id="L227">			}</span>
+<span class="fc" id="L228">		}</span>
 
 		try {
-<span class="fc" id="L230">			return new org.drip.spline.grid.OverlappingStretchSpan</span>
+<span class="fc" id="L231">			return new org.drip.spline.grid.OverlappingStretchSpan</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L232">					(&quot;org.drip.spline.multidimensional.WireSurfaceStretch@&quot; +</span>
-<span class="fc" id="L233">						org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,</span>
-<span class="fc" id="L234">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L233">					(&quot;org.drip.spline.multidimensional.WireSurfaceStretch@&quot; +</span>
+<span class="fc" id="L234">						org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,</span>
+<span class="fc" id="L235">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
-<span class="nc" id="L236">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L237">			e.printStackTrace();</span>
+<span class="nc" id="L237">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L238">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L240">		return null;</span>
+<span class="nc" id="L241">		return null;</span>
 	}
 
 	/**
@@ -251,58 +252,58 @@ public class WireSurfaceStretch {
 	public org.drip.spline.grid.Span wireSpanXAnchor (
 		final double dblXAnchor)
 	{
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchor)) return null;</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchor)) return null;</span>
 
-<span class="fc" id="L256">		org.drip.spline.grid.Span spanPrev = null;</span>
-<span class="fc" id="L257">		org.drip.spline.grid.Span spanCurrent = null;</span>
-<span class="fc" id="L258">		double dblXAnchorPrev = java.lang.Double.NaN;</span>
-<span class="fc" id="L259">		double dblXAnchorCurrent = java.lang.Double.NaN;</span>
+<span class="fc" id="L257">		org.drip.spline.grid.Span spanPrev = null;</span>
+<span class="fc" id="L258">		org.drip.spline.grid.Span spanCurrent = null;</span>
+<span class="fc" id="L259">		double dblXAnchorPrev = java.lang.Double.NaN;</span>
+<span class="fc" id="L260">		double dblXAnchorCurrent = java.lang.Double.NaN;</span>
 
-<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">			if (null == me) return null;</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, org.drip.spline.grid.Span&gt; me : _mapWireSpan.entrySet()) {</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">			if (null == me) return null;</span>
 
-<span class="fc" id="L264">			dblXAnchorCurrent = me.getKey();</span>
+<span class="fc" id="L265">			dblXAnchorCurrent = me.getKey();</span>
 
-<span class="fc" id="L266">			spanCurrent = me.getValue();</span>
+<span class="fc" id="L267">			spanCurrent = me.getValue();</span>
 
-<span class="fc bfc" id="L268" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchorPrev)) {</span>
-<span class="fc bfc" id="L269" title="All 2 branches covered.">				if (dblXAnchor &lt;= (dblXAnchorPrev = dblXAnchorCurrent)) return spanCurrent;</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchorPrev)) {</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">				if (dblXAnchor &lt;= (dblXAnchorPrev = dblXAnchorCurrent)) return spanCurrent;</span>
 
-<span class="fc" id="L271">				spanPrev = spanCurrent;</span>
-<span class="fc" id="L272">				continue;</span>
+<span class="fc" id="L272">				spanPrev = spanCurrent;</span>
+<span class="fc" id="L273">				continue;</span>
 			}
 
-<span class="pc bpc" id="L275" title="1 of 4 branches missed.">			if (dblXAnchor &gt; dblXAnchorPrev &amp;&amp; dblXAnchor &lt;= dblXAnchorCurrent) {</span>
-<span class="fc" id="L276">				double dblLeftWeight = (dblXAnchorCurrent - dblXAnchor) / (dblXAnchorCurrent -</span>
+<span class="pc bpc" id="L276" title="1 of 4 branches missed.">			if (dblXAnchor &gt; dblXAnchorPrev &amp;&amp; dblXAnchor &lt;= dblXAnchorCurrent) {</span>
+<span class="fc" id="L277">				double dblLeftWeight = (dblXAnchorCurrent - dblXAnchor) / (dblXAnchorCurrent -</span>
 					dblXAnchorPrev);
 
-<span class="fc" id="L279">				java.util.List&lt;java.lang.Double&gt; lsWeight = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L280">				java.util.List&lt;java.lang.Double&gt; lsWeight = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L281">				java.util.List&lt;org.drip.spline.grid.Span&gt; lsSpan = new</span>
+<span class="fc" id="L282">				java.util.List&lt;org.drip.spline.grid.Span&gt; lsSpan = new</span>
 					java.util.ArrayList&lt;org.drip.spline.grid.Span&gt;();
 
-<span class="fc" id="L284">				lsSpan.add (spanPrev);</span>
+<span class="fc" id="L285">				lsSpan.add (spanPrev);</span>
 
-<span class="fc" id="L286">				lsSpan.add (spanCurrent);</span>
+<span class="fc" id="L287">				lsSpan.add (spanCurrent);</span>
 
-<span class="fc" id="L288">				lsWeight.add (dblLeftWeight);</span>
+<span class="fc" id="L289">				lsWeight.add (dblLeftWeight);</span>
 
-<span class="fc" id="L290">				lsWeight.add (1. - dblLeftWeight);</span>
+<span class="fc" id="L291">				lsWeight.add (1. - dblLeftWeight);</span>
 
 				try {
-<span class="fc" id="L293">					return new org.drip.spline.grid.AggregatedSpan (lsSpan, lsWeight);</span>
-<span class="nc" id="L294">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L295">					e.printStackTrace();</span>
+<span class="fc" id="L294">					return new org.drip.spline.grid.AggregatedSpan (lsSpan, lsWeight);</span>
+<span class="nc" id="L295">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L296">					e.printStackTrace();</span>
 
-<span class="nc" id="L297">					return null;</span>
+<span class="nc" id="L298">					return null;</span>
 				}
 			}
 
-<span class="fc" id="L301">			spanPrev = spanCurrent;</span>
-<span class="fc" id="L302">			dblXAnchorPrev = dblXAnchorCurrent;</span>
-<span class="fc" id="L303">		}</span>
+<span class="fc" id="L302">			spanPrev = spanCurrent;</span>
+<span class="fc" id="L303">			dblXAnchorPrev = dblXAnchorCurrent;</span>
+<span class="fc" id="L304">		}</span>
 
-<span class="fc" id="L305">		return spanCurrent;</span>
+<span class="fc" id="L306">		return spanCurrent;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

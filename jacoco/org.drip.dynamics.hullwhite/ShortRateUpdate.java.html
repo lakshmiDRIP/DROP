@@ -13,12 +13,12 @@ package org.drip.dynamics.hullwhite;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -45,6 +45,7 @@ package org.drip.dynamics.hullwhite;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,17 +76,17 @@ package org.drip.dynamics.hullwhite;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite/README.md&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate {
-<span class="fc" id="L86">	private double _dblExpectedFinalShortRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblFinalShortRateVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="fc" id="L87">	private double _dblExpectedFinalShortRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L88">	private double _dblFinalShortRateVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
 
 	/**
 	 * Construct an Instance of ShortRateUpdate
@@ -117,35 +118,35 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 		final double dblZeroCouponBondPrice)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L120">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
+<span class="fc" id="L121">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 				dblRealizedFinalShortRate))
-<span class="nc" id="L126">			return null;</span>
+<span class="nc" id="L127">			return null;</span>
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
 				dblZeroCouponBondPrice))
-<span class="nc" id="L131">			return null;</span>
+<span class="nc" id="L132">			return null;</span>
 
-<span class="fc" id="L133">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
+<span class="fc" id="L134">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
 				dblRealizedFinalShortRate - dblInitialShortRate))
-<span class="nc" id="L139">			return null;</span>
+<span class="nc" id="L140">			return null;</span>
 
 		try {
-<span class="fc" id="L142">			return new ShortRateUpdate (lslFunding, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
+<span class="fc" id="L143">			return new ShortRateUpdate (lslFunding, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
 				lrIncrement, dblExpectedFinalShortRate, dblFinalShortRateVariance);
-<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L145">			e.printStackTrace();</span>
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L148">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	private ShortRateUpdate (
@@ -159,21 +160,21 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 		final double dblFinalShortRateVariance)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L162">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
+<span class="fc" id="L163">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
 
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			(_dblExpectedFinalShortRate = dblExpectedFinalShortRate) ||</span>
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblFinalShortRateVariance =</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">			(_dblExpectedFinalShortRate = dblExpectedFinalShortRate) ||</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblFinalShortRateVariance =</span>
 					dblFinalShortRateVariance)) {
-<span class="nc" id="L168">			System.out.println (_lslFunding.fullyQualifiedName());</span>
+<span class="nc" id="L169">			System.out.println (_lslFunding.fullyQualifiedName());</span>
 
-<span class="nc" id="L170">			System.out.println (&quot;Final Short Rate: &quot; + _dblExpectedFinalShortRate);</span>
+<span class="nc" id="L171">			System.out.println (&quot;Final Short Rate: &quot; + _dblExpectedFinalShortRate);</span>
 
-<span class="nc" id="L172">			System.out.println (&quot;Final Short Rate Variance: &quot; + _dblFinalShortRateVariance);</span>
+<span class="nc" id="L173">			System.out.println (&quot;Final Short Rate Variance: &quot; + _dblFinalShortRateVariance);</span>
 
-<span class="nc" id="L174">			throw new java.lang.Exception (&quot;ShortRateUpdate ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;ShortRateUpdate ctr: Invalid Inputs!&quot;);</span>
 		}
-<span class="fc" id="L176">	}</span>
+<span class="fc" id="L177">	}</span>
 
 	/**
 	 * Retrieve the Initial Short Rate
@@ -186,7 +187,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 	public double initialShortRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L189">		return realizedFinalShortRate() - shortRateIncrement();</span>
+<span class="fc" id="L190">		return realizedFinalShortRate() - shortRateIncrement();</span>
 	}
 
 	/**
@@ -200,7 +201,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 	public double realizedFinalShortRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L203">		return snapshot().qm (_lslFunding,</span>
+<span class="fc" id="L204">		return snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -215,7 +216,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 	public double shortRateIncrement()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L218">		return increment().qm (_lslFunding,</span>
+<span class="fc" id="L219">		return increment().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -227,7 +228,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 
 	public double expectedFinalShortRate()
 	{
-<span class="fc" id="L230">		return _dblExpectedFinalShortRate;</span>
+<span class="fc" id="L231">		return _dblExpectedFinalShortRate;</span>
 	}
 
 	/**
@@ -238,7 +239,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 
 	public double finalShortRateVariance()
 	{
-<span class="fc" id="L241">		return _dblFinalShortRateVariance;</span>
+<span class="fc" id="L242">		return _dblFinalShortRateVariance;</span>
 	}
 
 	/**
@@ -255,10 +256,10 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 		final double dblFinalInitialZeroRatio)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblFinalInitialZeroRatio))</span>
-<span class="nc" id="L259">			throw new java.lang.Exception (&quot;ShortRateUpdate::zeroCouponBondPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblFinalInitialZeroRatio))</span>
+<span class="nc" id="L260">			throw new java.lang.Exception (&quot;ShortRateUpdate::zeroCouponBondPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L261">		return dblFinalInitialZeroRatio * snapshot().qm (_lslFunding,</span>
+<span class="fc" id="L262">		return dblFinalInitialZeroRatio * snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 }

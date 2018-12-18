@@ -96,9 +96,10 @@ package org.drip.simm.parameters;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,8 +108,8 @@ package org.drip.simm.parameters;
 
 public class RiskMeasureSensitivitySettingsIR
 {
-<span class="nc" id="L110">	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;</span>
-<span class="nc" id="L111">	private java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;</span>
+<span class="nc" id="L111">	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;</span>
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;</span>
 		_bucketSensitivitySettingsMap = null;
 
 	/**
@@ -122,38 +123,38 @@ public class RiskMeasureSensitivitySettingsIR
 	public static final RiskMeasureSensitivitySettingsIR ISDA_DELTA_20 (
 		final java.util.List&lt;java.lang.String&gt; currencyList)
 	{
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == currencyList)</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == currencyList)</span>
 		{
-<span class="nc" id="L127">			return null;</span>
+<span class="nc" id="L128">			return null;</span>
 		}
 
-<span class="nc" id="L130">		int currencyListSize = currencyList.size();</span>
+<span class="nc" id="L131">		int currencyListSize = currencyList.size();</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
 		{
-<span class="nc" id="L134">			return null;</span>
+<span class="nc" id="L135">			return null;</span>
 		}
 
-<span class="nc" id="L137">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
+<span class="nc" id="L138">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L140">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+<span class="nc" id="L141">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;();
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
 		{
-<span class="nc" id="L145">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
+<span class="nc" id="L146">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
 
-<span class="nc" id="L147">			bucketDeltaSettingsMap.put (</span>
+<span class="nc" id="L148">			bucketDeltaSettingsMap.put (</span>
 				currency,
-<span class="nc" id="L149">				org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_20 (currency)</span>
+<span class="nc" id="L150">				org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_20 (currency)</span>
 			);
 
-<span class="nc" id="L152">			for (int currencyListInnerIndex = 0;</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
-<span class="nc" id="L154">				++currencyListInnerIndex)</span>
+<span class="nc" id="L153">			for (int currencyListInnerIndex = 0;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
+<span class="nc" id="L155">				++currencyListInnerIndex)</span>
 			{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
 					currencyListIndex == currencyListInnerIndex ? 1. :
 						org.drip.simm.rates.IRSystemics20.CROSS_CURRENCY_CORRELATION;
 			}
@@ -161,7 +162,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 		try
 		{
-<span class="nc" id="L164">			return new RiskMeasureSensitivitySettingsIR (</span>
+<span class="nc" id="L165">			return new RiskMeasureSensitivitySettingsIR (</span>
 				bucketDeltaSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
@@ -169,12 +170,12 @@ public class RiskMeasureSensitivitySettingsIR
 				)
 			);
 		}
-<span class="nc" id="L172">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L173">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L174">			e.printStackTrace();</span>
+<span class="nc" id="L175">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L177">		return null;</span>
+<span class="nc" id="L178">		return null;</span>
 	}
 
 	/**
@@ -188,38 +189,38 @@ public class RiskMeasureSensitivitySettingsIR
 	public static final RiskMeasureSensitivitySettingsIR ISDA_DELTA_21 (
 		final java.util.List&lt;java.lang.String&gt; currencyList)
 	{
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (null == currencyList)</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (null == currencyList)</span>
 		{
-<span class="nc" id="L193">			return null;</span>
+<span class="nc" id="L194">			return null;</span>
 		}
 
-<span class="nc" id="L196">		int currencyListSize = currencyList.size();</span>
+<span class="nc" id="L197">		int currencyListSize = currencyList.size();</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
 		{
-<span class="nc" id="L200">			return null;</span>
+<span class="nc" id="L201">			return null;</span>
 		}
 
-<span class="nc" id="L203">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
+<span class="nc" id="L204">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L206">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+<span class="nc" id="L207">			bucketDeltaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;();
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
 		{
-<span class="nc" id="L211">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
+<span class="nc" id="L212">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
 
-<span class="nc" id="L213">			bucketDeltaSettingsMap.put (</span>
+<span class="nc" id="L214">			bucketDeltaSettingsMap.put (</span>
 				currency,
-<span class="nc" id="L215">				org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_21 (currency)</span>
+<span class="nc" id="L216">				org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_21 (currency)</span>
 			);
 
-<span class="nc" id="L218">			for (int currencyListInnerIndex = 0;</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
-<span class="nc" id="L220">				++currencyListInnerIndex)</span>
+<span class="nc" id="L219">			for (int currencyListInnerIndex = 0;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
+<span class="nc" id="L221">				++currencyListInnerIndex)</span>
 			{
-<span class="nc bnc" id="L222" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
 					currencyListIndex == currencyListInnerIndex ? 1. :
 						org.drip.simm.rates.IRSystemics21.CROSS_CURRENCY_CORRELATION;
 			}
@@ -227,7 +228,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 		try
 		{
-<span class="nc" id="L230">			return new RiskMeasureSensitivitySettingsIR (</span>
+<span class="nc" id="L231">			return new RiskMeasureSensitivitySettingsIR (</span>
 				bucketDeltaSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
@@ -235,12 +236,12 @@ public class RiskMeasureSensitivitySettingsIR
 				)
 			);
 		}
-<span class="nc" id="L238">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L239">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L240">			e.printStackTrace();</span>
+<span class="nc" id="L241">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L243">		return null;</span>
+<span class="nc" id="L244">		return null;</span>
 	}
 
 	/**
@@ -254,38 +255,38 @@ public class RiskMeasureSensitivitySettingsIR
 	public static final RiskMeasureSensitivitySettingsIR ISDA_VEGA_20 (
 		final java.util.List&lt;java.lang.String&gt; currencyList)
 	{
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (null == currencyList)</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (null == currencyList)</span>
 		{
-<span class="nc" id="L259">			return null;</span>
+<span class="nc" id="L260">			return null;</span>
 		}
 
-<span class="nc" id="L262">		int currencyListSize = currencyList.size();</span>
+<span class="nc" id="L263">		int currencyListSize = currencyList.size();</span>
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
 		{
-<span class="nc" id="L266">			return null;</span>
+<span class="nc" id="L267">			return null;</span>
 		}
 
-<span class="nc" id="L269">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
+<span class="nc" id="L270">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L272">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+<span class="nc" id="L273">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;();
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
 		{
-<span class="nc" id="L277">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
+<span class="nc" id="L278">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
 
-<span class="nc" id="L279">			bucketVegaSettingsMap.put (</span>
+<span class="nc" id="L280">			bucketVegaSettingsMap.put (</span>
 				currency,
-<span class="nc" id="L281">				org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_20 (currency)</span>
+<span class="nc" id="L282">				org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_20 (currency)</span>
 			);
 
-<span class="nc" id="L284">			for (int currencyListInnerIndex = 0;</span>
-<span class="nc bnc" id="L285" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
-<span class="nc" id="L286">				++currencyListInnerIndex)</span>
+<span class="nc" id="L285">			for (int currencyListInnerIndex = 0;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
+<span class="nc" id="L287">				++currencyListInnerIndex)</span>
 			{
-<span class="nc bnc" id="L288" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
 					currencyListIndex == currencyListInnerIndex ? 1. :
 						org.drip.simm.rates.IRSystemics20.CROSS_CURRENCY_CORRELATION;
 			}
@@ -293,7 +294,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 		try
 		{
-<span class="nc" id="L296">			return new RiskMeasureSensitivitySettingsIR (</span>
+<span class="nc" id="L297">			return new RiskMeasureSensitivitySettingsIR (</span>
 				bucketVegaSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
@@ -301,12 +302,12 @@ public class RiskMeasureSensitivitySettingsIR
 				)
 			);
 		}
-<span class="nc" id="L304">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L305">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L306">			e.printStackTrace();</span>
+<span class="nc" id="L307">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L309">		return null;</span>
+<span class="nc" id="L310">		return null;</span>
 	}
 
 	/**
@@ -320,38 +321,38 @@ public class RiskMeasureSensitivitySettingsIR
 	public static final RiskMeasureSensitivitySettingsIR ISDA_VEGA_21 (
 		final java.util.List&lt;java.lang.String&gt; currencyList)
 	{
-<span class="nc bnc" id="L323" title="All 2 branches missed.">		if (null == currencyList)</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">		if (null == currencyList)</span>
 		{
-<span class="nc" id="L325">			return null;</span>
+<span class="nc" id="L326">			return null;</span>
 		}
 
-<span class="nc" id="L328">		int currencyListSize = currencyList.size();</span>
+<span class="nc" id="L329">		int currencyListSize = currencyList.size();</span>
 
-<span class="nc bnc" id="L330" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
 		{
-<span class="nc" id="L332">			return null;</span>
+<span class="nc" id="L333">			return null;</span>
 		}
 
-<span class="nc" id="L335">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
+<span class="nc" id="L336">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L338">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+<span class="nc" id="L339">			bucketVegaSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;();
 
-<span class="nc bnc" id="L341" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
 		{
-<span class="nc" id="L343">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
+<span class="nc" id="L344">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
 
-<span class="nc" id="L345">			bucketVegaSettingsMap.put (</span>
+<span class="nc" id="L346">			bucketVegaSettingsMap.put (</span>
 				currency,
-<span class="nc" id="L347">				org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency)</span>
+<span class="nc" id="L348">				org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency)</span>
 			);
 
-<span class="nc" id="L350">			for (int currencyListInnerIndex = 0;</span>
-<span class="nc bnc" id="L351" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
-<span class="nc" id="L352">				++currencyListInnerIndex)</span>
+<span class="nc" id="L351">			for (int currencyListInnerIndex = 0;</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
+<span class="nc" id="L353">				++currencyListInnerIndex)</span>
 			{
-<span class="nc bnc" id="L354" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
 					currencyListIndex == currencyListInnerIndex ? 1. :
 						org.drip.simm.rates.IRSystemics21.CROSS_CURRENCY_CORRELATION;
 			}
@@ -359,7 +360,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 		try
 		{
-<span class="nc" id="L362">			return new RiskMeasureSensitivitySettingsIR (</span>
+<span class="nc" id="L363">			return new RiskMeasureSensitivitySettingsIR (</span>
 				bucketVegaSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
@@ -367,12 +368,12 @@ public class RiskMeasureSensitivitySettingsIR
 				)
 			);
 		}
-<span class="nc" id="L370">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L371">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L372">			e.printStackTrace();</span>
+<span class="nc" id="L373">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L375">		return null;</span>
+<span class="nc" id="L376">		return null;</span>
 	}
 
 	/**
@@ -386,38 +387,38 @@ public class RiskMeasureSensitivitySettingsIR
 	public static final RiskMeasureSensitivitySettingsIR ISDA_CURVATURE_20 (
 		final java.util.List&lt;java.lang.String&gt; currencyList)
 	{
-<span class="nc bnc" id="L389" title="All 2 branches missed.">		if (null == currencyList)</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		if (null == currencyList)</span>
 		{
-<span class="nc" id="L391">			return null;</span>
+<span class="nc" id="L392">			return null;</span>
 		}
 
-<span class="nc" id="L394">		int currencyListSize = currencyList.size();</span>
+<span class="nc" id="L395">		int currencyListSize = currencyList.size();</span>
 
-<span class="nc bnc" id="L396" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
 		{
-<span class="nc" id="L398">			return null;</span>
+<span class="nc" id="L399">			return null;</span>
 		}
 
-<span class="nc" id="L401">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
+<span class="nc" id="L402">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L404">			bucketCurvatureSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+<span class="nc" id="L405">			bucketCurvatureSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;();
 
-<span class="nc bnc" id="L407" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
+<span class="nc bnc" id="L408" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
 		{
-<span class="nc" id="L409">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
+<span class="nc" id="L410">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
 
-<span class="nc" id="L411">			bucketCurvatureSettingsMap.put (</span>
+<span class="nc" id="L412">			bucketCurvatureSettingsMap.put (</span>
 				currency,
-<span class="nc" id="L413">				org.drip.simm.parameters.BucketCurvatureSettingsIR.ISDA_20 (currency)</span>
+<span class="nc" id="L414">				org.drip.simm.parameters.BucketCurvatureSettingsIR.ISDA_20 (currency)</span>
 			);
 
-<span class="nc" id="L416">			for (int currencyListInnerIndex = 0;</span>
-<span class="nc bnc" id="L417" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
-<span class="nc" id="L418">				++currencyListInnerIndex)</span>
+<span class="nc" id="L417">			for (int currencyListInnerIndex = 0;</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
+<span class="nc" id="L419">				++currencyListInnerIndex)</span>
 			{
-<span class="nc bnc" id="L420" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
 					currencyListIndex == currencyListInnerIndex ? 1. :
 						org.drip.simm.rates.IRSystemics20.CROSS_CURRENCY_CORRELATION;
 			}
@@ -425,7 +426,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 		try
 		{
-<span class="nc" id="L428">			return new RiskMeasureSensitivitySettingsIR (</span>
+<span class="nc" id="L429">			return new RiskMeasureSensitivitySettingsIR (</span>
 				bucketCurvatureSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
@@ -433,12 +434,12 @@ public class RiskMeasureSensitivitySettingsIR
 				)
 			);
 		}
-<span class="nc" id="L436">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L437">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L438">			e.printStackTrace();</span>
+<span class="nc" id="L439">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L441">		return null;</span>
+<span class="nc" id="L442">		return null;</span>
 	}
 
 	/**
@@ -452,38 +453,38 @@ public class RiskMeasureSensitivitySettingsIR
 	public static final RiskMeasureSensitivitySettingsIR ISDA_CURVATURE_21 (
 		final java.util.List&lt;java.lang.String&gt; currencyList)
 	{
-<span class="nc bnc" id="L455" title="All 2 branches missed.">		if (null == currencyList)</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">		if (null == currencyList)</span>
 		{
-<span class="nc" id="L457">			return null;</span>
+<span class="nc" id="L458">			return null;</span>
 		}
 
-<span class="nc" id="L460">		int currencyListSize = currencyList.size();</span>
+<span class="nc" id="L461">		int currencyListSize = currencyList.size();</span>
 
-<span class="nc bnc" id="L462" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">		if (0 == currencyListSize)</span>
 		{
-<span class="nc" id="L464">			return null;</span>
+<span class="nc" id="L465">			return null;</span>
 		}
 
-<span class="nc" id="L467">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
+<span class="nc" id="L468">		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L470">			bucketCurvatureSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
+<span class="nc" id="L471">			bucketCurvatureSettingsMap = new java.util.HashMap&lt;java.lang.String,</span>
 				org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;();
 
-<span class="nc bnc" id="L473" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">		for (int currencyListIndex = 0; currencyListIndex &lt; currencyListSize; ++currencyListIndex)</span>
 		{
-<span class="nc" id="L475">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
+<span class="nc" id="L476">			java.lang.String currency = currencyList.get (currencyListIndex);</span>
 
-<span class="nc" id="L477">			bucketCurvatureSettingsMap.put (</span>
+<span class="nc" id="L478">			bucketCurvatureSettingsMap.put (</span>
 				currency,
-<span class="nc" id="L479">				org.drip.simm.parameters.BucketCurvatureSettingsIR.ISDA_21 (currency)</span>
+<span class="nc" id="L480">				org.drip.simm.parameters.BucketCurvatureSettingsIR.ISDA_21 (currency)</span>
 			);
 
-<span class="nc" id="L482">			for (int currencyListInnerIndex = 0;</span>
-<span class="nc bnc" id="L483" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
-<span class="nc" id="L484">				++currencyListInnerIndex)</span>
+<span class="nc" id="L483">			for (int currencyListInnerIndex = 0;</span>
+<span class="nc bnc" id="L484" title="All 2 branches missed.">				currencyListInnerIndex &lt; currencyListSize;</span>
+<span class="nc" id="L485">				++currencyListInnerIndex)</span>
 			{
-<span class="nc bnc" id="L486" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =</span>
 					currencyListIndex == currencyListInnerIndex ? 1. :
 						org.drip.simm.rates.IRSystemics21.CROSS_CURRENCY_CORRELATION;
 			}
@@ -491,7 +492,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 		try
 		{
-<span class="nc" id="L494">			return new RiskMeasureSensitivitySettingsIR (</span>
+<span class="nc" id="L495">			return new RiskMeasureSensitivitySettingsIR (</span>
 				bucketCurvatureSettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					currencyList,
@@ -499,12 +500,12 @@ public class RiskMeasureSensitivitySettingsIR
 				)
 			);
 		}
-<span class="nc" id="L502">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L503">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L504">			e.printStackTrace();</span>
+<span class="nc" id="L505">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L507">		return null;</span>
+<span class="nc" id="L508">		return null;</span>
 	}
 
 	/**
@@ -521,14 +522,14 @@ public class RiskMeasureSensitivitySettingsIR
 			bucketSensitivitySettingsMap,
 		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L524">	{</span>
-<span class="nc bnc" id="L525" title="All 2 branches missed.">		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||</span>
-<span class="nc bnc" id="L526" title="All 4 branches missed.">				0 == _bucketSensitivitySettingsMap.size() ||</span>
+<span class="nc" id="L525">	{</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||</span>
+<span class="nc bnc" id="L527" title="All 4 branches missed.">				0 == _bucketSensitivitySettingsMap.size() ||</span>
 			null == (_crossBucketCorrelation = crossBucketCorrelation))
 		{
-<span class="nc" id="L529">			throw new java.lang.Exception (&quot;RiskMeasureSensitivitySettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L530">			throw new java.lang.Exception (&quot;RiskMeasureSensitivitySettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L531">	}</span>
+<span class="nc" id="L532">	}</span>
 
 	/**
 	 * Retrieve the Cross Bucket Correlation
@@ -538,7 +539,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 	public org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation()
 	{
-<span class="nc" id="L541">		return _crossBucketCorrelation;</span>
+<span class="nc" id="L542">		return _crossBucketCorrelation;</span>
 	}
 
 	/**
@@ -550,7 +551,7 @@ public class RiskMeasureSensitivitySettingsIR
 	public java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
 		bucketSensitivitySettingsMap()
 	{
-<span class="nc" id="L553">		return _bucketSensitivitySettingsMap;</span>
+<span class="nc" id="L554">		return _bucketSensitivitySettingsMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

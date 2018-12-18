@@ -97,9 +97,10 @@ package org.drip.xva.pde;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/pde&quot;&gt;PDE&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/pde&quot;&gt;PDE&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,8 +109,8 @@ package org.drip.xva.pde;
 
 public class TrajectoryEvolutionScheme
 {
-<span class="fc" id="L111">	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;</span>
-<span class="fc" id="L112">	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;</span>
+<span class="fc" id="L112">	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;</span>
+<span class="fc" id="L113">	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;</span>
 
 	/**
 	 * TrajectoryEvolutionScheme Constructor
@@ -124,13 +125,13 @@ public class TrajectoryEvolutionScheme
 		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
 		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
-<span class="fc" id="L127">	{</span>
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (null == (_tradeablesContainer = tradeablesContainer) ||</span>
+<span class="fc" id="L128">	{</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (null == (_tradeablesContainer = tradeablesContainer) ||</span>
 			null == (_pdeEvolutionControl = pdeEvolutionControl))
 		{
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;TrajectoryEvolutionScheme Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;TrajectoryEvolutionScheme Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L133">	}</span>
+<span class="fc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the Universe of Tradeables
@@ -140,7 +141,7 @@ public class TrajectoryEvolutionScheme
 
 	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
 	{
-<span class="fc" id="L143">		return _tradeablesContainer;</span>
+<span class="fc" id="L144">		return _tradeablesContainer;</span>
 	}
 
 	/**
@@ -151,7 +152,7 @@ public class TrajectoryEvolutionScheme
 
 	public org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl()
 	{
-<span class="nc" id="L154">		return _pdeEvolutionControl;</span>
+<span class="nc" id="L155">		return _pdeEvolutionControl;</span>
 	}
 
 	/**
@@ -167,95 +168,95 @@ public class TrajectoryEvolutionScheme
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final org.drip.exposure.universe.MarketEdge marketEdge)
 	{
-<span class="pc bpc" id="L170" title="2 of 4 branches missed.">		if (null == initialTrajectoryVertex ||</span>
+<span class="pc bpc" id="L171" title="2 of 4 branches missed.">		if (null == initialTrajectoryVertex ||</span>
 			null == marketEdge)
 		{
-<span class="nc" id="L173">			return null;</span>
+<span class="nc" id="L174">			return null;</span>
 		}
 
-<span class="fc" id="L176">		org.drip.xva.derivative.ReplicationPortfolioVertex initialReplicationPortfolioVertex =</span>
-<span class="fc" id="L177">			initialTrajectoryVertex.replicationPortfolioVertex();</span>
+<span class="fc" id="L177">		org.drip.xva.derivative.ReplicationPortfolioVertex initialReplicationPortfolioVertex =</span>
+<span class="fc" id="L178">			initialTrajectoryVertex.replicationPortfolioVertex();</span>
 
-<span class="fc" id="L179">		double initialPortfolioHoldings = initialReplicationPortfolioVertex.positionHoldings();</span>
+<span class="fc" id="L180">		double initialPortfolioHoldings = initialReplicationPortfolioVertex.positionHoldings();</span>
 
-<span class="fc" id="L181">		double initialDealerSeniorNumeraireHoldings =</span>
-<span class="fc" id="L182">			initialReplicationPortfolioVertex.dealerSeniorNumeraireHoldings();</span>
+<span class="fc" id="L182">		double initialDealerSeniorNumeraireHoldings =</span>
+<span class="fc" id="L183">			initialReplicationPortfolioVertex.dealerSeniorNumeraireHoldings();</span>
 
-<span class="fc" id="L184">		double initialClientNumeraireHoldings = initialReplicationPortfolioVertex.clientNumeraireHoldings();</span>
+<span class="fc" id="L185">		double initialClientNumeraireHoldings = initialReplicationPortfolioVertex.clientNumeraireHoldings();</span>
 
-<span class="fc" id="L186">		double initialDealerSubordinateNumeraireHoldings =</span>
-<span class="fc" id="L187">			initialReplicationPortfolioVertex.dealerSubordinateNumeraireHoldings();</span>
+<span class="fc" id="L187">		double initialDealerSubordinateNumeraireHoldings =</span>
+<span class="fc" id="L188">			initialReplicationPortfolioVertex.dealerSubordinateNumeraireHoldings();</span>
 
-<span class="fc" id="L189">		org.drip.exposure.universe.MarketVertex initialMarketVertex = marketEdge.start();</span>
+<span class="fc" id="L190">		org.drip.exposure.universe.MarketVertex initialMarketVertex = marketEdge.start();</span>
 
-<span class="fc" id="L191">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
+<span class="fc" id="L192">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
 
-<span class="fc" id="L193">		org.drip.exposure.universe.MarketVertexEntity emvDealerStart = initialMarketVertex.dealer();</span>
+<span class="fc" id="L194">		org.drip.exposure.universe.MarketVertexEntity emvDealerStart = initialMarketVertex.dealer();</span>
 
-<span class="fc" id="L195">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();</span>
+<span class="fc" id="L196">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();</span>
 
-<span class="fc" id="L197">		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();</span>
+<span class="fc" id="L198">		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();</span>
 
-<span class="fc" id="L199">		double finalDealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();</span>
+<span class="fc" id="L200">		double finalDealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();</span>
 
-<span class="fc" id="L201">		double finalClientNumeraire = clientMarketVertex.seniorFundingReplicator();</span>
+<span class="fc" id="L202">		double finalClientNumeraire = clientMarketVertex.seniorFundingReplicator();</span>
 
-<span class="fc" id="L203">		double initialDealerSubordinateFundingNumeraire = emvDealerStart.subordinateFundingReplicator();</span>
+<span class="fc" id="L204">		double initialDealerSubordinateFundingNumeraire = emvDealerStart.subordinateFundingReplicator();</span>
 
-<span class="fc" id="L205">		double finalDealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="fc" id="L206">		double finalDealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="fc" id="L207">		double timeIncrement = marketEdge.vertexIncrement() / 365.25;</span>
+<span class="fc" id="L208">		double timeIncrement = marketEdge.vertexIncrement() / 365.25;</span>
 
-<span class="fc" id="L209">		org.drip.exposure.evolver.PrimarySecurity clientFundingTradeable = _tradeablesContainer.clientFunding();</span>
+<span class="fc" id="L210">		org.drip.exposure.evolver.PrimarySecurity clientFundingTradeable = _tradeablesContainer.clientFunding();</span>
 
-<span class="fc" id="L211">		double clientCashAccumulation = initialClientNumeraireHoldings *</span>
-<span class="fc" id="L212">			clientFundingTradeable.cashAccumulationRate() * finalClientNumeraire * timeIncrement;</span>
+<span class="fc" id="L212">		double clientCashAccumulation = initialClientNumeraireHoldings *</span>
+<span class="fc" id="L213">			clientFundingTradeable.cashAccumulationRate() * finalClientNumeraire * timeIncrement;</span>
 
-<span class="fc" id="L214">		double clientHoldingsValueChange = initialClientNumeraireHoldings * (finalClientNumeraire -</span>
-<span class="fc" id="L215">			initialMarketVertex.client().seniorFundingReplicator());</span>
+<span class="fc" id="L215">		double clientHoldingsValueChange = initialClientNumeraireHoldings * (finalClientNumeraire -</span>
+<span class="fc" id="L216">			initialMarketVertex.client().seniorFundingReplicator());</span>
 
-<span class="fc" id="L217">		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()</span>
+<span class="fc" id="L218">		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()</span>
 			- initialDealerSeniorNumeraireHoldings * finalDealerSeniorFundingNumeraire;
 
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))</span>
 		{
-<span class="nc" id="L222">			cashAccountBalance -= initialDealerSubordinateNumeraireHoldings *</span>
+<span class="nc" id="L223">			cashAccountBalance -= initialDealerSubordinateNumeraireHoldings *</span>
 				finalDealerSubordinateFundingNumeraire;
 		}
 
-<span class="fc" id="L226">		org.drip.exposure.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();</span>
+<span class="fc" id="L227">		org.drip.exposure.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();</span>
 
-<span class="fc" id="L228">		org.drip.exposure.evolver.PrimarySecurity dealerSeniorFundingTradeable =</span>
-<span class="fc" id="L229">			_tradeablesContainer.dealerSeniorFunding();</span>
+<span class="fc" id="L229">		org.drip.exposure.evolver.PrimarySecurity dealerSeniorFundingTradeable =</span>
+<span class="fc" id="L230">			_tradeablesContainer.dealerSeniorFunding();</span>
 
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		double dealerCashAccumulation = cashAccountBalance * (cashAccountBalance &gt; 0. ?</span>
-<span class="pc" id="L232">			csaTradeable.cashAccumulationRate() : dealerSeniorFundingTradeable.cashAccumulationRate()) *</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">		double dealerCashAccumulation = cashAccountBalance * (cashAccountBalance &gt; 0. ?</span>
+<span class="pc" id="L233">			csaTradeable.cashAccumulationRate() : dealerSeniorFundingTradeable.cashAccumulationRate()) *</span>
 				timeIncrement;
 
 		try
 		{
-<span class="fc" id="L237">			double finalPortfolioValue = finalMarketVertex.latentStateValue</span>
-<span class="fc" id="L238">				(_tradeablesContainer.assetList().get (0).label());</span>
+<span class="fc" id="L238">			double finalPortfolioValue = finalMarketVertex.latentStateValue</span>
+<span class="fc" id="L239">				(_tradeablesContainer.assetList().get (0).label());</span>
 
-<span class="fc" id="L240">			double portfolioCashChange = initialPortfolioHoldings *</span>
-<span class="fc" id="L241">				_tradeablesContainer.assetList().get (0).cashAccumulationRate() * finalPortfolioValue *</span>
+<span class="fc" id="L241">			double portfolioCashChange = initialPortfolioHoldings *</span>
+<span class="fc" id="L242">				_tradeablesContainer.assetList().get (0).cashAccumulationRate() * finalPortfolioValue *</span>
 					timeIncrement;
 
-<span class="fc" id="L244">			double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -</span>
-<span class="fc" id="L245">				initialMarketVertex.latentStateValue (_tradeablesContainer.assetList().get (0).label())) +</span>
+<span class="fc" id="L245">			double derivativeXVAValueChange = -1. * (initialPortfolioHoldings * (finalPortfolioValue -</span>
+<span class="fc" id="L246">				initialMarketVertex.latentStateValue (_tradeablesContainer.assetList().get (0).label())) +</span>
 					initialDealerSeniorNumeraireHoldings * (finalDealerSeniorFundingNumeraire -
-<span class="fc" id="L247">						emvDealerStart.seniorFundingReplicator()) + clientHoldingsValueChange +</span>
+<span class="fc" id="L248">						emvDealerStart.seniorFundingReplicator()) + clientHoldingsValueChange +</span>
 							(portfolioCashChange + clientCashAccumulation + dealerCashAccumulation) *
 								timeIncrement);
 
-<span class="pc bpc" id="L251" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &amp;&amp;</span>
-<span class="nc bnc" id="L252" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &amp;&amp;</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))</span>
 			{
-<span class="nc" id="L254">				derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *</span>
+<span class="nc" id="L255">				derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *</span>
 					(finalDealerSubordinateFundingNumeraire - initialDealerSubordinateFundingNumeraire);
 			}
 
-<span class="fc" id="L258">			return new org.drip.xva.derivative.CashAccountRebalancer (</span>
+<span class="fc" id="L259">			return new org.drip.xva.derivative.CashAccountRebalancer (</span>
 				new org.drip.xva.derivative.CashAccountEdge (
 					portfolioCashChange,
 					dealerCashAccumulation * timeIncrement,
@@ -264,12 +265,12 @@ public class TrajectoryEvolutionScheme
 				derivativeXVAValueChange
 			);
 		}
-<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L268">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L269">			e.printStackTrace();</span>
+<span class="nc" id="L270">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L272">		return null;</span>
+<span class="nc" id="L273">		return null;</span>
 	}
 
 	/**
@@ -289,123 +290,123 @@ public class TrajectoryEvolutionScheme
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-<span class="pc bpc" id="L292" title="3 of 6 branches missed.">		if (null == marketEdge ||</span>
+<span class="pc bpc" id="L293" title="3 of 6 branches missed.">		if (null == marketEdge ||</span>
 			null == burgardKjaerOperator ||
 			null == initialTrajectoryVertex)
 		{
-<span class="nc" id="L296">			return null;</span>
+<span class="nc" id="L297">			return null;</span>
 		}
 
-<span class="fc" id="L299">		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =</span>
-<span class="fc" id="L300">			initialTrajectoryVertex.positionGreekVertex();</span>
+<span class="fc" id="L300">		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =</span>
+<span class="fc" id="L301">			initialTrajectoryVertex.positionGreekVertex();</span>
 
-<span class="fc" id="L302">		org.drip.xva.pde.BurgardKjaerEdgeRun burgardKjaerEdgeRun = burgardKjaerOperator.edgeRun (</span>
+<span class="fc" id="L303">		org.drip.xva.pde.BurgardKjaerEdgeRun burgardKjaerEdgeRun = burgardKjaerOperator.edgeRun (</span>
 			marketEdge,
 			initialTrajectoryVertex,
 			collateral
 		);
 
-<span class="fc" id="L308">		double initialTime = initialTrajectoryVertex.time();</span>
+<span class="fc" id="L309">		double initialTime = initialTrajectoryVertex.time();</span>
 
-<span class="fc" id="L310">		double timeIncrement = marketEdge.vertexIncrement() / 365.25;</span>
+<span class="fc" id="L311">		double timeIncrement = marketEdge.vertexIncrement() / 365.25;</span>
 
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">		if (null == burgardKjaerEdgeRun)</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (null == burgardKjaerEdgeRun)</span>
 		{
-<span class="nc" id="L314">			return null;</span>
+<span class="nc" id="L315">			return null;</span>
 		}
 
-<span class="fc" id="L317">		double theta = burgardKjaerEdgeRun.theta();</span>
+<span class="fc" id="L318">		double theta = burgardKjaerEdgeRun.theta();</span>
 
-<span class="fc" id="L319">		double positionValueBump = burgardKjaerEdgeRun.positionValueBump();</span>
+<span class="fc" id="L320">		double positionValueBump = burgardKjaerEdgeRun.positionValueBump();</span>
 
-<span class="fc" id="L321">		double thetaPositionValueUp = burgardKjaerEdgeRun.thetaPositionValueUp();</span>
+<span class="fc" id="L322">		double thetaPositionValueUp = burgardKjaerEdgeRun.thetaPositionValueUp();</span>
 
-<span class="fc" id="L323">		double thetaPositionValueDown = burgardKjaerEdgeRun.thetaPositionValueDown();</span>
+<span class="fc" id="L324">		double thetaPositionValueDown = burgardKjaerEdgeRun.thetaPositionValueDown();</span>
 
-<span class="fc" id="L325">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
+<span class="fc" id="L326">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
 
-<span class="fc" id="L327">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();</span>
+<span class="fc" id="L328">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();</span>
 
-<span class="fc" id="L329">		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();</span>
+<span class="fc" id="L330">		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();</span>
 
-<span class="fc" id="L331">		double derivativeXVAValueDeltaFinish =</span>
-<span class="fc" id="L332">			initialPositionGreekVertex.derivativeXVAValueDelta() +</span>
+<span class="fc" id="L332">		double derivativeXVAValueDeltaFinish =</span>
+<span class="fc" id="L333">			initialPositionGreekVertex.derivativeXVAValueDelta() +</span>
 			0.5 * (thetaPositionValueUp - thetaPositionValueDown) * timeIncrement / positionValueBump;
 
-<span class="fc" id="L335">		double clientGainOnDealerDefault = java.lang.Double.NaN;</span>
-<span class="fc" id="L336">		double finalGainOnClientDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L336">		double clientGainOnDealerDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L337">		double finalGainOnClientDefault = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L338">		double derivativeXVAValueFinish = initialPositionGreekVertex.derivativeXVAValue() - theta *</span>
+<span class="fc" id="L339">		double derivativeXVAValueFinish = initialPositionGreekVertex.derivativeXVAValue() - theta *</span>
 			timeIncrement;
 
 		try
 		{
-<span class="fc" id="L343">			org.drip.xva.definition.CloseOut closeOutScheme = new</span>
+<span class="fc" id="L344">			org.drip.xva.definition.CloseOut closeOutScheme = new</span>
 				org.drip.xva.definition.CloseOutBilateral (
-<span class="fc" id="L345">					dealerMarketVertex.seniorRecoveryRate(),</span>
-<span class="fc" id="L346">					clientMarketVertex.seniorRecoveryRate()</span>
+<span class="fc" id="L346">					dealerMarketVertex.seniorRecoveryRate(),</span>
+<span class="fc" id="L347">					clientMarketVertex.seniorRecoveryRate()</span>
 				);
 
-<span class="fc" id="L349">			clientGainOnDealerDefault = closeOutScheme.dealerDefault (derivativeXVAValueFinish);</span>
+<span class="fc" id="L350">			clientGainOnDealerDefault = closeOutScheme.dealerDefault (derivativeXVAValueFinish);</span>
 
-<span class="fc" id="L351">			finalGainOnClientDefault = -1. * (derivativeXVAValueFinish - closeOutScheme.clientDefault</span>
-<span class="fc" id="L352">				(derivativeXVAValueFinish));</span>
+<span class="fc" id="L352">			finalGainOnClientDefault = -1. * (derivativeXVAValueFinish - closeOutScheme.clientDefault</span>
+<span class="fc" id="L353">				(derivativeXVAValueFinish));</span>
 		}
-<span class="nc" id="L354">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L355">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L356">			e.printStackTrace();</span>
+<span class="nc" id="L357">			e.printStackTrace();</span>
 
-<span class="nc" id="L358">			return null;</span>
-<span class="fc" id="L359">		}</span>
+<span class="nc" id="L359">			return null;</span>
+<span class="fc" id="L360">		}</span>
 
-<span class="fc" id="L361">		double dealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="fc" id="L362">		double dealerSubordinateFundingNumeraire = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="fc" id="L363">		double gainOnDealerDefaultFinish = -1. * (derivativeXVAValueFinish - clientGainOnDealerDefault);</span>
+<span class="fc" id="L364">		double gainOnDealerDefaultFinish = -1. * (derivativeXVAValueFinish - clientGainOnDealerDefault);</span>
 
-<span class="fc" id="L365">		double finalClientHoldings = finalGainOnClientDefault / clientMarketVertex.seniorFundingReplicator();</span>
+<span class="fc" id="L366">		double finalClientHoldings = finalGainOnClientDefault / clientMarketVertex.seniorFundingReplicator();</span>
 
-<span class="fc" id="L367">		org.drip.xva.derivative.CashAccountRebalancer cashAccountRebalancer = rebalanceCash (</span>
+<span class="fc" id="L368">		org.drip.xva.derivative.CashAccountRebalancer cashAccountRebalancer = rebalanceCash (</span>
 			initialTrajectoryVertex,
 			marketEdge
 		);
 
-<span class="pc bpc" id="L372" title="1 of 2 branches missed.">		if (null == cashAccountRebalancer)</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">		if (null == cashAccountRebalancer)</span>
 		{
-<span class="nc" id="L374">			return null;</span>
+<span class="nc" id="L375">			return null;</span>
 		}
 
-<span class="fc" id="L377">		org.drip.xva.derivative.CashAccountEdge cashAccountEdge = cashAccountRebalancer.cashAccountEdge();</span>
+<span class="fc" id="L378">		org.drip.xva.derivative.CashAccountEdge cashAccountEdge = cashAccountRebalancer.cashAccountEdge();</span>
 
-<span class="fc" id="L379">		double dealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();</span>
+<span class="fc" id="L380">		double dealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();</span>
 
-<span class="fc" id="L381">		org.drip.exposure.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();</span>
+<span class="fc" id="L382">		org.drip.exposure.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();</span>
 
 		try
 		{
-<span class="fc" id="L385">			org.drip.xva.derivative.EvolutionTrajectoryVertex finalTrajectoryVertex = new</span>
+<span class="fc" id="L386">			org.drip.xva.derivative.EvolutionTrajectoryVertex finalTrajectoryVertex = new</span>
 				org.drip.xva.derivative.EvolutionTrajectoryVertex (
 				initialTime + timeIncrement,
 				new org.drip.xva.derivative.ReplicationPortfolioVertex (
 					-1. * derivativeXVAValueDeltaFinish,
 					gainOnDealerDefaultFinish / dealerSeniorFundingNumeraire,
-<span class="pc bpc" id="L391" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :</span>
+<span class="pc bpc" id="L392" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :</span>
 						gainOnDealerDefaultFinish / dealerSubordinateFundingNumeraire,
 					finalClientHoldings,
-<span class="fc" id="L394">					initialTrajectoryVertex.replicationPortfolioVertex().cashAccount() +</span>
-<span class="fc" id="L395">						cashAccountEdge.accumulation()</span>
+<span class="fc" id="L395">					initialTrajectoryVertex.replicationPortfolioVertex().cashAccount() +</span>
+<span class="fc" id="L396">						cashAccountEdge.accumulation()</span>
 				),
 				new org.drip.xva.derivative.PositionGreekVertex (
 					derivativeXVAValueFinish,
 					derivativeXVAValueDeltaFinish,
-<span class="fc" id="L400">					initialPositionGreekVertex.derivativeXVAValueGamma() +</span>
+<span class="fc" id="L401">					initialPositionGreekVertex.derivativeXVAValueGamma() +</span>
 						(thetaPositionValueUp + thetaPositionValueDown - 2. * theta) *
 						timeIncrement / (positionValueBump * positionValueBump),
-<span class="fc" id="L403">					initialPositionGreekVertex.derivativeFairValue() * java.lang.Math.exp (</span>
+<span class="fc" id="L404">					initialPositionGreekVertex.derivativeFairValue() * java.lang.Math.exp (</span>
 						-1. * timeIncrement *
-<span class="fc" id="L405">						csaTradeable.evolver().evaluator().drift().value (</span>
+<span class="fc" id="L406">						csaTradeable.evolver().evaluator().drift().value (</span>
 							new org.drip.measure.realization.JumpDiffusionVertex (
 								initialTime - 0.5 * timeIncrement,
-<span class="fc" id="L408">								marketEdge.start().csaReplicator(),</span>
+<span class="fc" id="L409">								marketEdge.start().csaReplicator(),</span>
 								0.,
 								false
 							)
@@ -415,21 +416,21 @@ public class TrajectoryEvolutionScheme
 				gainOnDealerDefaultFinish,
 				finalGainOnClientDefault,
 				collateral,
-<span class="fc" id="L418">				burgardKjaerEdgeRun.derivativeXVAHedgeErrorGrowth()</span>
+<span class="fc" id="L419">				burgardKjaerEdgeRun.derivativeXVAHedgeErrorGrowth()</span>
 			);
 
-<span class="fc" id="L421">			return new org.drip.xva.derivative.EvolutionTrajectoryEdge (</span>
+<span class="fc" id="L422">			return new org.drip.xva.derivative.EvolutionTrajectoryEdge (</span>
 				initialTrajectoryVertex,
 				finalTrajectoryVertex,
 				cashAccountEdge
 			);
 		}
-<span class="nc" id="L427">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L428">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L429">			e.printStackTrace();</span>
+<span class="nc" id="L430">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L432">		return null;</span>
+<span class="nc" id="L433">		return null;</span>
 	}
 
 	/**
@@ -449,26 +450,26 @@ public class TrajectoryEvolutionScheme
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-<span class="pc bpc" id="L452" title="1 of 2 branches missed.">		if (null == marketVertexArray)</span>
+<span class="pc bpc" id="L453" title="1 of 2 branches missed.">		if (null == marketVertexArray)</span>
 		{
-<span class="nc" id="L454">			return null;</span>
+<span class="nc" id="L455">			return null;</span>
 		}
 
-<span class="fc" id="L457">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L458">		org.drip.xva.derivative.EvolutionTrajectoryVertex trajectoryVertex = initialTrajectoryVertex;</span>
-<span class="pc bpc" id="L459" title="1 of 2 branches missed.">		org.drip.xva.derivative.EvolutionTrajectoryEdge[] evolutionTrajectoryEdgeArray = 1 &gt;= vertexCount ?</span>
+<span class="fc" id="L458">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L459">		org.drip.xva.derivative.EvolutionTrajectoryVertex trajectoryVertex = initialTrajectoryVertex;</span>
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">		org.drip.xva.derivative.EvolutionTrajectoryEdge[] evolutionTrajectoryEdgeArray = 1 &gt;= vertexCount ?</span>
 			null : new org.drip.xva.derivative.EvolutionTrajectoryEdge[vertexCount - 1];
 
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">		if (0 == vertexCount)</span>
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">		if (0 == vertexCount)</span>
 		{
-<span class="nc" id="L464">			return null;</span>
+<span class="nc" id="L465">			return null;</span>
 		}
 
-<span class="fc bfc" id="L467" title="All 2 branches covered.">		for (int i = vertexCount - 2; i &gt;= 0; --i)</span>
+<span class="fc bfc" id="L468" title="All 2 branches covered.">		for (int i = vertexCount - 2; i &gt;= 0; --i)</span>
 		{
 			try
 			{
-<span class="pc bpc" id="L471" title="1 of 2 branches missed.">				if (null == (evolutionTrajectoryEdgeArray[i] = eulerWalk (</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">				if (null == (evolutionTrajectoryEdgeArray[i] = eulerWalk (</span>
 					new org.drip.exposure.universe.MarketEdge (
 						marketVertexArray[i],
 						marketVertexArray[i + 1]
@@ -477,18 +478,18 @@ public class TrajectoryEvolutionScheme
 					trajectoryVertex,
 					collateral)))
 				{
-<span class="nc" id="L480">					return null;</span>
+<span class="nc" id="L481">					return null;</span>
 				}
 			}
-<span class="nc" id="L483">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L484">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L485">				e.printStackTrace();</span>
-<span class="fc" id="L486">			}</span>
+<span class="nc" id="L486">				e.printStackTrace();</span>
+<span class="fc" id="L487">			}</span>
 
-<span class="fc" id="L488">			trajectoryVertex = evolutionTrajectoryEdgeArray[i].vertexFinish();</span>
+<span class="fc" id="L489">			trajectoryVertex = evolutionTrajectoryEdgeArray[i].vertexFinish();</span>
 		}
 
-<span class="fc" id="L491">		return evolutionTrajectoryEdgeArray;</span>
+<span class="fc" id="L492">		return evolutionTrajectoryEdgeArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

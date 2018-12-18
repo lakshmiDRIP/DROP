@@ -14,12 +14,12 @@ package org.drip.analytics.date;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -46,6 +46,7 @@ package org.drip.analytics.date;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -88,26 +89,26 @@ package org.drip.analytics.date;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date&quot;&gt;Date&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date/README.md&quot;&gt;Date&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L98">public class DateUtil {</span>
+<span class="nc" id="L99">public class DateUtil {</span>
 
 	/**
 	 * HALF_SECOND Constant for Julian Date Construction
 	 */
 
-<span class="fc" id="L104">	public static double HALFSECOND = 0.5;</span>
+<span class="fc" id="L105">	public static double HALFSECOND = 0.5;</span>
 
 	/**
 	 * JGREG Constant for Julian Date Construction
 	 */
 
-<span class="fc" id="L110">  	public static int JGREG = 15 + 31 * (10 + 12 * 1582);</span>
+<span class="fc" id="L111">  	public static int JGREG = 15 + 31 * (10 + 12 * 1582);</span>
 
 	/**
 	 * LEFT_INCLUDE includes the start date in the Feb29 check
@@ -253,12 +254,12 @@ package org.drip.analytics.date;
 		final int iDay)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L256" title="3 of 6 branches missed.">		if (0 &gt; iYear || 0 &gt; iMonth || 0 &gt; iDay)</span>
-<span class="nc" id="L257">			throw new java.lang.Exception (&quot;DateUtil::ToJulian =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L257" title="3 of 6 branches missed.">		if (0 &gt; iYear || 0 &gt; iMonth || 0 &gt; iDay)</span>
+<span class="nc" id="L258">			throw new java.lang.Exception (&quot;DateUtil::ToJulian =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L259">		int iM1 = (iMonth - 14) / 12;</span>
-<span class="fc" id="L260">		int iY1 = iYear + 4800;</span>
-<span class="fc" id="L261">		return 1461 * (iY1 + iM1) / 4 + 367 * (iMonth - 2 - 12 * iM1) / 12 -</span>
+<span class="fc" id="L260">		int iM1 = (iMonth - 14) / 12;</span>
+<span class="fc" id="L261">		int iY1 = iYear + 4800;</span>
+<span class="fc" id="L262">		return 1461 * (iY1 + iM1) / 4 + 367 * (iMonth - 2 - 12 * iM1) / 12 -</span>
 			(3 * ((iY1 + iM1 + 100) / 100)) / 4 + iDay - 32075;
 	}
 
@@ -273,19 +274,19 @@ package org.drip.analytics.date;
 	public static java.lang.String YYYYMMDD (
 		final int iJulian)
 	{
-<span class="fc" id="L276">		int iP = iJulian + 68569;</span>
-<span class="fc" id="L277">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L278">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L279">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L280">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L281">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L282">		int iV = iU / 11;</span>
-<span class="fc" id="L283">		int iY = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L284">		int iM = iU + 2 - 12 * iV;</span>
-<span class="fc" id="L285">		int iD = iT - (2447 * iU / 80);</span>
+<span class="fc" id="L277">		int iP = iJulian + 68569;</span>
+<span class="fc" id="L278">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L279">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L280">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L281">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L282">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L283">		int iV = iU / 11;</span>
+<span class="fc" id="L284">		int iY = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L285">		int iM = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L286">		int iD = iT - (2447 * iU / 80);</span>
 
-<span class="fc" id="L287">		return &quot;&quot; + iY + &quot;/&quot; + org.drip.quant.common.FormatUtil.FormatDouble (iM, 2, 0, 1., false) + &quot;/&quot; +</span>
-<span class="fc" id="L288">			org.drip.quant.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false);</span>
+<span class="fc" id="L288">		return &quot;&quot; + iY + &quot;/&quot; + org.drip.quant.common.FormatUtil.FormatDouble (iM, 2, 0, 1., false) + &quot;/&quot; +</span>
+<span class="fc" id="L289">			org.drip.quant.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false);</span>
 	}
 
 	/**
@@ -299,18 +300,18 @@ package org.drip.analytics.date;
 	public static java.lang.String DDMMMYYYY (
 		final int iJulian)
 	{
-<span class="fc" id="L302">		int iP = iJulian + 68569;</span>
-<span class="fc" id="L303">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L304">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L305">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L306">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L307">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L308">		int iV = iU / 11;</span>
-<span class="fc" id="L309">		int iY = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L310">		int iM = iU + 2 - 12 * iV;</span>
-<span class="fc" id="L311">		int iD = iT - (2447 * iU / 80);</span>
+<span class="fc" id="L303">		int iP = iJulian + 68569;</span>
+<span class="fc" id="L304">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L305">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L306">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L307">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L308">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L309">		int iV = iU / 11;</span>
+<span class="fc" id="L310">		int iY = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L311">		int iM = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L312">		int iD = iT - (2447 * iU / 80);</span>
 
-<span class="fc" id="L313">		return org.drip.quant.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false) + &quot;-&quot; + MonthTrigram (iM)</span>
+<span class="fc" id="L314">		return org.drip.quant.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false) + &quot;-&quot; + MonthTrigram (iM)</span>
 			+ &quot;-&quot; + iY;
 	}
 
@@ -328,14 +329,14 @@ package org.drip.analytics.date;
 		final int iJulian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L331">		int iP = iJulian + 68569;</span>
-<span class="fc" id="L332">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L333">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L334">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L335">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L336">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L337">		int iV = iU / 11;</span>
-<span class="fc" id="L338">		return 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L332">		int iP = iJulian + 68569;</span>
+<span class="fc" id="L333">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L334">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L335">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L336">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L337">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L338">		int iV = iU / 11;</span>
+<span class="fc" id="L339">		return 100 * (iQ - 49) + iS + iV;</span>
 	}
 
 	/**
@@ -352,14 +353,14 @@ package org.drip.analytics.date;
 		final int iJulian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L355">		int iP = iJulian + 68569;</span>
-<span class="fc" id="L356">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L357">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L358">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L359">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L360">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L361">		int iV = iU / 11;</span>
-<span class="fc" id="L362">		return iU + 2 - 12 * iV;</span>
+<span class="fc" id="L356">		int iP = iJulian + 68569;</span>
+<span class="fc" id="L357">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L358">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L359">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L360">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L361">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L362">		int iV = iU / 11;</span>
+<span class="fc" id="L363">		return iU + 2 - 12 * iV;</span>
 	}
 
 	/**
@@ -376,13 +377,13 @@ package org.drip.analytics.date;
 		final int iJulian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L379">		int iP = iJulian + 68569;</span>
-<span class="fc" id="L380">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L381">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L382">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L383">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L384">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L385">		return iT - (2447 * iU / 80);</span>
+<span class="fc" id="L380">		int iP = iJulian + 68569;</span>
+<span class="fc" id="L381">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L382">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L383">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L384">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L385">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L386">		return iT - (2447 * iU / 80);</span>
 	}
 
 	/**
@@ -396,17 +397,17 @@ package org.drip.analytics.date;
 	public static java.lang.String Vintage (
 		final int iJulian)
 	{
-<span class="nc" id="L399">		int iP = iJulian + 68569;</span>
-<span class="nc" id="L400">		int iQ = 4 * iP / 146097;</span>
-<span class="nc" id="L401">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="nc" id="L402">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="nc" id="L403">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="nc" id="L404">		int iU = 80 * iT / 2447;</span>
-<span class="nc" id="L405">		int iV = iU / 11;</span>
-<span class="nc" id="L406">		int iY = 100 * (iQ - 49) + iS + iV;</span>
-<span class="nc" id="L407">		int iM = iU + 2 - 12 * iV;</span>
+<span class="nc" id="L400">		int iP = iJulian + 68569;</span>
+<span class="nc" id="L401">		int iQ = 4 * iP / 146097;</span>
+<span class="nc" id="L402">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="nc" id="L403">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="nc" id="L404">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="nc" id="L405">		int iU = 80 * iT / 2447;</span>
+<span class="nc" id="L406">		int iV = iU / 11;</span>
+<span class="nc" id="L407">		int iY = 100 * (iQ - 49) + iS + iV;</span>
+<span class="nc" id="L408">		int iM = iU + 2 - 12 * iV;</span>
 
-<span class="nc" id="L409">		return MonthTrigram (iM) + &quot;-&quot; + iY;</span>
+<span class="nc" id="L410">		return MonthTrigram (iM) + &quot;-&quot; + iY;</span>
 	}
 
 	/**
@@ -423,7 +424,7 @@ package org.drip.analytics.date;
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L426">		return iDate - ToJulian (Year (iDate), JANUARY, 1);</span>
+<span class="fc" id="L427">		return iDate - ToJulian (Year (iDate), JANUARY, 1);</span>
 	}
 
 	/**
@@ -440,7 +441,7 @@ package org.drip.analytics.date;
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L443">		return ToJulian (Year (iDate), DECEMBER, 31) - iDate;</span>
+<span class="fc" id="L444">		return ToJulian (Year (iDate), DECEMBER, 31) - iDate;</span>
 	}
 
 	/**
@@ -457,7 +458,7 @@ package org.drip.analytics.date;
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L460" title="All 2 branches covered.">		return 0 == (Year (iDate) % 4);</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">		return 0 == (Year (iDate) % 4);</span>
 	}
 
 	/**
@@ -479,20 +480,20 @@ package org.drip.analytics.date;
 		final int iIncludeSide)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L482" title="All 2 branches covered.">		if (iStartDate &gt;= iEndDate) return false;</span>
+<span class="fc bfc" id="L483" title="All 2 branches covered.">		if (iStartDate &gt;= iEndDate) return false;</span>
 
-<span class="fc" id="L484">		int iLeftDate = iStartDate;</span>
-<span class="fc" id="L485">		int iRightDate = iEndDate;</span>
+<span class="fc" id="L485">		int iLeftDate = iStartDate;</span>
+<span class="fc" id="L486">		int iRightDate = iEndDate;</span>
 
-<span class="pc bpc" id="L487" title="1 of 2 branches missed.">		if (0 == (iIncludeSide &amp; LEFT_INCLUDE)) ++iLeftDate;</span>
+<span class="pc bpc" id="L488" title="1 of 2 branches missed.">		if (0 == (iIncludeSide &amp; LEFT_INCLUDE)) ++iLeftDate;</span>
 
-<span class="pc bpc" id="L489" title="1 of 2 branches missed.">		if (0 == (iIncludeSide &amp; RIGHT_INCLUDE)) --iRightDate;</span>
+<span class="pc bpc" id="L490" title="1 of 2 branches missed.">		if (0 == (iIncludeSide &amp; RIGHT_INCLUDE)) --iRightDate;</span>
 
-<span class="fc bfc" id="L491" title="All 2 branches covered.">		for (int iDate = iLeftDate; iDate &lt;= iRightDate; ++iDate) {</span>
-<span class="fc bfc" id="L492" title="All 4 branches covered.">			if (FEBRUARY == Month (iDate) &amp;&amp; 29 == Date (iDate)) return true;</span>
+<span class="fc bfc" id="L492" title="All 2 branches covered.">		for (int iDate = iLeftDate; iDate &lt;= iRightDate; ++iDate) {</span>
+<span class="fc bfc" id="L493" title="All 4 branches covered.">			if (FEBRUARY == Month (iDate) &amp;&amp; 29 == Date (iDate)) return true;</span>
 		}
 
-<span class="fc" id="L495">		return false;</span>
+<span class="fc" id="L496">		return false;</span>
 	}
 
 	/**
@@ -514,24 +515,24 @@ package org.drip.analytics.date;
 		final int iIncludeSide)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L517">		int iNumFeb29 = 0;</span>
-<span class="fc" id="L518">		boolean bLoop = true;</span>
-<span class="fc" id="L519">		int iDate = iStartDate;</span>
+<span class="fc" id="L518">		int iNumFeb29 = 0;</span>
+<span class="fc" id="L519">		boolean bLoop = true;</span>
+<span class="fc" id="L520">		int iDate = iStartDate;</span>
 
-<span class="fc bfc" id="L521" title="All 2 branches covered.">		while (bLoop) {</span>
-<span class="fc" id="L522">			int iPeriodEndDate = iDate + 365;</span>
+<span class="fc bfc" id="L522" title="All 2 branches covered.">		while (bLoop) {</span>
+<span class="fc" id="L523">			int iPeriodEndDate = iDate + 365;</span>
 
-<span class="fc bfc" id="L524" title="All 2 branches covered.">			if (iPeriodEndDate &gt; iEndDate) {</span>
-<span class="fc" id="L525">				bLoop = false;</span>
-<span class="fc" id="L526">				iPeriodEndDate = iEndDate;</span>
+<span class="fc bfc" id="L525" title="All 2 branches covered.">			if (iPeriodEndDate &gt; iEndDate) {</span>
+<span class="fc" id="L526">				bLoop = false;</span>
+<span class="fc" id="L527">				iPeriodEndDate = iEndDate;</span>
 			}
 
-<span class="fc bfc" id="L529" title="All 2 branches covered.">			if (ContainsFeb29 (iDate, iPeriodEndDate, iIncludeSide)) ++iNumFeb29;</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">			if (ContainsFeb29 (iDate, iPeriodEndDate, iIncludeSide)) ++iNumFeb29;</span>
 
-<span class="fc" id="L531">			iDate = iPeriodEndDate;</span>
-<span class="fc" id="L532">		}</span>
+<span class="fc" id="L532">			iDate = iPeriodEndDate;</span>
+<span class="fc" id="L533">		}</span>
 
-<span class="fc" id="L534">		return iNumFeb29;</span>
+<span class="fc" id="L535">		return iNumFeb29;</span>
 	}
 
 	/**
@@ -545,31 +546,31 @@ package org.drip.analytics.date;
 	public static final java.lang.String MonthChar (
 		final int iMonth)
 	{
-<span class="pc bpc" id="L548" title="1 of 2 branches missed.">		if (JANUARY == iMonth) return &quot;January&quot;;</span>
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">		if (JANUARY == iMonth) return &quot;January&quot;;</span>
 
-<span class="fc bfc" id="L550" title="All 2 branches covered.">		if (FEBRUARY == iMonth) return &quot;February&quot;;</span>
+<span class="fc bfc" id="L551" title="All 2 branches covered.">		if (FEBRUARY == iMonth) return &quot;February&quot;;</span>
 
-<span class="pc bpc" id="L552" title="1 of 2 branches missed.">		if (MARCH == iMonth) return &quot;March&quot;;</span>
+<span class="pc bpc" id="L553" title="1 of 2 branches missed.">		if (MARCH == iMonth) return &quot;March&quot;;</span>
 
-<span class="pc bpc" id="L554" title="1 of 2 branches missed.">		if (APRIL == iMonth) return &quot;April&quot;;</span>
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">		if (APRIL == iMonth) return &quot;April&quot;;</span>
 
-<span class="fc bfc" id="L556" title="All 2 branches covered.">		if (MAY == iMonth) return &quot;May&quot;;</span>
+<span class="fc bfc" id="L557" title="All 2 branches covered.">		if (MAY == iMonth) return &quot;May&quot;;</span>
 
-<span class="pc bpc" id="L558" title="1 of 2 branches missed.">		if (JUNE == iMonth) return &quot;June&quot;;</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">		if (JUNE == iMonth) return &quot;June&quot;;</span>
 
-<span class="pc bpc" id="L560" title="1 of 2 branches missed.">		if (JULY == iMonth) return &quot;July&quot;;</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">		if (JULY == iMonth) return &quot;July&quot;;</span>
 
-<span class="fc bfc" id="L562" title="All 2 branches covered.">		if (AUGUST == iMonth) return &quot;August&quot;;</span>
+<span class="fc bfc" id="L563" title="All 2 branches covered.">		if (AUGUST == iMonth) return &quot;August&quot;;</span>
 
-<span class="pc bpc" id="L564" title="1 of 2 branches missed.">		if (SEPTEMBER == iMonth) return &quot;September&quot;;</span>
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">		if (SEPTEMBER == iMonth) return &quot;September&quot;;</span>
 
-<span class="pc bpc" id="L566" title="1 of 2 branches missed.">		if (OCTOBER == iMonth) return &quot;October&quot;;</span>
+<span class="pc bpc" id="L567" title="1 of 2 branches missed.">		if (OCTOBER == iMonth) return &quot;October&quot;;</span>
 
-<span class="pc bpc" id="L568" title="1 of 2 branches missed.">		if (NOVEMBER == iMonth) return &quot;November&quot;;</span>
+<span class="pc bpc" id="L569" title="1 of 2 branches missed.">		if (NOVEMBER == iMonth) return &quot;November&quot;;</span>
 
-<span class="nc bnc" id="L570" title="All 2 branches missed.">		if (DECEMBER == iMonth) return &quot;December&quot;;</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">		if (DECEMBER == iMonth) return &quot;December&quot;;</span>
 
-<span class="nc" id="L572">		return null;</span>
+<span class="nc" id="L573">		return null;</span>
 	}
 
 	/**
@@ -583,31 +584,31 @@ package org.drip.analytics.date;
 	public static java.lang.String MonthTrigram (
 		final int iMonth)
 	{
-<span class="fc bfc" id="L586" title="All 2 branches covered.">		if (JANUARY == iMonth) return &quot;JAN&quot;;</span>
+<span class="fc bfc" id="L587" title="All 2 branches covered.">		if (JANUARY == iMonth) return &quot;JAN&quot;;</span>
 
-<span class="fc bfc" id="L588" title="All 2 branches covered.">		if (FEBRUARY == iMonth) return &quot;FEB&quot;;</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">		if (FEBRUARY == iMonth) return &quot;FEB&quot;;</span>
 
-<span class="fc bfc" id="L590" title="All 2 branches covered.">		if (MARCH == iMonth) return &quot;MAR&quot;;</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">		if (MARCH == iMonth) return &quot;MAR&quot;;</span>
 
-<span class="fc bfc" id="L592" title="All 2 branches covered.">		if (APRIL == iMonth) return &quot;APR&quot;;</span>
+<span class="fc bfc" id="L593" title="All 2 branches covered.">		if (APRIL == iMonth) return &quot;APR&quot;;</span>
 
-<span class="fc bfc" id="L594" title="All 2 branches covered.">		if (MAY == iMonth) return &quot;MAY&quot;;</span>
+<span class="fc bfc" id="L595" title="All 2 branches covered.">		if (MAY == iMonth) return &quot;MAY&quot;;</span>
 
-<span class="fc bfc" id="L596" title="All 2 branches covered.">		if (JUNE == iMonth) return &quot;JUN&quot;;</span>
+<span class="fc bfc" id="L597" title="All 2 branches covered.">		if (JUNE == iMonth) return &quot;JUN&quot;;</span>
 
-<span class="fc bfc" id="L598" title="All 2 branches covered.">		if (JULY == iMonth) return &quot;JUL&quot;;</span>
+<span class="fc bfc" id="L599" title="All 2 branches covered.">		if (JULY == iMonth) return &quot;JUL&quot;;</span>
 
-<span class="fc bfc" id="L600" title="All 2 branches covered.">		if (AUGUST == iMonth) return &quot;AUG&quot;;</span>
+<span class="fc bfc" id="L601" title="All 2 branches covered.">		if (AUGUST == iMonth) return &quot;AUG&quot;;</span>
 
-<span class="fc bfc" id="L602" title="All 2 branches covered.">		if (SEPTEMBER == iMonth) return &quot;SEP&quot;;</span>
+<span class="fc bfc" id="L603" title="All 2 branches covered.">		if (SEPTEMBER == iMonth) return &quot;SEP&quot;;</span>
 
-<span class="fc bfc" id="L604" title="All 2 branches covered.">		if (OCTOBER == iMonth) return &quot;OCT&quot;;</span>
+<span class="fc bfc" id="L605" title="All 2 branches covered.">		if (OCTOBER == iMonth) return &quot;OCT&quot;;</span>
 
-<span class="fc bfc" id="L606" title="All 2 branches covered.">		if (NOVEMBER == iMonth) return &quot;NOV&quot;;</span>
+<span class="fc bfc" id="L607" title="All 2 branches covered.">		if (NOVEMBER == iMonth) return &quot;NOV&quot;;</span>
 
-<span class="pc bpc" id="L608" title="1 of 2 branches missed.">		if (DECEMBER == iMonth) return &quot;DEC&quot;;</span>
+<span class="pc bpc" id="L609" title="1 of 2 branches missed.">		if (DECEMBER == iMonth) return &quot;DEC&quot;;</span>
 
-<span class="nc" id="L610">		return null;</span>
+<span class="nc" id="L611">		return null;</span>
 	}
 
 	/**
@@ -624,36 +625,36 @@ package org.drip.analytics.date;
 		final java.lang.String strMonth)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L627" title="2 of 4 branches missed.">		if (null == strMonth || strMonth.isEmpty())</span>
-<span class="nc" id="L628">			throw new java.lang.Exception (&quot;DateUtil::MonthFromMonthChars =&gt; Invalid Month!&quot;);</span>
+<span class="pc bpc" id="L628" title="2 of 4 branches missed.">		if (null == strMonth || strMonth.isEmpty())</span>
+<span class="nc" id="L629">			throw new java.lang.Exception (&quot;DateUtil::MonthFromMonthChars =&gt; Invalid Month!&quot;);</span>
 
-<span class="pc bpc" id="L630" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;JAN&quot;) || strMonth.equalsIgnoreCase (&quot;JANUARY&quot;)) return JANUARY;</span>
+<span class="pc bpc" id="L631" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;JAN&quot;) || strMonth.equalsIgnoreCase (&quot;JANUARY&quot;)) return JANUARY;</span>
 
-<span class="pc bpc" id="L632" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;FEB&quot;) || strMonth.equalsIgnoreCase (&quot;FEBRUARY&quot;)) return FEBRUARY;</span>
+<span class="pc bpc" id="L633" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;FEB&quot;) || strMonth.equalsIgnoreCase (&quot;FEBRUARY&quot;)) return FEBRUARY;</span>
 
-<span class="pc bpc" id="L634" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;MAR&quot;) || strMonth.equalsIgnoreCase (&quot;MARCH&quot;)) return MARCH;</span>
+<span class="pc bpc" id="L635" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;MAR&quot;) || strMonth.equalsIgnoreCase (&quot;MARCH&quot;)) return MARCH;</span>
 
-<span class="pc bpc" id="L636" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;APR&quot;) || strMonth.equalsIgnoreCase (&quot;APRIL&quot;)) return APRIL;</span>
+<span class="pc bpc" id="L637" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;APR&quot;) || strMonth.equalsIgnoreCase (&quot;APRIL&quot;)) return APRIL;</span>
 
-<span class="fc bfc" id="L638" title="All 2 branches covered.">		if (strMonth.equalsIgnoreCase (&quot;MAY&quot;)) return MAY;</span>
+<span class="fc bfc" id="L639" title="All 2 branches covered.">		if (strMonth.equalsIgnoreCase (&quot;MAY&quot;)) return MAY;</span>
 
-<span class="pc bpc" id="L640" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;JUN&quot;) || strMonth.equalsIgnoreCase (&quot;JUNE&quot;)) return JUNE;</span>
+<span class="pc bpc" id="L641" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;JUN&quot;) || strMonth.equalsIgnoreCase (&quot;JUNE&quot;)) return JUNE;</span>
 
-<span class="pc bpc" id="L642" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;JUL&quot;) || strMonth.equalsIgnoreCase (&quot;JULY&quot;)) return JULY;</span>
+<span class="pc bpc" id="L643" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;JUL&quot;) || strMonth.equalsIgnoreCase (&quot;JULY&quot;)) return JULY;</span>
 
-<span class="pc bpc" id="L644" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;AUG&quot;) || strMonth.equalsIgnoreCase (&quot;AUGUST&quot;)) return AUGUST;</span>
+<span class="pc bpc" id="L645" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;AUG&quot;) || strMonth.equalsIgnoreCase (&quot;AUGUST&quot;)) return AUGUST;</span>
 
-<span class="pc bpc" id="L646" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;SEP&quot;) || strMonth.equalsIgnoreCase (&quot;SEPTEMBER&quot;) ||</span>
-<span class="pc bpc" id="L647" title="1 of 2 branches missed.">			strMonth.equalsIgnoreCase (&quot;SEPT&quot;))</span>
-<span class="fc" id="L648">			return SEPTEMBER;</span>
+<span class="pc bpc" id="L647" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;SEP&quot;) || strMonth.equalsIgnoreCase (&quot;SEPTEMBER&quot;) ||</span>
+<span class="pc bpc" id="L648" title="1 of 2 branches missed.">			strMonth.equalsIgnoreCase (&quot;SEPT&quot;))</span>
+<span class="fc" id="L649">			return SEPTEMBER;</span>
 
-<span class="pc bpc" id="L650" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;OCT&quot;) || strMonth.equalsIgnoreCase (&quot;OCTOBER&quot;)) return OCTOBER;</span>
+<span class="pc bpc" id="L651" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;OCT&quot;) || strMonth.equalsIgnoreCase (&quot;OCTOBER&quot;)) return OCTOBER;</span>
 
-<span class="pc bpc" id="L652" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;NOV&quot;) || strMonth.equalsIgnoreCase (&quot;NOVEMBER&quot;)) return NOVEMBER;</span>
+<span class="pc bpc" id="L653" title="1 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;NOV&quot;) || strMonth.equalsIgnoreCase (&quot;NOVEMBER&quot;)) return NOVEMBER;</span>
 
-<span class="pc bpc" id="L654" title="3 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;DEC&quot;) || strMonth.equalsIgnoreCase (&quot;DECEMBER&quot;)) return DECEMBER;</span>
+<span class="pc bpc" id="L655" title="3 of 4 branches missed.">		if (strMonth.equalsIgnoreCase (&quot;DEC&quot;) || strMonth.equalsIgnoreCase (&quot;DECEMBER&quot;)) return DECEMBER;</span>
 
-<span class="nc" id="L656">		throw new java.lang.Exception (&quot;DateUtil::MonthFromMonthChars =&gt; Invalid Month: &quot; + strMonth);</span>
+<span class="nc" id="L657">		throw new java.lang.Exception (&quot;DateUtil::MonthFromMonthChars =&gt; Invalid Month: &quot; + strMonth);</span>
 	}
 
 	/**
@@ -667,21 +668,21 @@ package org.drip.analytics.date;
 	public static java.lang.String DayChars (
 		final int iDay)
 	{
-<span class="nc bnc" id="L670" title="All 2 branches missed.">		if (MONDAY == iDay) return &quot;Monday&quot;;</span>
+<span class="nc bnc" id="L671" title="All 2 branches missed.">		if (MONDAY == iDay) return &quot;Monday&quot;;</span>
 
-<span class="nc bnc" id="L672" title="All 2 branches missed.">		if (TUESDAY == iDay) return &quot;Tuesday&quot;;</span>
+<span class="nc bnc" id="L673" title="All 2 branches missed.">		if (TUESDAY == iDay) return &quot;Tuesday&quot;;</span>
 
-<span class="nc bnc" id="L674" title="All 2 branches missed.">		if (WEDNESDAY == iDay) return &quot;Wednesday&quot;;</span>
+<span class="nc bnc" id="L675" title="All 2 branches missed.">		if (WEDNESDAY == iDay) return &quot;Wednesday&quot;;</span>
 
-<span class="nc bnc" id="L676" title="All 2 branches missed.">		if (THURSDAY == iDay) return &quot;Thursday&quot;;</span>
+<span class="nc bnc" id="L677" title="All 2 branches missed.">		if (THURSDAY == iDay) return &quot;Thursday&quot;;</span>
 
-<span class="nc bnc" id="L678" title="All 2 branches missed.">		if (FRIDAY == iDay) return &quot;Friday&quot;;</span>
+<span class="nc bnc" id="L679" title="All 2 branches missed.">		if (FRIDAY == iDay) return &quot;Friday&quot;;</span>
 
-<span class="nc bnc" id="L680" title="All 2 branches missed.">		if (SATURDAY == iDay) return &quot;Saturday&quot;;</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">		if (SATURDAY == iDay) return &quot;Saturday&quot;;</span>
 
-<span class="nc bnc" id="L682" title="All 2 branches missed.">		if (SUNDAY == iDay) return &quot;Sunday&quot;;</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">		if (SUNDAY == iDay) return &quot;Sunday&quot;;</span>
 
-<span class="nc" id="L684">		return &quot;&quot;;</span>
+<span class="nc" id="L685">		return &quot;&quot;;</span>
 	}
 
 	/**
@@ -700,31 +701,31 @@ package org.drip.analytics.date;
 		final int iYear)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L703" title="All 2 branches covered.">		if (JANUARY == iMonth) return 31;</span>
+<span class="fc bfc" id="L704" title="All 2 branches covered.">		if (JANUARY == iMonth) return 31;</span>
 
-<span class="fc bfc" id="L705" title="All 4 branches covered.">		if (FEBRUARY == iMonth) return 0 == (iYear % 4) ? 29 : 28;</span>
+<span class="fc bfc" id="L706" title="All 4 branches covered.">		if (FEBRUARY == iMonth) return 0 == (iYear % 4) ? 29 : 28;</span>
 
-<span class="fc bfc" id="L707" title="All 2 branches covered.">		if (MARCH == iMonth) return 31;</span>
+<span class="fc bfc" id="L708" title="All 2 branches covered.">		if (MARCH == iMonth) return 31;</span>
 
-<span class="fc bfc" id="L709" title="All 2 branches covered.">		if (APRIL == iMonth) return 30;</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">		if (APRIL == iMonth) return 30;</span>
 
-<span class="fc bfc" id="L711" title="All 2 branches covered.">		if (MAY == iMonth) return 31;</span>
+<span class="fc bfc" id="L712" title="All 2 branches covered.">		if (MAY == iMonth) return 31;</span>
 
-<span class="fc bfc" id="L713" title="All 2 branches covered.">		if (JUNE == iMonth) return 30;</span>
+<span class="fc bfc" id="L714" title="All 2 branches covered.">		if (JUNE == iMonth) return 30;</span>
 
-<span class="fc bfc" id="L715" title="All 2 branches covered.">		if (JULY == iMonth) return 31;</span>
+<span class="fc bfc" id="L716" title="All 2 branches covered.">		if (JULY == iMonth) return 31;</span>
 
-<span class="fc bfc" id="L717" title="All 2 branches covered.">		if (AUGUST == iMonth) return 31;</span>
+<span class="fc bfc" id="L718" title="All 2 branches covered.">		if (AUGUST == iMonth) return 31;</span>
 
-<span class="fc bfc" id="L719" title="All 2 branches covered.">		if (SEPTEMBER == iMonth) return 30;</span>
+<span class="fc bfc" id="L720" title="All 2 branches covered.">		if (SEPTEMBER == iMonth) return 30;</span>
 
-<span class="fc bfc" id="L721" title="All 2 branches covered.">		if (OCTOBER == iMonth) return 31;</span>
+<span class="fc bfc" id="L722" title="All 2 branches covered.">		if (OCTOBER == iMonth) return 31;</span>
 
-<span class="fc bfc" id="L723" title="All 2 branches covered.">		if (NOVEMBER == iMonth) return 30;</span>
+<span class="fc bfc" id="L724" title="All 2 branches covered.">		if (NOVEMBER == iMonth) return 30;</span>
 
-<span class="pc bpc" id="L725" title="1 of 2 branches missed.">		if (DECEMBER == iMonth) return 31;</span>
+<span class="pc bpc" id="L726" title="1 of 2 branches missed.">		if (DECEMBER == iMonth) return 31;</span>
 
-<span class="nc" id="L727">		throw new java.lang.Exception (&quot;DateUtil::DaysInMonth =&gt; Invalid Month: &quot; + iMonth);</span>
+<span class="nc" id="L728">		throw new java.lang.Exception (&quot;DateUtil::DaysInMonth =&gt; Invalid Month: &quot; + iMonth);</span>
 	}
 
 	/**
@@ -741,7 +742,7 @@ package org.drip.analytics.date;
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L744" title="All 2 branches covered.">		return Date (iDate) == DaysInMonth (Month (iDate), Year (iDate)) ? true : false;</span>
+<span class="fc bfc" id="L745" title="All 2 branches covered.">		return Date (iDate) == DaysInMonth (Month (iDate), Year (iDate)) ? true : false;</span>
 	}
 
 	/**
@@ -760,12 +761,12 @@ package org.drip.analytics.date;
 		final int iDate)
 	{
 		try {
-<span class="fc" id="L763">			return new org.drip.analytics.date.JulianDate (ToJulian (iYear, iMonth, iDate));</span>
-<span class="nc" id="L764">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L765">			e.printStackTrace();</span>
+<span class="fc" id="L764">			return new org.drip.analytics.date.JulianDate (ToJulian (iYear, iMonth, iDate));</span>
+<span class="nc" id="L765">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L766">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L768">		return null;</span>
+<span class="nc" id="L769">		return null;</span>
 	}
 
 	/**
@@ -776,15 +777,15 @@ package org.drip.analytics.date;
 
 	public static final org.drip.analytics.date.JulianDate Today()
 	{
-<span class="fc" id="L779">		java.util.Date dtNow = new java.util.Date();</span>
+<span class="fc" id="L780">		java.util.Date dtNow = new java.util.Date();</span>
 
 		try {
-<span class="fc" id="L782">			return CreateFromYMD (Year (dtNow), Month (dtNow), Day (dtNow));</span>
-<span class="nc" id="L783">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L784">			e.printStackTrace();</span>
+<span class="fc" id="L783">			return CreateFromYMD (Year (dtNow), Month (dtNow), Day (dtNow));</span>
+<span class="nc" id="L784">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L785">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L787">		return null;</span>
+<span class="nc" id="L788">		return null;</span>
 	}
 
 	/**
@@ -798,19 +799,19 @@ package org.drip.analytics.date;
 	public static final JulianDate CreateFromDDMMMYYYY (
 		final java.lang.String strDate)
 	{
-<span class="pc bpc" id="L801" title="1 of 4 branches missed.">		if (null == strDate || strDate.isEmpty()) return null;</span>
+<span class="pc bpc" id="L802" title="1 of 4 branches missed.">		if (null == strDate || strDate.isEmpty()) return null;</span>
 
-<span class="fc" id="L803">		java.lang.String[] astrParts = strDate.split (&quot;-&quot;);</span>
+<span class="fc" id="L804">		java.lang.String[] astrParts = strDate.split (&quot;-&quot;);</span>
 
-<span class="fc bfc" id="L805" title="All 2 branches covered.">		if (3 != astrParts.length) return null;</span>
+<span class="fc bfc" id="L806" title="All 2 branches covered.">		if (3 != astrParts.length) return null;</span>
 
 		try {
-<span class="fc" id="L808">			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[2]), MonthFromMonthChars (astrParts[1]),</span>
-<span class="fc" id="L809">				java.lang.Integer.parseInt (astrParts[0]));</span>
-<span class="fc" id="L810">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L809">			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[2]), MonthFromMonthChars (astrParts[1]),</span>
+<span class="fc" id="L810">				java.lang.Integer.parseInt (astrParts[0]));</span>
+<span class="fc" id="L811">		} catch (java.lang.Exception e) {</span>
 		}
 
-<span class="fc" id="L813">		return null;</span>
+<span class="fc" id="L814">		return null;</span>
 	}
 
 	/**
@@ -826,19 +827,19 @@ package org.drip.analytics.date;
 		final java.lang.String strMDY,
 		final java.lang.String strDelim)
 	{
-<span class="nc bnc" id="L829" title="All 8 branches missed.">		if (null == strMDY || strMDY.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;</span>
+<span class="nc bnc" id="L830" title="All 8 branches missed.">		if (null == strMDY || strMDY.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;</span>
 
-<span class="nc" id="L831">		java.lang.String[] astrParts = strMDY.split (strDelim);</span>
+<span class="nc" id="L832">		java.lang.String[] astrParts = strMDY.split (strDelim);</span>
 
-<span class="nc bnc" id="L833" title="All 2 branches missed.">		if (3 != astrParts.length) return null;</span>
+<span class="nc bnc" id="L834" title="All 2 branches missed.">		if (3 != astrParts.length) return null;</span>
 
 		try {
-<span class="nc" id="L836">			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[2]), java.lang.Integer.parseInt (astrParts[0]),</span>
-<span class="nc" id="L837">				java.lang.Integer.parseInt (astrParts[1]));</span>
-<span class="nc" id="L838">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L837">			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[2]), java.lang.Integer.parseInt (astrParts[0]),</span>
+<span class="nc" id="L838">				java.lang.Integer.parseInt (astrParts[1]));</span>
+<span class="nc" id="L839">		} catch (java.lang.Exception e) {</span>
 		}
 
-<span class="nc" id="L841">		return null;</span>
+<span class="nc" id="L842">		return null;</span>
 	}
 
 	/**
@@ -854,19 +855,19 @@ package org.drip.analytics.date;
 		final java.lang.String strYMD,
 		final java.lang.String strDelim)
 	{
-<span class="nc bnc" id="L857" title="All 8 branches missed.">		if (null == strYMD || strYMD.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;</span>
+<span class="nc bnc" id="L858" title="All 8 branches missed.">		if (null == strYMD || strYMD.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;</span>
 
-<span class="nc" id="L859">		java.lang.String[] astrParts = strYMD.split (strDelim);</span>
+<span class="nc" id="L860">		java.lang.String[] astrParts = strYMD.split (strDelim);</span>
 
-<span class="nc bnc" id="L861" title="All 2 branches missed.">		if (3 != astrParts.length) return null;</span>
+<span class="nc bnc" id="L862" title="All 2 branches missed.">		if (3 != astrParts.length) return null;</span>
 
 		try {
-<span class="nc" id="L864">			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[0]), java.lang.Integer.parseInt (astrParts[1]),</span>
-<span class="nc" id="L865">				java.lang.Integer.parseInt (astrParts[2]));</span>
-<span class="nc" id="L866">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L865">			return CreateFromYMD (java.lang.Integer.parseInt (astrParts[0]), java.lang.Integer.parseInt (astrParts[1]),</span>
+<span class="nc" id="L866">				java.lang.Integer.parseInt (astrParts[2]));</span>
+<span class="nc" id="L867">		} catch (java.lang.Exception e) {</span>
 		}
 
-<span class="nc" id="L869">		return null;</span>
+<span class="nc" id="L870">		return null;</span>
 	}
 
 	/**
@@ -883,13 +884,13 @@ package org.drip.analytics.date;
 		final java.util.Date dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L886" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::DayOfTheWeek =&gt; Invalid Date&quot;);</span>
+<span class="nc bnc" id="L887" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::DayOfTheWeek =&gt; Invalid Date&quot;);</span>
 
-<span class="nc" id="L888">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
+<span class="nc" id="L889">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
 
-<span class="nc" id="L890">		cal.setTime (dt);</span>
+<span class="nc" id="L891">		cal.setTime (dt);</span>
 
-<span class="nc" id="L892">		return cal.get (java.util.Calendar.DAY_OF_WEEK);</span>
+<span class="nc" id="L893">		return cal.get (java.util.Calendar.DAY_OF_WEEK);</span>
 	}
 
 	/**
@@ -906,13 +907,13 @@ package org.drip.analytics.date;
 		final java.util.Date dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L909" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::Day =&gt; Invalid Date&quot;);</span>
+<span class="pc bpc" id="L910" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::Day =&gt; Invalid Date&quot;);</span>
 
-<span class="fc" id="L911">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
+<span class="fc" id="L912">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
 
-<span class="fc" id="L913">		cal.setTime (dt);</span>
+<span class="fc" id="L914">		cal.setTime (dt);</span>
 
-<span class="fc" id="L915">		return cal.get (java.util.Calendar.DATE);</span>
+<span class="fc" id="L916">		return cal.get (java.util.Calendar.DATE);</span>
 	}
 
 	/**
@@ -929,13 +930,13 @@ package org.drip.analytics.date;
 		final java.util.Date dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L932" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::Month =&gt; Invalid Date&quot;);</span>
+<span class="pc bpc" id="L933" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::Month =&gt; Invalid Date&quot;);</span>
 
-<span class="fc" id="L934">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
+<span class="fc" id="L935">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
 
-<span class="fc" id="L936">		cal.setTime (dt);</span>
+<span class="fc" id="L937">		cal.setTime (dt);</span>
 
-<span class="fc" id="L938">		return cal.get (java.util.Calendar.MONTH) + 1;</span>
+<span class="fc" id="L939">		return cal.get (java.util.Calendar.MONTH) + 1;</span>
 	}
 
 	/**
@@ -952,13 +953,13 @@ package org.drip.analytics.date;
 		final java.util.Date dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L955" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::Year =&gt; Invalid Date&quot;);</span>
+<span class="pc bpc" id="L956" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DateUtil::Year =&gt; Invalid Date&quot;);</span>
 
-<span class="fc" id="L957">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
+<span class="fc" id="L958">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
 
-<span class="fc" id="L959">		cal.setTime (dt);</span>
+<span class="fc" id="L960">		cal.setTime (dt);</span>
 
-<span class="fc" id="L961">		return cal.get (java.util.Calendar.YEAR);</span>
+<span class="fc" id="L962">		return cal.get (java.util.Calendar.YEAR);</span>
 	}
 
 	/**
@@ -972,16 +973,16 @@ package org.drip.analytics.date;
 	public static java.lang.String MakeOracleDateFromYYYYMMDD (
 		final java.lang.String strYYYYMMDD)
 	{
-<span class="nc bnc" id="L975" title="All 4 branches missed.">		if (null == strYYYYMMDD || strYYYYMMDD.isEmpty()) return null;</span>
+<span class="nc bnc" id="L976" title="All 4 branches missed.">		if (null == strYYYYMMDD || strYYYYMMDD.isEmpty()) return null;</span>
 
 		try {
-<span class="nc" id="L978">			return strYYYYMMDD.substring (6) + &quot;-&quot; + MonthTrigram ((java.lang.Integer.parseInt</span>
-<span class="nc" id="L979">				(strYYYYMMDD.substring (4, 6)))) + &quot;-&quot; + strYYYYMMDD.substring (0, 4);</span>
-<span class="nc" id="L980">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L981">			e.printStackTrace();</span>
+<span class="nc" id="L979">			return strYYYYMMDD.substring (6) + &quot;-&quot; + MonthTrigram ((java.lang.Integer.parseInt</span>
+<span class="nc" id="L980">				(strYYYYMMDD.substring (4, 6)))) + &quot;-&quot; + strYYYYMMDD.substring (0, 4);</span>
+<span class="nc" id="L981">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L982">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L984">		return null;</span>
+<span class="nc" id="L985">		return null;</span>
 	}
 
 	/**
@@ -995,21 +996,21 @@ package org.drip.analytics.date;
 	public static java.lang.String MakeOracleDateFromBBGDate (
 		final java.lang.String strBBGDate)
 	{
-<span class="nc bnc" id="L998" title="All 4 branches missed.">		if (null == strBBGDate || strBBGDate.isEmpty()) return null;</span>
+<span class="nc bnc" id="L999" title="All 4 branches missed.">		if (null == strBBGDate || strBBGDate.isEmpty()) return null;</span>
 
-<span class="nc" id="L1000">		java.util.StringTokenizer st = new java.util.StringTokenizer (strBBGDate, &quot;/&quot;);</span>
+<span class="nc" id="L1001">		java.util.StringTokenizer st = new java.util.StringTokenizer (strBBGDate, &quot;/&quot;);</span>
 
 		try {
-<span class="nc" id="L1003">			java.lang.String strMonth = MonthTrigram (java.lang.Integer.parseInt (st.nextToken()));</span>
+<span class="nc" id="L1004">			java.lang.String strMonth = MonthTrigram (java.lang.Integer.parseInt (st.nextToken()));</span>
 
-<span class="nc bnc" id="L1005" title="All 2 branches missed.">			if (null == strMonth) return null;</span>
+<span class="nc bnc" id="L1006" title="All 2 branches missed.">			if (null == strMonth) return null;</span>
 
-<span class="nc" id="L1007">			return st.nextToken() + &quot;-&quot; + strMonth + &quot;-&quot; + st.nextToken();</span>
-<span class="nc" id="L1008">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1009">			e.printStackTrace();</span>
+<span class="nc" id="L1008">			return st.nextToken() + &quot;-&quot; + strMonth + &quot;-&quot; + st.nextToken();</span>
+<span class="nc" id="L1009">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1010">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1012">		return null;</span>
+<span class="nc" id="L1013">		return null;</span>
 	}
 
 	/**
@@ -1023,15 +1024,15 @@ package org.drip.analytics.date;
 	public static final org.drip.analytics.date.JulianDate MakeJulianFromRSEntry (
 		final java.util.Date dt)
 	{
-<span class="nc bnc" id="L1026" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="nc bnc" id="L1027" title="All 2 branches missed.">		if (null == dt) return null;</span>
 
 		try {
-<span class="nc" id="L1029">			return CreateFromYMD (Year (dt), Month (dt), Day (dt));</span>
-<span class="nc" id="L1030">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1031">			e.printStackTrace();</span>
+<span class="nc" id="L1030">			return CreateFromYMD (Year (dt), Month (dt), Day (dt));</span>
+<span class="nc" id="L1031">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1032">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1034">		return null;</span>
+<span class="nc" id="L1035">		return null;</span>
 	}
 
 	/**
@@ -1045,21 +1046,21 @@ package org.drip.analytics.date;
 	public static final java.util.Date JavaDateFromJulianDate (
 		final org.drip.analytics.date.JulianDate dt)
 	{
-<span class="pc bpc" id="L1048" title="1 of 2 branches missed.">		if (null == dt) return null;</span>
+<span class="pc bpc" id="L1049" title="1 of 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="fc" id="L1050">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
+<span class="fc" id="L1051">		java.util.Calendar cal = java.util.Calendar.getInstance();</span>
 
-<span class="fc" id="L1052">		int iDate = dt.julian();</span>
+<span class="fc" id="L1053">		int iDate = dt.julian();</span>
 
 		try {
-<span class="fc" id="L1055">			cal.set (Year (iDate), Month (iDate) - 1, Date (iDate));</span>
-<span class="nc" id="L1056">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1057">			e.printStackTrace();</span>
+<span class="fc" id="L1056">			cal.set (Year (iDate), Month (iDate) - 1, Date (iDate));</span>
+<span class="nc" id="L1057">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1058">			e.printStackTrace();</span>
 
-<span class="nc" id="L1059">			return null;</span>
-<span class="fc" id="L1060">		}</span>
+<span class="nc" id="L1060">			return null;</span>
+<span class="fc" id="L1061">		}</span>
 
-<span class="fc" id="L1062">		return cal.getTime();</span>
+<span class="fc" id="L1063">		return cal.getTime();</span>
 	}
 
 	/**
@@ -1075,21 +1076,21 @@ package org.drip.analytics.date;
 		final java.lang.String strDDMMMYY,
 		final java.lang.String strDelim)
 	{
-<span class="nc bnc" id="L1078" title="All 8 branches missed.">		if (null == strDDMMMYY || strDDMMMYY.isEmpty() || null == strDelim || strDelim.isEmpty())</span>
-<span class="nc" id="L1079">			return null;</span>
+<span class="nc bnc" id="L1079" title="All 8 branches missed.">		if (null == strDDMMMYY || strDDMMMYY.isEmpty() || null == strDelim || strDelim.isEmpty())</span>
+<span class="nc" id="L1080">			return null;</span>
 
-<span class="nc" id="L1081">		java.lang.String[] astrDMY = strDDMMMYY.split (strDelim);</span>
+<span class="nc" id="L1082">		java.lang.String[] astrDMY = strDDMMMYY.split (strDelim);</span>
 
-<span class="nc bnc" id="L1083" title="All 4 branches missed.">		if (null == astrDMY || 3 != astrDMY.length) return null;</span>
+<span class="nc bnc" id="L1084" title="All 4 branches missed.">		if (null == astrDMY || 3 != astrDMY.length) return null;</span>
 
 		try {
-<span class="nc" id="L1086">			return CreateFromYMD (2000 + java.lang.Integer.parseInt (astrDMY[2].trim()), MonthFromMonthChars</span>
-<span class="nc" id="L1087">				(astrDMY[1].trim()), java.lang.Integer.parseInt (astrDMY[0].trim()));</span>
-<span class="nc" id="L1088">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1089">			e.printStackTrace();</span>
+<span class="nc" id="L1087">			return CreateFromYMD (2000 + java.lang.Integer.parseInt (astrDMY[2].trim()), MonthFromMonthChars</span>
+<span class="nc" id="L1088">				(astrDMY[1].trim()), java.lang.Integer.parseInt (astrDMY[0].trim()));</span>
+<span class="nc" id="L1089">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1090">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1092">		return null;</span>
+<span class="nc" id="L1093">		return null;</span>
 	}
 
 	/**
@@ -1105,21 +1106,21 @@ package org.drip.analytics.date;
 		final java.lang.String strYYYYMMDD,
 		final java.lang.String strDelim)
 	{
-<span class="nc bnc" id="L1108" title="All 8 branches missed.">		if (null == strYYYYMMDD || strYYYYMMDD.isEmpty() || null == strDelim || strDelim.isEmpty())</span>
-<span class="nc" id="L1109">			return null;</span>
+<span class="nc bnc" id="L1109" title="All 8 branches missed.">		if (null == strYYYYMMDD || strYYYYMMDD.isEmpty() || null == strDelim || strDelim.isEmpty())</span>
+<span class="nc" id="L1110">			return null;</span>
 
-<span class="nc" id="L1111">		java.lang.String[] astrYYYYMMDD = strYYYYMMDD.split (strDelim);</span>
+<span class="nc" id="L1112">		java.lang.String[] astrYYYYMMDD = strYYYYMMDD.split (strDelim);</span>
 
-<span class="nc bnc" id="L1113" title="All 4 branches missed.">		if (null == astrYYYYMMDD || 3 != astrYYYYMMDD.length) return null;</span>
+<span class="nc bnc" id="L1114" title="All 4 branches missed.">		if (null == astrYYYYMMDD || 3 != astrYYYYMMDD.length) return null;</span>
 
 		try {
-<span class="nc" id="L1116">			return CreateFromYMD (java.lang.Integer.parseInt (astrYYYYMMDD[0].trim()), java.lang.Integer.parseInt</span>
-<span class="nc" id="L1117">				(astrYYYYMMDD[1].trim()), java.lang.Integer.parseInt (astrYYYYMMDD[2].trim()));</span>
-<span class="nc" id="L1118">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1119">			e.printStackTrace();</span>
+<span class="nc" id="L1117">			return CreateFromYMD (java.lang.Integer.parseInt (astrYYYYMMDD[0].trim()), java.lang.Integer.parseInt</span>
+<span class="nc" id="L1118">				(astrYYYYMMDD[1].trim()), java.lang.Integer.parseInt (astrYYYYMMDD[2].trim()));</span>
+<span class="nc" id="L1119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1120">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1122">		return null;</span>
+<span class="nc" id="L1123">		return null;</span>
 	}
 
 	/**
@@ -1135,21 +1136,21 @@ package org.drip.analytics.date;
 		final java.lang.String strMDY,
 		final java.lang.String strDelim)
 	{
-<span class="pc bpc" id="L1138" title="4 of 8 branches missed.">		if (null == strMDY || strMDY.isEmpty() || null == strDelim || strDelim.isEmpty())</span>
-<span class="nc" id="L1139">			return null;</span>
+<span class="pc bpc" id="L1139" title="4 of 8 branches missed.">		if (null == strMDY || strMDY.isEmpty() || null == strDelim || strDelim.isEmpty())</span>
+<span class="nc" id="L1140">			return null;</span>
 
-<span class="fc" id="L1141">		java.lang.String[] astrDMY = strMDY.split (strDelim);</span>
+<span class="fc" id="L1142">		java.lang.String[] astrDMY = strMDY.split (strDelim);</span>
 
-<span class="pc bpc" id="L1143" title="2 of 4 branches missed.">		if (null == astrDMY || 3 != astrDMY.length) return null;</span>
+<span class="pc bpc" id="L1144" title="2 of 4 branches missed.">		if (null == astrDMY || 3 != astrDMY.length) return null;</span>
 
 		try {
-<span class="fc" id="L1146">			return CreateFromYMD (java.lang.Integer.parseInt (astrDMY[2].trim()), java.lang.Integer.parseInt</span>
-<span class="fc" id="L1147">				(astrDMY[0].trim()), java.lang.Integer.parseInt (astrDMY[1].trim()));</span>
-<span class="nc" id="L1148">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1149">			e.printStackTrace();</span>
+<span class="fc" id="L1147">			return CreateFromYMD (java.lang.Integer.parseInt (astrDMY[2].trim()), java.lang.Integer.parseInt</span>
+<span class="fc" id="L1148">				(astrDMY[0].trim()), java.lang.Integer.parseInt (astrDMY[1].trim()));</span>
+<span class="nc" id="L1149">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1150">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1152">		return null;</span>
+<span class="nc" id="L1153">		return null;</span>
 	}
 
 	/**
@@ -1163,23 +1164,23 @@ package org.drip.analytics.date;
 	public static final org.drip.analytics.date.JulianDate MakeJulianDateFromBBGDate (
 		final java.lang.String strBBGDate)
 	{
-<span class="nc bnc" id="L1166" title="All 4 branches missed.">		if (null == strBBGDate || strBBGDate.isEmpty()) return null;</span>
+<span class="nc bnc" id="L1167" title="All 4 branches missed.">		if (null == strBBGDate || strBBGDate.isEmpty()) return null;</span>
 
-<span class="nc" id="L1168">		java.lang.String[] astrFields = strBBGDate.split (&quot;/&quot;);</span>
+<span class="nc" id="L1169">		java.lang.String[] astrFields = strBBGDate.split (&quot;/&quot;);</span>
 
-<span class="nc bnc" id="L1170" title="All 2 branches missed.">		if (3 != astrFields.length) return null;</span>
+<span class="nc bnc" id="L1171" title="All 2 branches missed.">		if (3 != astrFields.length) return null;</span>
 
 		try {
-<span class="nc" id="L1173">			return CreateFromYMD (</span>
-<span class="nc" id="L1174">				(int) java.lang.Double.parseDouble (astrFields[2].trim()),</span>
-<span class="nc" id="L1175">				(int) java.lang.Double.parseDouble (astrFields[0].trim()),</span>
-<span class="nc" id="L1176">				(int) java.lang.Double.parseDouble (astrFields[1].trim())</span>
+<span class="nc" id="L1174">			return CreateFromYMD (</span>
+<span class="nc" id="L1175">				(int) java.lang.Double.parseDouble (astrFields[2].trim()),</span>
+<span class="nc" id="L1176">				(int) java.lang.Double.parseDouble (astrFields[0].trim()),</span>
+<span class="nc" id="L1177">				(int) java.lang.Double.parseDouble (astrFields[1].trim())</span>
 			);
-<span class="nc" id="L1178">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1179">			e.printStackTrace();</span>
+<span class="nc" id="L1179">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1180">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1182">		return null;</span>
+<span class="nc" id="L1183">		return null;</span>
 	}
 
 	/**
@@ -1196,31 +1197,31 @@ package org.drip.analytics.date;
 		final char ch)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L1199" title="All 2 branches missed.">		if ('F' == ch) return JANUARY;</span>
+<span class="nc bnc" id="L1200" title="All 2 branches missed.">		if ('F' == ch) return JANUARY;</span>
 
-<span class="nc bnc" id="L1201" title="All 2 branches missed.">		if ('G' == ch) return FEBRUARY;</span>
+<span class="nc bnc" id="L1202" title="All 2 branches missed.">		if ('G' == ch) return FEBRUARY;</span>
 
-<span class="nc bnc" id="L1203" title="All 2 branches missed.">		if ('H' == ch) return MARCH;</span>
+<span class="nc bnc" id="L1204" title="All 2 branches missed.">		if ('H' == ch) return MARCH;</span>
 
-<span class="nc bnc" id="L1205" title="All 2 branches missed.">		if ('J' == ch) return APRIL;</span>
+<span class="nc bnc" id="L1206" title="All 2 branches missed.">		if ('J' == ch) return APRIL;</span>
 
-<span class="nc bnc" id="L1207" title="All 2 branches missed.">		if ('K' == ch) return MAY;</span>
+<span class="nc bnc" id="L1208" title="All 2 branches missed.">		if ('K' == ch) return MAY;</span>
 
-<span class="nc bnc" id="L1209" title="All 2 branches missed.">		if ('M' == ch) return JUNE;</span>
+<span class="nc bnc" id="L1210" title="All 2 branches missed.">		if ('M' == ch) return JUNE;</span>
 
-<span class="nc bnc" id="L1211" title="All 2 branches missed.">		if ('N' == ch) return JULY;</span>
+<span class="nc bnc" id="L1212" title="All 2 branches missed.">		if ('N' == ch) return JULY;</span>
 
-<span class="nc bnc" id="L1213" title="All 2 branches missed.">		if ('Q' == ch) return AUGUST;</span>
+<span class="nc bnc" id="L1214" title="All 2 branches missed.">		if ('Q' == ch) return AUGUST;</span>
 
-<span class="nc bnc" id="L1215" title="All 2 branches missed.">		if ('U' == ch) return SEPTEMBER;</span>
+<span class="nc bnc" id="L1216" title="All 2 branches missed.">		if ('U' == ch) return SEPTEMBER;</span>
 
-<span class="nc bnc" id="L1217" title="All 2 branches missed.">		if ('V' == ch) return OCTOBER;</span>
+<span class="nc bnc" id="L1218" title="All 2 branches missed.">		if ('V' == ch) return OCTOBER;</span>
 
-<span class="nc bnc" id="L1219" title="All 2 branches missed.">		if ('X' == ch) return NOVEMBER;</span>
+<span class="nc bnc" id="L1220" title="All 2 branches missed.">		if ('X' == ch) return NOVEMBER;</span>
 
-<span class="nc bnc" id="L1221" title="All 2 branches missed.">		if ('Z' == ch) return DECEMBER;</span>
+<span class="nc bnc" id="L1222" title="All 2 branches missed.">		if ('Z' == ch) return DECEMBER;</span>
 
-<span class="nc" id="L1223">		throw new java.lang.Exception (&quot;DateUtil::MonthFromCode =&gt; Invalid Character: &quot; + ch);</span>
+<span class="nc" id="L1224">		throw new java.lang.Exception (&quot;DateUtil::MonthFromCode =&gt; Invalid Character: &quot; + ch);</span>
 	}
 
 	/**
@@ -1237,31 +1238,31 @@ package org.drip.analytics.date;
 		final int iMonth)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L1240" title="1 of 2 branches missed.">		if (JANUARY == iMonth) return 'F';</span>
+<span class="pc bpc" id="L1241" title="1 of 2 branches missed.">		if (JANUARY == iMonth) return 'F';</span>
 
-<span class="pc bpc" id="L1242" title="1 of 2 branches missed.">		if (FEBRUARY == iMonth) return 'G';</span>
+<span class="pc bpc" id="L1243" title="1 of 2 branches missed.">		if (FEBRUARY == iMonth) return 'G';</span>
 
-<span class="fc bfc" id="L1244" title="All 2 branches covered.">		if (MARCH == iMonth) return 'H';</span>
+<span class="fc bfc" id="L1245" title="All 2 branches covered.">		if (MARCH == iMonth) return 'H';</span>
 
-<span class="pc bpc" id="L1246" title="1 of 2 branches missed.">		if (APRIL == iMonth) return 'J';</span>
+<span class="pc bpc" id="L1247" title="1 of 2 branches missed.">		if (APRIL == iMonth) return 'J';</span>
 
-<span class="pc bpc" id="L1248" title="1 of 2 branches missed.">		if (MAY == iMonth) return 'K';</span>
+<span class="pc bpc" id="L1249" title="1 of 2 branches missed.">		if (MAY == iMonth) return 'K';</span>
 
-<span class="fc bfc" id="L1250" title="All 2 branches covered.">		if (JUNE == iMonth) return 'M';</span>
+<span class="fc bfc" id="L1251" title="All 2 branches covered.">		if (JUNE == iMonth) return 'M';</span>
 
-<span class="pc bpc" id="L1252" title="1 of 2 branches missed.">		if (JULY == iMonth) return 'N';</span>
+<span class="pc bpc" id="L1253" title="1 of 2 branches missed.">		if (JULY == iMonth) return 'N';</span>
 
-<span class="pc bpc" id="L1254" title="1 of 2 branches missed.">		if (AUGUST == iMonth) return 'Q';</span>
+<span class="pc bpc" id="L1255" title="1 of 2 branches missed.">		if (AUGUST == iMonth) return 'Q';</span>
 
-<span class="fc bfc" id="L1256" title="All 2 branches covered.">		if (SEPTEMBER == iMonth) return 'U';</span>
+<span class="fc bfc" id="L1257" title="All 2 branches covered.">		if (SEPTEMBER == iMonth) return 'U';</span>
 
-<span class="pc bpc" id="L1258" title="1 of 2 branches missed.">		if (OCTOBER == iMonth) return 'V';</span>
+<span class="pc bpc" id="L1259" title="1 of 2 branches missed.">		if (OCTOBER == iMonth) return 'V';</span>
 
-<span class="pc bpc" id="L1260" title="1 of 2 branches missed.">		if (NOVEMBER == iMonth) return 'X';</span>
+<span class="pc bpc" id="L1261" title="1 of 2 branches missed.">		if (NOVEMBER == iMonth) return 'X';</span>
 
-<span class="pc bpc" id="L1262" title="1 of 2 branches missed.">		if (DECEMBER == iMonth) return 'Z';</span>
+<span class="pc bpc" id="L1263" title="1 of 2 branches missed.">		if (DECEMBER == iMonth) return 'Z';</span>
 
-<span class="nc" id="L1264">		throw new java.lang.Exception (&quot;DateUtil::CodeFromMonth =&gt; Invalid Month: &quot; + iMonth);</span>
+<span class="nc" id="L1265">		throw new java.lang.Exception (&quot;DateUtil::CodeFromMonth =&gt; Invalid Month: &quot; + iMonth);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

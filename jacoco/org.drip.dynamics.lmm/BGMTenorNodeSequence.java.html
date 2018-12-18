@@ -13,12 +13,12 @@ package org.drip.dynamics.lmm;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -45,6 +45,7 @@ package org.drip.dynamics.lmm;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,23 +92,23 @@ package org.drip.dynamics.lmm;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BGMTenorNodeSequence {
-<span class="fc" id="L102">	private int[] _aiDate = null;</span>
-<span class="fc" id="L103">	private double[] _adblLIBOR = null;</span>
-<span class="fc" id="L104">	private double[] _adblLIBORIncrement = null;</span>
-<span class="fc" id="L105">	private double[] _adblDiscountFactor = null;</span>
-<span class="fc" id="L106">	private double[] _adblSpotRateIncrement = null;</span>
-<span class="fc" id="L107">	private double[] _adblDiscountFactorIncrement = null;</span>
-<span class="fc" id="L108">	private double[] _adblContinuousForwardRateIncrement = null;</span>
-<span class="fc" id="L109">	private double[] _adblInstantaneousNominalForwardRate = null;</span>
-<span class="fc" id="L110">	private double[] _adblInstantaneousEffectiveForwardRate = null;</span>
+<span class="fc" id="L103">	private int[] _aiDate = null;</span>
+<span class="fc" id="L104">	private double[] _adblLIBOR = null;</span>
+<span class="fc" id="L105">	private double[] _adblLIBORIncrement = null;</span>
+<span class="fc" id="L106">	private double[] _adblDiscountFactor = null;</span>
+<span class="fc" id="L107">	private double[] _adblSpotRateIncrement = null;</span>
+<span class="fc" id="L108">	private double[] _adblDiscountFactorIncrement = null;</span>
+<span class="fc" id="L109">	private double[] _adblContinuousForwardRateIncrement = null;</span>
+<span class="fc" id="L110">	private double[] _adblInstantaneousNominalForwardRate = null;</span>
+<span class="fc" id="L111">	private double[] _adblInstantaneousEffectiveForwardRate = null;</span>
 
 	/**
 	 * BGMTenorNodeSequence Constructor
@@ -120,42 +121,42 @@ public class BGMTenorNodeSequence {
 	public BGMTenorNodeSequence (
 		final org.drip.dynamics.lmm.BGMForwardTenorSnap[] aBFTS)
 		throws java.lang.Exception
-<span class="fc" id="L123">	{</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (null == aBFTS) throw new java.lang.Exception (&quot;BGMTenorNodeSequence ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L124">	{</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (null == aBFTS) throw new java.lang.Exception (&quot;BGMTenorNodeSequence ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L126">		int iNumSnap = aBFTS.length;</span>
-<span class="fc" id="L127">		_aiDate = new int[iNumSnap];</span>
-<span class="fc" id="L128">		_adblLIBOR = new double[iNumSnap];</span>
-<span class="fc" id="L129">		_adblLIBORIncrement = new double[iNumSnap];</span>
-<span class="fc" id="L130">		_adblDiscountFactor = new double[iNumSnap];</span>
-<span class="fc" id="L131">		_adblSpotRateIncrement = new double[iNumSnap];</span>
-<span class="fc" id="L132">		_adblDiscountFactorIncrement = new double[iNumSnap];</span>
-<span class="fc" id="L133">		_adblContinuousForwardRateIncrement = new double[iNumSnap];</span>
-<span class="fc" id="L134">		_adblInstantaneousNominalForwardRate = new double[iNumSnap];</span>
-<span class="fc" id="L135">		_adblInstantaneousEffectiveForwardRate = new double[iNumSnap];</span>
+<span class="fc" id="L127">		int iNumSnap = aBFTS.length;</span>
+<span class="fc" id="L128">		_aiDate = new int[iNumSnap];</span>
+<span class="fc" id="L129">		_adblLIBOR = new double[iNumSnap];</span>
+<span class="fc" id="L130">		_adblLIBORIncrement = new double[iNumSnap];</span>
+<span class="fc" id="L131">		_adblDiscountFactor = new double[iNumSnap];</span>
+<span class="fc" id="L132">		_adblSpotRateIncrement = new double[iNumSnap];</span>
+<span class="fc" id="L133">		_adblDiscountFactorIncrement = new double[iNumSnap];</span>
+<span class="fc" id="L134">		_adblContinuousForwardRateIncrement = new double[iNumSnap];</span>
+<span class="fc" id="L135">		_adblInstantaneousNominalForwardRate = new double[iNumSnap];</span>
+<span class="fc" id="L136">		_adblInstantaneousEffectiveForwardRate = new double[iNumSnap];</span>
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (0 == iNumSnap) throw new java.lang.Exception (&quot;BGMTenorNodeSequence ctr: Invalid Inputs!&quot;);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (0 == iNumSnap) throw new java.lang.Exception (&quot;BGMTenorNodeSequence ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSnap; ++i) {</span>
-<span class="fc" id="L140">			_aiDate[i] = aBFTS[i].date();</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSnap; ++i) {</span>
+<span class="fc" id="L141">			_aiDate[i] = aBFTS[i].date();</span>
 
-<span class="fc" id="L142">			_adblLIBOR[i] = aBFTS[i].libor();</span>
+<span class="fc" id="L143">			_adblLIBOR[i] = aBFTS[i].libor();</span>
 
-<span class="fc" id="L144">			_adblLIBORIncrement[i] = aBFTS[i].liborIncrement();</span>
+<span class="fc" id="L145">			_adblLIBORIncrement[i] = aBFTS[i].liborIncrement();</span>
 
-<span class="fc" id="L146">			_adblDiscountFactor[i] = aBFTS[i].discountFactor();</span>
+<span class="fc" id="L147">			_adblDiscountFactor[i] = aBFTS[i].discountFactor();</span>
 
-<span class="fc" id="L148">			_adblSpotRateIncrement[i] = aBFTS[i].spotRateIncrement();</span>
+<span class="fc" id="L149">			_adblSpotRateIncrement[i] = aBFTS[i].spotRateIncrement();</span>
 
-<span class="fc" id="L150">			_adblDiscountFactorIncrement[i] = aBFTS[i].discountFactorIncrement();</span>
+<span class="fc" id="L151">			_adblDiscountFactorIncrement[i] = aBFTS[i].discountFactorIncrement();</span>
 
-<span class="fc" id="L152">			_adblInstantaneousNominalForwardRate[i] = aBFTS[i].instantaneousNominalForwardRate();</span>
+<span class="fc" id="L153">			_adblInstantaneousNominalForwardRate[i] = aBFTS[i].instantaneousNominalForwardRate();</span>
 
-<span class="fc" id="L154">			_adblInstantaneousEffectiveForwardRate[i] = aBFTS[i].instantaneousEffectiveForwardRate();</span>
+<span class="fc" id="L155">			_adblInstantaneousEffectiveForwardRate[i] = aBFTS[i].instantaneousEffectiveForwardRate();</span>
 
-<span class="fc" id="L156">			_adblContinuousForwardRateIncrement[i] = aBFTS[i].continuouslyCompoundedForwardIncrement();</span>
+<span class="fc" id="L157">			_adblContinuousForwardRateIncrement[i] = aBFTS[i].continuouslyCompoundedForwardIncrement();</span>
 		}
-<span class="fc" id="L158">	}</span>
+<span class="fc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Array of Tenor Dates
@@ -165,7 +166,7 @@ public class BGMTenorNodeSequence {
 
 	public int[] dates()
 	{
-<span class="fc" id="L168">		return _aiDate;</span>
+<span class="fc" id="L169">		return _aiDate;</span>
 	}
 
 	/**
@@ -176,7 +177,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] liborRates()
 	{
-<span class="fc" id="L179">		return _adblLIBOR;</span>
+<span class="fc" id="L180">		return _adblLIBOR;</span>
 	}
 
 	/**
@@ -187,7 +188,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] liborRateIncrements()
 	{
-<span class="fc" id="L190">		return _adblLIBORIncrement;</span>
+<span class="fc" id="L191">		return _adblLIBORIncrement;</span>
 	}
 
 	/**
@@ -198,7 +199,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] discountFactors()
 	{
-<span class="fc" id="L201">		return _adblDiscountFactor;</span>
+<span class="fc" id="L202">		return _adblDiscountFactor;</span>
 	}
 
 	/**
@@ -209,7 +210,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] discountFactorIncrements()
 	{
-<span class="fc" id="L212">		return _adblDiscountFactorIncrement;</span>
+<span class="fc" id="L213">		return _adblDiscountFactorIncrement;</span>
 	}
 
 	/**
@@ -220,7 +221,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] instantaneousEffectiveForwardRates()
 	{
-<span class="fc" id="L223">		return _adblInstantaneousEffectiveForwardRate;</span>
+<span class="fc" id="L224">		return _adblInstantaneousEffectiveForwardRate;</span>
 	}
 
 	/**
@@ -231,7 +232,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] instantaneousNominalForwardRates()
 	{
-<span class="fc" id="L234">		return _adblInstantaneousNominalForwardRate;</span>
+<span class="fc" id="L235">		return _adblInstantaneousNominalForwardRate;</span>
 	}
 
 	/**
@@ -242,7 +243,7 @@ public class BGMTenorNodeSequence {
 
 	public double[] continuousForwardRateIncrements()
 	{
-<span class="fc" id="L245">		return _adblContinuousForwardRateIncrement;</span>
+<span class="fc" id="L246">		return _adblContinuousForwardRateIncrement;</span>
 	}
 
 	/**
@@ -253,54 +254,54 @@ public class BGMTenorNodeSequence {
 
 	public double[] spotRateIncrements()
 	{
-<span class="fc" id="L256">		return _adblSpotRateIncrement;</span>
+<span class="fc" id="L257">		return _adblSpotRateIncrement;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L261">		int iNumTenor = _aiDate.length;</span>
-<span class="nc" id="L262">		java.lang.String strDateDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L263">		java.lang.String strPartition = &quot;\t |&quot;;</span>
-<span class="nc" id="L264">		java.lang.String strLIBORDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L265">		java.lang.String strLIBORIncrementDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L266">		java.lang.String strDiscountFactorDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L267">		java.lang.String strSpotRateIncrementDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L268">		java.lang.String strDiscountFactorIncrementDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L269">		java.lang.String strContinuousForwardIncrementDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L270">		java.lang.String strInstantaneousNominalForwardDump = &quot;\t |&quot;;</span>
-<span class="nc" id="L271">		java.lang.String strInstantaneousEffectiveForwardDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L262">		int iNumTenor = _aiDate.length;</span>
+<span class="nc" id="L263">		java.lang.String strDateDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L264">		java.lang.String strPartition = &quot;\t |&quot;;</span>
+<span class="nc" id="L265">		java.lang.String strLIBORDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L266">		java.lang.String strLIBORIncrementDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L267">		java.lang.String strDiscountFactorDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L268">		java.lang.String strSpotRateIncrementDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L269">		java.lang.String strDiscountFactorIncrementDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L270">		java.lang.String strContinuousForwardIncrementDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L271">		java.lang.String strInstantaneousNominalForwardDump = &quot;\t |&quot;;</span>
+<span class="nc" id="L272">		java.lang.String strInstantaneousEffectiveForwardDump = &quot;\t |&quot;;</span>
 
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
-<span class="nc" id="L274">			strPartition += &quot;-------------&quot;;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
+<span class="nc" id="L275">			strPartition += &quot;-------------&quot;;</span>
 
-<span class="nc" id="L276">			strDateDump += &quot; &quot; + new org.drip.analytics.date.JulianDate (_aiDate[i]) + &quot; |&quot;;</span>
+<span class="nc" id="L277">			strDateDump += &quot; &quot; + new org.drip.analytics.date.JulianDate (_aiDate[i]) + &quot; |&quot;;</span>
 
-<span class="nc" id="L278">			strLIBORDump += &quot;  &quot; + org.drip.quant.common.FormatUtil.FormatDouble (_adblLIBOR[i], 1, 3, 100.)</span>
+<span class="nc" id="L279">			strLIBORDump += &quot;  &quot; + org.drip.quant.common.FormatUtil.FormatDouble (_adblLIBOR[i], 1, 3, 100.)</span>
 				+ &quot;%   |&quot;;
 
-<span class="nc" id="L281">			strLIBORIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L282">				(_adblLIBORIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
+<span class="nc" id="L282">			strLIBORIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L283">				(_adblLIBORIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
 
-<span class="nc" id="L284">			strDiscountFactorDump += &quot;  &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L285">				(_adblDiscountFactor[i], 2, 3, 100.) + &quot;   |&quot;;</span>
+<span class="nc" id="L285">			strDiscountFactorDump += &quot;  &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L286">				(_adblDiscountFactor[i], 2, 3, 100.) + &quot;   |&quot;;</span>
 
-<span class="nc" id="L287">			strDiscountFactorIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L288">				(_adblDiscountFactorIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
+<span class="nc" id="L288">			strDiscountFactorIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L289">				(_adblDiscountFactorIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
 
-<span class="nc" id="L290">			strContinuousForwardIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L291">				(_adblContinuousForwardRateIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
+<span class="nc" id="L291">			strContinuousForwardIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L292">				(_adblContinuousForwardRateIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
 
-<span class="nc" id="L293">			strSpotRateIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L294">				(_adblSpotRateIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
+<span class="nc" id="L294">			strSpotRateIncrementDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L295">				(_adblSpotRateIncrement[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
 
-<span class="nc" id="L296">			strInstantaneousEffectiveForwardDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L297">				(_adblInstantaneousEffectiveForwardRate[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
+<span class="nc" id="L297">			strInstantaneousEffectiveForwardDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L298">				(_adblInstantaneousEffectiveForwardRate[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
 
-<span class="nc" id="L299">			strInstantaneousNominalForwardDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
-<span class="nc" id="L300">				(_adblInstantaneousNominalForwardRate[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
+<span class="nc" id="L300">			strInstantaneousNominalForwardDump += &quot;    &quot; + org.drip.quant.common.FormatUtil.FormatDouble</span>
+<span class="nc" id="L301">				(_adblInstantaneousNominalForwardRate[i], 2, 0, 10000.) + &quot;     |&quot;;</span>
 		}
 
-<span class="nc" id="L303">		return &quot;\n&quot; + strPartition + &quot;|\n&quot; + strDateDump + &quot;|\n&quot; + strPartition + &quot;|\n&quot; + strLIBORDump +</span>
+<span class="nc" id="L304">		return &quot;\n&quot; + strPartition + &quot;|\n&quot; + strDateDump + &quot;|\n&quot; + strPartition + &quot;|\n&quot; + strLIBORDump +</span>
 			&quot;|\n&quot; + strLIBORIncrementDump + &quot;|\n&quot; + strDiscountFactorDump + &quot;|\n&quot; +
 				strDiscountFactorIncrementDump + &quot;|\n&quot; + strContinuousForwardIncrementDump + &quot;|\n&quot; +
 					strSpotRateIncrementDump + &quot;|\n&quot; + strInstantaneousEffectiveForwardDump + &quot;|\n&quot; +

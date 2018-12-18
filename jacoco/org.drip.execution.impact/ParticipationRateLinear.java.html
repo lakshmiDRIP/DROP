@@ -12,12 +12,12 @@ package org.drip.execution.impact;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.impact;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,16 +99,16 @@ package org.drip.execution.impact;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact&quot;&gt;Impact&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/impact/README.md&quot;&gt;Impact&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ParticipationRateLinear extends org.drip.execution.impact.TransactionFunctionLinear {
-<span class="fc" id="L109">	private double _dblSlope = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _dblOffset = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double _dblSlope = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblOffset = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Vanilla Zero-Impact ParticipationRateLinear Instance
@@ -118,12 +119,12 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 	public static final ParticipationRateLinear NoImpact()
 	{
 		try {
-<span class="fc" id="L121">			return new ParticipationRateLinear (0., 0.);</span>
-<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L123">			e.printStackTrace();</span>
+<span class="fc" id="L122">			return new ParticipationRateLinear (0., 0.);</span>
+<span class="nc" id="L123">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L124">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L126">		return null;</span>
+<span class="nc" id="L127">		return null;</span>
 	}
 
 	/**
@@ -138,12 +139,12 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 		final double dblSlope)
 	{
 		try {
-<span class="fc" id="L141">			return new ParticipationRateLinear (0., dblSlope);</span>
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="fc" id="L142">			return new ParticipationRateLinear (0., dblSlope);</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	/**
@@ -159,11 +160,11 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 		final double dblOffset,
 		final double dblSlope)
 		throws java.lang.Exception
-<span class="fc" id="L162">	{</span>
-<span class="pc bpc" id="L163" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOffset = dblOffset) || 0. &gt; _dblOffset ||</span>
-<span class="pc bpc" id="L164" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSlope = dblSlope) || 0. &gt; _dblSlope)</span>
-<span class="nc" id="L165">			throw new java.lang.Exception (&quot;ParticipationRateLinear Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L166">	}</span>
+<span class="fc" id="L163">	{</span>
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOffset = dblOffset) || 0. &gt; _dblOffset ||</span>
+<span class="pc bpc" id="L165" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblSlope = dblSlope) || 0. &gt; _dblSlope)</span>
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;ParticipationRateLinear Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L167">	}</span>
 
 	/**
 	 * Retrieve the Linear Market Impact Slope Parameter
@@ -173,7 +174,7 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 
 	public double slope()
 	{
-<span class="fc" id="L176">		return _dblSlope;</span>
+<span class="fc" id="L177">		return _dblSlope;</span>
 	}
 
 	/**
@@ -184,34 +185,34 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 
 	public double offset()
 	{
-<span class="fc" id="L187">		return _dblOffset;</span>
+<span class="fc" id="L188">		return _dblOffset;</span>
 	}
 
 	@Override public double regularize (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
-<span class="nc" id="L195">			throw new java.lang.Exception (&quot;ParticipationRateLinear::regularize =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="nc" id="L196">			throw new java.lang.Exception (&quot;ParticipationRateLinear::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L197">		return 1. / dblTradeInterval;</span>
+<span class="fc" id="L198">		return 1. / dblTradeInterval;</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L204">		return 1.;</span>
+<span class="fc" id="L205">		return 1.;</span>
 	}
 
 	@Override public double evaluate  (
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
-<span class="nc" id="L212">			throw new java.lang.Exception (&quot;ParticipationRateLinear::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;ParticipationRateLinear::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L214" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * _dblOffset + _dblSlope * dblTradeRate;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		return (dblTradeRate &lt; 0. ? -1. : 1.) * _dblOffset + _dblSlope * dblTradeRate;</span>
 	}
 
 	@Override public double derivative  (
@@ -219,10 +220,10 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (0 &gt;= iOrder)</span>
-<span class="nc" id="L223">			throw new java.lang.Exception (&quot;ParticipationRateLinear::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (0 &gt;= iOrder)</span>
+<span class="nc" id="L224">			throw new java.lang.Exception (&quot;ParticipationRateLinear::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">		return 1 == iOrder ? _dblSlope : 0.;</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		return 1 == iOrder ? _dblSlope : 0.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

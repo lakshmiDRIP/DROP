@@ -93,9 +93,10 @@ package org.drip.state.discount;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount&quot;&gt;Discount&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount&quot;&gt;Discount&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -110,8 +111,8 @@ public abstract class ExplicitBootDiscountCurve extends org.drip.state.discount.
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L113">		super (iEpochDate, strCurrency, null);</span>
-<span class="fc" id="L114">	}</span>
+<span class="fc" id="L114">		super (iEpochDate, strCurrency, null);</span>
+<span class="fc" id="L115">	}</span>
 
 	/**
 	 * Create a shifted curve from an array of basis shifts
@@ -129,25 +130,25 @@ public abstract class ExplicitBootDiscountCurve extends org.drip.state.discount.
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		return null != (_ccis = ccis);</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		return null != (_ccis = ccis);</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		return null == _ccis ? null : _ccis.components();</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		return null == _ccis ? null : _ccis.components();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstrumentCode)
 	{
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (null == _ccis) return null;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (null == _ccis) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="fc" id="L146">			mapQuote = _ccis.quoteMap();</span>
+<span class="fc" id="L147">			mapQuote = _ccis.quoteMap();</span>
 
-<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;</span>
 
-<span class="fc" id="L150">		return mapQuote.get (strInstrumentCode);</span>
+<span class="fc" id="L151">		return mapQuote.get (strInstrumentCode);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

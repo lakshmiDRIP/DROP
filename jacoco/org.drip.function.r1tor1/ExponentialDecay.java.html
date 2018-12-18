@@ -14,12 +14,12 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -36,16 +36,17 @@ package org.drip.function.r1tor1;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,16 +76,16 @@ package org.drip.function.r1tor1;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L86">	private double _dblEpoch = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblHazard = java.lang.Double.NaN;</span>
+<span class="fc" id="L87">	private double _dblEpoch = java.lang.Double.NaN;</span>
+<span class="fc" id="L88">	private double _dblHazard = java.lang.Double.NaN;</span>
 
 	/**
 	 * ExponentialDecay constructor
@@ -100,21 +101,21 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 		final double dblHazard)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L103">		super (null);</span>
+<span class="fc" id="L104">		super (null);</span>
 
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblHazard = dblHazard))</span>
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;ExponentialDecay ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L108">	}</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblHazard = dblHazard))</span>
+<span class="nc" id="L108">			throw new java.lang.Exception (&quot;ExponentialDecay ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L109">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;ExponentialDecay::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;ExponentialDecay::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L117">		return java.lang.Math.exp (-1. * _dblHazard * (dblVariate - _dblEpoch));</span>
+<span class="fc" id="L118">		return java.lang.Math.exp (-1. * _dblHazard * (dblVariate - _dblEpoch));</span>
 	}
 
 	@Override public double derivative (
@@ -122,15 +123,15 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder)</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;ExponentialDecay::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;ExponentialDecay::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L128">		double dblDerivativeFactor = 1;</span>
+<span class="nc" id="L129">		double dblDerivativeFactor = 1;</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="nc" id="L131">			dblDerivativeFactor *= (-1. * _dblHazard);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="nc" id="L132">			dblDerivativeFactor *= (-1. * _dblHazard);</span>
 
-<span class="nc" id="L133">		return dblDerivativeFactor * evaluate (dblVariate);</span>
+<span class="nc" id="L134">		return dblDerivativeFactor * evaluate (dblVariate);</span>
 	}
 
 	@Override public double integrate (
@@ -138,11 +139,11 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;ExponentialDecay::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;ExponentialDecay::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L145">		return (evaluate (dblEnd) - evaluate (dblBegin)) / (-1. * _dblHazard);</span>
+<span class="nc" id="L146">		return (evaluate (dblEnd) - evaluate (dblBegin)) / (-1. * _dblHazard);</span>
 	}
 
 	/**
@@ -153,7 +154,7 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 
 	public double epoch()
 	{
-<span class="nc" id="L156">		return _dblEpoch;</span>
+<span class="nc" id="L157">		return _dblEpoch;</span>
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 
 	public double hazard()
 	{
-<span class="nc" id="L167">		return _dblHazard;</span>
+<span class="nc" id="L168">		return _dblHazard;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

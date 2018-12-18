@@ -92,9 +92,10 @@ package org.drip.state.estimator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,8 +103,8 @@ package org.drip.state.estimator;
  */
 
 public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegmentSequence {
-<span class="fc" id="L105">	private double _dblBuiltPredictorOrdinateRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L106">	private org.drip.state.representation.MergeSubStretchManager _msm = null;</span>
+<span class="fc" id="L106">	private double _dblBuiltPredictorOrdinateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L107">	private org.drip.state.representation.MergeSubStretchManager _msm = null;</span>
 
 	/**
 	 * CurveStretch constructor - Construct a sequence of Basis Spline Segments
@@ -121,10 +122,10 @@ public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegme
 		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L124">		super (strName, aCS, aSCBC);</span>
+<span class="fc" id="L125">		super (strName, aCS, aSCBC);</span>
 
-<span class="fc" id="L126">		_dblBuiltPredictorOrdinateRight = getLeftPredictorOrdinateEdge();</span>
-<span class="fc" id="L127">	}</span>
+<span class="fc" id="L127">		_dblBuiltPredictorOrdinateRight = getLeftPredictorOrdinateEdge();</span>
+<span class="fc" id="L128">	}</span>
 
 	/**
 	 * Mark the Range of the &quot;built&quot; Segments, and set the set of Merge Latent States
@@ -139,27 +140,27 @@ public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegme
 		final int iSegment,
 		final java.util.Set&lt;org.drip.state.identifier.LatentStateLabel&gt; setLSL)
 	{
-<span class="fc" id="L142">		org.drip.spline.segment.LatentStateResponseModel[] aCS = segments();</span>
+<span class="fc" id="L143">		org.drip.spline.segment.LatentStateResponseModel[] aCS = segments();</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (iSegment &gt;= aCS.length) return false;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (iSegment &gt;= aCS.length) return false;</span>
 
-<span class="fc" id="L146">		_dblBuiltPredictorOrdinateRight = aCS[iSegment].right();</span>
+<span class="fc" id="L147">		_dblBuiltPredictorOrdinateRight = aCS[iSegment].right();</span>
 
-<span class="pc bpc" id="L148" title="1 of 4 branches missed.">		if (null == setLSL || 0 == setLSL.size()) return true;</span>
+<span class="pc bpc" id="L149" title="1 of 4 branches missed.">		if (null == setLSL || 0 == setLSL.size()) return true;</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (null == _msm) _msm = new org.drip.state.representation.MergeSubStretchManager();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (null == _msm) _msm = new org.drip.state.representation.MergeSubStretchManager();</span>
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (org.drip.state.identifier.LatentStateLabel lsl : setLSL) {</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for (org.drip.state.identifier.LatentStateLabel lsl : setLSL) {</span>
 			try {
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">				if (!_msm.addMergeStretch (new org.drip.state.representation.LatentStateMergeSubStretch</span>
-<span class="fc" id="L155">					(aCS[iSegment].left(), aCS[iSegment].right(), lsl)))</span>
-<span class="nc" id="L156">					return false;</span>
-<span class="nc" id="L157">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L158">				e.printStackTrace();</span>
-<span class="fc" id="L159">			}</span>
-<span class="fc" id="L160">		}</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">				if (!_msm.addMergeStretch (new org.drip.state.representation.LatentStateMergeSubStretch</span>
+<span class="fc" id="L156">					(aCS[iSegment].left(), aCS[iSegment].right(), lsl)))</span>
+<span class="nc" id="L157">					return false;</span>
+<span class="nc" id="L158">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L159">				e.printStackTrace();</span>
+<span class="fc" id="L160">			}</span>
+<span class="fc" id="L161">		}</span>
 
-<span class="fc" id="L162">		return true;</span>
+<span class="fc" id="L163">		return true;</span>
 	}
 
 	/**
@@ -170,10 +171,10 @@ public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegme
 
 	public boolean clearBuiltRange()
 	{
-<span class="fc" id="L173">		_dblBuiltPredictorOrdinateRight = getLeftPredictorOrdinateEdge();</span>
+<span class="fc" id="L174">		_dblBuiltPredictorOrdinateRight = getLeftPredictorOrdinateEdge();</span>
 
-<span class="fc" id="L175">		_msm = null;</span>
-<span class="fc" id="L176">		return true;</span>
+<span class="fc" id="L176">		_msm = null;</span>
+<span class="fc" id="L177">		return true;</span>
 	}
 
 	/**
@@ -190,16 +191,16 @@ public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegme
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L194">			throw new java.lang.Exception (&quot;CurveStretch.inBuiltRange =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L195">			throw new java.lang.Exception (&quot;CurveStretch.inBuiltRange =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L196" title="1 of 4 branches missed.">		return dblPredictorOrdinate &gt;= getLeftPredictorOrdinateEdge() &amp;&amp; dblPredictorOrdinate &lt;=</span>
+<span class="pc bpc" id="L197" title="1 of 4 branches missed.">		return dblPredictorOrdinate &gt;= getLeftPredictorOrdinateEdge() &amp;&amp; dblPredictorOrdinate &lt;=</span>
 			_dblBuiltPredictorOrdinateRight;
 	}
 
 	@Override public org.drip.state.representation.MergeSubStretchManager msm()
 	{
-<span class="nc" id="L202">		return _msm;</span>
+<span class="nc" id="L203">		return _msm;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

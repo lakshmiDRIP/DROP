@@ -94,9 +94,10 @@ package org.drip.spline.segment;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -104,8 +105,8 @@ package org.drip.spline.segment;
  */
 
 public class LatentStateInelastic implements java.lang.Comparable&lt;LatentStateInelastic&gt; {
-<span class="fc" id="L107">	private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblPredictorOrdinateRight = java.lang.Double.NaN;</span>
 
 	/**
 	 * LatentStateInelastic constructor
@@ -120,12 +121,12 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 		final double dblPredictorOrdinateLeft,
 		final double dblPredictorOrdinateRight)
 		throws java.lang.Exception
-<span class="fc" id="L123">	{</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft)</span>
-<span class="pc bpc" id="L125" title="2 of 4 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblPredictorOrdinateRight =</span>
+<span class="fc" id="L124">	{</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft)</span>
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblPredictorOrdinateRight =</span>
 				dblPredictorOrdinateRight) || _dblPredictorOrdinateLeft &gt;= _dblPredictorOrdinateRight)
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;LatentStateInelastic ctr: Invalid inputs!&quot;);</span>
-<span class="fc" id="L128">	}</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;LatentStateInelastic ctr: Invalid inputs!&quot;);</span>
+<span class="fc" id="L129">	}</span>
 
 	/**
 	 * Retrieve the Segment Left Predictor Ordinate
@@ -135,7 +136,7 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 
 	public double left()
 	{
-<span class="fc" id="L138">		return _dblPredictorOrdinateLeft;</span>
+<span class="fc" id="L139">		return _dblPredictorOrdinateLeft;</span>
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 
 	public double right()
 	{
-<span class="fc" id="L149">		return _dblPredictorOrdinateRight;</span>
+<span class="fc" id="L150">		return _dblPredictorOrdinateRight;</span>
 	}
 
 	/**
@@ -163,10 +164,10 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;LatentStateInelastic::in =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L168">			throw new java.lang.Exception (&quot;LatentStateInelastic::in =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L169" title="All 4 branches covered.">		return _dblPredictorOrdinateLeft &lt;= dblPredictorOrdinate &amp;&amp; _dblPredictorOrdinateRight &gt;=</span>
+<span class="fc bfc" id="L170" title="All 4 branches covered.">		return _dblPredictorOrdinateLeft &lt;= dblPredictorOrdinate &amp;&amp; _dblPredictorOrdinateRight &gt;=</span>
 			dblPredictorOrdinate;
 	}
 
@@ -178,7 +179,7 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 
 	public double width()
 	{
-<span class="fc" id="L181">		return _dblPredictorOrdinateRight - _dblPredictorOrdinateLeft;</span>
+<span class="fc" id="L182">		return _dblPredictorOrdinateRight - _dblPredictorOrdinateLeft;</span>
 	}
 
 	/**
@@ -195,10 +196,10 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L198" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate))</span>
-<span class="fc" id="L199">			throw new java.lang.Exception (&quot;LatentStateInelastic::localize: Invalid inputs!&quot;);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate))</span>
+<span class="fc" id="L200">			throw new java.lang.Exception (&quot;LatentStateInelastic::localize: Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L201">		return (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
+<span class="fc" id="L202">		return (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -</span>
 			_dblPredictorOrdinateLeft);
 	}
 
@@ -216,28 +217,28 @@ public class LatentStateInelastic implements java.lang.Comparable&lt;LatentState
 		final double dblLocalPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLocalPredictorOrdinate))</span>
-<span class="nc" id="L220">			throw new java.lang.Exception (&quot;LatentStateInelastic::delocalize =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLocalPredictorOrdinate))</span>
+<span class="nc" id="L221">			throw new java.lang.Exception (&quot;LatentStateInelastic::delocalize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L222">		return _dblPredictorOrdinateLeft + dblLocalPredictorOrdinate * (_dblPredictorOrdinateRight -</span>
+<span class="nc" id="L223">		return _dblPredictorOrdinateLeft + dblLocalPredictorOrdinate * (_dblPredictorOrdinateRight -</span>
 			_dblPredictorOrdinateLeft);
 	}
 
 	@Override public int hashCode()
 	{
-<span class="nc" id="L228">		long lBits = java.lang.Double.doubleToLongBits ((int) _dblPredictorOrdinateLeft);</span>
+<span class="nc" id="L229">		long lBits = java.lang.Double.doubleToLongBits ((int) _dblPredictorOrdinateLeft);</span>
 
-<span class="nc" id="L230">		return (int) (lBits ^ (lBits &gt;&gt;&gt; 32));</span>
+<span class="nc" id="L231">		return (int) (lBits ^ (lBits &gt;&gt;&gt; 32));</span>
 	}
 
 	@Override public int compareTo (
 		final org.drip.spline.segment.LatentStateInelastic ieOther)
 	{
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (_dblPredictorOrdinateLeft &gt; ieOther._dblPredictorOrdinateLeft) return 1;</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (_dblPredictorOrdinateLeft &gt; ieOther._dblPredictorOrdinateLeft) return 1;</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (_dblPredictorOrdinateLeft &lt; ieOther._dblPredictorOrdinateLeft) return -1;</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (_dblPredictorOrdinateLeft &lt; ieOther._dblPredictorOrdinateLeft) return -1;</span>
 
-<span class="nc" id="L240">		return 0;</span>
+<span class="nc" id="L241">		return 0;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

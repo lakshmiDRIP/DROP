@@ -72,9 +72,10 @@ package org.drip.service.engine;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -89,8 +90,8 @@ public class ComputeServer {
 
 	public static final int DRIP_COMPUTE_ENGINE_PORT = 9090;
 
-<span class="nc" id="L92">	private int _iListenerPort = -1;</span>
-<span class="nc" id="L93">	private java.net.ServerSocket _socketListener = null;</span>
+<span class="nc" id="L93">	private int _iListenerPort = -1;</span>
+<span class="nc" id="L94">	private java.net.ServerSocket _socketListener = null;</span>
 
 	/**
 	 * Create a Standard Instance of the ComputeServer
@@ -101,14 +102,14 @@ public class ComputeServer {
 	public static final ComputeServer Standard()
 	{
 		try {
-<span class="nc" id="L104">			ComputeServer cs = new ComputeServer (DRIP_COMPUTE_ENGINE_PORT);</span>
+<span class="nc" id="L105">			ComputeServer cs = new ComputeServer (DRIP_COMPUTE_ENGINE_PORT);</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">			return cs.initialize() ? cs : null;</span>
-<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L108">			e.printStackTrace();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			return cs.initialize() ? cs : null;</span>
+<span class="nc" id="L108">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L109">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L111">		return null;</span>
+<span class="nc" id="L112">		return null;</span>
 	}
 
 	/**
@@ -122,10 +123,10 @@ public class ComputeServer {
 	public ComputeServer (
 		final int iListenerPort)
 		throws java.lang.Exception
-<span class="nc" id="L125">	{</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 &gt;= (_iListenerPort = iListenerPort))</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;ComputeServer Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L126">	{</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (0 &gt;= (_iListenerPort = iListenerPort))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;ComputeServer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">	}</span>
 
 	/**
 	 * Initialize the Compute Server Engine Listener Setup
@@ -136,14 +137,14 @@ public class ComputeServer {
 	public boolean initialize()
 	{
 		try {
-<span class="nc" id="L139">			_socketListener = new java.net.ServerSocket (_iListenerPort);</span>
+<span class="nc" id="L140">			_socketListener = new java.net.ServerSocket (_iListenerPort);</span>
 
-<span class="nc" id="L141">			return true;</span>
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L142">			return true;</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return false;</span>
+<span class="nc" id="L147">		return false;</span>
 	}
 
 	/**
@@ -156,45 +157,45 @@ public class ComputeServer {
 	{
         while (true) {
         	try {
-<span class="nc" id="L159">            	java.net.Socket s = _socketListener.accept();</span>
+<span class="nc" id="L160">            	java.net.Socket s = _socketListener.accept();</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">	        	if (null == s) return false;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">	        	if (null == s) return false;</span>
 
-<span class="nc" id="L163">	        	java.lang.String strJSONRequest = new java.io.BufferedReader (new java.io.InputStreamReader</span>
-<span class="nc" id="L164">	        		(s.getInputStream())).readLine();</span>
+<span class="nc" id="L164">	        	java.lang.String strJSONRequest = new java.io.BufferedReader (new java.io.InputStreamReader</span>
+<span class="nc" id="L165">	        		(s.getInputStream())).readLine();</span>
 
-<span class="nc" id="L166">	        	System.out.println (strJSONRequest);</span>
+<span class="nc" id="L167">	        	System.out.println (strJSONRequest);</span>
 
-<span class="nc" id="L168">	        	java.lang.Object objRequest = org.drip.json.simple.JSONValue.parse (strJSONRequest);</span>
+<span class="nc" id="L169">	        	java.lang.Object objRequest = org.drip.json.simple.JSONValue.parse (strJSONRequest);</span>
 
-<span class="nc bnc" id="L170" title="All 4 branches missed.">		    	if (null == objRequest || !(objRequest instanceof org.drip.json.simple.JSONObject))</span>
-<span class="nc" id="L171">		    		return false;</span>
+<span class="nc bnc" id="L171" title="All 4 branches missed.">		    	if (null == objRequest || !(objRequest instanceof org.drip.json.simple.JSONObject))</span>
+<span class="nc" id="L172">		    		return false;</span>
 
-<span class="nc" id="L173">		    	org.drip.json.simple.JSONObject jsonRequest = (org.drip.json.simple.JSONObject) objRequest;</span>
+<span class="nc" id="L174">		    	org.drip.json.simple.JSONObject jsonRequest = (org.drip.json.simple.JSONObject) objRequest;</span>
 
-<span class="nc" id="L175">		    	java.lang.Object objResponse = org.drip.json.simple.JSONValue.parse</span>
-<span class="nc" id="L176">	    			(org.drip.service.json.KeyHoleSkeleton.Thunker (strJSONRequest));</span>
+<span class="nc" id="L176">		    	java.lang.Object objResponse = org.drip.json.simple.JSONValue.parse</span>
+<span class="nc" id="L177">	    			(org.drip.service.json.KeyHoleSkeleton.Thunker (strJSONRequest));</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		    	if (null == objResponse) return false;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		    	if (null == objResponse) return false;</span>
 
-<span class="nc" id="L180">		    	org.drip.json.simple.JSONObject jsonResponse = (org.drip.json.simple.JSONObject) objResponse;</span>
+<span class="nc" id="L181">		    	org.drip.json.simple.JSONObject jsonResponse = (org.drip.json.simple.JSONObject) objResponse;</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		    	if (!org.drip.service.engine.RequestResponseDecorator.AffixResponseHeaders (jsonResponse,</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		    	if (!org.drip.service.engine.RequestResponseDecorator.AffixResponseHeaders (jsonResponse,</span>
 		    		jsonRequest))
-<span class="nc" id="L184">		    		return false;</span>
+<span class="nc" id="L185">		    		return false;</span>
 
-<span class="nc" id="L186">	        	System.out.println (&quot;\n\n&quot; + jsonResponse.toJSONString());</span>
+<span class="nc" id="L187">	        	System.out.println (&quot;\n\n&quot; + jsonResponse.toJSONString());</span>
 
-<span class="nc" id="L188">            	java.io.PrintWriter pw = new java.io.PrintWriter (s.getOutputStream(), true);</span>
+<span class="nc" id="L189">            	java.io.PrintWriter pw = new java.io.PrintWriter (s.getOutputStream(), true);</span>
 
-<span class="nc" id="L190">            	pw.write (jsonResponse.toJSONString() + &quot;\n&quot;);</span>
+<span class="nc" id="L191">            	pw.write (jsonResponse.toJSONString() + &quot;\n&quot;);</span>
 
-<span class="nc" id="L192">            	pw.flush();</span>
-<span class="nc" id="L193">        	} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">        		e.printStackTrace();</span>
+<span class="nc" id="L193">            	pw.flush();</span>
+<span class="nc" id="L194">        	} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L195">        		e.printStackTrace();</span>
 
-<span class="nc" id="L196">        		return false;</span>
-<span class="nc" id="L197">        	}</span>
+<span class="nc" id="L197">        		return false;</span>
+<span class="nc" id="L198">        	}</span>
         }
 	}
 
@@ -202,11 +203,11 @@ public class ComputeServer {
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L205">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L206">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L207">		ComputeServer cs = ComputeServer.Standard();</span>
+<span class="nc" id="L208">		ComputeServer cs = ComputeServer.Standard();</span>
 
-<span class="nc" id="L209">		cs.spin();</span>
-<span class="nc" id="L210">	}</span>
+<span class="nc" id="L210">		cs.spin();</span>
+<span class="nc" id="L211">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

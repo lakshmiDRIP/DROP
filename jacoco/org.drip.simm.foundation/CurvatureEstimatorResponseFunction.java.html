@@ -96,9 +96,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,7 +108,7 @@ package org.drip.simm.foundation;
 
 public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundation.CurvatureEstimator
 {
-<span class="nc" id="L110">	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;</span>
+<span class="nc" id="L111">	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;</span>
 
 	/**
 	 * Construct the Cornish Fischer Instance of the Curvature Estimator
@@ -119,15 +120,15 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 	{
 		try
 		{
-<span class="nc" id="L122">			return new CurvatureEstimatorResponseFunction</span>
-<span class="nc" id="L123">				(org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard());</span>
+<span class="nc" id="L123">			return new CurvatureEstimatorResponseFunction</span>
+<span class="nc" id="L124">				(org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard());</span>
 		}
-<span class="nc" id="L125">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L126">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L127">			e.printStackTrace();</span>
+<span class="nc" id="L128">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L130">		return null;</span>
+<span class="nc" id="L131">		return null;</span>
 	}
 
 	/**
@@ -141,13 +142,13 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 	public CurvatureEstimatorResponseFunction (
 		final org.drip.simm.foundation.CurvatureResponse curvatureResponse)
 		throws java.lang.Exception
-<span class="nc" id="L144">	{</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == (_curvatureResponse = curvatureResponse))</span>
+<span class="nc" id="L145">	{</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == (_curvatureResponse = curvatureResponse))</span>
 		{
-<span class="nc" id="L147">			throw new java.lang.Exception</span>
+<span class="nc" id="L148">			throw new java.lang.Exception</span>
 				(&quot;CurvatureEstimatorResponseFunction Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L150">	}</span>
+<span class="nc" id="L151">	}</span>
 
 	/**
 	 * Retrieve the Curvature Response Function
@@ -157,7 +158,7 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 
 	public org.drip.simm.foundation.CurvatureResponse curvatureResponse()
 	{
-<span class="nc" id="L160">		return _curvatureResponse;</span>
+<span class="nc" id="L161">		return _curvatureResponse;</span>
 	}
 
 	@Override public double margin (
@@ -166,25 +167,25 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
 			0. &gt; riskFactorSensitivityVariance)
 		{
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;CurvatureEstimatorResponseFunction::margin =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L173">			throw new java.lang.Exception (&quot;CurvatureEstimatorResponseFunction::margin =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L175">		return java.lang.Math.max (</span>
+<span class="nc" id="L176">		return java.lang.Math.max (</span>
 			cumulativeRiskFactorSensitivity +
-<span class="nc" id="L177">				_curvatureResponse.lambda (</span>
+<span class="nc" id="L178">				_curvatureResponse.lambda (</span>
 					cumulativeRiskFactorSensitivity,
 					cumulativeRiskFactorSensitivityPositive
-<span class="nc" id="L180">				) * java.lang.Math.sqrt (riskFactorSensitivityVariance),</span>
+<span class="nc" id="L181">				) * java.lang.Math.sqrt (riskFactorSensitivityVariance),</span>
 			0.
 		);
 	}
 
 	@Override public boolean isCorrelatorQuadratric()
 	{
-<span class="nc" id="L187">		return true;</span>
+<span class="nc" id="L188">		return true;</span>
 	}
 
 	@Override public double varianceModulator (
@@ -194,7 +195,7 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 		final double bucketVariance2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L197">		return 1.;</span>
+<span class="nc" id="L198">		return 1.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

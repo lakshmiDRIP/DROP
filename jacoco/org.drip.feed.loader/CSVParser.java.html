@@ -13,12 +13,12 @@ package org.drip.feed.loader;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -35,16 +35,17 @@ package org.drip.feed.loader;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,14 +75,14 @@ package org.drip.feed.loader;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class CSVParser {</span>
+<span class="nc" id="L85">public class CSVParser {</span>
 
 	/**
 	 * Parse the Contents of the CSV File into a List of String Arrays
@@ -96,33 +97,33 @@ package org.drip.feed.loader;
 		final java.lang.String strCSVFile,
 		final boolean bIgnoreHeader)
 	{
-<span class="nc bnc" id="L99" title="All 4 branches missed.">		if (null == strCSVFile || strCSVFile.isEmpty()) return null;</span>
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (null == strCSVFile || strCSVFile.isEmpty()) return null;</span>
 
-<span class="nc" id="L101">		boolean bHeader = true;</span>
-<span class="nc" id="L102">		java.lang.String strCSVLine = &quot;&quot;;</span>
-<span class="nc" id="L103">		java.io.BufferedReader brCSV = null;</span>
+<span class="nc" id="L102">		boolean bHeader = true;</span>
+<span class="nc" id="L103">		java.lang.String strCSVLine = &quot;&quot;;</span>
+<span class="nc" id="L104">		java.io.BufferedReader brCSV = null;</span>
 
-<span class="nc" id="L105">		org.drip.feed.loader.CSVGrid csvGrid = new org.drip.feed.loader.CSVGrid();</span>
+<span class="nc" id="L106">		org.drip.feed.loader.CSVGrid csvGrid = new org.drip.feed.loader.CSVGrid();</span>
 
 		try {
-<span class="nc" id="L108">			brCSV = new java.io.BufferedReader (new java.io.FileReader (strCSVFile));</span>
+<span class="nc" id="L109">			brCSV = new java.io.BufferedReader (new java.io.FileReader (strCSVFile));</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			while (null != (strCSVLine = brCSV.readLine())) {</span>
-<span class="nc" id="L111">				java.lang.String[] astrValue = org.drip.quant.common.StringUtil.Split (strCSVLine, &quot;,&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">			while (null != (strCSVLine = brCSV.readLine())) {</span>
+<span class="nc" id="L112">				java.lang.String[] astrValue = org.drip.quant.common.StringUtil.Split (strCSVLine, &quot;,&quot;);</span>
 
-<span class="nc bnc" id="L113" title="All 4 branches missed.">				if (null != astrValue &amp;&amp; 0 != astrValue.length) {</span>
-<span class="nc bnc" id="L114" title="All 4 branches missed.">					if (!bHeader || !bIgnoreHeader) csvGrid.add (astrValue);</span>
+<span class="nc bnc" id="L114" title="All 4 branches missed.">				if (null != astrValue &amp;&amp; 0 != astrValue.length) {</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">					if (!bHeader || !bIgnoreHeader) csvGrid.add (astrValue);</span>
 
-<span class="nc" id="L116">					bHeader = false;</span>
+<span class="nc" id="L117">					bHeader = false;</span>
 				}
-<span class="nc" id="L118">			}</span>
+<span class="nc" id="L119">			}</span>
 
-<span class="nc" id="L120">			return csvGrid;</span>
-<span class="nc" id="L121">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L122">			e.printStackTrace();</span>
+<span class="nc" id="L121">			return csvGrid;</span>
+<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L123">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L125">		return null;</span>
+<span class="nc" id="L126">		return null;</span>
 	}
 
 	/**
@@ -136,36 +137,36 @@ package org.drip.feed.loader;
 	@SuppressWarnings (&quot;resource&quot;) public static final org.drip.feed.loader.CSVGrid NamedStringGrid (
 		final java.lang.String strCSVFile)
 	{
-<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == strCSVFile || strCSVFile.isEmpty()) return null;</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == strCSVFile || strCSVFile.isEmpty()) return null;</span>
 
-<span class="nc" id="L141">		boolean bHeader = true;</span>
-<span class="nc" id="L142">		java.lang.String strCSVLine = &quot;&quot;;</span>
-<span class="nc" id="L143">		java.io.BufferedReader brCSV = null;</span>
+<span class="nc" id="L142">		boolean bHeader = true;</span>
+<span class="nc" id="L143">		java.lang.String strCSVLine = &quot;&quot;;</span>
+<span class="nc" id="L144">		java.io.BufferedReader brCSV = null;</span>
 
-<span class="nc" id="L145">		org.drip.feed.loader.CSVGrid csvGrid = new org.drip.feed.loader.CSVGrid();</span>
+<span class="nc" id="L146">		org.drip.feed.loader.CSVGrid csvGrid = new org.drip.feed.loader.CSVGrid();</span>
 
 		try {
-<span class="nc" id="L148">			brCSV = new java.io.BufferedReader (new java.io.FileReader (strCSVFile));</span>
+<span class="nc" id="L149">			brCSV = new java.io.BufferedReader (new java.io.FileReader (strCSVFile));</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			while (null != (strCSVLine = brCSV.readLine())) {</span>
-<span class="nc" id="L151">				java.lang.String[] astrValue = org.drip.quant.common.StringUtil.Split (strCSVLine, &quot;,&quot;);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			while (null != (strCSVLine = brCSV.readLine())) {</span>
+<span class="nc" id="L152">				java.lang.String[] astrValue = org.drip.quant.common.StringUtil.Split (strCSVLine, &quot;,&quot;);</span>
 
-<span class="nc bnc" id="L153" title="All 4 branches missed.">				if (null != astrValue &amp;&amp; 0 != astrValue.length) {</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">					if (bHeader)</span>
-<span class="nc" id="L155">						csvGrid.setHeader (astrValue);</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">				if (null != astrValue &amp;&amp; 0 != astrValue.length) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">					if (bHeader)</span>
+<span class="nc" id="L156">						csvGrid.setHeader (astrValue);</span>
 					else
-<span class="nc" id="L157">						csvGrid.add (astrValue);</span>
+<span class="nc" id="L158">						csvGrid.add (astrValue);</span>
 
-<span class="nc" id="L159">					bHeader = false;</span>
+<span class="nc" id="L160">					bHeader = false;</span>
 				}
-<span class="nc" id="L161">			}</span>
+<span class="nc" id="L162">			}</span>
 
-<span class="nc" id="L163">			return csvGrid;</span>
-<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="nc" id="L164">			return csvGrid;</span>
+<span class="nc" id="L165">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L166">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L168">		return null;</span>
+<span class="nc" id="L169">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

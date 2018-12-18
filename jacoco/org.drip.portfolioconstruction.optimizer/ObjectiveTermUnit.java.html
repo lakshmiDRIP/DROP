@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 /**
  * &lt;i&gt;ObjectiveTermUnit&lt;/i&gt; holds the Details of a Single Objective Term that forms the Strategy.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -80,9 +81,9 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public class ObjectiveTermUnit {
-<span class="nc" id="L83">	private boolean _bIsActive = false;</span>
-<span class="nc" id="L84">	private double _dblWeight = java.lang.Double.NaN;</span>
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.optimizer.ObjectiveTerm _objTerm = null;</span>
+<span class="nc" id="L84">	private boolean _bIsActive = false;</span>
+<span class="nc" id="L85">	private double _dblWeight = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.optimizer.ObjectiveTerm _objTerm = null;</span>
 
 	/**
 	 * ObjectiveTermUnit Constructor
@@ -97,13 +98,13 @@ public class ObjectiveTermUnit {
 		final org.drip.portfolioconstruction.optimizer.ObjectiveTerm objTerm,
 		final double dblWeight)
 		throws java.lang.Exception
-<span class="nc" id="L100">	{</span>
-<span class="nc bnc" id="L101" title="All 4 branches missed.">		if (null == (_objTerm = objTerm) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight =</span>
+<span class="nc" id="L101">	{</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">		if (null == (_objTerm = objTerm) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight =</span>
 			dblWeight))
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;ObjectiveTermUnit Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;ObjectiveTermUnit Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L105">		_bIsActive = true;</span>
-<span class="nc" id="L106">	}</span>
+<span class="nc" id="L106">		_bIsActive = true;</span>
+<span class="nc" id="L107">	}</span>
 
 	/**
 	 * Indicate if the Objective Term is Active
@@ -113,7 +114,7 @@ public class ObjectiveTermUnit {
 
 	public boolean isActive()
 	{
-<span class="nc" id="L116">		return _bIsActive;</span>
+<span class="nc" id="L117">		return _bIsActive;</span>
 	}
 
 	/**
@@ -124,9 +125,9 @@ public class ObjectiveTermUnit {
 
 	public boolean activate()
 	{
-<span class="nc" id="L127">		boolean bIsActiveOld = _bIsActive;</span>
-<span class="nc" id="L128">		_bIsActive = true;</span>
-<span class="nc" id="L129">		return bIsActiveOld;</span>
+<span class="nc" id="L128">		boolean bIsActiveOld = _bIsActive;</span>
+<span class="nc" id="L129">		_bIsActive = true;</span>
+<span class="nc" id="L130">		return bIsActiveOld;</span>
 	}
 
 	/**
@@ -137,9 +138,9 @@ public class ObjectiveTermUnit {
 
 	public boolean deactivate()
 	{
-<span class="nc" id="L140">		boolean bIsActiveOld = _bIsActive;</span>
-<span class="nc" id="L141">		_bIsActive = false;</span>
-<span class="nc" id="L142">		return bIsActiveOld;</span>
+<span class="nc" id="L141">		boolean bIsActiveOld = _bIsActive;</span>
+<span class="nc" id="L142">		_bIsActive = false;</span>
+<span class="nc" id="L143">		return bIsActiveOld;</span>
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class ObjectiveTermUnit {
 
 	public double weight()
 	{
-<span class="nc" id="L153">		return _dblWeight;</span>
+<span class="nc" id="L154">		return _dblWeight;</span>
 	}
 
 	/**
@@ -161,7 +162,7 @@ public class ObjectiveTermUnit {
 
 	public org.drip.portfolioconstruction.optimizer.ObjectiveTerm term()
 	{
-<span class="nc" id="L164">		return _objTerm;</span>
+<span class="nc" id="L165">		return _objTerm;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

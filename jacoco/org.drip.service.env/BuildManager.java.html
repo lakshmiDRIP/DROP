@@ -70,18 +70,19 @@ package org.drip.service.env;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Env&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Environment Shell&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class BuildManager</span>
+<span class="nc" id="L83">public class BuildManager</span>
 {
-<span class="fc" id="L84">	private static org.drip.service.env.BuildRecord[] s_aBuildRecord = null;</span>
+<span class="fc" id="L85">	private static org.drip.service.env.BuildRecord[] s_aBuildRecord = null;</span>
 
 	/**
 	 * Initialize the Build Logs of the Build Manager
@@ -91,10 +92,35 @@ package org.drip.service.env;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L94" title="All 2 branches covered.">		if (null != s_aBuildRecord) return true;</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		if (null != s_aBuildRecord) return true;</span>
 
 		try {
-<span class="fc" id="L97">			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {</span>
+<span class="fc" id="L98">			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {</span>
+				new org.drip.service.env.BuildRecord (
+					&quot;3.93.0&quot;,
+					&quot;1.8.0_112&quot;,
+					&quot;Mon Dec 17 18:34:10 EST 2018&quot;
+				),
+				new org.drip.service.env.BuildRecord (
+					&quot;3.92.0&quot;,
+					&quot;1.8.0_112&quot;,
+					&quot;Wed Dec 12 21:15:06 EST 2018&quot;
+				),
+				new org.drip.service.env.BuildRecord (
+					&quot;3.91.0&quot;,
+					&quot;1.8.0_112&quot;,
+					&quot;Sun Dec 09 23:52:23 EST 2018&quot;
+				),
+				new org.drip.service.env.BuildRecord (
+					&quot;3.90.0&quot;,
+					&quot;1.8.0_112&quot;,
+					&quot;Fri Dec 07 23:42:09 EST 2018&quot;
+				),
+				new org.drip.service.env.BuildRecord (
+					&quot;3.89.0&quot;,
+					&quot;1.8.0_112&quot;,
+					&quot;Fri Dec 07 01:32:58 EST 2018&quot;
+				),
 				new org.drip.service.env.BuildRecord (
 					&quot;3.88.0&quot;,
 					&quot;1.8.0_112&quot;,
@@ -347,12 +373,12 @@ package org.drip.service.env;
 				)
 			};
 
-<span class="fc" id="L350">			return true;</span>
-<span class="nc" id="L351">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L352">			e.printStackTrace();</span>
+<span class="fc" id="L376">			return true;</span>
+<span class="nc" id="L377">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L378">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L355">		return false;</span>
+<span class="nc" id="L381">		return false;</span>
 	}
 
 	/**
@@ -363,7 +389,7 @@ package org.drip.service.env;
 
 	public static final org.drip.service.env.BuildRecord[] buildRecords()
 	{
-<span class="nc" id="L366">		return s_aBuildRecord;</span>
+<span class="nc" id="L392">		return s_aBuildRecord;</span>
 	}
 
 	/**
@@ -374,7 +400,7 @@ package org.drip.service.env;
 
 	public static final org.drip.service.env.BuildRecord latestBuildRecord()
 	{
-<span class="fc" id="L377">		return s_aBuildRecord[0];</span>
+<span class="fc" id="L403">		return s_aBuildRecord[0];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

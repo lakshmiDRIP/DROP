@@ -81,9 +81,10 @@ package org.drip.spaces.metric;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -92,8 +93,8 @@ package org.drip.spaces.metric;
 
 public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector implements
 	org.drip.spaces.metric.R1Normed {
-<span class="nc" id="L95">	private int _iPNorm = -1;</span>
-<span class="nc" id="L96">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
+<span class="nc" id="L96">	private int _iPNorm = -1;</span>
+<span class="nc" id="L97">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
 
 	/**
 	 * Construct the Standard l^p R^1 Continuous Space Instance
@@ -113,12 +114,12 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final int iPNorm)
 	{
 		try {
-<span class="nc" id="L116">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);</span>
-<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L118">			e.printStackTrace();</span>
+<span class="nc" id="L117">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);</span>
+<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L119">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L121">		return null;</span>
+<span class="nc" id="L122">		return null;</span>
 	}
 
 	/**
@@ -137,12 +138,12 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final org.drip.measure.continuous.R1 distR1)
 	{
 		try {
-<span class="nc" id="L140">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);</span>
-<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L142">			e.printStackTrace();</span>
+<span class="nc" id="L141">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);</span>
+<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L143">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L145">		return null;</span>
+<span class="nc" id="L146">		return null;</span>
 	}
 
 	/**
@@ -163,93 +164,93 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final int iPNorm)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L166">		super (dblLeftEdge, dblRightEdge);</span>
+<span class="nc" id="L167">		super (dblLeftEdge, dblRightEdge);</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
-<span class="nc" id="L169">			throw new java.lang.Exception (&quot;R1Continuous Constructor: Invalid p-norm&quot;);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
+<span class="nc" id="L170">			throw new java.lang.Exception (&quot;R1Continuous Constructor: Invalid p-norm&quot;);</span>
 
-<span class="nc" id="L171">		_distR1 = distR1;</span>
-<span class="nc" id="L172">	}</span>
+<span class="nc" id="L172">		_distR1 = distR1;</span>
+<span class="nc" id="L173">	}</span>
 
 	@Override public int pNorm()
 	{
-<span class="nc" id="L176">		return _iPNorm;</span>
+<span class="nc" id="L177">		return _iPNorm;</span>
 	}
 
 	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
-<span class="nc" id="L181">		return _distR1;</span>
+<span class="nc" id="L182">		return _distR1;</span>
 	}
 
 	@Override public double sampleMetricNorm (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
-<span class="nc" id="L189">			throw new java.lang.Exception (&quot;R1Continuous::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
+<span class="nc" id="L190">			throw new java.lang.Exception (&quot;R1Continuous::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L191">		return java.lang.Math.abs (dblX);</span>
+<span class="nc" id="L192">		return java.lang.Math.abs (dblX);</span>
 	}
 
 	@Override public double populationMode()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L198">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L199">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L200">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L201">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L205">				return _distR1.density (dblX);</span>
+<span class="nc" id="L206">				return _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L209">		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());</span>
+<span class="nc" id="L210">		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());</span>
 
-<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (null == vopMode)</span>
-<span class="nc" id="L212">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Cannot compute VOP Mode&quot;);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (null == vopMode)</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Cannot compute VOP Mode&quot;);</span>
 
-<span class="nc" id="L214">		return vopMode.variates()[0];</span>
+<span class="nc" id="L215">		return vopMode.variates()[0];</span>
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L221">			throw new java.lang.Exception (&quot;R1Continuous::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L222">			throw new java.lang.Exception (&quot;R1Continuous::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L223">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L224">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L228">				return sampleMetricNorm (dblX) * _distR1.density (dblX);</span>
+<span class="nc" id="L229">				return sampleMetricNorm (dblX) * _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L232">		return funcR1ToR1.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L233">		return funcR1ToR1.integrate (leftEdge(), rightEdge());</span>
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L239" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
-<span class="nc" id="L240">			throw new java.lang.Exception (&quot;R1Continuous::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L240" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
+<span class="nc" id="L241">			throw new java.lang.Exception (&quot;R1Continuous::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L242">		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L243">			(null) {</span>
+<span class="nc" id="L243">		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L244">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L248">				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);</span>
+<span class="nc" id="L249">				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L252">		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L253">		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

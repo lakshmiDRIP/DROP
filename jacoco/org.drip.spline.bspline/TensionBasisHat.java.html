@@ -75,9 +75,10 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,9 +86,9 @@ package org.drip.spline.bspline;
  */
 
 public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L88">	private double _dblTension = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblLeftPredictorOrdinate = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblRightPredictorOrdinate = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private double _dblTension = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _dblLeftPredictorOrdinate = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">	private double _dblRightPredictorOrdinate = java.lang.Double.NaN;</span>
 
 	protected TensionBasisHat (
 		final double dblLeftPredictorOrdinate,
@@ -95,14 +96,14 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L98">		super (null);</span>
+<span class="fc" id="L99">		super (null);</span>
 
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeftPredictorOrdinate = dblLeftPredictorOrdinate)</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblRightPredictorOrdinate =</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">				dblRightPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblTension =</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeftPredictorOrdinate = dblLeftPredictorOrdinate)</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (_dblRightPredictorOrdinate =</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">				dblRightPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblTension =</span>
 					dblTension))
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;TensionBasisHat ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L105">	}</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;TensionBasisHat ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L106">	}</span>
 
 	/**
 	 * Identifies if the ordinate is local to the range
@@ -118,10 +119,10 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;TensionBasisHat::in =&gt; Invalid Input&quot;);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;TensionBasisHat::in =&gt; Invalid Input&quot;);</span>
 
-<span class="fc bfc" id="L124" title="All 4 branches covered.">		return dblPredictorOrdinate &gt;= _dblLeftPredictorOrdinate &amp;&amp; dblPredictorOrdinate &lt;=</span>
+<span class="fc bfc" id="L125" title="All 4 branches covered.">		return dblPredictorOrdinate &gt;= _dblLeftPredictorOrdinate &amp;&amp; dblPredictorOrdinate &lt;=</span>
 			_dblRightPredictorOrdinate;
 	}
 
@@ -133,7 +134,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 
 	public double left()
 	{
-<span class="fc" id="L136">		return _dblLeftPredictorOrdinate;</span>
+<span class="fc" id="L137">		return _dblLeftPredictorOrdinate;</span>
 	}
 
 	/**
@@ -144,7 +145,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 
 	public double right()
 	{
-<span class="fc" id="L147">		return _dblRightPredictorOrdinate;</span>
+<span class="fc" id="L148">		return _dblRightPredictorOrdinate;</span>
 	}
 
 	/**
@@ -155,7 +156,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 
 	public double tension()
 	{
-<span class="fc" id="L158">		return _dblTension;</span>
+<span class="fc" id="L159">		return _dblTension;</span>
 	}
 
 	/**

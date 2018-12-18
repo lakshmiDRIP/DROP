@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.objective;
 
 /**
  * &lt;i&gt;NetTaxGainsTerm&lt;/i&gt; holds the Details of the Portfolio Net Tax Gain Objective Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -98,30 +99,30 @@ public class NetTaxGainsTerm extends org.drip.portfolioconstruction.objective.Ta
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L101">		super (</span>
+<span class="nc" id="L102">		super (</span>
 			strName,
 			&quot;OT_NET_TAX_GAINS&quot;,
 			&quot;Portfolio Net Tax Gains Objective Term&quot;,
 			adblInitialHoldings,
 			taxationScheme
 		);
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L109">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L112">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L113">		{</span>
+<span class="nc" id="L113">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L114">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L116">				return initialHoldings().length;</span>
+<span class="nc" id="L117">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L123">				return taxationScheme().standardNetTaxGainUS (</span>
-<span class="nc" id="L124">					initialHoldings(),</span>
+<span class="nc" id="L124">				return taxationScheme().standardNetTaxGainUS (</span>
+<span class="nc" id="L125">					initialHoldings(),</span>
 					adblVariate
 				);
 			}

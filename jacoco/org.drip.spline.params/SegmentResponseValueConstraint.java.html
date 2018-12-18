@@ -111,9 +111,10 @@ package org.drip.spline.params;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -140,9 +141,9 @@ public class SegmentResponseValueConstraint {
 
 	public static final int SPLITS_CONSTRAINT = 4;
 
-<span class="fc" id="L143">	private double[] _adblPredictorOrdinate = null;</span>
-<span class="fc" id="L144">	private double[] _adblResponseValueWeight = null;</span>
-<span class="fc" id="L145">	private double _dblWeightedResponseValueConstraint = java.lang.Double.NaN;</span>
+<span class="fc" id="L144">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L145">	private double[] _adblResponseValueWeight = null;</span>
+<span class="fc" id="L146">	private double _dblWeightedResponseValueConstraint = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a SegmentResponseValueConstraint instance from the given predictor/response pair.
@@ -157,18 +158,18 @@ public class SegmentResponseValueConstraint {
 		final double dblPredictorOrdinate,
 		final double dblResponseValue)
 	{
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue))</span>
-<span class="nc" id="L162">			return null;</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue))</span>
+<span class="nc" id="L163">			return null;</span>
 
 		try {
-<span class="fc" id="L165">			return new SegmentResponseValueConstraint (new double[] {dblPredictorOrdinate}, new double[]</span>
+<span class="fc" id="L166">			return new SegmentResponseValueConstraint (new double[] {dblPredictorOrdinate}, new double[]</span>
 				{1.}, dblResponseValue);
-<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L172">		return null;</span>
 	}
 
 	/**
@@ -187,17 +188,17 @@ public class SegmentResponseValueConstraint {
 		final double[] adblResponseValueWeight,
 		final double dblWeightedResponseValueConstraint)
 		throws java.lang.Exception
-<span class="fc" id="L190">	{</span>
-<span class="pc bpc" id="L191" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =</span>
+<span class="fc" id="L191">	{</span>
+<span class="pc bpc" id="L192" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =</span>
 			adblResponseValueWeight) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))</span>
-<span class="nc" id="L194">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))</span>
+<span class="nc" id="L195">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L196">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
+<span class="fc" id="L197">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L198" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || _adblResponseValueWeight.length != iNumPredictorOrdinate)</span>
-<span class="nc" id="L199">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L200">	}</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || _adblResponseValueWeight.length != iNumPredictorOrdinate)</span>
+<span class="nc" id="L200">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L201">	}</span>
 
 	/**
 	 * Retrieve the Array of Predictor Ordinates
@@ -207,7 +208,7 @@ public class SegmentResponseValueConstraint {
 
 	public double[] predictorOrdinates()
 	{
-<span class="fc" id="L210">		return _adblPredictorOrdinate;</span>
+<span class="fc" id="L211">		return _adblPredictorOrdinate;</span>
 	}
 
 	/**
@@ -218,7 +219,7 @@ public class SegmentResponseValueConstraint {
 
 	public double[] responseWeights()
 	{
-<span class="nc" id="L221">		return _adblResponseValueWeight;</span>
+<span class="nc" id="L222">		return _adblResponseValueWeight;</span>
 	}
 
 	/**
@@ -229,18 +230,18 @@ public class SegmentResponseValueConstraint {
 
 	public double constraintValue()
 	{
-<span class="nc" id="L232">		return _dblWeightedResponseValueConstraint;</span>
+<span class="nc" id="L233">		return _dblWeightedResponseValueConstraint;</span>
 	}
 
 	public void display (
 		final java.lang.String strComment)
 	{
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblPredictorOrdinate.length; ++i)</span>
-<span class="nc" id="L239">			System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblPredictorOrdinate.length; ++i)</span>
+<span class="nc" id="L240">			System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
 				_adblPredictorOrdinate[i]) + &quot; =&gt; &quot; + _adblResponseValueWeight[i]);
 
-<span class="nc" id="L242">		System.out.println (&quot;\tConstraint: &quot; + _dblWeightedResponseValueConstraint);</span>
-<span class="nc" id="L243">	}</span>
+<span class="nc" id="L243">		System.out.println (&quot;\tConstraint: &quot; + _dblWeightedResponseValueConstraint);</span>
+<span class="nc" id="L244">	}</span>
 
 	/**
 	 * Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis
@@ -256,31 +257,31 @@ public class SegmentResponseValueConstraint {
 		final org.drip.spline.segment.BasisEvaluator lbe,
 		final org.drip.spline.segment.LatentStateInelastic ics)
 	{
-<span class="pc bpc" id="L259" title="2 of 4 branches missed.">		if (null == lbe || null == ics) return null;</span>
+<span class="pc bpc" id="L260" title="2 of 4 branches missed.">		if (null == lbe || null == ics) return null;</span>
 
-<span class="fc" id="L261">		int iNumResponseBasis = lbe.numBasis();</span>
+<span class="fc" id="L262">		int iNumResponseBasis = lbe.numBasis();</span>
 
-<span class="fc" id="L263">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
-<span class="fc" id="L264">		double[] adblResponseBasisWeight = new double[iNumResponseBasis];</span>
+<span class="fc" id="L264">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L265">		double[] adblResponseBasisWeight = new double[iNumResponseBasis];</span>
 
-<span class="pc bpc" id="L266" title="1 of 2 branches missed.">		if (0 == iNumResponseBasis) return null;</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		if (0 == iNumResponseBasis) return null;</span>
 
 		try {
-<span class="fc bfc" id="L269" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasis; ++i) {</span>
-<span class="fc" id="L270">				adblResponseBasisWeight[i] = 0.;</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasis; ++i) {</span>
+<span class="fc" id="L271">				adblResponseBasisWeight[i] = 0.;</span>
 
-<span class="fc bfc" id="L272" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
-<span class="fc" id="L273">					adblResponseBasisWeight[i] += _adblResponseValueWeight[j] *</span>
-<span class="fc" id="L274">						lbe.shapedBasisFunctionResponse (_adblPredictorOrdinate[j], i);</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
+<span class="fc" id="L274">					adblResponseBasisWeight[i] += _adblResponseValueWeight[j] *</span>
+<span class="fc" id="L275">						lbe.shapedBasisFunctionResponse (_adblPredictorOrdinate[j], i);</span>
 			}
 
-<span class="fc" id="L277">			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,</span>
+<span class="fc" id="L278">			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,</span>
 				_dblWeightedResponseValueConstraint);
-<span class="nc" id="L279">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L280">			e.printStackTrace();</span>
+<span class="nc" id="L280">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L281">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L283">		return null;</span>
+<span class="nc" id="L284">		return null;</span>
 	}
 
 	/**
@@ -298,15 +299,15 @@ public class SegmentResponseValueConstraint {
 		final double dblPredictorKnot)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorKnot))</span>
-<span class="nc" id="L302">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint::knotPosition =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorKnot))</span>
+<span class="nc" id="L303">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint::knotPosition =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (dblPredictorKnot &lt; _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (dblPredictorKnot &lt; _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		if (dblPredictorKnot &gt; _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1])</span>
-<span class="nc" id="L307">			return RIGHT_OF_CONSTRAINT;</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (dblPredictorKnot &gt; _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1])</span>
+<span class="nc" id="L308">			return RIGHT_OF_CONSTRAINT;</span>
 
-<span class="nc" id="L309">		return SPLITS_CONSTRAINT;</span>
+<span class="nc" id="L310">		return SPLITS_CONSTRAINT;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

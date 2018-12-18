@@ -91,9 +91,10 @@ package org.drip.spaces.cover;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Covering Number&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Cover&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -114,9 +115,9 @@ public class MaureyOperatorCoveringBounds {
 
 	public static final double WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT = 103.;
 
-<span class="nc" id="L117">	private int _iSupremumDimension = -1;</span>
-<span class="nc" id="L118">	private double _dblOperatorNorm = java.lang.Double.NaN;</span>
-<span class="nc" id="L119">	private double _dblMaureyConstant = java.lang.Double.NaN;</span>
+<span class="nc" id="L118">	private int _iSupremumDimension = -1;</span>
+<span class="nc" id="L119">	private double _dblOperatorNorm = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private double _dblMaureyConstant = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct an Instance Hilbert To Supremum Identity Map based Maurey Operator Covering Bounds
@@ -132,13 +133,13 @@ public class MaureyOperatorCoveringBounds {
 		final double dblOperatorNorm)
 	{
 		try {
-<span class="nc" id="L135">			return new MaureyOperatorCoveringBounds (HILBERT_SUPREMUM_IDENTITY_CONSTANT,</span>
+<span class="nc" id="L136">			return new MaureyOperatorCoveringBounds (HILBERT_SUPREMUM_IDENTITY_CONSTANT,</span>
 				iSupremumDimension, dblOperatorNorm);
-<span class="nc" id="L137">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L138">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L139">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L141">		return null;</span>
+<span class="nc" id="L142">		return null;</span>
 	}
 
 	/**
@@ -156,13 +157,13 @@ public class MaureyOperatorCoveringBounds {
 		final double dblOperatorNorm)
 	{
 		try {
-<span class="nc" id="L159">			return new MaureyOperatorCoveringBounds (WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT,</span>
+<span class="nc" id="L160">			return new MaureyOperatorCoveringBounds (WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT,</span>
 				iSupremumDimension, dblOperatorNorm);
-<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L163">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L166">		return null;</span>
 	}
 
 	/**
@@ -180,12 +181,12 @@ public class MaureyOperatorCoveringBounds {
 		final int iSupremumDimension,
 		final double dblOperatorNorm)
 		throws java.lang.Exception
-<span class="nc" id="L183">	{</span>
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 &gt;=</span>
+<span class="nc" id="L184">	{</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 &gt;=</span>
 			(_iSupremumDimension = iSupremumDimension) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				(_dblOperatorNorm = dblOperatorNorm))</span>
-<span class="nc" id="L187">			throw new java.lang.Exception (&quot;MaureyOperatorCoveringBounds ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L188">	}</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">				(_dblOperatorNorm = dblOperatorNorm))</span>
+<span class="nc" id="L188">			throw new java.lang.Exception (&quot;MaureyOperatorCoveringBounds ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L189">	}</span>
 
 	/**
 	 * Retrieve the Maurey Constant
@@ -195,7 +196,7 @@ public class MaureyOperatorCoveringBounds {
 
 	public double maureyConstant()
 	{
-<span class="nc" id="L198">		return _dblMaureyConstant;</span>
+<span class="nc" id="L199">		return _dblMaureyConstant;</span>
 	}
 
 	/**
@@ -206,7 +207,7 @@ public class MaureyOperatorCoveringBounds {
 
 	public int supremumDimension()
 	{
-<span class="nc" id="L209">		return _iSupremumDimension;</span>
+<span class="nc" id="L210">		return _iSupremumDimension;</span>
 	}
 
 	/**
@@ -217,7 +218,7 @@ public class MaureyOperatorCoveringBounds {
 
 	public double operatorNorm()
 	{
-<span class="nc" id="L220">		return _dblOperatorNorm;</span>
+<span class="nc" id="L221">		return _dblOperatorNorm;</span>
 	}
 
 	/**
@@ -234,11 +235,11 @@ public class MaureyOperatorCoveringBounds {
 		final int iEntropyNumberIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
-<span class="nc" id="L238">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
+<span class="nc" id="L239">			throw new java.lang.Exception</span>
 				(&quot;MaureyOperatorCoveringBounds::dyadicEntropyUpperBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L241">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((java.lang.Math.log (1. +</span>
+<span class="nc" id="L242">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((java.lang.Math.log (1. +</span>
 			(((double) _iSupremumDimension) / ((double) iEntropyNumberIndex))) / iEntropyNumberIndex));
 	}
 
@@ -256,13 +257,13 @@ public class MaureyOperatorCoveringBounds {
 		final int iEntropyNumberIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
-<span class="nc" id="L260">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
+<span class="nc" id="L261">			throw new java.lang.Exception</span>
 				(&quot;MaureyOperatorCoveringBounds::entropyNumberUpperBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L263">		double dblLogNPlus1 = 1. + java.lang.Math.log (iEntropyNumberIndex);</span>
+<span class="nc" id="L264">		double dblLogNPlus1 = 1. + java.lang.Math.log (iEntropyNumberIndex);</span>
 
-<span class="nc" id="L265">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((1. + (((double)</span>
+<span class="nc" id="L266">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((1. + (((double)</span>
 			_iSupremumDimension) / dblLogNPlus1)) / dblLogNPlus1);
 	}
 }

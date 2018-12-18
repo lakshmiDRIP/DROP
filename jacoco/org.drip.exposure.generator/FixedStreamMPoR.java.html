@@ -10,12 +10,12 @@ package org.drip.exposure.generator;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -32,16 +32,17 @@ package org.drip.exposure.generator;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,8 +99,8 @@ package org.drip.exposure.generator;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator/README.md&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -122,105 +123,105 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 		final double notional)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L125">		super (</span>
+<span class="nc" id="L126">		super (</span>
 			stream,
 			notional
 		);
-<span class="nc" id="L129">	}</span>
+<span class="nc" id="L130">	}</span>
 
 	@Override public double variationMarginEstimate (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;FixedStreamMPoR::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;FixedStreamMPoR::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L141">		double variationMarginEstimate = 0.;</span>
+<span class="nc" id="L142">		double variationMarginEstimate = 0.;</span>
 
-<span class="nc" id="L143">		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();</span>
+<span class="nc" id="L144">		double overnightReplicatorForward = marketPath.marketVertex (forwardDate).overnightReplicator();</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
 		{
-<span class="nc" id="L147">			int periodEndDate = period.endDate();</span>
+<span class="nc" id="L148">			int periodEndDate = period.endDate();</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">			if (periodEndDate &lt; forwardDate)</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (periodEndDate &lt; forwardDate)</span>
 			{
-<span class="nc" id="L151">				continue;</span>
+<span class="nc" id="L152">				continue;</span>
 			}
 
-<span class="nc" id="L154">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
-<span class="nc" id="L155">				period.couponMetrics (</span>
+<span class="nc" id="L155">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
+<span class="nc" id="L156">				period.couponMetrics (</span>
 					forwardDate,
 					null
 				);
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
 			{
-<span class="nc" id="L162">				throw new java.lang.Exception</span>
+<span class="nc" id="L163">				throw new java.lang.Exception</span>
 					(&quot;FixedStreamMPoR::variationMarginEstimate =&gt; Cannot Compute CompositePeriodCouponMetrics&quot;);
 			}
 
-<span class="nc" id="L166">			variationMarginEstimate += period.couponDCF() *</span>
-<span class="nc" id="L167">				period.notional (periodEndDate) *</span>
-<span class="nc" id="L168">				compositePeriodCouponMetrics.rate() *</span>
-<span class="nc" id="L169">				period.couponFactor (periodEndDate) *</span>
+<span class="nc" id="L167">			variationMarginEstimate += period.couponDCF() *</span>
+<span class="nc" id="L168">				period.notional (periodEndDate) *</span>
+<span class="nc" id="L169">				compositePeriodCouponMetrics.rate() *</span>
+<span class="nc" id="L170">				period.couponFactor (periodEndDate) *</span>
 				overnightReplicatorForward /
-<span class="nc" id="L171">				marketPath.marketVertex (period.payDate()).overnightReplicator();</span>
-<span class="nc" id="L172">		}</span>
+<span class="nc" id="L172">				marketPath.marketVertex (period.payDate()).overnightReplicator();</span>
+<span class="nc" id="L173">		}</span>
 
-<span class="nc" id="L174">		return variationMarginEstimate * notional();</span>
+<span class="nc" id="L175">		return variationMarginEstimate * notional();</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L183">			return null;</span>
+<span class="nc" id="L184">			return null;</span>
 		}
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
 		{
-<span class="nc" id="L188">			int periodPayDate = period.payDate();</span>
+<span class="nc" id="L189">			int periodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (periodPayDate == forwardDate)</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			if (periodPayDate == forwardDate)</span>
 			{
-<span class="nc" id="L192">				int periodEndDate = period.endDate();</span>
+<span class="nc" id="L193">				int periodEndDate = period.endDate();</span>
 
-<span class="nc" id="L194">				org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
-<span class="nc" id="L195">					period.couponMetrics (</span>
+<span class="nc" id="L195">				org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
+<span class="nc" id="L196">					period.couponMetrics (</span>
 						periodEndDate,
 						null
 					);
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">				if (null == compositePeriodCouponMetrics)</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">				if (null == compositePeriodCouponMetrics)</span>
 				{
-<span class="nc" id="L202">					return null;</span>
+<span class="nc" id="L203">					return null;</span>
 				}
 
 				try
 				{
-<span class="nc" id="L207">					return org.drip.exposure.mpor.TradePayment.Standard (</span>
-<span class="nc" id="L208">						notional() * period.couponDCF() *</span>
-<span class="nc" id="L209">						period.notional (periodEndDate) *</span>
-<span class="nc" id="L210">						compositePeriodCouponMetrics.rate() *</span>
-<span class="nc" id="L211">						period.couponFactor (periodEndDate)</span>
+<span class="nc" id="L208">					return org.drip.exposure.mpor.TradePayment.Standard (</span>
+<span class="nc" id="L209">						notional() * period.couponDCF() *</span>
+<span class="nc" id="L210">						period.notional (periodEndDate) *</span>
+<span class="nc" id="L211">						compositePeriodCouponMetrics.rate() *</span>
+<span class="nc" id="L212">						period.couponFactor (periodEndDate)</span>
 					);
 				}
-<span class="nc" id="L214">				catch (java.lang.Exception e)</span>
+<span class="nc" id="L215">				catch (java.lang.Exception e)</span>
 				{
-<span class="nc" id="L216">					e.printStackTrace();</span>
+<span class="nc" id="L217">					e.printStackTrace();</span>
 
-<span class="nc" id="L218">					return null;</span>
+<span class="nc" id="L219">					return null;</span>
 				}
 			}
-<span class="nc" id="L221">		}</span>
+<span class="nc" id="L222">		}</span>
 
-<span class="nc" id="L223">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
+<span class="nc" id="L224">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -228,73 +229,73 @@ public class FixedStreamMPoR extends org.drip.exposure.generator.StreamMPoR
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L231" title="All 4 branches missed.">		if (endDate &lt; startDate ||</span>
+<span class="nc bnc" id="L232" title="All 4 branches missed.">		if (endDate &lt; startDate ||</span>
 			null == marketPath)
 		{
-<span class="nc" id="L234">			return null;</span>
+<span class="nc" id="L235">			return null;</span>
 		}
 
-<span class="nc" id="L237">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L238">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L238">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L239">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.CompositePeriod period : stream().periods())</span>
 		{
-<span class="nc" id="L243">			int periodPayDate = period.payDate();</span>
+<span class="nc" id="L244">			int periodPayDate = period.payDate();</span>
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">			if (periodPayDate &lt; startDate)</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			if (periodPayDate &lt; startDate)</span>
 			{
-<span class="nc" id="L247">				continue;</span>
+<span class="nc" id="L248">				continue;</span>
 			}
 
-<span class="nc bnc" id="L250" title="All 2 branches missed.">			if (periodPayDate &gt; endDate)</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			if (periodPayDate &gt; endDate)</span>
 			{
-<span class="nc" id="L252">				break;</span>
+<span class="nc" id="L253">				break;</span>
 			}
 
-<span class="nc" id="L255">			int periodEndDate = period.endDate();</span>
+<span class="nc" id="L256">			int periodEndDate = period.endDate();</span>
 
-<span class="nc" id="L257">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
-<span class="nc" id="L258">				period.couponMetrics (</span>
+<span class="nc" id="L258">			org.drip.analytics.output.CompositePeriodCouponMetrics compositePeriodCouponMetrics =</span>
+<span class="nc" id="L259">				period.couponMetrics (</span>
 					periodEndDate,
 					null
 				);
 
-<span class="nc bnc" id="L263" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">			if (null == compositePeriodCouponMetrics)</span>
 			{
-<span class="nc" id="L265">				return null;</span>
+<span class="nc" id="L266">				return null;</span>
 			}
 
 			try
 			{
-<span class="nc" id="L270">				denseTradePaymentArray[periodPayDate - startDate] =</span>
-<span class="nc" id="L271">					org.drip.exposure.mpor.TradePayment.Standard (</span>
-<span class="nc" id="L272">						notional() * period.couponDCF() *</span>
-<span class="nc" id="L273">						period.notional (periodEndDate) *</span>
-<span class="nc" id="L274">						compositePeriodCouponMetrics.rate() *</span>
-<span class="nc" id="L275">						period.couponFactor (periodEndDate)</span>
+<span class="nc" id="L271">				denseTradePaymentArray[periodPayDate - startDate] =</span>
+<span class="nc" id="L272">					org.drip.exposure.mpor.TradePayment.Standard (</span>
+<span class="nc" id="L273">						notional() * period.couponDCF() *</span>
+<span class="nc" id="L274">						period.notional (periodEndDate) *</span>
+<span class="nc" id="L275">						compositePeriodCouponMetrics.rate() *</span>
+<span class="nc" id="L276">						period.couponFactor (periodEndDate)</span>
 					);
 			}
-<span class="nc" id="L278">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L279">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L280">				e.printStackTrace();</span>
+<span class="nc" id="L281">				e.printStackTrace();</span>
 
-<span class="nc" id="L282">				return null;</span>
-<span class="nc" id="L283">			}</span>
-<span class="nc" id="L284">		}</span>
+<span class="nc" id="L283">				return null;</span>
+<span class="nc" id="L284">			}</span>
+<span class="nc" id="L285">		}</span>
 
-<span class="nc" id="L286">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
-<span class="nc" id="L287">			(0.);</span>
+<span class="nc" id="L287">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L288">			(0.);</span>
 
-<span class="nc bnc" id="L289" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc bnc" id="L291" title="All 2 branches missed.">			if (null == denseTradePaymentArray[denseDateIndex])</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">			if (null == denseTradePaymentArray[denseDateIndex])</span>
 			{
-<span class="nc" id="L293">				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+<span class="nc" id="L294">				denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
 			}
 		}
 
-<span class="nc" id="L297">		return denseTradePaymentArray;</span>
+<span class="nc" id="L298">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

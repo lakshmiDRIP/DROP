@@ -13,12 +13,12 @@ package org.drip.feed.loader;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -35,16 +35,17 @@ package org.drip.feed.loader;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,16 +75,16 @@ package org.drip.feed.loader;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CSVGrid {
-<span class="nc" id="L85">	private java.lang.String[] _astrHeader = null;</span>
-<span class="nc" id="L86">	private java.util.List&lt;java.lang.String[]&gt; _lsastr = null;</span>
+<span class="nc" id="L86">	private java.lang.String[] _astrHeader = null;</span>
+<span class="nc" id="L87">	private java.util.List&lt;java.lang.String[]&gt; _lsastr = null;</span>
 
 	/**
 	 * Convert the String Element to double. Fall back is NaN.
@@ -96,15 +97,15 @@ public class CSVGrid {
 	public static final double ToDouble (
 		final java.lang.String strElement)
 	{
-<span class="nc bnc" id="L99" title="All 4 branches missed.">		if (null == strElement || strElement.trim().isEmpty()) return java.lang.Double.NaN;</span>
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (null == strElement || strElement.trim().isEmpty()) return java.lang.Double.NaN;</span>
 
 		try {
-<span class="nc" id="L102">			return java.lang.Double.parseDouble (strElement);</span>
-<span class="nc" id="L103">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L104">			e.printStackTrace();</span>
+<span class="nc" id="L103">			return java.lang.Double.parseDouble (strElement);</span>
+<span class="nc" id="L104">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L105">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L107">		return java.lang.Double.NaN;</span>
+<span class="nc" id="L108">		return java.lang.Double.NaN;</span>
 	}
 
 	/**
@@ -118,15 +119,15 @@ public class CSVGrid {
 	public static final int ToInteger (
 		final java.lang.String strElement)
 	{
-<span class="nc bnc" id="L121" title="All 4 branches missed.">		if (null == strElement || strElement.trim().isEmpty()) return java.lang.Integer.MIN_VALUE;</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == strElement || strElement.trim().isEmpty()) return java.lang.Integer.MIN_VALUE;</span>
 
 		try {
-<span class="nc" id="L124">			return java.lang.Integer.parseInt (strElement);</span>
-<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L126">			e.printStackTrace();</span>
+<span class="nc" id="L125">			return java.lang.Integer.parseInt (strElement);</span>
+<span class="nc" id="L126">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L127">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L129">		return java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L130">		return java.lang.Integer.MIN_VALUE;</span>
 	}
 
 	/**
@@ -140,14 +141,14 @@ public class CSVGrid {
 	public static final org.drip.analytics.date.JulianDate ToDate (
 		final java.lang.String strElement)
 	{
-<span class="nc" id="L143">		org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
-<span class="nc" id="L144">			(strElement.trim());</span>
+<span class="nc" id="L144">		org.drip.analytics.date.JulianDate dt = org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY</span>
+<span class="nc" id="L145">			(strElement.trim());</span>
 
-<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (null != dt || null != (dt = org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY (strElement,</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (null != dt || null != (dt = org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY (strElement,</span>
 			&quot;-&quot;)))
-<span class="nc" id="L148">			return dt;</span>
+<span class="nc" id="L149">			return dt;</span>
 
-<span class="nc" id="L150">		return org.drip.analytics.date.DateUtil.CreateFromMDY (strElement, &quot;-&quot;);</span>
+<span class="nc" id="L151">		return org.drip.analytics.date.DateUtil.CreateFromMDY (strElement, &quot;-&quot;);</span>
 	}
 
 	/**
@@ -155,8 +156,8 @@ public class CSVGrid {
 	 */
 
 	public CSVGrid()
-<span class="nc" id="L158">	{</span>
-<span class="nc" id="L159">	}</span>
+<span class="nc" id="L159">	{</span>
+<span class="nc" id="L160">	}</span>
 
 	/**
 	 * Retrieve the Underlying CSV Grid
@@ -166,7 +167,7 @@ public class CSVGrid {
 
 	public java.util.List&lt;java.lang.String[]&gt; grid()
 	{
-<span class="nc" id="L169">		return _lsastr;</span>
+<span class="nc" id="L170">		return _lsastr;</span>
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class CSVGrid {
 
 	public int size()
 	{
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		return null == _lsastr ? 0 : _lsastr.size();</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		return null == _lsastr ? 0 : _lsastr.size();</span>
 	}
 
 	/**
@@ -191,10 +192,10 @@ public class CSVGrid {
 	public boolean setHeader (
 		final java.lang.String[] astrHeader)
 	{
-<span class="nc bnc" id="L194" title="All 4 branches missed.">		if (null == astrHeader || 0 == astrHeader.length) return false;</span>
+<span class="nc bnc" id="L195" title="All 4 branches missed.">		if (null == astrHeader || 0 == astrHeader.length) return false;</span>
 
-<span class="nc" id="L196">		_astrHeader = astrHeader;</span>
-<span class="nc" id="L197">		return true;</span>
+<span class="nc" id="L197">		_astrHeader = astrHeader;</span>
+<span class="nc" id="L198">		return true;</span>
 	}
 
 	/**
@@ -208,13 +209,13 @@ public class CSVGrid {
 	public boolean add (
 		final java.lang.String[] astr)
 	{
-<span class="nc bnc" id="L211" title="All 4 branches missed.">		if (null == astr || 0 == astr.length) return false;</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (null == astr || 0 == astr.length) return false;</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == _lsastr) _lsastr = new java.util.ArrayList&lt;java.lang.String[]&gt;();</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (null == _lsastr) _lsastr = new java.util.ArrayList&lt;java.lang.String[]&gt;();</span>
 
-<span class="nc" id="L215">		_lsastr.add (astr);</span>
+<span class="nc" id="L216">		_lsastr.add (astr);</span>
 
-<span class="nc" id="L217">		return true;</span>
+<span class="nc" id="L218">		return true;</span>
 	}
 
 	/**
@@ -225,7 +226,7 @@ public class CSVGrid {
 
 	public java.lang.String[] headers()
 	{
-<span class="nc" id="L228">		return _astrHeader;</span>
+<span class="nc" id="L229">		return _astrHeader;</span>
 	}
 
 	/**
@@ -239,7 +240,7 @@ public class CSVGrid {
 	public java.lang.String header (
 		final int iIndex)
 	{
-<span class="nc bnc" id="L242" title="All 4 branches missed.">		return null == _astrHeader || _astrHeader.length &lt;= iIndex ? null : _astrHeader[iIndex];</span>
+<span class="nc bnc" id="L243" title="All 4 branches missed.">		return null == _astrHeader || _astrHeader.length &lt;= iIndex ? null : _astrHeader[iIndex];</span>
 	}
 
 	/**
@@ -254,19 +255,19 @@ public class CSVGrid {
 	public java.lang.String[] stringArrayAtColumn (
 		final int iColumn)
 	{
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
 
-<span class="nc" id="L259">		int iRow = 0;</span>
+<span class="nc" id="L260">		int iRow = 0;</span>
 
-<span class="nc" id="L261">		java.lang.String[] astrColumn = new java.lang.String[_lsastr.size()];</span>
+<span class="nc" id="L262">		java.lang.String[] astrColumn = new java.lang.String[_lsastr.size()];</span>
 
-<span class="nc bnc" id="L263" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
-<span class="nc bnc" id="L264" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L265" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
 
-<span class="nc" id="L266">			astrColumn[iRow++] = astr[iColumn];</span>
-<span class="nc" id="L267">		}</span>
+<span class="nc" id="L267">			astrColumn[iRow++] = astr[iColumn];</span>
+<span class="nc" id="L268">		}</span>
 
-<span class="nc" id="L269">		return astrColumn;</span>
+<span class="nc" id="L270">		return astrColumn;</span>
 	}
 
 	/**
@@ -280,19 +281,19 @@ public class CSVGrid {
 	public int[] intArrayAtColumn (
 		final int iColumn)
 	{
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
 
-<span class="nc" id="L285">		int iRow = 0;</span>
+<span class="nc" id="L286">		int iRow = 0;</span>
 
-<span class="nc" id="L287">		int[] ai = new int[_lsastr.size()];</span>
+<span class="nc" id="L288">		int[] ai = new int[_lsastr.size()];</span>
 
-<span class="nc bnc" id="L289" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
-<span class="nc bnc" id="L290" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L291" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
 
-<span class="nc" id="L292">			ai[iRow++] = ToInteger (astr[iColumn]);</span>
-<span class="nc" id="L293">		}</span>
+<span class="nc" id="L293">			ai[iRow++] = ToInteger (astr[iColumn]);</span>
+<span class="nc" id="L294">		}</span>
 
-<span class="nc" id="L295">		return ai;</span>
+<span class="nc" id="L296">		return ai;</span>
 	}
 
 	/**
@@ -308,19 +309,19 @@ public class CSVGrid {
 		final int iColumn,
 		final double dblScaler)
 	{
-<span class="nc bnc" id="L311" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || 0 &gt; iColumn) return null;</span>
+<span class="nc bnc" id="L312" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || 0 &gt; iColumn) return null;</span>
 
-<span class="nc" id="L313">		int iRow = 0;</span>
+<span class="nc" id="L314">		int iRow = 0;</span>
 
-<span class="nc" id="L315">		double[] adbl = new double[_lsastr.size()];</span>
+<span class="nc" id="L316">		double[] adbl = new double[_lsastr.size()];</span>
 
-<span class="nc bnc" id="L317" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
-<span class="nc bnc" id="L318" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L319" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
 
-<span class="nc" id="L320">			adbl[iRow++] = dblScaler * ToDouble (astr[iColumn]);</span>
-<span class="nc" id="L321">		}</span>
+<span class="nc" id="L321">			adbl[iRow++] = dblScaler * ToDouble (astr[iColumn]);</span>
+<span class="nc" id="L322">		}</span>
 
-<span class="nc" id="L323">		return adbl;</span>
+<span class="nc" id="L324">		return adbl;</span>
 	}
 
 	/**
@@ -334,7 +335,7 @@ public class CSVGrid {
 	public double[] doubleArrayAtColumn (
 		final int iColumn)
 	{
-<span class="nc" id="L337">		return doubleArrayAtColumn (iColumn, 1.);</span>
+<span class="nc" id="L338">		return doubleArrayAtColumn (iColumn, 1.);</span>
 	}
 
 	/**
@@ -348,19 +349,19 @@ public class CSVGrid {
 	public org.drip.analytics.date.JulianDate[] dateArrayAtColumn (
 		final int iColumn)
 	{
-<span class="nc bnc" id="L351" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">		if (0 &gt; iColumn) return null;</span>
 
-<span class="nc" id="L353">		int iRow = 0;</span>
+<span class="nc" id="L354">		int iRow = 0;</span>
 
-<span class="nc" id="L355">		org.drip.analytics.date.JulianDate[] adt = new org.drip.analytics.date.JulianDate[_lsastr.size()];</span>
+<span class="nc" id="L356">		org.drip.analytics.date.JulianDate[] adt = new org.drip.analytics.date.JulianDate[_lsastr.size()];</span>
 
-<span class="nc bnc" id="L357" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
-<span class="nc bnc" id="L358" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">		for (java.lang.String[] astr : _lsastr) {</span>
+<span class="nc bnc" id="L359" title="All 4 branches missed.">			if (null == astr || astr.length &lt;= iColumn) return null;</span>
 
-<span class="nc" id="L360">			adt[iRow++] = ToDate (astr[iColumn]);</span>
-<span class="nc" id="L361">		}</span>
+<span class="nc" id="L361">			adt[iRow++] = ToDate (astr[iColumn]);</span>
+<span class="nc" id="L362">		}</span>
 
-<span class="nc" id="L363">		return adt;</span>
+<span class="nc" id="L364">		return adt;</span>
 	}
 
 	/**
@@ -376,71 +377,71 @@ public class CSVGrid {
 			doubleMap (
 				final double dblScaler)
 	{
-<span class="nc bnc" id="L379" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;</span>
+<span class="nc bnc" id="L380" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;</span>
 
-<span class="nc" id="L381">		int iNumClose = _lsastr.size();</span>
+<span class="nc" id="L382">		int iNumClose = _lsastr.size();</span>
 
-<span class="nc bnc" id="L383" title="All 2 branches missed.">		if (0 == iNumClose) return null;</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		if (0 == iNumClose) return null;</span>
 
-<span class="nc" id="L385">		java.lang.String[] astrHeader = _lsastr.get (0);</span>
+<span class="nc" id="L386">		java.lang.String[] astrHeader = _lsastr.get (0);</span>
 
-<span class="nc" id="L387">		int iNumMark = astrHeader.length;</span>
-<span class="nc" id="L388">		double adblHeader[] = new double[iNumMark];</span>
+<span class="nc" id="L388">		int iNumMark = astrHeader.length;</span>
+<span class="nc" id="L389">		double adblHeader[] = new double[iNumMark];</span>
 
-<span class="nc bnc" id="L390" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMark; ++i) {</span>
-<span class="nc bnc" id="L391" title="All 4 branches missed.">			if (null == astrHeader[i] || astrHeader[i].isEmpty()) return null;</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMark; ++i) {</span>
+<span class="nc bnc" id="L392" title="All 4 branches missed.">			if (null == astrHeader[i] || astrHeader[i].isEmpty()) return null;</span>
 
-<span class="nc" id="L393">			double dblHeader = java.lang.Double.NaN;</span>
+<span class="nc" id="L394">			double dblHeader = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L395">			java.lang.String strHeader = astrHeader[i].trim();</span>
+<span class="nc" id="L396">			java.lang.String strHeader = astrHeader[i].trim();</span>
 
-<span class="nc bnc" id="L397" title="All 4 branches missed.">			if (null == strHeader || strHeader.isEmpty()) return null;</span>
+<span class="nc bnc" id="L398" title="All 4 branches missed.">			if (null == strHeader || strHeader.isEmpty()) return null;</span>
 
 			try {
-<span class="nc" id="L400">				dblHeader = java.lang.Double.parseDouble (strHeader);</span>
-<span class="nc" id="L401">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L402">				e.printStackTrace();</span>
+<span class="nc" id="L401">				dblHeader = java.lang.Double.parseDouble (strHeader);</span>
+<span class="nc" id="L402">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L403">				e.printStackTrace();</span>
 
-<span class="nc" id="L404">				return null;</span>
-<span class="nc" id="L405">			}</span>
+<span class="nc" id="L405">				return null;</span>
+<span class="nc" id="L406">			}</span>
 
-<span class="nc bnc" id="L407" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblHeader)) return null;</span>
+<span class="nc bnc" id="L408" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblHeader)) return null;</span>
 
-<span class="nc" id="L409">			adblHeader[i] = dblHeader;;</span>
+<span class="nc" id="L410">			adblHeader[i] = dblHeader;;</span>
 		}
 
 		java.util.Map&lt;org.drip.analytics.date.JulianDate, java.util.Map&lt;java.lang.Double, java.lang.Double&gt;&gt;
-<span class="nc" id="L413">			mapClose = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
+<span class="nc" id="L414">			mapClose = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
 				java.util.Map&lt;java.lang.Double, java.lang.Double&gt;&gt;();
 
-<span class="nc bnc" id="L416" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L417">			java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapClosingMark = new</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L418">			java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapClosingMark = new</span>
 				java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();
 
-<span class="nc" id="L420">			java.lang.String[] astrClosingMark = _lsastr.get (i);</span>
+<span class="nc" id="L421">			java.lang.String[] astrClosingMark = _lsastr.get (i);</span>
 
-<span class="nc bnc" id="L422" title="All 2 branches missed.">			for (int j = 1; j &lt; iNumMark; ++j) {</span>
-<span class="nc" id="L423">				double dblClosingMark = java.lang.Double.NaN;</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">			for (int j = 1; j &lt; iNumMark; ++j) {</span>
+<span class="nc" id="L424">				double dblClosingMark = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L425" title="All 4 branches missed.">				java.lang.String strClosingMark = null == astrClosingMark[j] || astrClosingMark[j].isEmpty()</span>
-<span class="nc" id="L426">					? null : astrClosingMark[j].trim();</span>
+<span class="nc bnc" id="L426" title="All 4 branches missed.">				java.lang.String strClosingMark = null == astrClosingMark[j] || astrClosingMark[j].isEmpty()</span>
+<span class="nc" id="L427">					? null : astrClosingMark[j].trim();</span>
 
 				try {
-<span class="nc bnc" id="L429" title="All 4 branches missed.">					if (null != strClosingMark &amp;&amp; !strClosingMark.isEmpty())</span>
-<span class="nc" id="L430">						dblClosingMark = java.lang.Double.parseDouble (strClosingMark);</span>
-<span class="nc" id="L431">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L432">				}</span>
+<span class="nc bnc" id="L430" title="All 4 branches missed.">					if (null != strClosingMark &amp;&amp; !strClosingMark.isEmpty())</span>
+<span class="nc" id="L431">						dblClosingMark = java.lang.Double.parseDouble (strClosingMark);</span>
+<span class="nc" id="L432">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L433">				}</span>
 
-<span class="nc bnc" id="L434" title="All 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblClosingMark))</span>
-<span class="nc" id="L435">					mapClosingMark.put (adblHeader[j], dblScaler * dblClosingMark);</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">				if (org.drip.quant.common.NumberUtil.IsValid (dblClosingMark))</span>
+<span class="nc" id="L436">					mapClosingMark.put (adblHeader[j], dblScaler * dblClosingMark);</span>
 			}
 
-<span class="nc bnc" id="L438" title="All 2 branches missed.">			if (0 != mapClosingMark.size())</span>
-<span class="nc" id="L439">				mapClose.put (org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (astrClosingMark[0]),</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">			if (0 != mapClosingMark.size())</span>
+<span class="nc" id="L440">				mapClose.put (org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (astrClosingMark[0]),</span>
 					mapClosingMark);
 		}
 
-<span class="nc" id="L443">		return mapClose;</span>
+<span class="nc" id="L444">		return mapClose;</span>
 	}
 
 	/**
@@ -455,63 +456,63 @@ public class CSVGrid {
 		groupedOrderedDouble (
 			final double dblScaler)
 	{
-<span class="nc bnc" id="L458" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;</span>
+<span class="nc bnc" id="L459" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;</span>
 
-<span class="nc" id="L460">		int iNumClose = _lsastr.size();</span>
+<span class="nc" id="L461">		int iNumClose = _lsastr.size();</span>
 
-<span class="nc bnc" id="L462" title="All 2 branches missed.">		if (0 == iNumClose) return null;</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">		if (0 == iNumClose) return null;</span>
 
-<span class="nc" id="L464">		java.lang.String[] astrHeader = _lsastr.get (0);</span>
+<span class="nc" id="L465">		java.lang.String[] astrHeader = _lsastr.get (0);</span>
 
-<span class="nc" id="L466">		int iNumMark = astrHeader.length;</span>
-<span class="nc" id="L467">		java.lang.String[] astrTenor = new java.lang.String[iNumMark - 1];</span>
-<span class="nc" id="L468">		java.lang.String[] astrInstrument = new java.lang.String[iNumMark - 1];</span>
+<span class="nc" id="L467">		int iNumMark = astrHeader.length;</span>
+<span class="nc" id="L468">		java.lang.String[] astrTenor = new java.lang.String[iNumMark - 1];</span>
+<span class="nc" id="L469">		java.lang.String[] astrInstrument = new java.lang.String[iNumMark - 1];</span>
 
-<span class="nc bnc" id="L470" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMark; ++i) {</span>
-<span class="nc" id="L471">			astrHeader[i].trim();</span>
+<span class="nc bnc" id="L471" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMark; ++i) {</span>
+<span class="nc" id="L472">			astrHeader[i].trim();</span>
 
-<span class="nc bnc" id="L473" title="All 4 branches missed.">			if (null == astrHeader[i] || astrHeader[i].isEmpty()) astrHeader[i] = &quot;@:#&quot;;</span>
+<span class="nc bnc" id="L474" title="All 4 branches missed.">			if (null == astrHeader[i] || astrHeader[i].isEmpty()) astrHeader[i] = &quot;@:#&quot;;</span>
 
-<span class="nc" id="L475">			java.lang.String[] astrInstrumentTenor = org.drip.quant.common.StringUtil.Split</span>
-<span class="nc" id="L476">				(astrHeader[i].trim(), &quot;:&quot;);</span>
+<span class="nc" id="L476">			java.lang.String[] astrInstrumentTenor = org.drip.quant.common.StringUtil.Split</span>
+<span class="nc" id="L477">				(astrHeader[i].trim(), &quot;:&quot;);</span>
 
-<span class="nc bnc" id="L478" title="All 4 branches missed.">			if (null == astrInstrumentTenor || 2 != astrInstrumentTenor.length) return null;</span>
+<span class="nc bnc" id="L479" title="All 4 branches missed.">			if (null == astrInstrumentTenor || 2 != astrInstrumentTenor.length) return null;</span>
 
-<span class="nc" id="L480">			astrTenor[i - 1] = astrInstrumentTenor[1];</span>
-<span class="nc" id="L481">			astrInstrument[i - 1] = astrInstrumentTenor[0];</span>
+<span class="nc" id="L481">			astrTenor[i - 1] = astrInstrumentTenor[1];</span>
+<span class="nc" id="L482">			astrInstrument[i - 1] = astrInstrumentTenor[0];</span>
 		}
 
 		java.util.Map&lt;org.drip.analytics.date.JulianDate, org.drip.feed.loader.InstrumentSetTenorQuote&gt;
-<span class="nc" id="L485">			mapISTQ = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
+<span class="nc" id="L486">			mapISTQ = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
 				org.drip.feed.loader.InstrumentSetTenorQuote&gt;();
 
-<span class="nc bnc" id="L488" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L489">			java.lang.String[] astrClosingMark = _lsastr.get (i);</span>
+<span class="nc bnc" id="L489" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L490">			java.lang.String[] astrClosingMark = _lsastr.get (i);</span>
 
-<span class="nc" id="L491">			org.drip.feed.loader.InstrumentSetTenorQuote istq = new</span>
+<span class="nc" id="L492">			org.drip.feed.loader.InstrumentSetTenorQuote istq = new</span>
 				org.drip.feed.loader.InstrumentSetTenorQuote();
 
-<span class="nc bnc" id="L494" title="All 2 branches missed.">			for (int j = 1; j &lt; iNumMark; ++j) {</span>
-<span class="nc" id="L495">				double dblClosingMark = java.lang.Double.NaN;</span>
+<span class="nc bnc" id="L495" title="All 2 branches missed.">			for (int j = 1; j &lt; iNumMark; ++j) {</span>
+<span class="nc" id="L496">				double dblClosingMark = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L497" title="All 4 branches missed.">				java.lang.String strClosingMark = null == astrClosingMark[j] || astrClosingMark[j].isEmpty()</span>
-<span class="nc" id="L498">					? null : astrClosingMark[j].trim();</span>
+<span class="nc bnc" id="L498" title="All 4 branches missed.">				java.lang.String strClosingMark = null == astrClosingMark[j] || astrClosingMark[j].isEmpty()</span>
+<span class="nc" id="L499">					? null : astrClosingMark[j].trim();</span>
 
 				try {
-<span class="nc bnc" id="L501" title="All 4 branches missed.">					if (null != strClosingMark &amp;&amp; !strClosingMark.isEmpty())</span>
-<span class="nc" id="L502">						dblClosingMark = java.lang.Double.parseDouble (strClosingMark);</span>
-<span class="nc" id="L503">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L504">				}</span>
+<span class="nc bnc" id="L502" title="All 4 branches missed.">					if (null != strClosingMark &amp;&amp; !strClosingMark.isEmpty())</span>
+<span class="nc" id="L503">						dblClosingMark = java.lang.Double.parseDouble (strClosingMark);</span>
+<span class="nc" id="L504">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L505">				}</span>
 
-<span class="nc" id="L506">				istq.add (astrInstrument[j - 1], astrTenor[j - 1], dblClosingMark, dblScaler);</span>
+<span class="nc" id="L507">				istq.add (astrInstrument[j - 1], astrTenor[j - 1], dblClosingMark, dblScaler);</span>
 			}
 
-<span class="nc bnc" id="L509" title="All 2 branches missed.">			if (!istq.isEmpty())</span>
-<span class="nc" id="L510">				mapISTQ.put (org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (astrClosingMark[0]),</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">			if (!istq.isEmpty())</span>
+<span class="nc" id="L511">				mapISTQ.put (org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (astrClosingMark[0]),</span>
 					istq);
 		}
 
-<span class="nc" id="L514">		return mapISTQ;</span>
+<span class="nc" id="L515">		return mapISTQ;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

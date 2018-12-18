@@ -16,12 +16,12 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -38,16 +38,17 @@ package org.drip.function.r1tor1solver;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,18 +79,18 @@ package org.drip.function.r1tor1solver;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class IteratedBracket {
-<span class="fc" id="L89">	private double _dblOFLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblOFRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L91">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">	private double _dblVariateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _dblOFLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">	private double _dblOFRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L93">	private double _dblVariateRight = java.lang.Double.NaN;</span>
 
 	/**
 	 * BracketingVariateIterator constructor
@@ -102,17 +103,17 @@ public class IteratedBracket {
 	public IteratedBracket (
 		final org.drip.function.r1tor1solver.BracketingOutput bop)
 		throws java.lang.Exception
-<span class="fc" id="L105">	{</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (null == bop) throw new java.lang.Exception (&quot;IteratedBracket constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L106">	{</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null == bop) throw new java.lang.Exception (&quot;IteratedBracket constructor: Invalid inputs&quot;);</span>
 
-<span class="fc" id="L108">		_dblOFLeft = bop.getOFLeft();</span>
+<span class="fc" id="L109">		_dblOFLeft = bop.getOFLeft();</span>
 
-<span class="fc" id="L110">		_dblOFRight = bop.getOFRight();</span>
+<span class="fc" id="L111">		_dblOFRight = bop.getOFRight();</span>
 
-<span class="fc" id="L112">		_dblVariateLeft = bop.getVariateLeft();</span>
+<span class="fc" id="L113">		_dblVariateLeft = bop.getVariateLeft();</span>
 
-<span class="fc" id="L114">		_dblVariateRight = bop.getVariateRight();</span>
-<span class="fc" id="L115">	}</span>
+<span class="fc" id="L115">		_dblVariateRight = bop.getVariateRight();</span>
+<span class="fc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the left variate
@@ -122,7 +123,7 @@ public class IteratedBracket {
 
 	public double getVariateLeft()
 	{
-<span class="fc" id="L125">		return _dblVariateLeft;</span>
+<span class="fc" id="L126">		return _dblVariateLeft;</span>
 	}
 
 	/**
@@ -136,10 +137,10 @@ public class IteratedBracket {
 	public boolean setVariateLeft (
 		final double dblVariateLeft)
 	{
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft)) return false;</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft)) return false;</span>
 
-<span class="fc" id="L141">		_dblVariateLeft = dblVariateLeft;</span>
-<span class="fc" id="L142">		return true;</span>
+<span class="fc" id="L142">		_dblVariateLeft = dblVariateLeft;</span>
+<span class="fc" id="L143">		return true;</span>
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class IteratedBracket {
 
 	public double getVariateRight()
 	{
-<span class="fc" id="L153">		return _dblVariateRight;</span>
+<span class="fc" id="L154">		return _dblVariateRight;</span>
 	}
 
 	/**
@@ -164,10 +165,10 @@ public class IteratedBracket {
 	public boolean setVariateRight (
 		final double dblVariateRight)
 	{
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight)) return false;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight)) return false;</span>
 
-<span class="fc" id="L169">		_dblVariateRight = dblVariateRight;</span>
-<span class="fc" id="L170">		return true;</span>
+<span class="fc" id="L170">		_dblVariateRight = dblVariateRight;</span>
+<span class="fc" id="L171">		return true;</span>
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class IteratedBracket {
 
 	public double getOFLeft()
 	{
-<span class="fc" id="L181">		return _dblOFLeft;</span>
+<span class="fc" id="L182">		return _dblOFLeft;</span>
 	}
 
 	/**
@@ -192,10 +193,10 @@ public class IteratedBracket {
 	public boolean setOFLeft (
 		final double dblOFLeft)
 	{
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFLeft)) return false;</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFLeft)) return false;</span>
 
-<span class="fc" id="L197">		_dblOFLeft = dblOFLeft;</span>
-<span class="fc" id="L198">		return true;</span>
+<span class="fc" id="L198">		_dblOFLeft = dblOFLeft;</span>
+<span class="fc" id="L199">		return true;</span>
 	}
 
 	/**
@@ -206,7 +207,7 @@ public class IteratedBracket {
 
 	public double getOFRight()
 	{
-<span class="fc" id="L209">		return _dblOFRight;</span>
+<span class="fc" id="L210">		return _dblOFRight;</span>
 	}
 
 	/**
@@ -220,10 +221,10 @@ public class IteratedBracket {
 	public boolean setOFRight (
 		final double dblOFRight)
 	{
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFRight)) return false;</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFRight)) return false;</span>
 
-<span class="fc" id="L225">		_dblOFRight = dblOFRight;</span>
-<span class="fc" id="L226">		return true;</span>
+<span class="fc" id="L226">		_dblOFRight = dblOFRight;</span>
+<span class="fc" id="L227">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

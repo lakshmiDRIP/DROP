@@ -94,9 +94,10 @@ package org.drip.xva.topology;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology&quot;&gt;Topology&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology&quot;&gt;Topology&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -105,8 +106,8 @@ package org.drip.xva.topology;
 
 public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 {
-<span class="nc" id="L108">	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;</span>
-<span class="nc" id="L109">	private java.util.Map&lt;java.lang.String, org.drip.xva.topology.PositionGroup&gt; _positionGroupMap = null;</span>
+<span class="nc" id="L109">	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;</span>
+<span class="nc" id="L110">	private java.util.Map&lt;java.lang.String, org.drip.xva.topology.PositionGroup&gt; _positionGroupMap = null;</span>
 
 	/**
 	 * CollateralGroup Constructor
@@ -124,19 +125,19 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L127">		super (</span>
+<span class="nc" id="L128">		super (</span>
 			id,
 			name
 		);
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == (_collateralGroupSpecification = collateralGroupSpecification))</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (null == (_collateralGroupSpecification = collateralGroupSpecification))</span>
 		{
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;CollateralGroup Contructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;CollateralGroup Contructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L137">		_positionGroupMap = new</span>
+<span class="nc" id="L138">		_positionGroupMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.topology.PositionGroup&gt;();
-<span class="nc" id="L139">	}</span>
+<span class="nc" id="L140">	}</span>
 
 	/**
 	 * Retrieve the Collateral Group Specification
@@ -146,7 +147,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
 	{
-<span class="nc" id="L149">		return _collateralGroupSpecification;</span>
+<span class="nc" id="L150">		return _collateralGroupSpecification;</span>
 	}
 
 	/**
@@ -157,7 +158,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public java.util.Map&lt;java.lang.String, org.drip.xva.topology.PositionGroup&gt; positionGroupMap()
 	{
-<span class="nc" id="L160">		return _positionGroupMap;</span>
+<span class="nc" id="L161">		return _positionGroupMap;</span>
 	}
 
 	/**
@@ -171,17 +172,17 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	public boolean addPositionGroup (
 		final org.drip.xva.topology.PositionGroup positionGroup)
 	{
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (null == positionGroup)</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (null == positionGroup)</span>
 		{
-<span class="nc" id="L176">			return false;</span>
+<span class="nc" id="L177">			return false;</span>
 		}
 
-<span class="nc" id="L179">		_positionGroupMap.put (</span>
-<span class="nc" id="L180">			positionGroup.id(),</span>
+<span class="nc" id="L180">		_positionGroupMap.put (</span>
+<span class="nc" id="L181">			positionGroup.id(),</span>
 			positionGroup
 		);
 
-<span class="nc" id="L184">		return true;</span>
+<span class="nc" id="L185">		return true;</span>
 	}
 
 	/**
@@ -195,8 +196,8 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	public boolean containsPositionGroup (
 		final java.lang.String positionGroupID)
 	{
-<span class="nc bnc" id="L198" title="All 4 branches missed.">		return null == positionGroupID || positionGroupID.isEmpty() ? false : _positionGroupMap.containsKey</span>
-<span class="nc" id="L199">			(positionGroupID);</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">		return null == positionGroupID || positionGroupID.isEmpty() ? false : _positionGroupMap.containsKey</span>
+<span class="nc" id="L200">			(positionGroupID);</span>
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	public org.drip.xva.topology.PositionGroup positionGroup (
 		final java.lang.String positionGroupID)
 	{
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		return containsPositionGroup (positionGroupID) ? _positionGroupMap.get (positionGroupID) : null;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		return containsPositionGroup (positionGroupID) ? _positionGroupMap.get (positionGroupID) : null;</span>
 	}
 
 	/**
@@ -221,7 +222,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.OvernightLabel overnightLabel()
 	{
-<span class="nc" id="L224">		return _collateralGroupSpecification.overnightLabel();</span>
+<span class="nc" id="L225">		return _collateralGroupSpecification.overnightLabel();</span>
 	}
 
 	/**
@@ -232,7 +233,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.CSALabel csaLabel()
 	{
-<span class="nc" id="L235">		return _collateralGroupSpecification.csaLabel();</span>
+<span class="nc" id="L236">		return _collateralGroupSpecification.csaLabel();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

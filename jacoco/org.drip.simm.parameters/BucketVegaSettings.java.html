@@ -96,9 +96,10 @@ package org.drip.simm.parameters;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,8 +108,8 @@ package org.drip.simm.parameters;
 
 public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivitySettings
 {
-<span class="nc" id="L110">	private double _impliedVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _historicalVolatilityRatio = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _impliedVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _historicalVolatilityRatio = java.lang.Double.NaN;</span>
 
 	/**
 	 * Retrieve the ISDA 2.0 Equity Vega Settings
@@ -122,31 +123,31 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final int bucketIndex)
 	{
 		org.drip.simm.equity.EQBucket equityBucket =
-<span class="nc" id="L125">			org.drip.simm.equity.EQSettingsContainer20.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L126">			org.drip.simm.equity.EQSettingsContainer20.BucketMap().get (bucketIndex);</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == equityBucket)</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == equityBucket)</span>
 		{
-<span class="nc" id="L129">			return null;</span>
+<span class="nc" id="L130">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L134">			return new BucketVegaSettings (</span>
-<span class="nc" id="L135">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L136">				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
-<span class="nc" id="L137">					(bucketIndex).vega(),</span>
-<span class="nc" id="L138">				equityBucket.memberCorrelation(),</span>
-<span class="nc" id="L139">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L140">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L135">			return new BucketVegaSettings (</span>
+<span class="nc" id="L136">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L137">				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L138">					(bucketIndex).vega(),</span>
+<span class="nc" id="L139">				equityBucket.memberCorrelation(),</span>
+<span class="nc" id="L140">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L141">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				org.drip.simm.equity.EQSystemics20.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-<span class="nc" id="L144">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L145">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L146">			e.printStackTrace();</span>
+<span class="nc" id="L147">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L149">		return null;</span>
+<span class="nc" id="L150">		return null;</span>
 	}
 
 	/**
@@ -161,31 +162,31 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final int bucketIndex)
 	{
 		org.drip.simm.equity.EQBucket equityBucket =
-<span class="nc" id="L164">			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L165">			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (null == equityBucket)</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == equityBucket)</span>
 		{
-<span class="nc" id="L168">			return null;</span>
+<span class="nc" id="L169">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L173">			return new BucketVegaSettings (</span>
-<span class="nc" id="L174">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L175">				org.drip.simm.equity.EQRiskThresholdContainer21.DeltaVegaThresholdMap().get</span>
-<span class="nc" id="L176">					(bucketIndex).vega(),</span>
-<span class="nc" id="L177">				equityBucket.memberCorrelation(),</span>
-<span class="nc" id="L178">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L179">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L174">			return new BucketVegaSettings (</span>
+<span class="nc" id="L175">				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L176">				org.drip.simm.equity.EQRiskThresholdContainer21.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L177">					(bucketIndex).vega(),</span>
+<span class="nc" id="L178">				equityBucket.memberCorrelation(),</span>
+<span class="nc" id="L179">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L180">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				org.drip.simm.equity.EQSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-<span class="nc" id="L183">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L184">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L185">			e.printStackTrace();</span>
+<span class="nc" id="L186">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L188">		return null;</span>
+<span class="nc" id="L189">		return null;</span>
 	}
 
 	/**
@@ -200,31 +201,31 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final int bucketIndex)
 	{
 		org.drip.simm.commodity.CTBucket commodityBucket =
-<span class="nc" id="L203">			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L204">			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (null == commodityBucket)</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (null == commodityBucket)</span>
 		{
-<span class="nc" id="L207">			return null;</span>
+<span class="nc" id="L208">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L212">			return new org.drip.simm.parameters.BucketVegaSettings (</span>
-<span class="nc" id="L213">				org.drip.simm.commodity.CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L214">				org.drip.simm.commodity.CTRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
-<span class="nc" id="L215">					(bucketIndex).vega(),</span>
-<span class="nc" id="L216">				commodityBucket.memberCorrelation(),</span>
-<span class="nc" id="L217">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L218">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L213">			return new org.drip.simm.parameters.BucketVegaSettings (</span>
+<span class="nc" id="L214">				org.drip.simm.commodity.CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L215">				org.drip.simm.commodity.CTRiskThresholdContainer20.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L216">					(bucketIndex).vega(),</span>
+<span class="nc" id="L217">				commodityBucket.memberCorrelation(),</span>
+<span class="nc" id="L218">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L219">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				org.drip.simm.commodity.CTSystemics20.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-<span class="nc" id="L222">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L224">			e.printStackTrace();</span>
+<span class="nc" id="L225">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L227">		return null;</span>
+<span class="nc" id="L228">		return null;</span>
 	}
 
 	/**
@@ -239,31 +240,31 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final int bucketIndex)
 	{
 		org.drip.simm.commodity.CTBucket commodityBucket =
-<span class="nc" id="L242">			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);</span>
+<span class="nc" id="L243">			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (null == commodityBucket)</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (null == commodityBucket)</span>
 		{
-<span class="nc" id="L246">			return null;</span>
+<span class="nc" id="L247">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L251">			return new org.drip.simm.parameters.BucketVegaSettings (</span>
-<span class="nc" id="L252">				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
-<span class="nc" id="L253">				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get</span>
-<span class="nc" id="L254">					(bucketIndex).vega(),</span>
-<span class="nc" id="L255">				commodityBucket.memberCorrelation(),</span>
-<span class="nc" id="L256">				java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L257">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L252">			return new org.drip.simm.parameters.BucketVegaSettings (</span>
+<span class="nc" id="L253">				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),</span>
+<span class="nc" id="L254">				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get</span>
+<span class="nc" id="L255">					(bucketIndex).vega(),</span>
+<span class="nc" id="L256">				commodityBucket.memberCorrelation(),</span>
+<span class="nc" id="L257">				java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L258">					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 				org.drip.simm.commodity.CTSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-<span class="nc" id="L261">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L262">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L263">			e.printStackTrace();</span>
+<span class="nc" id="L264">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L266">		return null;</span>
+<span class="nc" id="L267">		return null;</span>
 	}
 
 	/**
@@ -278,27 +279,27 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final java.lang.String vegaCategory)
 	{
 		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fxConcentrationCategoryVegaMap =
-<span class="nc" id="L281">			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryVegaMap();</span>
+<span class="nc" id="L282">			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryVegaMap();</span>
 
 		try
 		{
-<span class="nc bnc" id="L285" title="All 2 branches missed.">			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?</span>
 				new org.drip.simm.parameters.BucketVegaSettings (
 					org.drip.simm.fx.FXSystemics20.VEGA_RISK_WEIGHT *
 						org.drip.simm.fx.FXSystemics20.DELTA_RISK_WEIGHT,
-<span class="nc" id="L289">					fxConcentrationCategoryVegaMap.get (vegaCategory),</span>
+<span class="nc" id="L290">					fxConcentrationCategoryVegaMap.get (vegaCategory),</span>
 					org.drip.simm.fx.FXSystemics20.CORRELATION,
-<span class="nc" id="L291">					java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L292">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L292">					java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L293">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 					org.drip.simm.fx.FXSystemics20.HISTORICAL_VOLATILITY_RATIO
 				) : null;
 		}
-<span class="nc" id="L296">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L297">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L298">			e.printStackTrace();</span>
+<span class="nc" id="L299">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L301">		return null;</span>
+<span class="nc" id="L302">		return null;</span>
 	}
 
 	/**
@@ -313,27 +314,27 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final java.lang.String vegaCategory)
 	{
 		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fxConcentrationCategoryVegaMap =
-<span class="nc" id="L316">			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();</span>
+<span class="nc" id="L317">			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();</span>
 
 		try
 		{
-<span class="nc bnc" id="L320" title="All 2 branches missed.">			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?</span>
 				new org.drip.simm.parameters.BucketVegaSettings (
 					org.drip.simm.fx.FXSystemics21.VEGA_RISK_WEIGHT *
 						org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
-<span class="nc" id="L324">					fxConcentrationCategoryVegaMap.get (vegaCategory),</span>
+<span class="nc" id="L325">					fxConcentrationCategoryVegaMap.get (vegaCategory),</span>
 					org.drip.simm.fx.FXSystemics21.CORRELATION,
-<span class="nc" id="L326">					java.lang.Math.sqrt (365. / 14.) /</span>
-<span class="nc" id="L327">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
+<span class="nc" id="L327">					java.lang.Math.sqrt (365. / 14.) /</span>
+<span class="nc" id="L328">						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),</span>
 					org.drip.simm.fx.FXSystemics21.HISTORICAL_VOLATILITY_RATIO
 				) : null;
 		}
-<span class="nc" id="L331">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L332">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L333">			e.printStackTrace();</span>
+<span class="nc" id="L334">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L336">		return null;</span>
+<span class="nc" id="L337">		return null;</span>
 	}
 
 	/**
@@ -356,20 +357,20 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final double historicalVolatilityRatio)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L359">		super (</span>
+<span class="nc" id="L360">		super (</span>
 			riskWeight,
 			concentrationFactor,
 			memberCorrelation
 		);
 
-<span class="nc bnc" id="L365" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||</span>
+<span class="nc bnc" id="L366" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||</span>
 				0. &gt; _impliedVolatility ||
-<span class="nc bnc" id="L367" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =</span>
+<span class="nc bnc" id="L368" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =</span>
 				historicalVolatilityRatio) || 0. &gt; _historicalVolatilityRatio)
 		{
-<span class="nc" id="L370">			throw new java.lang.Exception (&quot;BucketVegaSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L371">			throw new java.lang.Exception (&quot;BucketVegaSettings Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L372">	}</span>
+<span class="nc" id="L373">	}</span>
 
 	/**
 	 * Retrieve the Implied Volatility
@@ -379,7 +380,7 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 
 	public double impliedVolatility()
 	{
-<span class="nc" id="L382">		return _impliedVolatility;</span>
+<span class="nc" id="L383">		return _impliedVolatility;</span>
 	}
 
 	/**
@@ -390,7 +391,7 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 
 	public double historicalVolatilityRatio()
 	{
-<span class="nc" id="L393">		return _historicalVolatilityRatio;</span>
+<span class="nc" id="L394">		return _historicalVolatilityRatio;</span>
 	}
 
 	/**
@@ -401,12 +402,12 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 
 	public double rawRiskWeight()
 	{
-<span class="nc" id="L404">		return super.riskWeight();</span>
+<span class="nc" id="L405">		return super.riskWeight();</span>
 	}
 
 	@Override public double riskWeight()
 	{
-<span class="nc" id="L409">		return super.riskWeight() * _impliedVolatility;</span>
+<span class="nc" id="L410">		return super.riskWeight() * _impliedVolatility;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 /**
  * &lt;i&gt;ConstraintTerm&lt;/i&gt; holds the Details of a given Constraint Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -80,11 +81,11 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public abstract class ConstraintTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-<span class="nc" id="L83">	private double _dblMaximum = java.lang.Double.NaN;</span>
-<span class="nc" id="L84">	private double _dblMinimum = java.lang.Double.NaN;</span>
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;</span>
+<span class="nc" id="L84">	private double _dblMaximum = java.lang.Double.NaN;</span>
+<span class="nc" id="L85">	private double _dblMinimum = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;</span>
+<span class="nc" id="L88">	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;</span>
 
 	protected ConstraintTerm (
 		final java.lang.String strName,
@@ -97,19 +98,19 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 		final double dblMaximum)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L100">		super (</span>
+<span class="nc" id="L101">		super (</span>
 			strName,
 			strID,
 			strDescription,
 			strCategory
 		);
 
-<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == (_scope = scope) ||</span>
+<span class="nc bnc" id="L108" title="All 4 branches missed.">		if (null == (_scope = scope) ||</span>
 			null == (_unit = unit) ||
-<span class="nc bnc" id="L109" title="All 2 branches missed.">			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &amp;&amp;</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;ConstraintTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &amp;&amp;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;ConstraintTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L113">	}</span>
 
 	/**
 	 * Retrieve the Soft Constraint
@@ -119,7 +120,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
 	{
-<span class="nc" id="L122">		return _sc;</span>
+<span class="nc" id="L123">		return _sc;</span>
 	}
 
 	/**
@@ -130,7 +131,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public org.drip.portfolioconstruction.optimizer.Scope scope()
 	{
-<span class="nc" id="L133">		return _scope;</span>
+<span class="nc" id="L134">		return _scope;</span>
 	}
 
 	/**
@@ -141,7 +142,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public org.drip.portfolioconstruction.optimizer.Unit unit()
 	{
-<span class="nc" id="L144">		return _unit;</span>
+<span class="nc" id="L145">		return _unit;</span>
 	}
 
 	/**
@@ -152,7 +153,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public double minimum()
 	{
-<span class="nc" id="L155">		return _dblMinimum;</span>
+<span class="nc" id="L156">		return _dblMinimum;</span>
 	}
 
 	/**
@@ -163,7 +164,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public double maximum()
 	{
-<span class="nc" id="L166">		return _dblMaximum;</span>
+<span class="nc" id="L167">		return _dblMaximum;</span>
 	}
 
 	/**
@@ -174,7 +175,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public boolean isEquality()
 	{
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		return _dblMaximum == _dblMinimum;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		return _dblMaximum == _dblMinimum;</span>
 	}
 
 	/**
@@ -188,10 +189,10 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 	public boolean setSoftConstraint (
 		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
 	{
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (null == sc) return false;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (null == sc) return false;</span>
 
-<span class="nc" id="L193">		_sc = sc;</span>
-<span class="nc" id="L194">		return true;</span>
+<span class="nc" id="L194">		_sc = sc;</span>
+<span class="nc" id="L195">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

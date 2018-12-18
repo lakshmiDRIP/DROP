@@ -80,27 +80,28 @@ package org.drip.state.boot;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot&quot;&gt;Boot&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot&quot;&gt;Boot&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L92">public class CreditCurveScenario {</span>
+<span class="nc" id="L93">public class CreditCurveScenario {</span>
 	static class TranslatedQuoteMeasure {
-<span class="fc" id="L94">		java.lang.String _strMeasure = &quot;&quot;;</span>
-<span class="fc" id="L95">		double _dblQuote = java.lang.Double.NaN;</span>
+<span class="fc" id="L95">		java.lang.String _strMeasure = &quot;&quot;;</span>
+<span class="fc" id="L96">		double _dblQuote = java.lang.Double.NaN;</span>
 
 		TranslatedQuoteMeasure (
 			final java.lang.String strMeasure,
 			final double dblQuote)
-<span class="fc" id="L100">		{</span>
-<span class="fc" id="L101">			_dblQuote = dblQuote;</span>
-<span class="fc" id="L102">			_strMeasure = strMeasure;</span>
-<span class="fc" id="L103">		}</span>
+<span class="fc" id="L101">		{</span>
+<span class="fc" id="L102">			_dblQuote = dblQuote;</span>
+<span class="fc" id="L103">			_strMeasure = strMeasure;</span>
+<span class="fc" id="L104">		}</span>
 	}
 
 	private static final TranslatedQuoteMeasure TranslateQuoteMeasure (
@@ -112,17 +113,17 @@ package org.drip.state.boot;
 		final java.lang.String strMeasure,
 		final double dblQuote)
 	{
-<span class="fc bfc" id="L115" title="All 2 branches covered.">		if (!(comp instanceof org.drip.product.definition.CreditDefaultSwap) ||</span>
-<span class="pc bpc" id="L116" title="2 of 4 branches missed.">			(!&quot;FlatSpread&quot;.equalsIgnoreCase (strMeasure) &amp;&amp; !&quot;QuotedSpread&quot;.equalsIgnoreCase (strMeasure)))</span>
-<span class="fc" id="L117">			return new TranslatedQuoteMeasure (strMeasure, dblQuote);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (!(comp instanceof org.drip.product.definition.CreditDefaultSwap) ||</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">			(!&quot;FlatSpread&quot;.equalsIgnoreCase (strMeasure) &amp;&amp; !&quot;QuotedSpread&quot;.equalsIgnoreCase (strMeasure)))</span>
+<span class="fc" id="L118">			return new TranslatedQuoteMeasure (strMeasure, dblQuote);</span>
 
-<span class="nc" id="L119">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapQSMeasures =</span>
-<span class="nc" id="L120">			((org.drip.product.definition.CreditDefaultSwap) comp).valueFromQuotedSpread (valParams,</span>
-<span class="nc" id="L121">				pricerParams, org.drip.param.creator.MarketParamsBuilder.Credit (dc, cc), null,</span>
+<span class="nc" id="L120">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapQSMeasures =</span>
+<span class="nc" id="L121">			((org.drip.product.definition.CreditDefaultSwap) comp).valueFromQuotedSpread (valParams,</span>
+<span class="nc" id="L122">				pricerParams, org.drip.param.creator.MarketParamsBuilder.Credit (dc, cc), null,</span>
 					0.01, dblQuote);
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		return null == mapQSMeasures ? null : new TranslatedQuoteMeasure (&quot;Upfront&quot;, mapQSMeasures.get</span>
-<span class="nc" id="L125">			(&quot;Upfront&quot;));</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		return null == mapQSMeasures ? null : new TranslatedQuoteMeasure (&quot;Upfront&quot;, mapQSMeasures.get</span>
+<span class="nc" id="L126">			(&quot;Upfront&quot;));</span>
 	}
 
 	/**
@@ -158,49 +159,49 @@ package org.drip.state.boot;
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.definition.CalibrationParams cp)
 	{
-<span class="pc bpc" id="L161" title="5 of 10 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||</span>
+<span class="pc bpc" id="L162" title="5 of 10 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||</span>
 			null == dc)
-<span class="nc" id="L163">			return null;</span>
+<span class="nc" id="L164">			return null;</span>
 
-<span class="fc" id="L165">		int iNumComp = aCalibInst.length;</span>
-<span class="fc" id="L166">		int aiDate[] = new int[iNumComp];</span>
-<span class="fc" id="L167">		double adblHazardRate[] = new double[iNumComp];</span>
+<span class="fc" id="L166">		int iNumComp = aCalibInst.length;</span>
+<span class="fc" id="L167">		int aiDate[] = new int[iNumComp];</span>
+<span class="fc" id="L168">		double adblHazardRate[] = new double[iNumComp];</span>
 
-<span class="pc bpc" id="L169" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
-<span class="nc" id="L170">			return null;</span>
+<span class="pc bpc" id="L170" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="nc" id="L171">			return null;</span>
 
-<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			if (null == aCalibInst[i]) return null;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			if (null == aCalibInst[i]) return null;</span>
 
-<span class="fc" id="L175">			adblHazardRate[i] = java.lang.Double.NaN;</span>
+<span class="fc" id="L176">			adblHazardRate[i] = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L177">			aiDate[i] = aCalibInst[i].maturityDate().julian();</span>
+<span class="fc" id="L178">			aiDate[i] = aCalibInst[i].maturityDate().julian();</span>
 		}
 
-<span class="fc" id="L180">		org.drip.state.credit.ExplicitBootCreditCurve ebcc =</span>
-<span class="fc" id="L181">			org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L182">				(valParams.valueDate()), strName, dc.currency(), aiDate, adblHazardRate, dblRecovery);</span>
+<span class="fc" id="L181">		org.drip.state.credit.ExplicitBootCreditCurve ebcc =</span>
+<span class="fc" id="L182">			org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L183">				(valParams.valueDate()), strName, dc.currency(), aiDate, adblHazardRate, dblRecovery);</span>
 
-<span class="fc" id="L184">		org.drip.param.pricer.CreditPricerParams pricerParams = new org.drip.param.pricer.CreditPricerParams</span>
+<span class="fc" id="L185">		org.drip.param.pricer.CreditPricerParams pricerParams = new org.drip.param.pricer.CreditPricerParams</span>
 			(7, null, false, org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP);
 
-<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="fc" id="L188">			TranslatedQuoteMeasure tqm = TranslateQuoteMeasure (aCalibInst[i], valParams, pricerParams, dc,</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="fc" id="L189">			TranslatedQuoteMeasure tqm = TranslateQuoteMeasure (aCalibInst[i], valParams, pricerParams, dc,</span>
 				ebcc, astrCalibMeasure[i], adblCalibQuote[i]);
 
-<span class="pc bpc" id="L191" title="1 of 2 branches missed.">			if (null == tqm) return null;</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">			if (null == tqm) return null;</span>
 
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">			if (!org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (valParams, aCalibInst[i],</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">			if (!org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (valParams, aCalibInst[i],</span>
 				tqm._dblQuote, tqm._strMeasure, bFlat, i, ebcc, dc, gc, pricerParams, lsfc, vcp, cp))
 			{
-<span class="nc" id="L196">				return null;</span>
+<span class="nc" id="L197">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L200">		ebcc.setInstrCalibInputs (valParams, bFlat, dc, gc, pricerParams, aCalibInst, adblCalibQuote,</span>
+<span class="fc" id="L201">		ebcc.setInstrCalibInputs (valParams, bFlat, dc, gc, pricerParams, aCalibInst, adblCalibQuote,</span>
 			astrCalibMeasure, lsfc, vcp);
 
-<span class="fc" id="L203">		return ebcc;</span>
+<span class="fc" id="L204">		return ebcc;</span>
 	}
 
 	/**
@@ -236,28 +237,28 @@ package org.drip.state.boot;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L239" title="All 10 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||</span>
+<span class="nc bnc" id="L240" title="All 10 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||</span>
 			null == dc)
-<span class="nc" id="L241">			return null;</span>
+<span class="nc" id="L242">			return null;</span>
 
-<span class="nc" id="L243">		int iNumComp = aCalibInst.length;</span>
-<span class="nc" id="L244">		org.drip.state.credit.CreditCurve[] aCreditCurve = new org.drip.state.credit.CreditCurve[iNumComp];</span>
+<span class="nc" id="L244">		int iNumComp = aCalibInst.length;</span>
+<span class="nc" id="L245">		org.drip.state.credit.CreditCurve[] aCreditCurve = new org.drip.state.credit.CreditCurve[iNumComp];</span>
 
-<span class="nc bnc" id="L246" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
-<span class="nc" id="L247">			return null;</span>
+<span class="nc bnc" id="L247" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="nc" id="L248">			return null;</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L250">			double[] adblTenorQuote = new double [iNumComp];</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L251">			double[] adblTenorQuote = new double [iNumComp];</span>
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
-<span class="nc bnc" id="L253" title="All 2 branches missed.">				adblTenorQuote[j] += (j == i ? dblBump : 0.);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">				adblTenorQuote[j] += (j == i ? dblBump : 0.);</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">			if (null == (aCreditCurve[i] = Standard (strName, valParams, aCalibInst, adblTenorQuote,</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">			if (null == (aCreditCurve[i] = Standard (strName, valParams, aCalibInst, adblTenorQuote,</span>
 				astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
-<span class="nc" id="L257">				return null;</span>
+<span class="nc" id="L258">				return null;</span>
 		}
 
-<span class="nc" id="L260">		return aCreditCurve;</span>
+<span class="nc" id="L261">		return aCreditCurve;</span>
 	}
 
 	/**
@@ -294,35 +295,35 @@ package org.drip.state.boot;
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L297" title="All 10 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||</span>
+<span class="nc bnc" id="L298" title="All 10 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||</span>
 			null == dc)
-<span class="nc" id="L299">			return null;</span>
+<span class="nc" id="L300">			return null;</span>
 
-<span class="nc" id="L301">		int iNumComp = aCalibInst.length;</span>
+<span class="nc" id="L302">		int iNumComp = aCalibInst.length;</span>
 
-<span class="nc bnc" id="L303" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
-<span class="nc" id="L304">			return null;</span>
+<span class="nc bnc" id="L304" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="nc" id="L305">			return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;
-<span class="nc" id="L307">			mapTenorCreditCurve = new</span>
+<span class="nc" id="L308">			mapTenorCreditCurve = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.credit.CreditCurve&gt;();
 
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L311">			org.drip.state.credit.CreditCurve cc = null;</span>
-<span class="nc" id="L312">			double[] adblTenorQuote = new double[iNumComp];</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L312">			org.drip.state.credit.CreditCurve cc = null;</span>
+<span class="nc" id="L313">			double[] adblTenorQuote = new double[iNumComp];</span>
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
-<span class="nc bnc" id="L315" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
 
-<span class="nc bnc" id="L317" title="All 2 branches missed.">			if (null == (cc = Standard (strName, valParams, aCalibInst, adblTenorQuote, astrCalibMeasure,</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">			if (null == (cc = Standard (strName, valParams, aCalibInst, adblTenorQuote, astrCalibMeasure,</span>
 				dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
-<span class="nc" id="L319">				return null;</span>
+<span class="nc" id="L320">				return null;</span>
 
-<span class="nc" id="L321">			mapTenorCreditCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD</span>
-<span class="nc" id="L322">				(aCalibInst[i].maturityDate().julian()), cc);</span>
+<span class="nc" id="L322">			mapTenorCreditCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD</span>
+<span class="nc" id="L323">				(aCalibInst[i].maturityDate().julian()), cc);</span>
 		}
 
-<span class="nc" id="L325">		return mapTenorCreditCurve;</span>
+<span class="nc" id="L326">		return mapTenorCreditCurve;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -72,16 +72,17 @@ package org.drip.service.json;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json&quot;&gt;Serialized JSON Service&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class PrepayAssetBackedProcessor {</span>
+<span class="nc" id="L85">public class PrepayAssetBackedProcessor {</span>
 
 	/**
 	 * JSON Based in/out Pre-Payable Asset Backed Loan Secular Metrics Thunker
@@ -94,228 +95,228 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject SecularMetrics (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L97">		java.lang.String strBondName = org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;Name&quot;);</span>
+<span class="fc" id="L98">		java.lang.String strBondName = org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;Name&quot;);</span>
 
-<span class="fc" id="L99">		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L100">		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;Currency&quot;);
 
-<span class="fc" id="L102">		java.lang.String strDayCount = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L103">		java.lang.String strDayCount = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;DayCount&quot;);
 
-<span class="fc" id="L105">		org.drip.analytics.date.JulianDate dtEffective = org.drip.json.parser.Converter.DateEntry</span>
-<span class="fc" id="L106">			(jsonParameter, &quot;EffectiveDate&quot;);</span>
+<span class="fc" id="L106">		org.drip.analytics.date.JulianDate dtEffective = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L107">			(jsonParameter, &quot;EffectiveDate&quot;);</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == dtEffective) return null;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == dtEffective) return null;</span>
 
-<span class="fc" id="L110">		int iEffectiveDate = dtEffective.julian();</span>
+<span class="fc" id="L111">		int iEffectiveDate = dtEffective.julian();</span>
 
-<span class="fc" id="L112">		org.drip.analytics.date.JulianDate dtSettle = org.drip.json.parser.Converter.DateEntry</span>
-<span class="fc" id="L113">			(jsonParameter, &quot;SettleDate&quot;);</span>
+<span class="fc" id="L113">		org.drip.analytics.date.JulianDate dtSettle = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L114">			(jsonParameter, &quot;SettleDate&quot;);</span>
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == dtSettle) return null;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == dtSettle) return null;</span>
 
-<span class="fc" id="L117">		int iSettleDate = dtSettle.julian();</span>
+<span class="fc" id="L118">		int iSettleDate = dtSettle.julian();</span>
 
-<span class="fc" id="L119">		int iNumPayment = -1;</span>
-<span class="fc" id="L120">		int iPayFrequency = -1;</span>
-<span class="fc" id="L121">		double dblCleanPrice = 1.;</span>
-<span class="fc" id="L122">		double dblCPR = java.lang.Double.NaN;</span>
-<span class="fc" id="L123">		double dblCouponRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L124">		double dblBondNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L125">		double dblServiceFeeRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L126">		double dblFixedMonthlyAmount = java.lang.Double.NaN;</span>
-<span class="fc" id="L127">		double dblBeginPrincipalFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L120">		int iNumPayment = -1;</span>
+<span class="fc" id="L121">		int iPayFrequency = -1;</span>
+<span class="fc" id="L122">		double dblCleanPrice = 1.;</span>
+<span class="fc" id="L123">		double dblCPR = java.lang.Double.NaN;</span>
+<span class="fc" id="L124">		double dblCouponRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L125">		double dblBondNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L126">		double dblServiceFeeRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L127">		double dblFixedMonthlyAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L128">		double dblBeginPrincipalFactor = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L130">			dblCPR = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CPR&quot;);</span>
+<span class="fc" id="L131">			dblCPR = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CPR&quot;);</span>
 
-<span class="fc" id="L132">			iNumPayment = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;NumPayment&quot;);</span>
+<span class="fc" id="L133">			iNumPayment = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;NumPayment&quot;);</span>
 
-<span class="fc" id="L134">			dblCouponRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CouponRate&quot;);</span>
+<span class="fc" id="L135">			dblCouponRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CouponRate&quot;);</span>
 
-<span class="fc" id="L136">			iPayFrequency = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;PayFrequency&quot;);</span>
+<span class="fc" id="L137">			iPayFrequency = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, &quot;PayFrequency&quot;);</span>
 
-<span class="fc" id="L138">			dblBondNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;BondNotional&quot;);</span>
+<span class="fc" id="L139">			dblBondNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;BondNotional&quot;);</span>
 
-<span class="fc" id="L140">			dblServiceFeeRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;ServiceFeeRate&quot;);</span>
+<span class="fc" id="L141">			dblServiceFeeRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;ServiceFeeRate&quot;);</span>
 
-<span class="fc" id="L142">			dblFixedMonthlyAmount = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L143">			dblFixedMonthlyAmount = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 				&quot;FixedMonthlyAmount&quot;);
 
-<span class="fc" id="L145">			dblBeginPrincipalFactor = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
+<span class="fc" id="L146">			dblBeginPrincipalFactor = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,</span>
 				&quot;BeginPrincipalFactor&quot;);
-<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="nc" id="L148">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L149">			e.printStackTrace();</span>
 
-<span class="nc" id="L150">			return null;</span>
-<span class="fc" id="L151">		}</span>
+<span class="nc" id="L151">			return null;</span>
+<span class="fc" id="L152">		}</span>
 
-<span class="fc" id="L153">		org.drip.product.definition.Bond fpmb = org.drip.product.creator.ConstantPaymentBondBuilder.Prepay</span>
-<span class="fc" id="L154">			(strBondName, dtEffective, strCurrency, iNumPayment, strDayCount, iPayFrequency, dblCouponRate,</span>
+<span class="fc" id="L154">		org.drip.product.definition.Bond fpmb = org.drip.product.creator.ConstantPaymentBondBuilder.Prepay</span>
+<span class="fc" id="L155">			(strBondName, dtEffective, strCurrency, iNumPayment, strDayCount, iPayFrequency, dblCouponRate,</span>
 				dblServiceFeeRate, dblCPR, dblFixedMonthlyAmount, dblBondNotional);
 
-<span class="pc bpc" id="L157" title="2 of 4 branches missed.">		if (null == fpmb || fpmb.maturityDate().julian() &lt;= iSettleDate) return null;</span>
+<span class="pc bpc" id="L158" title="2 of 4 branches missed.">		if (null == fpmb || fpmb.maturityDate().julian() &lt;= iSettleDate) return null;</span>
 
-<span class="fc" id="L159">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L160">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L161">		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L162">		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : fpmb.couponPeriods()) {</span>
-<span class="fc" id="L164">			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : fpmb.couponPeriods()) {</span>
+<span class="fc" id="L165">			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc" id="L166">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,</span>
+<span class="fc" id="L167">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,</span>
 				null);
 
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (null == cpcm) return null;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			if (null == cpcm) return null;</span>
 
-<span class="fc" id="L171">			double dblPeriodCouponRate = cpcm.rate();</span>
+<span class="fc" id="L172">			double dblPeriodCouponRate = cpcm.rate();</span>
 
-<span class="fc" id="L173">			jsonCouponFlow.put (&quot;FeeRate&quot;, dblServiceFeeRate);</span>
+<span class="fc" id="L174">			jsonCouponFlow.put (&quot;FeeRate&quot;, dblServiceFeeRate);</span>
 
-<span class="fc" id="L175">			jsonCouponFlow.put (&quot;CouponRate&quot;, dblPeriodCouponRate);</span>
+<span class="fc" id="L176">			jsonCouponFlow.put (&quot;CouponRate&quot;, dblPeriodCouponRate);</span>
 
-<span class="fc" id="L177">			jsonCouponFlow.put (&quot;PrincipalFactor&quot;, dblBeginPrincipalFactor);</span>
+<span class="fc" id="L178">			jsonCouponFlow.put (&quot;PrincipalFactor&quot;, dblBeginPrincipalFactor);</span>
 
 			try {
-<span class="fc" id="L180">				double dblEndPrincipalFactor = fpmb.notional (cp.endDate());</span>
+<span class="fc" id="L181">				double dblEndPrincipalFactor = fpmb.notional (cp.endDate());</span>
 
-<span class="fc" id="L182">				double dblYieldDF = org.drip.analytics.support.Helper.Yield2DF (iPayFrequency, dblCouponRate,</span>
-<span class="fc" id="L183">					org.drip.analytics.daycount.Convention.YearFraction (dtEffective.julian(), cp.endDate(),</span>
+<span class="fc" id="L183">				double dblYieldDF = org.drip.analytics.support.Helper.Yield2DF (iPayFrequency, dblCouponRate,</span>
+<span class="fc" id="L184">					org.drip.analytics.daycount.Convention.YearFraction (dtEffective.julian(), cp.endDate(),</span>
 						&quot;30/360&quot;, false, null, strCurrency));
 
-<span class="fc" id="L186">				jsonCouponFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L187">					(cp.startDate()).toString());</span>
+<span class="fc" id="L187">				jsonCouponFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L188">					(cp.startDate()).toString());</span>
 
-<span class="fc" id="L189">				jsonCouponFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L190">					(cp.endDate()).toString());</span>
+<span class="fc" id="L190">				jsonCouponFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L191">					(cp.endDate()).toString());</span>
 
-<span class="fc" id="L192">				jsonCouponFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L193">					(cp.payDate()).toString());</span>
+<span class="fc" id="L193">				jsonCouponFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L194">					(cp.payDate()).toString());</span>
 
-<span class="fc" id="L195">				double dblCouponDCF = cp.couponDCF();</span>
+<span class="fc" id="L196">				double dblCouponDCF = cp.couponDCF();</span>
 
-<span class="fc" id="L197">				jsonCouponFlow.put (&quot;AccrualDays&quot;, dblCouponDCF * 365.);</span>
+<span class="fc" id="L198">				jsonCouponFlow.put (&quot;AccrualDays&quot;, dblCouponDCF * 365.);</span>
 
-<span class="fc" id="L199">				jsonCouponFlow.put (&quot;AccrualFraction&quot;, dblCouponDCF);</span>
+<span class="fc" id="L200">				jsonCouponFlow.put (&quot;AccrualFraction&quot;, dblCouponDCF);</span>
 
-<span class="fc" id="L201">				double dblCouponAmount = dblBeginPrincipalFactor * dblPeriodCouponRate * dblCouponDCF *</span>
+<span class="fc" id="L202">				double dblCouponAmount = dblBeginPrincipalFactor * dblPeriodCouponRate * dblCouponDCF *</span>
 					dblBondNotional;
-<span class="fc" id="L203">				double dblFeeAmount = dblBeginPrincipalFactor * dblServiceFeeRate * dblCouponDCF *</span>
+<span class="fc" id="L204">				double dblFeeAmount = dblBeginPrincipalFactor * dblServiceFeeRate * dblCouponDCF *</span>
 					dblBondNotional;
-<span class="fc" id="L205">				double dblPrincipalAmount = (dblBeginPrincipalFactor - dblEndPrincipalFactor) *</span>
+<span class="fc" id="L206">				double dblPrincipalAmount = (dblBeginPrincipalFactor - dblEndPrincipalFactor) *</span>
 					dblBondNotional;
-<span class="fc" id="L207">				double dblTotalAmount = dblPrincipalAmount + dblCouponAmount;</span>
-<span class="fc" id="L208">				dblBeginPrincipalFactor = dblEndPrincipalFactor;</span>
-<span class="fc" id="L209">				double dblBeginNotional = dblBeginPrincipalFactor * dblBondNotional;</span>
+<span class="fc" id="L208">				double dblTotalAmount = dblPrincipalAmount + dblCouponAmount;</span>
+<span class="fc" id="L209">				dblBeginPrincipalFactor = dblEndPrincipalFactor;</span>
+<span class="fc" id="L210">				double dblBeginNotional = dblBeginPrincipalFactor * dblBondNotional;</span>
 
-<span class="fc" id="L211">				jsonCouponFlow.put (&quot;BeginPrincipal&quot;, dblBeginNotional);</span>
+<span class="fc" id="L212">				jsonCouponFlow.put (&quot;BeginPrincipal&quot;, dblBeginNotional);</span>
 
-<span class="fc" id="L213">				jsonCouponFlow.put (&quot;Notional&quot;, dblBeginNotional);</span>
+<span class="fc" id="L214">				jsonCouponFlow.put (&quot;Notional&quot;, dblBeginNotional);</span>
 
-<span class="fc" id="L215">				jsonCouponFlow.put (&quot;EndPrincipal&quot;, dblEndPrincipalFactor * dblBondNotional);</span>
+<span class="fc" id="L216">				jsonCouponFlow.put (&quot;EndPrincipal&quot;, dblEndPrincipalFactor * dblBondNotional);</span>
 
-<span class="fc" id="L217">				jsonCouponFlow.put (&quot;PrincipalAmount&quot;, dblPrincipalAmount);</span>
+<span class="fc" id="L218">				jsonCouponFlow.put (&quot;PrincipalAmount&quot;, dblPrincipalAmount);</span>
 
-<span class="fc" id="L219">				jsonCouponFlow.put (&quot;CouponAmount&quot;, dblCouponAmount);</span>
+<span class="fc" id="L220">				jsonCouponFlow.put (&quot;CouponAmount&quot;, dblCouponAmount);</span>
 
-<span class="fc" id="L221">				jsonCouponFlow.put (&quot;TotalAmount&quot;, dblTotalAmount);</span>
+<span class="fc" id="L222">				jsonCouponFlow.put (&quot;TotalAmount&quot;, dblTotalAmount);</span>
 
-<span class="fc" id="L223">				jsonCouponFlow.put (&quot;DiscountFactor&quot;, dblYieldDF);</span>
+<span class="fc" id="L224">				jsonCouponFlow.put (&quot;DiscountFactor&quot;, dblYieldDF);</span>
 
-<span class="fc" id="L225">				jsonCouponFlow.put (&quot;FeeAmount&quot;, dblFeeAmount);</span>
+<span class="fc" id="L226">				jsonCouponFlow.put (&quot;FeeAmount&quot;, dblFeeAmount);</span>
 
-<span class="fc" id="L227">				jsonCouponFlow.put (&quot;SurvivalFactor&quot;, 1.);</span>
-<span class="nc" id="L228">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L229">				e.printStackTrace();</span>
+<span class="fc" id="L228">				jsonCouponFlow.put (&quot;SurvivalFactor&quot;, 1.);</span>
+<span class="nc" id="L229">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L230">				e.printStackTrace();</span>
 
-<span class="nc" id="L231">				return null;</span>
-<span class="fc" id="L232">			}</span>
+<span class="nc" id="L232">				return null;</span>
+<span class="fc" id="L233">			}</span>
 
-<span class="fc" id="L234">			jsonCouponFlowArray.add (jsonCouponFlow);</span>
-<span class="fc" id="L235">		}</span>
+<span class="fc" id="L235">			jsonCouponFlowArray.add (jsonCouponFlow);</span>
+<span class="fc" id="L236">		}</span>
 
-<span class="fc" id="L237">		jsonResponse.put (&quot;CouponFlow&quot;, jsonCouponFlowArray);</span>
+<span class="fc" id="L238">		jsonResponse.put (&quot;CouponFlow&quot;, jsonCouponFlowArray);</span>
 
-<span class="fc" id="L239">		jsonResponse.put (&quot;CleanPrice&quot;, 100. * dblCleanPrice);</span>
+<span class="fc" id="L240">		jsonResponse.put (&quot;CleanPrice&quot;, 100. * dblCleanPrice);</span>
 
-<span class="fc" id="L241">		jsonResponse.put (&quot;Face&quot;, dblBondNotional);</span>
+<span class="fc" id="L242">		jsonResponse.put (&quot;Face&quot;, dblBondNotional);</span>
 
-<span class="fc" id="L243">		org.drip.analytics.date.JulianDate dtPreviousCouponDate = fpmb.previousCouponDate (dtSettle);</span>
+<span class="fc" id="L244">		org.drip.analytics.date.JulianDate dtPreviousCouponDate = fpmb.previousCouponDate (dtSettle);</span>
 
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		if (null != dtPreviousCouponDate) {</span>
-<span class="fc" id="L246">			jsonResponse.put (&quot;AccrualDays&quot;, dtPreviousCouponDate.julian() - iSettleDate);</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (null != dtPreviousCouponDate) {</span>
+<span class="fc" id="L247">			jsonResponse.put (&quot;AccrualDays&quot;, dtPreviousCouponDate.julian() - iSettleDate);</span>
 
-<span class="fc" id="L248">			jsonResponse.put (&quot;PreviousCouponDate&quot;, dtPreviousCouponDate.toString());</span>
+<span class="fc" id="L249">			jsonResponse.put (&quot;PreviousCouponDate&quot;, dtPreviousCouponDate.toString());</span>
 		}
 
-<span class="fc" id="L251">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="fc" id="L252">			(iSettleDate);</span>
+<span class="fc" id="L252">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="fc" id="L253">			(iSettleDate);</span>
 
 		try {
-<span class="fc" id="L255">			double dblAccruedAmount = fpmb.accrued (iSettleDate, null) * dblBondNotional;</span>
+<span class="fc" id="L256">			double dblAccruedAmount = fpmb.accrued (iSettleDate, null) * dblBondNotional;</span>
 
-<span class="fc" id="L257">			double dblCurrentPrincipal = fpmb.notional (dtPreviousCouponDate.julian()) * dblBondNotional;</span>
+<span class="fc" id="L258">			double dblCurrentPrincipal = fpmb.notional (dtPreviousCouponDate.julian()) * dblBondNotional;</span>
 
-<span class="fc" id="L259">			double dblRisk = fpmb.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
+<span class="fc" id="L260">			double dblRisk = fpmb.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
 
-<span class="fc" id="L261">			jsonResponse.put (&quot;Accrued&quot;, dblAccruedAmount);</span>
+<span class="fc" id="L262">			jsonResponse.put (&quot;Accrued&quot;, dblAccruedAmount);</span>
 
-<span class="fc" id="L263">			jsonResponse.put (&quot;Convexity&quot;, fpmb.convexityFromPrice (valParams, null, null, dblCleanPrice));</span>
+<span class="fc" id="L264">			jsonResponse.put (&quot;Convexity&quot;, fpmb.convexityFromPrice (valParams, null, null, dblCleanPrice));</span>
 
-<span class="fc" id="L265">			jsonResponse.put (&quot;CurrentPrincipal&quot;, dblCurrentPrincipal);</span>
+<span class="fc" id="L266">			jsonResponse.put (&quot;CurrentPrincipal&quot;, dblCurrentPrincipal);</span>
 
-<span class="fc" id="L267">			jsonResponse.put (&quot;DV01&quot;, dblRisk * dblBondNotional);</span>
+<span class="fc" id="L268">			jsonResponse.put (&quot;DV01&quot;, dblRisk * dblBondNotional);</span>
 
-<span class="fc" id="L269">			jsonResponse.put (&quot;ModifiedDuration&quot;, fpmb.modifiedDurationFromPrice (valParams, null, null,</span>
+<span class="fc" id="L270">			jsonResponse.put (&quot;ModifiedDuration&quot;, fpmb.modifiedDurationFromPrice (valParams, null, null,</span>
 				dblCleanPrice));
 
-<span class="fc" id="L272">			jsonResponse.put (&quot;Notional&quot;, dblBondNotional);</span>
+<span class="fc" id="L273">			jsonResponse.put (&quot;Notional&quot;, dblBondNotional);</span>
 
-<span class="fc" id="L274">			jsonResponse.put (&quot;NPV&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
+<span class="fc" id="L275">			jsonResponse.put (&quot;NPV&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
 
-<span class="fc" id="L276">			jsonResponse.put (&quot;Risk&quot;, dblRisk);</span>
+<span class="fc" id="L277">			jsonResponse.put (&quot;Risk&quot;, dblRisk);</span>
 
-<span class="fc" id="L278">			jsonResponse.put (&quot;SettleDate&quot;, dtSettle.toString());</span>
+<span class="fc" id="L279">			jsonResponse.put (&quot;SettleDate&quot;, dtSettle.toString());</span>
 
-<span class="fc" id="L280">			jsonResponse.put (&quot;Total&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
+<span class="fc" id="L281">			jsonResponse.put (&quot;Total&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
 
-<span class="fc" id="L282">			jsonResponse.put (&quot;Yield&quot;, fpmb.yieldFromPrice (valParams, null, null, dblCleanPrice));</span>
+<span class="fc" id="L283">			jsonResponse.put (&quot;Yield&quot;, fpmb.yieldFromPrice (valParams, null, null, dblCleanPrice));</span>
 
-<span class="fc" id="L284">			jsonResponse.put (&quot;Yield01&quot;, dblRisk);</span>
+<span class="fc" id="L285">			jsonResponse.put (&quot;Yield01&quot;, dblRisk);</span>
 
-<span class="fc" id="L286">			jsonResponse.put (&quot;Y01&quot;, dblRisk);</span>
-<span class="nc" id="L287">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L288">			e.printStackTrace();</span>
+<span class="fc" id="L287">			jsonResponse.put (&quot;Y01&quot;, dblRisk);</span>
+<span class="nc" id="L288">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L289">			e.printStackTrace();</span>
 
-<span class="nc" id="L290">			return null;</span>
-<span class="fc" id="L291">		}</span>
+<span class="nc" id="L291">			return null;</span>
+<span class="fc" id="L292">		}</span>
 
-<span class="fc" id="L293">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="fc" id="L294">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+<span class="fc" id="L294">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L295">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
 
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">		if (null == dcFunding) return jsonResponse;</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (null == dcFunding) return jsonResponse;</span>
 
-<span class="nc" id="L298">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="nc" id="L299">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return jsonResponse;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return jsonResponse;</span>
 
 		try {
-<span class="nc" id="L304">			jsonResponse.put (&quot;DiscountedPrice&quot;, fpmb.priceFromDiscountMargin (valParams, csqc, null, 0.));</span>
-<span class="nc" id="L305">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L306">		}</span>
+<span class="nc" id="L305">			jsonResponse.put (&quot;DiscountedPrice&quot;, fpmb.priceFromDiscountMargin (valParams, csqc, null, 0.));</span>
+<span class="nc" id="L306">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L307">		}</span>
 
-<span class="nc bnc" id="L308" title="All 2 branches missed.">		if (!csqc.setCreditState (org.drip.service.json.LatentStateProcessor.CreditCurve (jsonParameter,</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">		if (!csqc.setCreditState (org.drip.service.json.LatentStateProcessor.CreditCurve (jsonParameter,</span>
 			dcFunding)))
-<span class="nc" id="L310">			return jsonResponse;</span>
+<span class="nc" id="L311">			return jsonResponse;</span>
 
 		try {
-<span class="nc" id="L313">			jsonResponse.put (&quot;DiscountedCreditPrice&quot;, fpmb.priceFromCreditBasis (valParams, csqc, null,</span>
+<span class="nc" id="L314">			jsonResponse.put (&quot;DiscountedCreditPrice&quot;, fpmb.priceFromCreditBasis (valParams, csqc, null,</span>
 				0.));
-<span class="nc" id="L315">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L316">		}</span>
+<span class="nc" id="L316">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L317">		}</span>
 
-<span class="nc" id="L318">		return jsonResponse;</span>
+<span class="nc" id="L319">		return jsonResponse;</span>
 	}
 
 }

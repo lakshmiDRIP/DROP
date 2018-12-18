@@ -14,33 +14,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -57,27 +76,36 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * DualConstrainedVariateConvergence demonstrates the Sequential Convergence of the Constrained Optimal R^d
- *  Space.
+ * &lt;i&gt;DualConstrainedVariateConvergence&lt;/i&gt; demonstrates the Sequential Convergence of the Constrained
+ * Optimal R&lt;sup&gt;d&lt;/sup&gt; Space.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/assetallocation/README.md&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L66">public class DualConstrainedVariateConvergence {</span>
+<span class="nc" id="L94">public class DualConstrainedVariateConvergence {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L72">		EnvManager.InitEnv (</span>
+<span class="fc" id="L100">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L77">		VariateInequalityConstraintMultiplier.s_bPreBoundBlog = true;</span>
-<span class="fc" id="L78">		VariateInequalityConstraintMultiplier.s_bPostBoundBlog = true;</span>
+<span class="fc" id="L105">		VariateInequalityConstraintMultiplier.s_bPreBoundBlog = true;</span>
+<span class="fc" id="L106">		VariateInequalityConstraintMultiplier.s_bPostBoundBlog = true;</span>
 
-<span class="fc" id="L80">		String[] astrAssetName = new String[] {</span>
+<span class="fc" id="L108">		String[] astrAssetName = new String[] {</span>
 			&quot;TOK&quot;,
 			&quot;EWJ&quot;,
 			&quot;HYG&quot;,
@@ -87,7 +115,7 @@ import org.drip.service.env.EnvManager;
 			&quot;BWX&quot;
 		};
 
-<span class="fc" id="L90">		double[] adblAssetLowerBound = new double[] {</span>
+<span class="fc" id="L118">		double[] adblAssetLowerBound = new double[] {</span>
 			0.05,
 			0.04,
 			0.06,
@@ -97,7 +125,7 @@ import org.drip.service.env.EnvManager;
 			0.13
 		};
 
-<span class="fc" id="L100">		double[] adblAssetUpperBound = new double[] {</span>
+<span class="fc" id="L128">		double[] adblAssetUpperBound = new double[] {</span>
 			0.43,
 			0.27,
 			0.44,
@@ -107,7 +135,7 @@ import org.drip.service.env.EnvManager;
 			0.88
 		};
 
-<span class="fc" id="L110">		double[] adblAssetExpectedReturns = new double[] {</span>
+<span class="fc" id="L138">		double[] adblAssetExpectedReturns = new double[] {</span>
 			0.1300,
 			0.0700,
 			0.0400,
@@ -117,9 +145,9 @@ import org.drip.service.env.EnvManager;
 			0.0100
 		};
 
-<span class="fc" id="L120">		double dblPortfolioDesignReturn = 0.06000;</span>
+<span class="fc" id="L148">		double dblPortfolioDesignReturn = 0.06000;</span>
 
-<span class="fc" id="L122">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L150">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
 			{0.002733 * 12, 0.002083 * 12, 0.001593 * 12, 0.000488 * 12, 0.001172 * 12, 0.002312 * 12, 0.000710 * 12},
 			{0.002083 * 12, 0.002768 * 12, 0.001302 * 12, 0.000457 * 12, 0.001105 * 12, 0.001647 * 12, 0.000563 * 12},
 			{0.001593 * 12, 0.001302 * 12, 0.001463 * 12, 0.000639 * 12, 0.001050 * 12, 0.001110 * 12, 0.000519 * 12},
@@ -129,102 +157,102 @@ import org.drip.service.env.EnvManager;
 			{0.000710 * 12, 0.000563 * 12, 0.000519 * 12, 0.000370 * 12, 0.000661 * 12, 0.000749 * 12, 0.000703 * 12}
 		};
 
-<span class="fc" id="L132">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="fc" id="L133">			MultivariateMoments.Standard (</span>
+<span class="fc" id="L160">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="fc" id="L161">			MultivariateMoments.Standard (</span>
 				astrAssetName,
 				adblAssetExpectedReturns,
 				aadblAssetReturnsCovariance
 			)
 		);
 
-<span class="fc" id="L140">		double[][] aadblCovarianceMatrix = ausp.covariance (astrAssetName);</span>
+<span class="fc" id="L168">		double[][] aadblCovarianceMatrix = ausp.covariance (astrAssetName);</span>
 
-<span class="fc" id="L142">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L170">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L144">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
+<span class="fc" id="L172">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
 
-<span class="fc" id="L146">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L174">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L148">		String strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L176">		String strHeader = &quot;\t|     |&quot;;</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
-<span class="fc" id="L151">			strHeader += &quot;    &quot; + astrAssetName[i] + &quot;     |&quot;;</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="fc" id="L179">			strHeader += &quot;    &quot; + astrAssetName[i] + &quot;     |&quot;;</span>
 
-<span class="fc" id="L153">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc" id="L181">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="fc" id="L155">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L183">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i) {</span>
-<span class="fc" id="L158">			String strDump = &quot;\t| &quot; + astrAssetName[i] + &quot; &quot;;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i) {</span>
+<span class="fc" id="L186">			String strDump = &quot;\t| &quot; + astrAssetName[i] + &quot; &quot;;</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetName.length; ++j)</span>
-<span class="fc" id="L161">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetName.length; ++j)</span>
+<span class="fc" id="L189">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + &quot; &quot;;</span>
 
-<span class="fc" id="L163">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L191">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="fc" id="L166">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L168">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="fc" id="L196">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="fc" id="L170">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
+<span class="fc" id="L198">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
 
-<span class="fc" id="L172">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="fc" id="L200">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
-<span class="fc" id="L175">			System.out.println (</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="fc" id="L203">			System.out.println (</span>
 				&quot;\t| &quot; + astrAssetName[i] + &quot; | &quot; +
-<span class="fc" id="L177">				FormatUtil.FormatDouble (adblAssetLowerBound[i], 2, 0, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L178">				FormatUtil.FormatDouble (adblAssetUpperBound[i], 2, 0, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L205">				FormatUtil.FormatDouble (adblAssetLowerBound[i], 2, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L206">				FormatUtil.FormatDouble (adblAssetUpperBound[i], 2, 0, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L181">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
+<span class="fc" id="L209">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L183">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
+<span class="fc" id="L211">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+<span class="fc" id="L213">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
+<span class="fc" id="L215">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
 
-<span class="fc" id="L189">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+<span class="fc" id="L217">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L191">		System.out.println (&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / ipbc.decayVelocity());</span>
+<span class="fc" id="L219">		System.out.println (&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / ipbc.decayVelocity());</span>
 
-<span class="fc" id="L193">		System.out.println (&quot;\t|    Barrier Decay Steps           : &quot; + ipbc.numDecaySteps());</span>
+<span class="fc" id="L221">		System.out.println (&quot;\t|    Barrier Decay Steps           : &quot; + ipbc.numDecaySteps());</span>
 
-<span class="fc" id="L195">		System.out.println (&quot;\t|    Initial Barrier Strength      : &quot; + ipbc.initialStrength());</span>
+<span class="fc" id="L223">		System.out.println (&quot;\t|    Initial Barrier Strength      : &quot; + ipbc.initialStrength());</span>
 
-<span class="fc" id="L197">		System.out.println (&quot;\t|    Barrier Convergence Tolerance : &quot; + ipbc.relativeTolerance());</span>
+<span class="fc" id="L225">		System.out.println (&quot;\t|    Barrier Convergence Tolerance : &quot; + ipbc.relativeTolerance());</span>
 
-<span class="fc" id="L199">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L227">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L201">		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (</span>
+<span class="fc" id="L229">		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (</span>
 			ipbc,
-<span class="fc" id="L203">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
+<span class="fc" id="L231">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
 		);
 
-<span class="fc" id="L206">		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (</span>
+<span class="fc" id="L234">		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (</span>
 			astrAssetName,
-<span class="fc" id="L208">			CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+<span class="fc" id="L236">			CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 			new PortfolioEqualityConstraintSettings (
 				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
 				dblPortfolioDesignReturn
 			)
 		);
 
-<span class="fc bfc" id="L215" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
-<span class="fc" id="L216">			pdp.addBound (</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
+<span class="fc" id="L244">			pdp.addBound (</span>
 				astrAssetName[i],
 				adblAssetLowerBound[i],
 				adblAssetUpperBound[i]
 			);
 
-<span class="fc" id="L222">		cmva.allocate (</span>
+<span class="fc" id="L250">		cmva.allocate (</span>
 			pdp,
 			ausp
 		);
 
-<span class="fc" id="L227">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L228">	}</span>
+<span class="fc" id="L255">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L256">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

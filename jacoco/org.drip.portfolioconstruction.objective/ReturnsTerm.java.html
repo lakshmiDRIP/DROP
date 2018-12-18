@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.objective;
 /**
  * &lt;i&gt;ReturnsTerm&lt;/i&gt; holds the Details of the Portfolio Returns Based Objective Terms. Returns can be
  * Absolute or in relation to a Benchmark.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,8 +83,8 @@ package org.drip.portfolioconstruction.objective;
 
 public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-<span class="nc" id="L85">	private double[] _adblAlpha = null;</span>
-<span class="nc" id="L86">	private double[] _adblBenchmarkConstrictedHoldings = null;</span>
+<span class="nc" id="L86">	private double[] _adblAlpha = null;</span>
+<span class="nc" id="L87">	private double[] _adblBenchmarkConstrictedHoldings = null;</span>
 
 	protected ReturnsTerm (
 		final java.lang.String strName,
@@ -94,7 +95,7 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 		final double[] adblBenchmarkConstrictedHoldings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L97">		super (</span>
+<span class="nc" id="L98">		super (</span>
 			strName,
 			strID,
 			strDescription,
@@ -102,17 +103,17 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 			adblInitialHoldings
 		);
 
-<span class="nc" id="L105">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L106">		int iNumAsset = adblInitialHoldings.length;</span>
 
-<span class="nc bnc" id="L107" title="All 6 branches missed.">		if (null == (_adblAlpha = adblAlpha) || !org.drip.quant.common.NumberUtil.IsValid (_adblAlpha) ||</span>
+<span class="nc bnc" id="L108" title="All 6 branches missed.">		if (null == (_adblAlpha = adblAlpha) || !org.drip.quant.common.NumberUtil.IsValid (_adblAlpha) ||</span>
 			iNumAsset != _adblAlpha.length)
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;ReturnsTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;ReturnsTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) &amp;&amp; (iNumAsset !=</span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) &amp;&amp; (iNumAsset !=</span>
 			_adblBenchmarkConstrictedHoldings.length || !org.drip.quant.common.NumberUtil.IsValid
-<span class="nc bnc" id="L113" title="All 2 branches missed.">				(_adblBenchmarkConstrictedHoldings)))</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L115">	}</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">				(_adblBenchmarkConstrictedHoldings)))</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Array of Alphas
@@ -122,7 +123,7 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 
 	public double[] alpha()
 	{
-<span class="nc" id="L125">		return _adblAlpha;</span>
+<span class="nc" id="L126">		return _adblAlpha;</span>
 	}
 
 	/**
@@ -133,7 +134,7 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 
 	public double[] benchmarkConstrictedHoldings()
 	{
-<span class="nc" id="L136">		return _adblBenchmarkConstrictedHoldings;</span>
+<span class="nc" id="L137">		return _adblBenchmarkConstrictedHoldings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

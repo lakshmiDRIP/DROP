@@ -158,9 +158,10 @@ package org.drip.spline.segment;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -181,13 +182,13 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public static final int RIGHT_NODE_VALUE_PARAMETER_INDEX = 1;
 
-<span class="fc" id="L184">	private double[] _adblResponseBasisCoeff = null;</span>
-<span class="fc" id="L185">	private org.drip.spline.segment.BasisEvaluator _be = null;</span>
-<span class="fc" id="L186">	private double[][] _aadblDResponseBasisCoeffDConstraint = null;</span>
-<span class="fc" id="L187">	private org.drip.spline.params.SegmentInelasticDesignControl _sidc = null;</span>
-<span class="fc" id="L188">	private org.drip.quant.calculus.WengertJacobian _wjDBasisCoeffDEdgeValue = null;</span>
+<span class="fc" id="L185">	private double[] _adblResponseBasisCoeff = null;</span>
+<span class="fc" id="L186">	private org.drip.spline.segment.BasisEvaluator _be = null;</span>
+<span class="fc" id="L187">	private double[][] _aadblDResponseBasisCoeffDConstraint = null;</span>
+<span class="fc" id="L188">	private org.drip.spline.params.SegmentInelasticDesignControl _sidc = null;</span>
+<span class="fc" id="L189">	private org.drip.quant.calculus.WengertJacobian _wjDBasisCoeffDEdgeValue = null;</span>
 
-<span class="fc" id="L190">	private</span>
+<span class="fc" id="L191">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.segment.LatentStateManifestSensitivity&gt;
 			_mapLSMS = new
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.segment.LatentStateManifestSensitivity&gt;();
@@ -212,26 +213,26 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentInelasticDesignControl sidc)
 	{
 		try {
-<span class="fc" id="L215">			org.drip.spline.segment.SegmentBasisEvaluator sbe = new</span>
+<span class="fc" id="L216">			org.drip.spline.segment.SegmentBasisEvaluator sbe = new</span>
 				org.drip.spline.segment.SegmentBasisEvaluator (fs, rssc);
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
-<span class="pc bpc" id="L219" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
 				dblLeftPredictorOrdinate == dblRightPredictorOrdinate)
 			{
-<span class="nc" id="L222">				return null;</span>
+<span class="nc" id="L223">				return null;</span>
 			}
 
-<span class="fc" id="L225">			org.drip.spline.segment.LatentStateResponseModel lsrm = new</span>
+<span class="fc" id="L226">			org.drip.spline.segment.LatentStateResponseModel lsrm = new</span>
 				org.drip.spline.segment.LatentStateResponseModel (dblLeftPredictorOrdinate,
 					dblRightPredictorOrdinate, sbe, sidc);
 
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">			return sbe.setContainingInelastics (lsrm) ? lsrm : null;</span>
-<span class="nc" id="L230">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L231">			e.printStackTrace();</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">			return sbe.setContainingInelastics (lsrm) ? lsrm : null;</span>
+<span class="nc" id="L231">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L232">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L234">		return null;</span>
+<span class="nc" id="L235">		return null;</span>
 	}
 
 	/**
@@ -252,16 +253,16 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentInelasticDesignControl sidc)
 	{
 		try {
-<span class="fc" id="L255">			org.drip.spline.segment.LatentStateResponseModel lsrm = new</span>
+<span class="fc" id="L256">			org.drip.spline.segment.LatentStateResponseModel lsrm = new</span>
 				org.drip.spline.segment.LatentStateResponseModel (dblLeftPredictorOrdinate,
 					dblRightPredictorOrdinate, be, sidc);
 
-<span class="pc bpc" id="L259" title="1 of 2 branches missed.">			return be.setContainingInelastics (lsrm) ? lsrm : null;</span>
-<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">			return be.setContainingInelastics (lsrm) ? lsrm : null;</span>
+<span class="nc" id="L261">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L262">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L264">		return null;</span>
+<span class="nc" id="L265">		return null;</span>
 	}
 
 	private LatentStateResponseModel (
@@ -271,41 +272,41 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentInelasticDesignControl sidc)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L274">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate);</span>
+<span class="fc" id="L275">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate);</span>
 
-<span class="pc bpc" id="L276" title="2 of 4 branches missed.">		if (null == (_be = be) || null == (_sidc = sidc))</span>
-<span class="nc" id="L277">			throw new java.lang.Exception (&quot;LatentStateResponseModel ctr: Invalid Basis Functions!&quot;);</span>
+<span class="pc bpc" id="L277" title="2 of 4 branches missed.">		if (null == (_be = be) || null == (_sidc = sidc))</span>
+<span class="nc" id="L278">			throw new java.lang.Exception (&quot;LatentStateResponseModel ctr: Invalid Basis Functions!&quot;);</span>
 
-<span class="fc" id="L279">		int iNumBasis = _be.numBasis();</span>
+<span class="fc" id="L280">		int iNumBasis = _be.numBasis();</span>
 
-<span class="fc" id="L281">		_adblResponseBasisCoeff = new double[iNumBasis];</span>
+<span class="fc" id="L282">		_adblResponseBasisCoeff = new double[iNumBasis];</span>
 
-<span class="pc bpc" id="L283" title="2 of 4 branches missed.">		if (0 &gt;= iNumBasis || _sidc.Ck() &gt; iNumBasis - 2)</span>
-<span class="nc" id="L284">			throw new java.lang.Exception (&quot;LatentStateResponseModel ctr: Invalid inputs!&quot;);</span>
-<span class="fc" id="L285">	}</span>
+<span class="pc bpc" id="L284" title="2 of 4 branches missed.">		if (0 &gt;= iNumBasis || _sidc.Ck() &gt; iNumBasis - 2)</span>
+<span class="nc" id="L285">			throw new java.lang.Exception (&quot;LatentStateResponseModel ctr: Invalid inputs!&quot;);</span>
+<span class="fc" id="L286">	}</span>
 
 	private double[] DResponseDBasisCoeff (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="pc bpc" id="L291" title="1 of 2 branches missed.">		if (0 == iOrder) return null;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (0 == iOrder) return null;</span>
 
-<span class="fc" id="L293">		int iNumBasis = _be.numBasis();</span>
+<span class="fc" id="L294">		int iNumBasis = _be.numBasis();</span>
 
-<span class="fc" id="L295">		double[] adblDResponseDBasisCoeff = new double[iNumBasis];</span>
+<span class="fc" id="L296">		double[] adblDResponseDBasisCoeff = new double[iNumBasis];</span>
 
-<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
 			try {
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">				adblDResponseDBasisCoeff[i] = 1 == iOrder ? _be.shapedBasisFunctionResponse</span>
-<span class="pc" id="L300">					(dblPredictorOrdinate, i) : 0.;</span>
-<span class="nc" id="L301">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L302">				e.printStackTrace();</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">				adblDResponseDBasisCoeff[i] = 1 == iOrder ? _be.shapedBasisFunctionResponse</span>
+<span class="pc" id="L301">					(dblPredictorOrdinate, i) : 0.;</span>
+<span class="nc" id="L302">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L303">				e.printStackTrace();</span>
 
-<span class="nc" id="L304">				return null;</span>
-<span class="fc" id="L305">			}</span>
+<span class="nc" id="L305">				return null;</span>
+<span class="fc" id="L306">			}</span>
 		}
 
-<span class="fc" id="L308">		return adblDResponseDBasisCoeff;</span>
+<span class="fc" id="L309">		return adblDResponseDBasisCoeff;</span>
 	}
 
 	private double[] transmissionCk (
@@ -313,46 +314,46 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.segment.LatentStateResponseModel csPreceeding,
 		final int iCk)
 	{
-<span class="fc" id="L316">		double[] adblDeriv = new double[iCk];</span>
+<span class="fc" id="L317">		double[] adblDeriv = new double[iCk];</span>
 
-<span class="fc bfc" id="L318" title="All 2 branches covered.">		for (int i = 0; i &lt; iCk; ++i) {</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int i = 0; i &lt; iCk; ++i) {</span>
 			try {
-<span class="fc" id="L320">				adblDeriv[i] = csPreceeding.calcResponseValueDerivative (dblPredictorOrdinate, i + 1);</span>
-<span class="nc" id="L321">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L322">				e.printStackTrace();</span>
+<span class="fc" id="L321">				adblDeriv[i] = csPreceeding.calcResponseValueDerivative (dblPredictorOrdinate, i + 1);</span>
+<span class="nc" id="L322">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L323">				e.printStackTrace();</span>
 
-<span class="nc" id="L324">				return null;</span>
-<span class="fc" id="L325">			}</span>
+<span class="nc" id="L325">				return null;</span>
+<span class="fc" id="L326">			}</span>
 		}
 
-<span class="fc" id="L328">		return adblDeriv;</span>
+<span class="fc" id="L329">		return adblDeriv;</span>
 	}
 
 	private org.drip.spline.segment.LatentStateManifestSensitivity manifestSensitivity (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L334" title="2 of 4 branches missed.">		return null == strManifestMeasure || strManifestMeasure.isEmpty() || !_mapLSMS.containsKey</span>
-<span class="fc bfc" id="L335" title="All 2 branches covered.">			(strManifestMeasure) ? null : _mapLSMS.get (strManifestMeasure);</span>
+<span class="pc bpc" id="L335" title="2 of 4 branches missed.">		return null == strManifestMeasure || strManifestMeasure.isEmpty() || !_mapLSMS.containsKey</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">			(strManifestMeasure) ? null : _mapLSMS.get (strManifestMeasure);</span>
 	}
 
 	private double[] CkDBasisCoeffDPreceedingManifestMeasure (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="fc" id="L341">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L342">			(strManifestMeasure);</span>
+<span class="fc" id="L342">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L343">			(strManifestMeasure);</span>
 
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">		if (null == lsms) return null;</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		if (null == lsms) return null;</span>
 
-<span class="fc" id="L346">		int iCk = lsms.getPMSC().Ck();</span>
+<span class="fc" id="L347">		int iCk = lsms.getPMSC().Ck();</span>
 
-<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (0 == iCk) return null;</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">		if (0 == iCk) return null;</span>
 
-<span class="nc" id="L350">		double[] adblDBasisCoeffDPreceedingManifestTail = new double[iCk];</span>
+<span class="nc" id="L351">		double[] adblDBasisCoeffDPreceedingManifestTail = new double[iCk];</span>
 
-<span class="nc bnc" id="L352" title="All 2 branches missed.">		for (int i = 0; i &lt; iCk; ++i)</span>
-<span class="nc" id="L353">			adblDBasisCoeffDPreceedingManifestTail[i] = 0.;</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">		for (int i = 0; i &lt; iCk; ++i)</span>
+<span class="nc" id="L354">			adblDBasisCoeffDPreceedingManifestTail[i] = 0.;</span>
 
-<span class="nc" id="L355">		return adblDBasisCoeffDPreceedingManifestTail;</span>
+<span class="nc" id="L356">		return adblDBasisCoeffDPreceedingManifestTail;</span>
 	}
 
 	/**
@@ -368,18 +369,18 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final java.lang.String strManifestMeasure,
 		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
 	{
-<span class="pc bpc" id="L371" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return false;</span>
+<span class="pc bpc" id="L372" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return false;</span>
 
 		try {
-<span class="fc" id="L374">			_mapLSMS.put (strManifestMeasure, new org.drip.spline.segment.LatentStateManifestSensitivity</span>
+<span class="fc" id="L375">			_mapLSMS.put (strManifestMeasure, new org.drip.spline.segment.LatentStateManifestSensitivity</span>
 				(pmsc));
 
-<span class="fc" id="L377">			return true;</span>
-<span class="nc" id="L378">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L379">			e.printStackTrace();</span>
+<span class="fc" id="L378">			return true;</span>
+<span class="nc" id="L379">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L380">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L382">		return false;</span>
+<span class="nc" id="L383">		return false;</span>
 	}
 
 	/**
@@ -390,7 +391,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public int numParameters()
 	{
-<span class="fc" id="L393">		return _sidc.Ck() + 2;</span>
+<span class="fc" id="L394">		return _sidc.Ck() + 2;</span>
 	}
 
 	/**
@@ -401,7 +402,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public org.drip.spline.segment.BasisEvaluator basisEvaluator()
 	{
-<span class="fc" id="L404">		return _be;</span>
+<span class="fc" id="L405">		return _be;</span>
 	}
 
 	/**
@@ -412,7 +413,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public double[] responseBasisCoefficient()
 	{
-<span class="nc" id="L415">		return _adblResponseBasisCoeff;</span>
+<span class="nc" id="L416">		return _adblResponseBasisCoeff;</span>
 	}
 
 	/**
@@ -423,7 +424,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public org.drip.spline.params.SegmentInelasticDesignControl designControl()
 	{
-<span class="nc" id="L426">		return _sidc;</span>
+<span class="nc" id="L427">		return _sidc;</span>
 	}
 
 	/**
@@ -437,113 +438,113 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	public boolean calibrateState (
 		final org.drip.spline.params.SegmentStateCalibrationInputs ssciState)
 	{
-<span class="pc bpc" id="L440" title="1 of 2 branches missed.">		if (null == ssciState) return false;</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">		if (null == ssciState) return false;</span>
 
-<span class="fc" id="L442">		double[] adblPredictorOrdinate = ssciState.predictorOrdinates();</span>
+<span class="fc" id="L443">		double[] adblPredictorOrdinate = ssciState.predictorOrdinates();</span>
 
-<span class="fc" id="L444">		double[] adblResponseValue = ssciState.responseValues();</span>
+<span class="fc" id="L445">		double[] adblResponseValue = ssciState.responseValues();</span>
 
-<span class="fc" id="L446">		double[] adblLeftEdgeDeriv = ssciState.leftEdgeDeriv();</span>
+<span class="fc" id="L447">		double[] adblLeftEdgeDeriv = ssciState.leftEdgeDeriv();</span>
 
-<span class="fc" id="L448">		double[] adblRightEdgeDeriv = ssciState.rightEdgeDeriv();</span>
+<span class="fc" id="L449">		double[] adblRightEdgeDeriv = ssciState.rightEdgeDeriv();</span>
 
-<span class="fc" id="L450">		org.drip.spline.params.SegmentBestFitResponse sbfr = ssciState.bestFitResponse();</span>
+<span class="fc" id="L451">		org.drip.spline.params.SegmentBestFitResponse sbfr = ssciState.bestFitResponse();</span>
 
-<span class="fc" id="L452">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = ssciState.flexureConstraint();</span>
+<span class="fc" id="L453">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = ssciState.flexureConstraint();</span>
 
-<span class="fc" id="L454">		int iNumConstraint = 0;</span>
-<span class="fc" id="L455">		int iNumResponseBasisCoeff = _adblResponseBasisCoeff.length;</span>
-<span class="fc bfc" id="L456" title="All 2 branches covered.">		int iNumLeftDeriv = null == adblLeftEdgeDeriv ? 0 : adblLeftEdgeDeriv.length;</span>
-<span class="fc bfc" id="L457" title="All 2 branches covered.">		int iNumRightDeriv = null == adblRightEdgeDeriv ? 0 : adblRightEdgeDeriv.length;</span>
-<span class="fc" id="L458">		double[] adblPredictorResponseConstraintValue = new double[iNumResponseBasisCoeff];</span>
-<span class="fc bfc" id="L459" title="All 2 branches covered.">		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;</span>
-<span class="fc" id="L460">		double[][] aadblResponseBasisCoeffConstraint = new</span>
+<span class="fc" id="L455">		int iNumConstraint = 0;</span>
+<span class="fc" id="L456">		int iNumResponseBasisCoeff = _adblResponseBasisCoeff.length;</span>
+<span class="fc bfc" id="L457" title="All 2 branches covered.">		int iNumLeftDeriv = null == adblLeftEdgeDeriv ? 0 : adblLeftEdgeDeriv.length;</span>
+<span class="fc bfc" id="L458" title="All 2 branches covered.">		int iNumRightDeriv = null == adblRightEdgeDeriv ? 0 : adblRightEdgeDeriv.length;</span>
+<span class="fc" id="L459">		double[] adblPredictorResponseConstraintValue = new double[iNumResponseBasisCoeff];</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;</span>
+<span class="fc" id="L461">		double[][] aadblResponseBasisCoeffConstraint = new</span>
 			double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
 
-<span class="fc bfc" id="L463" title="All 2 branches covered.">		if (null != aSBFC) {</span>
-<span class="fc" id="L464">			int iNumPotentialConstraint = aSBFC.length;</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">		if (null != aSBFC) {</span>
+<span class="fc" id="L465">			int iNumPotentialConstraint = aSBFC.length;</span>
 
-<span class="fc bfc" id="L466" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumPotentialConstraint; ++i) {</span>
-<span class="fc bfc" id="L467" title="All 2 branches covered.">				if (null != aSBFC[i]) ++iNumConstraint;</span>
+<span class="fc bfc" id="L467" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumPotentialConstraint; ++i) {</span>
+<span class="fc bfc" id="L468" title="All 2 branches covered.">				if (null != aSBFC[i]) ++iNumConstraint;</span>
 			}
 		}
 
-<span class="pc bpc" id="L471" title="1 of 2 branches missed.">		if (iNumResponseBasisCoeff &lt; iNumPredictorOrdinate + iNumLeftDeriv + iNumRightDeriv + iNumConstraint)</span>
-<span class="nc" id="L472">			return false;</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">		if (iNumResponseBasisCoeff &lt; iNumPredictorOrdinate + iNumLeftDeriv + iNumRightDeriv + iNumConstraint)</span>
+<span class="nc" id="L473">			return false;</span>
 
 		try {
-<span class="fc" id="L475">			org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
-<span class="fc" id="L476">				org.drip.spline.segment.BestFitFlexurePenalizer (this, _sidc.curvaturePenaltyControl(),</span>
-<span class="fc" id="L477">					_sidc.lengthPenaltyControl(), sbfr, _be);</span>
+<span class="fc" id="L476">			org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
+<span class="fc" id="L477">				org.drip.spline.segment.BestFitFlexurePenalizer (this, _sidc.curvaturePenaltyControl(),</span>
+<span class="fc" id="L478">					_sidc.lengthPenaltyControl(), sbfr, _be);</span>
 
-<span class="fc bfc" id="L479" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j) {</span>
-<span class="fc bfc" id="L480" title="All 2 branches covered.">				if (j &lt; iNumPredictorOrdinate)</span>
-<span class="fc" id="L481">					adblPredictorResponseConstraintValue[j] = adblResponseValue[j];</span>
-<span class="fc bfc" id="L482" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint)</span>
-<span class="fc" id="L483">					adblPredictorResponseConstraintValue[j] = aSBFC[j -</span>
-<span class="fc" id="L484">					    iNumPredictorOrdinate].contraintValue();</span>
-<span class="fc bfc" id="L485" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv)</span>
-<span class="fc" id="L486">					adblPredictorResponseConstraintValue[j] = adblLeftEdgeDeriv[j - iNumPredictorOrdinate -</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j) {</span>
+<span class="fc bfc" id="L481" title="All 2 branches covered.">				if (j &lt; iNumPredictorOrdinate)</span>
+<span class="fc" id="L482">					adblPredictorResponseConstraintValue[j] = adblResponseValue[j];</span>
+<span class="fc bfc" id="L483" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint)</span>
+<span class="fc" id="L484">					adblPredictorResponseConstraintValue[j] = aSBFC[j -</span>
+<span class="fc" id="L485">					    iNumPredictorOrdinate].contraintValue();</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv)</span>
+<span class="fc" id="L487">					adblPredictorResponseConstraintValue[j] = adblLeftEdgeDeriv[j - iNumPredictorOrdinate -</span>
 					    iNumConstraint];
-<span class="fc bfc" id="L488" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv + iNumRightDeriv)</span>
-<span class="fc" id="L489">					adblPredictorResponseConstraintValue[j] = adblRightEdgeDeriv[j - iNumPredictorOrdinate -</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv + iNumRightDeriv)</span>
+<span class="fc" id="L490">					adblPredictorResponseConstraintValue[j] = adblRightEdgeDeriv[j - iNumPredictorOrdinate -</span>
 					    iNumConstraint - iNumLeftDeriv];
 				else
-<span class="fc" id="L492">					adblPredictorResponseConstraintValue[j] = bffp.basisPairPenaltyConstraint (j);</span>
+<span class="fc" id="L493">					adblPredictorResponseConstraintValue[j] = bffp.basisPairPenaltyConstraint (j);</span>
 			}
 
-<span class="fc bfc" id="L495" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="fc bfc" id="L496" title="All 2 branches covered.">				for (int l = 0; l &lt; iNumResponseBasisCoeff; ++l) {</span>
-<span class="fc" id="L497">					double[] adblCalibBasisConstraintWeight = null;</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="fc bfc" id="L497" title="All 2 branches covered.">				for (int l = 0; l &lt; iNumResponseBasisCoeff; ++l) {</span>
+<span class="fc" id="L498">					double[] adblCalibBasisConstraintWeight = null;</span>
 
-<span class="fc bfc" id="L499" title="All 6 branches covered.">					if (0 != iNumConstraint &amp;&amp; (l &gt;= iNumPredictorOrdinate &amp;&amp; l &lt; iNumPredictorOrdinate +</span>
+<span class="fc bfc" id="L500" title="All 6 branches covered.">					if (0 != iNumConstraint &amp;&amp; (l &gt;= iNumPredictorOrdinate &amp;&amp; l &lt; iNumPredictorOrdinate +</span>
 						iNumConstraint))
-<span class="fc" id="L501">						adblCalibBasisConstraintWeight = aSBFC[l -</span>
-<span class="fc" id="L502">						    iNumPredictorOrdinate].responseBasisCoeffWeights();</span>
+<span class="fc" id="L502">						adblCalibBasisConstraintWeight = aSBFC[l -</span>
+<span class="fc" id="L503">						    iNumPredictorOrdinate].responseBasisCoeffWeights();</span>
 
-<span class="fc bfc" id="L504" title="All 2 branches covered.">					if (l &lt; iNumPredictorOrdinate)</span>
-<span class="fc" id="L505">						aadblResponseBasisCoeffConstraint[l][i] = _be.shapedBasisFunctionResponse</span>
-<span class="fc" id="L506">							(adblPredictorOrdinate[l], i);</span>
-<span class="fc bfc" id="L507" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint)</span>
-<span class="fc" id="L508">						aadblResponseBasisCoeffConstraint[l][i] = adblCalibBasisConstraintWeight[i];</span>
-<span class="fc bfc" id="L509" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv)</span>
-<span class="fc" id="L510">						aadblResponseBasisCoeffConstraint[l][i] = _be.shapedBasisFunctionDerivative (left(),</span>
+<span class="fc bfc" id="L505" title="All 2 branches covered.">					if (l &lt; iNumPredictorOrdinate)</span>
+<span class="fc" id="L506">						aadblResponseBasisCoeffConstraint[l][i] = _be.shapedBasisFunctionResponse</span>
+<span class="fc" id="L507">							(adblPredictorOrdinate[l], i);</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint)</span>
+<span class="fc" id="L509">						aadblResponseBasisCoeffConstraint[l][i] = adblCalibBasisConstraintWeight[i];</span>
+<span class="fc bfc" id="L510" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv)</span>
+<span class="fc" id="L511">						aadblResponseBasisCoeffConstraint[l][i] = _be.shapedBasisFunctionDerivative (left(),</span>
 							l - iNumPredictorOrdinate - iNumConstraint + 1, i);
-<span class="fc bfc" id="L512" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv + iNumRightDeriv)</span>
-<span class="fc" id="L513">						aadblResponseBasisCoeffConstraint[l][i] = _be.shapedBasisFunctionDerivative</span>
-<span class="fc" id="L514">							(right(), l - iNumPredictorOrdinate - iNumConstraint - iNumLeftDeriv + 1, i);</span>
+<span class="fc bfc" id="L513" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv + iNumRightDeriv)</span>
+<span class="fc" id="L514">						aadblResponseBasisCoeffConstraint[l][i] = _be.shapedBasisFunctionDerivative</span>
+<span class="fc" id="L515">							(right(), l - iNumPredictorOrdinate - iNumConstraint - iNumLeftDeriv + 1, i);</span>
 					else
-<span class="fc" id="L516">						aadblResponseBasisCoeffConstraint[l][i] = bffp.basisPairConstraintCoefficient (i, l);</span>
+<span class="fc" id="L517">						aadblResponseBasisCoeffConstraint[l][i] = bffp.basisPairConstraintCoefficient (i, l);</span>
 				}
 			}
-<span class="nc" id="L519">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L520">			e.printStackTrace();</span>
+<span class="nc" id="L520">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L521">			e.printStackTrace();</span>
 
-<span class="nc" id="L522">			return false;</span>
-<span class="fc" id="L523">		}</span>
+<span class="nc" id="L523">			return false;</span>
+<span class="fc" id="L524">		}</span>
 
-<span class="fc" id="L525">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
+<span class="fc" id="L526">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
 			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
-<span class="fc" id="L527">				(aadblResponseBasisCoeffConstraint, adblPredictorResponseConstraintValue);</span>
+<span class="fc" id="L528">				(aadblResponseBasisCoeffConstraint, adblPredictorResponseConstraintValue);</span>
 
-<span class="fc bfc" id="L529" title="All 2 branches covered.">		if (null == lo) return false;</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">		if (null == lo) return false;</span>
 
-<span class="fc" id="L531">		double[] adblCalibResponseBasisCoeff = lo.getTransformedRHS();</span>
+<span class="fc" id="L532">		double[] adblCalibResponseBasisCoeff = lo.getTransformedRHS();</span>
 
-<span class="pc bpc" id="L533" title="2 of 4 branches missed.">		if (null == adblCalibResponseBasisCoeff || adblCalibResponseBasisCoeff.length !=</span>
+<span class="pc bpc" id="L534" title="2 of 4 branches missed.">		if (null == adblCalibResponseBasisCoeff || adblCalibResponseBasisCoeff.length !=</span>
 			iNumResponseBasisCoeff || null == (_aadblDResponseBasisCoeffDConstraint =
-<span class="pc bpc" id="L535" title="3 of 6 branches missed.">				lo.getTransformedMatrix()) || _aadblDResponseBasisCoeffDConstraint.length !=</span>
+<span class="pc bpc" id="L536" title="3 of 6 branches missed.">				lo.getTransformedMatrix()) || _aadblDResponseBasisCoeffDConstraint.length !=</span>
 					iNumResponseBasisCoeff || _aadblDResponseBasisCoeffDConstraint[0].length !=
 						iNumResponseBasisCoeff)
-<span class="nc" id="L538">			return false;</span>
+<span class="nc" id="L539">			return false;</span>
 
-<span class="fc bfc" id="L540" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="pc bpc" id="L541" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblResponseBasisCoeff[i] =</span>
+<span class="fc bfc" id="L541" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="pc bpc" id="L542" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblResponseBasisCoeff[i] =</span>
 				adblCalibResponseBasisCoeff[i]))
-<span class="nc" id="L543">				return false;</span>
+<span class="nc" id="L544">				return false;</span>
 		}
 
-<span class="fc" id="L546">		return true;</span>
+<span class="fc" id="L547">		return true;</span>
 	}
 
 	/**
@@ -559,125 +560,125 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentStateCalibrationInputs ssciManifestSensitivity,
 		final org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState)
 	{
-<span class="pc bpc" id="L562" title="1 of 2 branches missed.">		if (null == ssciManifestSensitivity) return null;</span>
+<span class="pc bpc" id="L563" title="1 of 2 branches missed.">		if (null == ssciManifestSensitivity) return null;</span>
 
-<span class="fc" id="L564">		double[] adblPredictorOrdinate = ssciManifestSensitivity.predictorOrdinates();</span>
+<span class="fc" id="L565">		double[] adblPredictorOrdinate = ssciManifestSensitivity.predictorOrdinates();</span>
 
-<span class="fc" id="L566">		double[] adblResponseValueManifestSensitivity = ssciManifestSensitivity.responseValues();</span>
+<span class="fc" id="L567">		double[] adblResponseValueManifestSensitivity = ssciManifestSensitivity.responseValues();</span>
 
-<span class="fc" id="L568">		double[] adblLeftEdgeDerivManifestSensitivity = ssciManifestSensitivity.leftEdgeDeriv();</span>
+<span class="fc" id="L569">		double[] adblLeftEdgeDerivManifestSensitivity = ssciManifestSensitivity.leftEdgeDeriv();</span>
 
-<span class="fc" id="L570">		double[] adblRightEdgeDerivManifestSensitivity = ssciManifestSensitivity.rightEdgeDeriv();</span>
+<span class="fc" id="L571">		double[] adblRightEdgeDerivManifestSensitivity = ssciManifestSensitivity.rightEdgeDeriv();</span>
 
-<span class="fc" id="L572">		org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity =</span>
-<span class="fc" id="L573">			ssciManifestSensitivity.bestFitResponse();</span>
+<span class="fc" id="L573">		org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity =</span>
+<span class="fc" id="L574">			ssciManifestSensitivity.bestFitResponse();</span>
 
-<span class="fc" id="L575">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity =</span>
-<span class="fc" id="L576">			ssciManifestSensitivity.flexureConstraint();</span>
+<span class="fc" id="L576">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity =</span>
+<span class="fc" id="L577">			ssciManifestSensitivity.flexureConstraint();</span>
 
-<span class="fc" id="L578">		int iNumConstraint = 0;</span>
-<span class="fc" id="L579">		int iNumResponseBasisCoeff = _adblResponseBasisCoeff.length;</span>
-<span class="fc bfc" id="L580" title="All 2 branches covered.">		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;</span>
-<span class="fc" id="L581">		double[] adblPredictorResponseManifestSensitivityConstraint = new double[iNumResponseBasisCoeff];</span>
-<span class="fc bfc" id="L582" title="All 2 branches covered.">		int iNumLeftDerivManifestSensitivity = null == adblLeftEdgeDerivManifestSensitivity ? 0 :</span>
+<span class="fc" id="L579">		int iNumConstraint = 0;</span>
+<span class="fc" id="L580">		int iNumResponseBasisCoeff = _adblResponseBasisCoeff.length;</span>
+<span class="fc bfc" id="L581" title="All 2 branches covered.">		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;</span>
+<span class="fc" id="L582">		double[] adblPredictorResponseManifestSensitivityConstraint = new double[iNumResponseBasisCoeff];</span>
+<span class="fc bfc" id="L583" title="All 2 branches covered.">		int iNumLeftDerivManifestSensitivity = null == adblLeftEdgeDerivManifestSensitivity ? 0 :</span>
 			adblLeftEdgeDerivManifestSensitivity.length;
-<span class="pc bpc" id="L584" title="1 of 2 branches missed.">		int iNumRightDerivManifestSensitivity = null == adblRightEdgeDerivManifestSensitivity ? 0 :</span>
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">		int iNumRightDerivManifestSensitivity = null == adblRightEdgeDerivManifestSensitivity ? 0 :</span>
 			adblRightEdgeDerivManifestSensitivity.length;
-<span class="fc" id="L586">		double[][] aadblResponseCoeffConstraintManifestSensitivity = new</span>
+<span class="fc" id="L587">		double[][] aadblResponseCoeffConstraintManifestSensitivity = new</span>
 			double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
 
-<span class="fc bfc" id="L589" title="All 2 branches covered.">		if (null != aSBFCState) {</span>
-<span class="fc" id="L590">			int iNumPotentialConstraint = aSBFCState.length;</span>
+<span class="fc bfc" id="L590" title="All 2 branches covered.">		if (null != aSBFCState) {</span>
+<span class="fc" id="L591">			int iNumPotentialConstraint = aSBFCState.length;</span>
 
-<span class="fc bfc" id="L592" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumPotentialConstraint; ++i) {</span>
-<span class="pc bpc" id="L593" title="1 of 2 branches missed.">				if (null != aSBFCState[i]) ++iNumConstraint;</span>
+<span class="fc bfc" id="L593" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumPotentialConstraint; ++i) {</span>
+<span class="pc bpc" id="L594" title="1 of 2 branches missed.">				if (null != aSBFCState[i]) ++iNumConstraint;</span>
 			}
 		}
 
-<span class="pc bpc" id="L597" title="1 of 2 branches missed.">		if (iNumResponseBasisCoeff &lt; iNumPredictorOrdinate + iNumLeftDerivManifestSensitivity +</span>
+<span class="pc bpc" id="L598" title="1 of 2 branches missed.">		if (iNumResponseBasisCoeff &lt; iNumPredictorOrdinate + iNumLeftDerivManifestSensitivity +</span>
 			iNumRightDerivManifestSensitivity + iNumConstraint)
-<span class="nc" id="L599">			return null;</span>
+<span class="nc" id="L600">			return null;</span>
 
 		try {
-<span class="pc bpc" id="L602" title="1 of 2 branches missed.">			org.drip.spline.segment.BestFitFlexurePenalizer bffpManifestSensitivity = new</span>
+<span class="pc bpc" id="L603" title="1 of 2 branches missed.">			org.drip.spline.segment.BestFitFlexurePenalizer bffpManifestSensitivity = new</span>
 				org.drip.spline.segment.BestFitFlexurePenalizer (this, null == _sidc ? null :
-<span class="pc bpc" id="L604" title="1 of 2 branches missed.">					_sidc.curvaturePenaltyControl(), null == _sidc ? null : _sidc.lengthPenaltyControl(),</span>
+<span class="pc bpc" id="L605" title="1 of 2 branches missed.">					_sidc.curvaturePenaltyControl(), null == _sidc ? null : _sidc.lengthPenaltyControl(),</span>
 						sbfrManifestSensitivity, _be);
 
-<span class="fc bfc" id="L607" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j) {</span>
-<span class="fc bfc" id="L608" title="All 2 branches covered.">				if (j &lt; iNumPredictorOrdinate)</span>
-<span class="fc" id="L609">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
+<span class="fc bfc" id="L608" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j) {</span>
+<span class="fc bfc" id="L609" title="All 2 branches covered.">				if (j &lt; iNumPredictorOrdinate)</span>
+<span class="fc" id="L610">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
 						adblResponseValueManifestSensitivity[j];
-<span class="fc bfc" id="L611" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint) {</span>
-<span class="fc" id="L612">					adblPredictorResponseManifestSensitivityConstraint[j] = 0.;</span>
-<span class="fc" id="L613">					org.drip.spline.params.SegmentBasisFlexureConstraint sbfcManifestSensitivity =</span>
+<span class="fc bfc" id="L612" title="All 2 branches covered.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint) {</span>
+<span class="fc" id="L613">					adblPredictorResponseManifestSensitivityConstraint[j] = 0.;</span>
+<span class="fc" id="L614">					org.drip.spline.params.SegmentBasisFlexureConstraint sbfcManifestSensitivity =</span>
 						aSBFCManifestSensitivity[j - iNumPredictorOrdinate];
 
-<span class="pc bpc" id="L616" title="1 of 2 branches missed.">					if (null != sbfcManifestSensitivity) {</span>
-<span class="fc" id="L617">						adblPredictorResponseManifestSensitivityConstraint[j] =</span>
-<span class="fc" id="L618">							sbfcManifestSensitivity.contraintValue();</span>
+<span class="pc bpc" id="L617" title="1 of 2 branches missed.">					if (null != sbfcManifestSensitivity) {</span>
+<span class="fc" id="L618">						adblPredictorResponseManifestSensitivityConstraint[j] =</span>
+<span class="fc" id="L619">							sbfcManifestSensitivity.contraintValue();</span>
 
-<span class="fc" id="L620">						double[] adblCalibConstraintWeightManifestSensitivity =</span>
-<span class="fc" id="L621">							sbfcManifestSensitivity.responseBasisCoeffWeights();</span>
+<span class="fc" id="L621">						double[] adblCalibConstraintWeightManifestSensitivity =</span>
+<span class="fc" id="L622">							sbfcManifestSensitivity.responseBasisCoeffWeights();</span>
 
-<span class="fc bfc" id="L623" title="All 2 branches covered.">						for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i)</span>
-<span class="fc" id="L624">							adblPredictorResponseManifestSensitivityConstraint[j] -=</span>
+<span class="fc bfc" id="L624" title="All 2 branches covered.">						for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i)</span>
+<span class="fc" id="L625">							adblPredictorResponseManifestSensitivityConstraint[j] -=</span>
 								_adblResponseBasisCoeff[i] * adblCalibConstraintWeightManifestSensitivity[i];
 					}
-<span class="fc bfc" id="L627" title="All 2 branches covered.">				} else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity)</span>
-<span class="fc" id="L628">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
+<span class="fc bfc" id="L628" title="All 2 branches covered.">				} else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity)</span>
+<span class="fc" id="L629">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
 						adblLeftEdgeDerivManifestSensitivity[j - iNumPredictorOrdinate - iNumConstraint];
-<span class="pc bpc" id="L630" title="1 of 2 branches missed.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity +</span>
+<span class="pc bpc" id="L631" title="1 of 2 branches missed.">				else if (j &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity +</span>
 					iNumRightDerivManifestSensitivity)
-<span class="nc" id="L632">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
+<span class="nc" id="L633">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
 						adblRightEdgeDerivManifestSensitivity[j - iNumPredictorOrdinate - iNumConstraint -
 						    iNumLeftDerivManifestSensitivity];
 				else
-<span class="fc" id="L636">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
-<span class="fc" id="L637">						bffpManifestSensitivity.basisPairPenaltyConstraint (j);</span>
+<span class="fc" id="L637">					adblPredictorResponseManifestSensitivityConstraint[j] =</span>
+<span class="fc" id="L638">						bffpManifestSensitivity.basisPairPenaltyConstraint (j);</span>
 			}
 
-<span class="fc bfc" id="L640" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="fc bfc" id="L641" title="All 2 branches covered.">				for (int l = 0; l &lt; iNumResponseBasisCoeff; ++l) {</span>
-<span class="fc" id="L642">					double[] adblCalibBasisConstraintWeight = null;</span>
+<span class="fc bfc" id="L641" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="fc bfc" id="L642" title="All 2 branches covered.">				for (int l = 0; l &lt; iNumResponseBasisCoeff; ++l) {</span>
+<span class="fc" id="L643">					double[] adblCalibBasisConstraintWeight = null;</span>
 
-<span class="fc bfc" id="L644" title="All 6 branches covered.">					if (0 != iNumConstraint &amp;&amp; (l &gt;= iNumPredictorOrdinate &amp;&amp; l &lt; iNumPredictorOrdinate +</span>
+<span class="fc bfc" id="L645" title="All 6 branches covered.">					if (0 != iNumConstraint &amp;&amp; (l &gt;= iNumPredictorOrdinate &amp;&amp; l &lt; iNumPredictorOrdinate +</span>
 						iNumConstraint))
-<span class="fc" id="L646">						adblCalibBasisConstraintWeight = aSBFCState[l -</span>
-<span class="fc" id="L647">						    iNumPredictorOrdinate].responseBasisCoeffWeights();</span>
+<span class="fc" id="L647">						adblCalibBasisConstraintWeight = aSBFCState[l -</span>
+<span class="fc" id="L648">						    iNumPredictorOrdinate].responseBasisCoeffWeights();</span>
 
-<span class="fc bfc" id="L649" title="All 2 branches covered.">					if (l &lt; iNumPredictorOrdinate)</span>
-<span class="fc" id="L650">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
-<span class="fc" id="L651">							_be.shapedBasisFunctionResponse (adblPredictorOrdinate[l], i);</span>
-<span class="fc bfc" id="L652" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint)</span>
-<span class="fc" id="L653">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
+<span class="fc bfc" id="L650" title="All 2 branches covered.">					if (l &lt; iNumPredictorOrdinate)</span>
+<span class="fc" id="L651">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
+<span class="fc" id="L652">							_be.shapedBasisFunctionResponse (adblPredictorOrdinate[l], i);</span>
+<span class="fc bfc" id="L653" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint)</span>
+<span class="fc" id="L654">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
 							adblCalibBasisConstraintWeight[i];
-<span class="fc bfc" id="L655" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity)</span>
-<span class="fc" id="L656">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
-<span class="fc" id="L657">							_be.shapedBasisFunctionDerivative (left(), l - iNumPredictorOrdinate -</span>
+<span class="fc bfc" id="L656" title="All 2 branches covered.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity)</span>
+<span class="fc" id="L657">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
+<span class="fc" id="L658">							_be.shapedBasisFunctionDerivative (left(), l - iNumPredictorOrdinate -</span>
 								iNumConstraint + 1, i);
-<span class="pc bpc" id="L659" title="1 of 2 branches missed.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity +</span>
+<span class="pc bpc" id="L660" title="1 of 2 branches missed.">					else if (l &lt; iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity +</span>
 						iNumRightDerivManifestSensitivity)
-<span class="nc" id="L661">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
-<span class="nc" id="L662">							_be.shapedBasisFunctionDerivative (right(), l - iNumPredictorOrdinate -</span>
+<span class="nc" id="L662">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
+<span class="nc" id="L663">							_be.shapedBasisFunctionDerivative (right(), l - iNumPredictorOrdinate -</span>
 								iNumConstraint - iNumLeftDerivManifestSensitivity + 1, i);
 					else
-<span class="fc" id="L665">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
-<span class="fc" id="L666">							bffpManifestSensitivity.basisPairConstraintCoefficient (i, l);</span>
+<span class="fc" id="L666">						aadblResponseCoeffConstraintManifestSensitivity[l][i] =</span>
+<span class="fc" id="L667">							bffpManifestSensitivity.basisPairConstraintCoefficient (i, l);</span>
 				}
 			}
-<span class="nc" id="L669">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L670">			e.printStackTrace();</span>
+<span class="nc" id="L670">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L671">			e.printStackTrace();</span>
 
-<span class="nc" id="L672">			return null;</span>
-<span class="fc" id="L673">		}</span>
+<span class="nc" id="L673">			return null;</span>
+<span class="fc" id="L674">		}</span>
 
-<span class="fc" id="L675">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
+<span class="fc" id="L676">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
 			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
-<span class="fc" id="L677">				(aadblResponseCoeffConstraintManifestSensitivity,</span>
+<span class="fc" id="L678">				(aadblResponseCoeffConstraintManifestSensitivity,</span>
 					adblPredictorResponseManifestSensitivityConstraint);
 
-<span class="pc bpc" id="L680" title="1 of 2 branches missed.">		return null == lo ? null : lo.getTransformedRHS();</span>
+<span class="pc bpc" id="L681" title="1 of 2 branches missed.">		return null == lo ? null : lo.getTransformedRHS();</span>
 	}
 
 	/**
@@ -696,17 +697,17 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentStateCalibrationInputs ssciManifestSensitivity,
 		final org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState)
 	{
-<span class="fc" id="L699">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L700">			(strManifestMeasure);</span>
+<span class="fc" id="L700">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L701">			(strManifestMeasure);</span>
 
-<span class="pc bpc" id="L702" title="1 of 2 branches missed.">		if (null == lsms) return false;</span>
+<span class="pc bpc" id="L703" title="1 of 2 branches missed.">		if (null == lsms) return false;</span>
 
-<span class="fc" id="L704">		double[] adblDBasisCoeffDLocalManifest = calibrateManifestJacobian (ssciManifestSensitivity,</span>
+<span class="fc" id="L705">		double[] adblDBasisCoeffDLocalManifest = calibrateManifestJacobian (ssciManifestSensitivity,</span>
 			aSBFCState);
 
-<span class="pc bpc" id="L707" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDLocalManifest || adblDBasisCoeffDLocalManifest.length !=</span>
+<span class="pc bpc" id="L708" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDLocalManifest || adblDBasisCoeffDLocalManifest.length !=</span>
 			_adblResponseBasisCoeff.length ? false : lsms.setDBasisCoeffDLocalManifest
-<span class="fc" id="L709">				(adblDBasisCoeffDLocalManifest);</span>
+<span class="fc" id="L710">				(adblDBasisCoeffDLocalManifest);</span>
 	}
 
 	/**
@@ -724,17 +725,17 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final java.lang.String strManifestMeasure,
 		final org.drip.spline.params.SegmentStateCalibrationInputs ssciPreceedingManifestSensitivity)
 	{
-<span class="fc" id="L727">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L728">			(strManifestMeasure);</span>
+<span class="fc" id="L728">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L729">			(strManifestMeasure);</span>
 
-<span class="pc bpc" id="L730" title="1 of 2 branches missed.">		if (null == lsms) return false;</span>
+<span class="pc bpc" id="L731" title="1 of 2 branches missed.">		if (null == lsms) return false;</span>
 
-<span class="fc" id="L732">		double[] adblDBasisCoeffDPreceedingManifest = calibrateManifestJacobian</span>
-<span class="fc" id="L733">			(ssciPreceedingManifestSensitivity, null);</span>
+<span class="fc" id="L733">		double[] adblDBasisCoeffDPreceedingManifest = calibrateManifestJacobian</span>
+<span class="fc" id="L734">			(ssciPreceedingManifestSensitivity, null);</span>
 
-<span class="pc bpc" id="L735" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDPreceedingManifest || adblDBasisCoeffDPreceedingManifest.length !=</span>
+<span class="pc bpc" id="L736" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDPreceedingManifest || adblDBasisCoeffDPreceedingManifest.length !=</span>
 			_adblResponseBasisCoeff.length ? false : lsms.setDBasisCoeffDPreceedingManifest
-<span class="fc" id="L737">				(adblDBasisCoeffDPreceedingManifest);</span>
+<span class="fc" id="L738">				(adblDBasisCoeffDPreceedingManifest);</span>
 	}
 
 	/**
@@ -753,52 +754,52 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentResponseValueConstraint srvcState,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-<span class="fc" id="L756">		int iCk = _sidc.Ck();</span>
+<span class="fc" id="L757">		int iCk = _sidc.Ck();</span>
 
-<span class="fc bfc" id="L758" title="All 2 branches covered.">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null == srvcState ? null : new</span>
+<span class="fc bfc" id="L759" title="All 2 branches covered.">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null == srvcState ? null : new</span>
 			org.drip.spline.params.SegmentBasisFlexureConstraint[] {srvcState.responseIndexedBasisConstraint
-<span class="fc" id="L760">				(_be, this)};</span>
+<span class="fc" id="L761">				(_be, this)};</span>
 
-<span class="fc" id="L762">		double[] adblManifestJacobianDerivAtLeftOrdinate = null;</span>
+<span class="fc" id="L763">		double[] adblManifestJacobianDerivAtLeftOrdinate = null;</span>
 
-<span class="fc bfc" id="L764" title="All 2 branches covered.">		if (0 != iCk) {</span>
-<span class="fc" id="L765">			adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
+<span class="fc bfc" id="L765" title="All 2 branches covered.">		if (0 != iCk) {</span>
+<span class="fc" id="L766">			adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
 
-<span class="fc bfc" id="L767" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
-<span class="fc" id="L768">				adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
+<span class="fc bfc" id="L768" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
+<span class="fc" id="L769">				adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
 		}
 
-<span class="pc bpc" id="L771" title="1 of 2 branches missed.">		if (null == csPreceeding) {</span>
+<span class="pc bpc" id="L772" title="1 of 2 branches missed.">		if (null == csPreceeding) {</span>
 			try {
-<span class="nc" id="L773">				double[] adblStateDerivAtLeftOrdinate = null;</span>
+<span class="nc" id="L774">				double[] adblStateDerivAtLeftOrdinate = null;</span>
 
-<span class="nc bnc" id="L775" title="All 2 branches missed.">				if (0 != iCk) {</span>
-<span class="nc" id="L776">					adblStateDerivAtLeftOrdinate = new double[iCk];</span>
+<span class="nc bnc" id="L776" title="All 2 branches missed.">				if (0 != iCk) {</span>
+<span class="nc" id="L777">					adblStateDerivAtLeftOrdinate = new double[iCk];</span>
 
-<span class="nc bnc" id="L778" title="All 2 branches missed.">					for (int i = 0; i &lt; iCk; ++i)</span>
-<span class="nc" id="L779">						adblStateDerivAtLeftOrdinate[i] = _be.responseValueDerivative</span>
-<span class="nc" id="L780">							(_adblResponseBasisCoeff, left(), i);</span>
+<span class="nc bnc" id="L779" title="All 2 branches missed.">					for (int i = 0; i &lt; iCk; ++i)</span>
+<span class="nc" id="L780">						adblStateDerivAtLeftOrdinate[i] = _be.responseValueDerivative</span>
+<span class="nc" id="L781">							(_adblResponseBasisCoeff, left(), i);</span>
 				}
 
-<span class="nc" id="L783">				return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
-<span class="nc" id="L784">					{left()}, new double[] {_be.responseValue (_adblResponseBasisCoeff, left())},</span>
+<span class="nc" id="L784">				return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
+<span class="nc" id="L785">					{left()}, new double[] {_be.responseValue (_adblResponseBasisCoeff, left())},</span>
 						adblStateDerivAtLeftOrdinate, null, aSBFCState, sbfrState));
-<span class="nc" id="L786">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L787">				e.printStackTrace();</span>
+<span class="nc" id="L787">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L788">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L790">			return false;</span>
+<span class="nc" id="L791">			return false;</span>
 		}
 
 		try {
-<span class="fc" id="L794">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
-<span class="fc bfc" id="L795" title="All 2 branches covered.">				{left()}, new double[] {csPreceeding.responseValue (left())}, 0 == iCk ? null :</span>
-<span class="fc" id="L796">					transmissionCk (left(), csPreceeding, iCk), null, aSBFCState, sbfrState));</span>
-<span class="nc" id="L797">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L798">			e.printStackTrace();</span>
+<span class="fc" id="L795">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
+<span class="fc bfc" id="L796" title="All 2 branches covered.">				{left()}, new double[] {csPreceeding.responseValue (left())}, 0 == iCk ? null :</span>
+<span class="fc" id="L797">					transmissionCk (left(), csPreceeding, iCk), null, aSBFCState, sbfrState));</span>
+<span class="nc" id="L798">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L799">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L801">		return false;</span>
+<span class="nc" id="L802">		return false;</span>
 	}
 
 	/**
@@ -817,19 +818,19 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightStateValue,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-<span class="pc bpc" id="L820" title="1 of 2 branches missed.">		if (null == csPreceeding) return false;</span>
+<span class="pc bpc" id="L821" title="1 of 2 branches missed.">		if (null == csPreceeding) return false;</span>
 
-<span class="fc" id="L822">		int iCk = _sidc.Ck();</span>
+<span class="fc" id="L823">		int iCk = _sidc.Ck();</span>
 
 		try {
-<span class="fc" id="L825">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
-<span class="fc bfc" id="L826" title="All 2 branches covered.">				{left(), right()}, new double[] {csPreceeding.responseValue (left()), dblRightStateValue}, 0</span>
-<span class="fc" id="L827">					!= iCk ? csPreceeding.transmissionCk (left(), this, iCk) : null, null, null, sbfrState));</span>
-<span class="nc" id="L828">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L829">			e.printStackTrace();</span>
+<span class="fc" id="L826">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
+<span class="fc bfc" id="L827" title="All 2 branches covered.">				{left(), right()}, new double[] {csPreceeding.responseValue (left()), dblRightStateValue}, 0</span>
+<span class="fc" id="L828">					!= iCk ? csPreceeding.transmissionCk (left(), this, iCk) : null, null, null, sbfrState));</span>
+<span class="nc" id="L829">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L830">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L832">		return false;</span>
+<span class="nc" id="L833">		return false;</span>
 	}
 
 	/**
@@ -849,21 +850,21 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightValue,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-<span class="pc bpc" id="L852" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftValue) ||</span>
-<span class="pc bpc" id="L853" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblLeftSlope) ||</span>
-<span class="pc bpc" id="L854" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRightValue))</span>
-<span class="nc" id="L855">			return false;</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftValue) ||</span>
+<span class="pc bpc" id="L854" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblLeftSlope) ||</span>
+<span class="pc bpc" id="L855" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRightValue))</span>
+<span class="nc" id="L856">			return false;</span>
 
 		try {
-<span class="fc" id="L858">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
-<span class="fc" id="L859">				{left(), right()}, new double[] {dblLeftValue, dblRightValue},</span>
-<span class="fc" id="L860">					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
+<span class="fc" id="L859">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
+<span class="fc" id="L860">				{left(), right()}, new double[] {dblLeftValue, dblRightValue},</span>
+<span class="fc" id="L861">					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
 						dblLeftSlope), null, null, sbfrState));
-<span class="nc" id="L862">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L863">			e.printStackTrace();</span>
+<span class="nc" id="L863">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L864">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L866">		return false;</span>
+<span class="nc" id="L867">		return false;</span>
 	}
 
 	/**
@@ -884,22 +885,22 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentResponseValueConstraint wrvcStateRight,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-<span class="fc" id="L887">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null;</span>
+<span class="fc" id="L888">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null;</span>
 
 		try {
-<span class="pc bpc" id="L890" title="1 of 4 branches missed.">			if (null != wrvcStateLeft || null != wrvcStateRight)</span>
-<span class="pc bpc" id="L891" title="1 of 2 branches missed.">				aSBFCState = new org.drip.spline.params.SegmentBasisFlexureConstraint[] {null ==</span>
-<span class="fc bfc" id="L892" title="All 2 branches covered.">					wrvcStateLeft ? null : wrvcStateLeft.responseIndexedBasisConstraint (_be, this), null ==</span>
-<span class="fc" id="L893">						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};</span>
+<span class="pc bpc" id="L891" title="1 of 4 branches missed.">			if (null != wrvcStateLeft || null != wrvcStateRight)</span>
+<span class="pc bpc" id="L892" title="1 of 2 branches missed.">				aSBFCState = new org.drip.spline.params.SegmentBasisFlexureConstraint[] {null ==</span>
+<span class="fc bfc" id="L893" title="All 2 branches covered.">					wrvcStateLeft ? null : wrvcStateLeft.responseIndexedBasisConstraint (_be, this), null ==</span>
+<span class="fc" id="L894">						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};</span>
 
-<span class="fc" id="L895">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,</span>
-<span class="fc" id="L896">				org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),</span>
+<span class="fc" id="L896">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,</span>
+<span class="fc" id="L897">				org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),</span>
 					null, aSBFCState, sbfrState));
-<span class="nc" id="L898">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L899">			e.printStackTrace();</span>
+<span class="nc" id="L899">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L900">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L902">		return false;</span>
+<span class="nc" id="L903">		return false;</span>
 	}
 
 	/**
@@ -923,54 +924,54 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentResponseValueConstraint srvcManifestSensitivity,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
-<span class="pc bpc" id="L926" title="3 of 4 branches missed.">		if (null == srvcState &amp;&amp; null != srvcManifestSensitivity) return false;</span>
+<span class="pc bpc" id="L927" title="3 of 4 branches missed.">		if (null == srvcState &amp;&amp; null != srvcManifestSensitivity) return false;</span>
 
-<span class="pc bpc" id="L928" title="1 of 2 branches missed.">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null == srvcState ? null : new</span>
+<span class="pc bpc" id="L929" title="1 of 2 branches missed.">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null == srvcState ? null : new</span>
 			org.drip.spline.params.SegmentBasisFlexureConstraint[] {srvcState.responseIndexedBasisConstraint
-<span class="fc" id="L930">				(_be, this)};</span>
+<span class="fc" id="L931">				(_be, this)};</span>
 
-<span class="pc bpc" id="L932" title="1 of 2 branches missed.">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity = null ==</span>
+<span class="pc bpc" id="L933" title="1 of 2 branches missed.">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity = null ==</span>
 			srvcManifestSensitivity ? null : new org.drip.spline.params.SegmentBasisFlexureConstraint[]
-<span class="fc" id="L934">				{srvcManifestSensitivity.responseIndexedBasisConstraint (_be, this)};</span>
+<span class="fc" id="L935">				{srvcManifestSensitivity.responseIndexedBasisConstraint (_be, this)};</span>
 
-<span class="fc" id="L936">		double[] adblManifestJacobianDerivAtLeftOrdinate = null;</span>
+<span class="fc" id="L937">		double[] adblManifestJacobianDerivAtLeftOrdinate = null;</span>
 
-<span class="fc" id="L938">		int iCk = _sidc.Ck();</span>
+<span class="fc" id="L939">		int iCk = _sidc.Ck();</span>
 
-<span class="fc bfc" id="L940" title="All 2 branches covered.">		if (0 != iCk) {</span>
-<span class="fc" id="L941">			adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
+<span class="fc bfc" id="L941" title="All 2 branches covered.">		if (0 != iCk) {</span>
+<span class="fc" id="L942">			adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
 
-<span class="fc bfc" id="L943" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
-<span class="fc" id="L944">				adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
+<span class="fc bfc" id="L944" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
+<span class="fc" id="L945">				adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
 		}
 
-<span class="pc bpc" id="L947" title="1 of 2 branches missed.">		if (null == csPreceeding) return false;</span>
+<span class="pc bpc" id="L948" title="1 of 2 branches missed.">		if (null == csPreceeding) return false;</span>
 
 		try {
-<span class="pc bpc" id="L950" title="1 of 2 branches missed.">			if (null == aSBFCManifestSensitivity) return true;</span>
+<span class="pc bpc" id="L951" title="1 of 2 branches missed.">			if (null == aSBFCManifestSensitivity) return true;</span>
 
-<span class="pc bpc" id="L952" title="1 of 2 branches missed.">			if (!calibrateLocalManifestJacobian (strManifestMeasure, new</span>
-<span class="fc" id="L953">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left()}, new double[]</span>
+<span class="pc bpc" id="L953" title="1 of 2 branches missed.">			if (!calibrateLocalManifestJacobian (strManifestMeasure, new</span>
+<span class="fc" id="L954">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left()}, new double[]</span>
 					{0.}, adblManifestJacobianDerivAtLeftOrdinate, null, aSBFCManifestSensitivity,
 						sbfrManifestSensitivity), aSBFCState))
-<span class="nc" id="L956">				return false;</span>
+<span class="nc" id="L957">				return false;</span>
 
-<span class="fc" id="L958">			org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L959">				(strManifestMeasure);</span>
+<span class="fc" id="L959">			org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L960">				(strManifestMeasure);</span>
 
-<span class="pc bpc" id="L961" title="1 of 2 branches missed.">			if (null == lsms) return true;</span>
+<span class="pc bpc" id="L962" title="1 of 2 branches missed.">			if (null == lsms) return true;</span>
 
-<span class="pc bpc" id="L963" title="1 of 2 branches missed.">			return lsms.getPMSC().impactFade() ? calibratePreceedingManifestJacobian (strManifestMeasure, new</span>
-<span class="fc" id="L964">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
-<span class="fc" id="L965">					double[] {csPreceeding.calcDResponseDManifest (strManifestMeasure, left(), 1), 0.}, null,</span>
-<span class="fc" id="L966">						CkDBasisCoeffDPreceedingManifestMeasure (strManifestMeasure), null, null)) :</span>
-<span class="nc" id="L967">							lsms.setDResponseDPreceedingManifest (csPreceeding.calcDResponseDManifest</span>
-<span class="nc" id="L968">								(strManifestMeasure, left(), 1));</span>
-<span class="nc" id="L969">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L970">			e.printStackTrace();</span>
+<span class="pc bpc" id="L964" title="1 of 2 branches missed.">			return lsms.getPMSC().impactFade() ? calibratePreceedingManifestJacobian (strManifestMeasure, new</span>
+<span class="fc" id="L965">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
+<span class="fc" id="L966">					double[] {csPreceeding.calcDResponseDManifest (strManifestMeasure, left(), 1), 0.}, null,</span>
+<span class="fc" id="L967">						CkDBasisCoeffDPreceedingManifestMeasure (strManifestMeasure), null, null)) :</span>
+<span class="nc" id="L968">							lsms.setDResponseDPreceedingManifest (csPreceeding.calcDResponseDManifest</span>
+<span class="nc" id="L969">								(strManifestMeasure, left(), 1));</span>
+<span class="nc" id="L970">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L971">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L973">		return false;</span>
+<span class="nc" id="L974">		return false;</span>
 	}
 
 	/**
@@ -993,45 +994,45 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightStateManifestSensitivity,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
-<span class="pc bpc" id="L996" title="1 of 2 branches missed.">		if (null == csPreceeding) return false;</span>
+<span class="pc bpc" id="L997" title="1 of 2 branches missed.">		if (null == csPreceeding) return false;</span>
 
-<span class="fc" id="L998">		int iCk = _sidc.Ck();</span>
+<span class="fc" id="L999">		int iCk = _sidc.Ck();</span>
 
 		try {
-<span class="fc" id="L1001">			double[] adblManifestJacobianDerivAtLeftOrdinate = null;</span>
+<span class="fc" id="L1002">			double[] adblManifestJacobianDerivAtLeftOrdinate = null;</span>
 
-<span class="fc bfc" id="L1003" title="All 2 branches covered.">			if (0 != iCk) {</span>
-<span class="fc" id="L1004">				adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">			if (0 != iCk) {</span>
+<span class="fc" id="L1005">				adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];</span>
 
-<span class="fc bfc" id="L1006" title="All 2 branches covered.">				for (int i = 0; i &lt; iCk; ++i)</span>
-<span class="fc" id="L1007">					adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
+<span class="fc bfc" id="L1007" title="All 2 branches covered.">				for (int i = 0; i &lt; iCk; ++i)</span>
+<span class="fc" id="L1008">					adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
 			}
 
-<span class="pc bpc" id="L1010" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightStateManifestSensitivity)) return true;</span>
+<span class="pc bpc" id="L1011" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightStateManifestSensitivity)) return true;</span>
 
-<span class="nc bnc" id="L1012" title="All 2 branches missed.">			if (!calibrateLocalManifestJacobian (strManifestMeasure, new</span>
-<span class="nc bnc" id="L1013" title="All 2 branches missed.">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
+<span class="nc bnc" id="L1013" title="All 2 branches missed.">			if (!calibrateLocalManifestJacobian (strManifestMeasure, new</span>
+<span class="nc bnc" id="L1014" title="All 2 branches missed.">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
 					double[] {0., dblRightStateManifestSensitivity}, 0 != iCk ?
 						adblManifestJacobianDerivAtLeftOrdinate : null, null, null, sbfrManifestSensitivity),
 							null))
-<span class="nc" id="L1017">				return false;</span>
+<span class="nc" id="L1018">				return false;</span>
 
-<span class="nc" id="L1019">			org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="nc" id="L1020">				(strManifestMeasure);</span>
+<span class="nc" id="L1020">			org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="nc" id="L1021">				(strManifestMeasure);</span>
 
-<span class="nc bnc" id="L1022" title="All 2 branches missed.">			if (null == lsms) return true;</span>
+<span class="nc bnc" id="L1023" title="All 2 branches missed.">			if (null == lsms) return true;</span>
 
-<span class="nc bnc" id="L1024" title="All 2 branches missed.">			return lsms.getPMSC().impactFade() ? calibratePreceedingManifestJacobian (strManifestMeasure, new</span>
-<span class="nc" id="L1025">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
-<span class="nc" id="L1026">					double[] {csPreceeding.calcDResponseDManifest (strManifestMeasure, left(), 1), 0.}, null,</span>
-<span class="nc" id="L1027">						CkDBasisCoeffDPreceedingManifestMeasure (strManifestMeasure), null, null)) :</span>
-<span class="nc" id="L1028">							lsms.setDResponseDPreceedingManifest (csPreceeding.calcDResponseDManifest</span>
-<span class="nc" id="L1029">								(strManifestMeasure, left(), 1));</span>
-<span class="nc" id="L1030">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1031">			e.printStackTrace();</span>
+<span class="nc bnc" id="L1025" title="All 2 branches missed.">			return lsms.getPMSC().impactFade() ? calibratePreceedingManifestJacobian (strManifestMeasure, new</span>
+<span class="nc" id="L1026">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
+<span class="nc" id="L1027">					double[] {csPreceeding.calcDResponseDManifest (strManifestMeasure, left(), 1), 0.}, null,</span>
+<span class="nc" id="L1028">						CkDBasisCoeffDPreceedingManifestMeasure (strManifestMeasure), null, null)) :</span>
+<span class="nc" id="L1029">							lsms.setDResponseDPreceedingManifest (csPreceeding.calcDResponseDManifest</span>
+<span class="nc" id="L1030">								(strManifestMeasure, left(), 1));</span>
+<span class="nc" id="L1031">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1032">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1034">		return false;</span>
+<span class="nc" id="L1035">		return false;</span>
 	}
 
 	/**
@@ -1056,21 +1057,21 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
 		try {
-<span class="nc bnc" id="L1059" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblLeftManifestSensitivity) &amp;&amp;</span>
-<span class="nc bnc" id="L1060" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (dblLeftSlopeManifestSensitivity) &amp;&amp;</span>
-<span class="nc bnc" id="L1061" title="All 2 branches missed.">					org.drip.quant.common.NumberUtil.IsValid (dblRightManifestSensitivity) ?</span>
-<span class="nc" id="L1062">						calibrateLocalManifestJacobian (strManifestMeasure, new</span>
-<span class="nc" id="L1063">							org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(),</span>
-<span class="nc" id="L1064">								right()}, new double[] {dblLeftManifestSensitivity,</span>
+<span class="nc bnc" id="L1060" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblLeftManifestSensitivity) &amp;&amp;</span>
+<span class="nc bnc" id="L1061" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (dblLeftSlopeManifestSensitivity) &amp;&amp;</span>
+<span class="nc bnc" id="L1062" title="All 2 branches missed.">					org.drip.quant.common.NumberUtil.IsValid (dblRightManifestSensitivity) ?</span>
+<span class="nc" id="L1063">						calibrateLocalManifestJacobian (strManifestMeasure, new</span>
+<span class="nc" id="L1064">							org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(),</span>
+<span class="nc" id="L1065">								right()}, new double[] {dblLeftManifestSensitivity,</span>
 									dblRightManifestSensitivity},
 										org.drip.quant.common.CollectionUtil.DerivArrayFromSlope
-<span class="nc" id="L1067">											(numParameters() - 2, dblLeftSlopeManifestSensitivity), null,</span>
+<span class="nc" id="L1068">											(numParameters() - 2, dblLeftSlopeManifestSensitivity), null,</span>
 												null, sbfrManifestSensitivity), null) : true;
-<span class="nc" id="L1069">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1070">			e.printStackTrace();</span>
+<span class="nc" id="L1070">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1071">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1073">		return false;</span>
+<span class="nc" id="L1074">		return false;</span>
 	}
 
 	/**
@@ -1098,33 +1099,33 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentResponseValueConstraint wrvcStateRightManifestSensitivity,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
-<span class="fc" id="L1101">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null;</span>
-<span class="fc" id="L1102">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity = null;</span>
+<span class="fc" id="L1102">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null;</span>
+<span class="fc" id="L1103">		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity = null;</span>
 
 		try {
-<span class="pc bpc" id="L1105" title="3 of 4 branches missed.">			if (null != wrvcStateLeft || null != wrvcStateRight)</span>
-<span class="pc bpc" id="L1106" title="1 of 2 branches missed.">				aSBFCState = new org.drip.spline.params.SegmentBasisFlexureConstraint[] {null ==</span>
-<span class="pc bpc" id="L1107" title="1 of 2 branches missed.">					wrvcStateLeft ? null : wrvcStateLeft.responseIndexedBasisConstraint (_be, this), null ==</span>
-<span class="fc" id="L1108">						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};</span>
+<span class="pc bpc" id="L1106" title="3 of 4 branches missed.">			if (null != wrvcStateLeft || null != wrvcStateRight)</span>
+<span class="pc bpc" id="L1107" title="1 of 2 branches missed.">				aSBFCState = new org.drip.spline.params.SegmentBasisFlexureConstraint[] {null ==</span>
+<span class="pc bpc" id="L1108" title="1 of 2 branches missed.">					wrvcStateLeft ? null : wrvcStateLeft.responseIndexedBasisConstraint (_be, this), null ==</span>
+<span class="fc" id="L1109">						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};</span>
 
-<span class="pc bpc" id="L1110" title="3 of 4 branches missed.">			if (null != wrvcStateLeftManifestSensitivity || null != wrvcStateRightManifestSensitivity)</span>
-<span class="pc bpc" id="L1111" title="1 of 2 branches missed.">				aSBFCManifestSensitivity = new org.drip.spline.params.SegmentBasisFlexureConstraint[] {null</span>
+<span class="pc bpc" id="L1111" title="3 of 4 branches missed.">			if (null != wrvcStateLeftManifestSensitivity || null != wrvcStateRightManifestSensitivity)</span>
+<span class="pc bpc" id="L1112" title="1 of 2 branches missed.">				aSBFCManifestSensitivity = new org.drip.spline.params.SegmentBasisFlexureConstraint[] {null</span>
 					== wrvcStateLeftManifestSensitivity ? null :
-<span class="pc bpc" id="L1113" title="1 of 2 branches missed.">						wrvcStateLeftManifestSensitivity.responseIndexedBasisConstraint (_be, this), null ==</span>
+<span class="pc bpc" id="L1114" title="1 of 2 branches missed.">						wrvcStateLeftManifestSensitivity.responseIndexedBasisConstraint (_be, this), null ==</span>
 							wrvcStateRightManifestSensitivity ? null :
-<span class="fc" id="L1115">								wrvcStateRightManifestSensitivity.responseIndexedBasisConstraint (_be,</span>
+<span class="fc" id="L1116">								wrvcStateRightManifestSensitivity.responseIndexedBasisConstraint (_be,</span>
 									this)};
 
-<span class="pc bpc" id="L1118" title="1 of 2 branches missed.">			return null == aSBFCManifestSensitivity ? true : calibrateLocalManifestJacobian</span>
-<span class="fc" id="L1119">				(strManifestMeasure, new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,</span>
-<span class="fc" id="L1120">					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
+<span class="pc bpc" id="L1119" title="1 of 2 branches missed.">			return null == aSBFCManifestSensitivity ? true : calibrateLocalManifestJacobian</span>
+<span class="fc" id="L1120">				(strManifestMeasure, new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,</span>
+<span class="fc" id="L1121">					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
 						dblLeftSlopeManifestSensitivity), null, aSBFCManifestSensitivity,
 							sbfrManifestSensitivity), aSBFCState);
-<span class="nc" id="L1123">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1124">			e.printStackTrace();</span>
+<span class="nc" id="L1124">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1125">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1127">		return false;</span>
+<span class="nc" id="L1128">		return false;</span>
 	}
 
 	/**
@@ -1138,24 +1139,24 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	public double curvatureDPE()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L1141">		double dblDPE = 0.;</span>
+<span class="fc" id="L1142">		double dblDPE = 0.;</span>
 
-<span class="fc" id="L1143">		int iNumBasis = _be.numBasis();</span>
+<span class="fc" id="L1144">		int iNumBasis = _be.numBasis();</span>
 
-<span class="fc" id="L1145">		org.drip.spline.params.SegmentFlexurePenaltyControl sfpc = _sidc.curvaturePenaltyControl();</span>
+<span class="fc" id="L1146">		org.drip.spline.params.SegmentFlexurePenaltyControl sfpc = _sidc.curvaturePenaltyControl();</span>
 
-<span class="pc bpc" id="L1147" title="1 of 2 branches missed.">		if (null == sfpc) sfpc = new org.drip.spline.params.SegmentFlexurePenaltyControl (2, 1.);</span>
+<span class="pc bpc" id="L1148" title="1 of 2 branches missed.">		if (null == sfpc) sfpc = new org.drip.spline.params.SegmentFlexurePenaltyControl (2, 1.);</span>
 
-<span class="fc" id="L1149">		org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
+<span class="fc" id="L1150">		org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
 			org.drip.spline.segment.BestFitFlexurePenalizer (this, sfpc, null, null, _be);
 
-<span class="fc bfc" id="L1152" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
-<span class="fc bfc" id="L1153" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumBasis; ++j)</span>
-<span class="fc" id="L1154">				dblDPE += _adblResponseBasisCoeff[i] * _adblResponseBasisCoeff[j] *</span>
-<span class="fc" id="L1155">					bffp.basisPairCurvaturePenalty (i, j);</span>
+<span class="fc bfc" id="L1153" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="fc bfc" id="L1154" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumBasis; ++j)</span>
+<span class="fc" id="L1155">				dblDPE += _adblResponseBasisCoeff[i] * _adblResponseBasisCoeff[j] *</span>
+<span class="fc" id="L1156">					bffp.basisPairCurvaturePenalty (i, j);</span>
 		}
 
-<span class="fc" id="L1158">		return sfpc.amplitude() * dblDPE;</span>
+<span class="fc" id="L1159">		return sfpc.amplitude() * dblDPE;</span>
 	}
 
 	/**
@@ -1169,24 +1170,24 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	public double lengthDPE()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L1172">		double dblDPE = 0.;</span>
+<span class="fc" id="L1173">		double dblDPE = 0.;</span>
 
-<span class="fc" id="L1174">		int iNumBasis = _be.numBasis();</span>
+<span class="fc" id="L1175">		int iNumBasis = _be.numBasis();</span>
 
-<span class="fc" id="L1176">		org.drip.spline.params.SegmentFlexurePenaltyControl sfpcLength = _sidc.lengthPenaltyControl();</span>
+<span class="fc" id="L1177">		org.drip.spline.params.SegmentFlexurePenaltyControl sfpcLength = _sidc.lengthPenaltyControl();</span>
 
-<span class="pc bpc" id="L1178" title="1 of 2 branches missed.">		if (null == sfpcLength) sfpcLength = new org.drip.spline.params.SegmentFlexurePenaltyControl (1, 1.);</span>
+<span class="pc bpc" id="L1179" title="1 of 2 branches missed.">		if (null == sfpcLength) sfpcLength = new org.drip.spline.params.SegmentFlexurePenaltyControl (1, 1.);</span>
 
-<span class="fc" id="L1180">		org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
+<span class="fc" id="L1181">		org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
 			org.drip.spline.segment.BestFitFlexurePenalizer (this, null, sfpcLength, null, _be);
 
-<span class="fc bfc" id="L1183" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
-<span class="fc bfc" id="L1184" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumBasis; ++j)</span>
-<span class="fc" id="L1185">				dblDPE += _adblResponseBasisCoeff[i] * _adblResponseBasisCoeff[j] *</span>
-<span class="fc" id="L1186">					bffp.basisPairLengthPenalty (i, j);</span>
+<span class="fc bfc" id="L1184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="fc bfc" id="L1185" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumBasis; ++j)</span>
+<span class="fc" id="L1186">				dblDPE += _adblResponseBasisCoeff[i] * _adblResponseBasisCoeff[j] *</span>
+<span class="fc" id="L1187">					bffp.basisPairLengthPenalty (i, j);</span>
 		}
 
-<span class="fc" id="L1189">		return sfpcLength.amplitude() * dblDPE;</span>
+<span class="fc" id="L1190">		return sfpcLength.amplitude() * dblDPE;</span>
 	}
 
 	/**
@@ -1203,22 +1204,22 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentBestFitResponse sbfr)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L1206" title="All 2 branches covered.">		if (null == sbfr) return 0.;</span>
+<span class="fc bfc" id="L1207" title="All 2 branches covered.">		if (null == sbfr) return 0.;</span>
 
-<span class="fc" id="L1208">		double dblDPE = 0.;</span>
+<span class="fc" id="L1209">		double dblDPE = 0.;</span>
 
-<span class="fc" id="L1210">		int iNumBasis = _be.numBasis();</span>
+<span class="fc" id="L1211">		int iNumBasis = _be.numBasis();</span>
 
-<span class="fc" id="L1212">		org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
+<span class="fc" id="L1213">		org.drip.spline.segment.BestFitFlexurePenalizer bffp = new</span>
 			org.drip.spline.segment.BestFitFlexurePenalizer (this, null, null, sbfr, _be);
 
-<span class="fc bfc" id="L1215" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
-<span class="fc bfc" id="L1216" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumBasis; ++j)</span>
-<span class="fc" id="L1217">				dblDPE += _adblResponseBasisCoeff[i] * _adblResponseBasisCoeff[j] * bffp.basisBestFitPenalty</span>
-<span class="fc" id="L1218">					(i, j);</span>
+<span class="fc bfc" id="L1216" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumBasis; ++i) {</span>
+<span class="fc bfc" id="L1217" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumBasis; ++j)</span>
+<span class="fc" id="L1218">				dblDPE += _adblResponseBasisCoeff[i] * _adblResponseBasisCoeff[j] * bffp.basisBestFitPenalty</span>
+<span class="fc" id="L1219">					(i, j);</span>
 		}
 
-<span class="fc" id="L1221">		return dblDPE;</span>
+<span class="fc" id="L1222">		return dblDPE;</span>
 	}
 
 	/**
@@ -1235,7 +1236,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L1238">		return _be.responseValue (_adblResponseBasisCoeff, dblPredictorOrdinate);</span>
+<span class="fc" id="L1239">		return _be.responseValue (_adblResponseBasisCoeff, dblPredictorOrdinate);</span>
 	}
 
 	/**
@@ -1255,8 +1256,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L1258" title="All 2 branches covered.">		return 0 == iOrder ? responseValue (dblPredictorOrdinate) : _be.responseValueDerivative</span>
-<span class="fc" id="L1259">			(_adblResponseBasisCoeff, dblPredictorOrdinate, iOrder);</span>
+<span class="fc bfc" id="L1259" title="All 2 branches covered.">		return 0 == iOrder ? responseValue (dblPredictorOrdinate) : _be.responseValueDerivative</span>
+<span class="fc" id="L1260">			(_adblResponseBasisCoeff, dblPredictorOrdinate, iOrder);</span>
 	}
 
 	/**
@@ -1279,18 +1280,18 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L1282" title="1 of 2 branches missed.">		if (0 == iOrder)</span>
-<span class="nc" id="L1283">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L1283" title="1 of 2 branches missed.">		if (0 == iOrder)</span>
+<span class="nc" id="L1284">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::calcDResponseDManifest =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L1286">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L1287">			(strManifestMeasure);</span>
+<span class="fc" id="L1287">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L1288">			(strManifestMeasure);</span>
 
-<span class="pc bpc" id="L1289" title="1 of 2 branches missed.">		if (null == lsms)</span>
-<span class="nc" id="L1290">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L1290" title="1 of 2 branches missed.">		if (null == lsms)</span>
+<span class="nc" id="L1291">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::calcDResponseDManifest =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L1293">		return _be.responseValue (lsms.getDBasisCoeffDLocalManifest(), dblPredictorOrdinate);</span>
+<span class="fc" id="L1294">		return _be.responseValue (lsms.getDBasisCoeffDLocalManifest(), dblPredictorOrdinate);</span>
 	}
 
 	/**
@@ -1313,31 +1314,31 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L1316" title="1 of 2 branches missed.">		if (0 == iOrder)</span>
-<span class="nc" id="L1317">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L1317" title="1 of 2 branches missed.">		if (0 == iOrder)</span>
+<span class="nc" id="L1318">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::calcDResponseDPreceedingManifest =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L1320">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L1321">			(strManifestMeasure);</span>
+<span class="fc" id="L1321">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L1322">			(strManifestMeasure);</span>
 
-<span class="pc bpc" id="L1323" title="1 of 2 branches missed.">		if (null == lsms)</span>
-<span class="nc" id="L1324">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L1324" title="1 of 2 branches missed.">		if (null == lsms)</span>
+<span class="nc" id="L1325">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::calcDResponseDPreceedingManifest =&gt; Cannot locate state Manifest sensitivity&quot;);
 
-<span class="fc" id="L1327">		org.drip.spline.params.PreceedingManifestSensitivityControl pqsc = lsms.getPMSC();</span>
+<span class="fc" id="L1328">		org.drip.spline.params.PreceedingManifestSensitivityControl pqsc = lsms.getPMSC();</span>
 
-<span class="fc" id="L1329">		double dblDResponseDPreceedingManifest = lsms.getDResponseDPreceedingManifest();</span>
+<span class="fc" id="L1330">		double dblDResponseDPreceedingManifest = lsms.getDResponseDPreceedingManifest();</span>
 
-<span class="pc bpc" id="L1331" title="1 of 2 branches missed.">		if (!pqsc.impactFade())</span>
-<span class="nc bnc" id="L1332" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?</span>
+<span class="pc bpc" id="L1332" title="1 of 2 branches missed.">		if (!pqsc.impactFade())</span>
+<span class="nc bnc" id="L1333" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?</span>
 				dblDResponseDPreceedingManifest : 0.;
 
-<span class="fc" id="L1335">		org.drip.spline.segment.BasisEvaluator be = pqsc.basisEvaluator();</span>
+<span class="fc" id="L1336">		org.drip.spline.segment.BasisEvaluator be = pqsc.basisEvaluator();</span>
 
-<span class="fc" id="L1337">		double[] adblDBasisCoeffDPreceedingManifest = lsms.getDBasisCoeffDPreceedingManifest();</span>
+<span class="fc" id="L1338">		double[] adblDBasisCoeffDPreceedingManifest = lsms.getDBasisCoeffDPreceedingManifest();</span>
 
-<span class="pc bpc" id="L1339" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDPreceedingManifest ? 0. : (null == be ? _be : be).responseValue</span>
-<span class="fc" id="L1340">			(adblDBasisCoeffDPreceedingManifest, dblPredictorOrdinate);</span>
+<span class="pc bpc" id="L1340" title="2 of 4 branches missed.">		return null == adblDBasisCoeffDPreceedingManifest ? 0. : (null == be ? _be : be).responseValue</span>
+<span class="fc" id="L1341">			(adblDBasisCoeffDPreceedingManifest, dblPredictorOrdinate);</span>
 	}
 
 	/**
@@ -1354,14 +1355,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final java.lang.String strManifestMeasure)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L1357">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
-<span class="fc" id="L1358">			(strManifestMeasure);</span>
+<span class="fc" id="L1358">		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity</span>
+<span class="fc" id="L1359">			(strManifestMeasure);</span>
 
-<span class="fc bfc" id="L1360" title="All 2 branches covered.">		if (null == lsms)</span>
-<span class="fc" id="L1361">			throw new java.lang.Exception</span>
+<span class="fc bfc" id="L1361" title="All 2 branches covered.">		if (null == lsms)</span>
+<span class="fc" id="L1362">			throw new java.lang.Exception</span>
 				(&quot;LatentStateResponseModel::impactFade =&gt; Cannot locate state Manifest sensitivity&quot;);
 
-<span class="fc" id="L1364">		return lsms.getPMSC().impactFade();</span>
+<span class="fc" id="L1365">		return lsms.getPMSC().impactFade();</span>
 	}
 
 	/**
@@ -1372,37 +1373,37 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeInputs()
 	{
-<span class="fc bfc" id="L1375" title="All 2 branches covered.">		if (null != _wjDBasisCoeffDEdgeValue) return _wjDBasisCoeffDEdgeValue;</span>
+<span class="fc bfc" id="L1376" title="All 2 branches covered.">		if (null != _wjDBasisCoeffDEdgeValue) return _wjDBasisCoeffDEdgeValue;</span>
 
-<span class="fc" id="L1377">		int iNumResponseBasisCoeff = _be.numBasis();</span>
+<span class="fc" id="L1378">		int iNumResponseBasisCoeff = _be.numBasis();</span>
 
 		try {
-<span class="fc" id="L1380">			_wjDBasisCoeffDEdgeValue = new org.drip.quant.calculus.WengertJacobian (iNumResponseBasisCoeff,</span>
+<span class="fc" id="L1381">			_wjDBasisCoeffDEdgeValue = new org.drip.quant.calculus.WengertJacobian (iNumResponseBasisCoeff,</span>
 				iNumResponseBasisCoeff);
-<span class="nc" id="L1382">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1383">			e.printStackTrace();</span>
+<span class="nc" id="L1383">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1384">			e.printStackTrace();</span>
 
-<span class="nc" id="L1385">			return _wjDBasisCoeffDEdgeValue = null;</span>
-<span class="fc" id="L1386">		}</span>
+<span class="nc" id="L1386">			return _wjDBasisCoeffDEdgeValue = null;</span>
+<span class="fc" id="L1387">		}</span>
 
-<span class="fc bfc" id="L1388" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="pc bpc" id="L1389" title="1 of 2 branches missed.">			if (!_wjDBasisCoeffDEdgeValue.setWengert (i, _adblResponseBasisCoeff[i]))</span>
-<span class="nc" id="L1390">				return _wjDBasisCoeffDEdgeValue = null;</span>
+<span class="fc bfc" id="L1389" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="pc bpc" id="L1390" title="1 of 2 branches missed.">			if (!_wjDBasisCoeffDEdgeValue.setWengert (i, _adblResponseBasisCoeff[i]))</span>
+<span class="nc" id="L1391">				return _wjDBasisCoeffDEdgeValue = null;</span>
 		}
 
-<span class="fc bfc" id="L1393" title="All 2 branches covered.">		if (null == _aadblDResponseBasisCoeffDConstraint) return null;</span>
+<span class="fc bfc" id="L1394" title="All 2 branches covered.">		if (null == _aadblDResponseBasisCoeffDConstraint) return null;</span>
 
-<span class="fc" id="L1395">		int iSize = _aadblDResponseBasisCoeffDConstraint.length;</span>
+<span class="fc" id="L1396">		int iSize = _aadblDResponseBasisCoeffDConstraint.length;</span>
 
-<span class="fc bfc" id="L1397" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc bfc" id="L1398" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
-<span class="pc bpc" id="L1399" title="1 of 2 branches missed.">				if (!_wjDBasisCoeffDEdgeValue.accumulatePartialFirstDerivative (i, j,</span>
+<span class="fc bfc" id="L1398" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L1399" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="pc bpc" id="L1400" title="1 of 2 branches missed.">				if (!_wjDBasisCoeffDEdgeValue.accumulatePartialFirstDerivative (i, j,</span>
 					_aadblDResponseBasisCoeffDConstraint[i][j]))
-<span class="nc" id="L1401">					return null;</span>
+<span class="nc" id="L1402">					return null;</span>
 			}
 		}
 
-<span class="fc" id="L1405">		return _wjDBasisCoeffDEdgeValue;</span>
+<span class="fc" id="L1406">		return _wjDBasisCoeffDEdgeValue;</span>
 	}
 
 	/**
@@ -1419,44 +1420,44 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final int iOrder)
 	{
 		try {
-<span class="fc" id="L1422">			int iNumResponseBasisCoeff = _be.numBasis();</span>
+<span class="fc" id="L1423">			int iNumResponseBasisCoeff = _be.numBasis();</span>
 
-<span class="fc" id="L1424">			org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeParams = null;</span>
-<span class="fc" id="L1425">			double[][] aadblDBasisCoeffDEdgeParams = new</span>
+<span class="fc" id="L1425">			org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeParams = null;</span>
+<span class="fc" id="L1426">			double[][] aadblDBasisCoeffDEdgeParams = new</span>
 				double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
 
-<span class="fc" id="L1428">			double[] adblDResponseDBasisCoeff = DResponseDBasisCoeff (dblPredictorOrdinate, iOrder);</span>
+<span class="fc" id="L1429">			double[] adblDResponseDBasisCoeff = DResponseDBasisCoeff (dblPredictorOrdinate, iOrder);</span>
 
-<span class="pc bpc" id="L1430" title="2 of 4 branches missed.">			if (null == adblDResponseDBasisCoeff || iNumResponseBasisCoeff !=</span>
+<span class="pc bpc" id="L1431" title="2 of 4 branches missed.">			if (null == adblDResponseDBasisCoeff || iNumResponseBasisCoeff !=</span>
 				adblDResponseDBasisCoeff.length)
-<span class="nc" id="L1432">				return null;</span>
+<span class="nc" id="L1433">				return null;</span>
 
-<span class="fc bfc" id="L1434" title="All 2 branches covered.">			org.drip.quant.calculus.WengertJacobian wjDBasisCoeffDEdgeParams = (null ==</span>
-<span class="fc" id="L1435">				_wjDBasisCoeffDEdgeValue) ? jackDCoeffDEdgeInputs() : _wjDBasisCoeffDEdgeValue;</span>
+<span class="fc bfc" id="L1435" title="All 2 branches covered.">			org.drip.quant.calculus.WengertJacobian wjDBasisCoeffDEdgeParams = (null ==</span>
+<span class="fc" id="L1436">				_wjDBasisCoeffDEdgeValue) ? jackDCoeffDEdgeInputs() : _wjDBasisCoeffDEdgeValue;</span>
 
-<span class="fc bfc" id="L1437" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="fc bfc" id="L1438" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j)</span>
-<span class="fc" id="L1439">					aadblDBasisCoeffDEdgeParams[j][i] = wjDBasisCoeffDEdgeParams.firstDerivative (j, i);</span>
+<span class="fc bfc" id="L1438" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="fc bfc" id="L1439" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j)</span>
+<span class="fc" id="L1440">					aadblDBasisCoeffDEdgeParams[j][i] = wjDBasisCoeffDEdgeParams.firstDerivative (j, i);</span>
 			}
 
-<span class="fc" id="L1442">			if (!(wjDResponseDEdgeParams = new org.drip.quant.calculus.WengertJacobian (1,</span>
-<span class="pc bpc" id="L1443" title="1 of 2 branches missed.">				iNumResponseBasisCoeff)).setWengert (0, responseValue (dblPredictorOrdinate)))</span>
-<span class="nc" id="L1444">				return null;</span>
+<span class="fc" id="L1443">			if (!(wjDResponseDEdgeParams = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="pc bpc" id="L1444" title="1 of 2 branches missed.">				iNumResponseBasisCoeff)).setWengert (0, responseValue (dblPredictorOrdinate)))</span>
+<span class="nc" id="L1445">				return null;</span>
 
-<span class="fc bfc" id="L1446" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="fc bfc" id="L1447" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j) {</span>
-<span class="pc bpc" id="L1448" title="1 of 2 branches missed.">					if (!wjDResponseDEdgeParams.accumulatePartialFirstDerivative (0, i,</span>
+<span class="fc bfc" id="L1447" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="fc bfc" id="L1448" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumResponseBasisCoeff; ++j) {</span>
+<span class="pc bpc" id="L1449" title="1 of 2 branches missed.">					if (!wjDResponseDEdgeParams.accumulatePartialFirstDerivative (0, i,</span>
 						adblDResponseDBasisCoeff[j] * aadblDBasisCoeffDEdgeParams[j][i]))
-<span class="nc" id="L1450">						return null;</span>
+<span class="nc" id="L1451">						return null;</span>
 				}
 			}
 
-<span class="fc" id="L1454">			return wjDResponseDEdgeParams;</span>
-<span class="nc" id="L1455">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1456">			e.printStackTrace();</span>
+<span class="fc" id="L1455">			return wjDResponseDEdgeParams;</span>
+<span class="nc" id="L1456">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1457">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1459">		return null;</span>
+<span class="nc" id="L1460">		return null;</span>
 	}
 
 	/**
@@ -1473,29 +1474,29 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final int iOrder)
 	{
 		try {
-<span class="nc" id="L1476">			int iNumResponseBasisCoeff = _be.numBasis();</span>
+<span class="nc" id="L1477">			int iNumResponseBasisCoeff = _be.numBasis();</span>
 
-<span class="nc" id="L1478">			double[] adblBasisDResponseDBasisCoeff = DResponseDBasisCoeff (dblPredictorOrdinate, iOrder);</span>
+<span class="nc" id="L1479">			double[] adblBasisDResponseDBasisCoeff = DResponseDBasisCoeff (dblPredictorOrdinate, iOrder);</span>
 
-<span class="nc bnc" id="L1480" title="All 4 branches missed.">			if (null == adblBasisDResponseDBasisCoeff || iNumResponseBasisCoeff !=</span>
+<span class="nc bnc" id="L1481" title="All 4 branches missed.">			if (null == adblBasisDResponseDBasisCoeff || iNumResponseBasisCoeff !=</span>
 				adblBasisDResponseDBasisCoeff.length)
-<span class="nc" id="L1482">				return null;</span>
+<span class="nc" id="L1483">				return null;</span>
 
-<span class="nc" id="L1484">			org.drip.quant.calculus.WengertJacobian wjDResponseDBasisCoeff = new</span>
+<span class="nc" id="L1485">			org.drip.quant.calculus.WengertJacobian wjDResponseDBasisCoeff = new</span>
 				org.drip.quant.calculus.WengertJacobian (1, iNumResponseBasisCoeff);
 
-<span class="nc bnc" id="L1487" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="nc bnc" id="L1488" title="All 2 branches missed.">				if (!wjDResponseDBasisCoeff.accumulatePartialFirstDerivative (0, i,</span>
+<span class="nc bnc" id="L1488" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
+<span class="nc bnc" id="L1489" title="All 2 branches missed.">				if (!wjDResponseDBasisCoeff.accumulatePartialFirstDerivative (0, i,</span>
 					adblBasisDResponseDBasisCoeff[i]))
-<span class="nc" id="L1490">					return null;</span>
+<span class="nc" id="L1491">					return null;</span>
 			}
 
-<span class="nc" id="L1493">			return wjDResponseDBasisCoeff;</span>
-<span class="nc" id="L1494">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1495">			e.printStackTrace();</span>
+<span class="nc" id="L1494">			return wjDResponseDBasisCoeff;</span>
+<span class="nc" id="L1495">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1496">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1498">		return null;</span>
+<span class="nc" id="L1499">		return null;</span>
 	}
 
 	/**
@@ -1521,14 +1522,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentBestFitResponse sbfr)
 	{
 		try {
-<span class="pc bpc" id="L1524" title="1 of 2 branches missed.">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs</span>
+<span class="pc bpc" id="L1525" title="1 of 2 branches missed.">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs</span>
 				(adblPredictorOrdinate, adblResponseValue, adblLeftEdgeDeriv, adblRightEdgeDeriv, aSBFC,
-<span class="pc" id="L1526">					sbfr)) ? jackDCoeffDEdgeInputs() : null;</span>
-<span class="nc" id="L1527">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1528">			e.printStackTrace();</span>
+<span class="pc" id="L1527">					sbfr)) ? jackDCoeffDEdgeInputs() : null;</span>
+<span class="nc" id="L1528">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1529">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1531">		return null;</span>
+<span class="nc" id="L1532">		return null;</span>
 	}
 
 	/**
@@ -1549,7 +1550,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightValue,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-<span class="pc bpc" id="L1552" title="1 of 2 branches missed.">		return calibrate (dblLeftValue, dblLeftSlope, dblRightValue, sbfrState) ? jackDCoeffDEdgeInputs() :</span>
+<span class="pc bpc" id="L1553" title="1 of 2 branches missed.">		return calibrate (dblLeftValue, dblLeftSlope, dblRightValue, sbfrState) ? jackDCoeffDEdgeInputs() :</span>
 			null;
 	}
 
@@ -1577,9 +1578,9 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightStateManifestSensitivity,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
-<span class="pc bpc" id="L1580" title="1 of 2 branches missed.">		return !calibrate (csPreceeding, dblRightStateValue, sbfrState) || !manifestMeasureSensitivity</span>
-<span class="pc bpc" id="L1581" title="1 of 2 branches missed.">			(csPreceeding, strManifestMeasure, dblRightStateManifestSensitivity, sbfrManifestSensitivity) ?</span>
-<span class="fc" id="L1582">				null : jackDCoeffDEdgeInputs();</span>
+<span class="pc bpc" id="L1581" title="1 of 2 branches missed.">		return !calibrate (csPreceeding, dblRightStateValue, sbfrState) || !manifestMeasureSensitivity</span>
+<span class="pc bpc" id="L1582" title="1 of 2 branches missed.">			(csPreceeding, strManifestMeasure, dblRightStateManifestSensitivity, sbfrManifestSensitivity) ?</span>
+<span class="fc" id="L1583">				null : jackDCoeffDEdgeInputs();</span>
 	}
 
 	/**
@@ -1591,24 +1592,24 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public org.drip.spline.segment.Monotonocity monotoneType()
 	{
-<span class="fc bfc" id="L1594" title="All 2 branches covered.">		if (1 &gt;= _sidc.Ck()) {</span>
+<span class="fc bfc" id="L1595" title="All 2 branches covered.">		if (1 &gt;= _sidc.Ck()) {</span>
 			try {
-<span class="fc" id="L1596">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="fc" id="L1597">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
-<span class="nc" id="L1598">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1599">				e.printStackTrace();</span>
+<span class="nc" id="L1599">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1600">				e.printStackTrace();</span>
 
-<span class="nc" id="L1601">				return null;</span>
+<span class="nc" id="L1602">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L1605">		org.drip.function.definition.R1ToR1 ofDeriv = new</span>
-<span class="fc" id="L1606">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L1606">		org.drip.function.definition.R1ToR1 ofDeriv = new</span>
+<span class="fc" id="L1607">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L1611">				return _be.responseValueDerivative (_adblResponseBasisCoeff, dblX, 1);</span>
+<span class="fc" id="L1612">				return _be.responseValueDerivative (_adblResponseBasisCoeff, dblX, 1);</span>
 			}
 
 			@Override public org.drip.quant.calculus.Differential differential (
@@ -1617,16 +1618,16 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				final int iOrder)
 			{
 				try {
-<span class="nc" id="L1620">					double dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblX);</span>
+<span class="nc" id="L1621">					double dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblX);</span>
 
-<span class="nc" id="L1622">					return new org.drip.quant.calculus.Differential (dblVariateInfinitesimal,</span>
-<span class="nc" id="L1623">						_be.responseValueDerivative (_adblResponseBasisCoeff, dblX, iOrder) *</span>
+<span class="nc" id="L1623">					return new org.drip.quant.calculus.Differential (dblVariateInfinitesimal,</span>
+<span class="nc" id="L1624">						_be.responseValueDerivative (_adblResponseBasisCoeff, dblX, iOrder) *</span>
 							dblVariateInfinitesimal);
-<span class="nc" id="L1625">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1626">					e.printStackTrace();</span>
+<span class="nc" id="L1626">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1627">					e.printStackTrace();</span>
 				}
 
-<span class="nc" id="L1629">				return null;</span>
+<span class="nc" id="L1630">				return null;</span>
 			}
 
 			@Override public double integrate (
@@ -1634,53 +1635,53 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L1637">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L1638">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L1642">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
+<span class="fc" id="L1643">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
 				org.drip.function.r1tor1solver.FixedPointFinderBrent (0., ofDeriv, false).findRoot
-<span class="fc" id="L1644">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0., 1.));</span>
+<span class="fc" id="L1645">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0., 1.));</span>
 
-<span class="pc bpc" id="L1646" title="1 of 4 branches missed.">			if (null == fpop || !fpop.containsRoot())</span>
-<span class="fc" id="L1647">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="pc bpc" id="L1647" title="1 of 4 branches missed.">			if (null == fpop || !fpop.containsRoot())</span>
+<span class="fc" id="L1648">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
 
-<span class="fc" id="L1650">			double dblExtremum = fpop.getRoot();</span>
+<span class="fc" id="L1651">			double dblExtremum = fpop.getRoot();</span>
 
-<span class="pc bpc" id="L1652" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
+<span class="pc bpc" id="L1653" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
 				&gt;= 1.)
-<span class="nc" id="L1654">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc" id="L1655">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
 
-<span class="fc" id="L1657">			double dbl2ndDeriv = _be.responseValueDerivative (_adblResponseBasisCoeff, dblExtremum, 2);</span>
+<span class="fc" id="L1658">			double dbl2ndDeriv = _be.responseValueDerivative (_adblResponseBasisCoeff, dblExtremum, 2);</span>
 
-<span class="pc bpc" id="L1659" title="1 of 2 branches missed.">			if (0. &gt; dbl2ndDeriv)</span>
-<span class="nc" id="L1660">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="pc bpc" id="L1660" title="1 of 2 branches missed.">			if (0. &gt; dbl2ndDeriv)</span>
+<span class="nc" id="L1661">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MAXIMA);
 
-<span class="pc bpc" id="L1663" title="1 of 2 branches missed.">			if (0. &lt; dbl2ndDeriv)</span>
-<span class="fc" id="L1664">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="pc bpc" id="L1664" title="1 of 2 branches missed.">			if (0. &lt; dbl2ndDeriv)</span>
+<span class="fc" id="L1665">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MINIMA);
 
-<span class="nc bnc" id="L1667" title="All 2 branches missed.">			if (0. == dbl2ndDeriv)</span>
-<span class="nc" id="L1668">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc bnc" id="L1668" title="All 2 branches missed.">			if (0. == dbl2ndDeriv)</span>
+<span class="nc" id="L1669">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.INFLECTION);
 
-<span class="nc" id="L1671">			return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc" id="L1672">			return new org.drip.spline.segment.Monotonocity</span>
 				(org.drip.spline.segment.Monotonocity.NON_MONOTONIC);
-<span class="nc" id="L1673">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1674">			e.printStackTrace();</span>
+<span class="nc" id="L1674">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1675">			e.printStackTrace();</span>
 		}
 
 		try {
-<span class="nc" id="L1678">			return new org.drip.spline.segment.Monotonocity (org.drip.spline.segment.Monotonocity.MONOTONIC);</span>
-<span class="nc" id="L1679">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1680">			e.printStackTrace();</span>
+<span class="nc" id="L1679">			return new org.drip.spline.segment.Monotonocity (org.drip.spline.segment.Monotonocity.MONOTONIC);</span>
+<span class="nc" id="L1680">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1681">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1683">		return null;</span>
+<span class="nc" id="L1684">		return null;</span>
 	}
 
 	/**
@@ -1696,23 +1697,23 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblPredictorOrdinate)
 	{
 		try {
-<span class="fc" id="L1699">			LatentStateResponseModel csLeftSnipped = LatentStateResponseModel.Create (dblPredictorOrdinate,</span>
-<span class="fc" id="L1700">				right(), _be.replicate(), _sidc);</span>
+<span class="fc" id="L1700">			LatentStateResponseModel csLeftSnipped = LatentStateResponseModel.Create (dblPredictorOrdinate,</span>
+<span class="fc" id="L1701">				right(), _be.replicate(), _sidc);</span>
 
-<span class="fc" id="L1702">			int iCk = _sidc.Ck();</span>
+<span class="fc" id="L1703">			int iCk = _sidc.Ck();</span>
 
-<span class="pc bpc" id="L1704" title="1 of 2 branches missed.">			double[] adblCalibLeftEdgeDeriv = 0 != iCk ? csLeftSnipped.transmissionCk (dblPredictorOrdinate,</span>
+<span class="pc bpc" id="L1705" title="1 of 2 branches missed.">			double[] adblCalibLeftEdgeDeriv = 0 != iCk ? csLeftSnipped.transmissionCk (dblPredictorOrdinate,</span>
 				this, iCk) : null;
 
-<span class="pc bpc" id="L1707" title="1 of 2 branches missed.">			return csLeftSnipped.calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs</span>
-<span class="fc" id="L1708">				(new double[] {dblPredictorOrdinate, right()}, new double[] {responseValue</span>
-<span class="fc" id="L1709">					(dblPredictorOrdinate), responseValue (right())}, adblCalibLeftEdgeDeriv, null, null,</span>
+<span class="pc bpc" id="L1708" title="1 of 2 branches missed.">			return csLeftSnipped.calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs</span>
+<span class="fc" id="L1709">				(new double[] {dblPredictorOrdinate, right()}, new double[] {responseValue</span>
+<span class="fc" id="L1710">					(dblPredictorOrdinate), responseValue (right())}, adblCalibLeftEdgeDeriv, null, null,</span>
 						null)) ? csLeftSnipped : null;
-<span class="nc" id="L1711">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1712">			e.printStackTrace();</span>
+<span class="nc" id="L1712">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1713">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1715">		return null;</span>
+<span class="nc" id="L1716">		return null;</span>
 	}
 
 	/**
@@ -1728,20 +1729,20 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblPredictorOrdinate)
 	{
 		try {
-<span class="fc" id="L1731">			LatentStateResponseModel csRightSnipped = LatentStateResponseModel.Create (left(),</span>
-<span class="fc" id="L1732">				dblPredictorOrdinate, _be.replicate(), _sidc);</span>
+<span class="fc" id="L1732">			LatentStateResponseModel csRightSnipped = LatentStateResponseModel.Create (left(),</span>
+<span class="fc" id="L1733">				dblPredictorOrdinate, _be.replicate(), _sidc);</span>
 
-<span class="fc" id="L1734">			int iCk = _sidc.Ck();</span>
+<span class="fc" id="L1735">			int iCk = _sidc.Ck();</span>
 
-<span class="pc bpc" id="L1736" title="1 of 2 branches missed.">			return csRightSnipped.calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs</span>
-<span class="fc" id="L1737">				(new double[] {left(), dblPredictorOrdinate}, new double[] {responseValue (left()),</span>
-<span class="pc bpc" id="L1738" title="1 of 2 branches missed.">					responseValue (dblPredictorOrdinate)}, 0 != iCk ? csRightSnipped.transmissionCk (left(),</span>
+<span class="pc bpc" id="L1737" title="1 of 2 branches missed.">			return csRightSnipped.calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs</span>
+<span class="fc" id="L1738">				(new double[] {left(), dblPredictorOrdinate}, new double[] {responseValue (left()),</span>
+<span class="pc bpc" id="L1739" title="1 of 2 branches missed.">					responseValue (dblPredictorOrdinate)}, 0 != iCk ? csRightSnipped.transmissionCk (left(),</span>
 						this, iCk) : null, null, null, null)) ? csRightSnipped : null;
-<span class="nc" id="L1740">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1741">			e.printStackTrace();</span>
+<span class="nc" id="L1741">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1742">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1744">		return null;</span>
+<span class="nc" id="L1745">		return null;</span>
 	}
 
 	/**
@@ -1752,17 +1753,17 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 	public java.lang.String displayString()
 	{
-<span class="nc" id="L1755">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L1756">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc" id="L1757">		sb.append (&quot;\t\t\t[&quot; + left() + &quot; =&gt; &quot; + right() + &quot;\n&quot;);</span>
+<span class="nc" id="L1758">		sb.append (&quot;\t\t\t[&quot; + left() + &quot; =&gt; &quot; + right() + &quot;\n&quot;);</span>
 
-<span class="nc bnc" id="L1759" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblResponseBasisCoeff.length; ++i) {</span>
-<span class="nc bnc" id="L1760" title="All 2 branches missed.">			if (0 != i) sb.append (&quot;  |  &quot;);</span>
+<span class="nc bnc" id="L1760" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblResponseBasisCoeff.length; ++i) {</span>
+<span class="nc bnc" id="L1761" title="All 2 branches missed.">			if (0 != i) sb.append (&quot;  |  &quot;);</span>
 
-<span class="nc" id="L1762">			sb.append (_adblResponseBasisCoeff[i] + &quot;\n&quot;);</span>
+<span class="nc" id="L1763">			sb.append (_adblResponseBasisCoeff[i] + &quot;\n&quot;);</span>
 		}
 
-<span class="nc" id="L1765">		return sb.toString();</span>
+<span class="nc" id="L1766">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

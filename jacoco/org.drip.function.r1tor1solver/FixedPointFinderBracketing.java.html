@@ -16,12 +16,12 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -38,16 +38,17 @@ package org.drip.function.r1tor1solver;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,18 +93,18 @@ package org.drip.function.r1tor1solver;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FixedPointFinderBracketing extends org.drip.function.r1tor1solver.FixedPointFinder {
-<span class="fc" id="L103">	protected int _iIteratorPrimitive = -1;</span>
-<span class="fc" id="L104">	protected org.drip.function.r1tor1solver.IteratedBracket _ib = null;</span>
+<span class="fc" id="L104">	protected int _iIteratorPrimitive = -1;</span>
+<span class="fc" id="L105">	protected org.drip.function.r1tor1solver.IteratedBracket _ib = null;</span>
 
-<span class="fc" id="L106">	private org.drip.function.r1tor1solver.ExecutionInitializer _ei = null;</span>
+<span class="fc" id="L107">	private org.drip.function.r1tor1solver.ExecutionInitializer _ei = null;</span>
 
 	protected final double calcNextVariate (
 		final double dblCurrentVariate,
@@ -114,38 +115,38 @@ public class FixedPointFinderBracketing extends org.drip.function.r1tor1solver.F
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L117" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION == iIteratorPrimitive)</span>
-<span class="fc" id="L118">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblCurrentVariate,</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION == iIteratorPrimitive)</span>
+<span class="fc" id="L119">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblCurrentVariate,</span>
 				dblContraVariate);
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.FALSE_POSITION == iIteratorPrimitive)</span>
-<span class="fc" id="L122">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.FalsePosition (dblCurrentVariate,</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.FALSE_POSITION == iIteratorPrimitive)</span>
+<span class="fc" id="L123">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.FalsePosition (dblCurrentVariate,</span>
 				dblContraVariate, dblCurrentOF, dblContraPointOF);
 
-<span class="fc" id="L125">		double dblIntermediateVariate = org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection</span>
-<span class="fc" id="L126">			(dblCurrentVariate, dblContraVariate);</span>
+<span class="fc" id="L126">		double dblIntermediateVariate = org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection</span>
+<span class="fc" id="L127">			(dblCurrentVariate, dblContraVariate);</span>
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L129">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L130">			throw new java.lang.Exception</span>
 				(&quot;FixedPointFinderBracketing::calcNextVariate =&gt; Cannot increment rfop!&quot;);
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.QUADRATIC_INTERPOLATION == iIteratorPrimitive)</span>
-<span class="fc" id="L133">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.QuadraticInterpolation (dblCurrentVariate,</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.QUADRATIC_INTERPOLATION == iIteratorPrimitive)</span>
+<span class="fc" id="L134">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.QuadraticInterpolation (dblCurrentVariate,</span>
 				dblIntermediateVariate, dblContraVariate, dblCurrentOF, _of.evaluate
-<span class="fc" id="L135">					(dblIntermediateVariate), dblContraPointOF);</span>
+<span class="fc" id="L136">					(dblIntermediateVariate), dblContraPointOF);</span>
 
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.INVERSE_QUADRATIC_INTERPOLATION ==</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.INVERSE_QUADRATIC_INTERPOLATION ==</span>
 			iIteratorPrimitive)
-<span class="fc" id="L139">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.InverseQuadraticInterpolation</span>
-<span class="fc" id="L140">				(dblCurrentVariate, dblIntermediateVariate, dblContraVariate, dblCurrentOF, _of.evaluate</span>
-<span class="fc" id="L141">					(dblIntermediateVariate), dblContraPointOF);</span>
+<span class="fc" id="L140">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.InverseQuadraticInterpolation</span>
+<span class="fc" id="L141">				(dblCurrentVariate, dblIntermediateVariate, dblContraVariate, dblCurrentOF, _of.evaluate</span>
+<span class="fc" id="L142">					(dblIntermediateVariate), dblContraPointOF);</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.RIDDER == iIteratorPrimitive)</span>
-<span class="fc" id="L144">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.Ridder (dblCurrentVariate,</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.RIDDER == iIteratorPrimitive)</span>
+<span class="fc" id="L145">			return org.drip.function.r1tor1solver.VariateIteratorPrimitive.Ridder (dblCurrentVariate,</span>
 				dblIntermediateVariate, dblContraVariate, dblCurrentOF, _of.evaluate
-<span class="fc" id="L146">					(dblIntermediateVariate), dblContraPointOF);</span>
+<span class="fc" id="L147">					(dblIntermediateVariate), dblContraPointOF);</span>
 
-<span class="nc" id="L148">		throw new java.lang.Exception</span>
+<span class="nc" id="L149">		throw new java.lang.Exception</span>
 			(&quot;FixedPointFinderBracketing.calcNextVariate =&gt; Unknown Iterator Primitive&quot;);
 	}
 
@@ -157,7 +158,7 @@ public class FixedPointFinderBracketing extends org.drip.function.r1tor1solver.F
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L160">		return calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF, dblContraPointOF,</span>
+<span class="fc" id="L161">		return calcNextVariate (dblCurrentVariate, dblContraVariate, dblCurrentOF, dblContraPointOF,</span>
 			_iIteratorPrimitive, rfop);
 	}
 
@@ -165,68 +166,68 @@ public class FixedPointFinderBracketing extends org.drip.function.r1tor1solver.F
 		final org.drip.function.r1tor1solver.IteratedVariate iv,
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 	{
-<span class="pc bpc" id="L168" title="2 of 4 branches missed.">		if (null == iv || null == rfop) return false;</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">		if (null == iv || null == rfop) return false;</span>
 
-<span class="fc" id="L170">		double dblContraRoot = java.lang.Double.NaN;</span>
-<span class="fc" id="L171">		double dblContraRootOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L171">		double dblContraRoot = java.lang.Double.NaN;</span>
+<span class="fc" id="L172">		double dblContraRootOF = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L173">		double dblOF = iv.getOF();</span>
+<span class="fc" id="L174">		double dblOF = iv.getOF();</span>
 
-<span class="fc" id="L175">		double dblOFLeft = _ib.getOFLeft();</span>
+<span class="fc" id="L176">		double dblOFLeft = _ib.getOFLeft();</span>
 
-<span class="fc" id="L177">		double dblOFRight = _ib.getOFRight();</span>
+<span class="fc" id="L178">		double dblOFRight = _ib.getOFRight();</span>
 
-<span class="fc" id="L179">		double dblVariate = iv.getVariate();</span>
+<span class="fc" id="L180">		double dblVariate = iv.getVariate();</span>
 
-<span class="fc" id="L181">		double dblVariateLeft = _ib.getVariateLeft();</span>
+<span class="fc" id="L182">		double dblVariateLeft = _ib.getVariateLeft();</span>
 
-<span class="fc" id="L183">		double dblVariateRight = _ib.getVariateRight();</span>
+<span class="fc" id="L184">		double dblVariateRight = _ib.getVariateRight();</span>
 
-<span class="fc bfc" id="L185" title="All 2 branches covered.">		if (((dblOFLeft - _dblOFGoal) * (dblOF - _dblOFGoal)) &gt; 0.) {</span>
-<span class="pc bpc" id="L186" title="2 of 4 branches missed.">			if (!_ib.setOFLeft (dblOF) || !_ib.setVariateLeft (dblVariate)) return false;</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">		if (((dblOFLeft - _dblOFGoal) * (dblOF - _dblOFGoal)) &gt; 0.) {</span>
+<span class="pc bpc" id="L187" title="2 of 4 branches missed.">			if (!_ib.setOFLeft (dblOF) || !_ib.setVariateLeft (dblVariate)) return false;</span>
 
-<span class="fc" id="L188">			dblContraRootOF = dblOFRight;</span>
-<span class="fc" id="L189">			dblContraRoot = dblVariateRight;</span>
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		} else if (((dblOFRight - _dblOFGoal) * (dblOF - _dblOFGoal)) &gt; 0.) {</span>
-<span class="pc bpc" id="L191" title="2 of 4 branches missed.">			if (!_ib.setOFRight (dblOF) || !_ib.setVariateRight (dblVariate)) return false;</span>
+<span class="fc" id="L189">			dblContraRootOF = dblOFRight;</span>
+<span class="fc" id="L190">			dblContraRoot = dblVariateRight;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		} else if (((dblOFRight - _dblOFGoal) * (dblOF - _dblOFGoal)) &gt; 0.) {</span>
+<span class="pc bpc" id="L192" title="2 of 4 branches missed.">			if (!_ib.setOFRight (dblOF) || !_ib.setVariateRight (dblVariate)) return false;</span>
 
-<span class="fc" id="L193">			dblContraRootOF = dblOFLeft;</span>
-<span class="fc" id="L194">			dblContraRoot = dblVariateLeft;</span>
+<span class="fc" id="L194">			dblContraRootOF = dblOFLeft;</span>
+<span class="fc" id="L195">			dblContraRoot = dblVariateLeft;</span>
 		}
 
 		try {
-<span class="fc" id="L198">			dblVariate = iterateCompoundVariate (dblVariate, dblContraRoot, dblOF, dblContraRootOF, rfop);</span>
+<span class="fc" id="L199">			dblVariate = iterateCompoundVariate (dblVariate, dblContraRoot, dblOF, dblContraRootOF, rfop);</span>
 
-<span class="pc bpc" id="L200" title="2 of 6 branches missed.">			return iv.setVariate (dblVariate) &amp;&amp; iv.setOF (_of.evaluate (dblVariate)) &amp;&amp; rfop.incrOFCalcs();</span>
-<span class="nc" id="L201">		} catch (java.lang.Exception e) {</span>
-<span class="nc bnc" id="L202" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
+<span class="pc bpc" id="L201" title="2 of 6 branches missed.">			return iv.setVariate (dblVariate) &amp;&amp; iv.setOF (_of.evaluate (dblVariate)) &amp;&amp; rfop.incrOFCalcs();</span>
+<span class="nc" id="L202">		} catch (java.lang.Exception e) {</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L205">		return false;</span>
+<span class="nc" id="L206">		return false;</span>
 	}
 
 	@Override protected org.drip.function.r1tor1solver.ExecutionInitializationOutput initializeVariateZone (
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="fc" id="L211">		org.drip.function.r1tor1solver.BracketingOutput bop = null;</span>
+<span class="fc" id="L212">		org.drip.function.r1tor1solver.BracketingOutput bop = null;</span>
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">		if (null != ih &amp;&amp; org.drip.function.r1tor1solver.InitializationHeuristics.SEARCH_HARD_BRACKETS ==</span>
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">			ih.getDeterminant())</span>
-<span class="fc" id="L215">			bop = _ei.verifyHardSearchEdges (ih, _dblOFGoal);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		if (null != ih &amp;&amp; org.drip.function.r1tor1solver.InitializationHeuristics.SEARCH_HARD_BRACKETS ==</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">			ih.getDeterminant())</span>
+<span class="fc" id="L216">			bop = _ei.verifyHardSearchEdges (ih, _dblOFGoal);</span>
 		else
-<span class="fc" id="L217">			bop = _ei.initializeBracket (ih, _dblOFGoal);</span>
+<span class="fc" id="L218">			bop = _ei.initializeBracket (ih, _dblOFGoal);</span>
 
-<span class="fc bfc" id="L219" title="All 4 branches covered.">		if (null == bop || !bop.isDone()) return null;</span>
+<span class="fc bfc" id="L220" title="All 4 branches covered.">		if (null == bop || !bop.isDone()) return null;</span>
 
 		try {
-<span class="fc" id="L222">			_ib = new org.drip.function.r1tor1solver.IteratedBracket (bop);</span>
+<span class="fc" id="L223">			_ib = new org.drip.function.r1tor1solver.IteratedBracket (bop);</span>
 
-<span class="fc" id="L224">			return bop;</span>
-<span class="nc" id="L225">		} catch (java.lang.Exception e) {</span>
-<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
+<span class="fc" id="L225">			return bop;</span>
+<span class="nc" id="L226">		} catch (java.lang.Exception e) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			if (_bWhine) e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L229">		return null;</span>
+<span class="nc" id="L230">		return null;</span>
 	}
 
 	/**
@@ -249,9 +250,9 @@ public class FixedPointFinderBracketing extends org.drip.function.r1tor1solver.F
 		final boolean bWhine)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L252">		super (dblOFGoal, of, ec, bWhine);</span>
+<span class="fc" id="L253">		super (dblOFGoal, of, ec, bWhine);</span>
 
-<span class="pc bpc" id="L254" title="1 of 10 branches missed.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION != (_iIteratorPrimitive =</span>
+<span class="pc bpc" id="L255" title="1 of 10 branches missed.">		if (org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION != (_iIteratorPrimitive =</span>
 			iIteratorPrimitive) &amp;&amp; org.drip.function.r1tor1solver.VariateIteratorPrimitive.FALSE_POSITION !=
 				_iIteratorPrimitive &amp;&amp;
 					org.drip.function.r1tor1solver.VariateIteratorPrimitive.QUADRATIC_INTERPOLATION !=
@@ -260,9 +261,9 @@ public class FixedPointFinderBracketing extends org.drip.function.r1tor1solver.F
 								!= _iIteratorPrimitive &amp;&amp;
 									org.drip.function.r1tor1solver.VariateIteratorPrimitive.RIDDER !=
 										_iIteratorPrimitive)
-<span class="nc" id="L263">			throw new java.lang.Exception (&quot;FixedPointFinderBracketing constructor: Invalid inputs!&quot;);</span>
+<span class="nc" id="L264">			throw new java.lang.Exception (&quot;FixedPointFinderBracketing constructor: Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L265">		_ei = new org.drip.function.r1tor1solver.ExecutionInitializer (_of, null, true);</span>
-<span class="fc" id="L266">	}</span>
+<span class="fc" id="L266">		_ei = new org.drip.function.r1tor1solver.ExecutionInitializer (_of, null, true);</span>
+<span class="fc" id="L267">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

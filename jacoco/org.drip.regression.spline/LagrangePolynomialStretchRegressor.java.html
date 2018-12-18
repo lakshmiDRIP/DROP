@@ -89,9 +89,10 @@ package org.drip.regression.spline;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -99,63 +100,63 @@ package org.drip.regression.spline;
  */
 
 public class LagrangePolynomialStretchRegressor extends org.drip.regression.core.UnitRegressionExecutor {
-<span class="fc" id="L102">	private boolean _bLocallyMonotone = false;</span>
-<span class="fc" id="L103">	private double _dblValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L104">	private org.drip.spline.segment.Monotonocity _sm = null;</span>
-<span class="fc" id="L105">	private org.drip.quant.calculus.WengertJacobian _wj = null;</span>
-<span class="fc" id="L106">	private org.drip.spline.stretch.SingleSegmentSequence _sss = null;</span>
+<span class="fc" id="L103">	private boolean _bLocallyMonotone = false;</span>
+<span class="fc" id="L104">	private double _dblValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">	private org.drip.spline.segment.Monotonocity _sm = null;</span>
+<span class="fc" id="L106">	private org.drip.quant.calculus.WengertJacobian _wj = null;</span>
+<span class="fc" id="L107">	private org.drip.spline.stretch.SingleSegmentSequence _sss = null;</span>
 
 	public LagrangePolynomialStretchRegressor (
 		final java.lang.String strName,
 		final java.lang.String strScenarioName)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L113">		super (strName, strScenarioName);</span>
+<span class="fc" id="L114">		super (strName, strScenarioName);</span>
 
-<span class="fc" id="L115">		_sss = new org.drip.spline.stretch.SingleSegmentLagrangePolynomial (new double[] {1., 2., 3., 4.});</span>
-<span class="fc" id="L116">	}</span>
+<span class="fc" id="L116">		_sss = new org.drip.spline.stretch.SingleSegmentLagrangePolynomial (new double[] {1., 2., 3., 4.});</span>
+<span class="fc" id="L117">	}</span>
 
 	@Override public boolean preRegression()
 	{
 		try {
-<span class="fc" id="L121">			return _sss.setup (1., new double[] {1., 2., 3., 4.}, null,</span>
-<span class="fc" id="L122">				org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L122">			return _sss.setup (1., new double[] {1., 2., 3., 4.}, null,</span>
+<span class="fc" id="L123">				org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
-<span class="nc" id="L124">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L125">			e.printStackTrace();</span>
+<span class="nc" id="L125">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L126">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L128">		return false;</span>
+<span class="nc" id="L129">		return false;</span>
 	}
 
 	@Override public boolean execRegression()
 	{
 		try {
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_dblValue = _sss.responseValue (2.16)))</span>
-<span class="nc" id="L135">				return false;</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_dblValue = _sss.responseValue (2.16)))</span>
+<span class="nc" id="L136">				return false;</span>
 
-<span class="fc" id="L137">			_bLocallyMonotone = _sss.isLocallyMonotone();</span>
-<span class="nc" id="L138">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L139">			e.printStackTrace();</span>
+<span class="fc" id="L138">			_bLocallyMonotone = _sss.isLocallyMonotone();</span>
+<span class="nc" id="L139">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L140">			e.printStackTrace();</span>
 
-<span class="nc" id="L141">			return false;</span>
-<span class="fc" id="L142">		}</span>
+<span class="nc" id="L142">			return false;</span>
+<span class="fc" id="L143">		}</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (null == (_wj = _sss.jackDResponseDCalibrationInput (2.16, 1))) return false;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (null == (_wj = _sss.jackDResponseDCalibrationInput (2.16, 1))) return false;</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		return null != (_sm = _sss.monotoneType (2.16));</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		return null != (_sm = _sss.monotoneType (2.16));</span>
 	}
 
 	@Override public boolean postRegression (
 		final org.drip.regression.core.RegressionRunDetail rnvd)
 	{
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!rnvd.set (&quot;LPSR_Value&quot;, &quot;&quot; + _dblValue)) return false;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (!rnvd.set (&quot;LPSR_Value&quot;, &quot;&quot; + _dblValue)) return false;</span>
 
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (!rnvd.set (&quot;LPSR_WJ&quot;, _wj.displayString())) return false;</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (!rnvd.set (&quot;LPSR_WJ&quot;, _wj.displayString())) return false;</span>
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (!rnvd.set (&quot;LPSR_SM&quot;, _sm.toString())) return false;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (!rnvd.set (&quot;LPSR_SM&quot;, _sm.toString())) return false;</span>
 
-<span class="fc" id="L158">		return rnvd.set (&quot;LPSR_LocallyMonotone&quot;, &quot;&quot; + _bLocallyMonotone);</span>
+<span class="fc" id="L159">		return rnvd.set (&quot;LPSR_LocallyMonotone&quot;, &quot;&quot; + _bLocallyMonotone);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

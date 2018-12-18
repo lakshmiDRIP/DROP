@@ -88,40 +88,41 @@ import org.drip.state.volatility.VolatilityCurve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L100">public class ForwardVolatilityStateShifted {</span>
+<span class="nc" id="L101">public class ForwardVolatilityStateShifted {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L106">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L107">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L108">		String strFRATenor = &quot;3M&quot;;</span>
-<span class="fc" id="L109">		String strCurrency = &quot;GBP&quot;;</span>
-<span class="fc" id="L110">		double dblBump = 0.0000001;</span>
-<span class="fc" id="L111">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L109">		String strFRATenor = &quot;3M&quot;;</span>
+<span class="fc" id="L110">		String strCurrency = &quot;GBP&quot;;</span>
+<span class="fc" id="L111">		double dblBump = 0.0000001;</span>
+<span class="fc" id="L112">		boolean bIsBumpProportional = false;</span>
 
-<span class="fc" id="L113">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L114">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-<span class="fc" id="L119">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L120">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strFRATenor
 		);
 
-<span class="fc" id="L124">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L125">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			new String[] {
@@ -160,7 +161,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L163">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L164">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
@@ -170,7 +171,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L173">		double[] adblStrike = new double[] {</span>
+<span class="fc" id="L174">		double[] adblStrike = new double[] {</span>
 			0.0788, //  &quot;1Y&quot;,
 			0.0839, // 	&quot;2Y&quot;,
 			0.0864, //  &quot;3Y&quot;,
@@ -180,7 +181,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.0889  // &quot;10Y&quot;
 		};
 
-<span class="fc" id="L183">		double[] adblPrice = new double[] {</span>
+<span class="fc" id="L184">		double[] adblPrice = new double[] {</span>
 			0.0017, //  &quot;1Y&quot;,
 			0.0132, // 	&quot;2Y&quot;,
 			0.0234, //  &quot;3Y&quot;,
@@ -190,9 +191,9 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.1625  // &quot;10Y&quot;
 		};
 
-<span class="fc" id="L193">		ForwardCurve fc = dcFunding.nativeForwardCurve (strFRATenor);</span>
+<span class="fc" id="L194">		ForwardCurve fc = dcFunding.nativeForwardCurve (strFRATenor);</span>
 
-<span class="fc" id="L195">		Map&lt;String, VolatilityCurve&gt; bumpedForwardVolatilityCurve = LatentMarketStateBuilder.BumpedForwardVolatilityCurve (</span>
+<span class="fc" id="L196">		Map&lt;String, VolatilityCurve&gt; bumpedForwardVolatilityCurve = LatentMarketStateBuilder.BumpedForwardVolatilityCurve (</span>
 			dtSpot,
 			forwardLabel,
 			true,
@@ -206,7 +207,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			bIsBumpProportional
 		);
 
-<span class="fc" id="L209">		FRAStandardCapFloor[] aFRACapFloor = OTCInstrumentBuilder.CapFloor (</span>
+<span class="fc" id="L210">		FRAStandardCapFloor[] aFRACapFloor = OTCInstrumentBuilder.CapFloor (</span>
 			dtSpot,
 			forwardLabel,
 			astrMaturityTenor,
@@ -214,27 +215,27 @@ import org.drip.state.volatility.VolatilityCurve;
 			true
 		);
 
-<span class="fc" id="L217">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L218">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L219">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L220">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc bfc" id="L221" title="All 2 branches covered.">		for (Map.Entry&lt;String, VolatilityCurve&gt; meForwardVolatility : bumpedForwardVolatilityCurve.entrySet()) {</span>
-<span class="fc" id="L222">			String strKey = meForwardVolatility.getKey();</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (Map.Entry&lt;String, VolatilityCurve&gt; meForwardVolatility : bumpedForwardVolatilityCurve.entrySet()) {</span>
+<span class="fc" id="L223">			String strKey = meForwardVolatility.getKey();</span>
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;capfloor&quot;)) continue;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;capfloor&quot;)) continue;</span>
 
-<span class="fc" id="L226">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L227">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L228">			csqc.setFundingState (dcFunding);</span>
+<span class="fc" id="L229">			csqc.setFundingState (dcFunding);</span>
 
-<span class="fc" id="L230">			csqc.setForwardState (fc);</span>
+<span class="fc" id="L231">			csqc.setForwardState (fc);</span>
 
-<span class="fc" id="L232">			csqc.setForwardVolatility (meForwardVolatility.getValue());</span>
+<span class="fc" id="L233">			csqc.setForwardVolatility (meForwardVolatility.getValue());</span>
 
-<span class="fc" id="L234">			System.out.print (&quot;\t|  [&quot; + meForwardVolatility.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L235">			System.out.print (&quot;\t|  [&quot; + meForwardVolatility.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L236" title="All 2 branches covered.">			for (Component comp : aFRACapFloor)</span>
-<span class="fc" id="L237">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			for (Component comp : aFRACapFloor)</span>
+<span class="fc" id="L238">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -242,41 +243,41 @@ import org.drip.state.volatility.VolatilityCurve;
 					&quot;Price&quot;
 				), 1, 8, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L245">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L246">		}</span>
+<span class="fc" id="L246">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L247">		}</span>
 
-<span class="fc" id="L248">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L249">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L250">		System.out.println (&quot;\n\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L251">		System.out.println (&quot;\n\t|-------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L252">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L253">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L254">		csqcBase.setFundingState (dcFunding);</span>
+<span class="fc" id="L255">		csqcBase.setFundingState (dcFunding);</span>
 
-<span class="fc" id="L256">		csqcBase.setForwardState (fc);</span>
+<span class="fc" id="L257">		csqcBase.setForwardState (fc);</span>
 
-<span class="fc" id="L258">		csqcBase.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L259">		csqcBase.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Base&quot;));</span>
 
-<span class="fc" id="L260">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L261">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L262">		csqcBump.setFundingState (dcFunding);</span>
+<span class="fc" id="L263">		csqcBump.setFundingState (dcFunding);</span>
 
-<span class="fc" id="L264">		csqcBump.setForwardState (fc);</span>
+<span class="fc" id="L265">		csqcBump.setForwardState (fc);</span>
 
-<span class="fc" id="L266">		csqcBump.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L267">		csqcBump.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Bump&quot;));</span>
 
-<span class="fc bfc" id="L268" title="All 2 branches covered.">		for (Component comp : aFRACapFloor)</span>
-<span class="fc" id="L269">			System.out.println (</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">		for (Component comp : aFRACapFloor)</span>
+<span class="fc" id="L270">			System.out.println (</span>
 				&quot;\t| PRICE =&gt; &quot; +
-<span class="fc" id="L271">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="fc" id="L272">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L272">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L273">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;Price&quot;
 				), 1, 8, 1.) + &quot; | &quot; +
-<span class="fc" id="L279">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L280">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -285,7 +286,7 @@ import org.drip.state.volatility.VolatilityCurve;
 				), 1, 8, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc" id="L288">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
-<span class="fc" id="L289">	}</span>
+<span class="fc" id="L289">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L290">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

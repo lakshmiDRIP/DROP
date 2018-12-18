@@ -75,9 +75,10 @@ package org.drip.quant.calculus;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus&quot;&gt;Calculus&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus&quot;&gt;Calculus&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,8 +86,8 @@ package org.drip.quant.calculus;
  */
 
 public class Differential {
-<span class="fc" id="L88">	private double _dblDeltaOF = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblDeltaVariate = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private double _dblDeltaOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _dblDeltaVariate = java.lang.Double.NaN;</span>
 
 	/**
 	 * Differential constructor
@@ -101,11 +102,11 @@ public class Differential {
 		final double dblDeltaVariate,
 		final double dblDeltaOF)
 		throws java.lang.Exception
-<span class="fc" id="L104">	{</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDeltaVariate = dblDeltaVariate) ||</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDeltaOF = dblDeltaOF))</span>
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;Differential constructor: Invalid Inputs!&quot;);</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L105">	{</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDeltaVariate = dblDeltaVariate) ||</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblDeltaOF = dblDeltaOF))</span>
+<span class="nc" id="L108">			throw new java.lang.Exception (&quot;Differential constructor: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L109">	}</span>
 
 	/**
 	 * Retrieve the Delta for the OF
@@ -115,7 +116,7 @@ public class Differential {
 
 	public double getDeltaOF()
 	{
-<span class="nc" id="L118">		return _dblDeltaOF;</span>
+<span class="nc" id="L119">		return _dblDeltaOF;</span>
 	}
 
 	/**
@@ -126,7 +127,7 @@ public class Differential {
 
 	public double getDeltaVariate()
 	{
-<span class="nc" id="L129">		return _dblDeltaVariate;</span>
+<span class="nc" id="L130">		return _dblDeltaVariate;</span>
 	}
 
 	/**
@@ -140,9 +141,9 @@ public class Differential {
 	public double calcSlope (
 		final boolean bOFNumerator)
 	{
-<span class="fc bfc" id="L143" title="All 2 branches covered.">		if (bOFNumerator) return _dblDeltaOF / _dblDeltaVariate;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		if (bOFNumerator) return _dblDeltaOF / _dblDeltaVariate;</span>
 
-<span class="fc" id="L145">		return _dblDeltaVariate / _dblDeltaOF;</span>
+<span class="fc" id="L146">		return _dblDeltaVariate / _dblDeltaOF;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

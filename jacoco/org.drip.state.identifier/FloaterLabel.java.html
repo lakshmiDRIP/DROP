@@ -71,9 +71,10 @@ package org.drip.state.identifier;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *  
@@ -82,17 +83,17 @@ package org.drip.state.identifier;
 
 public abstract class FloaterLabel implements org.drip.state.identifier.LatentStateLabel
 {
-<span class="fc" id="L85">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="fc" id="L86">	private org.drip.market.definition.FloaterIndex _floaterIndex = null;</span>
+<span class="fc" id="L86">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="fc" id="L87">	private org.drip.market.definition.FloaterIndex _floaterIndex = null;</span>
 
 	protected FloaterLabel (
 		final org.drip.market.definition.FloaterIndex floaterIndex,
 		final java.lang.String strTenor)
 		throws java.lang.Exception
-<span class="fc" id="L92">	{</span>
-<span class="pc bpc" id="L93" title="3 of 6 branches missed.">		if (null == (_floaterIndex = floaterIndex) || null == (_strTenor = strTenor) || _strTenor.isEmpty())</span>
-<span class="nc" id="L94">			throw new java.lang.Exception (&quot;FloaterLabel ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L95">	}</span>
+<span class="fc" id="L93">	{</span>
+<span class="pc bpc" id="L94" title="3 of 6 branches missed.">		if (null == (_floaterIndex = floaterIndex) || null == (_strTenor = strTenor) || _strTenor.isEmpty())</span>
+<span class="nc" id="L95">			throw new java.lang.Exception (&quot;FloaterLabel ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L96">	}</span>
 
 	/**
 	 * Retrieve the Currency
@@ -102,7 +103,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public java.lang.String currency()
 	{
-<span class="fc" id="L105">		return _floaterIndex.currency();</span>
+<span class="fc" id="L106">		return _floaterIndex.currency();</span>
 	}
 
 	/**
@@ -113,7 +114,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public java.lang.String family()
 	{
-<span class="nc" id="L116">		return _floaterIndex.family();</span>
+<span class="nc" id="L117">		return _floaterIndex.family();</span>
 	}
 
 	/**
@@ -124,7 +125,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public java.lang.String tenor()
 	{
-<span class="fc" id="L127">		return _strTenor;</span>
+<span class="fc" id="L128">		return _strTenor;</span>
 	}
 
 	/**
@@ -135,7 +136,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public boolean overnight()
 	{
-<span class="pc bpc" id="L138" title="1 of 4 branches missed.">		return &quot;ON&quot;.equalsIgnoreCase (_strTenor) || &quot;1D&quot;.equalsIgnoreCase (_strTenor);</span>
+<span class="pc bpc" id="L139" title="1 of 4 branches missed.">		return &quot;ON&quot;.equalsIgnoreCase (_strTenor) || &quot;1D&quot;.equalsIgnoreCase (_strTenor);</span>
 	}
 
 	/**
@@ -146,7 +147,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public org.drip.market.definition.FloaterIndex floaterIndex()
 	{
-<span class="fc" id="L149">		return _floaterIndex;</span>
+<span class="fc" id="L150">		return _floaterIndex;</span>
 	}
 
 	/**
@@ -157,29 +158,29 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public org.drip.param.period.UnitCouponAccrualSetting ucas()
 	{
-<span class="fc" id="L160">		java.lang.String strDayCount = _floaterIndex.dayCount();</span>
+<span class="fc" id="L161">		java.lang.String strDayCount = _floaterIndex.dayCount();</span>
 
 		try {
-<span class="fc bfc" id="L163" title="All 2 branches covered.">			return new org.drip.param.period.UnitCouponAccrualSetting (overnight() ? 360 :</span>
-<span class="fc" id="L164">				org.drip.analytics.support.Helper.TenorToFreq (_strTenor), strDayCount, false, strDayCount,</span>
-<span class="fc" id="L165">					false, _floaterIndex.currency(), false, _floaterIndex.accrualCompoundingRule());</span>
-<span class="nc" id="L166">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L167">			e.printStackTrace();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">			return new org.drip.param.period.UnitCouponAccrualSetting (overnight() ? 360 :</span>
+<span class="fc" id="L165">				org.drip.analytics.support.Helper.TenorToFreq (_strTenor), strDayCount, false, strDayCount,</span>
+<span class="fc" id="L166">					false, _floaterIndex.currency(), false, _floaterIndex.accrualCompoundingRule());</span>
+<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L170">		return null;</span>
+<span class="nc" id="L171">		return null;</span>
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-<span class="fc" id="L175">		return _floaterIndex.currency() + &quot;-&quot; + _floaterIndex.family() + &quot;-&quot; + _strTenor;</span>
+<span class="fc" id="L176">		return _floaterIndex.currency() + &quot;-&quot; + _floaterIndex.family() + &quot;-&quot; + _strTenor;</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-<span class="pc bpc" id="L181" title="2 of 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.ForwardLabel) ? false :</span>
-<span class="fc" id="L182">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
+<span class="pc bpc" id="L182" title="2 of 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.ForwardLabel) ? false :</span>
+<span class="fc" id="L183">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -13,12 +13,12 @@ package org.drip.dynamics.lmm;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -45,6 +45,7 @@ package org.drip.dynamics.lmm;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,18 +76,18 @@ package org.drip.dynamics.lmm;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate {
-<span class="fc" id="L86">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
-<span class="fc" id="L87">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
-<span class="fc" id="L88">	private double _dblLognormalLIBORVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblContinuouslyCompoundedForwardVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L87">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L88">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="fc" id="L89">	private double _dblLognormalLIBORVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _dblContinuouslyCompoundedForwardVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct an Instance of BGMPointUpdate
@@ -131,66 +132,66 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 		final double dblLognormalLIBORVolatility,
 		final double dblContinuouslyCompoundedForwardVolatility)
 	{
-<span class="fc" id="L134">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
+<span class="fc" id="L135">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE, dblLIBOR))
-<span class="nc" id="L139">			return null;</span>
+<span class="nc" id="L140">			return null;</span>
 
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE,
 				dblContinuousForwardRate))
-<span class="nc" id="L144">			return null;</span>
+<span class="nc" id="L145">			return null;</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_EFFECTIVE_FORWARD_RATE,
 				dblInstantaneousEffectiveForwardRate))
-<span class="nc" id="L149">			return null;</span>
+<span class="nc" id="L150">			return null;</span>
 
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_NOMINAL_FORWARD_RATE,
 				dblInstantaneousNominalForwardRate))
-<span class="nc" id="L154">			return null;</span>
+<span class="nc" id="L155">			return null;</span>
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, dblSpotRate))
-<span class="nc" id="L158">			return null;</span>
+<span class="nc" id="L159">			return null;</span>
 
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR, dblDiscountFactor))
-<span class="nc" id="L162">			return null;</span>
+<span class="nc" id="L163">			return null;</span>
 
-<span class="fc" id="L164">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
+<span class="fc" id="L165">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE, dblLIBORIncrement))
-<span class="nc" id="L169">			return null;</span>
+<span class="nc" id="L170">			return null;</span>
 
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE,
 				dblContinuousForwardRateIncrement))
-<span class="nc" id="L174">			return null;</span>
+<span class="nc" id="L175">			return null;</span>
 
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, dblSpotRateIncrement))
-<span class="nc" id="L178">			return null;</span>
+<span class="nc" id="L179">			return null;</span>
 
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
 				dblDiscountFactorIncrement))
-<span class="nc" id="L183">			return null;</span>
+<span class="nc" id="L184">			return null;</span>
 
 		try {
-<span class="fc" id="L186">			return new BGMPointUpdate (lslFunding, lslForward, iInitialDate, iFinalDate, iTargetPointDate,</span>
+<span class="fc" id="L187">			return new BGMPointUpdate (lslFunding, lslForward, iInitialDate, iFinalDate, iTargetPointDate,</span>
 				lrSnapshot, lrIncrement, dblLognormalLIBORVolatility,
 					dblContinuouslyCompoundedForwardVolatility);
-<span class="nc" id="L189">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L190">			e.printStackTrace();</span>
+<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L191">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L193">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	private BGMPointUpdate (
@@ -205,15 +206,15 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 		final double dblContinuouslyCompoundedForwardVolatility)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L208">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
+<span class="fc" id="L209">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
 
-<span class="pc bpc" id="L210" title="2 of 4 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||</span>
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLognormalLIBORVolatility =</span>
+<span class="pc bpc" id="L211" title="2 of 4 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblLognormalLIBORVolatility =</span>
 				dblLognormalLIBORVolatility) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L213" title="1 of 2 branches missed.">					(_dblContinuouslyCompoundedForwardVolatility =</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">					(_dblContinuouslyCompoundedForwardVolatility =</span>
 						dblContinuouslyCompoundedForwardVolatility))
-<span class="nc" id="L215">			throw new java.lang.Exception (&quot;BGMPointUpdate ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L216">	}</span>
+<span class="nc" id="L216">			throw new java.lang.Exception (&quot;BGMPointUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L217">	}</span>
 
 	/**
 	 * Retrieve the LIBOR Rate
@@ -226,7 +227,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double libor()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L229">		return snapshot().qm (_lslForward,</span>
+<span class="fc" id="L230">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE);
 	}
 
@@ -241,7 +242,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double liborIncrement()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L244">		return increment().qm (_lslForward,</span>
+<span class="fc" id="L245">		return increment().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_LIBOR_RATE);
 	}
 
@@ -256,7 +257,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double continuousForwardRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L259">		return snapshot().qm (_lslForward,</span>
+<span class="fc" id="L260">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE);
 	}
 
@@ -272,7 +273,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double continuousForwardRateIncrement()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L275">		return increment().qm (_lslForward,</span>
+<span class="fc" id="L276">		return increment().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_CONTINUOUSLY_COMPOUNDED_FORWARD_RATE);
 	}
 
@@ -287,7 +288,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double instantaneousEffectiveForwardRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L290">		return snapshot().qm (_lslForward,</span>
+<span class="fc" id="L291">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_EFFECTIVE_FORWARD_RATE);
 	}
 
@@ -302,7 +303,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double instantaneousNominalForwardRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L305">		return snapshot().qm (_lslForward,</span>
+<span class="fc" id="L306">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_INSTANTANEOUS_NOMINAL_FORWARD_RATE);
 	}
 
@@ -317,7 +318,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double spotRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L320">		return snapshot().qm (_lslFunding,</span>
+<span class="fc" id="L321">		return snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -332,7 +333,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double spotRateIncrement()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L335">		return increment().qm (_lslFunding,</span>
+<span class="fc" id="L336">		return increment().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE);
 	}
 
@@ -347,7 +348,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double discountFactor()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L350">		return snapshot().qm (_lslFunding,</span>
+<span class="fc" id="L351">		return snapshot().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 
@@ -362,7 +363,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	public double discountFactorIncrement()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L365">		return increment().qm (_lslFunding,</span>
+<span class="fc" id="L366">		return increment().qm (_lslFunding,</span>
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR);
 	}
 
@@ -374,7 +375,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 
 	public double lognormalLIBORVolatility()
 	{
-<span class="fc" id="L377">		return _dblLognormalLIBORVolatility;</span>
+<span class="fc" id="L378">		return _dblLognormalLIBORVolatility;</span>
 	}
 
 	/**
@@ -385,7 +386,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 
 	public double continuouslyCompoundedForwardVolatility()
 	{
-<span class="fc" id="L388">		return _dblContinuouslyCompoundedForwardVolatility;</span>
+<span class="fc" id="L389">		return _dblContinuouslyCompoundedForwardVolatility;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -110,9 +110,10 @@ package org.drip.product.rates;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -120,10 +121,10 @@ package org.drip.product.rates;
  */
 
 public class FloatFloatComponent extends org.drip.product.rates.DualStreamComponent {
-<span class="fc" id="L123">	private java.lang.String _strCode = &quot;&quot;;</span>
-<span class="fc" id="L124">	private org.drip.product.rates.Stream _floatDerived = null;</span>
-<span class="fc" id="L125">	private org.drip.product.rates.Stream _floatReference = null;</span>
-<span class="fc" id="L126">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
+<span class="fc" id="L124">	private java.lang.String _strCode = &quot;&quot;;</span>
+<span class="fc" id="L125">	private org.drip.product.rates.Stream _floatDerived = null;</span>
+<span class="fc" id="L126">	private org.drip.product.rates.Stream _floatReference = null;</span>
+<span class="fc" id="L127">	private org.drip.param.valuation.CashSettleParams _csp = null;</span>
 
 	/**
 	 * Construct the FloatFloatComponent from the Reference and the Derived Floating Streams.
@@ -140,62 +141,62 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.product.rates.Stream floatDerived,
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
-<span class="fc" id="L143">	{</span>
-<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (null == (_floatReference = floatReference) || null == (_floatDerived = floatDerived))</span>
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;FloatFloatComponent ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L144">	{</span>
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">		if (null == (_floatReference = floatReference) || null == (_floatDerived = floatDerived))</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;FloatFloatComponent ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L147">		_csp = csp;</span>
-<span class="fc" id="L148">	}</span>
+<span class="fc" id="L148">		_csp = csp;</span>
+<span class="fc" id="L149">	}</span>
 
 	@Override public void setPrimaryCode (
 		final java.lang.String strCode)
 	{
-<span class="fc" id="L153">		_strCode = strCode;</span>
-<span class="fc" id="L154">	}</span>
+<span class="fc" id="L154">		_strCode = strCode;</span>
+<span class="fc" id="L155">	}</span>
 
 	@Override public java.lang.String primaryCode()
 	{
-<span class="nc" id="L158">		return _strCode;</span>
+<span class="nc" id="L159">		return _strCode;</span>
 	}
 
 	@Override public java.lang.String name()
 	{
-<span class="fc" id="L163">		return _strCode;</span>
+<span class="fc" id="L164">		return _strCode;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; couponCurrency()
 	{
-<span class="nc" id="L168">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCouponCurrency = new</span>
+<span class="nc" id="L169">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCouponCurrency = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
-<span class="nc" id="L171">		mapCouponCurrency.put (&quot;DERIVED&quot;, _floatDerived.couponCurrency());</span>
+<span class="nc" id="L172">		mapCouponCurrency.put (&quot;DERIVED&quot;, _floatDerived.couponCurrency());</span>
 
-<span class="nc" id="L173">		mapCouponCurrency.put (&quot;REFERENCE&quot;, _floatReference.couponCurrency());</span>
+<span class="nc" id="L174">		mapCouponCurrency.put (&quot;REFERENCE&quot;, _floatReference.couponCurrency());</span>
 
-<span class="nc" id="L175">		return mapCouponCurrency;</span>
+<span class="nc" id="L176">		return mapCouponCurrency;</span>
 	}
 
 	@Override public java.lang.String payCurrency()
 	{
-<span class="nc" id="L180">		return _floatReference.payCurrency();</span>
+<span class="nc" id="L181">		return _floatReference.payCurrency();</span>
 	}
 
 	@Override public java.lang.String principalCurrency()
 	{
-<span class="nc" id="L185">		return null;</span>
+<span class="nc" id="L186">		return null;</span>
 	}
 
 	@Override public double initialNotional()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L191">		return _floatReference.initialNotional();</span>
+<span class="fc" id="L192">		return _floatReference.initialNotional();</span>
 	}
 
 	@Override public double notional (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L198">		return _floatReference.notional (iDate);</span>
+<span class="fc" id="L199">		return _floatReference.notional (iDate);</span>
 	}
 
 	@Override public double notional (
@@ -203,7 +204,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L206">		return _floatReference.notional (iDate1, iDate2);</span>
+<span class="nc" id="L207">		return _floatReference.notional (iDate1, iDate2);</span>
 	}
 
 	@Override public org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
@@ -211,17 +212,17 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc" id="L214">		return _floatReference.coupon (iAccrualEndDate, valParams, csqs);</span>
+<span class="nc" id="L215">		return _floatReference.coupon (iAccrualEndDate, valParams, csqs);</span>
 	}
 
 	@Override public int freq()
 	{
-<span class="nc" id="L219">		return _floatReference.freq();</span>
+<span class="nc" id="L220">		return _floatReference.freq();</span>
 	}
 
 	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
-<span class="nc" id="L224">		return null;</span>
+<span class="nc" id="L225">		return null;</span>
 	}
 
 	@Override public
@@ -229,126 +230,126 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 			forwardLabel()
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
-<span class="fc" id="L232">			mapForwardLabel = new</span>
+<span class="fc" id="L233">			mapForwardLabel = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;();
 
-<span class="fc" id="L235">		mapForwardLabel.put (</span>
+<span class="fc" id="L236">		mapForwardLabel.put (</span>
 			&quot;REFERENCE&quot;,
-<span class="fc" id="L237">			_floatReference.forwardLabel()</span>
+<span class="fc" id="L238">			_floatReference.forwardLabel()</span>
 		);
 
-<span class="fc" id="L240">		mapForwardLabel.put (</span>
+<span class="fc" id="L241">		mapForwardLabel.put (</span>
 			&quot;DERIVED&quot;,
-<span class="fc" id="L242">			_floatDerived.forwardLabel()</span>
+<span class="fc" id="L243">			_floatDerived.forwardLabel()</span>
 		);
 
-<span class="fc" id="L245">		return mapForwardLabel;</span>
+<span class="fc" id="L246">		return mapForwardLabel;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.OTCFixFloatLabel&gt;
 			otcFixFloatLabel()
 	{
-<span class="nc" id="L252">		return null;</span>
+<span class="nc" id="L253">		return null;</span>
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L257">		return _floatReference.fundingLabel();</span>
+<span class="nc" id="L258">		return _floatReference.fundingLabel();</span>
 	}
 
 	@Override public org.drip.state.identifier.GovvieLabel govvieLabel()
 	{
-<span class="nc" id="L262">		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());</span>
+<span class="nc" id="L263">		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;
 		fxLabel()
 	{
-<span class="nc" id="L268">		org.drip.state.identifier.FXLabel fxLabelReference = _floatReference.fxLabel();</span>
+<span class="nc" id="L269">		org.drip.state.identifier.FXLabel fxLabelReference = _floatReference.fxLabel();</span>
 
-<span class="nc" id="L270">		org.drip.state.identifier.FXLabel fxLabelDerived = _floatDerived.fxLabel();</span>
+<span class="nc" id="L271">		org.drip.state.identifier.FXLabel fxLabelDerived = _floatDerived.fxLabel();</span>
 
-<span class="nc bnc" id="L272" title="All 4 branches missed.">		if (null != fxLabelReference &amp;&amp; null != fxLabelDerived) return null;</span>
+<span class="nc bnc" id="L273" title="All 4 branches missed.">		if (null != fxLabelReference &amp;&amp; null != fxLabelDerived) return null;</span>
 
-<span class="nc" id="L274">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; mapFXLabel = new</span>
+<span class="nc" id="L275">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; mapFXLabel = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;();
 
-<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (null != fxLabelReference) mapFXLabel.put (&quot;REFERENCE&quot;, fxLabelReference);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (null != fxLabelReference) mapFXLabel.put (&quot;REFERENCE&quot;, fxLabelReference);</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (null != fxLabelDerived) mapFXLabel.put (&quot;DERIVED&quot;, fxLabelDerived);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (null != fxLabelDerived) mapFXLabel.put (&quot;DERIVED&quot;, fxLabelDerived);</span>
 
-<span class="nc" id="L281">		return mapFXLabel;</span>
+<span class="nc" id="L282">		return mapFXLabel;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.VolatilityLabel&gt;
 			volatilityLabel()
 	{
-<span class="nc" id="L288">		return null;</span>
+<span class="nc" id="L289">		return null;</span>
 	}
 
 	@Override public org.drip.product.rates.Stream referenceStream()
 	{
-<span class="nc" id="L293">		return _floatReference;</span>
+<span class="nc" id="L294">		return _floatReference;</span>
 	}
 
 	@Override public org.drip.product.rates.Stream derivedStream()
 	{
-<span class="fc" id="L298">		return _floatDerived;</span>
+<span class="fc" id="L299">		return _floatDerived;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate effectiveDate()
 	{
-<span class="fc" id="L303">		org.drip.analytics.date.JulianDate dtFloatReferenceEffective = _floatReference.effective();</span>
+<span class="fc" id="L304">		org.drip.analytics.date.JulianDate dtFloatReferenceEffective = _floatReference.effective();</span>
 
-<span class="fc" id="L305">		org.drip.analytics.date.JulianDate dtFloatDerivedEffective = _floatDerived.effective();</span>
+<span class="fc" id="L306">		org.drip.analytics.date.JulianDate dtFloatDerivedEffective = _floatDerived.effective();</span>
 
-<span class="pc bpc" id="L307" title="2 of 4 branches missed.">		if (null == dtFloatReferenceEffective || null == dtFloatDerivedEffective) return null;</span>
+<span class="pc bpc" id="L308" title="2 of 4 branches missed.">		if (null == dtFloatReferenceEffective || null == dtFloatDerivedEffective) return null;</span>
 
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		return dtFloatReferenceEffective.julian() &lt; dtFloatDerivedEffective.julian() ?</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">		return dtFloatReferenceEffective.julian() &lt; dtFloatDerivedEffective.julian() ?</span>
 			dtFloatReferenceEffective : dtFloatDerivedEffective;
 	}
 
 	@Override public org.drip.analytics.date.JulianDate maturityDate()
 	{
-<span class="fc" id="L315">		org.drip.analytics.date.JulianDate dtFloatReferenceMaturity = _floatReference.maturity();</span>
+<span class="fc" id="L316">		org.drip.analytics.date.JulianDate dtFloatReferenceMaturity = _floatReference.maturity();</span>
 
-<span class="fc" id="L317">		org.drip.analytics.date.JulianDate dtFloatDerivedMaturity = _floatDerived.maturity();</span>
+<span class="fc" id="L318">		org.drip.analytics.date.JulianDate dtFloatDerivedMaturity = _floatDerived.maturity();</span>
 
-<span class="pc bpc" id="L319" title="2 of 4 branches missed.">		if (null == dtFloatReferenceMaturity || null == dtFloatDerivedMaturity) return null;</span>
+<span class="pc bpc" id="L320" title="2 of 4 branches missed.">		if (null == dtFloatReferenceMaturity || null == dtFloatDerivedMaturity) return null;</span>
 
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		return dtFloatReferenceMaturity.julian() &gt; dtFloatDerivedMaturity.julian() ?</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">		return dtFloatReferenceMaturity.julian() &gt; dtFloatDerivedMaturity.julian() ?</span>
 			dtFloatReferenceMaturity : dtFloatDerivedMaturity;
 	}
 
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
 	{
-<span class="nc" id="L327">		org.drip.analytics.date.JulianDate dtFloatReferenceFirstCoupon = _floatReference.firstCouponDate();</span>
+<span class="nc" id="L328">		org.drip.analytics.date.JulianDate dtFloatReferenceFirstCoupon = _floatReference.firstCouponDate();</span>
 
-<span class="nc" id="L329">		org.drip.analytics.date.JulianDate dtFloatDerivedFirstCoupon = _floatDerived.firstCouponDate();</span>
+<span class="nc" id="L330">		org.drip.analytics.date.JulianDate dtFloatDerivedFirstCoupon = _floatDerived.firstCouponDate();</span>
 
-<span class="nc bnc" id="L331" title="All 4 branches missed.">		if (null == dtFloatReferenceFirstCoupon || null == dtFloatDerivedFirstCoupon) return null;</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">		if (null == dtFloatReferenceFirstCoupon || null == dtFloatDerivedFirstCoupon) return null;</span>
 
-<span class="nc bnc" id="L333" title="All 2 branches missed.">		return dtFloatReferenceFirstCoupon.julian() &lt; dtFloatDerivedFirstCoupon.julian() ?</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">		return dtFloatReferenceFirstCoupon.julian() &lt; dtFloatDerivedFirstCoupon.julian() ?</span>
 			dtFloatReferenceFirstCoupon : dtFloatDerivedFirstCoupon;
 	}
 
 	@Override public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriods()
 	{
-<span class="nc" id="L339">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCP = new</span>
+<span class="nc" id="L340">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="nc" id="L342">		lsCP.addAll (_floatReference.cashFlowPeriod());</span>
+<span class="nc" id="L343">		lsCP.addAll (_floatReference.cashFlowPeriod());</span>
 
-<span class="nc" id="L344">		lsCP.addAll (_floatDerived.cashFlowPeriod());</span>
+<span class="nc" id="L345">		lsCP.addAll (_floatDerived.cashFlowPeriod());</span>
 
-<span class="nc" id="L346">		return lsCP;</span>
+<span class="nc" id="L347">		return lsCP;</span>
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
 	{
-<span class="nc" id="L351">		return _csp;</span>
+<span class="nc" id="L352">		return _csp;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -357,232 +358,232 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="fc" id="L360">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L361">		long lStart = System.nanoTime();</span>
 
-<span class="fc" id="L362">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatReferenceStreamResult =</span>
-<span class="fc" id="L363">			_floatReference.value (valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L363">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatReferenceStreamResult =</span>
+<span class="fc" id="L364">			_floatReference.value (valParams, pricerParams, csqs, vcp);</span>
 
-<span class="fc" id="L365">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatDerivedStreamResult =</span>
-<span class="fc" id="L366">			_floatDerived.value (valParams, pricerParams, csqs, vcp);</span>
+<span class="fc" id="L366">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatDerivedStreamResult =</span>
+<span class="fc" id="L367">			_floatDerived.value (valParams, pricerParams, csqs, vcp);</span>
 
-<span class="pc bpc" id="L368" title="3 of 6 branches missed.">		if (null == mapFloatReferenceStreamResult || 0 == mapFloatReferenceStreamResult.size() || null ==</span>
-<span class="pc bpc" id="L369" title="1 of 2 branches missed.">			mapFloatDerivedStreamResult || 0 == mapFloatDerivedStreamResult.size())</span>
-<span class="nc" id="L370">			return null;</span>
+<span class="pc bpc" id="L369" title="3 of 6 branches missed.">		if (null == mapFloatReferenceStreamResult || 0 == mapFloatReferenceStreamResult.size() || null ==</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">			mapFloatDerivedStreamResult || 0 == mapFloatDerivedStreamResult.size())</span>
+<span class="nc" id="L371">			return null;</span>
 
-<span class="fc" id="L372">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L373">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="pc bpc" id="L375" title="1 of 2 branches missed.">		if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult,</span>
-<span class="fc" id="L376">			_floatReference.name(), mapFloatReferenceStreamResult))</span>
-<span class="nc" id="L377">			return null;</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">		if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult,</span>
+<span class="fc" id="L377">			_floatReference.name(), mapFloatReferenceStreamResult))</span>
+<span class="nc" id="L378">			return null;</span>
 
-<span class="pc bpc" id="L379" title="1 of 2 branches missed.">		if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult, _floatDerived.name(),</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult, _floatDerived.name(),</span>
 			mapFloatDerivedStreamResult))
-<span class="nc" id="L381">			return null;</span>
+<span class="nc" id="L382">			return null;</span>
 
-<span class="fc" id="L383">		mapResult.put (&quot;ReferenceAccrued01&quot;, mapFloatReferenceStreamResult.get (&quot;Accrued01&quot;));</span>
+<span class="fc" id="L384">		mapResult.put (&quot;ReferenceAccrued01&quot;, mapFloatReferenceStreamResult.get (&quot;Accrued01&quot;));</span>
 
-<span class="fc" id="L385">		mapResult.put (&quot;ReferenceAccrued&quot;, mapFloatReferenceStreamResult.get (&quot;FloatAccrued&quot;));</span>
+<span class="fc" id="L386">		mapResult.put (&quot;ReferenceAccrued&quot;, mapFloatReferenceStreamResult.get (&quot;FloatAccrued&quot;));</span>
 
-<span class="fc" id="L387">		double dblReferenceCleanDV01 = mapFloatReferenceStreamResult.get (&quot;CleanDV01&quot;);</span>
+<span class="fc" id="L388">		double dblReferenceCleanDV01 = mapFloatReferenceStreamResult.get (&quot;CleanDV01&quot;);</span>
 
-<span class="fc" id="L389">		mapResult.put (&quot;ReferenceCleanDV01&quot;, dblReferenceCleanDV01);</span>
+<span class="fc" id="L390">		mapResult.put (&quot;ReferenceCleanDV01&quot;, dblReferenceCleanDV01);</span>
 
-<span class="fc" id="L391">		double dblReferenceCleanPV = mapFloatReferenceStreamResult.get (&quot;CleanPV&quot;);</span>
+<span class="fc" id="L392">		double dblReferenceCleanPV = mapFloatReferenceStreamResult.get (&quot;CleanPV&quot;);</span>
 
-<span class="fc" id="L393">		mapResult.put (&quot;ReferenceCleanPV&quot;, dblReferenceCleanPV);</span>
+<span class="fc" id="L394">		mapResult.put (&quot;ReferenceCleanPV&quot;, dblReferenceCleanPV);</span>
 
-<span class="fc" id="L395">		mapResult.put (&quot;ReferenceDirtyDV01&quot;, mapFloatReferenceStreamResult.get (&quot;DirtyDV01&quot;));</span>
+<span class="fc" id="L396">		mapResult.put (&quot;ReferenceDirtyDV01&quot;, mapFloatReferenceStreamResult.get (&quot;DirtyDV01&quot;));</span>
 
-<span class="fc" id="L397">		double dblReferenceDirtyPV = mapFloatReferenceStreamResult.get (&quot;DirtyPV&quot;);</span>
+<span class="fc" id="L398">		double dblReferenceDirtyPV = mapFloatReferenceStreamResult.get (&quot;DirtyPV&quot;);</span>
 
-<span class="fc" id="L399">		mapResult.put (&quot;ReferenceDirtyPV&quot;, dblReferenceDirtyPV);</span>
+<span class="fc" id="L400">		mapResult.put (&quot;ReferenceDirtyPV&quot;, dblReferenceDirtyPV);</span>
 
-<span class="fc" id="L401">		mapResult.put (&quot;ReferenceDV01&quot;, mapFloatReferenceStreamResult.get (&quot;DV01&quot;));</span>
+<span class="fc" id="L402">		mapResult.put (&quot;ReferenceDV01&quot;, mapFloatReferenceStreamResult.get (&quot;DV01&quot;));</span>
 
-<span class="fc" id="L403">		mapResult.put (&quot;ReferenceFixing01&quot;, mapFloatReferenceStreamResult.get (&quot;Fixing01&quot;));</span>
+<span class="fc" id="L404">		mapResult.put (&quot;ReferenceFixing01&quot;, mapFloatReferenceStreamResult.get (&quot;Fixing01&quot;));</span>
 
-<span class="fc" id="L405">		double dblReferencePV = mapFloatReferenceStreamResult.get (&quot;PV&quot;);</span>
+<span class="fc" id="L406">		double dblReferencePV = mapFloatReferenceStreamResult.get (&quot;PV&quot;);</span>
 
-<span class="fc" id="L407">		mapResult.put (&quot;ReferencePV&quot;, dblReferencePV);</span>
+<span class="fc" id="L408">		mapResult.put (&quot;ReferencePV&quot;, dblReferencePV);</span>
 
-<span class="fc" id="L409">		mapResult.put (&quot;ReferenceCumulativeConvexityAdjustmentFactor&quot;, mapFloatReferenceStreamResult.get</span>
-<span class="fc" id="L410">			(&quot;CumulativeConvexityAdjustmentFactor&quot;));</span>
+<span class="fc" id="L410">		mapResult.put (&quot;ReferenceCumulativeConvexityAdjustmentFactor&quot;, mapFloatReferenceStreamResult.get</span>
+<span class="fc" id="L411">			(&quot;CumulativeConvexityAdjustmentFactor&quot;));</span>
 
-<span class="fc" id="L412">		double dblReferenceCumulativeConvexityAdjustmentPremium = mapFloatReferenceStreamResult.get</span>
-<span class="fc" id="L413">			(&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="fc" id="L413">		double dblReferenceCumulativeConvexityAdjustmentPremium = mapFloatReferenceStreamResult.get</span>
+<span class="fc" id="L414">			(&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="fc" id="L415">		mapResult.put (&quot;ReferenceCumulativeConvexityAdjustmentPremium&quot;,</span>
-<span class="fc" id="L416">			dblReferenceCumulativeConvexityAdjustmentPremium);</span>
+<span class="fc" id="L416">		mapResult.put (&quot;ReferenceCumulativeConvexityAdjustmentPremium&quot;,</span>
+<span class="fc" id="L417">			dblReferenceCumulativeConvexityAdjustmentPremium);</span>
 
-<span class="fc" id="L418">		mapResult.put (&quot;ReferenceResetDate&quot;, mapFloatReferenceStreamResult.get (&quot;ResetDate&quot;));</span>
+<span class="fc" id="L419">		mapResult.put (&quot;ReferenceResetDate&quot;, mapFloatReferenceStreamResult.get (&quot;ResetDate&quot;));</span>
 
-<span class="fc" id="L420">		mapResult.put (&quot;ReferenceResetRate&quot;, mapFloatReferenceStreamResult.get (&quot;ResetRate&quot;));</span>
+<span class="fc" id="L421">		mapResult.put (&quot;ReferenceResetRate&quot;, mapFloatReferenceStreamResult.get (&quot;ResetRate&quot;));</span>
 
-<span class="fc" id="L422">		mapResult.put (&quot;DerivedAccrued01&quot;, mapFloatDerivedStreamResult.get (&quot;Accrued01&quot;));</span>
+<span class="fc" id="L423">		mapResult.put (&quot;DerivedAccrued01&quot;, mapFloatDerivedStreamResult.get (&quot;Accrued01&quot;));</span>
 
-<span class="fc" id="L424">		mapResult.put (&quot;DerivedAccrued&quot;, mapFloatDerivedStreamResult.get (&quot;FloatAccrued&quot;));</span>
+<span class="fc" id="L425">		mapResult.put (&quot;DerivedAccrued&quot;, mapFloatDerivedStreamResult.get (&quot;FloatAccrued&quot;));</span>
 
-<span class="fc" id="L426">		double dblDerivedCleanDV01 = mapFloatDerivedStreamResult.get (&quot;CleanDV01&quot;);</span>
+<span class="fc" id="L427">		double dblDerivedCleanDV01 = mapFloatDerivedStreamResult.get (&quot;CleanDV01&quot;);</span>
 
-<span class="fc" id="L428">		mapResult.put (&quot;DerivedCleanDV01&quot;, dblDerivedCleanDV01);</span>
+<span class="fc" id="L429">		mapResult.put (&quot;DerivedCleanDV01&quot;, dblDerivedCleanDV01);</span>
 
-<span class="fc" id="L430">		double dblDerivedCleanPV = mapFloatDerivedStreamResult.get (&quot;CleanPV&quot;);</span>
+<span class="fc" id="L431">		double dblDerivedCleanPV = mapFloatDerivedStreamResult.get (&quot;CleanPV&quot;);</span>
 
-<span class="fc" id="L432">		mapResult.put (&quot;DerivedCleanPV&quot;, dblDerivedCleanPV);</span>
+<span class="fc" id="L433">		mapResult.put (&quot;DerivedCleanPV&quot;, dblDerivedCleanPV);</span>
 
-<span class="fc" id="L434">		mapResult.put (&quot;DerivedDirtyDV01&quot;, mapFloatDerivedStreamResult.get (&quot;DirtyDV01&quot;));</span>
+<span class="fc" id="L435">		mapResult.put (&quot;DerivedDirtyDV01&quot;, mapFloatDerivedStreamResult.get (&quot;DirtyDV01&quot;));</span>
 
-<span class="fc" id="L436">		double dblDerivedDirtyPV = mapFloatDerivedStreamResult.get (&quot;DirtyPV&quot;);</span>
+<span class="fc" id="L437">		double dblDerivedDirtyPV = mapFloatDerivedStreamResult.get (&quot;DirtyPV&quot;);</span>
 
-<span class="fc" id="L438">		mapResult.put (&quot;DerivedDirtyPV&quot;, dblDerivedDirtyPV);</span>
+<span class="fc" id="L439">		mapResult.put (&quot;DerivedDirtyPV&quot;, dblDerivedDirtyPV);</span>
 
-<span class="fc" id="L440">		mapResult.put (&quot;DerivedDV01&quot;, mapFloatDerivedStreamResult.get (&quot;DV01&quot;));</span>
+<span class="fc" id="L441">		mapResult.put (&quot;DerivedDV01&quot;, mapFloatDerivedStreamResult.get (&quot;DV01&quot;));</span>
 
-<span class="fc" id="L442">		mapResult.put (&quot;DerivedFixing01&quot;, mapFloatDerivedStreamResult.get (&quot;Fixing01&quot;));</span>
+<span class="fc" id="L443">		mapResult.put (&quot;DerivedFixing01&quot;, mapFloatDerivedStreamResult.get (&quot;Fixing01&quot;));</span>
 
-<span class="fc" id="L444">		double dblDerivedPV = mapFloatDerivedStreamResult.get (&quot;PV&quot;);</span>
+<span class="fc" id="L445">		double dblDerivedPV = mapFloatDerivedStreamResult.get (&quot;PV&quot;);</span>
 
-<span class="fc" id="L446">		mapResult.put (&quot;DerivedPV&quot;, dblDerivedPV);</span>
+<span class="fc" id="L447">		mapResult.put (&quot;DerivedPV&quot;, dblDerivedPV);</span>
 
-<span class="fc" id="L448">		mapResult.put (&quot;DerivedCumulativeConvexityAdjustmentFactor&quot;, mapFloatDerivedStreamResult.get</span>
-<span class="fc" id="L449">			(&quot;CumulativeConvexityAdjustmentFactor&quot;));</span>
+<span class="fc" id="L449">		mapResult.put (&quot;DerivedCumulativeConvexityAdjustmentFactor&quot;, mapFloatDerivedStreamResult.get</span>
+<span class="fc" id="L450">			(&quot;CumulativeConvexityAdjustmentFactor&quot;));</span>
 
-<span class="fc" id="L451">		double dblDerivedCumulativeConvexityAdjustmentPremium = mapFloatDerivedStreamResult.get</span>
-<span class="fc" id="L452">			(&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;);</span>
+<span class="fc" id="L452">		double dblDerivedCumulativeConvexityAdjustmentPremium = mapFloatDerivedStreamResult.get</span>
+<span class="fc" id="L453">			(&quot;CumulativeConvexityAdjustmentPremiumUpfront&quot;);</span>
 
-<span class="fc" id="L454">		mapResult.put (&quot;DerivedCumulativeConvexityAdjustmentPremium&quot;,</span>
-<span class="fc" id="L455">			dblDerivedCumulativeConvexityAdjustmentPremium);</span>
+<span class="fc" id="L455">		mapResult.put (&quot;DerivedCumulativeConvexityAdjustmentPremium&quot;,</span>
+<span class="fc" id="L456">			dblDerivedCumulativeConvexityAdjustmentPremium);</span>
 
-<span class="fc" id="L457">		mapResult.put (&quot;DerivedResetDate&quot;, mapFloatDerivedStreamResult.get (&quot;ResetDate&quot;));</span>
+<span class="fc" id="L458">		mapResult.put (&quot;DerivedResetDate&quot;, mapFloatDerivedStreamResult.get (&quot;ResetDate&quot;));</span>
 
-<span class="fc" id="L459">		mapResult.put (&quot;DerivedResetRate&quot;, mapFloatDerivedStreamResult.get (&quot;ResetRate&quot;));</span>
+<span class="fc" id="L460">		mapResult.put (&quot;DerivedResetRate&quot;, mapFloatDerivedStreamResult.get (&quot;ResetRate&quot;));</span>
 
-<span class="fc" id="L461">		double dblCleanPV = dblReferenceCleanPV + dblDerivedCleanPV;</span>
+<span class="fc" id="L462">		double dblCleanPV = dblReferenceCleanPV + dblDerivedCleanPV;</span>
 
-<span class="fc" id="L463">		mapResult.put (&quot;CleanPV&quot;, dblCleanPV);</span>
+<span class="fc" id="L464">		mapResult.put (&quot;CleanPV&quot;, dblCleanPV);</span>
 
-<span class="fc" id="L465">		mapResult.put (&quot;DirtyPV&quot;, dblDerivedCleanPV + dblDerivedDirtyPV);</span>
+<span class="fc" id="L466">		mapResult.put (&quot;DirtyPV&quot;, dblDerivedCleanPV + dblDerivedDirtyPV);</span>
 
-<span class="fc" id="L467">		mapResult.put (&quot;PV&quot;, dblReferencePV + dblDerivedPV);</span>
+<span class="fc" id="L468">		mapResult.put (&quot;PV&quot;, dblReferencePV + dblDerivedPV);</span>
 
-<span class="fc" id="L469">		mapResult.put (&quot;CumulativeConvexityAdjustmentPremium&quot;, _floatReference.initialNotional() *</span>
-<span class="fc" id="L470">			dblReferenceCumulativeConvexityAdjustmentPremium + _floatDerived.initialNotional() *</span>
+<span class="fc" id="L470">		mapResult.put (&quot;CumulativeConvexityAdjustmentPremium&quot;, _floatReference.initialNotional() *</span>
+<span class="fc" id="L471">			dblReferenceCumulativeConvexityAdjustmentPremium + _floatDerived.initialNotional() *</span>
 				dblDerivedCumulativeConvexityAdjustmentPremium);
 
-<span class="fc" id="L473">		mapResult.put (&quot;Upfront&quot;, mapFloatReferenceStreamResult.get (&quot;Upfront&quot;) +</span>
-<span class="fc" id="L474">			mapFloatDerivedStreamResult.get (&quot;Upfront&quot;));</span>
+<span class="fc" id="L474">		mapResult.put (&quot;Upfront&quot;, mapFloatReferenceStreamResult.get (&quot;Upfront&quot;) +</span>
+<span class="fc" id="L475">			mapFloatDerivedStreamResult.get (&quot;Upfront&quot;));</span>
 
-<span class="fc" id="L476">		mapResult.put (&quot;ReferenceParBasisSpread&quot;, -1. * (dblReferenceCleanPV + dblDerivedCleanPV) /</span>
+<span class="fc" id="L477">		mapResult.put (&quot;ReferenceParBasisSpread&quot;, -1. * (dblReferenceCleanPV + dblDerivedCleanPV) /</span>
 			dblReferenceCleanDV01);
 
-<span class="fc" id="L479">		mapResult.put (&quot;DerivedParBasisSpread&quot;, -1. * (dblReferenceCleanPV + dblDerivedCleanPV) /</span>
+<span class="fc" id="L480">		mapResult.put (&quot;DerivedParBasisSpread&quot;, -1. * (dblReferenceCleanPV + dblDerivedCleanPV) /</span>
 			dblDerivedCleanDV01);
 
-<span class="fc" id="L482">		double dblValueNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L483">		double dblValueNotional = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L485">			dblValueNotional = notional (valParams.valueDate());</span>
-<span class="nc" id="L486">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L487">			e.printStackTrace();</span>
-<span class="fc" id="L488">		}</span>
+<span class="fc" id="L486">			dblValueNotional = notional (valParams.valueDate());</span>
+<span class="nc" id="L487">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L488">			e.printStackTrace();</span>
+<span class="fc" id="L489">		}</span>
 
 		try {
-<span class="pc bpc" id="L491" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (dblValueNotional)) {</span>
-<span class="fc" id="L492">				double dblCleanPrice = 100. * (1. + (dblCleanPV / initialNotional() / dblValueNotional));</span>
+<span class="pc bpc" id="L492" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (dblValueNotional)) {</span>
+<span class="fc" id="L493">				double dblCleanPrice = 100. * (1. + (dblCleanPV / initialNotional() / dblValueNotional));</span>
 
-<span class="fc" id="L494">				mapResult.put (&quot;CleanPrice&quot;, dblCleanPrice);</span>
+<span class="fc" id="L495">				mapResult.put (&quot;CleanPrice&quot;, dblCleanPrice);</span>
 
-<span class="fc" id="L496">				mapResult.put (&quot;Price&quot;, dblCleanPrice);</span>
+<span class="fc" id="L497">				mapResult.put (&quot;Price&quot;, dblCleanPrice);</span>
 			}
-<span class="nc" id="L498">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L499">			e.printStackTrace();</span>
+<span class="nc" id="L499">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L500">			e.printStackTrace();</span>
 
-<span class="nc" id="L501">			return null;</span>
-<span class="fc" id="L502">		}</span>
+<span class="nc" id="L502">			return null;</span>
+<span class="fc" id="L503">		}</span>
 
-<span class="fc" id="L504">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L505">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L506">		return mapResult;</span>
+<span class="fc" id="L507">		return mapResult;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L511">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L512">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L513">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L514">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L515">		setstrMeasureNames.add (&quot;CleanPrice&quot;);</span>
+<span class="nc" id="L516">		setstrMeasureNames.add (&quot;CleanPrice&quot;);</span>
 
-<span class="nc" id="L517">		setstrMeasureNames.add (&quot;CleanPV&quot;);</span>
+<span class="nc" id="L518">		setstrMeasureNames.add (&quot;CleanPV&quot;);</span>
 
-<span class="nc" id="L519">		setstrMeasureNames.add (&quot;DerivedAccrued01&quot;);</span>
+<span class="nc" id="L520">		setstrMeasureNames.add (&quot;DerivedAccrued01&quot;);</span>
 
-<span class="nc" id="L521">		setstrMeasureNames.add (&quot;DerivedAccrued&quot;);</span>
+<span class="nc" id="L522">		setstrMeasureNames.add (&quot;DerivedAccrued&quot;);</span>
 
-<span class="nc" id="L523">		setstrMeasureNames.add (&quot;DerivedCleanDV01&quot;);</span>
+<span class="nc" id="L524">		setstrMeasureNames.add (&quot;DerivedCleanDV01&quot;);</span>
 
-<span class="nc" id="L525">		setstrMeasureNames.add (&quot;DerivedCleanPV&quot;);</span>
+<span class="nc" id="L526">		setstrMeasureNames.add (&quot;DerivedCleanPV&quot;);</span>
 
-<span class="nc" id="L527">		setstrMeasureNames.add (&quot;DerivedDirtyDV01&quot;);</span>
+<span class="nc" id="L528">		setstrMeasureNames.add (&quot;DerivedDirtyDV01&quot;);</span>
 
-<span class="nc" id="L529">		setstrMeasureNames.add (&quot;DerivedDirtyPV&quot;);</span>
+<span class="nc" id="L530">		setstrMeasureNames.add (&quot;DerivedDirtyPV&quot;);</span>
 
-<span class="nc" id="L531">		setstrMeasureNames.add (&quot;DerivedDV01&quot;);</span>
+<span class="nc" id="L532">		setstrMeasureNames.add (&quot;DerivedDV01&quot;);</span>
 
-<span class="nc" id="L533">		setstrMeasureNames.add (&quot;DerivedFixing01&quot;);</span>
+<span class="nc" id="L534">		setstrMeasureNames.add (&quot;DerivedFixing01&quot;);</span>
 
-<span class="nc" id="L535">		setstrMeasureNames.add (&quot;DerivedParBasisSpread&quot;);</span>
+<span class="nc" id="L536">		setstrMeasureNames.add (&quot;DerivedParBasisSpread&quot;);</span>
 
-<span class="nc" id="L537">		setstrMeasureNames.add (&quot;DerivedPV&quot;);</span>
+<span class="nc" id="L538">		setstrMeasureNames.add (&quot;DerivedPV&quot;);</span>
 
-<span class="nc" id="L539">		setstrMeasureNames.add (&quot;DerivedCumulativeConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L540">		setstrMeasureNames.add (&quot;DerivedCumulativeConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L541">		setstrMeasureNames.add (&quot;DerivedCumulativeConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L542">		setstrMeasureNames.add (&quot;DerivedCumulativeConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L543">		setstrMeasureNames.add (&quot;DerivedResetDate&quot;);</span>
+<span class="nc" id="L544">		setstrMeasureNames.add (&quot;DerivedResetDate&quot;);</span>
 
-<span class="nc" id="L545">		setstrMeasureNames.add (&quot;DerivedResetRate&quot;);</span>
+<span class="nc" id="L546">		setstrMeasureNames.add (&quot;DerivedResetRate&quot;);</span>
 
-<span class="nc" id="L547">		setstrMeasureNames.add (&quot;DirtyPV&quot;);</span>
+<span class="nc" id="L548">		setstrMeasureNames.add (&quot;DirtyPV&quot;);</span>
 
-<span class="nc" id="L549">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+<span class="nc" id="L550">		setstrMeasureNames.add (&quot;Price&quot;);</span>
 
-<span class="nc" id="L551">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+<span class="nc" id="L552">		setstrMeasureNames.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L553">		setstrMeasureNames.add (&quot;CumulativeConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L554">		setstrMeasureNames.add (&quot;CumulativeConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L555">		setstrMeasureNames.add (&quot;ReferenceAccrued01&quot;);</span>
+<span class="nc" id="L556">		setstrMeasureNames.add (&quot;ReferenceAccrued01&quot;);</span>
 
-<span class="nc" id="L557">		setstrMeasureNames.add (&quot;ReferenceAccrued&quot;);</span>
+<span class="nc" id="L558">		setstrMeasureNames.add (&quot;ReferenceAccrued&quot;);</span>
 
-<span class="nc" id="L559">		setstrMeasureNames.add (&quot;ReferenceCleanDV01&quot;);</span>
+<span class="nc" id="L560">		setstrMeasureNames.add (&quot;ReferenceCleanDV01&quot;);</span>
 
-<span class="nc" id="L561">		setstrMeasureNames.add (&quot;ReferenceCleanPV&quot;);</span>
+<span class="nc" id="L562">		setstrMeasureNames.add (&quot;ReferenceCleanPV&quot;);</span>
 
-<span class="nc" id="L563">		setstrMeasureNames.add (&quot;ReferenceDirtyDV01&quot;);</span>
+<span class="nc" id="L564">		setstrMeasureNames.add (&quot;ReferenceDirtyDV01&quot;);</span>
 
-<span class="nc" id="L565">		setstrMeasureNames.add (&quot;ReferenceDirtyPV&quot;);</span>
+<span class="nc" id="L566">		setstrMeasureNames.add (&quot;ReferenceDirtyPV&quot;);</span>
 
-<span class="nc" id="L567">		setstrMeasureNames.add (&quot;ReferenceDV01&quot;);</span>
+<span class="nc" id="L568">		setstrMeasureNames.add (&quot;ReferenceDV01&quot;);</span>
 
-<span class="nc" id="L569">		setstrMeasureNames.add (&quot;ReferenceFixing01&quot;);</span>
+<span class="nc" id="L570">		setstrMeasureNames.add (&quot;ReferenceFixing01&quot;);</span>
 
-<span class="nc" id="L571">		setstrMeasureNames.add (&quot;ReferenceParBasisSpread&quot;);</span>
+<span class="nc" id="L572">		setstrMeasureNames.add (&quot;ReferenceParBasisSpread&quot;);</span>
 
-<span class="nc" id="L573">		setstrMeasureNames.add (&quot;ReferenceCumulativeConvexityAdjustmentFactor&quot;);</span>
+<span class="nc" id="L574">		setstrMeasureNames.add (&quot;ReferenceCumulativeConvexityAdjustmentFactor&quot;);</span>
 
-<span class="nc" id="L575">		setstrMeasureNames.add (&quot;ReferenceCumulativeConvexityAdjustmentPremium&quot;);</span>
+<span class="nc" id="L576">		setstrMeasureNames.add (&quot;ReferenceCumulativeConvexityAdjustmentPremium&quot;);</span>
 
-<span class="nc" id="L577">		setstrMeasureNames.add (&quot;ReferencePV&quot;);</span>
+<span class="nc" id="L578">		setstrMeasureNames.add (&quot;ReferencePV&quot;);</span>
 
-<span class="nc" id="L579">		setstrMeasureNames.add (&quot;ReferenceResetDate&quot;);</span>
+<span class="nc" id="L580">		setstrMeasureNames.add (&quot;ReferenceResetDate&quot;);</span>
 
-<span class="nc" id="L581">		setstrMeasureNames.add (&quot;ReferenceResetRate&quot;);</span>
+<span class="nc" id="L582">		setstrMeasureNames.add (&quot;ReferenceResetRate&quot;);</span>
 
-<span class="nc" id="L583">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L584">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L585">		return setstrMeasureNames;</span>
+<span class="nc" id="L586">		return setstrMeasureNames;</span>
 	}
 
 	@Override public double pv (
@@ -592,18 +593,18 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L595">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatReferenceStreamResult =</span>
-<span class="nc" id="L596">			_floatReference.value (valParams, pricerParams, csqs, quotingParams);</span>
+<span class="nc" id="L596">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatReferenceStreamResult =</span>
+<span class="nc" id="L597">			_floatReference.value (valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="nc" id="L598">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatDerivedStreamResult =</span>
-<span class="nc" id="L599">			_floatDerived.value (valParams, pricerParams, csqs, quotingParams);</span>
+<span class="nc" id="L599">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapFloatDerivedStreamResult =</span>
+<span class="nc" id="L600">			_floatDerived.value (valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="nc bnc" id="L601" title="All 6 branches missed.">		if (null == mapFloatReferenceStreamResult || !mapFloatReferenceStreamResult.containsKey (&quot;DirtyPV&quot;)</span>
-<span class="nc bnc" id="L602" title="All 2 branches missed.">			|| null == mapFloatDerivedStreamResult || !mapFloatDerivedStreamResult.containsKey (&quot;DirtyPV&quot;))</span>
-<span class="nc" id="L603">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L602" title="All 6 branches missed.">		if (null == mapFloatReferenceStreamResult || !mapFloatReferenceStreamResult.containsKey (&quot;DirtyPV&quot;)</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">			|| null == mapFloatDerivedStreamResult || !mapFloatDerivedStreamResult.containsKey (&quot;DirtyPV&quot;))</span>
+<span class="nc" id="L604">			throw new java.lang.Exception</span>
 				(&quot;FloatFloatComponent::pv =&gt; Cannot Compute Constituent Stream Value Metrics&quot;);
 
-<span class="nc" id="L606">		return mapFloatReferenceStreamResult.get (&quot;DirtyPV&quot;) + mapFloatDerivedStreamResult.get (&quot;DirtyPV&quot;);</span>
+<span class="nc" id="L607">		return mapFloatReferenceStreamResult.get (&quot;DirtyPV&quot;) + mapFloatDerivedStreamResult.get (&quot;DirtyPV&quot;);</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
@@ -612,7 +613,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L615">		return null;</span>
+<span class="nc" id="L616">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
@@ -622,19 +623,19 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L625">		return null;</span>
+<span class="nc" id="L626">		return null;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="fc" id="L632">			return new org.drip.product.calib.FloatFloatQuoteSet (aLSS);</span>
-<span class="nc" id="L633">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L634">			e.printStackTrace();</span>
+<span class="fc" id="L633">			return new org.drip.product.calib.FloatFloatQuoteSet (aLSS);</span>
+<span class="nc" id="L634">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L635">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L637">		return null;</span>
+<span class="nc" id="L638">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
@@ -644,58 +645,58 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L647" title="All 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FloatFloatQuoteSet))</span>
-<span class="nc" id="L648">			return null;</span>
+<span class="nc bnc" id="L648" title="All 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FloatFloatQuoteSet))</span>
+<span class="nc" id="L649">			return null;</span>
 
-<span class="nc bnc" id="L650" title="All 2 branches missed.">		if (valParams.valueDate() &gt;= maturityDate().julian()) return null;</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">		if (valParams.valueDate() &gt;= maturityDate().julian()) return null;</span>
 
-<span class="nc" id="L652">		double dblPV = 0.;</span>
-<span class="nc" id="L653">		org.drip.product.calib.FloatingStreamQuoteSet fsqsDerived = null;</span>
-<span class="nc" id="L654">		org.drip.product.calib.FloatingStreamQuoteSet fsqsReference = null;</span>
-<span class="nc" id="L655">		org.drip.product.calib.FloatFloatQuoteSet ffqs = (org.drip.product.calib.FloatFloatQuoteSet) pqs;</span>
+<span class="nc" id="L653">		double dblPV = 0.;</span>
+<span class="nc" id="L654">		org.drip.product.calib.FloatingStreamQuoteSet fsqsDerived = null;</span>
+<span class="nc" id="L655">		org.drip.product.calib.FloatingStreamQuoteSet fsqsReference = null;</span>
+<span class="nc" id="L656">		org.drip.product.calib.FloatFloatQuoteSet ffqs = (org.drip.product.calib.FloatFloatQuoteSet) pqs;</span>
 
-<span class="nc bnc" id="L657" title="All 4 branches missed.">		if (!ffqs.containsPV() &amp;&amp; !ffqs.containsDerivedParBasisSpread() &amp;&amp;</span>
-<span class="nc bnc" id="L658" title="All 2 branches missed.">			!ffqs.containsReferenceParBasisSpread())</span>
-<span class="nc" id="L659">			return null;</span>
+<span class="nc bnc" id="L658" title="All 4 branches missed.">		if (!ffqs.containsPV() &amp;&amp; !ffqs.containsDerivedParBasisSpread() &amp;&amp;</span>
+<span class="nc bnc" id="L659" title="All 2 branches missed.">			!ffqs.containsReferenceParBasisSpread())</span>
+<span class="nc" id="L660">			return null;</span>
 
-<span class="nc" id="L661">		org.drip.state.representation.LatentStateSpecification[] aLSS = pqs.lss();</span>
+<span class="nc" id="L662">		org.drip.state.representation.LatentStateSpecification[] aLSS = pqs.lss();</span>
 
 		try {
-<span class="nc" id="L664">			fsqsDerived = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="nc" id="L665">			fsqsDerived = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
 
-<span class="nc" id="L666">			fsqsReference = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="nc" id="L667">			fsqsReference = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
 
-<span class="nc bnc" id="L668" title="All 2 branches missed.">			if (ffqs.containsPV()) dblPV = ffqs.pv();</span>
+<span class="nc bnc" id="L669" title="All 2 branches missed.">			if (ffqs.containsPV()) dblPV = ffqs.pv();</span>
 
-<span class="nc bnc" id="L670" title="All 2 branches missed.">			if (ffqs.containsDerivedParBasisSpread() &amp;&amp; !fsqsDerived.setSpread</span>
-<span class="nc bnc" id="L671" title="All 2 branches missed.">				(ffqs.derivedParBasisSpread()))</span>
-<span class="nc" id="L672">				return null;</span>
+<span class="nc bnc" id="L671" title="All 2 branches missed.">			if (ffqs.containsDerivedParBasisSpread() &amp;&amp; !fsqsDerived.setSpread</span>
+<span class="nc bnc" id="L672" title="All 2 branches missed.">				(ffqs.derivedParBasisSpread()))</span>
+<span class="nc" id="L673">				return null;</span>
 
-<span class="nc bnc" id="L674" title="All 2 branches missed.">			if (ffqs.containsReferenceParBasisSpread() &amp;&amp; !fsqsReference.setSpread</span>
-<span class="nc bnc" id="L675" title="All 2 branches missed.">				(ffqs.referenceParBasisSpread()))</span>
-<span class="nc" id="L676">				return null;</span>
-<span class="nc" id="L677">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L678">			e.printStackTrace();</span>
+<span class="nc bnc" id="L675" title="All 2 branches missed.">			if (ffqs.containsReferenceParBasisSpread() &amp;&amp; !fsqsReference.setSpread</span>
+<span class="nc bnc" id="L676" title="All 2 branches missed.">				(ffqs.referenceParBasisSpread()))</span>
+<span class="nc" id="L677">				return null;</span>
+<span class="nc" id="L678">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L679">			e.printStackTrace();</span>
 
-<span class="nc" id="L680">			return null;</span>
-<span class="nc" id="L681">		}</span>
+<span class="nc" id="L681">			return null;</span>
+<span class="nc" id="L682">		}</span>
 
-<span class="nc" id="L683">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcDerived = _floatDerived.fundingPRWC</span>
-<span class="nc" id="L684">			(valParams, pricerParams, csqs, quotingParams, fsqsDerived);</span>
+<span class="nc" id="L684">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcDerived = _floatDerived.fundingPRWC</span>
+<span class="nc" id="L685">			(valParams, pricerParams, csqs, quotingParams, fsqsDerived);</span>
 
-<span class="nc" id="L686">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcReference =</span>
-<span class="nc" id="L687">			_floatReference.fundingPRWC (valParams, pricerParams, csqs, quotingParams, fsqsReference);</span>
+<span class="nc" id="L687">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcReference =</span>
+<span class="nc" id="L688">			_floatReference.fundingPRWC (valParams, pricerParams, csqs, quotingParams, fsqsReference);</span>
 
-<span class="nc bnc" id="L689" title="All 4 branches missed.">		if (null == prwcDerived &amp;&amp; null == prwcReference) return null;</span>
+<span class="nc bnc" id="L690" title="All 4 branches missed.">		if (null == prwcDerived &amp;&amp; null == prwcReference) return null;</span>
 
-<span class="nc" id="L691">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L692">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc bnc" id="L694" title="All 2 branches missed.">		if (!prwc.absorb (prwcDerived)) return null;</span>
+<span class="nc bnc" id="L695" title="All 2 branches missed.">		if (!prwc.absorb (prwcDerived)) return null;</span>
 
-<span class="nc bnc" id="L696" title="All 2 branches missed.">		if (!prwc.absorb (prwcReference)) return null;</span>
+<span class="nc bnc" id="L697" title="All 2 branches missed.">		if (!prwc.absorb (prwcReference)) return null;</span>
 
-<span class="nc bnc" id="L698" title="All 2 branches missed.">		return !prwc.updateValue (dblPV) ? null : prwc;</span>
+<span class="nc bnc" id="L699" title="All 2 branches missed.">		return !prwc.updateValue (dblPV) ? null : prwc;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
@@ -705,57 +706,57 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L708" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FloatFloatQuoteSet))</span>
-<span class="nc" id="L709">			return null;</span>
+<span class="pc bpc" id="L709" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FloatFloatQuoteSet))</span>
+<span class="nc" id="L710">			return null;</span>
 
-<span class="pc bpc" id="L711" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt;= maturityDate().julian()) return null;</span>
+<span class="pc bpc" id="L712" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt;= maturityDate().julian()) return null;</span>
 
-<span class="fc" id="L713">		double dblPV = 0.;</span>
-<span class="fc" id="L714">		org.drip.product.calib.FloatingStreamQuoteSet fsqsDerived = null;</span>
-<span class="fc" id="L715">		org.drip.product.calib.FloatingStreamQuoteSet fsqsReference = null;</span>
-<span class="fc" id="L716">		org.drip.product.calib.FloatFloatQuoteSet ffqs = (org.drip.product.calib.FloatFloatQuoteSet) pqs;</span>
+<span class="fc" id="L714">		double dblPV = 0.;</span>
+<span class="fc" id="L715">		org.drip.product.calib.FloatingStreamQuoteSet fsqsDerived = null;</span>
+<span class="fc" id="L716">		org.drip.product.calib.FloatingStreamQuoteSet fsqsReference = null;</span>
+<span class="fc" id="L717">		org.drip.product.calib.FloatFloatQuoteSet ffqs = (org.drip.product.calib.FloatFloatQuoteSet) pqs;</span>
 
-<span class="fc bfc" id="L718" title="All 4 branches covered.">		if (!ffqs.containsPV() &amp;&amp; !ffqs.containsDerivedParBasisSpread() &amp;&amp;</span>
-<span class="pc bpc" id="L719" title="1 of 2 branches missed.">			!ffqs.containsReferenceParBasisSpread())</span>
-<span class="nc" id="L720">			return null;</span>
+<span class="fc bfc" id="L719" title="All 4 branches covered.">		if (!ffqs.containsPV() &amp;&amp; !ffqs.containsDerivedParBasisSpread() &amp;&amp;</span>
+<span class="pc bpc" id="L720" title="1 of 2 branches missed.">			!ffqs.containsReferenceParBasisSpread())</span>
+<span class="nc" id="L721">			return null;</span>
 
-<span class="fc" id="L722">		org.drip.state.representation.LatentStateSpecification[] aLSS = pqs.lss();</span>
+<span class="fc" id="L723">		org.drip.state.representation.LatentStateSpecification[] aLSS = pqs.lss();</span>
 
 		try {
-<span class="fc" id="L725">			fsqsDerived = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="fc" id="L726">			fsqsDerived = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
 
-<span class="fc" id="L727">			fsqsReference = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="fc" id="L728">			fsqsReference = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
 
-<span class="fc bfc" id="L729" title="All 2 branches covered.">			if (ffqs.containsPV()) dblPV = ffqs.pv();</span>
+<span class="fc bfc" id="L730" title="All 2 branches covered.">			if (ffqs.containsPV()) dblPV = ffqs.pv();</span>
 
-<span class="fc bfc" id="L731" title="All 2 branches covered.">			if (ffqs.containsDerivedParBasisSpread()) fsqsDerived.setSpread (ffqs.derivedParBasisSpread());</span>
+<span class="fc bfc" id="L732" title="All 2 branches covered.">			if (ffqs.containsDerivedParBasisSpread()) fsqsDerived.setSpread (ffqs.derivedParBasisSpread());</span>
 
-<span class="fc bfc" id="L733" title="All 2 branches covered.">			if (ffqs.containsReferenceParBasisSpread())</span>
-<span class="fc" id="L734">				fsqsReference.setSpread (ffqs.referenceParBasisSpread());</span>
-<span class="nc" id="L735">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L736">			e.printStackTrace();</span>
+<span class="fc bfc" id="L734" title="All 2 branches covered.">			if (ffqs.containsReferenceParBasisSpread())</span>
+<span class="fc" id="L735">				fsqsReference.setSpread (ffqs.referenceParBasisSpread());</span>
+<span class="nc" id="L736">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L737">			e.printStackTrace();</span>
 
-<span class="nc" id="L738">			return null;</span>
-<span class="fc" id="L739">		}</span>
+<span class="nc" id="L739">			return null;</span>
+<span class="fc" id="L740">		}</span>
 
-<span class="fc" id="L741">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcDerived = _floatDerived.forwardPRWC</span>
-<span class="fc" id="L742">			(valParams, pricerParams, csqs, quotingParams, fsqsDerived);</span>
+<span class="fc" id="L742">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcDerived = _floatDerived.forwardPRWC</span>
+<span class="fc" id="L743">			(valParams, pricerParams, csqs, quotingParams, fsqsDerived);</span>
 
-<span class="fc" id="L744">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcReference =</span>
-<span class="fc" id="L745">			_floatReference.forwardPRWC (valParams, pricerParams, csqs, quotingParams, fsqsReference);</span>
+<span class="fc" id="L745">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcReference =</span>
+<span class="fc" id="L746">			_floatReference.forwardPRWC (valParams, pricerParams, csqs, quotingParams, fsqsReference);</span>
 
-<span class="pc bpc" id="L747" title="3 of 4 branches missed.">		if (null == prwcDerived &amp;&amp; null == prwcReference) return null;</span>
+<span class="pc bpc" id="L748" title="3 of 4 branches missed.">		if (null == prwcDerived &amp;&amp; null == prwcReference) return null;</span>
 
-<span class="fc" id="L749">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="fc" id="L750">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="pc bpc" id="L752" title="1 of 2 branches missed.">		if (!prwc.absorb (prwcDerived)) return null;</span>
+<span class="pc bpc" id="L753" title="1 of 2 branches missed.">		if (!prwc.absorb (prwcDerived)) return null;</span>
 
-<span class="pc bpc" id="L754" title="1 of 2 branches missed.">		if (!prwc.absorb (prwcReference)) return null;</span>
+<span class="pc bpc" id="L755" title="1 of 2 branches missed.">		if (!prwc.absorb (prwcReference)) return null;</span>
 
-<span class="pc bpc" id="L756" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblPV)) return null;</span>
+<span class="pc bpc" id="L757" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblPV)) return null;</span>
 
-<span class="fc" id="L758">		return prwc;</span>
+<span class="fc" id="L759">		return prwc;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
@@ -765,60 +766,60 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L768" title="All 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FloatFloatQuoteSet))</span>
-<span class="nc" id="L769">			return null;</span>
+<span class="nc bnc" id="L769" title="All 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof org.drip.product.calib.FloatFloatQuoteSet))</span>
+<span class="nc" id="L770">			return null;</span>
 
-<span class="nc bnc" id="L771" title="All 2 branches missed.">		if (valParams.valueDate() &gt;= maturityDate().julian()) return null;</span>
+<span class="nc bnc" id="L772" title="All 2 branches missed.">		if (valParams.valueDate() &gt;= maturityDate().julian()) return null;</span>
 
-<span class="nc" id="L773">		double dblPV = 0.;</span>
-<span class="nc" id="L774">		org.drip.product.calib.FloatingStreamQuoteSet fsqsDerived = null;</span>
-<span class="nc" id="L775">		org.drip.product.calib.FloatingStreamQuoteSet fsqsReference = null;</span>
-<span class="nc" id="L776">		org.drip.product.calib.FloatFloatQuoteSet ffqs = (org.drip.product.calib.FloatFloatQuoteSet) pqs;</span>
+<span class="nc" id="L774">		double dblPV = 0.;</span>
+<span class="nc" id="L775">		org.drip.product.calib.FloatingStreamQuoteSet fsqsDerived = null;</span>
+<span class="nc" id="L776">		org.drip.product.calib.FloatingStreamQuoteSet fsqsReference = null;</span>
+<span class="nc" id="L777">		org.drip.product.calib.FloatFloatQuoteSet ffqs = (org.drip.product.calib.FloatFloatQuoteSet) pqs;</span>
 
-<span class="nc bnc" id="L778" title="All 4 branches missed.">		if (!ffqs.containsPV() &amp;&amp; !ffqs.containsDerivedParBasisSpread() &amp;&amp;</span>
-<span class="nc bnc" id="L779" title="All 2 branches missed.">			!ffqs.containsReferenceParBasisSpread())</span>
-<span class="nc" id="L780">			return null;</span>
+<span class="nc bnc" id="L779" title="All 4 branches missed.">		if (!ffqs.containsPV() &amp;&amp; !ffqs.containsDerivedParBasisSpread() &amp;&amp;</span>
+<span class="nc bnc" id="L780" title="All 2 branches missed.">			!ffqs.containsReferenceParBasisSpread())</span>
+<span class="nc" id="L781">			return null;</span>
 
-<span class="nc" id="L782">		org.drip.state.representation.LatentStateSpecification[] aLSS = pqs.lss();</span>
+<span class="nc" id="L783">		org.drip.state.representation.LatentStateSpecification[] aLSS = pqs.lss();</span>
 
 		try {
-<span class="nc" id="L785">			fsqsDerived = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="nc" id="L786">			fsqsDerived = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
 
-<span class="nc" id="L787">			fsqsReference = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="nc" id="L788">			fsqsReference = new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
 
-<span class="nc bnc" id="L789" title="All 2 branches missed.">			if (ffqs.containsPV()) dblPV = ffqs.pv();</span>
+<span class="nc bnc" id="L790" title="All 2 branches missed.">			if (ffqs.containsPV()) dblPV = ffqs.pv();</span>
 
-<span class="nc bnc" id="L791" title="All 2 branches missed.">			if (ffqs.containsDerivedParBasisSpread() &amp;&amp; !fsqsDerived.setSpread</span>
-<span class="nc bnc" id="L792" title="All 2 branches missed.">				(ffqs.derivedParBasisSpread()))</span>
-<span class="nc" id="L793">				return null;</span>
+<span class="nc bnc" id="L792" title="All 2 branches missed.">			if (ffqs.containsDerivedParBasisSpread() &amp;&amp; !fsqsDerived.setSpread</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">				(ffqs.derivedParBasisSpread()))</span>
+<span class="nc" id="L794">				return null;</span>
 
-<span class="nc bnc" id="L795" title="All 2 branches missed.">			if (ffqs.containsReferenceParBasisSpread() &amp;&amp; !fsqsReference.setSpread</span>
-<span class="nc bnc" id="L796" title="All 2 branches missed.">				(ffqs.referenceParBasisSpread()))</span>
-<span class="nc" id="L797">				return null;</span>
-<span class="nc" id="L798">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L799">			e.printStackTrace();</span>
+<span class="nc bnc" id="L796" title="All 2 branches missed.">			if (ffqs.containsReferenceParBasisSpread() &amp;&amp; !fsqsReference.setSpread</span>
+<span class="nc bnc" id="L797" title="All 2 branches missed.">				(ffqs.referenceParBasisSpread()))</span>
+<span class="nc" id="L798">				return null;</span>
+<span class="nc" id="L799">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L800">			e.printStackTrace();</span>
 
-<span class="nc" id="L801">			return null;</span>
-<span class="nc" id="L802">		}</span>
+<span class="nc" id="L802">			return null;</span>
+<span class="nc" id="L803">		}</span>
 
-<span class="nc" id="L804">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcDerived =</span>
-<span class="nc" id="L805">			_floatDerived.fundingForwardPRWC (valParams, pricerParams, csqs, quotingParams, fsqsDerived);</span>
+<span class="nc" id="L805">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcDerived =</span>
+<span class="nc" id="L806">			_floatDerived.fundingForwardPRWC (valParams, pricerParams, csqs, quotingParams, fsqsDerived);</span>
 
-<span class="nc" id="L807">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcReference =</span>
-<span class="nc" id="L808">			_floatReference.fundingForwardPRWC (valParams, pricerParams, csqs, quotingParams, fsqsReference);</span>
+<span class="nc" id="L808">		org.drip.state.estimator.PredictorResponseWeightConstraint prwcReference =</span>
+<span class="nc" id="L809">			_floatReference.fundingForwardPRWC (valParams, pricerParams, csqs, quotingParams, fsqsReference);</span>
 
-<span class="nc bnc" id="L810" title="All 4 branches missed.">		if (null == prwcDerived &amp;&amp; null == prwcReference) return null;</span>
+<span class="nc bnc" id="L811" title="All 4 branches missed.">		if (null == prwcDerived &amp;&amp; null == prwcReference) return null;</span>
 
-<span class="nc" id="L812">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L813">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc bnc" id="L815" title="All 2 branches missed.">		if (!prwc.absorb (prwcDerived)) return null;</span>
+<span class="nc bnc" id="L816" title="All 2 branches missed.">		if (!prwc.absorb (prwcDerived)) return null;</span>
 
-<span class="nc bnc" id="L817" title="All 2 branches missed.">		if (!prwc.absorb (prwcReference)) return null;</span>
+<span class="nc bnc" id="L818" title="All 2 branches missed.">		if (!prwc.absorb (prwcReference)) return null;</span>
 
-<span class="nc bnc" id="L819" title="All 2 branches missed.">		if (!prwc.updateValue (dblPV)) return null;</span>
+<span class="nc bnc" id="L820" title="All 2 branches missed.">		if (!prwc.updateValue (dblPV)) return null;</span>
 
-<span class="nc" id="L821">		return prwc;</span>
+<span class="nc" id="L822">		return prwc;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fxPRWC (
@@ -828,7 +829,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L831">		return null;</span>
+<span class="nc" id="L832">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint govviePRWC (
@@ -838,7 +839,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L841">		return null;</span>
+<span class="nc" id="L842">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -848,7 +849,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L851">		return null;</span>
+<span class="nc" id="L852">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; calibMeasures (
@@ -857,7 +858,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L860">		return null;</span>
+<span class="nc" id="L861">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

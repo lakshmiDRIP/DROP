@@ -76,9 +76,10 @@ package org.drip.state.discount;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount&quot;&gt;Discount&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount&quot;&gt;Discount&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -86,15 +87,15 @@ package org.drip.state.discount;
  */
 
 public class TurnListDiscountFactor {
-<span class="fc" id="L89">	private java.util.List&lt;org.drip.analytics.definition.Turn&gt; _lsTurn = null;</span>
+<span class="fc" id="L90">	private java.util.List&lt;org.drip.analytics.definition.Turn&gt; _lsTurn = null;</span>
 
 	/**
 	 * Empty TurnListDiscountFactor constructor
 	 */
 
 	public TurnListDiscountFactor()
-<span class="fc" id="L96">	{</span>
-<span class="fc" id="L97">	}</span>
+<span class="fc" id="L97">	{</span>
+<span class="fc" id="L98">	}</span>
 
 	/**
 	 * Add a Turn Instance to the Discount Curve
@@ -107,13 +108,13 @@ public class TurnListDiscountFactor {
 	public boolean addTurn (
 		final org.drip.analytics.definition.Turn turn)
 	{
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (null == turn) return false;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (null == turn) return false;</span>
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (null == _lsTurn) _lsTurn = new java.util.ArrayList&lt;org.drip.analytics.definition.Turn&gt;();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (null == _lsTurn) _lsTurn = new java.util.ArrayList&lt;org.drip.analytics.definition.Turn&gt;();</span>
 
-<span class="fc" id="L114">		_lsTurn.add (turn);</span>
+<span class="fc" id="L115">		_lsTurn.add (turn);</span>
 
-<span class="fc" id="L116">		return true;</span>
+<span class="fc" id="L117">		return true;</span>
 	}
 
 	/**
@@ -132,24 +133,24 @@ public class TurnListDiscountFactor {
 		final int iFinishDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L135" title="2 of 4 branches missed.">		if (null == _lsTurn || 0 == _lsTurn.size()) return 1.;</span>
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (null == _lsTurn || 0 == _lsTurn.size()) return 1.;</span>
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (iStartDate &gt;= iFinishDate) return 1.;</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (iStartDate &gt;= iFinishDate) return 1.;</span>
 
-<span class="fc" id="L139">		double dblTurnAdjust = 1.;</span>
+<span class="fc" id="L140">		double dblTurnAdjust = 1.;</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (org.drip.analytics.definition.Turn turn : _lsTurn) {</span>
-<span class="pc bpc" id="L142" title="2 of 6 branches missed.">			if (null == turn || iStartDate &gt;= turn.finishDate() || iFinishDate &lt;= turn.startDate()) continue;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (org.drip.analytics.definition.Turn turn : _lsTurn) {</span>
+<span class="pc bpc" id="L143" title="2 of 6 branches missed.">			if (null == turn || iStartDate &gt;= turn.finishDate() || iFinishDate &lt;= turn.startDate()) continue;</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			int iEffectiveStart = turn.startDate() &gt; iStartDate ? turn.startDate() : iStartDate;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			int iEffectiveStart = turn.startDate() &gt; iStartDate ? turn.startDate() : iStartDate;</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">			int iEffectiveFinish = turn.finishDate() &lt; iFinishDate ? turn.finishDate() : iFinishDate;</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			int iEffectiveFinish = turn.finishDate() &lt; iFinishDate ? turn.finishDate() : iFinishDate;</span>
 
-<span class="fc" id="L148">			dblTurnAdjust *= java.lang.Math.exp (turn.spread() * (iEffectiveStart - iEffectiveFinish) /</span>
+<span class="fc" id="L149">			dblTurnAdjust *= java.lang.Math.exp (turn.spread() * (iEffectiveStart - iEffectiveFinish) /</span>
 				365.25);
-<span class="fc" id="L150">		}</span>
+<span class="fc" id="L151">		}</span>
 
-<span class="fc" id="L152">		return dblTurnAdjust;</span>
+<span class="fc" id="L153">		return dblTurnAdjust;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
