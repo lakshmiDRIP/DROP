@@ -13,32 +13,51 @@ import org.drip.service.scenario.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -55,37 +74,46 @@ import org.drip.service.scenario.*;
  */
 
 /**
- * Saharanpur generates the Full Suite of Replication Metrics for the Sinker Bond Saharanpur.
+ * &lt;i&gt;Saharanpur&lt;/i&gt; generates the Full Suite of Replication Metrics for the Sinker Bond Saharanpur.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondsink/README.md&quot;&gt;Sinker Bond Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L63">public class Saharanpur {</span>
+<span class="nc" id="L91">public class Saharanpur {</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L69">		EnvManager.InitEnv (</span>
+<span class="fc" id="L97">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L74">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L102">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.MARCH,
 			10
 		);
 
-<span class="fc" id="L80">		String[] astrDepositTenor = new String[] {</span>
+<span class="fc" id="L108">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="fc" id="L84">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L112">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="fc" id="L88">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L116">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -94,7 +122,7 @@ import org.drip.service.scenario.*;
 			0.01845     // 98.155
 		};
 
-<span class="fc" id="L97">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="fc" id="L125">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -114,7 +142,7 @@ import org.drip.service.scenario.*;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L117">		String[] astrGovvieTenor = new String[] {</span>
+<span class="fc" id="L145">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -125,7 +153,7 @@ import org.drip.service.scenario.*;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L128">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L156">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -145,7 +173,7 @@ import org.drip.service.scenario.*;
 			0.025560  // 50Y
 		};
 
-<span class="fc" id="L148">		double[] adblGovvieYield = new double[] {</span>
+<span class="fc" id="L176">		double[] adblGovvieYield = new double[] {</span>
 			0.01219, //  1Y
 			0.01391, //  2Y
 			0.01590, //  3Y
@@ -156,7 +184,7 @@ import org.drip.service.scenario.*;
 			0.02927  // 30Y
 		};
 
-<span class="fc" id="L159">		String[] astrCreditTenor = new String[] {</span>
+<span class="fc" id="L187">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -167,7 +195,7 @@ import org.drip.service.scenario.*;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L170">		double[] adblCreditQuote = new double[] {</span>
+<span class="fc" id="L198">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -178,33 +206,33 @@ import org.drip.service.scenario.*;
 			188.	// 10Y
 		};
 
-<span class="fc" id="L181">		double dblFX = 1.;</span>
-<span class="fc" id="L182">		int iSettleLag = 3;</span>
-<span class="fc" id="L183">		int iCouponFreq = 4;</span>
-<span class="fc" id="L184">		String strName = &quot;Saharanpur&quot;;</span>
-<span class="fc" id="L185">		double dblCleanPrice = 1.058939;</span>
-<span class="fc" id="L186">		double dblIssuePrice = 1.0;</span>
-<span class="fc" id="L187">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L188">		double dblSpreadBump = 20.;</span>
-<span class="fc" id="L189">		double dblCouponRate = 0.055; </span>
-<span class="fc" id="L190">		double dblIssueAmount = 1.0e00;</span>
-<span class="fc" id="L191">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="fc" id="L192">		String strCouponDayCount = &quot;30/360&quot;;</span>
-<span class="fc" id="L193">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="fc" id="L209">		double dblFX = 1.;</span>
+<span class="fc" id="L210">		int iSettleLag = 3;</span>
+<span class="fc" id="L211">		int iCouponFreq = 4;</span>
+<span class="fc" id="L212">		String strName = &quot;Saharanpur&quot;;</span>
+<span class="fc" id="L213">		double dblCleanPrice = 1.058939;</span>
+<span class="fc" id="L214">		double dblIssuePrice = 1.0;</span>
+<span class="fc" id="L215">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L216">		double dblSpreadBump = 20.;</span>
+<span class="fc" id="L217">		double dblCouponRate = 0.055; </span>
+<span class="fc" id="L218">		double dblIssueAmount = 1.0e00;</span>
+<span class="fc" id="L219">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L220">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L221">		double dblSpreadDurationMultiplier = 5.;</span>
 
-<span class="fc" id="L195">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L223">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2012,
 			DateUtil.DECEMBER,
 			20
 		);
 
-<span class="fc" id="L201">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L229">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2027,
 			DateUtil.DECEMBER,
 			20
 		);
 
-<span class="fc" id="L207">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="fc" id="L235">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strName,
 			strCurrency,
 			strName,
@@ -213,51 +241,51 @@ import org.drip.service.scenario.*;
 			strCouponDayCount,
 			dtEffective,
 			dtMaturity,
-<span class="fc" id="L216">			Array2D.FromArray (</span>
+<span class="fc" id="L244">			Array2D.FromArray (</span>
 				new int[] {
-<span class="fc" id="L218">					DateUtil.CreateFromYMD (2017,  3, 20).julian(),</span>
-<span class="fc" id="L219">					DateUtil.CreateFromYMD (2017,  6, 20).julian(),</span>
-<span class="fc" id="L220">					DateUtil.CreateFromYMD (2017,  9, 20).julian(),</span>
-<span class="fc" id="L221">					DateUtil.CreateFromYMD (2017, 12, 20).julian(),</span>
-<span class="fc" id="L222">					DateUtil.CreateFromYMD (2018,  3, 20).julian(),</span>
-<span class="fc" id="L223">					DateUtil.CreateFromYMD (2018,  6, 20).julian(),</span>
-<span class="fc" id="L224">					DateUtil.CreateFromYMD (2018,  9, 20).julian(),</span>
-<span class="fc" id="L225">					DateUtil.CreateFromYMD (2018, 12, 20).julian(),</span>
-<span class="fc" id="L226">					DateUtil.CreateFromYMD (2019,  3, 20).julian(),</span>
-<span class="fc" id="L227">					DateUtil.CreateFromYMD (2019,  6, 20).julian(),</span>
-<span class="fc" id="L228">					DateUtil.CreateFromYMD (2019,  9, 20).julian(),</span>
-<span class="fc" id="L229">					DateUtil.CreateFromYMD (2019, 12, 20).julian(),</span>
-<span class="fc" id="L230">					DateUtil.CreateFromYMD (2020,  3, 20).julian(),</span>
-<span class="fc" id="L231">					DateUtil.CreateFromYMD (2020,  6, 20).julian(),</span>
-<span class="fc" id="L232">					DateUtil.CreateFromYMD (2020,  9, 20).julian(),</span>
-<span class="fc" id="L233">					DateUtil.CreateFromYMD (2020, 12, 20).julian(),</span>
-<span class="fc" id="L234">					DateUtil.CreateFromYMD (2021,  3, 20).julian(),</span>
-<span class="fc" id="L235">					DateUtil.CreateFromYMD (2021,  6, 20).julian(),</span>
-<span class="fc" id="L236">					DateUtil.CreateFromYMD (2021,  9, 20).julian(),</span>
-<span class="fc" id="L237">					DateUtil.CreateFromYMD (2021, 12, 20).julian(),</span>
-<span class="fc" id="L238">					DateUtil.CreateFromYMD (2022,  3, 20).julian(),</span>
-<span class="fc" id="L239">					DateUtil.CreateFromYMD (2022,  6, 20).julian(),</span>
-<span class="fc" id="L240">					DateUtil.CreateFromYMD (2022,  9, 20).julian(),</span>
-<span class="fc" id="L241">					DateUtil.CreateFromYMD (2022, 12, 20).julian(),</span>
-<span class="fc" id="L242">					DateUtil.CreateFromYMD (2023,  3, 20).julian(),</span>
-<span class="fc" id="L243">					DateUtil.CreateFromYMD (2023,  6, 20).julian(),</span>
-<span class="fc" id="L244">					DateUtil.CreateFromYMD (2023,  9, 20).julian(),</span>
-<span class="fc" id="L245">					DateUtil.CreateFromYMD (2023, 12, 20).julian(),</span>
-<span class="fc" id="L246">					DateUtil.CreateFromYMD (2024,  3, 20).julian(),</span>
-<span class="fc" id="L247">					DateUtil.CreateFromYMD (2024,  6, 20).julian(),</span>
-<span class="fc" id="L248">					DateUtil.CreateFromYMD (2024,  9, 20).julian(),</span>
-<span class="fc" id="L249">					DateUtil.CreateFromYMD (2024, 12, 20).julian(),</span>
-<span class="fc" id="L250">					DateUtil.CreateFromYMD (2025,  3, 20).julian(),</span>
-<span class="fc" id="L251">					DateUtil.CreateFromYMD (2025,  6, 20).julian(),</span>
-<span class="fc" id="L252">					DateUtil.CreateFromYMD (2025,  9, 20).julian(),</span>
-<span class="fc" id="L253">					DateUtil.CreateFromYMD (2025, 12, 20).julian(),</span>
-<span class="fc" id="L254">					DateUtil.CreateFromYMD (2026,  3, 20).julian(),</span>
-<span class="fc" id="L255">					DateUtil.CreateFromYMD (2026,  6, 20).julian(),</span>
-<span class="fc" id="L256">					DateUtil.CreateFromYMD (2026,  9, 20).julian(),</span>
-<span class="fc" id="L257">					DateUtil.CreateFromYMD (2026, 12, 20).julian(),</span>
-<span class="fc" id="L258">					DateUtil.CreateFromYMD (2027,  3, 20).julian(),</span>
-<span class="fc" id="L259">					DateUtil.CreateFromYMD (2027,  6, 20).julian(),</span>
-<span class="fc" id="L260">					DateUtil.CreateFromYMD (2027,  9, 20).julian(),</span>
+<span class="fc" id="L246">					DateUtil.CreateFromYMD (2017,  3, 20).julian(),</span>
+<span class="fc" id="L247">					DateUtil.CreateFromYMD (2017,  6, 20).julian(),</span>
+<span class="fc" id="L248">					DateUtil.CreateFromYMD (2017,  9, 20).julian(),</span>
+<span class="fc" id="L249">					DateUtil.CreateFromYMD (2017, 12, 20).julian(),</span>
+<span class="fc" id="L250">					DateUtil.CreateFromYMD (2018,  3, 20).julian(),</span>
+<span class="fc" id="L251">					DateUtil.CreateFromYMD (2018,  6, 20).julian(),</span>
+<span class="fc" id="L252">					DateUtil.CreateFromYMD (2018,  9, 20).julian(),</span>
+<span class="fc" id="L253">					DateUtil.CreateFromYMD (2018, 12, 20).julian(),</span>
+<span class="fc" id="L254">					DateUtil.CreateFromYMD (2019,  3, 20).julian(),</span>
+<span class="fc" id="L255">					DateUtil.CreateFromYMD (2019,  6, 20).julian(),</span>
+<span class="fc" id="L256">					DateUtil.CreateFromYMD (2019,  9, 20).julian(),</span>
+<span class="fc" id="L257">					DateUtil.CreateFromYMD (2019, 12, 20).julian(),</span>
+<span class="fc" id="L258">					DateUtil.CreateFromYMD (2020,  3, 20).julian(),</span>
+<span class="fc" id="L259">					DateUtil.CreateFromYMD (2020,  6, 20).julian(),</span>
+<span class="fc" id="L260">					DateUtil.CreateFromYMD (2020,  9, 20).julian(),</span>
+<span class="fc" id="L261">					DateUtil.CreateFromYMD (2020, 12, 20).julian(),</span>
+<span class="fc" id="L262">					DateUtil.CreateFromYMD (2021,  3, 20).julian(),</span>
+<span class="fc" id="L263">					DateUtil.CreateFromYMD (2021,  6, 20).julian(),</span>
+<span class="fc" id="L264">					DateUtil.CreateFromYMD (2021,  9, 20).julian(),</span>
+<span class="fc" id="L265">					DateUtil.CreateFromYMD (2021, 12, 20).julian(),</span>
+<span class="fc" id="L266">					DateUtil.CreateFromYMD (2022,  3, 20).julian(),</span>
+<span class="fc" id="L267">					DateUtil.CreateFromYMD (2022,  6, 20).julian(),</span>
+<span class="fc" id="L268">					DateUtil.CreateFromYMD (2022,  9, 20).julian(),</span>
+<span class="fc" id="L269">					DateUtil.CreateFromYMD (2022, 12, 20).julian(),</span>
+<span class="fc" id="L270">					DateUtil.CreateFromYMD (2023,  3, 20).julian(),</span>
+<span class="fc" id="L271">					DateUtil.CreateFromYMD (2023,  6, 20).julian(),</span>
+<span class="fc" id="L272">					DateUtil.CreateFromYMD (2023,  9, 20).julian(),</span>
+<span class="fc" id="L273">					DateUtil.CreateFromYMD (2023, 12, 20).julian(),</span>
+<span class="fc" id="L274">					DateUtil.CreateFromYMD (2024,  3, 20).julian(),</span>
+<span class="fc" id="L275">					DateUtil.CreateFromYMD (2024,  6, 20).julian(),</span>
+<span class="fc" id="L276">					DateUtil.CreateFromYMD (2024,  9, 20).julian(),</span>
+<span class="fc" id="L277">					DateUtil.CreateFromYMD (2024, 12, 20).julian(),</span>
+<span class="fc" id="L278">					DateUtil.CreateFromYMD (2025,  3, 20).julian(),</span>
+<span class="fc" id="L279">					DateUtil.CreateFromYMD (2025,  6, 20).julian(),</span>
+<span class="fc" id="L280">					DateUtil.CreateFromYMD (2025,  9, 20).julian(),</span>
+<span class="fc" id="L281">					DateUtil.CreateFromYMD (2025, 12, 20).julian(),</span>
+<span class="fc" id="L282">					DateUtil.CreateFromYMD (2026,  3, 20).julian(),</span>
+<span class="fc" id="L283">					DateUtil.CreateFromYMD (2026,  6, 20).julian(),</span>
+<span class="fc" id="L284">					DateUtil.CreateFromYMD (2026,  9, 20).julian(),</span>
+<span class="fc" id="L285">					DateUtil.CreateFromYMD (2026, 12, 20).julian(),</span>
+<span class="fc" id="L286">					DateUtil.CreateFromYMD (2027,  3, 20).julian(),</span>
+<span class="fc" id="L287">					DateUtil.CreateFromYMD (2027,  6, 20).julian(),</span>
+<span class="fc" id="L288">					DateUtil.CreateFromYMD (2027,  9, 20).julian(),</span>
 				},
 				new double[] {
 					0.794090176,
@@ -308,7 +336,7 @@ import org.drip.service.scenario.*;
 			null
 		);
 
-<span class="fc" id="L311">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
+<span class="fc" id="L339">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -331,11 +359,11 @@ import org.drip.service.scenario.*;
 			bond
 		);
 
-<span class="fc" id="L334">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="fc" id="L362">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="fc" id="L336">		System.out.println (abrr.display());</span>
+<span class="fc" id="L364">		System.out.println (abrr.display());</span>
 
-<span class="fc" id="L338">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L339">	}</span>
+<span class="fc" id="L366">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L367">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
