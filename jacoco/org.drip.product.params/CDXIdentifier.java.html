@@ -77,9 +77,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *  
@@ -87,10 +88,10 @@ package org.drip.product.params;
  */
 
 public class CDXIdentifier {
-<span class="fc" id="L90">	public int _iSeries = 0;</span>
-<span class="fc" id="L91">	public int _iVersion = 0;</span>
-<span class="fc" id="L92">	public java.lang.String _strIndex = &quot;&quot;;</span>
-<span class="fc" id="L93">	public java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="fc" id="L91">	public int _iSeries = 0;</span>
+<span class="fc" id="L92">	public int _iVersion = 0;</span>
+<span class="fc" id="L93">	public java.lang.String _strIndex = &quot;&quot;;</span>
+<span class="fc" id="L94">	public java.lang.String _strTenor = &quot;&quot;;</span>
 
 	/**
 	 * Create the CDX Identifier from the CDX Code
@@ -103,24 +104,24 @@ public class CDXIdentifier {
 	public static final CDXIdentifier CreateCDXIdentifierFromCode (
 		final java.lang.String strCode)
 	{
-<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (null == strCode || strCode.isEmpty()) return null;</span>
+<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == strCode || strCode.isEmpty()) return null;</span>
 
-<span class="nc" id="L108">		java.lang.String[] astrFields = strCode.split (&quot;.&quot;);</span>
+<span class="nc" id="L109">		java.lang.String[] astrFields = strCode.split (&quot;.&quot;);</span>
 
-<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (null == astrFields || 4 &gt; astrFields.length) return null;</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == astrFields || 4 &gt; astrFields.length) return null;</span>
 
 		try {
-<span class="nc" id="L113">			return new CDXIdentifier (</span>
-<span class="nc" id="L114">				java.lang.Integer.parseInt (astrFields[astrFields.length - 2]),</span>
-<span class="nc" id="L115">				java.lang.Integer.parseInt (astrFields[astrFields.length - 1]),</span>
+<span class="nc" id="L114">			return new CDXIdentifier (</span>
+<span class="nc" id="L115">				java.lang.Integer.parseInt (astrFields[astrFields.length - 2]),</span>
+<span class="nc" id="L116">				java.lang.Integer.parseInt (astrFields[astrFields.length - 1]),</span>
 				astrFields[astrFields.length - 3],
 				astrFields[astrFields.length - 4]
 			);
-<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L120">			e.printStackTrace();</span>
+<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L121">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L123">		return null;</span>
+<span class="nc" id="L124">		return null;</span>
 	}
 
 	/**
@@ -140,14 +141,14 @@ public class CDXIdentifier {
 		final java.lang.String strIndex,
 		final java.lang.String strTenor)
 		throws java.lang.Exception
-<span class="fc" id="L143">	{</span>
-<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (null == (_strIndex = strIndex) || _strIndex.isEmpty() || null == (_strTenor = strTenor) ||</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			_strTenor.isEmpty())</span>
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;CDXIdentifier ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L144">	{</span>
+<span class="pc bpc" id="L145" title="3 of 6 branches missed.">		if (null == (_strIndex = strIndex) || _strIndex.isEmpty() || null == (_strTenor = strTenor) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			_strTenor.isEmpty())</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;CDXIdentifier ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L148">		_iSeries = iSeries;</span>
-<span class="fc" id="L149">		_iVersion = iVersion;</span>
-<span class="fc" id="L150">	}</span>
+<span class="fc" id="L149">		_iSeries = iSeries;</span>
+<span class="fc" id="L150">		_iVersion = iVersion;</span>
+<span class="fc" id="L151">	}</span>
 
 	/**
 	 * Return the CDX code string composed off of the index, tenor, series, and the version
@@ -157,7 +158,7 @@ public class CDXIdentifier {
 
 	public java.lang.String getCode()
 	{
-<span class="fc" id="L160">		return _strIndex + &quot;.&quot; + _strTenor + &quot;.&quot; + _iSeries + &quot;.&quot; + _iVersion;</span>
+<span class="fc" id="L161">		return _strIndex + &quot;.&quot; + _strTenor + &quot;.&quot; + _iSeries + &quot;.&quot; + _iVersion;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

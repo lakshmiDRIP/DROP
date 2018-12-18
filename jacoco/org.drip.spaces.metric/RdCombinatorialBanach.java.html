@@ -81,9 +81,10 @@ package org.drip.spaces.metric;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -92,8 +93,8 @@ package org.drip.spaces.metric;
 
 public class RdCombinatorialBanach extends org.drip.spaces.tensor.RdCombinatorialVector implements
 	org.drip.spaces.metric.RdNormed {
-<span class="nc" id="L95">	private int _iPNorm = -1;</span>
-<span class="nc" id="L96">	private org.drip.measure.continuous.Rd _distRd = null;</span>
+<span class="nc" id="L96">	private int _iPNorm = -1;</span>
+<span class="nc" id="L97">	private org.drip.measure.continuous.Rd _distRd = null;</span>
 
 	/**
 	 * RdCombinatorialBanach Space Constructor
@@ -111,165 +112,165 @@ public class RdCombinatorialBanach extends org.drip.spaces.tensor.RdCombinatoria
 		final int iPNorm)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L114">		super (aR1CV);</span>
+<span class="nc" id="L115">		super (aR1CV);</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;RdCombinatorialBanach Constructor: Invalid p-norm&quot;);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;RdCombinatorialBanach Constructor: Invalid p-norm&quot;);</span>
 
-<span class="nc" id="L119">		_distRd = distRd;</span>
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L120">		_distRd = distRd;</span>
+<span class="nc" id="L121">	}</span>
 
 	@Override public int pNorm()
 	{
-<span class="nc" id="L124">		return _iPNorm;</span>
+<span class="nc" id="L125">		return _iPNorm;</span>
 	}
 
 	@Override public org.drip.measure.continuous.Rd borelSigmaMeasure()
 	{
-<span class="nc" id="L129">		return _distRd;</span>
+<span class="nc" id="L130">		return _distRd;</span>
 	}
 
 	@Override public double sampleSupremumNorm (
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (!validateInstance (adblX))</span>
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;RdCombinatorialBanach::sampleSupremumNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!validateInstance (adblX))</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;RdCombinatorialBanach::sampleSupremumNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L139">		int iDimension = adblX.length;</span>
+<span class="nc" id="L140">		int iDimension = adblX.length;</span>
 
-<span class="nc" id="L141">		double dblNorm = java.lang.Math.abs (adblX[0]);</span>
+<span class="nc" id="L142">		double dblNorm = java.lang.Math.abs (adblX[0]);</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 1; i &lt; iDimension; ++i) {</span>
-<span class="nc" id="L144">			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (int i = 1; i &lt; iDimension; ++i) {</span>
+<span class="nc" id="L145">			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			dblNorm = dblNorm &gt; dblAbsoluteX ? dblNorm : dblAbsoluteX;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">			dblNorm = dblNorm &gt; dblAbsoluteX ? dblNorm : dblAbsoluteX;</span>
 		}
 
-<span class="nc" id="L149">		return dblNorm;</span>
+<span class="nc" id="L150">		return dblNorm;</span>
 	}
 
 	@Override public double sampleMetricNorm (
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!validateInstance (adblX))</span>
-<span class="nc" id="L157">			throw new java.lang.Exception (&quot;RdCombinatorialBanach::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (!validateInstance (adblX))</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;RdCombinatorialBanach::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (adblX);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (adblX);</span>
 
-<span class="nc" id="L161">		double dblNorm = 0.;</span>
-<span class="nc" id="L162">		int iDimension = adblX.length;</span>
+<span class="nc" id="L162">		double dblNorm = 0.;</span>
+<span class="nc" id="L163">		int iDimension = adblX.length;</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L165">			dblNorm += java.lang.Math.pow (java.lang.Math.abs (adblX[i]), _iPNorm);</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L166">			dblNorm += java.lang.Math.pow (java.lang.Math.abs (adblX[i]), _iPNorm);</span>
 
-<span class="nc" id="L167">		return java.lang.Math.pow (dblNorm, 1. / _iPNorm);</span>
+<span class="nc" id="L168">		return java.lang.Math.pow (dblNorm, 1. / _iPNorm);</span>
 	}
 
 	@Override public double[] populationMode()
 	{
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (null == _distRd) return null;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == _distRd) return null;</span>
 
-<span class="nc" id="L174">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();</span>
+<span class="nc" id="L175">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();</span>
 
-<span class="nc" id="L176">		double[] adblVariate = crmi.cursorVariates();</span>
+<span class="nc" id="L177">		double[] adblVariate = crmi.cursorVariates();</span>
 
-<span class="nc" id="L178">		int iDimension = adblVariate.length;</span>
-<span class="nc" id="L179">		double dblModeProbabilityDensity = 0.;</span>
-<span class="nc" id="L180">		double[] adblModeVariate = new double[iDimension];</span>
-<span class="nc" id="L181">		double dblProbabilityDensity = java.lang.Double.NaN;</span>
+<span class="nc" id="L179">		int iDimension = adblVariate.length;</span>
+<span class="nc" id="L180">		double dblModeProbabilityDensity = 0.;</span>
+<span class="nc" id="L181">		double[] adblModeVariate = new double[iDimension];</span>
+<span class="nc" id="L182">		double dblProbabilityDensity = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		while (null != adblVariate) {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		while (null != adblVariate) {</span>
 			try {
-<span class="nc" id="L185">				dblProbabilityDensity = _distRd.density (adblVariate);</span>
-<span class="nc" id="L186">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L187">				e.printStackTrace();</span>
+<span class="nc" id="L186">				dblProbabilityDensity = _distRd.density (adblVariate);</span>
+<span class="nc" id="L187">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L188">				e.printStackTrace();</span>
 
-<span class="nc" id="L189">				return null;</span>
-<span class="nc" id="L190">			}</span>
+<span class="nc" id="L190">				return null;</span>
+<span class="nc" id="L191">			}</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (dblProbabilityDensity &gt; dblModeProbabilityDensity) {</span>
-<span class="nc bnc" id="L193" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L194">					adblModeVariate[i] = adblVariate[i];</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">			if (dblProbabilityDensity &gt; dblModeProbabilityDensity) {</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L195">					adblModeVariate[i] = adblVariate[i];</span>
 
-<span class="nc" id="L196">				dblModeProbabilityDensity = dblProbabilityDensity;</span>
+<span class="nc" id="L197">				dblModeProbabilityDensity = dblProbabilityDensity;</span>
 			}
 
-<span class="nc" id="L199">			adblVariate = crmi.nextVariates();</span>
+<span class="nc" id="L200">			adblVariate = crmi.nextVariates();</span>
 		}
 
-<span class="nc" id="L202">		return adblModeVariate;</span>
+<span class="nc" id="L203">		return adblModeVariate;</span>
 	}
 
 	@Override public double populationSupremumNorm()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (null == _distRd)</span>
-<span class="nc" id="L209">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (null == _distRd)</span>
+<span class="nc" id="L210">			throw new java.lang.Exception</span>
 				(&quot;RdCombinatorialBanach::populationSupremumNorm =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L212">		return sampleSupremumNorm (populationMode());</span>
+<span class="nc" id="L213">		return sampleSupremumNorm (populationMode());</span>
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (populationMode());</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (populationMode());</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (null == _distRd)</span>
-<span class="nc" id="L221">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (null == _distRd)</span>
+<span class="nc" id="L222">			throw new java.lang.Exception</span>
 				(&quot;RdCombinatorialBanach::populationMetricNorm =&gt; No Multivariate Distribution&quot;);
 
-<span class="nc" id="L224">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();</span>
+<span class="nc" id="L225">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();</span>
 
-<span class="nc" id="L226">		double[] adblVariate = crmi.cursorVariates();</span>
+<span class="nc" id="L227">		double[] adblVariate = crmi.cursorVariates();</span>
 
-<span class="nc" id="L228">		double dblNormalizer = 0.;</span>
-<span class="nc" id="L229">		double dblPopulationMetricNorm  = 0.;</span>
-<span class="nc" id="L230">		int iDimension = adblVariate.length;</span>
+<span class="nc" id="L229">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L230">		double dblPopulationMetricNorm  = 0.;</span>
+<span class="nc" id="L231">		int iDimension = adblVariate.length;</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">		while (null != adblVariate) {</span>
-<span class="nc" id="L233">			double dblProbabilityDensity = _distRd.density (adblVariate);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		while (null != adblVariate) {</span>
+<span class="nc" id="L234">			double dblProbabilityDensity = _distRd.density (adblVariate);</span>
 
-<span class="nc" id="L235">			dblNormalizer += dblProbabilityDensity;</span>
+<span class="nc" id="L236">			dblNormalizer += dblProbabilityDensity;</span>
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L238">				dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L239">					(adblVariate[i]), _iPNorm);</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">			for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L239">				dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L240">					(adblVariate[i]), _iPNorm);</span>
 
-<span class="nc" id="L241">			adblVariate = crmi.nextVariates();</span>
-<span class="nc" id="L242">		}</span>
+<span class="nc" id="L242">			adblVariate = crmi.nextVariates();</span>
+<span class="nc" id="L243">		}</span>
 
-<span class="nc" id="L244">		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / _iPNorm);</span>
+<span class="nc" id="L245">		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / _iPNorm);</span>
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L251" title="All 4 branches missed.">		if (null == _distRd || null == funcRdToR1)</span>
-<span class="nc" id="L252">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L252" title="All 4 branches missed.">		if (null == _distRd || null == funcRdToR1)</span>
+<span class="nc" id="L253">			throw new java.lang.Exception</span>
 				(&quot;RdCombinatorialBanach::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L255">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();</span>
+<span class="nc" id="L256">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();</span>
 
-<span class="nc" id="L257">		double[] adblVariate = crmi.cursorVariates();</span>
+<span class="nc" id="L258">		double[] adblVariate = crmi.cursorVariates();</span>
 
-<span class="nc" id="L259">		double dblBorelMeasureSpaceExpectation = 0.;</span>
-<span class="nc" id="L260">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L260">		double dblBorelMeasureSpaceExpectation = 0.;</span>
+<span class="nc" id="L261">		double dblNormalizer = 0.;</span>
 
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		while (null != adblVariate) {</span>
-<span class="nc" id="L263">			double dblProbabilityDensity = _distRd.density (adblVariate);</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		while (null != adblVariate) {</span>
+<span class="nc" id="L264">			double dblProbabilityDensity = _distRd.density (adblVariate);</span>
 
-<span class="nc" id="L265">			dblNormalizer += dblProbabilityDensity;</span>
+<span class="nc" id="L266">			dblNormalizer += dblProbabilityDensity;</span>
 
-<span class="nc" id="L267">			dblBorelMeasureSpaceExpectation += dblProbabilityDensity * funcRdToR1.evaluate (adblVariate);</span>
+<span class="nc" id="L268">			dblBorelMeasureSpaceExpectation += dblProbabilityDensity * funcRdToR1.evaluate (adblVariate);</span>
 
-<span class="nc" id="L269">			adblVariate = crmi.nextVariates();</span>
-<span class="nc" id="L270">		}</span>
+<span class="nc" id="L270">			adblVariate = crmi.nextVariates();</span>
+<span class="nc" id="L271">		}</span>
 
-<span class="nc" id="L272">		return dblBorelMeasureSpaceExpectation / dblNormalizer;</span>
+<span class="nc" id="L273">		return dblBorelMeasureSpaceExpectation / dblNormalizer;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

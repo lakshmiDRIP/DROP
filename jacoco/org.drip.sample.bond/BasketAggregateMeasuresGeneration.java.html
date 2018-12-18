@@ -30,35 +30,54 @@ import org.drip.state.identifier.ForwardLabel;
 
 /*!
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -75,20 +94,45 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * BasketAggregateMeasuresGeneration contains a demo of the bond basket Measure generation Sample. It shows
- *  the following:
+ * &lt;i&gt;BasketAggregateMeasuresGeneration&lt;/i&gt; contains a demo of the bond basket Measure generation Sample. It
+ * shows the following:
  *  
- * 	- Build the IR Curve from the Rates' instruments.
- * 	- Build the Component Credit Curve from the CDS instruments.
- * 	- Create the basket market parameters and add the named discount curve and the credit curves to it.
- * 	- Create the bond basket from the component bonds and their weights.
- * 	- Construct the Valuation and the Pricing Parameters.
- * 	- Generate the bond basket measures from the valuation, the pricer, and the market parameters.
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Build the IR Curve from the Rates' instruments.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Build the Component Credit Curve from the CDS instruments.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Create the basket market parameters and add the named discount curve and the credit curves to it.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Create the bond basket from the component bonds and their weights.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Construct the Valuation and the Pricing Parameters.
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Generate the bond basket measures from the valuation, the pricer, and the market parameters.
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bond/README.md&quot;&gt;Bond&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class BasketAggregateMeasuresGeneration {</span>
+<span class="nc" id="L135">public class BasketAggregateMeasuresGeneration {</span>
 
 	private static final FixFloatComponent IRS (
 		final JulianDate dtEffective,
@@ -97,7 +141,7 @@ import org.drip.state.identifier.ForwardLabel;
 		final double dblCoupon)
 		throws Exception
 	{
-<span class="fc" id="L100">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="fc" id="L144">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 			2,
 			&quot;Act/360&quot;,
 			false,
@@ -108,11 +152,11 @@ import org.drip.state.identifier.ForwardLabel;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="fc" id="L111">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L155">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-<span class="fc" id="L115">			ForwardLabel.Create (</span>
+<span class="fc" id="L159">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;3M&quot;
 			),
@@ -120,7 +164,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.
 		);
 
-<span class="fc" id="L123">		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="fc" id="L167">		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
@@ -129,7 +173,7 @@ import org.drip.state.identifier.ForwardLabel;
 			strCurrency
 		);
 
-<span class="fc" id="L132">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="fc" id="L176">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			strCurrency,
@@ -141,7 +185,7 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="fc" id="L144">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="fc" id="L188">		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 			2,
 			&quot;6M&quot;,
 			strCurrency,
@@ -153,36 +197,36 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="fc" id="L156">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L200">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="fc" id="L162">		List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L206">		List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 			dtEffective,
 			&quot;6M&quot;,
 			strMaturityTenor,
 			null
 		);
 
-<span class="fc" id="L169">		List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L213">		List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 			dtEffective,
 			&quot;3M&quot;,
 			strMaturityTenor,
 			null
 		);
 
-<span class="fc" id="L176">		Stream floatingStream = new Stream (</span>
-<span class="fc" id="L177">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L220">		Stream floatingStream = new Stream (</span>
+<span class="fc" id="L221">			CompositePeriodBuilder.FloatingCompositeUnit (</span>
 				lsFloatingStreamEdgeDate,
 				cpsFloating,
 				cfusFloating
 			)
 		);
 
-<span class="fc" id="L184">		Stream fixedStream = new Stream (</span>
-<span class="fc" id="L185">			CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L228">		Stream fixedStream = new Stream (</span>
+<span class="fc" id="L229">			CompositePeriodBuilder.FixedCompositeUnit (</span>
 				lsFixedStreamEdgeDate,
 				cpsFixed,
 				ucasFixed,
@@ -190,15 +234,15 @@ import org.drip.state.identifier.ForwardLabel;
 			)
 		);
 
-<span class="fc" id="L193">		FixFloatComponent irs = new FixFloatComponent (</span>
+<span class="fc" id="L237">		FixFloatComponent irs = new FixFloatComponent (</span>
 			fixedStream,
 			floatingStream,
 			csp
 		);
 
-<span class="fc" id="L199">		irs.setPrimaryCode (&quot;IRS.&quot; + strMaturityTenor + &quot;.&quot; + strCurrency);</span>
+<span class="fc" id="L243">		irs.setPrimaryCode (&quot;IRS.&quot; + strMaturityTenor + &quot;.&quot; + strCurrency);</span>
 
-<span class="fc" id="L201">		return irs;</span>
+<span class="fc" id="L245">		return irs;</span>
 	}
 
 	/*
@@ -217,26 +261,26 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L220">		int iNumDCInstruments = astrCashTenor.length + adblIRSRate.length;</span>
-<span class="fc" id="L221">		int aiDate[] = new int[iNumDCInstruments];</span>
-<span class="fc" id="L222">		double adblRate[] = new double[iNumDCInstruments];</span>
-<span class="fc" id="L223">		String astrCalibMeasure[] = new String[iNumDCInstruments];</span>
-<span class="fc" id="L224">		double adblCompCalibValue[] = new double[iNumDCInstruments];</span>
-<span class="fc" id="L225">		CalibratableComponent aCompCalib[] = new CalibratableComponent[iNumDCInstruments];</span>
+<span class="fc" id="L264">		int iNumDCInstruments = astrCashTenor.length + adblIRSRate.length;</span>
+<span class="fc" id="L265">		int aiDate[] = new int[iNumDCInstruments];</span>
+<span class="fc" id="L266">		double adblRate[] = new double[iNumDCInstruments];</span>
+<span class="fc" id="L267">		String astrCalibMeasure[] = new String[iNumDCInstruments];</span>
+<span class="fc" id="L268">		double adblCompCalibValue[] = new double[iNumDCInstruments];</span>
+<span class="fc" id="L269">		CalibratableComponent aCompCalib[] = new CalibratableComponent[iNumDCInstruments];</span>
 
 		// Cash Calibration
 
-<span class="fc" id="L229">		JulianDate dtCashEffective = dtStart.addBusDays (1, strCurrency);</span>
+<span class="fc" id="L273">		JulianDate dtCashEffective = dtStart.addBusDays (1, strCurrency);</span>
 
-<span class="fc bfc" id="L231" title="All 2 branches covered.">		for (int i = 0; i &lt; astrCashTenor.length; ++i) {</span>
-<span class="fc" id="L232">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
-<span class="fc" id="L233">			adblRate[i] = java.lang.Double.NaN;</span>
-<span class="fc" id="L234">			adblCompCalibValue[i] = adblCashRate[i] + dblBump;</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		for (int i = 0; i &lt; astrCashTenor.length; ++i) {</span>
+<span class="fc" id="L276">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="fc" id="L277">			adblRate[i] = java.lang.Double.NaN;</span>
+<span class="fc" id="L278">			adblCompCalibValue[i] = adblCashRate[i] + dblBump;</span>
 
-<span class="fc" id="L236">			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc" id="L280">			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtCashEffective,
-<span class="fc" id="L238">				new JulianDate (aiDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),</span>
-<span class="fc" id="L239">				ForwardLabel.Create (</span>
+<span class="fc" id="L282">				new JulianDate (aiDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),</span>
+<span class="fc" id="L283">				ForwardLabel.Create (</span>
 					strCurrency,
 					astrCashTenor[i]
 				)
@@ -245,19 +289,19 @@ import org.drip.state.identifier.ForwardLabel;
 
 		// IRS Calibration
 
-<span class="fc" id="L248">		JulianDate dtIRSEffective = dtStart.addBusDays (</span>
+<span class="fc" id="L292">		JulianDate dtIRSEffective = dtStart.addBusDays (</span>
 			2,
 			strCurrency
 		);
 
-<span class="fc bfc" id="L253" title="All 2 branches covered.">		for (int i = 0; i &lt; astrIRSTenor.length; ++i) {</span>
-<span class="fc" id="L254">			astrCalibMeasure[i + astrCashTenor.length] = &quot;Rate&quot;;</span>
-<span class="fc" id="L255">			adblRate[i + astrCashTenor.length] = java.lang.Double.NaN;</span>
-<span class="fc" id="L256">			adblCompCalibValue[i + astrCashTenor.length] = adblIRSRate[i] + dblBump;</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (int i = 0; i &lt; astrIRSTenor.length; ++i) {</span>
+<span class="fc" id="L298">			astrCalibMeasure[i + astrCashTenor.length] = &quot;Rate&quot;;</span>
+<span class="fc" id="L299">			adblRate[i + astrCashTenor.length] = java.lang.Double.NaN;</span>
+<span class="fc" id="L300">			adblCompCalibValue[i + astrCashTenor.length] = adblIRSRate[i] + dblBump;</span>
 
-<span class="fc" id="L258">			aiDate[i + astrCashTenor.length] = dtIRSEffective.addTenor (astrIRSTenor[i]).julian();</span>
+<span class="fc" id="L302">			aiDate[i + astrCashTenor.length] = dtIRSEffective.addTenor (astrIRSTenor[i]).julian();</span>
 
-<span class="fc" id="L260">			aCompCalib[i + astrCashTenor.length] = IRS (</span>
+<span class="fc" id="L304">			aCompCalib[i + astrCashTenor.length] = IRS (</span>
 				dtIRSEffective,
 				strCurrency,
 				astrIRSTenor[i],
@@ -269,7 +313,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build the IR curve from the components, their calibration measures, and their calibration quotes.
 		 */
 
-<span class="fc" id="L272">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+<span class="fc" id="L316">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
 			dtStart,
 			strCurrency,
 			aCompCalib,
@@ -292,7 +336,7 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strTenor)
 		throws Exception
 	{
-<span class="fc" id="L295">		return BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond</span>
+<span class="fc" id="L339">		return BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond</span>
 			strName,					// Name
 			&quot;USD&quot;,					// Fictitious Treasury Curve Name
             &quot;&quot;,                         // Credit Curve - Empty for now
@@ -300,7 +344,7 @@ import org.drip.state.identifier.ForwardLabel;
 			2, 							// Frequency
 			&quot;Act/Act&quot;,					// Day Count
 			dt, 						// Effective
-<span class="fc" id="L303">			dt.addTenor (strTenor),		// Maturity</span>
+<span class="fc" id="L347">			dt.addTenor (strTenor),		// Maturity</span>
 			null,						// Principal Schedule
 			null
 		);
@@ -318,17 +362,17 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="fc" id="L321">		Bond aTSYBond[] = new Bond[astrTenor.length];</span>
+<span class="fc" id="L365">		Bond aTSYBond[] = new Bond[astrTenor.length];</span>
 
-<span class="fc bfc" id="L323" title="All 2 branches covered.">		for (int i = 0; i &lt; astrTenor.length; ++i)</span>
-<span class="fc" id="L324">			aTSYBond[i] = CreateTSYBond (</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (int i = 0; i &lt; astrTenor.length; ++i)</span>
+<span class="fc" id="L368">			aTSYBond[i] = CreateTSYBond (</span>
 				&quot;TSY&quot; + astrTenor[i] + &quot;ON&quot;,
 				adblCoupon[i],
 				dt,
 				astrTenor[i]
 			);
 
-<span class="fc" id="L331">		return aTSYBond;</span>
+<span class="fc" id="L375">		return aTSYBond;</span>
 	}
 
 	/*
@@ -343,12 +387,12 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblTSYYield)
 		throws Exception
 	{
-<span class="fc" id="L346">		String astrCalibMeasure[] = new String[aTSYBond.length];</span>
+<span class="fc" id="L390">		String astrCalibMeasure[] = new String[aTSYBond.length];</span>
 
-<span class="fc bfc" id="L348" title="All 2 branches covered.">		for (int i = 0; i &lt; aTSYBond.length; ++i)</span>
-<span class="fc" id="L349">			astrCalibMeasure[i] = &quot;Yield&quot;;</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">		for (int i = 0; i &lt; aTSYBond.length; ++i)</span>
+<span class="fc" id="L393">			astrCalibMeasure[i] = &quot;Yield&quot;;</span>
 
-<span class="fc" id="L351">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+<span class="fc" id="L395">		return ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
 			dt,
 			&quot;USD&quot;, // Fake curve name to indicate it is a USD TSY curve, not the usual USD curve
 			aTSYBond,
@@ -367,16 +411,16 @@ import org.drip.state.identifier.ForwardLabel;
 	private static final Array2D MakeFSPrincipal()
 		throws Exception
 	{
-<span class="fc" id="L370">		double[] aiDate = new double[5];</span>
-<span class="fc" id="L371">		double[] adblFactor = new double[] {1., 1.0, 1.0, 1.0, 1.0};</span>
+<span class="fc" id="L414">		double[] aiDate = new double[5];</span>
+<span class="fc" id="L415">		double[] adblFactor = new double[] {1., 1.0, 1.0, 1.0, 1.0};</span>
 		// double[] adblFactor = new double[] {1., 0.9, 0.8, 0.7, 0.6};
 
-<span class="fc" id="L374">		JulianDate dtEOSStart = DateUtil.Today().addDays (2);</span>
+<span class="fc" id="L418">		JulianDate dtEOSStart = DateUtil.Today().addDays (2);</span>
 
-<span class="fc bfc" id="L376" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i)</span>
-<span class="fc" id="L377">			aiDate[i] = dtEOSStart.addYears (i + 2).julian();</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i)</span>
+<span class="fc" id="L421">			aiDate[i] = dtEOSStart.addYears (i + 2).julian();</span>
 
-<span class="fc" id="L379">		return Array2D.FromArray (</span>
+<span class="fc" id="L423">		return Array2D.FromArray (</span>
 			aiDate,
 			adblFactor
 		);
@@ -391,16 +435,16 @@ import org.drip.state.identifier.ForwardLabel;
 	private static final Array2D MakeFSCoupon()
 		throws Exception
 	{
-<span class="fc" id="L394">		double[] aiDate = new double[5];</span>
-<span class="fc" id="L395">		double[] adblFactor = new double[] {1., 1.0, 1.0, 1.0, 1.0};</span>
+<span class="fc" id="L438">		double[] aiDate = new double[5];</span>
+<span class="fc" id="L439">		double[] adblFactor = new double[] {1., 1.0, 1.0, 1.0, 1.0};</span>
 		// double[] adblFactor = new double[] {1., 0.9, 0.8, 0.7, 0.6};
 
-<span class="fc" id="L398">		JulianDate dtEOSStart = DateUtil.Today().addDays (2);</span>
+<span class="fc" id="L442">		JulianDate dtEOSStart = DateUtil.Today().addDays (2);</span>
 
-<span class="fc bfc" id="L400" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i)</span>
-<span class="fc" id="L401">			aiDate[i] = dtEOSStart.addYears (i + 2).julian();</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i)</span>
+<span class="fc" id="L445">			aiDate[i] = dtEOSStart.addYears (i + 2).julian();</span>
 
-<span class="fc" id="L403">		return Array2D.FromArray (</span>
+<span class="fc" id="L447">		return Array2D.FromArray (</span>
 			aiDate,
 			adblFactor
 		);
@@ -415,13 +459,13 @@ import org.drip.state.identifier.ForwardLabel;
 	private static final void BasketBondAPISample()
 		throws Exception
 	{
-<span class="fc" id="L418">		JulianDate dtCurve = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L462">		JulianDate dtCurve = DateUtil.CreateFromYMD (</span>
 			2013,
 			6,
 			27
 		);
 
-<span class="fc" id="L424">		JulianDate dtSettle = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L468">		JulianDate dtSettle = DateUtil.CreateFromYMD (</span>
 			2013,
 			7,
 			1
@@ -431,27 +475,27 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build the IR Curve from the Rates' instruments
 		 */
 
-<span class="fc" id="L434">		String[] astrCashTenor = new String[] {&quot;3M&quot;};</span>
-<span class="fc" id="L435">		double[] adblCashRate = new double[] {0.00276};</span>
-<span class="fc" id="L436">		String[] astrIRSTenor = new String[] {   &quot;1Y&quot;,    &quot;2Y&quot;,    &quot;3Y&quot;,    &quot;4Y&quot;,    &quot;5Y&quot;,    &quot;6Y&quot;,    &quot;7Y&quot;,</span>
+<span class="fc" id="L478">		String[] astrCashTenor = new String[] {&quot;3M&quot;};</span>
+<span class="fc" id="L479">		double[] adblCashRate = new double[] {0.00276};</span>
+<span class="fc" id="L480">		String[] astrIRSTenor = new String[] {   &quot;1Y&quot;,    &quot;2Y&quot;,    &quot;3Y&quot;,    &quot;4Y&quot;,    &quot;5Y&quot;,    &quot;6Y&quot;,    &quot;7Y&quot;,</span>
 			   &quot;8Y&quot;,    &quot;9Y&quot;,   &quot;10Y&quot;,   &quot;11Y&quot;,   &quot;12Y&quot;,   &quot;15Y&quot;,   &quot;20Y&quot;,   &quot;25Y&quot;,   &quot;30Y&quot;,   &quot;40Y&quot;,   &quot;50Y&quot;};
-<span class="fc" id="L438">		double[] adblIRSRate = new double[]  {0.00367, 0.00533, 0.00843, 0.01238, 0.01609, 0.01926, 0.02191,</span>
+<span class="fc" id="L482">		double[] adblIRSRate = new double[]  {0.00367, 0.00533, 0.00843, 0.01238, 0.01609, 0.01926, 0.02191,</span>
 			0.02406, 0.02588, 0.02741, 0.02870, 0.02982, 0.03208, 0.03372, 0.03445, 0.03484, 0.03501, 0.03484};
 
-<span class="fc" id="L441">		MergedDiscountForwardCurve dc = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor, adblIRSRate, 0., &quot;USD&quot;);</span>
+<span class="fc" id="L485">		MergedDiscountForwardCurve dc = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor, adblIRSRate, 0., &quot;USD&quot;);</span>
 
 		/*
 		 * Construct the set of Treasury instruments (in the case on-the-run set)
 		 */
 
-<span class="fc" id="L447">		String[] astrTSYTenor = new String[] {</span>
+<span class="fc" id="L491">		String[] astrTSYTenor = new String[] {</span>
 			&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;5Y&quot;, &quot;7Y&quot;, &quot;10Y&quot;, &quot;30Y&quot;
 		};
-<span class="fc" id="L450">		final double[] adblTSYCoupon = new double[] {</span>
+<span class="fc" id="L494">		final double[] adblTSYCoupon = new double[] {</span>
 			0.0000, 0.00375, 0.00500, 0.0100, 0.01375, 0.01375, 0.02875
 		};
 
-<span class="fc" id="L454">		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (</span>
+<span class="fc" id="L498">		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (</span>
 			dtCurve,
 			astrTSYTenor,
 			adblTSYCoupon
@@ -461,11 +505,11 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build the Treasury Curve from the Treasury instruments and their yields
 		 */
 
-<span class="fc" id="L464">		double[] adblTSYYield = new double[] {</span>
+<span class="fc" id="L508">		double[] adblTSYYield = new double[] {</span>
 			0.00160, 0.00397, 0.00696, 0.01421, 0.01955, 0.02529, 0.03568
 		};
 
-<span class="fc" id="L468">		MergedDiscountForwardCurve dcTSY = BuildOnTheRunTSYDiscountCurve (</span>
+<span class="fc" id="L512">		MergedDiscountForwardCurve dcTSY = BuildOnTheRunTSYDiscountCurve (</span>
 			dtCurve,
 			aTSYBond,
 			adblTSYYield
@@ -475,19 +519,19 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the set of bonds and load them onto the basket
 		 */
 
-<span class="fc" id="L478">		BondComponent bond1 = BondBuilder.CreateSimpleFixed (</span>
+<span class="fc" id="L522">		BondComponent bond1 = BondBuilder.CreateSimpleFixed (</span>
             &quot;TEST1&quot;,                                               // Name
             &quot;USD&quot;,                                  // Currency
             &quot;&quot;,                                  	// Credit Curve - Empty for now
             0.09,                                      // Bond Coupon
             2,                                                            // Frequency
             &quot;30/360&quot;,                             // Day Count
-<span class="fc" id="L485">            DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L529">            DateUtil.CreateFromYMD (</span>
             	2011,
             	2,
             	23
             ), // Effective
-<span class="fc" id="L490">            DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L534">            DateUtil.CreateFromYMD (</span>
             	2021,
             	3,
             	1
@@ -496,19 +540,19 @@ import org.drip.state.identifier.ForwardLabel;
             null
 		);
 
-<span class="fc" id="L499">		BondComponent bond2 = BondBuilder.CreateSimpleFixed (    // Simple Fixed Rate Bond</span>
+<span class="fc" id="L543">		BondComponent bond2 = BondBuilder.CreateSimpleFixed (    // Simple Fixed Rate Bond</span>
             &quot;TEST2&quot;,                                               // Name
             &quot;USD&quot;,                                  // Currency
             &quot;&quot;,                                  	// Credit Curve - Empty for now
             0.09,                                      // Bond Coupon
             2,                                                            // Frequency
             &quot;30/360&quot;,                             // Day Count
-<span class="fc" id="L506">            DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L550">            DateUtil.CreateFromYMD (</span>
             	2011,
             	2,
             	23
             ), // Effective
-<span class="fc" id="L511">            DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L555">            DateUtil.CreateFromYMD (</span>
             	2021,
             	3,
             	1
@@ -517,19 +561,19 @@ import org.drip.state.identifier.ForwardLabel;
             null
 		);
 
-<span class="fc" id="L520">		BondComponent bond3 = BondBuilder.CreateSimpleFixed (    // Simple Fixed Rate Bond</span>
+<span class="fc" id="L564">		BondComponent bond3 = BondBuilder.CreateSimpleFixed (    // Simple Fixed Rate Bond</span>
             &quot;TEST3&quot;,                                               // Name
             &quot;USD&quot;,                                  // Currency
             &quot;&quot;,                                  	// Credit Curve - Empty for now
             0.09,                                      // Bond Coupon
             2,                                                            // Frequency
             &quot;30/360&quot;,                             // Day Count
-<span class="fc" id="L527">            DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L571">            DateUtil.CreateFromYMD (</span>
             	2011,
             	2,
             	23
             ), // Effective
-<span class="fc" id="L532">            DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L576">            DateUtil.CreateFromYMD (</span>
             	2021,
             	3,
             	1
@@ -538,7 +582,7 @@ import org.drip.state.identifier.ForwardLabel;
             null
 		);
 
-<span class="fc" id="L541">		BondComponent bond4 = BondBuilder.CreateSimpleFloater ( // Simple Floating Rate Bond</span>
+<span class="fc" id="L585">		BondComponent bond4 = BondBuilder.CreateSimpleFloater ( // Simple Floating Rate Bond</span>
 			&quot;FLOATER1&quot;,		// Name
 			&quot;USD&quot;,			// Currency
 			&quot;USD-6M&quot;,	// Rate Index
@@ -546,21 +590,21 @@ import org.drip.state.identifier.ForwardLabel;
 			0.01,			// Floating Spread
 			2,				// Coupon Frequency
 			&quot;30/360&quot;,		// Day Count
-<span class="fc" id="L549">			DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L593">			DateUtil.CreateFromYMD (</span>
 				2008,
 				9,
 				21
 			), // Effective
-<span class="fc" id="L554">			DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L598">			DateUtil.CreateFromYMD (</span>
 				2023,
 				9,
 				20
 			),	// Maturity
-<span class="fc" id="L559">			MakeFSPrincipal(),		// Principal Schedule</span>
-<span class="fc" id="L560">			MakeFSCoupon()		// Coupon Schedule</span>
+<span class="fc" id="L603">			MakeFSPrincipal(),		// Principal Schedule</span>
+<span class="fc" id="L604">			MakeFSCoupon()		// Coupon Schedule</span>
 		);
 
-<span class="fc" id="L563">		BasketProduct bb = new BondBasket (</span>
+<span class="fc" id="L607">		BasketProduct bb = new BondBasket (</span>
 			&quot;TurtlePower&quot;,
 			new Bond[] {
 				bond1, bond2, bond3, bond4
@@ -574,24 +618,24 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Create the basket market parameters and add the named discount curve and the treasury curves to it.
 		 */
 
-<span class="fc" id="L577">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L621">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L579">		mktParams.setFundingState (dc);</span>
+<span class="fc" id="L623">		mktParams.setFundingState (dc);</span>
 
-<span class="fc" id="L581">		mktParams.setFundingState (dcTSY);</span>
+<span class="fc" id="L625">		mktParams.setFundingState (dcTSY);</span>
 
 		/*
 		 * Construct the Valuation and the Pricing Parameters
 		 */
 
-<span class="fc" id="L587">		ValuationParams valParams = ValuationParams.Spot (</span>
+<span class="fc" id="L631">		ValuationParams valParams = ValuationParams.Spot (</span>
 			dtSettle,
 			0,
 			&quot;USD&quot;,
 			Convention.DATE_ROLL_ACTUAL
 		);
 
-<span class="fc" id="L594">		CreditPricerParams pricerParams = new CreditPricerParams (</span>
+<span class="fc" id="L638">		CreditPricerParams pricerParams = new CreditPricerParams (</span>
 			7,
 			null,
 			false,
@@ -602,29 +646,29 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Generate the bond basket measures from the valuation, the pricer, and the market parameters
 		 */
 
-<span class="fc" id="L605">		CaseInsensitiveTreeMap&lt;Double&gt; mapResult = bb.value (</span>
+<span class="fc" id="L649">		CaseInsensitiveTreeMap&lt;Double&gt; mapResult = bb.value (</span>
 			valParams,
 			pricerParams,
 			mktParams,
 			null
 		);
 
-<span class="fc" id="L612">		System.out.println (&quot;Clean Price:      &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;CleanPrice&quot;), 0, 2, 100.));</span>
+<span class="fc" id="L656">		System.out.println (&quot;Clean Price:      &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;CleanPrice&quot;), 0, 2, 100.));</span>
 
-<span class="fc" id="L614">		System.out.println (&quot;Fair Clean Price: &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairCleanPrice&quot;), 0, 2, 100.));</span>
+<span class="fc" id="L658">		System.out.println (&quot;Fair Clean Price: &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairCleanPrice&quot;), 0, 2, 100.));</span>
 
-<span class="fc" id="L616">		System.out.println (&quot;Fair Yield:       &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairYield&quot;), 0, 2, 100.));</span>
+<span class="fc" id="L660">		System.out.println (&quot;Fair Yield:       &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairYield&quot;), 0, 2, 100.));</span>
 
-<span class="fc" id="L618">		System.out.println (&quot;Fair GSpread:     &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairGSpread&quot;), 0, 0, 10000.));</span>
+<span class="fc" id="L662">		System.out.println (&quot;Fair GSpread:     &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairGSpread&quot;), 0, 0, 10000.));</span>
 
-<span class="fc" id="L620">		System.out.println (&quot;Fair ZSpread:     &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairZSpread&quot;), 0, 0, 10000.));</span>
+<span class="fc" id="L664">		System.out.println (&quot;Fair ZSpread:     &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairZSpread&quot;), 0, 0, 10000.));</span>
 
-<span class="fc" id="L622">		System.out.println (&quot;Fair ISpread:     &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairISpread&quot;), 0, 0, 10000.));</span>
+<span class="fc" id="L666">		System.out.println (&quot;Fair ISpread:     &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairISpread&quot;), 0, 0, 10000.));</span>
 
-<span class="fc" id="L624">		System.out.println (&quot;Fair Duration:    &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairDuration&quot;), 0, 2, 10000.));</span>
+<span class="fc" id="L668">		System.out.println (&quot;Fair Duration:    &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;FairDuration&quot;), 0, 2, 10000.));</span>
 
-<span class="fc" id="L626">		System.out.println (&quot;Accrued:          &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;Accrued&quot;), 1, 2, 100.));</span>
-<span class="fc" id="L627">	}</span>
+<span class="fc" id="L670">		System.out.println (&quot;Accrued:          &quot; + FormatUtil.FormatDouble (mapResult.get (&quot;Accrued&quot;), 1, 2, 100.));</span>
+<span class="fc" id="L671">	}</span>
 
 	public static final void main (
 		final String astrArgs[])
@@ -632,14 +676,14 @@ import org.drip.state.identifier.ForwardLabel;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="fc" id="L635">		EnvManager.InitEnv (</span>
+<span class="fc" id="L679">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L640">		BasketBondAPISample();</span>
+<span class="fc" id="L684">		BasketBondAPISample();</span>
 
-<span class="fc" id="L642">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L643">	}</span>
+<span class="fc" id="L686">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L687">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

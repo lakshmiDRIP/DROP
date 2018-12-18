@@ -90,16 +90,17 @@ package org.drip.spaces.cover;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Covering Number&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Cover&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L102">public class CoveringBoundsHelper {</span>
+<span class="nc" id="L103">public class CoveringBoundsHelper {</span>
 
 	/**
 	 * Compute the Dyadic Entropy Number from the nth Entropy Number
@@ -115,10 +116,10 @@ package org.drip.spaces.cover;
 		final double dblLogNEntropyNumber)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;CoveringBoundsHelper::DyadicEntropyNumber =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;CoveringBoundsHelper::DyadicEntropyNumber =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L121">		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));</span>
+<span class="nc" id="L122">		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));</span>
 	}
 
 	/**
@@ -143,12 +144,12 @@ package org.drip.spaces.cover;
 		final int iEntropyNumberIndexB)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (null == mocbA || null == mocbB)</span>
-<span class="nc" id="L147">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (null == mocbA || null == mocbB)</span>
+<span class="nc" id="L148">			throw new java.lang.Exception</span>
 				(&quot;CoveringBoundsHelper::CarlStephaniProductBound =&gt; Invalid Maurey Bounds for the Function Class&quot;);
 
-<span class="nc" id="L150">		return mocbA.entropyNumberUpperBound (iEntropyNumberIndexA) * mocbB.entropyNumberUpperBound</span>
-<span class="nc" id="L151">			(iEntropyNumberIndexB);</span>
+<span class="nc" id="L151">		return mocbA.entropyNumberUpperBound (iEntropyNumberIndexA) * mocbB.entropyNumberUpperBound</span>
+<span class="nc" id="L152">			(iEntropyNumberIndexB);</span>
 	}
 
 	/**
@@ -172,17 +173,17 @@ package org.drip.spaces.cover;
 		final double dblNormB,
 		final int iEntropyNumberIndex)
 	{
-<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (null == mocbA || null == mocbB) return null;</span>
+<span class="nc bnc" id="L176" title="All 4 branches missed.">		if (null == mocbA || null == mocbB) return null;</span>
 
 		try {
-<span class="nc" id="L178">			return new org.drip.spaces.cover.CarlStephaniNormedBounds (mocbA.entropyNumberUpperBound</span>
-<span class="nc" id="L179">				(iEntropyNumberIndex) * dblNormB, mocbB.entropyNumberUpperBound (iEntropyNumberIndex) *</span>
+<span class="nc" id="L179">			return new org.drip.spaces.cover.CarlStephaniNormedBounds (mocbA.entropyNumberUpperBound</span>
+<span class="nc" id="L180">				(iEntropyNumberIndex) * dblNormB, mocbB.entropyNumberUpperBound (iEntropyNumberIndex) *</span>
 					dblNormA);
-<span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L182">			e.printStackTrace();</span>
+<span class="nc" id="L182">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L183">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L185">		return null;</span>
+<span class="nc" id="L186">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

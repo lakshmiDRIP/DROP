@@ -81,9 +81,10 @@ package org.drip.spaces.rxtord;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -108,63 +109,63 @@ public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.rxtord.
 		final org.drip.function.definition.R1ToRd funcR1ToRd)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (r1CombinatorialInput, rdContinuousInput, funcR1ToRd);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc" id="L112">		super (r1CombinatorialInput, rdContinuousInput, funcR1ToRd);</span>
+<span class="nc" id="L113">	}</span>
 
 	@Override public double[] populationMetricNorm()
 	{
-<span class="nc" id="L116">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L117">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();</span>
 
-<span class="nc" id="L120">		org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput =</span>
-<span class="nc" id="L121">			(org.drip.spaces.metric.R1Combinatorial) inputMetricVectorSpace();</span>
+<span class="nc" id="L121">		org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput =</span>
+<span class="nc" id="L122">			(org.drip.spaces.metric.R1Combinatorial) inputMetricVectorSpace();</span>
 
-<span class="nc" id="L123">		org.drip.measure.continuous.R1 distR1 = r1CombinatorialInput.borelSigmaMeasure();</span>
+<span class="nc" id="L124">		org.drip.measure.continuous.R1 distR1 = r1CombinatorialInput.borelSigmaMeasure();</span>
 
-<span class="nc" id="L125">		java.util.List&lt;java.lang.Double&gt; lsElem = r1CombinatorialInput.elementSpace();</span>
+<span class="nc" id="L126">		java.util.List&lt;java.lang.Double&gt; lsElem = r1CombinatorialInput.elementSpace();</span>
 
-<span class="nc" id="L127">		org.drip.function.definition.R1ToRd funcR1ToRd = function();</span>
+<span class="nc" id="L128">		org.drip.function.definition.R1ToRd funcR1ToRd = function();</span>
 
-<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == distR1 || null == funcR1ToRd) return null;</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == distR1 || null == funcR1ToRd) return null;</span>
 
-<span class="nc" id="L131">		double dblProbabilityDensity = java.lang.Double.NaN;</span>
-<span class="nc" id="L132">		double[] adblPopulationMetricNorm = null;</span>
-<span class="nc" id="L133">		int iOutputDimension = -1;</span>
-<span class="nc" id="L134">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L132">		double dblProbabilityDensity = java.lang.Double.NaN;</span>
+<span class="nc" id="L133">		double[] adblPopulationMetricNorm = null;</span>
+<span class="nc" id="L134">		int iOutputDimension = -1;</span>
+<span class="nc" id="L135">		double dblNormalizer = 0.;</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (double dblElement : lsElem) {</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (double dblElement : lsElem) {</span>
 			try {
-<span class="nc" id="L138">				dblProbabilityDensity = distR1.density (dblElement);</span>
-<span class="nc" id="L139">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L140">				e.printStackTrace();</span>
+<span class="nc" id="L139">				dblProbabilityDensity = distR1.density (dblElement);</span>
+<span class="nc" id="L140">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L141">				e.printStackTrace();</span>
 
-<span class="nc" id="L142">				return null;</span>
-<span class="nc" id="L143">			}</span>
+<span class="nc" id="L143">				return null;</span>
+<span class="nc" id="L144">			}</span>
 
-<span class="nc" id="L145">			double[] adblValue = funcR1ToRd.evaluate (dblElement);</span>
+<span class="nc" id="L146">			double[] adblValue = funcR1ToRd.evaluate (dblElement);</span>
 
-<span class="nc bnc" id="L147" title="All 4 branches missed.">			if (null == adblValue || 0 == (iOutputDimension = adblValue.length)) return null;</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">			if (null == adblValue || 0 == (iOutputDimension = adblValue.length)) return null;</span>
 
-<span class="nc" id="L149">			dblNormalizer += dblProbabilityDensity;</span>
+<span class="nc" id="L150">			dblNormalizer += dblProbabilityDensity;</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">			if (null == adblPopulationMetricNorm) {</span>
-<span class="nc" id="L152">				adblPopulationMetricNorm = new double[iOutputDimension];</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			if (null == adblPopulationMetricNorm) {</span>
+<span class="nc" id="L153">				adblPopulationMetricNorm = new double[iOutputDimension];</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">				for (int i = 0; i &lt; iOutputDimension; ++i)</span>
-<span class="nc" id="L155">					adblPopulationMetricNorm[i] = 0;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">				for (int i = 0; i &lt; iOutputDimension; ++i)</span>
+<span class="nc" id="L156">					adblPopulationMetricNorm[i] = 0;</span>
 			}
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			for (int i = 0; i &lt; iOutputDimension; ++i)</span>
-<span class="nc" id="L159">				adblPopulationMetricNorm[i] += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L160">					(adblValue[i]), iPNorm);</span>
-<span class="nc" id="L161">		}</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			for (int i = 0; i &lt; iOutputDimension; ++i)</span>
+<span class="nc" id="L160">				adblPopulationMetricNorm[i] += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L161">					(adblValue[i]), iPNorm);</span>
+<span class="nc" id="L162">		}</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimension; ++i)</span>
-<span class="nc" id="L164">			adblPopulationMetricNorm[i] += java.lang.Math.pow (adblPopulationMetricNorm[i] / dblNormalizer,</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimension; ++i)</span>
+<span class="nc" id="L165">			adblPopulationMetricNorm[i] += java.lang.Math.pow (adblPopulationMetricNorm[i] / dblNormalizer,</span>
 				1. / iPNorm);
 
-<span class="nc" id="L167">		return adblPopulationMetricNorm;</span>
+<span class="nc" id="L168">		return adblPopulationMetricNorm;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

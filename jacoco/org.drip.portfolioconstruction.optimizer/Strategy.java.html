@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 /**
  * &lt;i&gt;Strategy&lt;/i&gt; holds the Details of a given Strategy.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -80,11 +81,11 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public class Strategy extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L83">	private boolean _bAllowCrossOver = false;</span>
-<span class="nc" id="L84">	private boolean _bIgnoreCompliance = false;</span>
-<span class="nc" id="L85">	private boolean _bAllowGrandFathering = false;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _of = null;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _ch = null;</span>
+<span class="nc" id="L84">	private boolean _bAllowCrossOver = false;</span>
+<span class="nc" id="L85">	private boolean _bIgnoreCompliance = false;</span>
+<span class="nc" id="L86">	private boolean _bAllowGrandFathering = false;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _of = null;</span>
+<span class="nc" id="L88">	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _ch = null;</span>
 
 	/**
 	 * Strategy Constructor
@@ -112,15 +113,15 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 		final boolean bIgnoreCompliance)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L115">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L116">		super (strName, strID, strDescription);</span>
 
-<span class="nc" id="L117">		_ch = ch;</span>
-<span class="nc" id="L118">		_bAllowCrossOver = bAllowCrossOver;</span>
-<span class="nc" id="L119">		_bIgnoreCompliance = bIgnoreCompliance;</span>
-<span class="nc" id="L120">		_bAllowGrandFathering = bAllowGrandFathering;</span>
+<span class="nc" id="L118">		_ch = ch;</span>
+<span class="nc" id="L119">		_bAllowCrossOver = bAllowCrossOver;</span>
+<span class="nc" id="L120">		_bIgnoreCompliance = bIgnoreCompliance;</span>
+<span class="nc" id="L121">		_bAllowGrandFathering = bAllowGrandFathering;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == (_of = of)) throw new java.lang.Exception (&quot;Strategy Construtor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L123">	}</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == (_of = of)) throw new java.lang.Exception (&quot;Strategy Construtor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L124">	}</span>
 
 	/**
 	 * Indicate if Grand-fathering of the &quot;Previous&quot; is to be performed
@@ -130,7 +131,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean allowGrandFathering()
 	{
-<span class="nc" id="L133">		return _bAllowGrandFathering;</span>
+<span class="nc" id="L134">		return _bAllowGrandFathering;</span>
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean allowCrossOver()
 	{
-<span class="nc" id="L144">		return _bAllowCrossOver;</span>
+<span class="nc" id="L145">		return _bAllowCrossOver;</span>
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean ignoreCompliance()
 	{
-<span class="nc" id="L155">		return _bIgnoreCompliance;</span>
+<span class="nc" id="L156">		return _bIgnoreCompliance;</span>
 	}
 
 	/**
@@ -163,7 +164,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction()
 	{
-<span class="nc" id="L166">		return _of;</span>
+<span class="nc" id="L167">		return _of;</span>
 	}
 
 	/**
@@ -174,7 +175,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy()
 	{
-<span class="nc" id="L177">		return _ch;</span>
+<span class="nc" id="L178">		return _ch;</span>
 	}
 
 	/**
@@ -185,7 +186,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public double[] constraintAttributes()
 	{
-<span class="nc" id="L188">		return null;</span>
+<span class="nc" id="L189">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

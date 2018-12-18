@@ -96,9 +96,10 @@ package org.drip.simm.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,9 +108,9 @@ package org.drip.simm.product;
 
 public class RiskClassSensitivityIR
 {
-<span class="nc" id="L110">	private org.drip.simm.product.RiskMeasureSensitivityIR _vega = null;</span>
-<span class="nc" id="L111">	private org.drip.simm.product.RiskMeasureSensitivityIR _delta = null;</span>
-<span class="nc" id="L112">	private org.drip.simm.product.RiskMeasureSensitivityIR _curvature = null;</span>
+<span class="nc" id="L111">	private org.drip.simm.product.RiskMeasureSensitivityIR _vega = null;</span>
+<span class="nc" id="L112">	private org.drip.simm.product.RiskMeasureSensitivityIR _delta = null;</span>
+<span class="nc" id="L113">	private org.drip.simm.product.RiskMeasureSensitivityIR _curvature = null;</span>
 
 	/**
 	 * RiskClassSensitivityIR Constructor
@@ -126,14 +127,14 @@ public class RiskClassSensitivityIR
 		final org.drip.simm.product.RiskMeasureSensitivityIR vega,
 		final org.drip.simm.product.RiskMeasureSensitivityIR curvature)
 		throws java.lang.Exception
-<span class="nc" id="L129">	{</span>
-<span class="nc bnc" id="L130" title="All 6 branches missed.">		if (null == (_delta = delta) ||</span>
+<span class="nc" id="L130">	{</span>
+<span class="nc bnc" id="L131" title="All 6 branches missed.">		if (null == (_delta = delta) ||</span>
 			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;RiskClassSensitivityIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;RiskClassSensitivityIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L136">	}</span>
+<span class="nc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the IR Delta Tenor Sensitivity
@@ -143,7 +144,7 @@ public class RiskClassSensitivityIR
 
 	public org.drip.simm.product.RiskMeasureSensitivityIR delta()
 	{
-<span class="nc" id="L146">		return _delta;</span>
+<span class="nc" id="L147">		return _delta;</span>
 	}
 
 	/**
@@ -154,7 +155,7 @@ public class RiskClassSensitivityIR
 
 	public org.drip.simm.product.RiskMeasureSensitivityIR vega()
 	{
-<span class="nc" id="L157">		return _vega;</span>
+<span class="nc" id="L158">		return _vega;</span>
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class RiskClassSensitivityIR
 
 	public org.drip.simm.product.RiskMeasureSensitivityIR curvature()
 	{
-<span class="nc" id="L168">		return _curvature;</span>
+<span class="nc" id="L169">		return _curvature;</span>
 	}
 
 	/**
@@ -181,34 +182,34 @@ public class RiskClassSensitivityIR
 		final org.drip.simm.parameters.RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR,
 		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (null == riskClassSensitivitySettingsIR)</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		if (null == riskClassSensitivitySettingsIR)</span>
 		{
-<span class="nc" id="L186">			return null;</span>
+<span class="nc" id="L187">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L191">			return new org.drip.simm.margin.RiskClassAggregateIR (</span>
-<span class="nc" id="L192">				_delta.linearAggregate (</span>
-<span class="nc" id="L193">					riskClassSensitivitySettingsIR.delta(),</span>
+<span class="nc" id="L192">			return new org.drip.simm.margin.RiskClassAggregateIR (</span>
+<span class="nc" id="L193">				_delta.linearAggregate (</span>
+<span class="nc" id="L194">					riskClassSensitivitySettingsIR.delta(),</span>
 					marginEstimationSettings
 				),
-<span class="nc" id="L196">				_vega.linearAggregate (</span>
-<span class="nc" id="L197">					riskClassSensitivitySettingsIR.vega(),</span>
+<span class="nc" id="L197">				_vega.linearAggregate (</span>
+<span class="nc" id="L198">					riskClassSensitivitySettingsIR.vega(),</span>
 					marginEstimationSettings
 				),
-<span class="nc" id="L200">				_curvature.curvatureAggregate (</span>
-<span class="nc" id="L201">					riskClassSensitivitySettingsIR.curvature(),</span>
+<span class="nc" id="L201">				_curvature.curvatureAggregate (</span>
+<span class="nc" id="L202">					riskClassSensitivitySettingsIR.curvature(),</span>
 					marginEstimationSettings
 				)
 			);
 		}
-<span class="nc" id="L206">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L207">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L208">			e.printStackTrace();</span>
+<span class="nc" id="L209">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L211">		return null;</span>
+<span class="nc" id="L212">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

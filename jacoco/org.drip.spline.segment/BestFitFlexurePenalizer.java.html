@@ -94,9 +94,10 @@ package org.drip.spline.segment;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -104,11 +105,11 @@ package org.drip.spline.segment;
  */
 
 public class BestFitFlexurePenalizer {
-<span class="fc" id="L107">	private org.drip.spline.segment.BasisEvaluator _lbe = null;</span>
-<span class="fc" id="L108">	private org.drip.spline.segment.LatentStateInelastic _ics = null;</span>
-<span class="fc" id="L109">	private org.drip.spline.params.SegmentBestFitResponse _sbfr = null;</span>
-<span class="fc" id="L110">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;</span>
-<span class="fc" id="L111">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;</span>
+<span class="fc" id="L108">	private org.drip.spline.segment.BasisEvaluator _lbe = null;</span>
+<span class="fc" id="L109">	private org.drip.spline.segment.LatentStateInelastic _ics = null;</span>
+<span class="fc" id="L110">	private org.drip.spline.params.SegmentBestFitResponse _sbfr = null;</span>
+<span class="fc" id="L111">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;</span>
+<span class="fc" id="L112">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;</span>
 
 	/**
 	 * BestFitFlexurePenalizer constructor
@@ -129,14 +130,14 @@ public class BestFitFlexurePenalizer {
 		final org.drip.spline.params.SegmentBestFitResponse sbfr,
 		final org.drip.spline.segment.BasisEvaluator lbe)
 		throws java.lang.Exception
-<span class="fc" id="L132">	{</span>
-<span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (null == (_lbe = lbe) || null == (_ics = ics))</span>
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;BestFitFlexurePenalizer ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L133">	{</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (null == (_lbe = lbe) || null == (_ics = ics))</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;BestFitFlexurePenalizer ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L136">		_sbfr = sbfr;</span>
-<span class="fc" id="L137">		_sfpcLength = sfpcLength;</span>
-<span class="fc" id="L138">		_sfpcCurvature = sfpcCurvature;</span>
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L137">		_sbfr = sbfr;</span>
+<span class="fc" id="L138">		_sfpcLength = sfpcLength;</span>
+<span class="fc" id="L139">		_sfpcCurvature = sfpcCurvature;</span>
+<span class="fc" id="L140">	}</span>
 
 	/**
 	 * Compute the Cross-Curvature Penalty for the given Basis Pair
@@ -154,18 +155,18 @@ public class BestFitFlexurePenalizer {
 		final int iBasisIndexR)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		if (null == _sfpcCurvature) return 0.;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		if (null == _sfpcCurvature) return 0.;</span>
 
-<span class="fc" id="L159">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L160">			(null) {</span>
+<span class="fc" id="L160">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L161">			(null) {</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws Exception
 			{
-<span class="fc" id="L165">				int iOrder = _sfpcCurvature.derivativeOrder();</span>
+<span class="fc" id="L166">				int iOrder = _sfpcCurvature.derivativeOrder();</span>
 
-<span class="fc" id="L167">				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *</span>
-<span class="fc" id="L168">					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);</span>
+<span class="fc" id="L168">				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *</span>
+<span class="fc" id="L169">					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);</span>
 			}
 
 			@Override public double integrate (
@@ -173,11 +174,11 @@ public class BestFitFlexurePenalizer {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L176">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="fc" id="L177">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
-<span class="fc" id="L180">		return _sfpcCurvature.amplitude() * au.integrate (_ics.left(), _ics.right());</span>
+<span class="fc" id="L181">		return _sfpcCurvature.amplitude() * au.integrate (_ics.left(), _ics.right());</span>
 	}
 
 	/**
@@ -196,18 +197,18 @@ public class BestFitFlexurePenalizer {
 		final int iBasisIndexR)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L199" title="All 2 branches covered.">		if (null == _sfpcLength) return 0.;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		if (null == _sfpcLength) return 0.;</span>
 
-<span class="fc" id="L201">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L202">			(null) {</span>
+<span class="fc" id="L202">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L203">			(null) {</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws Exception
 			{
-<span class="fc" id="L207">				int iOrder = _sfpcLength.derivativeOrder();</span>
+<span class="fc" id="L208">				int iOrder = _sfpcLength.derivativeOrder();</span>
 
-<span class="fc" id="L209">				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *</span>
-<span class="fc" id="L210">					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);</span>
+<span class="fc" id="L210">				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *</span>
+<span class="fc" id="L211">					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);</span>
 			}
 
 			@Override public double integrate (
@@ -215,11 +216,11 @@ public class BestFitFlexurePenalizer {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L218">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="fc" id="L219">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
-<span class="fc" id="L222">		return _sfpcLength.amplitude() * au.integrate (_ics.left(), _ics.right());</span>
+<span class="fc" id="L223">		return _sfpcLength.amplitude() * au.integrate (_ics.left(), _ics.right());</span>
 	}
 
 	/**
@@ -238,23 +239,23 @@ public class BestFitFlexurePenalizer {
 		final int iBasisIndexR)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L241" title="All 2 branches covered.">		if (null == _sbfr) return 0.;</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		if (null == _sbfr) return 0.;</span>
 
-<span class="fc" id="L243">		int iNumPoint = _sbfr.numPoint();</span>
+<span class="fc" id="L244">		int iNumPoint = _sbfr.numPoint();</span>
 
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		if (0 == iNumPoint) return 0.;</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (0 == iNumPoint) return 0.;</span>
 
-<span class="fc" id="L247">		double dblBasisPairFitnessPenalty = 0.;</span>
+<span class="fc" id="L248">		double dblBasisPairFitnessPenalty = 0.;</span>
 
-<span class="fc bfc" id="L249" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
-<span class="fc" id="L250">			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
+<span class="fc" id="L251">			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);</span>
 
-<span class="fc" id="L252">			dblBasisPairFitnessPenalty += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse</span>
-<span class="fc" id="L253">				(dblPredictorOrdinate, iBasisIndexI) * _lbe.shapedBasisFunctionResponse</span>
-<span class="fc" id="L254">					(dblPredictorOrdinate, iBasisIndexR);</span>
+<span class="fc" id="L253">			dblBasisPairFitnessPenalty += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse</span>
+<span class="fc" id="L254">				(dblPredictorOrdinate, iBasisIndexI) * _lbe.shapedBasisFunctionResponse</span>
+<span class="fc" id="L255">					(dblPredictorOrdinate, iBasisIndexR);</span>
 		}
 
-<span class="fc" id="L257">		return dblBasisPairFitnessPenalty / iNumPoint;</span>
+<span class="fc" id="L258">		return dblBasisPairFitnessPenalty / iNumPoint;</span>
 	}
 
 	/**
@@ -273,8 +274,8 @@ public class BestFitFlexurePenalizer {
 		final int iBasisIndexR)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L276">		return basisPairCurvaturePenalty (iBasisIndexI, iBasisIndexR) + basisPairLengthPenalty (iBasisIndexI,</span>
-<span class="fc" id="L277">			iBasisIndexR) + basisBestFitPenalty (iBasisIndexI, iBasisIndexR);</span>
+<span class="fc" id="L277">		return basisPairCurvaturePenalty (iBasisIndexI, iBasisIndexR) + basisPairLengthPenalty (iBasisIndexI,</span>
+<span class="fc" id="L278">			iBasisIndexR) + basisBestFitPenalty (iBasisIndexI, iBasisIndexR);</span>
 	}
 
 	/**
@@ -291,22 +292,22 @@ public class BestFitFlexurePenalizer {
 		final int iBasisIndexR)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L294" title="All 2 branches covered.">		if (null == _sbfr) return 0.;</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		if (null == _sbfr) return 0.;</span>
 
-<span class="fc" id="L296">		int iNumPoint = _sbfr.numPoint();</span>
+<span class="fc" id="L297">		int iNumPoint = _sbfr.numPoint();</span>
 
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">		if (0 == iNumPoint) return 0.;</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		if (0 == iNumPoint) return 0.;</span>
 
-<span class="fc" id="L300">		double dblBasisPairPenaltyConstraint = 0.;</span>
+<span class="fc" id="L301">		double dblBasisPairPenaltyConstraint = 0.;</span>
 
-<span class="fc bfc" id="L302" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
-<span class="fc" id="L303">			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoint; ++i) {</span>
+<span class="fc" id="L304">			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);</span>
 
-<span class="fc" id="L305">			dblBasisPairPenaltyConstraint += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse</span>
-<span class="fc" id="L306">				(dblPredictorOrdinate, iBasisIndexR) * _sbfr.response (i);</span>
+<span class="fc" id="L306">			dblBasisPairPenaltyConstraint += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse</span>
+<span class="fc" id="L307">				(dblPredictorOrdinate, iBasisIndexR) * _sbfr.response (i);</span>
 		}
 
-<span class="fc" id="L309">		return dblBasisPairPenaltyConstraint / iNumPoint;</span>
+<span class="fc" id="L310">		return dblBasisPairPenaltyConstraint / iNumPoint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

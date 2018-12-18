@@ -94,9 +94,10 @@ package org.drip.regression.core;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -129,79 +130,79 @@ public class RegressionEngine {
 
 	public static final int REGRESSION_DETAIL_STATS = 8;
 
-<span class="fc" id="L132">	private int _iNumRuns = 0;</span>
-<span class="fc" id="L133">	private int _iRegressionDetail = REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED;</span>
+<span class="fc" id="L133">	private int _iNumRuns = 0;</span>
+<span class="fc" id="L134">	private int _iRegressionDetail = REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED;</span>
 
-<span class="fc" id="L135">	protected java.util.Set&lt;org.drip.regression.core.RegressorSet&gt; _setRS = new</span>
+<span class="fc" id="L136">	protected java.util.Set&lt;org.drip.regression.core.RegressorSet&gt; _setRS = new</span>
 		java.util.HashSet&lt;org.drip.regression.core.RegressorSet&gt;();
 
-<span class="fc" id="L138">	org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.regression.core.UnitRegressionStat&gt; _mapURS = new</span>
+<span class="fc" id="L139">	org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.regression.core.UnitRegressionStat&gt; _mapURS = new</span>
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.regression.core.UnitRegressionStat&gt;();
 
 	private boolean executeRegressionSet (
 		final org.drip.regression.core.RegressorSet rs)
 	{
-<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (null == rs || null == rs.getSetName() || rs.getSetName().isEmpty()) return false;</span>
+<span class="pc bpc" id="L145" title="3 of 6 branches missed.">		if (null == rs || null == rs.getSetName() || rs.getSetName().isEmpty()) return false;</span>
 
-<span class="fc" id="L146">		java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; lsRegressor = rs.getRegressorSet();</span>
+<span class="fc" id="L147">		java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; lsRegressor = rs.getRegressorSet();</span>
 
-<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == lsRegressor || 0 == lsRegressor.size()) {</span>
-<span class="nc" id="L149">			System.out.println (&quot;Cannot get the &quot; + rs.getSetName() + &quot; scenarios!&quot;);</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">		if (null == lsRegressor || 0 == lsRegressor.size()) {</span>
+<span class="nc" id="L150">			System.out.println (&quot;Cannot get the &quot; + rs.getSetName() + &quot; scenarios!&quot;);</span>
 
-<span class="nc" id="L151">			return false;</span>
+<span class="nc" id="L152">			return false;</span>
 		}
 
-<span class="fc" id="L154">		long lModuleTime = 0;</span>
-<span class="fc" id="L155">		int iNumRegressionsSucceeded = 0;</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">		boolean bRegressionDetail = 0 != (REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED &amp; _iRegressionDetail) ?</span>
+<span class="fc" id="L155">		long lModuleTime = 0;</span>
+<span class="fc" id="L156">		int iNumRegressionsSucceeded = 0;</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		boolean bRegressionDetail = 0 != (REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED &amp; _iRegressionDetail) ?</span>
 			true : false;
 
-<span class="fc" id="L159">		System.out.println (&quot;\t&quot; + rs.getSetName() + &quot; starts at &quot; + new java.util.Date());</span>
+<span class="fc" id="L160">		System.out.println (&quot;\t&quot; + rs.getSetName() + &quot; starts at &quot; + new java.util.Date());</span>
 
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (org.drip.regression.core.UnitRegressor r : lsRegressor) {</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			if (null == r) continue;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (org.drip.regression.core.UnitRegressor r : lsRegressor) {</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">			if (null == r) continue;</span>
 
-<span class="fc" id="L164">			org.drip.regression.core.RegressionRunOutput ro = r.regress();</span>
+<span class="fc" id="L165">			org.drip.regression.core.RegressionRunOutput ro = r.regress();</span>
 
-<span class="fc bfc" id="L166" title="All 4 branches covered.">			if (null != ro &amp;&amp; ro._bStatus) {</span>
-<span class="fc" id="L167">				++iNumRegressionsSucceeded;</span>
-<span class="fc" id="L168">				lModuleTime += ro._lExecTime;</span>
+<span class="fc bfc" id="L167" title="All 4 branches covered.">			if (null != ro &amp;&amp; ro._bStatus) {</span>
+<span class="fc" id="L168">				++iNumRegressionsSucceeded;</span>
+<span class="fc" id="L169">				lModuleTime += ro._lExecTime;</span>
 
-<span class="fc" id="L170">				java.lang.String strScenarioQualifiedRegressor = rs.getSetName() + &quot;.&quot; + r.getName();</span>
+<span class="fc" id="L171">				java.lang.String strScenarioQualifiedRegressor = rs.getSetName() + &quot;.&quot; + r.getName();</span>
 
-<span class="fc" id="L172">				org.drip.regression.core.UnitRegressionStat urs = _mapURS.get</span>
-<span class="fc" id="L173">					(strScenarioQualifiedRegressor);</span>
+<span class="fc" id="L173">				org.drip.regression.core.UnitRegressionStat urs = _mapURS.get</span>
+<span class="fc" id="L174">					(strScenarioQualifiedRegressor);</span>
 
-<span class="fc bfc" id="L175" title="All 2 branches covered.">				if (null == urs) urs = new org.drip.regression.core.UnitRegressionStat();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">				if (null == urs) urs = new org.drip.regression.core.UnitRegressionStat();</span>
 
-<span class="fc" id="L177">				urs.addExecTime (ro._lExecTime);</span>
+<span class="fc" id="L178">				urs.addExecTime (ro._lExecTime);</span>
 
-<span class="fc" id="L179">				_mapURS.put (strScenarioQualifiedRegressor, urs);</span>
+<span class="fc" id="L180">				_mapURS.put (strScenarioQualifiedRegressor, urs);</span>
 
-<span class="pc bpc" id="L181" title="1 of 4 branches missed.">				if (0 != (REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED &amp; _iRegressionDetail) ||</span>
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">				if (0 != (REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED &amp; _iRegressionDetail) ||</span>
 					0 != (REGRESSION_DETAIL_MODULE_UNIT_AGGREGATED &amp; _iRegressionDetail))
-<span class="fc" id="L183">					System.out.println (ro.displayString (bRegressionDetail));</span>
+<span class="fc" id="L184">					System.out.println (ro.displayString (bRegressionDetail));</span>
 			}
-<span class="fc" id="L185">		}</span>
+<span class="fc" id="L186">		}</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t&quot; + rs.getSetName() + &quot;=&gt; &quot; + lModuleTime+ &quot; (mu-s): &quot; +</span>
-<span class="fc" id="L188">			iNumRegressionsSucceeded + &quot; / &quot; + lsRegressor.size() + &quot; succeeded.&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t&quot; + rs.getSetName() + &quot;=&gt; &quot; + lModuleTime+ &quot; (mu-s): &quot; +</span>
+<span class="fc" id="L189">			iNumRegressionsSucceeded + &quot; / &quot; + lsRegressor.size() + &quot; succeeded.&quot;);</span>
 
-<span class="fc" id="L190">		System.out.println (&quot;\t&quot; + rs.getSetName() + &quot; ends at &quot; + new java.util.Date() + &quot;\n&quot;);</span>
+<span class="fc" id="L191">		System.out.println (&quot;\t&quot; + rs.getSetName() + &quot; ends at &quot; + new java.util.Date() + &quot;\n&quot;);</span>
 
-<span class="fc" id="L192">		return true;</span>
+<span class="fc" id="L193">		return true;</span>
 	}
 
 	protected RegressionEngine (
 		final int iNumRuns,
 		final int iRegressionDetail)
 		throws java.lang.Exception
-<span class="fc" id="L199">	{</span>
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (0 &gt;= (_iNumRuns = iNumRuns))</span>
-<span class="nc" id="L201">			throw new java.lang.Exception (&quot;RegressionEngine ctr: Invalid inputs&quot;);</span>
+<span class="fc" id="L200">	{</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		if (0 &gt;= (_iNumRuns = iNumRuns))</span>
+<span class="nc" id="L202">			throw new java.lang.Exception (&quot;RegressionEngine ctr: Invalid inputs&quot;);</span>
 
-<span class="fc" id="L203">		_iRegressionDetail = iRegressionDetail;</span>
-<span class="fc" id="L204">	}</span>
+<span class="fc" id="L204">		_iRegressionDetail = iRegressionDetail;</span>
+<span class="fc" id="L205">	}</span>
 
 	/**
 	 * Add the regressor set to the framework
@@ -214,11 +215,11 @@ public class RegressionEngine {
 	protected final boolean addRegressorSet (
 		final org.drip.regression.core.RegressorSet rs)
 	{
-<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == rs || !rs.setupRegressors()) return false;</span>
+<span class="pc bpc" id="L218" title="2 of 4 branches missed.">		if (null == rs || !rs.setupRegressors()) return false;</span>
 
-<span class="fc" id="L219">		_setRS.add (rs);</span>
+<span class="fc" id="L220">		_setRS.add (rs);</span>
 
-<span class="fc" id="L221">		return true;</span>
+<span class="fc" id="L222">		return true;</span>
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class RegressionEngine {
 
 	public boolean initRegressionEnv()
 	{
-<span class="fc" id="L232">		return true;</span>
+<span class="fc" id="L233">		return true;</span>
 	}
 
 	/**
@@ -240,33 +241,33 @@ public class RegressionEngine {
 
 	protected final boolean launch()
 	{
-<span class="pc bpc" id="L243" title="2 of 4 branches missed.">		if (0 == _setRS.size() || !initRegressionEnv()) return false;</span>
+<span class="pc bpc" id="L244" title="2 of 4 branches missed.">		if (0 == _setRS.size() || !initRegressionEnv()) return false;</span>
 
-<span class="fc" id="L245">		boolean bLaunchSuccessful = true;</span>
+<span class="fc" id="L246">		boolean bLaunchSuccessful = true;</span>
 
-<span class="fc bfc" id="L247" title="All 2 branches covered.">		for (int i = 0; i &lt; _iNumRuns; ++i) {</span>
-<span class="fc bfc" id="L248" title="All 2 branches covered.">			for (org.drip.regression.core.RegressorSet rs : _setRS)</span>
-<span class="fc" id="L249">				bLaunchSuccessful = executeRegressionSet (rs);</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">		for (int i = 0; i &lt; _iNumRuns; ++i) {</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">			for (org.drip.regression.core.RegressorSet rs : _setRS)</span>
+<span class="fc" id="L250">				bLaunchSuccessful = executeRegressionSet (rs);</span>
 		}
 
-<span class="pc bpc" id="L252" title="2 of 4 branches missed.">		if (0 != _mapURS.size() &amp;&amp; null != _mapURS.entrySet()) {</span>
+<span class="pc bpc" id="L253" title="2 of 4 branches missed.">		if (0 != _mapURS.size() &amp;&amp; null != _mapURS.entrySet()) {</span>
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.regression.core.UnitRegressionStat&gt;
-<span class="fc bfc" id="L254" title="All 2 branches covered.">				meURS : _mapURS.entrySet()) {</span>
-<span class="pc bpc" id="L255" title="3 of 6 branches missed.">				if (null == meURS || null == meURS.getKey() || meURS.getKey().isEmpty()) continue;</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">				meURS : _mapURS.entrySet()) {</span>
+<span class="pc bpc" id="L256" title="3 of 6 branches missed.">				if (null == meURS || null == meURS.getKey() || meURS.getKey().isEmpty()) continue;</span>
 
-<span class="fc" id="L257">				org.drip.regression.core.UnitRegressionStat urs = meURS.getValue();</span>
+<span class="fc" id="L258">				org.drip.regression.core.UnitRegressionStat urs = meURS.getValue();</span>
 
-<span class="pc bpc" id="L259" title="2 of 4 branches missed.">				if (null == urs || !urs.generateStat()) continue;</span>
+<span class="pc bpc" id="L260" title="2 of 4 branches missed.">				if (null == urs || !urs.generateStat()) continue;</span>
 
-<span class="fc bfc" id="L261" title="All 2 branches covered.">				if (0 != (REGRESSION_DETAIL_STATS &amp; _iRegressionDetail)) {</span>
-<span class="fc" id="L262">					System.out.println (&quot;\n--------\nStats for &quot; + meURS.getKey() + &quot;\n--------&quot;);</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">				if (0 != (REGRESSION_DETAIL_STATS &amp; _iRegressionDetail)) {</span>
+<span class="fc" id="L263">					System.out.println (&quot;\n--------\nStats for &quot; + meURS.getKey() + &quot;\n--------&quot;);</span>
 
-<span class="fc" id="L264">					System.out.println (urs.displayString (meURS.getKey()));</span>
+<span class="fc" id="L265">					System.out.println (urs.displayString (meURS.getKey()));</span>
 				}
-<span class="fc" id="L266">			}</span>
+<span class="fc" id="L267">			}</span>
 		}
 
-<span class="fc" id="L269">		return bLaunchSuccessful;</span>
+<span class="fc" id="L270">		return bLaunchSuccessful;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

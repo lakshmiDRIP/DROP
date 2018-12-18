@@ -93,9 +93,10 @@ package org.drip.state.estimator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -103,9 +104,9 @@ package org.drip.state.estimator;
  */
 
 public class PredictorResponseRelationSetup {
-<span class="fc" id="L106">	private double _dblValue = 0.;</span>
+<span class="fc" id="L107">	private double _dblValue = 0.;</span>
 
-<span class="fc" id="L108">	private java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; _mapPredictorResponseWeight = new</span>
+<span class="fc" id="L109">	private java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; _mapPredictorResponseWeight = new</span>
 		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();
 
 	/**
@@ -113,8 +114,8 @@ public class PredictorResponseRelationSetup {
 	 */
 
 	public PredictorResponseRelationSetup()
-<span class="fc" id="L116">	{</span>
-<span class="fc" id="L117">	}</span>
+<span class="fc" id="L117">	{</span>
+<span class="fc" id="L118">	}</span>
 
 	/**
 	 * Update the Constraint Value
@@ -127,10 +128,10 @@ public class PredictorResponseRelationSetup {
 	public boolean updateValue (
 		final double dblValue)
 	{
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="fc" id="L132">		_dblValue += dblValue;</span>
-<span class="fc" id="L133">		return true;</span>
+<span class="fc" id="L133">		_dblValue += dblValue;</span>
+<span class="fc" id="L134">		return true;</span>
 	}
 
 	/**
@@ -146,16 +147,16 @@ public class PredictorResponseRelationSetup {
 		final double dblPredictor,
 		final double dblResponseWeight)
 	{
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictor) ||</span>
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblResponseWeight))</span>
-<span class="nc" id="L151">			return false;</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictor) ||</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblResponseWeight))</span>
+<span class="nc" id="L152">			return false;</span>
 
-<span class="fc bfc" id="L153" title="All 2 branches covered.">		double dblResponseWeightPrior = _mapPredictorResponseWeight.containsKey (dblPredictor) ?</span>
-<span class="fc" id="L154">			_mapPredictorResponseWeight.get (dblPredictor) : 0.;</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		double dblResponseWeightPrior = _mapPredictorResponseWeight.containsKey (dblPredictor) ?</span>
+<span class="fc" id="L155">			_mapPredictorResponseWeight.get (dblPredictor) : 0.;</span>
 
-<span class="fc" id="L156">		_mapPredictorResponseWeight.put (dblPredictor, dblResponseWeight + dblResponseWeightPrior);</span>
+<span class="fc" id="L157">		_mapPredictorResponseWeight.put (dblPredictor, dblResponseWeight + dblResponseWeightPrior);</span>
 
-<span class="fc" id="L158">		return true;</span>
+<span class="fc" id="L159">		return true;</span>
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class PredictorResponseRelationSetup {
 
 	public double getValue()
 	{
-<span class="fc" id="L169">		return _dblValue;</span>
+<span class="fc" id="L170">		return _dblValue;</span>
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class PredictorResponseRelationSetup {
 
 	public java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; getPredictorResponseWeight()
 	{
-<span class="fc" id="L180">		return _mapPredictorResponseWeight;</span>
+<span class="fc" id="L181">		return _mapPredictorResponseWeight;</span>
 	}
 
 	/**
@@ -191,18 +192,18 @@ public class PredictorResponseRelationSetup {
 	public boolean absorb (
 		final PredictorResponseRelationSetup prrsOther)
 	{
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">		if (null == prrsOther || !updateValue (prrsOther.getValue())) return false;</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">		if (null == prrsOther || !updateValue (prrsOther.getValue())) return false;</span>
 
-<span class="fc" id="L196">		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; mapPRWOther =</span>
-<span class="fc" id="L197">			prrsOther.getPredictorResponseWeight();</span>
+<span class="fc" id="L197">		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; mapPRWOther =</span>
+<span class="fc" id="L198">			prrsOther.getPredictorResponseWeight();</span>
 
-<span class="pc bpc" id="L199" title="1 of 4 branches missed.">		if (null == mapPRWOther || 0 == mapPRWOther.size()) return true;</span>
+<span class="pc bpc" id="L200" title="1 of 4 branches missed.">		if (null == mapPRWOther || 0 == mapPRWOther.size()) return true;</span>
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : mapPRWOther.entrySet()) {</span>
-<span class="pc bpc" id="L202" title="2 of 4 branches missed.">			if (null != me &amp;&amp; !addPredictorResponseWeight (me.getKey(), me.getValue())) return false;</span>
-<span class="fc" id="L203">		}</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : mapPRWOther.entrySet()) {</span>
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">			if (null != me &amp;&amp; !addPredictorResponseWeight (me.getKey(), me.getValue())) return false;</span>
+<span class="fc" id="L204">		}</span>
 
-<span class="fc" id="L205">		return true;</span>
+<span class="fc" id="L206">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

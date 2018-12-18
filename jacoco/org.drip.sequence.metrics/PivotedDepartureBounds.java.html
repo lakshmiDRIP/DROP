@@ -73,9 +73,10 @@ package org.drip.sequence.metrics;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/metrics&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/metrics&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,10 +103,10 @@ public class PivotedDepartureBounds {
 
 	public static final int PIVOT_ANCHOR_TYPE_CUSTOM = 4;
 
-<span class="fc" id="L105">	private int _iPivotAnchorType = -1;</span>
-<span class="fc" id="L106">	private double _dblLower = java.lang.Double.NaN;</span>
-<span class="fc" id="L107">	private double _dblUpper = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private double _dblCustomPivotAnchor = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private int _iPivotAnchorType = -1;</span>
+<span class="fc" id="L107">	private double _dblLower = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private double _dblUpper = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private double _dblCustomPivotAnchor = java.lang.Double.NaN;</span>
 
 	/**
 	 * PivotedDepartureBounds Constructor
@@ -124,17 +125,17 @@ public class PivotedDepartureBounds {
 		final double dblLower,
 		final double dblUpper)
 		throws java.lang.Exception
-<span class="fc" id="L127">	{</span>
-<span class="fc" id="L128">		_dblLower = dblLower;</span>
-<span class="fc" id="L129">		_dblUpper = dblUpper;</span>
-<span class="fc" id="L130">		_iPivotAnchorType = iPivotAnchorType;</span>
-<span class="fc" id="L131">		_dblCustomPivotAnchor = dblCustomPivotAnchor;</span>
+<span class="fc" id="L128">	{</span>
+<span class="fc" id="L129">		_dblLower = dblLower;</span>
+<span class="fc" id="L130">		_dblUpper = dblUpper;</span>
+<span class="fc" id="L131">		_iPivotAnchorType = iPivotAnchorType;</span>
+<span class="fc" id="L132">		_dblCustomPivotAnchor = dblCustomPivotAnchor;</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		if ((!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp;</span>
-<span class="pc bpc" id="L134" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper)) || (PIVOT_ANCHOR_TYPE_CUSTOM ==</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				_iPivotAnchorType &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (_dblCustomPivotAnchor)))</span>
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;PivotedDepartureBounds ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L137">	}</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		if ((!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &amp;&amp;</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper)) || (PIVOT_ANCHOR_TYPE_CUSTOM ==</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				_iPivotAnchorType &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (_dblCustomPivotAnchor)))</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;PivotedDepartureBounds ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Lower Probability Bound
@@ -144,7 +145,7 @@ public class PivotedDepartureBounds {
 
 	public double lower()
 	{
-<span class="fc" id="L147">		return _dblLower;</span>
+<span class="fc" id="L148">		return _dblLower;</span>
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class PivotedDepartureBounds {
 
 	public double upper()
 	{
-<span class="fc" id="L158">		return _dblUpper;</span>
+<span class="fc" id="L159">		return _dblUpper;</span>
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class PivotedDepartureBounds {
 
 	public int pivotAnchorType()
 	{
-<span class="nc" id="L169">		return _iPivotAnchorType;</span>
+<span class="nc" id="L170">		return _iPivotAnchorType;</span>
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class PivotedDepartureBounds {
 
 	public double customPivotAnchor()
 	{
-<span class="nc" id="L180">		return _dblCustomPivotAnchor;</span>
+<span class="nc" id="L181">		return _dblCustomPivotAnchor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

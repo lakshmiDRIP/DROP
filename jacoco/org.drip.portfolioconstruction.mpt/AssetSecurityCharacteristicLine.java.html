@@ -69,12 +69,13 @@ package org.drip.portfolioconstruction.mpt;
 /**
  * &lt;i&gt;AssetSecurityCharacteristicLine&lt;/i&gt; holds the Asset Alpha and Beta from which the Asset's Excess
  * Returns over the Risk-Free Rate are estimated.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/mpt&quot;&gt;Modern Portfolio Theory&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/mpt&quot;&gt;Modern Portfolio Theory&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,8 +83,8 @@ package org.drip.portfolioconstruction.mpt;
  */
 
 public class AssetSecurityCharacteristicLine {
-<span class="nc" id="L85">	private double _dblBeta = java.lang.Double.NaN;</span>
-<span class="nc" id="L86">	private double _dblAlpha = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private double _dblBeta = java.lang.Double.NaN;</span>
+<span class="nc" id="L87">	private double _dblAlpha = java.lang.Double.NaN;</span>
 
 	/**
 	 * AssetSecurityCharacteristicLine Constructor
@@ -98,11 +99,11 @@ public class AssetSecurityCharacteristicLine {
 		final double dblAlpha,
 		final double dblBeta)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAlpha = dblAlpha) ||</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBeta = dblBeta))</span>
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;AssetSecurityCharacteristicLine Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L105">	}</span>
+<span class="nc" id="L102">	{</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAlpha = dblAlpha) ||</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblBeta = dblBeta))</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;AssetSecurityCharacteristicLine Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Asset's Alpha
@@ -112,7 +113,7 @@ public class AssetSecurityCharacteristicLine {
 
 	public double alpha()
 	{
-<span class="nc" id="L115">		return _dblAlpha;</span>
+<span class="nc" id="L116">		return _dblAlpha;</span>
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class AssetSecurityCharacteristicLine {
 
 	public double beta()
 	{
-<span class="nc" id="L126">		return _dblBeta;</span>
+<span class="nc" id="L127">		return _dblBeta;</span>
 	}
 
 	/**
@@ -141,11 +142,11 @@ public class AssetSecurityCharacteristicLine {
 		final double dblMarketExcessReturns)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblMarketExcessReturns))</span>
-<span class="nc" id="L145">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblMarketExcessReturns))</span>
+<span class="nc" id="L146">			throw new java.lang.Exception</span>
 				(&quot;AssetSecurityCharacteristicLine::excessReturns =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L148">		return _dblAlpha + _dblBeta * dblMarketExcessReturns;</span>
+<span class="nc" id="L149">		return _dblAlpha + _dblBeta * dblMarketExcessReturns;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

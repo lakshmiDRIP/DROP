@@ -73,16 +73,17 @@ package org.drip.spaces.big;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class SubMatrixSetExtractor {</span>
+<span class="nc" id="L86">public class SubMatrixSetExtractor {</span>
 
 	/**
 	 * Compute the Aggregate Composite Value of the Supplied Matrix
@@ -98,26 +99,26 @@ package org.drip.spaces.big;
 		final double[][] aadbl)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (null == aadbl)</span>
-<span class="nc" id="L102">			throw new java.lang.Exception (&quot;SubMatrixSetExtractor::CompositeValue =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == aadbl)</span>
+<span class="nc" id="L103">			throw new java.lang.Exception (&quot;SubMatrixSetExtractor::CompositeValue =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L104">		int iSize = aadbl.length;</span>
-<span class="fc" id="L105">		double dblCompositeValue = 0.;</span>
+<span class="fc" id="L105">		int iSize = aadbl.length;</span>
+<span class="fc" id="L106">		double dblCompositeValue = 0.;</span>
 
-<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (0 == iSize || 0 == aadbl[0].length)</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;SubMatrixSetExtractor::CompositeValue =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (0 == iSize || 0 == aadbl[0].length)</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;SubMatrixSetExtractor::CompositeValue =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (aadbl[i][j]))</span>
-<span class="nc" id="L113">					throw new java.lang.Exception</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (aadbl[i][j]))</span>
+<span class="nc" id="L114">					throw new java.lang.Exception</span>
 						(&quot;SubMatrixSetExtractor::CompositeValue =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L116">				dblCompositeValue += aadbl[i][j];</span>
+<span class="fc" id="L117">				dblCompositeValue += aadbl[i][j];</span>
 			}
 		}
 
-<span class="fc" id="L120">		return dblCompositeValue;</span>
+<span class="fc" id="L121">		return dblCompositeValue;</span>
 	}
 
 	/**
@@ -136,27 +137,27 @@ package org.drip.spaces.big;
 		final int iStartRow,
 		final int iStartColumn)
 	{
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (null == aadblMaster) return null;</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (null == aadblMaster) return null;</span>
 
-<span class="fc" id="L141">		int iMasterSize = aadblMaster.length;</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">		int iMaxSubMatrixSize = iMasterSize - (iStartColumn &gt; iStartRow ? iStartColumn : iStartRow);</span>
+<span class="fc" id="L142">		int iMasterSize = aadblMaster.length;</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		int iMaxSubMatrixSize = iMasterSize - (iStartColumn &gt; iStartRow ? iStartColumn : iStartRow);</span>
 
-<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (0 == iMasterSize || 0 == aadblMaster[0].length || 0 == iMaxSubMatrixSize) return null;</span>
+<span class="pc bpc" id="L145" title="3 of 6 branches missed.">		if (0 == iMasterSize || 0 == aadblMaster[0].length || 0 == iMaxSubMatrixSize) return null;</span>
 
-<span class="fc" id="L146">		java.util.List&lt;double[][]&gt; lsSubMatrix = new java.util.ArrayList&lt;double[][]&gt;();</span>
+<span class="fc" id="L147">		java.util.List&lt;double[][]&gt; lsSubMatrix = new java.util.ArrayList&lt;double[][]&gt;();</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int iSubMatrixSize = 1; iSubMatrixSize &lt;= iMaxSubMatrixSize; ++iSubMatrixSize) {</span>
-<span class="fc" id="L149">			double[][] aadblSubMatrix = new double[iSubMatrixSize][iSubMatrixSize];</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int iSubMatrixSize = 1; iSubMatrixSize &lt;= iMaxSubMatrixSize; ++iSubMatrixSize) {</span>
+<span class="fc" id="L150">			double[][] aadblSubMatrix = new double[iSubMatrixSize][iSubMatrixSize];</span>
 
-<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (int i = iStartRow; i &lt; iStartRow + iSubMatrixSize; ++i) {</span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">				for (int j = iStartColumn; j &lt; iStartColumn + iSubMatrixSize; ++j)</span>
-<span class="fc" id="L153">					aadblSubMatrix[i - iStartRow][j - iStartColumn] = aadblMaster[i][j];</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">			for (int i = iStartRow; i &lt; iStartRow + iSubMatrixSize; ++i) {</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">				for (int j = iStartColumn; j &lt; iStartColumn + iSubMatrixSize; ++j)</span>
+<span class="fc" id="L154">					aadblSubMatrix[i - iStartRow][j - iStartColumn] = aadblMaster[i][j];</span>
 			}
 
-<span class="fc" id="L156">			lsSubMatrix.add (aadblSubMatrix);</span>
+<span class="fc" id="L157">			lsSubMatrix.add (aadblSubMatrix);</span>
 		}
 
-<span class="fc" id="L159">		return lsSubMatrix;</span>
+<span class="fc" id="L160">		return lsSubMatrix;</span>
 	}
 
 	/**
@@ -178,21 +179,21 @@ package org.drip.spaces.big;
 		final int iStartColumn)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L181">		java.util.List&lt;double[][]&gt; lsSubMatrix = SquareSubMatrixList (aadblMaster, iStartRow, iStartColumn);</span>
+<span class="fc" id="L182">		java.util.List&lt;double[][]&gt; lsSubMatrix = SquareSubMatrixList (aadblMaster, iStartRow, iStartColumn);</span>
 
-<span class="pc bpc" id="L183" title="2 of 4 branches missed.">		if (null == lsSubMatrix || 0 == lsSubMatrix.size())</span>
-<span class="nc" id="L184">			throw new java.lang.Exception (&quot;SubMatrixSetExtractor::MaxCompositeSubMatrix =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L184" title="2 of 4 branches missed.">		if (null == lsSubMatrix || 0 == lsSubMatrix.size())</span>
+<span class="nc" id="L185">			throw new java.lang.Exception (&quot;SubMatrixSetExtractor::MaxCompositeSubMatrix =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L186">		double dblMaxCompositeSubMatrix = java.lang.Double.NEGATIVE_INFINITY;</span>
+<span class="fc" id="L187">		double dblMaxCompositeSubMatrix = java.lang.Double.NEGATIVE_INFINITY;</span>
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (double[][] aadblSubMatrix : lsSubMatrix) {</span>
-<span class="fc" id="L189">			double dblCompositeSubMatrix = CompositeValue (aadblSubMatrix);</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (double[][] aadblSubMatrix : lsSubMatrix) {</span>
+<span class="fc" id="L190">			double dblCompositeSubMatrix = CompositeValue (aadblSubMatrix);</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">			if (dblMaxCompositeSubMatrix &lt; dblCompositeSubMatrix)</span>
-<span class="fc" id="L192">				dblMaxCompositeSubMatrix = dblCompositeSubMatrix;</span>
-<span class="fc" id="L193">		}</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">			if (dblMaxCompositeSubMatrix &lt; dblCompositeSubMatrix)</span>
+<span class="fc" id="L193">				dblMaxCompositeSubMatrix = dblCompositeSubMatrix;</span>
+<span class="fc" id="L194">		}</span>
 
-<span class="fc" id="L195">		return dblMaxCompositeSubMatrix;</span>
+<span class="fc" id="L196">		return dblMaxCompositeSubMatrix;</span>
 	}
 
 	/**
@@ -214,34 +215,34 @@ package org.drip.spaces.big;
 		final int iStartColumn)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (null == aadblMaster)</span>
-<span class="nc" id="L218">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (null == aadblMaster)</span>
+<span class="nc" id="L219">			throw new java.lang.Exception</span>
 				(&quot;SubMatrixSetExtractor::LeanMaxCompositeSubMatrix =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L221">		double dblCompositeSubMatrix = 0.;</span>
-<span class="fc" id="L222">		int iMasterSize = aadblMaster.length;</span>
-<span class="fc" id="L223">		double dblMaxCompositeSubMatrix = java.lang.Double.NEGATIVE_INFINITY;</span>
-<span class="fc bfc" id="L224" title="All 2 branches covered.">		int iMaxSubMatrixSize = iMasterSize - (iStartColumn &gt; iStartRow ? iStartColumn : iStartRow);</span>
+<span class="fc" id="L222">		double dblCompositeSubMatrix = 0.;</span>
+<span class="fc" id="L223">		int iMasterSize = aadblMaster.length;</span>
+<span class="fc" id="L224">		double dblMaxCompositeSubMatrix = java.lang.Double.NEGATIVE_INFINITY;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		int iMaxSubMatrixSize = iMasterSize - (iStartColumn &gt; iStartRow ? iStartColumn : iStartRow);</span>
 
-<span class="pc bpc" id="L226" title="3 of 6 branches missed.">		if (0 == iMasterSize || 0 == aadblMaster[0].length || 0 == iMaxSubMatrixSize)</span>
-<span class="nc" id="L227">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L227" title="3 of 6 branches missed.">		if (0 == iMasterSize || 0 == aadblMaster[0].length || 0 == iMaxSubMatrixSize)</span>
+<span class="nc" id="L228">			throw new java.lang.Exception</span>
 				(&quot;SubMatrixSetExtractor::LeanMaxCompositeSubMatrix =&gt; Invalid Inputs&quot;);
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int iSubMatrixSize = 1; iSubMatrixSize &lt;= iMaxSubMatrixSize; ++iSubMatrixSize) {</span>
-<span class="fc bfc" id="L231" title="All 2 branches covered.">			for (int iRow = iStartRow; iRow &lt; iStartRow + iSubMatrixSize - 2; ++iRow)</span>
-<span class="fc" id="L232">				dblCompositeSubMatrix += aadblMaster[iRow][iStartColumn + iSubMatrixSize - 2];</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">		for (int iSubMatrixSize = 1; iSubMatrixSize &lt;= iMaxSubMatrixSize; ++iSubMatrixSize) {</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">			for (int iRow = iStartRow; iRow &lt; iStartRow + iSubMatrixSize - 2; ++iRow)</span>
+<span class="fc" id="L233">				dblCompositeSubMatrix += aadblMaster[iRow][iStartColumn + iSubMatrixSize - 2];</span>
 
-<span class="fc bfc" id="L234" title="All 2 branches covered.">			for (int iColumn = iStartColumn; iColumn &lt; iStartColumn + iSubMatrixSize - 2; ++iColumn)</span>
-<span class="fc" id="L235">				dblCompositeSubMatrix += aadblMaster[iStartRow + iSubMatrixSize - 2][iColumn];</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">			for (int iColumn = iStartColumn; iColumn &lt; iStartColumn + iSubMatrixSize - 2; ++iColumn)</span>
+<span class="fc" id="L236">				dblCompositeSubMatrix += aadblMaster[iStartRow + iSubMatrixSize - 2][iColumn];</span>
 
-<span class="fc" id="L237">			dblCompositeSubMatrix +=</span>
+<span class="fc" id="L238">			dblCompositeSubMatrix +=</span>
 				aadblMaster[iStartRow + iSubMatrixSize - 1][iStartColumn + iSubMatrixSize - 1];
 
-<span class="fc bfc" id="L240" title="All 2 branches covered.">			if (dblMaxCompositeSubMatrix &lt; dblCompositeSubMatrix)</span>
-<span class="fc" id="L241">				dblMaxCompositeSubMatrix = dblCompositeSubMatrix;</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">			if (dblMaxCompositeSubMatrix &lt; dblCompositeSubMatrix)</span>
+<span class="fc" id="L242">				dblMaxCompositeSubMatrix = dblCompositeSubMatrix;</span>
 		}
 
-<span class="fc" id="L244">		return dblMaxCompositeSubMatrix;</span>
+<span class="fc" id="L245">		return dblMaxCompositeSubMatrix;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -77,9 +77,10 @@ package org.drip.xva.hypothecation;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation&quot;&gt;Hypothecation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation&quot;&gt;Hypothecation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -88,8 +89,8 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexCloseOut
 {
-<span class="fc" id="L91">	private double _client = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">	private double _dealer = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">	private double _client = java.lang.Double.NaN;</span>
+<span class="fc" id="L93">	private double _dealer = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Static Instance of CollateralGroupVertexCloseOut
@@ -106,32 +107,32 @@ public class CollateralGroupVertexCloseOut
 		final double uncollateralizedExposure,
 		final double collateralBalance)
 	{
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == closeOutGeneral ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (null == closeOutGeneral ||</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))</span>
 		{
-<span class="nc" id="L113">			return null;</span>
+<span class="nc" id="L114">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L118">			return new CollateralGroupVertexCloseOut (</span>
-<span class="fc" id="L119">				closeOutGeneral.dealerDefault (</span>
+<span class="fc" id="L119">			return new CollateralGroupVertexCloseOut (</span>
+<span class="fc" id="L120">				closeOutGeneral.dealerDefault (</span>
 					uncollateralizedExposure,
 					collateralBalance
 				),
-<span class="fc" id="L123">				closeOutGeneral.clientDefault (</span>
+<span class="fc" id="L124">				closeOutGeneral.clientDefault (</span>
 					uncollateralizedExposure,
 					collateralBalance
 				)
 			);
 		}
-<span class="nc" id="L129">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L130">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L131">			e.printStackTrace();</span>
+<span class="nc" id="L132">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L134">		return null;</span>
+<span class="nc" id="L135">		return null;</span>
 	}
 
 	/**
@@ -147,13 +148,13 @@ public class CollateralGroupVertexCloseOut
 		final double dealer,
 		final double client)
 		throws java.lang.Exception
-<span class="fc" id="L150">	{</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_client = client))</span>
+<span class="fc" id="L151">	{</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_client = client))</span>
 		{
-<span class="nc" id="L154">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L156">	}</span>
+<span class="fc" id="L157">	}</span>
 
 	/**
 	 * Retrieve the Dealer Close Out
@@ -163,7 +164,7 @@ public class CollateralGroupVertexCloseOut
 
 	public double dealer()
 	{
-<span class="fc" id="L166">		return _dealer;</span>
+<span class="fc" id="L167">		return _dealer;</span>
 	}
 
 	/**
@@ -174,7 +175,7 @@ public class CollateralGroupVertexCloseOut
 
 	public double client()
 	{
-<span class="fc" id="L177">		return _client;</span>
+<span class="fc" id="L178">		return _client;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -95,9 +95,10 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -105,10 +106,10 @@ package org.drip.spline.bspline;
  */
 
 public abstract class SegmentBasisFunction extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L108">	private int _iBSplineOrder = -1;</span>
-<span class="fc" id="L109">	private double _dblLeadingPredictorOrdinate = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _dblTrailingPredictorOrdinate = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _dblFollowingPredictorOrdinate = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private int _iBSplineOrder = -1;</span>
+<span class="fc" id="L110">	private double _dblLeadingPredictorOrdinate = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblTrailingPredictorOrdinate = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _dblFollowingPredictorOrdinate = java.lang.Double.NaN;</span>
 
 	protected SegmentBasisFunction (
 		final int iBSplineOrder,
@@ -117,17 +118,17 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 		final double dblTrailingPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L120">		super (null);</span>
+<span class="fc" id="L121">		super (null);</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeadingPredictorOrdinate =</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeadingPredictorOrdinate =</span>
 			dblLeadingPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">				(_dblFollowingPredictorOrdinate = dblFollowingPredictorOrdinate) ||</span>
-<span class="pc bpc" id="L125" title="4 of 8 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTrailingPredictorOrdinate =</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">				(_dblFollowingPredictorOrdinate = dblFollowingPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L126" title="4 of 8 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTrailingPredictorOrdinate =</span>
 						dblTrailingPredictorOrdinate) || _dblLeadingPredictorOrdinate &gt;=
 							_dblFollowingPredictorOrdinate || _dblFollowingPredictorOrdinate &gt;=
 								_dblTrailingPredictorOrdinate || 2 &gt; (_iBSplineOrder = iBSplineOrder))
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;SegmentBasisFunction ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L130">	}</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;SegmentBasisFunction ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Order of the B Spline
@@ -137,7 +138,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public int bSplineOrder()
 	{
-<span class="fc" id="L140">		return _iBSplineOrder;</span>
+<span class="fc" id="L141">		return _iBSplineOrder;</span>
 	}
 
 	/**
@@ -148,7 +149,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public double leading()
 	{
-<span class="fc" id="L151">		return _dblLeadingPredictorOrdinate;</span>
+<span class="fc" id="L152">		return _dblLeadingPredictorOrdinate;</span>
 	}
 
 	/**
@@ -159,7 +160,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public double following()
 	{
-<span class="fc" id="L162">		return _dblFollowingPredictorOrdinate;</span>
+<span class="fc" id="L163">		return _dblFollowingPredictorOrdinate;</span>
 	}
 
 	/**
@@ -170,7 +171,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public double trailing()
 	{
-<span class="fc" id="L173">		return _dblTrailingPredictorOrdinate;</span>
+<span class="fc" id="L174">		return _dblTrailingPredictorOrdinate;</span>
 	}
 
 	/**

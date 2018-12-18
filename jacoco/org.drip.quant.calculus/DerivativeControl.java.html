@@ -76,9 +76,10 @@ package org.drip.quant.calculus;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus&quot;&gt;Calculus&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/calculus&quot;&gt;Calculus&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -89,15 +90,15 @@ public class DerivativeControl {
 	private static final double ABSOLUTE_INCREMENT = 1.e-05;
 	private static final double RELATIVE_INCREMENT = 1.e-06;
 
-<span class="pc" id="L92">	private double _dblBumpFactor = RELATIVE_INCREMENT;</span>
+<span class="pc" id="L93">	private double _dblBumpFactor = RELATIVE_INCREMENT;</span>
 
 	/**
 	 * Empty DerivativeControl constructor
 	 */
 
 	public DerivativeControl()
-<span class="fc" id="L99">	{</span>
-<span class="fc" id="L100">	}</span>
+<span class="fc" id="L100">	{</span>
+<span class="fc" id="L101">	}</span>
 
 	/**
 	 * DerivativeControl constructor
@@ -110,10 +111,10 @@ public class DerivativeControl {
 	public DerivativeControl (
 		final double dblBumpFactor)
 		throws java.lang.Exception
-<span class="nc" id="L113">	{</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBumpFactor))</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;DerivativeControl constructor: Invalid inputs!&quot;);</span>
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L114">	{</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBumpFactor))</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;DerivativeControl constructor: Invalid inputs!&quot;);</span>
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Retrieve the bump factor
@@ -123,7 +124,7 @@ public class DerivativeControl {
 
 	public double getBumpFactor()
 	{
-<span class="fc" id="L126">		return _dblBumpFactor;</span>
+<span class="fc" id="L127">		return _dblBumpFactor;</span>
 	}
 
 	/**
@@ -140,14 +141,14 @@ public class DerivativeControl {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L144">			throw new java.lang.Exception (&quot;DerivativeControl::getVariateInfinitesimal =&gt; Invalid input&quot;);</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L145">			throw new java.lang.Exception (&quot;DerivativeControl::getVariateInfinitesimal =&gt; Invalid input&quot;);</span>
 
-<span class="fc" id="L146">		double dblVariateInfinitesimal = dblVariate * getBumpFactor();</span>
+<span class="fc" id="L147">		double dblVariateInfinitesimal = dblVariate * getBumpFactor();</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (java.lang.Math.abs (dblVariateInfinitesimal) &lt; ABSOLUTE_INCREMENT) return ABSOLUTE_INCREMENT;</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		if (java.lang.Math.abs (dblVariateInfinitesimal) &lt; ABSOLUTE_INCREMENT) return ABSOLUTE_INCREMENT;</span>
 
-<span class="fc" id="L150">		return dblVariateInfinitesimal;</span>
+<span class="fc" id="L151">		return dblVariateInfinitesimal;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -73,9 +73,10 @@ package org.drip.sequence.random;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,8 +85,8 @@ package org.drip.sequence.random;
 
 public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.MultivariateSequenceGenerator
 {
-<span class="fc" id="L87">	private double[][] _aadblFactor = null;</span>
-<span class="fc" id="L88">	private double[] _adblFactorWeight = null;</span>
+<span class="fc" id="L88">	private double[][] _aadblFactor = null;</span>
+<span class="fc" id="L89">	private double[] _adblFactorWeight = null;</span>
 
 	/**
 	 * PrincipalFactorSequenceGenerator Constructor
@@ -103,39 +104,39 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 		final int iNumFactor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L106">		super (aUSG, aadblCorrelation);</span>
+<span class="fc" id="L107">		super (aUSG, aadblCorrelation);</span>
 
-<span class="fc" id="L108">		int iNumVariate = aUSG.length;</span>
+<span class="fc" id="L109">		int iNumVariate = aUSG.length;</span>
 
-<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (0 &gt;= iNumFactor || iNumFactor &gt; iNumVariate)</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (0 &gt;= iNumFactor || iNumFactor &gt; iNumVariate)</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L113">		org.drip.quant.eigen.QREigenComponentExtractor qrece = new</span>
+<span class="fc" id="L114">		org.drip.quant.eigen.QREigenComponentExtractor qrece = new</span>
 			org.drip.quant.eigen.QREigenComponentExtractor (80, 0.00001);
 
-<span class="fc" id="L116">		org.drip.quant.eigen.EigenComponent[] aEC = qrece.orderedComponents (aadblCorrelation);</span>
+<span class="fc" id="L117">		org.drip.quant.eigen.EigenComponent[] aEC = qrece.orderedComponents (aadblCorrelation);</span>
 
-<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (null == aEC || 0 == aEC.length)</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == aEC || 0 == aEC.length)</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L121">		double dblNormalizer = 0.;</span>
-<span class="fc" id="L122">		_adblFactorWeight = new double[iNumFactor];</span>
-<span class="fc" id="L123">		_aadblFactor = new double[iNumFactor][iNumVariate];</span>
+<span class="fc" id="L122">		double dblNormalizer = 0.;</span>
+<span class="fc" id="L123">		_adblFactorWeight = new double[iNumFactor];</span>
+<span class="fc" id="L124">		_aadblFactor = new double[iNumFactor][iNumVariate];</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc bfc" id="L126" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="fc" id="L127">				_aadblFactor[i] = aEC[i].eigenvector();</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L128">				_aadblFactor[i] = aEC[i].eigenvector();</span>
 
-<span class="fc" id="L129">			_adblFactorWeight[i] = aEC[i].eigenvalue();</span>
+<span class="fc" id="L130">			_adblFactorWeight[i] = aEC[i].eigenvalue();</span>
 
-<span class="fc" id="L131">			dblNormalizer += _adblFactorWeight[i] * _adblFactorWeight[i];</span>
+<span class="fc" id="L132">			dblNormalizer += _adblFactorWeight[i] * _adblFactorWeight[i];</span>
 		}
 
-<span class="fc" id="L134">		dblNormalizer = java.lang.Math.sqrt (dblNormalizer);</span>
+<span class="fc" id="L135">		dblNormalizer = java.lang.Math.sqrt (dblNormalizer);</span>
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="fc" id="L137">			_adblFactorWeight[i] /= dblNormalizer;</span>
-<span class="fc" id="L138">	}</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L138">			_adblFactorWeight[i] /= dblNormalizer;</span>
+<span class="fc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Number of Factors
@@ -145,7 +146,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 	public int numFactor()
 	{
-<span class="fc" id="L148">		return _adblFactorWeight.length;</span>
+<span class="fc" id="L149">		return _adblFactorWeight.length;</span>
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 	public double[][] factors()
 	{
-<span class="fc" id="L159">		return _aadblFactor;</span>
+<span class="fc" id="L160">		return _aadblFactor;</span>
 	}
 
 	/**
@@ -167,27 +168,27 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 	public double[] factorWeight()
 	{
-<span class="fc" id="L170">		return _adblFactorWeight;</span>
+<span class="fc" id="L171">		return _adblFactorWeight;</span>
 	}
 
 	@Override public double[] random()
 	{
-<span class="fc" id="L175">		double[] adblBaseRandom = super.random();</span>
+<span class="fc" id="L176">		double[] adblBaseRandom = super.random();</span>
 
-<span class="fc" id="L177">		int iNumVariate = _aadblFactor[0].length;</span>
-<span class="fc" id="L178">		int iNumFactor = _adblFactorWeight.length;</span>
-<span class="fc" id="L179">		double[] adblRandom = new double[iNumFactor];</span>
+<span class="fc" id="L178">		int iNumVariate = _aadblFactor[0].length;</span>
+<span class="fc" id="L179">		int iNumFactor = _adblFactorWeight.length;</span>
+<span class="fc" id="L180">		double[] adblRandom = new double[iNumFactor];</span>
 
-<span class="fc bfc" id="L181" title="All 2 branches covered.">		if (iNumFactor == iNumVariate) return adblBaseRandom;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		if (iNumFactor == iNumVariate) return adblBaseRandom;</span>
 
-<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L184">			adblRandom[i] = 0.;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L185">			adblRandom[i] = 0.;</span>
 
-<span class="fc bfc" id="L186" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="fc" id="L187">				adblRandom[i] += _aadblFactor[i][j] * adblBaseRandom[j];</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
+<span class="fc" id="L188">				adblRandom[i] += _aadblFactor[i][j] * adblBaseRandom[j];</span>
 		}
 
-<span class="fc" id="L190">		return adblRandom;</span>
+<span class="fc" id="L191">		return adblRandom;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

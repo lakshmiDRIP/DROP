@@ -97,9 +97,10 @@ package org.drip.xva.derivative;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/derivative&quot;&gt;Derivative&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/derivative&quot;&gt;Derivative&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,9 +109,9 @@ package org.drip.xva.derivative;
 
 public class CashAccountEdge
 {
-<span class="fc" id="L111">	private double _clientAccumulation = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _dealerAccumulation = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	private double _positionAccumulation = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _clientAccumulation = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _dealerAccumulation = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _positionAccumulation = java.lang.Double.NaN;</span>
 
 	/**
 	 * CashAccountEdge Constructor
@@ -128,14 +129,14 @@ public class CashAccountEdge
 		final double dealerAccumulation,
 		final double clientAccumulation)
 		throws java.lang.Exception
-<span class="fc" id="L131">	{</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||</span>
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientAccumulation = clientAccumulation))</span>
+<span class="fc" id="L132">	{</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_clientAccumulation = clientAccumulation))</span>
 		{
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;CashAccountEdge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;CashAccountEdge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L138">	}</span>
+<span class="fc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Incremental Amount added to the Cash Account coming from the Asset
@@ -145,7 +146,7 @@ public class CashAccountEdge
 
 	public double assetAccumulation()
 	{
-<span class="fc" id="L148">		return _positionAccumulation;</span>
+<span class="fc" id="L149">		return _positionAccumulation;</span>
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class CashAccountEdge
 
 	public double dealerAccumulation()
 	{
-<span class="fc" id="L159">		return _dealerAccumulation;</span>
+<span class="fc" id="L160">		return _dealerAccumulation;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class CashAccountEdge
 
 	public double clientAccumulation()
 	{
-<span class="fc" id="L170">		return _clientAccumulation;</span>
+<span class="fc" id="L171">		return _clientAccumulation;</span>
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class CashAccountEdge
 
 	public double accumulation()
 	{
-<span class="fc" id="L181">		return _positionAccumulation + _dealerAccumulation + _clientAccumulation;</span>
+<span class="fc" id="L182">		return _positionAccumulation + _dealerAccumulation + _clientAccumulation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

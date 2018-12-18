@@ -14,12 +14,12 @@ package org.drip.analytics.support;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -46,6 +46,7 @@ package org.drip.analytics.support;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,14 +76,14 @@ package org.drip.analytics.support;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/README.md&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class CompositePeriodBuilder {</span>
+<span class="nc" id="L86">public class CompositePeriodBuilder {</span>
 
 	/**
 	 * Edge Date Generation Sequence - Forward
@@ -161,15 +162,15 @@ package org.drip.analytics.support;
 		final int iDate,
 		final org.drip.analytics.daycount.DateAdjustParams dap)
 	{
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		if (null == dap) return iDate;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		if (null == dap) return iDate;</span>
 
 		try {
-<span class="fc" id="L167">			return dap.roll (iDate);</span>
-<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L169">			e.printStackTrace();</span>
+<span class="fc" id="L168">			return dap.roll (iDate);</span>
+<span class="nc" id="L169">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L172">		return iDate;</span>
+<span class="nc" id="L173">		return iDate;</span>
 	}
 
 	/**
@@ -183,7 +184,7 @@ package org.drip.analytics.support;
 	public static final boolean ValidateCompoundingRule (
 		final int iAccrualCompoundingRule)
 	{
-<span class="pc bpc" id="L186" title="1 of 4 branches missed.">		return ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompoundingRule ||</span>
+<span class="pc bpc" id="L187" title="1 of 4 branches missed.">		return ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompoundingRule ||</span>
 			ACCRUAL_COMPOUNDING_RULE_GEOMETRIC == iAccrualCompoundingRule;
 	}
 
@@ -206,55 +207,55 @@ package org.drip.analytics.support;
 		final org.drip.analytics.daycount.DateAdjustParams dap,
 		final int iPSEC)
 	{
-<span class="nc bnc" id="L209" title="All 8 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L210" title="All 8 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="nc" id="L211">		java.lang.String strPeriodRollTenor = &quot;&quot;;</span>
-<span class="nc" id="L212">		org.drip.analytics.date.JulianDate dtEdge = dtEffective;</span>
+<span class="nc" id="L212">		java.lang.String strPeriodRollTenor = &quot;&quot;;</span>
+<span class="nc" id="L213">		org.drip.analytics.date.JulianDate dtEdge = dtEffective;</span>
 
-<span class="nc" id="L214">		int iMaturityDate = dtMaturity.julian();</span>
+<span class="nc" id="L215">		int iMaturityDate = dtMaturity.julian();</span>
 
-<span class="nc" id="L216">		int iEdgeDate = dtEdge.julian();</span>
+<span class="nc" id="L217">		int iEdgeDate = dtEdge.julian();</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (iEdgeDate &gt;= iMaturityDate) return null;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (iEdgeDate &gt;= iMaturityDate) return null;</span>
 
-<span class="nc" id="L220">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="nc" id="L221">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		while (iEdgeDate &lt; iMaturityDate) {</span>
-<span class="nc" id="L223">			lsEdgeDate.add (iEdgeDate);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		while (iEdgeDate &lt; iMaturityDate) {</span>
+<span class="nc" id="L224">			lsEdgeDate.add (iEdgeDate);</span>
 
-<span class="nc" id="L225">			strPeriodRollTenor = org.drip.analytics.support.Helper.AggregateTenor</span>
-<span class="nc" id="L226">				(strPeriodRollTenor, strTenor);</span>
+<span class="nc" id="L226">			strPeriodRollTenor = org.drip.analytics.support.Helper.AggregateTenor</span>
+<span class="nc" id="L227">				(strPeriodRollTenor, strTenor);</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (null == (dtEdge = dtMaturity.addTenor (strPeriodRollTenor))) return null;</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (null == (dtEdge = dtMaturity.addTenor (strPeriodRollTenor))) return null;</span>
 
-<span class="nc" id="L230">			iEdgeDate = dtEdge.julian();</span>
+<span class="nc" id="L231">			iEdgeDate = dtEdge.julian();</span>
 		}
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (iEdgeDate &gt; iMaturityDate) {</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">			if (SHORT_STUB == iPSEC)</span>
-<span class="nc" id="L235">				lsEdgeDate.add (iMaturityDate);</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">			else if (LONG_STUB == iPSEC) {</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (lsEdgeDate.size() - 1);</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">		if (iEdgeDate &gt; iMaturityDate) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			if (SHORT_STUB == iPSEC)</span>
+<span class="nc" id="L236">				lsEdgeDate.add (iMaturityDate);</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">			else if (LONG_STUB == iPSEC) {</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (lsEdgeDate.size() - 1);</span>
 
-<span class="nc" id="L239">				lsEdgeDate.add (iMaturityDate);</span>
+<span class="nc" id="L240">				lsEdgeDate.add (iMaturityDate);</span>
 			}
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		} else if (iEdgeDate == iMaturityDate)</span>
-<span class="nc" id="L242">			lsEdgeDate.add (iMaturityDate);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		} else if (iEdgeDate == iMaturityDate)</span>
+<span class="nc" id="L243">			lsEdgeDate.add (iMaturityDate);</span>
 
-<span class="nc" id="L244">		java.util.List&lt;java.lang.Integer&gt; lsAdjustedEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="nc" id="L245">		java.util.List&lt;java.lang.Integer&gt; lsAdjustedEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="nc" id="L246">		lsAdjustedEdgeDate.add (lsEdgeDate.get (0));</span>
+<span class="nc" id="L247">		lsAdjustedEdgeDate.add (lsEdgeDate.get (0));</span>
 
-<span class="nc" id="L248">		int iNumDate = lsEdgeDate.size();</span>
+<span class="nc" id="L249">		int iNumDate = lsEdgeDate.size();</span>
 
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumDate - 1; ++i)</span>
-<span class="nc" id="L251">			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumDate - 1; ++i)</span>
+<span class="nc" id="L252">			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));</span>
 
-<span class="nc" id="L253">		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));</span>
+<span class="nc" id="L254">		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		if (1 == lsAdjustedEdgeDate.size()) lsAdjustedEdgeDate.add (1, iMaturityDate);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (1 == lsAdjustedEdgeDate.size()) lsAdjustedEdgeDate.add (1, iMaturityDate);</span>
 
-<span class="nc" id="L257">		return lsAdjustedEdgeDate;</span>
+<span class="nc" id="L258">		return lsAdjustedEdgeDate;</span>
 	}
 
 	/**
@@ -276,55 +277,55 @@ package org.drip.analytics.support;
 		final org.drip.analytics.daycount.DateAdjustParams dap,
 		final int iPSEC)
 	{
-<span class="pc bpc" id="L279" title="4 of 8 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L280" title="4 of 8 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="fc" id="L281">		int iEffectiveDate = dtEffective.julian();</span>
+<span class="fc" id="L282">		int iEffectiveDate = dtEffective.julian();</span>
 
-<span class="fc" id="L283">		java.lang.String strPeriodRollTenor = &quot;&quot;;</span>
-<span class="fc" id="L284">		org.drip.analytics.date.JulianDate dtEdge = dtMaturity;</span>
+<span class="fc" id="L284">		java.lang.String strPeriodRollTenor = &quot;&quot;;</span>
+<span class="fc" id="L285">		org.drip.analytics.date.JulianDate dtEdge = dtMaturity;</span>
 
-<span class="fc" id="L286">		int iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L287">		int iEdgeDate = dtEdge.julian();</span>
 
-<span class="pc bpc" id="L288" title="1 of 2 branches missed.">		if (iEffectiveDate &gt;= iEdgeDate) return null;</span>
+<span class="pc bpc" id="L289" title="1 of 2 branches missed.">		if (iEffectiveDate &gt;= iEdgeDate) return null;</span>
 
-<span class="fc" id="L290">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L291">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc bfc" id="L292" title="All 2 branches covered.">		while (iEdgeDate &gt; iEffectiveDate) {</span>
-<span class="fc" id="L293">			lsEdgeDate.add (0, iEdgeDate);</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">		while (iEdgeDate &gt; iEffectiveDate) {</span>
+<span class="fc" id="L294">			lsEdgeDate.add (0, iEdgeDate);</span>
 
-<span class="fc" id="L295">			strPeriodRollTenor = org.drip.analytics.support.Helper.AggregateTenor (strPeriodRollTenor,</span>
+<span class="fc" id="L296">			strPeriodRollTenor = org.drip.analytics.support.Helper.AggregateTenor (strPeriodRollTenor,</span>
 				strTenor);
 
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">			if (null == (dtEdge = dtMaturity.subtractTenor (strPeriodRollTenor))) return null;</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (null == (dtEdge = dtMaturity.subtractTenor (strPeriodRollTenor))) return null;</span>
 
-<span class="fc" id="L300">			iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L301">			iEdgeDate = dtEdge.julian();</span>
 		}
 
-<span class="fc bfc" id="L303" title="All 2 branches covered.">		if (iEdgeDate &lt; iEffectiveDate) {</span>
-<span class="fc bfc" id="L304" title="All 2 branches covered.">			if (SHORT_STUB == iPSEC)</span>
-<span class="fc" id="L305">				lsEdgeDate.add (0, iEffectiveDate);</span>
-<span class="pc bpc" id="L306" title="1 of 2 branches missed.">			else if (FULL_FRONT_PERIOD == iPSEC)</span>
-<span class="nc" id="L307">				lsEdgeDate.add (0, iEdgeDate);</span>
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">			else if (LONG_STUB == iPSEC) {</span>
-<span class="fc bfc" id="L309" title="All 2 branches covered.">				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (0);</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">		if (iEdgeDate &lt; iEffectiveDate) {</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">			if (SHORT_STUB == iPSEC)</span>
+<span class="fc" id="L306">				lsEdgeDate.add (0, iEffectiveDate);</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">			else if (FULL_FRONT_PERIOD == iPSEC)</span>
+<span class="nc" id="L308">				lsEdgeDate.add (0, iEdgeDate);</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">			else if (LONG_STUB == iPSEC) {</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">				if (1 != lsEdgeDate.size()) lsEdgeDate.remove (0);</span>
 
-<span class="fc" id="L311">				lsEdgeDate.add (0, iEffectiveDate);</span>
+<span class="fc" id="L312">				lsEdgeDate.add (0, iEffectiveDate);</span>
 			}
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		} else if (dtEdge.julian() == iEffectiveDate)</span>
-<span class="fc" id="L314">			lsEdgeDate.add (0, iEffectiveDate);</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		} else if (dtEdge.julian() == iEffectiveDate)</span>
+<span class="fc" id="L315">			lsEdgeDate.add (0, iEffectiveDate);</span>
 
-<span class="fc" id="L316">		java.util.List&lt;java.lang.Integer&gt; lsAdjustedEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L317">		java.util.List&lt;java.lang.Integer&gt; lsAdjustedEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L318">		lsAdjustedEdgeDate.add (lsEdgeDate.get (0));</span>
+<span class="fc" id="L319">		lsAdjustedEdgeDate.add (lsEdgeDate.get (0));</span>
 
-<span class="fc" id="L320">		int iNumDate = lsEdgeDate.size();</span>
+<span class="fc" id="L321">		int iNumDate = lsEdgeDate.size();</span>
 
-<span class="fc bfc" id="L322" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate - 1; ++i)</span>
-<span class="fc" id="L323">			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate - 1; ++i)</span>
+<span class="fc" id="L324">			lsAdjustedEdgeDate.add (DAPAdjust (lsEdgeDate.get (i), dap));</span>
 
-<span class="fc" id="L325">		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));</span>
+<span class="fc" id="L326">		lsAdjustedEdgeDate.add (lsEdgeDate.get (iNumDate - 1));</span>
 
-<span class="fc" id="L327">		return lsAdjustedEdgeDate;</span>
+<span class="fc" id="L328">		return lsAdjustedEdgeDate;</span>
 	}
 
 	/**
@@ -344,62 +345,62 @@ package org.drip.analytics.support;
 		final java.lang.String strMaturityTenor,
 		final org.drip.analytics.daycount.DateAdjustParams dap)
 	{
-<span class="pc bpc" id="L347" title="4 of 8 branches missed.">		if (null == dtEffective || null == strPeriodTenor || strPeriodTenor.isEmpty() || null ==</span>
-<span class="pc bpc" id="L348" title="1 of 2 branches missed.">			strMaturityTenor || strMaturityTenor.isEmpty())</span>
-<span class="nc" id="L349">			return null;</span>
+<span class="pc bpc" id="L348" title="4 of 8 branches missed.">		if (null == dtEffective || null == strPeriodTenor || strPeriodTenor.isEmpty() || null ==</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">			strMaturityTenor || strMaturityTenor.isEmpty())</span>
+<span class="nc" id="L350">			return null;</span>
 
-<span class="fc" id="L351">		int iPeriodTenorMonth = -1;</span>
-<span class="fc" id="L352">		int iMaturityTenorMonth = -1;</span>
-<span class="fc" id="L353">		int iPeriodMaturityTenorComparison = -1;</span>
+<span class="fc" id="L352">		int iPeriodTenorMonth = -1;</span>
+<span class="fc" id="L353">		int iMaturityTenorMonth = -1;</span>
+<span class="fc" id="L354">		int iPeriodMaturityTenorComparison = -1;</span>
 
-<span class="fc" id="L355">		int iMaturityDate = dtEffective.addTenor (strMaturityTenor).julian();</span>
+<span class="fc" id="L356">		int iMaturityDate = dtEffective.addTenor (strMaturityTenor).julian();</span>
 
-<span class="fc" id="L357">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L358">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
 		try {
-<span class="fc" id="L360">			iPeriodMaturityTenorComparison = org.drip.analytics.support.Helper.TenorCompare (strPeriodTenor,</span>
+<span class="fc" id="L361">			iPeriodMaturityTenorComparison = org.drip.analytics.support.Helper.TenorCompare (strPeriodTenor,</span>
 				strMaturityTenor);
-<span class="nc" id="L362">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L363">			e.printStackTrace();</span>
+<span class="nc" id="L363">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L364">			e.printStackTrace();</span>
 
-<span class="nc" id="L365">			return null;</span>
-<span class="fc" id="L366">		}</span>
+<span class="nc" id="L366">			return null;</span>
+<span class="fc" id="L367">		}</span>
 
-<span class="fc bfc" id="L368" title="All 4 branches covered.">		if (org.drip.analytics.support.Helper.LEFT_TENOR_EQUALS == iPeriodMaturityTenorComparison ||</span>
+<span class="fc bfc" id="L369" title="All 4 branches covered.">		if (org.drip.analytics.support.Helper.LEFT_TENOR_EQUALS == iPeriodMaturityTenorComparison ||</span>
 			org.drip.analytics.support.Helper.LEFT_TENOR_GREATER == iPeriodMaturityTenorComparison) {
-<span class="fc" id="L370">			lsEdgeDate.add (dtEffective.julian());</span>
+<span class="fc" id="L371">			lsEdgeDate.add (dtEffective.julian());</span>
 
-<span class="fc" id="L372">			lsEdgeDate.add (iMaturityDate);</span>
+<span class="fc" id="L373">			lsEdgeDate.add (iMaturityDate);</span>
 
-<span class="fc" id="L374">			return lsEdgeDate;</span>
+<span class="fc" id="L375">			return lsEdgeDate;</span>
 		}
 
 		try {
-<span class="fc" id="L378">			iPeriodTenorMonth = org.drip.analytics.support.Helper.TenorToMonths (strPeriodTenor);</span>
+<span class="fc" id="L379">			iPeriodTenorMonth = org.drip.analytics.support.Helper.TenorToMonths (strPeriodTenor);</span>
 
-<span class="fc" id="L380">			iMaturityTenorMonth = org.drip.analytics.support.Helper.TenorToMonths (strMaturityTenor);</span>
-<span class="nc" id="L381">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L382">			e.printStackTrace();</span>
+<span class="fc" id="L381">			iMaturityTenorMonth = org.drip.analytics.support.Helper.TenorToMonths (strMaturityTenor);</span>
+<span class="nc" id="L382">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L383">			e.printStackTrace();</span>
 
-<span class="nc" id="L384">			return null;</span>
-<span class="fc" id="L385">		}</span>
+<span class="nc" id="L385">			return null;</span>
+<span class="fc" id="L386">		}</span>
 
-<span class="fc" id="L387">		org.drip.analytics.date.JulianDate dtEdge = dtEffective;</span>
-<span class="fc" id="L388">		int iNumPeriod = iMaturityTenorMonth / iPeriodTenorMonth;</span>
+<span class="fc" id="L388">		org.drip.analytics.date.JulianDate dtEdge = dtEffective;</span>
+<span class="fc" id="L389">		int iNumPeriod = iMaturityTenorMonth / iPeriodTenorMonth;</span>
 
-<span class="fc" id="L390">		lsEdgeDate.add (dtEdge.julian());</span>
+<span class="fc" id="L391">		lsEdgeDate.add (dtEdge.julian());</span>
 
-<span class="fc bfc" id="L392" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriod; ++i) {</span>
-<span class="fc" id="L393">			dtEdge = dtEdge.addTenor (strPeriodTenor);</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPeriod; ++i) {</span>
+<span class="fc" id="L394">			dtEdge = dtEdge.addTenor (strPeriodTenor);</span>
 
-<span class="fc" id="L395">			int iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L396">			int iEdgeDate = dtEdge.julian();</span>
 
-<span class="fc bfc" id="L397" title="All 2 branches covered.">			if (iEdgeDate &lt; iMaturityDate) lsEdgeDate.add (DAPAdjust (iEdgeDate, dap));</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">			if (iEdgeDate &lt; iMaturityDate) lsEdgeDate.add (DAPAdjust (iEdgeDate, dap));</span>
 		}
 
-<span class="fc" id="L400">		lsEdgeDate.add (iMaturityDate);</span>
+<span class="fc" id="L401">		lsEdgeDate.add (iMaturityDate);</span>
 
-<span class="fc" id="L402">		return lsEdgeDate;</span>
+<span class="fc" id="L403">		return lsEdgeDate;</span>
 	}
 
 	/**
@@ -419,27 +420,27 @@ package org.drip.analytics.support;
 		final java.lang.String strPeriodTenor,
 		final org.drip.analytics.daycount.DateAdjustParams dap)
 	{
-<span class="pc bpc" id="L422" title="3 of 6 branches missed.">		if (iStartDate &gt;= iEndDate || null == strPeriodTenor || strPeriodTenor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L423" title="3 of 6 branches missed.">		if (iStartDate &gt;= iEndDate || null == strPeriodTenor || strPeriodTenor.isEmpty()) return null;</span>
 
-<span class="fc" id="L424">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L425">		java.util.List&lt;java.lang.Integer&gt; lsEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L426">		int iEdgeDate = iStartDate;</span>
+<span class="fc" id="L427">		int iEdgeDate = iStartDate;</span>
 
-<span class="fc" id="L428">		org.drip.analytics.date.JulianDate dtEdge = new org.drip.analytics.date.JulianDate (iStartDate);</span>
+<span class="fc" id="L429">		org.drip.analytics.date.JulianDate dtEdge = new org.drip.analytics.date.JulianDate (iStartDate);</span>
 
-<span class="fc bfc" id="L430" title="All 2 branches covered.">		while (iEdgeDate &lt; iEndDate) {</span>
-<span class="fc" id="L431">			int iAdjustedEdgeDate = DAPAdjust (iEdgeDate, dap);</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">		while (iEdgeDate &lt; iEndDate) {</span>
+<span class="fc" id="L432">			int iAdjustedEdgeDate = DAPAdjust (iEdgeDate, dap);</span>
 
-<span class="pc bpc" id="L433" title="1 of 2 branches missed.">			if (!lsEdgeDate.contains (iAdjustedEdgeDate)) lsEdgeDate.add (iAdjustedEdgeDate);</span>
+<span class="pc bpc" id="L434" title="1 of 2 branches missed.">			if (!lsEdgeDate.contains (iAdjustedEdgeDate)) lsEdgeDate.add (iAdjustedEdgeDate);</span>
 
-<span class="pc bpc" id="L435" title="1 of 2 branches missed.">			if (null == (dtEdge = dtEdge.addTenor (strPeriodTenor))) return null;</span>
+<span class="pc bpc" id="L436" title="1 of 2 branches missed.">			if (null == (dtEdge = dtEdge.addTenor (strPeriodTenor))) return null;</span>
 
-<span class="fc" id="L437">			iEdgeDate = dtEdge.julian();</span>
-<span class="fc" id="L438">		}</span>
+<span class="fc" id="L438">			iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L439">		}</span>
 
-<span class="fc bfc" id="L440" title="All 2 branches covered.">		if (!lsEdgeDate.contains (iEndDate)) lsEdgeDate.add (iEndDate);</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">		if (!lsEdgeDate.contains (iEndDate)) lsEdgeDate.add (iEndDate);</span>
 
-<span class="fc" id="L442">		return lsEdgeDate;</span>
+<span class="fc" id="L443">		return lsEdgeDate;</span>
 	}
 
 	/**
@@ -461,16 +462,16 @@ package org.drip.analytics.support;
 		final java.lang.String strMaturityTenor,
 		final org.drip.analytics.daycount.DateAdjustParams dap)
 	{
-<span class="pc bpc" id="L464" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
+<span class="pc bpc" id="L465" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
 
 		try {
-<span class="fc" id="L467">			return RegularEdgeDates (dtSpot.nextRatesFuturesIMM (iRollMonths), strPeriodTenor,</span>
+<span class="fc" id="L468">			return RegularEdgeDates (dtSpot.nextRatesFuturesIMM (iRollMonths), strPeriodTenor,</span>
 				strMaturityTenor, dap);
-<span class="nc" id="L469">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L470">			e.printStackTrace();</span>
+<span class="nc" id="L470">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L471">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L473">		return null;</span>
+<span class="nc" id="L474">		return null;</span>
 	}
 
 	/**
@@ -488,29 +489,29 @@ package org.drip.analytics.support;
 		final org.drip.analytics.date.JulianDate dtEnd,
 		final java.lang.String strCalendar)
 	{
-<span class="pc bpc" id="L491" title="2 of 4 branches missed.">		if (null == dtStart || null == dtEnd) return null;</span>
+<span class="pc bpc" id="L492" title="2 of 4 branches missed.">		if (null == dtStart || null == dtEnd) return null;</span>
 
-<span class="fc" id="L493">		org.drip.analytics.date.JulianDate dtEdge = dtStart;</span>
+<span class="fc" id="L494">		org.drip.analytics.date.JulianDate dtEdge = dtStart;</span>
 
-<span class="fc" id="L495">		int iEndDate = dtEnd.julian();</span>
+<span class="fc" id="L496">		int iEndDate = dtEnd.julian();</span>
 
-<span class="fc" id="L497">		int iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L498">		int iEdgeDate = dtEdge.julian();</span>
 
-<span class="pc bpc" id="L499" title="1 of 2 branches missed.">		if (iEndDate &lt;= iEdgeDate) return null;</span>
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">		if (iEndDate &lt;= iEdgeDate) return null;</span>
 
-<span class="fc" id="L501">		java.util.List&lt;java.lang.Integer&gt; lsOvernightEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L502">		java.util.List&lt;java.lang.Integer&gt; lsOvernightEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc bfc" id="L503" title="All 2 branches covered.">		while (iEdgeDate &lt; iEndDate) {</span>
-<span class="fc" id="L504">			lsOvernightEdgeDate.add (iEdgeDate);</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">		while (iEdgeDate &lt; iEndDate) {</span>
+<span class="fc" id="L505">			lsOvernightEdgeDate.add (iEdgeDate);</span>
 
-<span class="pc bpc" id="L506" title="1 of 2 branches missed.">			if (null == (dtEdge = dtEdge.addBusDays (1, strCalendar))) return null;</span>
+<span class="pc bpc" id="L507" title="1 of 2 branches missed.">			if (null == (dtEdge = dtEdge.addBusDays (1, strCalendar))) return null;</span>
 
-<span class="fc" id="L508">			iEdgeDate = dtEdge.julian();</span>
+<span class="fc" id="L509">			iEdgeDate = dtEdge.julian();</span>
 		}
 
-<span class="fc" id="L511">		lsOvernightEdgeDate.add (iEndDate);</span>
+<span class="fc" id="L512">		lsOvernightEdgeDate.add (iEndDate);</span>
 
-<span class="fc" id="L513">		return lsOvernightEdgeDate;</span>
+<span class="fc" id="L514">		return lsOvernightEdgeDate;</span>
 	}
 
 	/**
@@ -526,21 +527,21 @@ package org.drip.analytics.support;
 		final org.drip.analytics.date.JulianDate dtStart,
 		final org.drip.analytics.date.JulianDate dtEnd)
 	{
-<span class="pc bpc" id="L529" title="2 of 4 branches missed.">		if (null == dtStart || null == dtEnd) return null;</span>
+<span class="pc bpc" id="L530" title="2 of 4 branches missed.">		if (null == dtStart || null == dtEnd) return null;</span>
 
-<span class="fc" id="L531">		int iEndDate = dtEnd.julian();</span>
+<span class="fc" id="L532">		int iEndDate = dtEnd.julian();</span>
 
-<span class="fc" id="L533">		int iStartDate = dtStart.julian();</span>
+<span class="fc" id="L534">		int iStartDate = dtStart.julian();</span>
 
-<span class="pc bpc" id="L535" title="1 of 2 branches missed.">		if (iEndDate &lt;= iStartDate) return null;</span>
+<span class="pc bpc" id="L536" title="1 of 2 branches missed.">		if (iEndDate &lt;= iStartDate) return null;</span>
 
-<span class="fc" id="L537">		java.util.List&lt;java.lang.Integer&gt; lsOvernightEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L538">		java.util.List&lt;java.lang.Integer&gt; lsOvernightEdgeDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L539">		lsOvernightEdgeDate.add (iStartDate);</span>
+<span class="fc" id="L540">		lsOvernightEdgeDate.add (iStartDate);</span>
 
-<span class="fc" id="L541">		lsOvernightEdgeDate.add (iEndDate);</span>
+<span class="fc" id="L542">		lsOvernightEdgeDate.add (iEndDate);</span>
 
-<span class="fc" id="L543">		return lsOvernightEdgeDate;</span>
+<span class="fc" id="L544">		return lsOvernightEdgeDate;</span>
 	}
 
 	/**
@@ -561,28 +562,28 @@ package org.drip.analytics.support;
 		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final int iReferencePeriodArrearsType)
 	{
-<span class="pc bpc" id="L564" title="3 of 6 branches missed.">		if (null == dtStart || null == dtEnd || null == floaterLabel) return null;</span>
+<span class="pc bpc" id="L565" title="3 of 6 branches missed.">		if (null == dtStart || null == dtEnd || null == floaterLabel) return null;</span>
 
-<span class="fc" id="L566">		java.lang.String strForwardTenor = &quot;&quot;;</span>
+<span class="fc" id="L567">		java.lang.String strForwardTenor = &quot;&quot;;</span>
 
-<span class="fc bfc" id="L568" title="All 2 branches covered.">		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel)</span>
-<span class="fc" id="L569">			strForwardTenor = floaterLabel.tenor();</span>
-<span class="pc bpc" id="L570" title="1 of 2 branches missed.">		else if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)</span>
-<span class="fc" id="L571">			strForwardTenor = ((org.drip.state.identifier.OTCFixFloatLabel) floaterLabel).fixFloatTenor();</span>
+<span class="fc bfc" id="L569" title="All 2 branches covered.">		if (floaterLabel instanceof org.drip.state.identifier.ForwardLabel)</span>
+<span class="fc" id="L570">			strForwardTenor = floaterLabel.tenor();</span>
+<span class="pc bpc" id="L571" title="1 of 2 branches missed.">		else if (floaterLabel instanceof org.drip.state.identifier.OTCFixFloatLabel)</span>
+<span class="fc" id="L572">			strForwardTenor = ((org.drip.state.identifier.OTCFixFloatLabel) floaterLabel).fixFloatTenor();</span>
 
 		try {
-<span class="fc bfc" id="L574" title="All 2 branches covered.">			return org.drip.analytics.cashflow.ReferenceIndexPeriod.Standard (</span>
+<span class="fc bfc" id="L575" title="All 2 branches covered.">			return org.drip.analytics.cashflow.ReferenceIndexPeriod.Standard (</span>
 				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtStart.addTenor
-<span class="fc bfc" id="L576" title="All 2 branches covered.">					(strForwardTenor).julian() : dtStart.julian(),</span>
+<span class="fc bfc" id="L577" title="All 2 branches covered.">					(strForwardTenor).julian() : dtStart.julian(),</span>
 				REFERENCE_PERIOD_IN_ARREARS == iReferencePeriodArrearsType ? dtEnd.addTenor
-<span class="fc" id="L578">					(strForwardTenor).julian() : dtEnd.julian(),</span>
+<span class="fc" id="L579">					(strForwardTenor).julian() : dtEnd.julian(),</span>
 				floaterLabel
 			);
-<span class="nc" id="L581">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L582">			e.printStackTrace();</span>
+<span class="nc" id="L582">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L583">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L585">		return null;</span>
+<span class="nc" id="L586">		return null;</span>
 	}
 
 	/**
@@ -604,7 +605,7 @@ package org.drip.analytics.support;
 		final org.drip.analytics.daycount.DateAdjustParams dap,
 		final int iPSEC)
 	{
-<span class="nc" id="L607">		return ForwardEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), new</span>
+<span class="nc" id="L608">		return ForwardEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), new</span>
 			org.drip.analytics.date.JulianDate (iMaturity), strTenor, dap, iPSEC);
 	}
 
@@ -627,7 +628,7 @@ package org.drip.analytics.support;
 		final org.drip.analytics.daycount.DateAdjustParams dap,
 		final int iPSEC)
 	{
-<span class="nc" id="L630">		return BackwardEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), new</span>
+<span class="nc" id="L631">		return BackwardEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), new</span>
 			org.drip.analytics.date.JulianDate (iMaturity), strTenor, dap, iPSEC);
 	}
 
@@ -648,7 +649,7 @@ package org.drip.analytics.support;
 		final java.lang.String strMaturityTenor,
 		final org.drip.analytics.daycount.DateAdjustParams dap)
 	{
-<span class="fc" id="L651">		return RegularEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), strPeriodTenor,</span>
+<span class="fc" id="L652">		return RegularEdgeDates (new org.drip.analytics.date.JulianDate (iEffective), strPeriodTenor,</span>
 			strMaturityTenor, dap);
 	}
 
@@ -667,7 +668,7 @@ package org.drip.analytics.support;
 		final int iEndDate,
 		final java.lang.String strCalendar)
 	{
-<span class="fc" id="L670">		return OvernightEdgeDates (new org.drip.analytics.date.JulianDate (iStartDate), new</span>
+<span class="fc" id="L671">		return OvernightEdgeDates (new org.drip.analytics.date.JulianDate (iStartDate), new</span>
 			org.drip.analytics.date.JulianDate (iEndDate), strCalendar);
 	}
 
@@ -689,7 +690,7 @@ package org.drip.analytics.support;
 		final org.drip.state.identifier.FloaterLabel floaterLabel,
 		final int iReferencePeriodArrearsType)
 	{
-<span class="fc" id="L692">		return ReferencePeriod (</span>
+<span class="fc" id="L693">		return ReferencePeriod (</span>
 			new org.drip.analytics.date.JulianDate (iStartDate),
 			new org.drip.analytics.date.JulianDate (iEndDate),
 			floaterLabel,
@@ -714,29 +715,29 @@ package org.drip.analytics.support;
 		final java.lang.String strCalendar,
 		final org.drip.param.period.ComposableUnitBuilderSetting cubs)
 	{
-<span class="pc bpc" id="L717" title="1 of 2 branches missed.">		if (null == cubs) return null;</span>
+<span class="pc bpc" id="L718" title="1 of 2 branches missed.">		if (null == cubs) return null;</span>
 
-<span class="fc" id="L719">		int iEdgeDateSequenceScheme = cubs.edgeDateSequenceScheme();</span>
+<span class="fc" id="L720">		int iEdgeDateSequenceScheme = cubs.edgeDateSequenceScheme();</span>
 
-<span class="fc bfc" id="L721" title="All 2 branches covered.">		if (EDGE_DATE_SEQUENCE_SINGLE == iEdgeDateSequenceScheme) {</span>
-<span class="pc bpc" id="L722" title="1 of 2 branches missed.">			if (iUnitPeriodStartDate &gt;= iUnitPeriodEndDate) return null;</span>
+<span class="fc bfc" id="L722" title="All 2 branches covered.">		if (EDGE_DATE_SEQUENCE_SINGLE == iEdgeDateSequenceScheme) {</span>
+<span class="pc bpc" id="L723" title="1 of 2 branches missed.">			if (iUnitPeriodStartDate &gt;= iUnitPeriodEndDate) return null;</span>
 
-<span class="fc" id="L724">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L725">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L726">			lsEdgeDates.add (iUnitPeriodStartDate);</span>
+<span class="fc" id="L727">			lsEdgeDates.add (iUnitPeriodStartDate);</span>
 
-<span class="fc" id="L728">			lsEdgeDates.add (iUnitPeriodEndDate);</span>
+<span class="fc" id="L729">			lsEdgeDates.add (iUnitPeriodEndDate);</span>
 
-<span class="fc" id="L730">			return lsEdgeDates;</span>
+<span class="fc" id="L731">			return lsEdgeDates;</span>
 		}
 
-<span class="fc bfc" id="L733" title="All 2 branches covered.">		if (EDGE_DATE_SEQUENCE_REGULAR == iEdgeDateSequenceScheme)</span>
-<span class="fc" id="L734">			return RegularEdgeDates (iUnitPeriodStartDate, iUnitPeriodEndDate, cubs.tenor(), cubs.dapEdge());</span>
+<span class="fc bfc" id="L734" title="All 2 branches covered.">		if (EDGE_DATE_SEQUENCE_REGULAR == iEdgeDateSequenceScheme)</span>
+<span class="fc" id="L735">			return RegularEdgeDates (iUnitPeriodStartDate, iUnitPeriodEndDate, cubs.tenor(), cubs.dapEdge());</span>
 
-<span class="pc bpc" id="L736" title="1 of 2 branches missed.">		if (EDGE_DATE_SEQUENCE_OVERNIGHT == iEdgeDateSequenceScheme)</span>
-<span class="fc" id="L737">			return OvernightEdgeDates (iUnitPeriodStartDate, iUnitPeriodEndDate, strCalendar);</span>
+<span class="pc bpc" id="L737" title="1 of 2 branches missed.">		if (EDGE_DATE_SEQUENCE_OVERNIGHT == iEdgeDateSequenceScheme)</span>
+<span class="fc" id="L738">			return OvernightEdgeDates (iUnitPeriodStartDate, iUnitPeriodEndDate, strCalendar);</span>
 
-<span class="nc" id="L739">		return null;</span>
+<span class="nc" id="L740">		return null;</span>
 	}
 
 	/**
@@ -756,32 +757,32 @@ package org.drip.analytics.support;
 		final org.drip.param.period.UnitCouponAccrualSetting ucas,
 		final org.drip.param.period.ComposableFixedUnitSetting cfus)
 	{
-<span class="pc bpc" id="L759" title="1 of 2 branches missed.">		if (null == cfus) return null;</span>
+<span class="pc bpc" id="L760" title="1 of 2 branches missed.">		if (null == cfus) return null;</span>
 
-<span class="fc" id="L761">		java.util.List&lt;java.lang.Integer&gt; lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,</span>
-<span class="fc" id="L762">			iUnitPeriodEndDate, ucas.calendar(), cfus);</span>
+<span class="fc" id="L762">		java.util.List&lt;java.lang.Integer&gt; lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,</span>
+<span class="fc" id="L763">			iUnitPeriodEndDate, ucas.calendar(), cfus);</span>
 
-<span class="pc bpc" id="L764" title="1 of 2 branches missed.">		if (null == lsUnitEdgeDate) return null;</span>
+<span class="pc bpc" id="L765" title="1 of 2 branches missed.">		if (null == lsUnitEdgeDate) return null;</span>
 
-<span class="fc" id="L766">		int iNumDate = lsUnitEdgeDate.size();</span>
+<span class="fc" id="L767">		int iNumDate = lsUnitEdgeDate.size();</span>
 
-<span class="pc bpc" id="L768" title="1 of 2 branches missed.">		if (2 &gt; iNumDate) return null;</span>
+<span class="pc bpc" id="L769" title="1 of 2 branches missed.">		if (2 &gt; iNumDate) return null;</span>
 
-<span class="fc" id="L770">		java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
+<span class="fc" id="L771">		java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt;();
 
-<span class="fc bfc" id="L773" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
+<span class="fc bfc" id="L774" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
 			try {
-<span class="fc" id="L775">				lsCUP.add (new org.drip.analytics.cashflow.ComposableUnitFixedPeriod (lsUnitEdgeDate.get</span>
-<span class="fc" id="L776">					(i - 1), lsUnitEdgeDate.get (i), ucas, cfus));</span>
-<span class="nc" id="L777">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L778">				e.printStackTrace();</span>
+<span class="fc" id="L776">				lsCUP.add (new org.drip.analytics.cashflow.ComposableUnitFixedPeriod (lsUnitEdgeDate.get</span>
+<span class="fc" id="L777">					(i - 1), lsUnitEdgeDate.get (i), ucas, cfus));</span>
+<span class="nc" id="L778">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L779">				e.printStackTrace();</span>
 
-<span class="nc" id="L780">				return null;</span>
-<span class="fc" id="L781">			}</span>
+<span class="nc" id="L781">				return null;</span>
+<span class="fc" id="L782">			}</span>
 		}
 
-<span class="fc" id="L784">		return lsCUP;</span>
+<span class="fc" id="L785">		return lsCUP;</span>
 	}
 
 	/**
@@ -799,52 +800,52 @@ package org.drip.analytics.support;
 		final int iUnitPeriodEndDate,
 		final org.drip.param.period.ComposableFloatingUnitSetting cfus)
 	{
-<span class="pc bpc" id="L802" title="1 of 2 branches missed.">		if (null == cfus) return null;</span>
+<span class="pc bpc" id="L803" title="1 of 2 branches missed.">		if (null == cfus) return null;</span>
 
-<span class="fc" id="L804">		org.drip.state.identifier.FloaterLabel floaterLabel = cfus.floaterLabel();</span>
+<span class="fc" id="L805">		org.drip.state.identifier.FloaterLabel floaterLabel = cfus.floaterLabel();</span>
 
-<span class="fc" id="L806">		java.lang.String strCalendar = floaterLabel.floaterIndex().calendar();</span>
+<span class="fc" id="L807">		java.lang.String strCalendar = floaterLabel.floaterIndex().calendar();</span>
 
-<span class="fc" id="L808">		java.util.List&lt;java.lang.Integer&gt; lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,</span>
+<span class="fc" id="L809">		java.util.List&lt;java.lang.Integer&gt; lsUnitEdgeDate = UnitDateEdges (iUnitPeriodStartDate,</span>
 			iUnitPeriodEndDate, strCalendar, cfus);
 
-<span class="pc bpc" id="L811" title="1 of 2 branches missed.">		if (null == lsUnitEdgeDate) return null;</span>
+<span class="pc bpc" id="L812" title="1 of 2 branches missed.">		if (null == lsUnitEdgeDate) return null;</span>
 
-<span class="fc" id="L813">		int iNumDate = lsUnitEdgeDate.size();</span>
+<span class="fc" id="L814">		int iNumDate = lsUnitEdgeDate.size();</span>
 
-<span class="pc bpc" id="L815" title="1 of 2 branches missed.">		if (2 &gt; iNumDate) return null;</span>
+<span class="pc bpc" id="L816" title="1 of 2 branches missed.">		if (2 &gt; iNumDate) return null;</span>
 
-<span class="fc" id="L817">		java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
+<span class="fc" id="L818">		java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt;();
 
-<span class="fc" id="L820">		double dblSpread = cfus.spread();</span>
+<span class="fc" id="L821">		double dblSpread = cfus.spread();</span>
 
-<span class="fc" id="L822">		java.lang.String strUnitTenor = cfus.tenor();</span>
+<span class="fc" id="L823">		java.lang.String strUnitTenor = cfus.tenor();</span>
 
-<span class="fc" id="L824">		java.lang.String strForwardTenor = floaterLabel.tenor();</span>
+<span class="fc" id="L825">		java.lang.String strForwardTenor = floaterLabel.tenor();</span>
 
-<span class="fc" id="L826">		int iReferencePeriodArrearsType = cfus.referencePeriodArrearsType();</span>
+<span class="fc" id="L827">		int iReferencePeriodArrearsType = cfus.referencePeriodArrearsType();</span>
 
-<span class="fc" id="L828">		boolean bComposableForwardPeriodsMatch = cfus.tenor().equalsIgnoreCase (strForwardTenor);</span>
+<span class="fc" id="L829">		boolean bComposableForwardPeriodsMatch = cfus.tenor().equalsIgnoreCase (strForwardTenor);</span>
 
-<span class="fc bfc" id="L830" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
-<span class="fc" id="L831">			int iUnitStartDate = lsUnitEdgeDate.get (i - 1);</span>
+<span class="fc bfc" id="L831" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
+<span class="fc" id="L832">			int iUnitStartDate = lsUnitEdgeDate.get (i - 1);</span>
 
-<span class="fc" id="L833">			int iUnitEndDate = lsUnitEdgeDate.get (i);</span>
+<span class="fc" id="L834">			int iUnitEndDate = lsUnitEdgeDate.get (i);</span>
 
-<span class="fc" id="L835">			int iReferencePeriodEndDate = iUnitEndDate;</span>
+<span class="fc" id="L836">			int iReferencePeriodEndDate = iUnitEndDate;</span>
 
-<span class="fc bfc" id="L837" title="All 2 branches covered.">			int iReferencePeriodStartDate = bComposableForwardPeriodsMatch ? iUnitStartDate : new</span>
-<span class="fc" id="L838">				org.drip.analytics.date.JulianDate (iUnitEndDate).subtractTenorAndAdjust (strForwardTenor,</span>
-<span class="fc" id="L839">					strCalendar).julian();</span>
+<span class="fc bfc" id="L838" title="All 2 branches covered.">			int iReferencePeriodStartDate = bComposableForwardPeriodsMatch ? iUnitStartDate : new</span>
+<span class="fc" id="L839">				org.drip.analytics.date.JulianDate (iUnitEndDate).subtractTenorAndAdjust (strForwardTenor,</span>
+<span class="fc" id="L840">					strCalendar).julian();</span>
 
 			try {
-<span class="fc" id="L842">				lsCUP.add (</span>
+<span class="fc" id="L843">				lsCUP.add (</span>
 					new org.drip.analytics.cashflow.ComposableUnitFloatingPeriod (
 						iUnitStartDate,
 						iUnitEndDate,
 						strUnitTenor,
-<span class="fc" id="L847">						ReferencePeriod (</span>
+<span class="fc" id="L848">						ReferencePeriod (</span>
 							iReferencePeriodStartDate,
 							iReferencePeriodEndDate,
 							floaterLabel,
@@ -853,14 +854,14 @@ package org.drip.analytics.support;
 						dblSpread
 					)
 				);
-<span class="nc" id="L856">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L857">				e.printStackTrace();</span>
+<span class="nc" id="L857">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L858">				e.printStackTrace();</span>
 
-<span class="nc" id="L859">				return null;</span>
-<span class="fc" id="L860">			}</span>
+<span class="nc" id="L860">				return null;</span>
+<span class="fc" id="L861">			}</span>
 		}
 
-<span class="fc" id="L863">		return lsCUP;</span>
+<span class="fc" id="L864">		return lsCUP;</span>
 	}
 
 	/**
@@ -880,27 +881,27 @@ package org.drip.analytics.support;
 		final org.drip.param.period.UnitCouponAccrualSetting ucas,
 		final org.drip.param.period.ComposableFixedUnitSetting cfus)
 	{
-<span class="pc bpc" id="L883" title="1 of 2 branches missed.">		if (null == lsCompositeEdgeDate) return null;</span>
+<span class="pc bpc" id="L884" title="1 of 2 branches missed.">		if (null == lsCompositeEdgeDate) return null;</span>
 
-<span class="fc" id="L885">		int iNumEdge = lsCompositeEdgeDate.size();</span>
+<span class="fc" id="L886">		int iNumEdge = lsCompositeEdgeDate.size();</span>
 
-<span class="pc bpc" id="L887" title="1 of 2 branches missed.">		if (2 &gt; iNumEdge) return null;</span>
+<span class="pc bpc" id="L888" title="1 of 2 branches missed.">		if (2 &gt; iNumEdge) return null;</span>
 
-<span class="fc" id="L889">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCFP = new</span>
+<span class="fc" id="L890">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCFP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="fc bfc" id="L892" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEdge; ++i) {</span>
+<span class="fc bfc" id="L893" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEdge; ++i) {</span>
 			try {
-<span class="fc" id="L894">				lsCFP.add (new org.drip.analytics.cashflow.CompositeFixedPeriod (cps, FixedUnits</span>
-<span class="fc" id="L895">					(lsCompositeEdgeDate.get (i - 1), lsCompositeEdgeDate.get (i), ucas, cfus)));</span>
-<span class="nc" id="L896">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L897">				e.printStackTrace();</span>
+<span class="fc" id="L895">				lsCFP.add (new org.drip.analytics.cashflow.CompositeFixedPeriod (cps, FixedUnits</span>
+<span class="fc" id="L896">					(lsCompositeEdgeDate.get (i - 1), lsCompositeEdgeDate.get (i), ucas, cfus)));</span>
+<span class="nc" id="L897">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L898">				e.printStackTrace();</span>
 
-<span class="nc" id="L899">				return null;</span>
-<span class="fc" id="L900">			}</span>
+<span class="nc" id="L900">				return null;</span>
+<span class="fc" id="L901">			}</span>
 		}
 
-<span class="fc" id="L903">		return lsCFP;</span>
+<span class="fc" id="L904">		return lsCFP;</span>
 	}
 
 	/**
@@ -919,27 +920,27 @@ package org.drip.analytics.support;
 		final org.drip.param.period.CompositePeriodSetting cps,
 		final org.drip.param.period.ComposableFloatingUnitSetting cfus)
 	{
-<span class="pc bpc" id="L922" title="1 of 2 branches missed.">		if (null == lsCompositeEdgeDate) return null;</span>
+<span class="pc bpc" id="L923" title="1 of 2 branches missed.">		if (null == lsCompositeEdgeDate) return null;</span>
 
-<span class="fc" id="L924">		int iNumEdge = lsCompositeEdgeDate.size();</span>
+<span class="fc" id="L925">		int iNumEdge = lsCompositeEdgeDate.size();</span>
 
-<span class="pc bpc" id="L926" title="1 of 2 branches missed.">		if (2 &gt; iNumEdge) return null;</span>
+<span class="pc bpc" id="L927" title="1 of 2 branches missed.">		if (2 &gt; iNumEdge) return null;</span>
 
-<span class="fc" id="L928">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCFP = new</span>
+<span class="fc" id="L929">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCFP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="fc bfc" id="L931" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEdge; ++i) {</span>
+<span class="fc bfc" id="L932" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumEdge; ++i) {</span>
 			try {
-<span class="fc" id="L933">				lsCFP.add (new org.drip.analytics.cashflow.CompositeFloatingPeriod (cps, FloatingUnits</span>
-<span class="fc" id="L934">					(lsCompositeEdgeDate.get (i - 1), lsCompositeEdgeDate.get (i), cfus)));</span>
-<span class="nc" id="L935">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L936">				e.printStackTrace();</span>
+<span class="fc" id="L934">				lsCFP.add (new org.drip.analytics.cashflow.CompositeFloatingPeriod (cps, FloatingUnits</span>
+<span class="fc" id="L935">					(lsCompositeEdgeDate.get (i - 1), lsCompositeEdgeDate.get (i), cfus)));</span>
+<span class="nc" id="L936">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L937">				e.printStackTrace();</span>
 
-<span class="nc" id="L938">				return null;</span>
-<span class="fc" id="L939">			}</span>
+<span class="nc" id="L939">				return null;</span>
+<span class="fc" id="L940">			}</span>
 		}
 
-<span class="fc" id="L942">		return lsCFP;</span>
+<span class="fc" id="L943">		return lsCFP;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

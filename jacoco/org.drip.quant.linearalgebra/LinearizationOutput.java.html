@@ -75,9 +75,10 @@ package org.drip.quant.linearalgebra;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/linearalgebra&quot;&gt;Linear Algebra&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/linearalgebra&quot;&gt;Linear Algebra&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,9 +86,9 @@ package org.drip.quant.linearalgebra;
  */
 
 public class LinearizationOutput {
-<span class="fc" id="L88">	private double[] _adblTransformedRHS = null;</span>
-<span class="fc" id="L89">	private double[][] _aadblTransformedMatrix = null;</span>
-<span class="fc" id="L90">	private java.lang.String _strLinearizationMethod = &quot;&quot;;</span>
+<span class="fc" id="L89">	private double[] _adblTransformedRHS = null;</span>
+<span class="fc" id="L90">	private double[][] _aadblTransformedMatrix = null;</span>
+<span class="fc" id="L91">	private java.lang.String _strLinearizationMethod = &quot;&quot;;</span>
 
 	/**
 	 * LinearizationOutput constructor
@@ -104,18 +105,18 @@ public class LinearizationOutput {
 		final double[][] aadblTransformedMatrix,
 		final java.lang.String strLinearizationMethod)
 		throws java.lang.Exception
-<span class="fc" id="L107">	{</span>
-<span class="pc bpc" id="L108" title="3 of 6 branches missed.">		if (null == (_adblTransformedRHS = adblTransformedRHS) || null == (_aadblTransformedMatrix =</span>
+<span class="fc" id="L108">	{</span>
+<span class="pc bpc" id="L109" title="3 of 6 branches missed.">		if (null == (_adblTransformedRHS = adblTransformedRHS) || null == (_aadblTransformedMatrix =</span>
 			aadblTransformedMatrix) || null == (_strLinearizationMethod = strLinearizationMethod) ||
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">				_strLinearizationMethod.isEmpty())</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LinearizationOutput ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">				_strLinearizationMethod.isEmpty())</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;LinearizationOutput ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L113">		int iSize = _adblTransformedRHS.length;</span>
+<span class="fc" id="L114">		int iSize = _adblTransformedRHS.length;</span>
 
-<span class="pc bpc" id="L115" title="4 of 8 branches missed.">		if (0 == iSize || iSize != _aadblTransformedMatrix.length || null == _aadblTransformedMatrix[0] ||</span>
+<span class="pc bpc" id="L116" title="4 of 8 branches missed.">		if (0 == iSize || iSize != _aadblTransformedMatrix.length || null == _aadblTransformedMatrix[0] ||</span>
 			iSize != _aadblTransformedMatrix[0].length)
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;LinearizationOutput ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L118">	}</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;LinearizationOutput ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L119">	}</span>
 
 	/**
 	 * The RHS
@@ -125,7 +126,7 @@ public class LinearizationOutput {
 
 	public double[] getTransformedRHS()
 	{
-<span class="fc" id="L128">		return _adblTransformedRHS;</span>
+<span class="fc" id="L129">		return _adblTransformedRHS;</span>
 	}
 
 	/**
@@ -136,7 +137,7 @@ public class LinearizationOutput {
 
 	public double[][] getTransformedMatrix()
 	{
-<span class="fc" id="L139">		return _aadblTransformedMatrix;</span>
+<span class="fc" id="L140">		return _aadblTransformedMatrix;</span>
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class LinearizationOutput {
 
 	public java.lang.String getLinearizationMethod()
 	{
-<span class="nc" id="L150">		return _strLinearizationMethod;</span>
+<span class="nc" id="L151">		return _strLinearizationMethod;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

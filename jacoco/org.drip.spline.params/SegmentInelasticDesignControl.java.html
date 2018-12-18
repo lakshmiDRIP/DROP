@@ -92,9 +92,10 @@ package org.drip.spline.params;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,9 +103,9 @@ package org.drip.spline.params;
  */
 
 public class SegmentInelasticDesignControl {
-<span class="fc" id="L105">	private int _iCk = -1;</span>
-<span class="fc" id="L106">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;</span>
-<span class="fc" id="L107">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;</span>
+<span class="fc" id="L106">	private int _iCk = -1;</span>
+<span class="fc" id="L107">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;</span>
+<span class="fc" id="L108">	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;</span>
 
 	/**
 	 * Create the C2 Inelastic Design Params
@@ -115,13 +116,13 @@ public class SegmentInelasticDesignControl {
 	public static final SegmentInelasticDesignControl MakeC2DesignInelasticControl()
 	{
 		try {
-<span class="nc" id="L118">			return new SegmentInelasticDesignControl (2, null, new</span>
+<span class="nc" id="L119">			return new SegmentInelasticDesignControl (2, null, new</span>
 				org.drip.spline.params.SegmentFlexurePenaltyControl (2, 1.));
-<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L121">			e.printStackTrace();</span>
+<span class="nc" id="L121">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L122">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L124">		return null;</span>
+<span class="nc" id="L125">		return null;</span>
 	}
 
 	/**
@@ -138,13 +139,13 @@ public class SegmentInelasticDesignControl {
 		final int iCurvaturePenaltyDerivativeOrder)
 	{
 		try {
-<span class="fc" id="L141">			return new SegmentInelasticDesignControl (iCk, null, new</span>
+<span class="fc" id="L142">			return new SegmentInelasticDesignControl (iCk, null, new</span>
 				org.drip.spline.params.SegmentFlexurePenaltyControl (iCurvaturePenaltyDerivativeOrder, 1.));
-<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L144">			e.printStackTrace();</span>
+<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L147">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	/**
@@ -163,13 +164,13 @@ public class SegmentInelasticDesignControl {
 		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcLength,
 		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcCurvature)
 		throws java.lang.Exception
-<span class="fc" id="L166">	{</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (0 &gt; (_iCk = iCk))</span>
-<span class="nc" id="L168">			throw new java.lang.Exception (&quot;SegmentInelasticDesignControl ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L167">	{</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (0 &gt; (_iCk = iCk))</span>
+<span class="nc" id="L169">			throw new java.lang.Exception (&quot;SegmentInelasticDesignControl ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L170">		_sfpcLength = sfpcLength;</span>
-<span class="fc" id="L171">		_sfpcCurvature = sfpcCurvature;</span>
-<span class="fc" id="L172">	}</span>
+<span class="fc" id="L171">		_sfpcLength = sfpcLength;</span>
+<span class="fc" id="L172">		_sfpcCurvature = sfpcCurvature;</span>
+<span class="fc" id="L173">	}</span>
 
 	/**
 	 * Retrieve the Continuity Order
@@ -179,7 +180,7 @@ public class SegmentInelasticDesignControl {
 
 	public int Ck()
 	{
-<span class="fc" id="L182">		return _iCk;</span>
+<span class="fc" id="L183">		return _iCk;</span>
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class SegmentInelasticDesignControl {
 
 	public org.drip.spline.params.SegmentFlexurePenaltyControl lengthPenaltyControl()
 	{
-<span class="fc" id="L193">		return _sfpcLength;</span>
+<span class="fc" id="L194">		return _sfpcLength;</span>
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class SegmentInelasticDesignControl {
 
 	public org.drip.spline.params.SegmentFlexurePenaltyControl curvaturePenaltyControl()
 	{
-<span class="fc" id="L204">		return _sfpcCurvature;</span>
+<span class="fc" id="L205">		return _sfpcCurvature;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

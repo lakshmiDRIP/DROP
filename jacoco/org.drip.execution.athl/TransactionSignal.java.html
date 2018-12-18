@@ -12,12 +12,12 @@ package org.drip.execution.athl;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.athl;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,17 +98,17 @@ package org.drip.execution.athl;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TransactionSignal {
-<span class="nc" id="L108">	private double _dblDrift = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _dblIWander = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dblJWander = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _dblDrift = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblIWander = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dblJWander = java.lang.Double.NaN;</span>
 
 	/**
 	 * TransactionSignal Constructor
@@ -124,12 +125,12 @@ public class TransactionSignal {
 		final double dblIWander,
 		final double dblJWander)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblJWander = dblJWander))</span>
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;TransactionSignal Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L132">	}</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblJWander = dblJWander))</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;TransactionSignal Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Drift of the Transaction Signal
@@ -139,7 +140,7 @@ public class TransactionSignal {
 
 	public double drift()
 	{
-<span class="nc" id="L142">		return _dblDrift;</span>
+<span class="nc" id="L143">		return _dblDrift;</span>
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class TransactionSignal {
 
 	public double iWander()
 	{
-<span class="nc" id="L153">		return _dblIWander;</span>
+<span class="nc" id="L154">		return _dblIWander;</span>
 	}
 
 	/**
@@ -161,7 +162,7 @@ public class TransactionSignal {
 
 	public double jWander()
 	{
-<span class="nc" id="L164">		return _dblJWander;</span>
+<span class="nc" id="L165">		return _dblJWander;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -73,9 +73,10 @@ package org.drip.state.identifier;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *  
@@ -83,7 +84,7 @@ package org.drip.state.identifier;
  */
 
 public class VolatilityLabel implements org.drip.state.identifier.LatentStateLabel {
-<span class="fc" id="L86">	private org.drip.state.identifier.LatentStateLabel _lslUnderlyingState = null;</span>
+<span class="fc" id="L87">	private org.drip.state.identifier.LatentStateLabel _lslUnderlyingState = null;</span>
 
 	/**
 	 * Make a Standard Volatility Latent State Label from the Underlying Latent State Label
@@ -97,12 +98,12 @@ public class VolatilityLabel implements org.drip.state.identifier.LatentStateLab
 		final org.drip.state.identifier.LatentStateLabel lslUnderlyingState)
 	{
 		try {
-<span class="fc" id="L100">			return new VolatilityLabel (lslUnderlyingState);</span>
-<span class="nc" id="L101">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L102">			e.printStackTrace();</span>
+<span class="fc" id="L101">			return new VolatilityLabel (lslUnderlyingState);</span>
+<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L103">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L105">		return null;</span>
+<span class="nc" id="L106">		return null;</span>
 	}
 
 	/**
@@ -116,10 +117,10 @@ public class VolatilityLabel implements org.drip.state.identifier.LatentStateLab
 	public VolatilityLabel (
 		final org.drip.state.identifier.LatentStateLabel lslUnderlyingState)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == (_lslUnderlyingState = lslUnderlyingState))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;VolatilityLabel ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L122">	}</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (null == (_lslUnderlyingState = lslUnderlyingState))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;VolatilityLabel ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Latent State Underlying the Volatility Latent State
@@ -129,20 +130,20 @@ public class VolatilityLabel implements org.drip.state.identifier.LatentStateLab
 
 	public org.drip.state.identifier.LatentStateLabel underlyingLatentState()
 	{
-<span class="nc" id="L132">		return _lslUnderlyingState;</span>
+<span class="nc" id="L133">		return _lslUnderlyingState;</span>
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-<span class="fc" id="L137">		return _lslUnderlyingState.fullyQualifiedName();</span>
+<span class="fc" id="L138">		return _lslUnderlyingState.fullyQualifiedName();</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-<span class="nc bnc" id="L143" title="All 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.VolatilityLabel) ? false :</span>
-<span class="nc" id="L144">			underlyingLatentState().match (((org.drip.state.identifier.VolatilityLabel)</span>
-<span class="nc" id="L145">				lslOther).underlyingLatentState());</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.VolatilityLabel) ? false :</span>
+<span class="nc" id="L145">			underlyingLatentState().match (((org.drip.state.identifier.VolatilityLabel)</span>
+<span class="nc" id="L146">				lslOther).underlyingLatentState());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

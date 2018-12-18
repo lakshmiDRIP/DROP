@@ -77,9 +77,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -87,10 +88,10 @@ package org.drip.product.params;
  */
 
 public class CurrencyPair {
-<span class="fc" id="L90">	private java.lang.String _strNumCcy = &quot;&quot;;</span>
-<span class="fc" id="L91">	private java.lang.String _strDenomCcy = &quot;&quot;;</span>
-<span class="fc" id="L92">	private java.lang.String _strQuoteCcy = &quot;&quot;;</span>
-<span class="fc" id="L93">	private double _dblPIPFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">	private java.lang.String _strNumCcy = &quot;&quot;;</span>
+<span class="fc" id="L92">	private java.lang.String _strDenomCcy = &quot;&quot;;</span>
+<span class="fc" id="L93">	private java.lang.String _strQuoteCcy = &quot;&quot;;</span>
+<span class="fc" id="L94">	private double _dblPIPFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Currency Pair from the Code
@@ -103,21 +104,21 @@ public class CurrencyPair {
 	public static final CurrencyPair FromCode (
 		final java.lang.String strCode)
 	{
-<span class="pc bpc" id="L106" title="2 of 4 branches missed.">		if (null == strCode || strCode.isEmpty()) return null;</span>
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">		if (null == strCode || strCode.isEmpty()) return null;</span>
 
-<span class="fc" id="L108">		java.lang.String[] astrCcy = strCode.split (&quot;/&quot;);</span>
+<span class="fc" id="L109">		java.lang.String[] astrCcy = strCode.split (&quot;/&quot;);</span>
 
-<span class="pc bpc" id="L110" title="5 of 10 branches missed.">		if (null == astrCcy || 2 != astrCcy.length || null == astrCcy[0] || astrCcy[0].isEmpty() || null ==</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			astrCcy[1] || astrCcy[1].isEmpty())</span>
-<span class="nc" id="L112">			return null;</span>
+<span class="pc bpc" id="L111" title="5 of 10 branches missed.">		if (null == astrCcy || 2 != astrCcy.length || null == astrCcy[0] || astrCcy[0].isEmpty() || null ==</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			astrCcy[1] || astrCcy[1].isEmpty())</span>
+<span class="nc" id="L113">			return null;</span>
 
 		try {
-<span class="fc" id="L115">			return new CurrencyPair (astrCcy[0], astrCcy[1], astrCcy[0], 1.);</span>
-<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L117">			e.printStackTrace();</span>
+<span class="fc" id="L116">			return new CurrencyPair (astrCcy[0], astrCcy[1], astrCcy[0], 1.);</span>
+<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L118">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L120">		return null;</span>
+<span class="nc" id="L121">		return null;</span>
 	}
 
 	/**
@@ -138,18 +139,18 @@ public class CurrencyPair {
 		final java.lang.String strQuoteCcy,
 		final double dblPIPFactor)
 		throws java.lang.Exception
-<span class="fc" id="L141">	{</span>
-<span class="pc bpc" id="L142" title="5 of 10 branches missed.">		if (null == strNumCcy || strNumCcy.isEmpty() || null == strDenomCcy || strDenomCcy.isEmpty() || null</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			== strQuoteCcy || strNumCcy.equalsIgnoreCase (strDenomCcy) || (!strQuoteCcy.equalsIgnoreCase</span>
-<span class="pc bpc" id="L144" title="1 of 4 branches missed.">				(strNumCcy) &amp;&amp; !strQuoteCcy.equalsIgnoreCase (strDenomCcy)) ||</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblPIPFactor))</span>
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;CurrencyPair ctr: Invalid parameters&quot;);</span>
+<span class="fc" id="L142">	{</span>
+<span class="pc bpc" id="L143" title="5 of 10 branches missed.">		if (null == strNumCcy || strNumCcy.isEmpty() || null == strDenomCcy || strDenomCcy.isEmpty() || null</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			== strQuoteCcy || strNumCcy.equalsIgnoreCase (strDenomCcy) || (!strQuoteCcy.equalsIgnoreCase</span>
+<span class="pc bpc" id="L145" title="1 of 4 branches missed.">				(strNumCcy) &amp;&amp; !strQuoteCcy.equalsIgnoreCase (strDenomCcy)) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblPIPFactor))</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;CurrencyPair ctr: Invalid parameters&quot;);</span>
 
-<span class="fc" id="L148">		_strNumCcy = strNumCcy;</span>
-<span class="fc" id="L149">		_strDenomCcy = strDenomCcy;</span>
-<span class="fc" id="L150">		_strQuoteCcy = strQuoteCcy;</span>
-<span class="fc" id="L151">		_dblPIPFactor = dblPIPFactor;</span>
-<span class="fc" id="L152">	}</span>
+<span class="fc" id="L149">		_strNumCcy = strNumCcy;</span>
+<span class="fc" id="L150">		_strDenomCcy = strDenomCcy;</span>
+<span class="fc" id="L151">		_strQuoteCcy = strQuoteCcy;</span>
+<span class="fc" id="L152">		_dblPIPFactor = dblPIPFactor;</span>
+<span class="fc" id="L153">	}</span>
 
 	/**
 	 * Get the numerator currency
@@ -159,7 +160,7 @@ public class CurrencyPair {
 
 	public java.lang.String numCcy()
 	{
-<span class="fc" id="L162">		return _strNumCcy;</span>
+<span class="fc" id="L163">		return _strNumCcy;</span>
 	}
 
 	/**
@@ -170,7 +171,7 @@ public class CurrencyPair {
 
 	public java.lang.String denomCcy()
 	{
-<span class="fc" id="L173">		return _strDenomCcy;</span>
+<span class="fc" id="L174">		return _strDenomCcy;</span>
 	}
 
 	/**
@@ -181,7 +182,7 @@ public class CurrencyPair {
 
 	public java.lang.String quoteCcy()
 	{
-<span class="nc" id="L184">		return _strQuoteCcy;</span>
+<span class="nc" id="L185">		return _strQuoteCcy;</span>
 	}
 
 	/**
@@ -192,7 +193,7 @@ public class CurrencyPair {
 
 	public java.lang.String code()
 	{
-<span class="fc" id="L195">		return _strNumCcy + &quot;/&quot; + _strDenomCcy;</span>
+<span class="fc" id="L196">		return _strNumCcy + &quot;/&quot; + _strDenomCcy;</span>
 	}
 
 	/**
@@ -203,7 +204,7 @@ public class CurrencyPair {
 
 	public java.lang.String inverseCode()
 	{
-<span class="nc" id="L206">		return _strDenomCcy + &quot;/&quot; + _strNumCcy;</span>
+<span class="nc" id="L207">		return _strDenomCcy + &quot;/&quot; + _strNumCcy;</span>
 	}
 
 	/**
@@ -214,12 +215,12 @@ public class CurrencyPair {
 
 	public double pipFactor()
 	{
-<span class="fc" id="L217">		return _dblPIPFactor;</span>
+<span class="fc" id="L218">		return _dblPIPFactor;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L222">		return _strNumCcy + &quot; | &quot; + _strDenomCcy + &quot; | &quot; + _strQuoteCcy + &quot; | &quot; + _dblPIPFactor;</span>
+<span class="fc" id="L223">		return _strNumCcy + &quot; | &quot; + _strDenomCcy + &quot; | &quot; + _strQuoteCcy + &quot; | &quot; + _dblPIPFactor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -71,16 +71,17 @@ package org.drip.service.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product&quot;&gt;Product API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L83">public class OvernightIndexSwapAPI {</span>
+<span class="nc" id="L84">public class OvernightIndexSwapAPI {</span>
 
 	/**
 	 * Generate Full Set of Metrics for the Specified OIS
@@ -109,27 +110,27 @@ package org.drip.service.product;
 		final double[] adblOvernightCurveOISQuote,
 		final boolean bFund)
 	{
-<span class="fc" id="L112">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L113">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L114">		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
+<span class="fc" id="L115">		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);</span>
 
-<span class="fc" id="L116">		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
-<span class="fc" id="L117">			org.drip.service.template.LatentMarketStateBuilder.SmoothOvernightCurve (dtSpot, strOISCurrency,</span>
+<span class="fc" id="L117">		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
+<span class="fc" id="L118">			org.drip.service.template.LatentMarketStateBuilder.SmoothOvernightCurve (dtSpot, strOISCurrency,</span>
 				astrOvernightCurveDepositTenor, adblOvernightCurveDepositQuote, &quot;Rate&quot;,
 					astrOvernightCurveOISTenor, adblOvernightCurveOISQuote, &quot;SwapRate&quot;, null, null, null,
 						&quot;SwapRate&quot;, null, null, &quot;SwapRate&quot;);
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == dcOvernight) return null;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == dcOvernight) return null;</span>
 
-<span class="fc" id="L124">		org.drip.product.rates.FixFloatComponent oisFixFloat =</span>
-<span class="fc" id="L125">			org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strOISCurrency, strOISTenor,</span>
+<span class="fc" id="L125">		org.drip.product.rates.FixFloatComponent oisFixFloat =</span>
+<span class="fc" id="L126">			org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strOISCurrency, strOISTenor,</span>
 				dblOISCoupon, bFund);
 
-<span class="fc" id="L128">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L129">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		return csqc.setFundingState (dcOvernight) ? oisFixFloat.value</span>
-<span class="pc" id="L132">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null) : null;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		return csqc.setFundingState (dcOvernight) ? oisFixFloat.value</span>
+<span class="pc" id="L133">			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

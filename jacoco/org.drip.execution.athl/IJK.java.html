@@ -12,12 +12,12 @@ package org.drip.execution.athl;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.athl;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,16 +97,16 @@ package org.drip.execution.athl;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class IJK {
-<span class="nc" id="L107">	private org.drip.execution.athl.TransactionSignal _tsI = null;</span>
-<span class="nc" id="L108">	private org.drip.execution.athl.TransactionSignal _tsK = null;</span>
+<span class="nc" id="L108">	private org.drip.execution.athl.TransactionSignal _tsI = null;</span>
+<span class="nc" id="L109">	private org.drip.execution.athl.TransactionSignal _tsK = null;</span>
 
 	/**
 	 * IJK Constructor
@@ -120,10 +121,10 @@ public class IJK {
 		final org.drip.execution.athl.TransactionSignal tsI,
 		final org.drip.execution.athl.TransactionSignal tsK)
 		throws java.lang.Exception
-<span class="nc" id="L123">	{</span>
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == (_tsI = tsI) || null == (_tsK = tsK))</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;IJK Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L126">	}</span>
+<span class="nc" id="L124">	{</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null == (_tsI = tsI) || null == (_tsK = tsK))</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;IJK Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L127">	}</span>
 
 	/**
 	 * The Almgren-Thum-Hauptmann-Li &quot;I&quot; Transaction Signal
@@ -133,7 +134,7 @@ public class IJK {
 
 	public org.drip.execution.athl.TransactionSignal i()
 	{
-<span class="nc" id="L136">		return _tsI;</span>
+<span class="nc" id="L137">		return _tsI;</span>
 	}
 
 	/**
@@ -144,7 +145,7 @@ public class IJK {
 
 	public org.drip.execution.athl.TransactionSignal k()
 	{
-<span class="nc" id="L147">		return _tsK;</span>
+<span class="nc" id="L148">		return _tsK;</span>
 	}
 
 	/**
@@ -156,13 +157,13 @@ public class IJK {
 	public org.drip.execution.athl.TransactionSignal j()
 	{
 		try {
-<span class="nc" id="L159">			return new org.drip.execution.athl.TransactionSignal (_tsK.drift() + 0.5 * _tsI.drift(),</span>
-<span class="nc" id="L160">				_tsK.iWander() + 0.5 * _tsI.iWander(), _tsK.jWander());</span>
-<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L160">			return new org.drip.execution.athl.TransactionSignal (_tsK.drift() + 0.5 * _tsI.drift(),</span>
+<span class="nc" id="L161">				_tsK.iWander() + 0.5 * _tsI.iWander(), _tsK.jWander());</span>
+<span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L163">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L166">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

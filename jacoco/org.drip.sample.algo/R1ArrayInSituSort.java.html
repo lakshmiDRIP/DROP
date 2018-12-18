@@ -10,34 +10,53 @@ import org.drip.spaces.big.BigR1Array;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,177 +73,186 @@ import org.drip.spaces.big.BigR1Array;
  */
 
 /**
- * R1ArrayInSituSort demonstrates the Functionality that conducts an in-place Sorting of an Instance of
- * 	BigDoubleArray using a variety of Sorting Algorithms.
+ * &lt;i&gt;R1ArrayInSituSort&lt;/i&gt; demonstrates the Functionality that conducts an in-place Sorting of an Instance
+ * of BigDoubleArray using a variety of Sorting Algorithms.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md&quot;&gt;&quot;Big&quot; Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L63">public class R1ArrayInSituSort {</span>
+<span class="nc" id="L91">public class R1ArrayInSituSort {</span>
 
 	private static void QuickSort (
 		final int iNumRandom,
 		final String strPrefix)
 		throws Exception
 	{
-<span class="fc" id="L70">		double[] adblA = new double[iNumRandom];</span>
-<span class="fc" id="L71">		double[] adblAOrig = new double[iNumRandom];</span>
+<span class="fc" id="L98">		double[] adblA = new double[iNumRandom];</span>
+<span class="fc" id="L99">		double[] adblAOrig = new double[iNumRandom];</span>
 
-<span class="fc bfc" id="L73" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
-<span class="fc" id="L74">			adblA[i] = Math.random();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
+<span class="fc" id="L102">			adblA[i] = Math.random();</span>
 
-<span class="fc" id="L76">			adblAOrig[i] = adblA[i];</span>
+<span class="fc" id="L104">			adblAOrig[i] = adblA[i];</span>
 		}
 
-<span class="fc" id="L79">		BigR1Array ba = new BigR1Array (adblA);</span>
+<span class="fc" id="L107">		BigR1Array ba = new BigR1Array (adblA);</span>
 
-<span class="fc" id="L81">		ba.quickSort();</span>
+<span class="fc" id="L109">		ba.quickSort();</span>
 
-<span class="fc" id="L83">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L111">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L85" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
-<span class="fc" id="L86">			System.out.println (</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
+<span class="fc" id="L114">			System.out.println (</span>
 				&quot;\t||  &quot; + strPrefix + &quot;  &quot; +
-<span class="fc" id="L88">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L89">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L116">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L117">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L92">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L120">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L121">	}</span>
 
 	private static void MergeSort (
 		final int iNumRandom,
 		final String strPrefix)
 		throws Exception
 	{
-<span class="fc" id="L100">		double[] adblA = new double[iNumRandom];</span>
-<span class="fc" id="L101">		double[] adblAOrig = new double[iNumRandom];</span>
+<span class="fc" id="L128">		double[] adblA = new double[iNumRandom];</span>
+<span class="fc" id="L129">		double[] adblAOrig = new double[iNumRandom];</span>
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
-<span class="fc" id="L104">			adblA[i] = Math.random();</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
+<span class="fc" id="L132">			adblA[i] = Math.random();</span>
 
-<span class="fc" id="L106">			adblAOrig[i] = adblA[i];</span>
+<span class="fc" id="L134">			adblAOrig[i] = adblA[i];</span>
 		}
 
-<span class="fc" id="L109">		BigR1Array ba = new BigR1Array (adblA);</span>
+<span class="fc" id="L137">		BigR1Array ba = new BigR1Array (adblA);</span>
 
-<span class="fc" id="L111">		ba.mergeSort();</span>
+<span class="fc" id="L139">		ba.mergeSort();</span>
 
-<span class="fc" id="L113">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
-<span class="fc" id="L116">			System.out.println (</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
+<span class="fc" id="L144">			System.out.println (</span>
 				&quot;\t||  &quot; + strPrefix + &quot;  &quot; +
-<span class="fc" id="L118">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L119">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L146">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L147">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L122">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
-<span class="fc" id="L123">	}</span>
+<span class="fc" id="L150">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L151">	}</span>
 
 	private static void HeapSort (
 		final int iNumRandom,
 		final String strPrefix)
 		throws Exception
 	{
-<span class="fc" id="L130">		double[] adblA = new double[iNumRandom];</span>
-<span class="fc" id="L131">		double[] adblAOrig = new double[iNumRandom];</span>
+<span class="fc" id="L158">		double[] adblA = new double[iNumRandom];</span>
+<span class="fc" id="L159">		double[] adblAOrig = new double[iNumRandom];</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
-<span class="fc" id="L134">			adblA[i] = Math.random();</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
+<span class="fc" id="L162">			adblA[i] = Math.random();</span>
 
-<span class="fc" id="L136">			adblAOrig[i] = adblA[i];</span>
+<span class="fc" id="L164">			adblAOrig[i] = adblA[i];</span>
 		}
 
-<span class="fc" id="L139">		BigR1Array ba = new BigR1Array (adblA);</span>
+<span class="fc" id="L167">		BigR1Array ba = new BigR1Array (adblA);</span>
 
-<span class="fc" id="L141">		ba.heapSort();</span>
+<span class="fc" id="L169">		ba.heapSort();</span>
 
-<span class="fc" id="L143">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
-<span class="fc" id="L146">			System.out.println (</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
+<span class="fc" id="L174">			System.out.println (</span>
 				&quot;\t||  &quot; + strPrefix + &quot;  &quot; +
-<span class="fc" id="L148">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L149">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L176">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L177">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L152">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
-<span class="fc" id="L153">	}</span>
+<span class="fc" id="L180">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L181">	}</span>
 
 	private static void InsertionSort (
 		final int iNumRandom,
 		final String strPrefix)
 		throws Exception
 	{
-<span class="fc" id="L160">		double[] adblA = new double[iNumRandom];</span>
-<span class="fc" id="L161">		double[] adblAOrig = new double[iNumRandom];</span>
+<span class="fc" id="L188">		double[] adblA = new double[iNumRandom];</span>
+<span class="fc" id="L189">		double[] adblAOrig = new double[iNumRandom];</span>
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
-<span class="fc" id="L164">			adblA[i] = Math.random();</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i) {</span>
+<span class="fc" id="L192">			adblA[i] = Math.random();</span>
 
-<span class="fc" id="L166">			adblAOrig[i] = adblA[i];</span>
+<span class="fc" id="L194">			adblAOrig[i] = adblA[i];</span>
 		}
 
-<span class="fc" id="L169">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
 
-<span class="fc" id="L171">		NumberUtil.Print1DArray (</span>
+<span class="fc" id="L199">		NumberUtil.Print1DArray (</span>
 			&quot;\t|  ORIGINAL  &quot;,
 			adblA,
 			6,
 			false
 		);
 
-<span class="fc" id="L178">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L206">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
 
-<span class="fc" id="L180">		BigR1Array ba = new BigR1Array (adblA);</span>
+<span class="fc" id="L208">		BigR1Array ba = new BigR1Array (adblA);</span>
 
-<span class="fc" id="L182">		ba.insertionSort();</span>
+<span class="fc" id="L210">		ba.insertionSort();</span>
 
-<span class="fc" id="L184">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;\n\t---------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L186" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
-<span class="fc" id="L187">			System.out.println (</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRandom; ++i)</span>
+<span class="fc" id="L215">			System.out.println (</span>
 				&quot;\t||  &quot; + strPrefix + &quot;  &quot; +
-<span class="fc" id="L189">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L190">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L217">				FormatUtil.FormatDouble (adblAOrig[i], 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L218">				FormatUtil.FormatDouble (adblA[i], 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L193">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
-<span class="fc" id="L194">	}</span>
+<span class="fc" id="L221">		System.out.println (&quot;\t---------------------------------------------&quot;);</span>
+<span class="fc" id="L222">	}</span>
 
 	public static void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L200">		EnvManager.InitEnv (</span>
+<span class="fc" id="L228">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L205">		int iNumRandom = 50;</span>
+<span class="fc" id="L233">		int iNumRandom = 50;</span>
 
-<span class="fc" id="L207">		QuickSort (</span>
+<span class="fc" id="L235">		QuickSort (</span>
 			iNumRandom,
 			&quot;QUICKSORT&quot;
 		);
 
-<span class="fc" id="L212">		MergeSort (</span>
+<span class="fc" id="L240">		MergeSort (</span>
 			iNumRandom,
 			&quot;MERGESORT&quot;
 		);
 
-<span class="fc" id="L217">		InsertionSort (</span>
+<span class="fc" id="L245">		InsertionSort (</span>
 			iNumRandom,
 			&quot;INSERTIONSORT&quot;
 		);
 
-<span class="fc" id="L222">		HeapSort (</span>
+<span class="fc" id="L250">		HeapSort (</span>
 			iNumRandom,
 			&quot;HEAPSORT&quot;
 		);
 
-<span class="fc" id="L227">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L228">	}</span>
+<span class="fc" id="L255">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L256">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

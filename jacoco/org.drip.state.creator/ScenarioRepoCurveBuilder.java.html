@@ -73,16 +73,17 @@ package org.drip.state.creator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class ScenarioRepoCurveBuilder {</span>
+<span class="nc" id="L86">public class ScenarioRepoCurveBuilder {</span>
 
 	/**
 	 * Create an Instance of the Custom Splined Repo Curve
@@ -105,37 +106,37 @@ package org.drip.state.creator;
 		final double[] adblRepo,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="nc bnc" id="L108" title="All 10 branches missed.">		if (null == strName || null == dtSpot || strName.isEmpty() || null == aiDate || null == adblRepo)</span>
-<span class="nc" id="L109">			return null;</span>
+<span class="nc bnc" id="L109" title="All 10 branches missed.">		if (null == strName || null == dtSpot || strName.isEmpty() || null == aiDate || null == adblRepo)</span>
+<span class="nc" id="L110">			return null;</span>
 
-<span class="nc" id="L111">		int iNumInstrument = aiDate.length;</span>
-<span class="nc" id="L112">		int[] aiBasisPredictorOrdinate = new int[iNumInstrument + 1];</span>
-<span class="nc" id="L113">		double[] adblBasisResponseValue = new double[iNumInstrument + 1];</span>
-<span class="nc" id="L114">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="nc" id="L112">		int iNumInstrument = aiDate.length;</span>
+<span class="nc" id="L113">		int[] aiBasisPredictorOrdinate = new int[iNumInstrument + 1];</span>
+<span class="nc" id="L114">		double[] adblBasisResponseValue = new double[iNumInstrument + 1];</span>
+<span class="nc" id="L115">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumInstrument];
 
-<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (0 == iNumInstrument || iNumInstrument != adblRepo.length) return null;</span>
+<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (0 == iNumInstrument || iNumInstrument != adblRepo.length) return null;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumInstrument; ++i) {</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">			aiBasisPredictorOrdinate[i] = 0 == i ? dtSpot.julian() : aiDate[i - 1];</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (int i = 0; i &lt;= iNumInstrument; ++i) {</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			aiBasisPredictorOrdinate[i] = 0 == i ? dtSpot.julian() : aiDate[i - 1];</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			adblBasisResponseValue[i] = 0 == i ? adblRepo[0] : adblRepo[i - 1];</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			adblBasisResponseValue[i] = 0 == i ? adblRepo[0] : adblRepo[i - 1];</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
 		}
 
 		try {
-<span class="nc" id="L128">			return new org.drip.state.curve.BasisSplineRepoCurve (comp, new</span>
+<span class="nc" id="L129">			return new org.drip.state.curve.BasisSplineRepoCurve (comp, new</span>
 				org.drip.spline.grid.OverlappingStretchSpan
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="nc" id="L131">						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,</span>
-<span class="nc" id="L132">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="nc" id="L132">						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,</span>
+<span class="nc" id="L133">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-<span class="nc" id="L134">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L135">			e.printStackTrace();</span>
+<span class="nc" id="L135">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L136">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L138">		return null;</span>
+<span class="nc" id="L139">		return null;</span>
 	}
 
 	/**
@@ -158,16 +159,16 @@ package org.drip.state.creator;
 		final double[] adblRepo)
 	{
 		try {
-<span class="nc" id="L161">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
+<span class="nc" id="L162">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="nc" id="L165">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L166">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L167">			e.printStackTrace();</span>
+<span class="nc" id="L166">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L170">		return null;</span>
+<span class="nc" id="L171">		return null;</span>
 	}
 
 	/**
@@ -190,16 +191,16 @@ package org.drip.state.creator;
 		final double[] adblRepo)
 	{
 		try {
-<span class="nc" id="L193">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
+<span class="nc" id="L194">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="nc" id="L197">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L198">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L199">			e.printStackTrace();</span>
+<span class="nc" id="L198">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L199">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L200">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L202">		return null;</span>
+<span class="nc" id="L203">		return null;</span>
 	}
 
 	/**
@@ -222,16 +223,16 @@ package org.drip.state.creator;
 		final double[] adblRepo)
 	{
 		try {
-<span class="nc" id="L225">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
+<span class="nc" id="L226">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
 						org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="nc" id="L229">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L230">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L231">			e.printStackTrace();</span>
+<span class="nc" id="L230">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L231">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L232">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L234">		return null;</span>
+<span class="nc" id="L235">		return null;</span>
 	}
 
 	/**
@@ -256,16 +257,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L259">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
+<span class="nc" id="L260">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L263">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L264">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L265">			e.printStackTrace();</span>
+<span class="nc" id="L264">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L265">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L266">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L268">		return null;</span>
+<span class="nc" id="L269">		return null;</span>
 	}
 
 	/**
@@ -290,16 +291,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L293">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
+<span class="nc" id="L294">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L297">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L298">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L299">			e.printStackTrace();</span>
+<span class="nc" id="L298">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L299">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L300">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L302">		return null;</span>
+<span class="nc" id="L303">		return null;</span>
 	}
 
 	/**
@@ -324,16 +325,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L327">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
+<span class="nc" id="L328">			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L331">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L332">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L333">			e.printStackTrace();</span>
+<span class="nc" id="L332">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L333">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L334">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L336">		return null;</span>
+<span class="nc" id="L337">		return null;</span>
 	}
 
 	/**
@@ -351,18 +352,18 @@ package org.drip.state.creator;
 		final org.drip.product.definition.Component comp,
 		final double dblRepoRate)
 	{
-<span class="pc bpc" id="L354" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
 
-<span class="fc" id="L356">		int iEpochDate = dtSpot.julian();</span>
+<span class="fc" id="L357">		int iEpochDate = dtSpot.julian();</span>
 
 		try {
-<span class="fc" id="L359">			return new org.drip.state.nonlinear.FlatForwardRepoCurve (iEpochDate, comp, new int[]</span>
+<span class="fc" id="L360">			return new org.drip.state.nonlinear.FlatForwardRepoCurve (iEpochDate, comp, new int[]</span>
 				{iEpochDate}, new double[] {dblRepoRate});
-<span class="nc" id="L361">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L362">			e.printStackTrace();</span>
+<span class="nc" id="L362">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L363">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L365">		return null;</span>
+<span class="nc" id="L366">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

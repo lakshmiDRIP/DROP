@@ -75,9 +75,10 @@ package org.drip.state.curve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,9 +86,9 @@ package org.drip.state.curve;
  */
 
 public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-<span class="fc" id="L88">	private int _iDiscreteCollateralizationIncrement = -1;</span>
-<span class="fc" id="L89">	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;</span>
-<span class="fc" id="L90">	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;</span>
+<span class="fc" id="L89">	private int _iDiscreteCollateralizationIncrement = -1;</span>
+<span class="fc" id="L90">	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;</span>
+<span class="fc" id="L91">	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;</span>
 
 	/**
 	 * DeterministicCollateralChoiceDiscountCurve constructor
@@ -105,64 +106,64 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDiscreteCollateralizationIncrement)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L108">		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);</span>
+<span class="fc" id="L109">		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);</span>
 
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (0 &gt;= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (0 &gt;= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))</span>
+<span class="nc" id="L112">			throw new java.lang.Exception</span>
 				(&quot;DeterministicCollateralChoiceDiscountCurve ctr: Invalid Collateralization Increment!&quot;);
 
-<span class="fc" id="L114">		_aFCDC = aFCDC;</span>
-<span class="fc" id="L115">		_dcDomesticCollateralized = dcDomesticCollateralized;</span>
-<span class="fc" id="L116">	}</span>
+<span class="fc" id="L115">		_aFCDC = aFCDC;</span>
+<span class="fc" id="L116">		_dcDomesticCollateralized = dcDomesticCollateralized;</span>
+<span class="fc" id="L117">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);</span>
 
-<span class="fc" id="L124">		int iNumCollateralizer = _aFCDC.length;</span>
+<span class="fc" id="L125">		int iNumCollateralizer = _aFCDC.length;</span>
 
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);</span>
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
 
-<span class="fc" id="L130">		double dblDF = 1.;</span>
-<span class="fc" id="L131">		int iWorkoutDate = _iEpochDate;</span>
+<span class="fc" id="L131">		double dblDF = 1.;</span>
+<span class="fc" id="L132">		int iWorkoutDate = _iEpochDate;</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		while (java.lang.Math.abs (iDate - iWorkoutDate) &gt; _iDiscreteCollateralizationIncrement) {</span>
-<span class="fc" id="L134">			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">		while (java.lang.Math.abs (iDate - iWorkoutDate) &gt; _iDiscreteCollateralizationIncrement) {</span>
+<span class="fc" id="L135">			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;</span>
 
-<span class="fc" id="L136">			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /</span>
-<span class="fc" id="L137">				_dcDomesticCollateralized.df (iWorkoutDate);</span>
+<span class="fc" id="L137">			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /</span>
+<span class="fc" id="L138">				_dcDomesticCollateralized.df (iWorkoutDate);</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
-<span class="fc" id="L140">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df</span>
-<span class="fc" id="L141">					(iWorkoutDate);</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
+<span class="fc" id="L141">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df</span>
+<span class="fc" id="L142">					(iWorkoutDate);</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
-<span class="nc" id="L144">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
+<span class="nc" id="L145">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
 			}
 
-<span class="fc" id="L147">			dblDF *= dblDFIncrement;</span>
-<span class="fc" id="L148">			iWorkoutDate = iWorkoutEndDate;</span>
-<span class="fc" id="L149">		}</span>
+<span class="fc" id="L148">			dblDF *= dblDFIncrement;</span>
+<span class="fc" id="L149">			iWorkoutDate = iWorkoutEndDate;</span>
+<span class="fc" id="L150">		}</span>
 
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (iDate &gt; iWorkoutDate) {</span>
-<span class="fc" id="L152">			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df</span>
-<span class="fc" id="L153">				(iWorkoutDate);</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (iDate &gt; iWorkoutDate) {</span>
+<span class="fc" id="L153">			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df</span>
+<span class="fc" id="L154">				(iWorkoutDate);</span>
 
-<span class="fc bfc" id="L155" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
-<span class="fc" id="L156">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumCollateralizer; ++i) {</span>
+<span class="fc" id="L157">				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
-<span class="nc" id="L159">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">				if (dblCollateralizerDFIncrement &lt; dblDFIncrement)</span>
+<span class="nc" id="L160">					dblDFIncrement = dblCollateralizerDFIncrement;</span>
 			}
 
-<span class="fc" id="L162">			dblDF *= dblDFIncrement;</span>
+<span class="fc" id="L163">			dblDF *= dblDFIncrement;</span>
 		}
 
-<span class="fc" id="L165">		return dblDF;</span>
+<span class="fc" id="L166">		return dblDF;</span>
 	}
 
 	@Override public double forward (
@@ -170,37 +171,37 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (iDate1 &lt; _iEpochDate || iDate2 &lt; _iEpochDate) return 0.;</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">		if (iDate1 &lt; _iEpochDate || iDate2 &lt; _iEpochDate) return 0.;</span>
 
-<span class="nc" id="L175">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
+<span class="nc" id="L176">		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));</span>
 	}
 
 	@Override public double zero (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (iDate &lt; _iEpochDate) return 0.;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (iDate &lt; _iEpochDate) return 0.;</span>
 
-<span class="nc" id="L184">		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));</span>
+<span class="nc" id="L185">		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));</span>
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
 		final int iDate,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="nc" id="L191">		return null;</span>
+<span class="nc" id="L192">		return null;</span>
 	}
 
 	@Override public java.lang.String latentStateQuantificationMetric()
 	{
-<span class="nc" id="L196">		return null;</span>
+<span class="nc" id="L197">		return null;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L203">		return null;</span>
+<span class="nc" id="L204">		return null;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve shiftManifestMeasure (
@@ -208,50 +209,50 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L211">		return null;</span>
+<span class="nc" id="L212">		return null;</span>
 	}
 
 	@Override public org.drip.state.discount.MergedDiscountForwardCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L218">		return null;</span>
+<span class="nc" id="L219">		return null;</span>
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L224">		return null;</span>
+<span class="nc" id="L225">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L230">		return null;</span>
+<span class="nc" id="L231">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="nc" id="L237">		return null;</span>
+<span class="nc" id="L238">		return null;</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L243">		return false;</span>
+<span class="nc" id="L244">		return false;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L248">		return null;</span>
+<span class="nc" id="L249">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L254">		return null;</span>
+<span class="nc" id="L255">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

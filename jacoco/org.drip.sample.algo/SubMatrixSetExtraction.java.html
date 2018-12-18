@@ -12,34 +12,53 @@ import org.drip.spaces.big.SubMatrixSetExtractor;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -56,73 +75,82 @@ import org.drip.spaces.big.SubMatrixSetExtractor;
  */
 
 /**
- * SubMatrixSetStringExtraction demonstrates the Extraction and Usage of the Inner Sub-matrices of a given
- * 	Master Matrix.
+ * &lt;i&gt;SubMatrixSetStringExtraction&lt;/i&gt; demonstrates the Extraction and Usage of the Inner Sub-matrices of a
+ * given Master Matrix.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md&quot;&gt;&quot;Big&quot; Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L65">public class SubMatrixSetExtraction {</span>
+<span class="nc" id="L93">public class SubMatrixSetExtraction {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L71">		EnvManager.InitEnv (</span>
+<span class="fc" id="L99">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L76">		int iSize = 4;</span>
-<span class="fc" id="L77">		double[][] aadbl = new double[iSize][iSize];</span>
+<span class="fc" id="L104">		int iSize = 4;</span>
+<span class="fc" id="L105">		double[][] aadbl = new double[iSize][iSize];</span>
 
-<span class="fc bfc" id="L79" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc bfc" id="L80" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="fc" id="L81">				aadbl[i][j] = Math.random() - 0.5;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L109">				aadbl[i][j] = Math.random() - 0.5;</span>
 		}
 
-<span class="fc" id="L84">		System.out.println ();</span>
+<span class="fc" id="L112">		System.out.println ();</span>
 
-<span class="fc bfc" id="L86" title="All 2 branches covered.">		for (int iStartRow = 0; iStartRow &lt; iSize; ++iStartRow) {</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">			for (int iStartColumn = 0; iStartColumn &lt; iSize; ++iStartColumn) {</span>
-<span class="fc" id="L88">				double dblMaxCompositeSum = -1. * iSize * iSize;</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int iStartRow = 0; iStartRow &lt; iSize; ++iStartRow) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">			for (int iStartColumn = 0; iStartColumn &lt; iSize; ++iStartColumn) {</span>
+<span class="fc" id="L116">				double dblMaxCompositeSum = -1. * iSize * iSize;</span>
 
-<span class="fc" id="L90">				List&lt;double[][]&gt; lsSubMatrix = SubMatrixSetExtractor.SquareSubMatrixList (</span>
+<span class="fc" id="L118">				List&lt;double[][]&gt; lsSubMatrix = SubMatrixSetExtractor.SquareSubMatrixList (</span>
 					aadbl,
 					iStartRow,
 					iStartColumn
 				);
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">				for (double[][] aadblSubMatrix : lsSubMatrix) {</span>
-<span class="fc" id="L97">					double dblCompositeSum = SubMatrixSetExtractor.CompositeValue (aadblSubMatrix);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">				for (double[][] aadblSubMatrix : lsSubMatrix) {</span>
+<span class="fc" id="L125">					double dblCompositeSum = SubMatrixSetExtractor.CompositeValue (aadblSubMatrix);</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">					if (dblCompositeSum &gt; dblMaxCompositeSum) dblMaxCompositeSum = dblCompositeSum;</span>
-<span class="fc" id="L100">				}</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">					if (dblCompositeSum &gt; dblMaxCompositeSum) dblMaxCompositeSum = dblCompositeSum;</span>
+<span class="fc" id="L128">				}</span>
 
-<span class="fc" id="L102">				double dblMaxCompositeSumCombined = SubMatrixSetExtractor.MaxCompositeSubMatrix (</span>
+<span class="fc" id="L130">				double dblMaxCompositeSumCombined = SubMatrixSetExtractor.MaxCompositeSubMatrix (</span>
 					aadbl,
 					iStartRow,
 					iStartColumn
 				);
 
-<span class="fc" id="L108">				double dblMaxCompositeSumLean = SubMatrixSetExtractor.LeanMaxCompositeSubMatrix (</span>
+<span class="fc" id="L136">				double dblMaxCompositeSumLean = SubMatrixSetExtractor.LeanMaxCompositeSubMatrix (</span>
 					aadbl,
 					iStartRow,
 					iStartColumn
 				);
 
-<span class="fc" id="L114">				System.out.println (</span>
+<span class="fc" id="L142">				System.out.println (</span>
 					&quot;\tMax[&quot; + iStartRow + &quot;][&quot; + iStartColumn + &quot;] =&gt; &quot; +
-<span class="fc" id="L116">					FormatUtil.FormatDouble (dblMaxCompositeSum, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L117">					FormatUtil.FormatDouble (dblMaxCompositeSumCombined, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L118">					FormatUtil.FormatDouble (dblMaxCompositeSumLean, 1, 4, 1.)</span>
+<span class="fc" id="L144">					FormatUtil.FormatDouble (dblMaxCompositeSum, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L145">					FormatUtil.FormatDouble (dblMaxCompositeSumCombined, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L146">					FormatUtil.FormatDouble (dblMaxCompositeSumLean, 1, 4, 1.)</span>
 				);
 			}
 		}
 
-<span class="fc" id="L123">		System.out.println();</span>
+<span class="fc" id="L151">		System.out.println();</span>
 
-<span class="fc" id="L125">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L126">	}</span>
+<span class="fc" id="L153">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L154">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

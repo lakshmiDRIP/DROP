@@ -91,9 +91,10 @@ package org.drip.spaces.graph;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,25 +103,25 @@ package org.drip.spaces.graph;
 
 public class ShortestPathTree
 {
-<span class="nc" id="L105">	private java.util.Map&lt;java.lang.String, org.drip.spaces.graph.ShortestPathVertex&gt; _nameIndex = new</span>
+<span class="nc" id="L106">	private java.util.Map&lt;java.lang.String, org.drip.spaces.graph.ShortestPathVertex&gt; _nameIndex = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spaces.graph.ShortestPathVertex&gt;();
 
-<span class="nc" id="L108">	private java.util.Map&lt;java.lang.Double, java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt;&gt;</span>
+<span class="nc" id="L109">	private java.util.Map&lt;java.lang.Double, java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt;&gt;</span>
 		_weightIndex = new java.util.TreeMap&lt;java.lang.Double,
 			java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt;&gt;();
 
 	private org.drip.spaces.graph.ShortestPathVertex getUnvisited (
 		final java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt; shortestPathVertexList)
 	{
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (org.drip.spaces.graph.ShortestPathVertex shortestPathVertex : shortestPathVertexList)</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (org.drip.spaces.graph.ShortestPathVertex shortestPathVertex : shortestPathVertexList)</span>
 		{
-<span class="nc bnc" id="L117" title="All 2 branches missed.">			if (!shortestPathVertex.visited())</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">			if (!shortestPathVertex.visited())</span>
 			{
-<span class="nc" id="L119">				return shortestPathVertex;</span>
+<span class="nc" id="L120">				return shortestPathVertex;</span>
 			}
-<span class="nc" id="L121">		}</span>
+<span class="nc" id="L122">		}</span>
 
-<span class="nc" id="L123">		return null;</span>
+<span class="nc" id="L124">		return null;</span>
 	}
 
 	/**
@@ -128,8 +129,8 @@ public class ShortestPathTree
 	 */
 
 	public ShortestPathTree()
-<span class="nc" id="L131">	{</span>
-<span class="nc" id="L132">	}</span>
+<span class="nc" id="L132">	{</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Add a shortestPathVertex
@@ -142,36 +143,36 @@ public class ShortestPathTree
 	public boolean addShortestPathVertex (
 		final org.drip.spaces.graph.ShortestPathVertex shortestPathVertex)
 	{
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == shortestPathVertex)</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == shortestPathVertex)</span>
 		{
-<span class="nc" id="L147">			return false;</span>
+<span class="nc" id="L148">			return false;</span>
 		}
 
-<span class="nc" id="L150">		_nameIndex.put (</span>
-<span class="nc" id="L151">			shortestPathVertex.current(),</span>
+<span class="nc" id="L151">		_nameIndex.put (</span>
+<span class="nc" id="L152">			shortestPathVertex.current(),</span>
 			shortestPathVertex
 		);
 
-<span class="nc" id="L155">		double weightFromSource = shortestPathVertex.weightFromSource();</span>
+<span class="nc" id="L156">		double weightFromSource = shortestPathVertex.weightFromSource();</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (_weightIndex.containsKey (weightFromSource))</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (_weightIndex.containsKey (weightFromSource))</span>
 		{
-<span class="nc" id="L159">			_weightIndex.get (shortestPathVertex.weightFromSource()).add (shortestPathVertex);</span>
+<span class="nc" id="L160">			_weightIndex.get (shortestPathVertex.weightFromSource()).add (shortestPathVertex);</span>
 		}
 		else
 		{
-<span class="nc" id="L163">			java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt; shortestPathVertexList = new</span>
+<span class="nc" id="L164">			java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt; shortestPathVertexList = new</span>
 				java.util.ArrayList&lt;org.drip.spaces.graph.ShortestPathVertex&gt;();
 
-<span class="nc" id="L166">			shortestPathVertexList.add (shortestPathVertex);</span>
+<span class="nc" id="L167">			shortestPathVertexList.add (shortestPathVertex);</span>
 
-<span class="nc" id="L168">			_weightIndex.put (</span>
-<span class="nc" id="L169">				weightFromSource,</span>
+<span class="nc" id="L169">			_weightIndex.put (</span>
+<span class="nc" id="L170">				weightFromSource,</span>
 				shortestPathVertexList
 			);
 		}
 
-<span class="nc" id="L174">		return true;</span>
+<span class="nc" id="L175">		return true;</span>
 	}
 
 	/**
@@ -187,13 +188,13 @@ public class ShortestPathTree
 	{
 		try
 		{
-<span class="nc" id="L190">			return addShortestPathVertex (new org.drip.spaces.graph.ShortestPathVertex (vertexName));</span>
+<span class="nc" id="L191">			return addShortestPathVertex (new org.drip.spaces.graph.ShortestPathVertex (vertexName));</span>
 		}
-<span class="nc" id="L192">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L193">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="nc" id="L195">			e.printStackTrace();</span>
 		}
-<span class="nc" id="L196">		return false;</span>
+<span class="nc" id="L197">		return false;</span>
 	}
 
 	/**
@@ -207,7 +208,7 @@ public class ShortestPathTree
 	public boolean containsVertex (
 		final java.lang.String vertexName)
 	{
-<span class="nc bnc" id="L210" title="All 6 branches missed.">		return null != vertexName &amp;&amp; !vertexName.isEmpty() &amp;&amp; _nameIndex.containsKey (vertexName);</span>
+<span class="nc bnc" id="L211" title="All 6 branches missed.">		return null != vertexName &amp;&amp; !vertexName.isEmpty() &amp;&amp; _nameIndex.containsKey (vertexName);</span>
 	}
 
 	/**
@@ -221,7 +222,7 @@ public class ShortestPathTree
 	public org.drip.spaces.graph.ShortestPathVertex shortestPathVertex (
 		final java.lang.String vertexName)
 	{
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		return _nameIndex.containsKey (vertexName) ? _nameIndex.get (vertexName) : null;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		return _nameIndex.containsKey (vertexName) ? _nameIndex.get (vertexName) : null;</span>
 	}
 
 	/**
@@ -233,22 +234,22 @@ public class ShortestPathTree
 	public org.drip.spaces.graph.ShortestPathVertex greedyShortestPathVertex()
 	{
 		for (java.util.Map.Entry&lt;java.lang.Double, java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt;&gt;
-<span class="nc bnc" id="L236" title="All 2 branches missed.">			weightIndexEntry : _weightIndex.entrySet())</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">			weightIndexEntry : _weightIndex.entrySet())</span>
 		{
-<span class="nc" id="L238">			org.drip.spaces.graph.ShortestPathVertex vertexPeriphery = getUnvisited</span>
-<span class="nc" id="L239">				(weightIndexEntry.getValue());</span>
+<span class="nc" id="L239">			org.drip.spaces.graph.ShortestPathVertex vertexPeriphery = getUnvisited</span>
+<span class="nc" id="L240">				(weightIndexEntry.getValue());</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">			if (null == vertexPeriphery)</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">			if (null == vertexPeriphery)</span>
 			{
-<span class="nc" id="L243">				continue;</span>
+<span class="nc" id="L244">				continue;</span>
 			}
 
-<span class="nc" id="L246">			vertexPeriphery.setVisited (true);</span>
+<span class="nc" id="L247">			vertexPeriphery.setVisited (true);</span>
 
-<span class="nc" id="L248">			return vertexPeriphery;</span>
+<span class="nc" id="L249">			return vertexPeriphery;</span>
 		}
 
-<span class="nc" id="L251">		return null;</span>
+<span class="nc" id="L252">		return null;</span>
 	}
 
 	/**
@@ -259,7 +260,7 @@ public class ShortestPathTree
 
 	public java.util.Map&lt;java.lang.String, org.drip.spaces.graph.ShortestPathVertex&gt; nameIndex()
 	{
-<span class="nc" id="L262">		return _nameIndex;</span>
+<span class="nc" id="L263">		return _nameIndex;</span>
 	}
 
 	/**
@@ -271,7 +272,7 @@ public class ShortestPathTree
 	public java.util.Map&lt;java.lang.Double, java.util.List&lt;org.drip.spaces.graph.ShortestPathVertex&gt;&gt;
 		weightIndex()
 	{
-<span class="nc" id="L274">		return _weightIndex;</span>
+<span class="nc" id="L275">		return _weightIndex;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

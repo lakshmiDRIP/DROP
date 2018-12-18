@@ -96,9 +96,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,8 +108,8 @@ package org.drip.simm.foundation;
 
 public class RiskGroupPrincipalCovariance
 {
-<span class="nc" id="L110">	private double _extraGroupCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;</span>
+<span class="nc" id="L111">	private double _extraGroupCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;</span>
 
 	/**
 	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
@@ -126,21 +127,21 @@ public class RiskGroupPrincipalCovariance
 	{
 		try
 		{
-<span class="nc" id="L129">			return new RiskGroupPrincipalCovariance (</span>
+<span class="nc" id="L130">			return new RiskGroupPrincipalCovariance (</span>
 				new org.drip.quant.eigen.PowerIterationComponentExtractor (
 					30,
 					0.000001,
 					false
-<span class="nc" id="L134">				).principalComponent (intraGroupCorrelationMatrix),</span>
+<span class="nc" id="L135">				).principalComponent (intraGroupCorrelationMatrix),</span>
 				extraGroupCorrelation
 			);
 		}
-<span class="nc" id="L138">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L139">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L140">			e.printStackTrace();</span>
+<span class="nc" id="L141">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L143">		return null;</span>
+<span class="nc" id="L144">		return null;</span>
 	}
 
 	/**
@@ -156,14 +157,14 @@ public class RiskGroupPrincipalCovariance
 		final org.drip.quant.eigen.EigenComponent principalEigenComponent,
 		final double extraGroupCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L159">	{</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (null == (_principalEigenComponent = principalEigenComponent) ||</span>
-<span class="nc bnc" id="L161" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||</span>
+<span class="nc" id="L160">	{</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == (_principalEigenComponent = principalEigenComponent) ||</span>
+<span class="nc bnc" id="L162" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||</span>
 				-1. &gt; _extraGroupCorrelation || 1. &lt; _extraGroupCorrelation)
 		{
-<span class="nc" id="L164">			throw new java.lang.Exception (&quot;RiskGroupPrincipalCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L165">			throw new java.lang.Exception (&quot;RiskGroupPrincipalCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L166">	}</span>
+<span class="nc" id="L167">	}</span>
 
 	/**
 	 * Retrieve the Intra-Group Principal Eigen-Component
@@ -173,7 +174,7 @@ public class RiskGroupPrincipalCovariance
 
 	public org.drip.quant.eigen.EigenComponent principalEigenComponent()
 	{
-<span class="nc" id="L176">		return _principalEigenComponent;</span>
+<span class="nc" id="L177">		return _principalEigenComponent;</span>
 	}
 
 	/**
@@ -184,7 +185,7 @@ public class RiskGroupPrincipalCovariance
 
 	public double extraGroupCorrelation()
 	{
-<span class="nc" id="L187">		return _extraGroupCorrelation;</span>
+<span class="nc" id="L188">		return _extraGroupCorrelation;</span>
 	}
 
 	/**
@@ -195,19 +196,19 @@ public class RiskGroupPrincipalCovariance
 
 	public double[] scaledPrincipalEigenvector()
 	{
-<span class="nc" id="L198">		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());</span>
+<span class="nc" id="L199">		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());</span>
 
-<span class="nc" id="L200">		double[] principalEigenvector = _principalEigenComponent.eigenvector();</span>
+<span class="nc" id="L201">		double[] principalEigenvector = _principalEigenComponent.eigenvector();</span>
 
-<span class="nc" id="L202">		int componentCount = principalEigenvector.length;</span>
-<span class="nc" id="L203">		double[] scaledPrincipalEigenvector = new double[componentCount];</span>
+<span class="nc" id="L203">		int componentCount = principalEigenvector.length;</span>
+<span class="nc" id="L204">		double[] scaledPrincipalEigenvector = new double[componentCount];</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int componentIndex = 0; componentIndex &lt; componentCount; ++componentIndex)</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int componentIndex = 0; componentIndex &lt; componentCount; ++componentIndex)</span>
 		{
-<span class="nc" id="L207">			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;</span>
+<span class="nc" id="L208">			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;</span>
 		}
 
-<span class="nc" id="L210">		return scaledPrincipalEigenvector;</span>
+<span class="nc" id="L211">		return scaledPrincipalEigenvector;</span>
 	}
 
 	/**
@@ -218,9 +219,9 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] unadjustedCovariance()
 	{
-<span class="nc" id="L221">		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();</span>
+<span class="nc" id="L222">		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();</span>
 
-<span class="nc" id="L223">		return org.drip.quant.linearalgebra.Matrix.CrossProduct (</span>
+<span class="nc" id="L224">		return org.drip.quant.linearalgebra.Matrix.CrossProduct (</span>
 			scaledPrincipalEigenvector,
 			scaledPrincipalEigenvector
 		);
@@ -234,8 +235,8 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] adjustedCovariance()
 	{
-<span class="nc" id="L237">		return org.drip.quant.linearalgebra.Matrix.Scale2D (</span>
-<span class="nc" id="L238">			unadjustedCovariance(),</span>
+<span class="nc" id="L238">		return org.drip.quant.linearalgebra.Matrix.Scale2D (</span>
+<span class="nc" id="L239">			unadjustedCovariance(),</span>
 			_extraGroupCorrelation
 		);
 	}

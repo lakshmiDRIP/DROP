@@ -13,12 +13,12 @@ package org.drip.dynamics.hullwhite;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -45,6 +45,7 @@ package org.drip.dynamics.hullwhite;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,18 +76,18 @@ package org.drip.dynamics.hullwhite;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite/README.md&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class TrinomialTreeNodeMetrics {
-<span class="fc" id="L86">	private long _lTimeIndex = -1L;</span>
-<span class="fc" id="L87">	private long _lXStochasticIndex = 0L;</span>
-<span class="fc" id="L88">	private double _dblX = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblAlpha = java.lang.Double.NaN;</span>
+<span class="fc" id="L87">	private long _lTimeIndex = -1L;</span>
+<span class="fc" id="L88">	private long _lXStochasticIndex = 0L;</span>
+<span class="fc" id="L89">	private double _dblX = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _dblAlpha = java.lang.Double.NaN;</span>
 
 	/**
 	 * TrinomialTreeNodeMetrics Constructor
@@ -105,13 +106,13 @@ public class TrinomialTreeNodeMetrics {
 		final double dblX,
 		final double dblAlpha)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (0 &gt; (_lTimeIndex = lTimeIndex) || !org.drip.quant.common.NumberUtil.IsValid (_dblX = dblX) ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAlpha = dblAlpha))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;TrinomialTreeNodeMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L109">	{</span>
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (0 &gt; (_lTimeIndex = lTimeIndex) || !org.drip.quant.common.NumberUtil.IsValid (_dblX = dblX) ||</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAlpha = dblAlpha))</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;TrinomialTreeNodeMetrics ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L113">		_lXStochasticIndex = lXStochasticIndex;</span>
-<span class="fc" id="L114">	}</span>
+<span class="fc" id="L114">		_lXStochasticIndex = lXStochasticIndex;</span>
+<span class="fc" id="L115">	}</span>
 
 	/**
 	 * Retrieve the Node's X
@@ -121,7 +122,7 @@ public class TrinomialTreeNodeMetrics {
 
 	public double x()
 	{
-<span class="fc" id="L124">		return _dblX;</span>
+<span class="fc" id="L125">		return _dblX;</span>
 	}
 
 	/**
@@ -132,7 +133,7 @@ public class TrinomialTreeNodeMetrics {
 
 	public double alpha()
 	{
-<span class="fc" id="L135">		return _dblAlpha;</span>
+<span class="fc" id="L136">		return _dblAlpha;</span>
 	}
 
 	/**
@@ -143,7 +144,7 @@ public class TrinomialTreeNodeMetrics {
 
 	public double shortRate()
 	{
-<span class="fc" id="L146">		return _dblX + _dblAlpha;</span>
+<span class="fc" id="L147">		return _dblX + _dblAlpha;</span>
 	}
 
 	/**
@@ -154,7 +155,7 @@ public class TrinomialTreeNodeMetrics {
 
 	public long timeIndex()
 	{
-<span class="fc" id="L157">		return _lTimeIndex;</span>
+<span class="fc" id="L158">		return _lTimeIndex;</span>
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class TrinomialTreeNodeMetrics {
 
 	public long xStochasticIndex()
 	{
-<span class="fc" id="L168">		return _lXStochasticIndex;</span>
+<span class="fc" id="L169">		return _lXStochasticIndex;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

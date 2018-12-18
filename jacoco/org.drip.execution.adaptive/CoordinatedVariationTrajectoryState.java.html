@@ -12,12 +12,12 @@ package org.drip.execution.adaptive;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.adaptive;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -100,19 +101,19 @@ package org.drip.execution.adaptive;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CoordinatedVariationTrajectoryState {
-<span class="nc" id="L111">	private double _dblCost = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private double _dblHoldings = java.lang.Double.NaN;</span>
-<span class="nc" id="L114">	private double _dblTradeRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L115">	private double _dblMarketState = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dblCost = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _dblTime = java.lang.Double.NaN;</span>
+<span class="nc" id="L114">	private double _dblHoldings = java.lang.Double.NaN;</span>
+<span class="nc" id="L115">	private double _dblTradeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L116">	private double _dblMarketState = java.lang.Double.NaN;</span>
 
 	/**
 	 * CoordinatedVariationTrajectoryState Constructor
@@ -133,15 +134,15 @@ public class CoordinatedVariationTrajectoryState {
 		final double dblCost,
 		final double dblMarketState)
 		throws java.lang.Exception
-<span class="nc" id="L136">	{</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) ||</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate) ||</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCost = dblCost) ||</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblMarketState = dblMarketState))</span>
-<span class="nc" id="L142">			throw new java.lang.Exception</span>
+<span class="nc" id="L137">	{</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) ||</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate) ||</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCost = dblCost) ||</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">						!org.drip.quant.common.NumberUtil.IsValid (_dblMarketState = dblMarketState))</span>
+<span class="nc" id="L143">			throw new java.lang.Exception</span>
 				(&quot;CoordinatedVariationTrajectoryState Constructor =&gt; Invalid Inputs&quot;);
-<span class="nc" id="L144">	}</span>
+<span class="nc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Trajectory State Time Node
@@ -151,7 +152,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double time()
 	{
-<span class="nc" id="L154">		return _dblTime;</span>
+<span class="nc" id="L155">		return _dblTime;</span>
 	}
 
 	/**
@@ -162,7 +163,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double holdings()
 	{
-<span class="nc" id="L165">		return _dblHoldings;</span>
+<span class="nc" id="L166">		return _dblHoldings;</span>
 	}
 
 	/**
@@ -173,7 +174,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double cost()
 	{
-<span class="nc" id="L176">		return _dblCost;</span>
+<span class="nc" id="L177">		return _dblCost;</span>
 	}
 
 	/**
@@ -184,7 +185,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double tradeRate()
 	{
-<span class="nc" id="L187">		return _dblTradeRate;</span>
+<span class="nc" id="L188">		return _dblTradeRate;</span>
 	}
 
 	/**
@@ -195,7 +196,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double marketState()
 	{
-<span class="nc" id="L198">		return _dblMarketState;</span>
+<span class="nc" id="L199">		return _dblMarketState;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

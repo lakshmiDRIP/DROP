@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.constraint;
 /**
  * &lt;i&gt;LimitThresholdTermIssuerShort&lt;/i&gt; implements the Issuer Short Portfolio Holdings as long as they are
  * not Zero.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -106,7 +107,7 @@ public class LimitThresholdTermIssuerShort extends
 		final double[] adblIssuerSelection)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L109">		super (</span>
+<span class="nc" id="L110">		super (</span>
 			strName,
 			&quot;CT_LIMIT_THRESHOLD_SHORT_HOLDINGS&quot;,
 			&quot;Issuer Threshold Limit Short Issuer Holdings&quot;,
@@ -116,38 +117,38 @@ public class LimitThresholdTermIssuerShort extends
 			dblMaximum,
 			adblIssuerSelection
 		);
-<span class="nc" id="L119">	}</span>
+<span class="nc" id="L120">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L123">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L124">		{</span>
+<span class="nc" id="L124">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L125">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L127">				return issuerSelection().length;</span>
+<span class="nc" id="L128">				return issuerSelection().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L134">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L135">				double[] adblIssuerSelection = issuerSelection();</span>
 
-<span class="nc" id="L136">				int iNumAsset = adblIssuerSelection.length;</span>
-<span class="nc" id="L137">				double dblConstraintValue = 0.;</span>
+<span class="nc" id="L137">				int iNumAsset = adblIssuerSelection.length;</span>
+<span class="nc" id="L138">				double dblConstraintValue = 0.;</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L140" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L141">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
+<span class="nc" id="L142">					throw new java.lang.Exception</span>
 						(&quot;LimitThresholdTermIssuerShort::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
 				{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">					if (adblFinalHoldings[i] &lt; 0.)</span>
-<span class="nc" id="L147">						dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">					if (adblFinalHoldings[i] &lt; 0.)</span>
+<span class="nc" id="L148">						dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];</span>
 				}
 
-<span class="nc" id="L150">				return dblConstraintValue;</span>
+<span class="nc" id="L151">				return dblConstraintValue;</span>
 			}
 		};
 	}

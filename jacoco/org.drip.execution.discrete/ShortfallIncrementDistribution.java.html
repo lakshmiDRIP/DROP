@@ -12,12 +12,12 @@ package org.drip.execution.discrete;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.discrete;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,20 +99,20 @@ package org.drip.execution.discrete;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-<span class="fc" id="L109">	public double _dblMarketDynamicVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	public double _dblPermanentImpactVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	public double _dblTemporaryImpactVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	public double _dblMarketDynamicExpectation = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	public double _dblPermanentImpactExpectation = java.lang.Double.NaN;</span>
-<span class="fc" id="L114">	public double _dblTemporaryImpactExpectation = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	public double _dblMarketDynamicVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	public double _dblPermanentImpactVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	public double _dblTemporaryImpactVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	public double _dblMarketDynamicExpectation = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	public double _dblPermanentImpactExpectation = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	public double _dblTemporaryImpactExpectation = java.lang.Double.NaN;</span>
 
 	/**
 	 * ShortfallIncrementDistribution Constructor
@@ -135,17 +136,17 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 		final double dblMarketDynamicVariance)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L138">		super (dblPermanentImpactExpectation + dblTemporaryImpactExpectation + dblMarketDynamicExpectation,</span>
-<span class="fc" id="L139">			java.lang.Math.sqrt (dblPermanentImpactVariance + dblTemporaryImpactVariance +</span>
+<span class="fc" id="L139">		super (dblPermanentImpactExpectation + dblTemporaryImpactExpectation + dblMarketDynamicExpectation,</span>
+<span class="fc" id="L140">			java.lang.Math.sqrt (dblPermanentImpactVariance + dblTemporaryImpactVariance +</span>
 				dblMarketDynamicVariance));
 
-<span class="fc" id="L142">		_dblPermanentImpactExpectation = dblPermanentImpactExpectation;</span>
-<span class="fc" id="L143">		_dblTemporaryImpactExpectation = dblTemporaryImpactExpectation;</span>
-<span class="fc" id="L144">		_dblMarketDynamicExpectation = dblMarketDynamicExpectation;</span>
-<span class="fc" id="L145">		_dblPermanentImpactVariance = dblPermanentImpactVariance;</span>
-<span class="fc" id="L146">		_dblTemporaryImpactVariance = dblTemporaryImpactVariance;</span>
-<span class="fc" id="L147">		_dblMarketDynamicVariance = dblMarketDynamicVariance;</span>
-<span class="fc" id="L148">	}</span>
+<span class="fc" id="L143">		_dblPermanentImpactExpectation = dblPermanentImpactExpectation;</span>
+<span class="fc" id="L144">		_dblTemporaryImpactExpectation = dblTemporaryImpactExpectation;</span>
+<span class="fc" id="L145">		_dblMarketDynamicExpectation = dblMarketDynamicExpectation;</span>
+<span class="fc" id="L146">		_dblPermanentImpactVariance = dblPermanentImpactVariance;</span>
+<span class="fc" id="L147">		_dblTemporaryImpactVariance = dblTemporaryImpactVariance;</span>
+<span class="fc" id="L148">		_dblMarketDynamicVariance = dblMarketDynamicVariance;</span>
+<span class="fc" id="L149">	}</span>
 
 	/**
 	 * Retrieve the Total Expectation
@@ -155,7 +156,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double expectation()
 	{
-<span class="fc" id="L158">		return mean();</span>
+<span class="fc" id="L159">		return mean();</span>
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double marketDynamicExpectation()
 	{
-<span class="nc" id="L169">		return _dblMarketDynamicExpectation;</span>
+<span class="nc" id="L170">		return _dblMarketDynamicExpectation;</span>
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double marketDynamicVariance()
 	{
-<span class="nc" id="L180">		return _dblMarketDynamicVariance;</span>
+<span class="nc" id="L181">		return _dblMarketDynamicVariance;</span>
 	}
 
 	/**
@@ -188,7 +189,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double permanentImpactExpectation()
 	{
-<span class="fc" id="L191">		return _dblPermanentImpactExpectation;</span>
+<span class="fc" id="L192">		return _dblPermanentImpactExpectation;</span>
 	}
 
 	/**
@@ -199,7 +200,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double permanentImpactVariance()
 	{
-<span class="nc" id="L202">		return _dblPermanentImpactVariance;</span>
+<span class="nc" id="L203">		return _dblPermanentImpactVariance;</span>
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double temporaryImpactExpectation()
 	{
-<span class="fc" id="L213">		return _dblTemporaryImpactExpectation;</span>
+<span class="fc" id="L214">		return _dblTemporaryImpactExpectation;</span>
 	}
 
 	/**
@@ -221,7 +222,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double temporaryImpactVariance()
 	{
-<span class="nc" id="L224">		return _dblTemporaryImpactVariance;</span>
+<span class="nc" id="L225">		return _dblTemporaryImpactVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

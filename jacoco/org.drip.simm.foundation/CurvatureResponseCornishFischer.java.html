@@ -96,9 +96,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -114,8 +115,8 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 
 	public static final double CURVATURE_VAR_CUT_OFF = 0.995;
 
-<span class="nc" id="L117">	private double _varCutoff = java.lang.Double.NaN;</span>
-<span class="nc" id="L118">	private double _lambdaPlateauPeak = java.lang.Double.NaN;</span>
+<span class="nc" id="L118">	private double _varCutoff = java.lang.Double.NaN;</span>
+<span class="nc" id="L119">	private double _lambdaPlateauPeak = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Standard Instance of CurvatureResponseCornishFischer
@@ -127,14 +128,14 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 	{
 		try
 		{
-<span class="nc" id="L130">			return new CurvatureResponseCornishFischer (CURVATURE_VAR_CUT_OFF);</span>
+<span class="nc" id="L131">			return new CurvatureResponseCornishFischer (CURVATURE_VAR_CUT_OFF);</span>
 		}
-<span class="nc" id="L132">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L133">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="nc" id="L135">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L138">		return null;</span>
 	}
 
 	/**
@@ -148,17 +149,17 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 	public CurvatureResponseCornishFischer (
 		final double varCutoff)
 		throws java.lang.Exception
-<span class="nc" id="L151">	{</span>
-<span class="nc bnc" id="L152" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_varCutoff = varCutoff) ||</span>
+<span class="nc" id="L152">	{</span>
+<span class="nc bnc" id="L153" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_varCutoff = varCutoff) ||</span>
 				0. &gt; _varCutoff || 1. &lt; _varCutoff)
 		{
-<span class="nc" id="L155">			throw new java.lang.Exception (&quot;CurvatureResponseCornishFischer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L156">			throw new java.lang.Exception (&quot;CurvatureResponseCornishFischer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L158">		double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (_varCutoff);</span>
+<span class="nc" id="L159">		double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (_varCutoff);</span>
 
-<span class="nc" id="L160">		_lambdaPlateauPeak = tailVariate * tailVariate - 1.;</span>
-<span class="nc" id="L161">	}</span>
+<span class="nc" id="L161">		_lambdaPlateauPeak = tailVariate * tailVariate - 1.;</span>
+<span class="nc" id="L162">	}</span>
 
 	/**
 	 * Retrieve the VaR Cut-off
@@ -168,7 +169,7 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 
 	public double varCutoff()
 	{
-<span class="nc" id="L171">		return _varCutoff;</span>
+<span class="nc" id="L172">		return _varCutoff;</span>
 	}
 
 	/**
@@ -179,7 +180,7 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 
 	public double lambdaPlateauPeak()
 	{
-<span class="nc" id="L182">		return _lambdaPlateauPeak;</span>
+<span class="nc" id="L183">		return _lambdaPlateauPeak;</span>
 	}
 
 	/**
@@ -198,20 +199,20 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 		final double cumulativeRiskFactorSensitivityPositive)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||</span>
-<span class="nc bnc" id="L202" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||</span>
+<span class="nc bnc" id="L203" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||</span>
 				0. &gt; cumulativeRiskFactorSensitivityPositive)
 		{
-<span class="nc" id="L205">			throw new java.lang.Exception (&quot;CurvatureResponseCornishFischer::lambda =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L206">			throw new java.lang.Exception (&quot;CurvatureResponseCornishFischer::lambda =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		double theta = java.lang.Math.min (</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		double theta = java.lang.Math.min (</span>
 			0. == cumulativeRiskFactorSensitivityPositive ? 0. :
 				cumulativeRiskFactorSensitivity / cumulativeRiskFactorSensitivityPositive,
 			0.
 		);
 
-<span class="nc" id="L214">		return _lambdaPlateauPeak * (1. + theta) - theta;</span>
+<span class="nc" id="L215">		return _lambdaPlateauPeak * (1. + theta) - theta;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

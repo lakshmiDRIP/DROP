@@ -96,9 +96,10 @@ package org.drip.simm.rates;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,12 +108,12 @@ package org.drip.simm.rates;
 
 public class IRWeight
 {
-<span class="fc" id="L110">	private java.lang.String _volatilityType = &quot;&quot;;</span>
+<span class="fc" id="L111">	private java.lang.String _volatilityType = &quot;&quot;;</span>
 
-<span class="fc" id="L112">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorVega = new</span>
+<span class="fc" id="L113">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorVega = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L115">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorDelta = new</span>
+<span class="fc" id="L116">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorDelta = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 	/**
@@ -130,21 +131,21 @@ public class IRWeight
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDelta,
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVega)
 		throws java.lang.Exception
-<span class="fc" id="L133">	{</span>
-<span class="pc bpc" id="L134" title="4 of 8 branches missed.">		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||</span>
+<span class="fc" id="L134">	{</span>
+<span class="pc bpc" id="L135" title="4 of 8 branches missed.">		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||</span>
 			null == (_tenorDelta = tenorDelta) ||
 			null == (_tenorVega = tenorVega))
 		{
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L141">		int tenorCount = _tenorDelta.size();</span>
+<span class="fc" id="L142">		int tenorCount = _tenorDelta.size();</span>
 
-<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (0 == tenorCount || tenorCount != _tenorVega.size())</span>
+<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (0 == tenorCount || tenorCount != _tenorVega.size())</span>
 		{
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;IRWeight Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L147">	}</span>
+<span class="fc" id="L148">	}</span>
 
 	/**
 	 * Retrieve the Volatility Type
@@ -154,7 +155,7 @@ public class IRWeight
 
 	public java.lang.String volatilityType()
 	{
-<span class="nc" id="L157">		return _volatilityType;</span>
+<span class="nc" id="L158">		return _volatilityType;</span>
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class IRWeight
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorDelta()
 	{
-<span class="nc" id="L168">		return _tenorDelta;</span>
+<span class="nc" id="L169">		return _tenorDelta;</span>
 	}
 
 	/**
@@ -176,7 +177,7 @@ public class IRWeight
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVega()
 	{
-<span class="nc" id="L179">		return _tenorVega;</span>
+<span class="nc" id="L180">		return _tenorVega;</span>
 	}
 
 	/**
@@ -187,7 +188,7 @@ public class IRWeight
 
 	public java.util.Set&lt;java.lang.String&gt; tenors()
 	{
-<span class="nc" id="L190">		return _tenorDelta.keySet();</span>
+<span class="nc" id="L191">		return _tenorDelta.keySet();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

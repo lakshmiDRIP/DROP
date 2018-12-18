@@ -78,9 +78,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -88,11 +89,11 @@ package org.drip.product.params;
  */
 
 public class CreditSetting implements org.drip.product.params.Validatable {
-<span class="fc" id="L91">	private int _iLossPayLag = -1;</span>
-<span class="fc" id="L92">	private boolean _bUseCurveRecovery = true;</span>
-<span class="fc" id="L93">	private boolean _bAccrualOnDefault = false;</span>
-<span class="fc" id="L94">	private java.lang.String _strCreditCurveName = &quot;&quot;;</span>
-<span class="fc" id="L95">	private double _dblRecovery = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">	private int _iLossPayLag = -1;</span>
+<span class="fc" id="L93">	private boolean _bUseCurveRecovery = true;</span>
+<span class="fc" id="L94">	private boolean _bAccrualOnDefault = false;</span>
+<span class="fc" id="L95">	private java.lang.String _strCreditCurveName = &quot;&quot;;</span>
+<span class="fc" id="L96">	private double _dblRecovery = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the CreditSetting from the default pay lag, use curve or the component recovery flag,
@@ -111,21 +112,21 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 		final boolean bUseCurveRecovery,
 		final java.lang.String strCreditCurveName,
 		final boolean bAccrualOnDefault)
-<span class="fc" id="L114">	{</span>
-<span class="fc" id="L115">		_iLossPayLag = iLossPayLag;</span>
-<span class="fc" id="L116">		_dblRecovery = dblRecovery;</span>
-<span class="fc" id="L117">		_bAccrualOnDefault = bAccrualOnDefault;</span>
-<span class="fc" id="L118">		_bUseCurveRecovery = bUseCurveRecovery;</span>
-<span class="fc" id="L119">		_strCreditCurveName = strCreditCurveName;</span>
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L115">	{</span>
+<span class="fc" id="L116">		_iLossPayLag = iLossPayLag;</span>
+<span class="fc" id="L117">		_dblRecovery = dblRecovery;</span>
+<span class="fc" id="L118">		_bAccrualOnDefault = bAccrualOnDefault;</span>
+<span class="fc" id="L119">		_bUseCurveRecovery = bUseCurveRecovery;</span>
+<span class="fc" id="L120">		_strCreditCurveName = strCreditCurveName;</span>
+<span class="fc" id="L121">	}</span>
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L124" title="1 of 4 branches missed.">		if (null == _strCreditCurveName || _strCreditCurveName.isEmpty()) return true;</span>
+<span class="pc bpc" id="L125" title="1 of 4 branches missed.">		if (null == _strCreditCurveName || _strCreditCurveName.isEmpty()) return true;</span>
 
-<span class="pc bpc" id="L126" title="1 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRecovery) &amp;&amp; !_bUseCurveRecovery) return false;</span>
+<span class="pc bpc" id="L127" title="1 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRecovery) &amp;&amp; !_bUseCurveRecovery) return false;</span>
 
-<span class="fc" id="L128">		return true;</span>
+<span class="fc" id="L129">		return true;</span>
 	}
 
 	/**
@@ -136,7 +137,7 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 
 	public int lossPayLag()
 	{
-<span class="fc" id="L139">		return _iLossPayLag;</span>
+<span class="fc" id="L140">		return _iLossPayLag;</span>
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 
 	public boolean useCurveRecovery()
 	{
-<span class="fc" id="L150">		return _bUseCurveRecovery;</span>
+<span class="fc" id="L151">		return _bUseCurveRecovery;</span>
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 
 	public java.lang.String creditCurveName()
 	{
-<span class="fc" id="L161">		return _strCreditCurveName;</span>
+<span class="fc" id="L162">		return _strCreditCurveName;</span>
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 
 	public boolean accrualOnDefault()
 	{
-<span class="fc" id="L172">		return _bAccrualOnDefault;</span>
+<span class="fc" id="L173">		return _bAccrualOnDefault;</span>
 	}
 
 	/**
@@ -180,7 +181,7 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 
 	public double recovery()
 	{
-<span class="fc" id="L183">		return _dblRecovery;</span>
+<span class="fc" id="L184">		return _dblRecovery;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

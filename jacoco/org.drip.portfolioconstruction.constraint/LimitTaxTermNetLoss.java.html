@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.constraint;
 
 /**
  * &lt;i&gt;LimitTaxTermNetLoss&lt;/i&gt; holds the Details of a Limit Net Tax Loss Constraint Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -106,7 +107,7 @@ public class LimitTaxTermNetLoss extends org.drip.portfolioconstruction.constrai
 		final double[] adblInitialHoldings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L109">		super (</span>
+<span class="nc" id="L110">		super (</span>
 			strName,
 			&quot;CT_LIMIT_NET_TAX_LOSS&quot;,
 			&quot;Constrains the Net Tax Loss&quot;,
@@ -117,23 +118,23 @@ public class LimitTaxTermNetLoss extends org.drip.portfolioconstruction.constrai
 			taxationScheme,
 			adblInitialHoldings
 		);
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L121">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L124">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L125">		{</span>
+<span class="nc" id="L125">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L126">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L128">				return initialHoldings().length;</span>
+<span class="nc" id="L129">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L135">				return taxationScheme().customNetTaxLoss (</span>
-<span class="nc" id="L136">					initialHoldings(),</span>
+<span class="nc" id="L136">				return taxationScheme().customNetTaxLoss (</span>
+<span class="nc" id="L137">					initialHoldings(),</span>
 					adblFinalHoldings
 				);
 			}

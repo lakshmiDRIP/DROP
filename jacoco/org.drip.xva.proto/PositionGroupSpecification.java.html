@@ -94,9 +94,10 @@ package org.drip.xva.proto;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/proto&quot;&gt;Proto&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/proto&quot;&gt;Proto&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -105,16 +106,16 @@ package org.drip.xva.proto;
 
 public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecification
 {
-<span class="fc" id="L108">	private int _closeOutScheme = -1;</span>
-<span class="fc" id="L109">	private int _brokenDateScheme = -1;</span>
-<span class="fc" id="L110">	private int _clientDefaultWindow = -1;</span>
-<span class="fc" id="L111">	private int _dealerDefaultWindow = -1;</span>
-<span class="fc" id="L112">	private int _positionReplicationScheme = -1;</span>
-<span class="fc" id="L113">	private double _hedgeError = java.lang.Double.NaN;</span>
-<span class="fc" id="L114">	private double _independentAmount = java.lang.Double.NaN;</span>
-<span class="fc" id="L115">	private double _minimumTransferAmount = java.lang.Double.NaN;</span>
-<span class="fc" id="L116">	private org.drip.function.definition.R1ToR1 _dealerThresholdFunction = null;</span>
-<span class="fc" id="L117">	private org.drip.function.definition.R1ToR1[] _clientThresholdFunctionArray = null;</span>
+<span class="fc" id="L109">	private int _closeOutScheme = -1;</span>
+<span class="fc" id="L110">	private int _brokenDateScheme = -1;</span>
+<span class="fc" id="L111">	private int _clientDefaultWindow = -1;</span>
+<span class="fc" id="L112">	private int _dealerDefaultWindow = -1;</span>
+<span class="fc" id="L113">	private int _positionReplicationScheme = -1;</span>
+<span class="fc" id="L114">	private double _hedgeError = java.lang.Double.NaN;</span>
+<span class="fc" id="L115">	private double _independentAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private double _minimumTransferAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L117">	private org.drip.function.definition.R1ToR1 _dealerThresholdFunction = null;</span>
+<span class="fc" id="L118">	private org.drip.function.definition.R1ToR1[] _clientThresholdFunctionArray = null;</span>
 
 	/**
 	 * Generate a Zero-Threshold Instance of the Named Position Group
@@ -137,8 +138,8 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	{
 		try
 		{
-<span class="nc" id="L140">			return new PositionGroupSpecification (</span>
-<span class="nc" id="L141">				org.drip.quant.common.StringUtil.GUID(),</span>
+<span class="nc" id="L141">			return new PositionGroupSpecification (</span>
+<span class="nc" id="L142">				org.drip.quant.common.StringUtil.GUID(),</span>
 				name,
 				14,
 				14,
@@ -152,12 +153,12 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 				closeOutScheme
 			);
 		}
-<span class="nc" id="L155">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L156">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L157">			e.printStackTrace();</span>
+<span class="nc" id="L158">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L160">		return null;</span>
+<span class="nc" id="L161">		return null;</span>
 	}
 
 	/**
@@ -183,16 +184,16 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		final double hedgeError,
 		final int closeOutScheme)
 	{
-<span class="pc bpc" id="L186" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (clientThreshold) || 0. &gt; clientThreshold ||</span>
-<span class="pc bpc" id="L187" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dealerThreshold) || 0. &lt; dealerThreshold)</span>
+<span class="pc bpc" id="L187" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (clientThreshold) || 0. &gt; clientThreshold ||</span>
+<span class="pc bpc" id="L188" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dealerThreshold) || 0. &lt; dealerThreshold)</span>
 		{
-<span class="nc" id="L189">			return null;</span>
+<span class="nc" id="L190">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L194">			return new PositionGroupSpecification (</span>
-<span class="fc" id="L195">				org.drip.quant.common.StringUtil.GUID(),</span>
+<span class="fc" id="L195">			return new PositionGroupSpecification (</span>
+<span class="fc" id="L196">				org.drip.quant.common.StringUtil.GUID(),</span>
 				name,
 				14,
 				14,
@@ -209,12 +210,12 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 				closeOutScheme
 			);
 		}
-<span class="nc" id="L212">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L213">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L214">			e.printStackTrace();</span>
+<span class="nc" id="L215">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L217">		return null;</span>
+<span class="nc" id="L218">		return null;</span>
 	}
 
 	/**
@@ -251,26 +252,26 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		final int closeOutScheme)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L254">		super (</span>
+<span class="fc" id="L255">		super (</span>
 			id,
 			name
 		);
 
-<span class="pc bpc" id="L259" title="2 of 4 branches missed.">		if (-1 &gt;= (_clientDefaultWindow = clientDefaultWindow) ||</span>
+<span class="pc bpc" id="L260" title="2 of 4 branches missed.">		if (-1 &gt;= (_clientDefaultWindow = clientDefaultWindow) ||</span>
 			-1 &gt;= (_dealerDefaultWindow = dealerDefaultWindow) ||
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||</span>
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||</span>
-<span class="pc bpc" id="L263" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
 		{
-<span class="nc" id="L265">			throw new java.lang.Exception (&quot;PositionGroupSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L266">			throw new java.lang.Exception (&quot;PositionGroupSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L268">		_closeOutScheme = closeOutScheme;</span>
-<span class="fc" id="L269">		_brokenDateScheme = brokenDateScheme;</span>
-<span class="fc" id="L270">		_dealerThresholdFunction = dealerThresholdFunction;</span>
-<span class="fc" id="L271">		_positionReplicationScheme = positionReplicationScheme;</span>
-<span class="fc" id="L272">		_clientThresholdFunctionArray = clientThresholdFunctionArray;</span>
-<span class="fc" id="L273">	}</span>
+<span class="fc" id="L269">		_closeOutScheme = closeOutScheme;</span>
+<span class="fc" id="L270">		_brokenDateScheme = brokenDateScheme;</span>
+<span class="fc" id="L271">		_dealerThresholdFunction = dealerThresholdFunction;</span>
+<span class="fc" id="L272">		_positionReplicationScheme = positionReplicationScheme;</span>
+<span class="fc" id="L273">		_clientThresholdFunctionArray = clientThresholdFunctionArray;</span>
+<span class="fc" id="L274">	}</span>
 
 	/**
 	 * Retrieve the Client Default Window
@@ -280,7 +281,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public int clientDefaultWindow()
 	{
-<span class="fc" id="L283">		return _clientDefaultWindow;</span>
+<span class="fc" id="L284">		return _clientDefaultWindow;</span>
 	}
 
 	/**
@@ -291,7 +292,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public int dealerDefaultWindow()
 	{
-<span class="fc" id="L294">		return _dealerDefaultWindow;</span>
+<span class="fc" id="L295">		return _dealerDefaultWindow;</span>
 	}
 
 	/**
@@ -302,7 +303,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray()
 	{
-<span class="fc" id="L305">		return _clientThresholdFunctionArray;</span>
+<span class="fc" id="L306">		return _clientThresholdFunctionArray;</span>
 	}
 
 	/**
@@ -313,7 +314,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public org.drip.function.definition.R1ToR1 dealerThresholdFunction()
 	{
-<span class="fc" id="L316">		return _dealerThresholdFunction;</span>
+<span class="fc" id="L317">		return _dealerThresholdFunction;</span>
 	}
 
 	/**
@@ -324,7 +325,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public double minimumTransferAmount()
 	{
-<span class="nc" id="L327">		return _minimumTransferAmount;</span>
+<span class="nc" id="L328">		return _minimumTransferAmount;</span>
 	}
 
 	/**
@@ -335,7 +336,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public double independentAmount()
 	{
-<span class="nc" id="L338">		return _independentAmount;</span>
+<span class="nc" id="L339">		return _independentAmount;</span>
 	}
 
 	/**
@@ -346,7 +347,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public int positionReplicationScheme()
 	{
-<span class="nc" id="L349">		return _positionReplicationScheme;</span>
+<span class="nc" id="L350">		return _positionReplicationScheme;</span>
 	}
 
 	/**
@@ -357,7 +358,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public int brokenDateScheme()
 	{
-<span class="nc" id="L360">		return _brokenDateScheme;</span>
+<span class="nc" id="L361">		return _brokenDateScheme;</span>
 	}
 
 	/**
@@ -368,7 +369,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public double hedgeError()
 	{
-<span class="nc" id="L371">		return _hedgeError;</span>
+<span class="nc" id="L372">		return _hedgeError;</span>
 	}
 
 	/**
@@ -379,7 +380,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public int closeOutScheme()
 	{
-<span class="nc" id="L382">		return _closeOutScheme;</span>
+<span class="nc" id="L383">		return _closeOutScheme;</span>
 	}
 
 	/**
@@ -390,7 +391,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 	public boolean isUncollateralized()
 	{
-<span class="nc bnc" id="L393" title="All 4 branches missed.">		return null == _clientThresholdFunctionArray &amp;&amp; null == _dealerThresholdFunction;</span>
+<span class="nc bnc" id="L394" title="All 4 branches missed.">		return null == _clientThresholdFunctionArray &amp;&amp; null == _dealerThresholdFunction;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

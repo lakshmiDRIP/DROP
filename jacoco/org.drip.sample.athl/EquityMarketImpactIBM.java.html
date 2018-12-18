@@ -11,33 +11,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,26 +73,45 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * EquityMarketImpactIBM demonstrates the Reconciliation of the Equity Market Impact with that determined
- *  empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren (2003) for
- *  IBM. The References are:
- * 
- * 	- Almgren, R., and N. Chriss (1999): Value under Liquidation, Risk 12 (12).
- * 
- * 	- Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions, Journal of Risk 3 (2)
- * 		5-39.
- * 
- * 	- Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk,
- * 		Applied Mathematical Finance 10 (1) 1-18.
- *
- * 	- Almgren, R., and N. Chriss (2003): Bidding Principles, Risk 97-102.
- * 
- * 	- Almgren, R., C. Thum, E. Hauptmann, and H. Li (2005): Equity Market Impact, Risk 18 (7) 57-62.
+ * &lt;i&gt;EquityMarketImpactIBM&lt;/i&gt; demonstrates the Reconciliation of the Equity Market Impact with that
+ * determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
+ * (2003) for IBM. The References are:
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (1999): Value under Liquidation &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;12 (12)&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions &lt;i&gt;Journal of
+ * 				Risk&lt;/i&gt; &lt;b&gt;3 (2)&lt;/b&gt; 5-39
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Almgren, R. (2003): Optimal Execution with Nonlinear Impact Functions and Trading-Enhanced Risk
+ * 				&lt;i&gt;Applied Mathematical Finance&lt;/i&gt; &lt;b&gt;10 (1)&lt;/b&gt; 1-18
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Almgren, R., and N. Chriss (2003): Bidding Principles &lt;i&gt;Risk&lt;/i&gt; 97-102
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Almgren, R., C. Thum, E. Hauptmann, and H. Li (2005): Equity Market Impact &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;18
+ * 				(7)&lt;/b&gt; 57-62
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/athl/README.md&quot;&gt;Almgren, Thum, Hauptmann, and Li (2005) Calibration&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L76">public class EquityMarketImpactIBM {</span>
+<span class="nc" id="L114">public class EquityMarketImpactIBM {</span>
 
 	private static final void TemporaryImpactReconciler (
 		final TemporaryImpact ti,
@@ -85,164 +123,164 @@ import org.drip.service.env.EnvManager;
 		final double dblRealizedImpactReconciler)
 		throws Exception
 	{
-<span class="fc" id="L88">		double dblNormalizedTemporaryImpact = ti.evaluate (</span>
-<span class="fc" id="L89">			dblTradeSize / (ti.assetFlowParameters().averageDailyVolume() * dblTime)</span>
+<span class="fc" id="L126">		double dblNormalizedTemporaryImpact = ti.evaluate (</span>
+<span class="fc" id="L127">			dblTradeSize / (ti.assetFlowParameters().averageDailyVolume() * dblTime)</span>
 		);
 
-<span class="fc" id="L92">		double dblDenormalizedTemporaryImpact = ti.evaluate (</span>
+<span class="fc" id="L130">		double dblDenormalizedTemporaryImpact = ti.evaluate (</span>
 			dblTradeSize,
 			dblTime
 		);
 
-<span class="fc" id="L97">		System.out.println (</span>
+<span class="fc" id="L135">		System.out.println (</span>
 			&quot;\t| &quot; +
-<span class="fc" id="L99">			FormatUtil.FormatDouble (dblTime, 1, 1, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L100">			FormatUtil.FormatDouble (dblNormalizedTemporaryImpact, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L101">			FormatUtil.FormatDouble (dblNormalizedTemporaryImpactReconciler, 1, 3, 1.) + &quot; || &quot; +</span>
-<span class="fc" id="L102">			FormatUtil.FormatDouble (dblDenormalizedTemporaryImpact, 2, 0, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L103">			FormatUtil.FormatDouble (dblDenormalizedTemporaryImpactReconciler, 2, 0, 1.) + &quot; ||&quot; +</span>
-<span class="fc" id="L104">			FormatUtil.FormatDouble (dblDenormalizedPermanentImpact + dblDenormalizedTemporaryImpact, 2, 0, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L105">			FormatUtil.FormatDouble (dblRealizedImpactReconciler, 2, 0, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L137">			FormatUtil.FormatDouble (dblTime, 1, 1, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L138">			FormatUtil.FormatDouble (dblNormalizedTemporaryImpact, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L139">			FormatUtil.FormatDouble (dblNormalizedTemporaryImpactReconciler, 1, 3, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L140">			FormatUtil.FormatDouble (dblDenormalizedTemporaryImpact, 2, 0, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L141">			FormatUtil.FormatDouble (dblDenormalizedTemporaryImpactReconciler, 2, 0, 1.) + &quot; ||&quot; +</span>
+<span class="fc" id="L142">			FormatUtil.FormatDouble (dblDenormalizedPermanentImpact + dblDenormalizedTemporaryImpact, 2, 0, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L143">			FormatUtil.FormatDouble (dblRealizedImpactReconciler, 2, 0, 1.) + &quot; ||&quot;</span>
 		);
-<span class="fc" id="L107">	}</span>
+<span class="fc" id="L145">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L113">		EnvManager.InitEnv (</span>
+<span class="fc" id="L151">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L118">		String strAssetName = &quot;IBM&quot;;</span>
-<span class="fc" id="L119">		double dblAverageDailyVolume = 6561000.;</span>
-<span class="fc" id="L120">		double dblSharesOutstanding = 1728000000.;</span>
-<span class="fc" id="L121">		double dblDailyVolatility = 1.57;</span>
-<span class="fc" id="L122">		double dblTradeSize = 656100.;</span>
-<span class="fc" id="L123">		double dblTradeTime = 1.;</span>
+<span class="fc" id="L156">		String strAssetName = &quot;IBM&quot;;</span>
+<span class="fc" id="L157">		double dblAverageDailyVolume = 6561000.;</span>
+<span class="fc" id="L158">		double dblSharesOutstanding = 1728000000.;</span>
+<span class="fc" id="L159">		double dblDailyVolatility = 1.57;</span>
+<span class="fc" id="L160">		double dblTradeSize = 656100.;</span>
+<span class="fc" id="L161">		double dblTradeTime = 1.;</span>
 
-<span class="fc" id="L125">		double dblInverseTurnoverReconciler = 263.374;</span>
-<span class="fc" id="L126">		double dblNormalizedTradeSizeReconciler = 0.1;</span>
-<span class="fc" id="L127">		double dblNormalizedPermanentImpactReconciler = 0.126;</span>
-<span class="fc" id="L128">		double dblDenormalizedPermanentImpactReconciler = 19.86;</span>
+<span class="fc" id="L163">		double dblInverseTurnoverReconciler = 263.374;</span>
+<span class="fc" id="L164">		double dblNormalizedTradeSizeReconciler = 0.1;</span>
+<span class="fc" id="L165">		double dblNormalizedPermanentImpactReconciler = 0.126;</span>
+<span class="fc" id="L166">		double dblDenormalizedPermanentImpactReconciler = 19.86;</span>
 
-<span class="fc" id="L130">		double[] adblTime = new double[] {</span>
+<span class="fc" id="L168">		double[] adblTime = new double[] {</span>
 			0.1,
 			0.2,
 			0.5
 		};
 
-<span class="fc" id="L136">		double[] adblNormalizedTemporaryImpactReconciler = new double[] {</span>
+<span class="fc" id="L174">		double[] adblNormalizedTemporaryImpactReconciler = new double[] {</span>
 			0.142,
 			0.094,
 			0.054
 		};
 
-<span class="fc" id="L142">		double[] adblDenormalizedTemporaryImpactReconciler = new double[] {</span>
+<span class="fc" id="L180">		double[] adblDenormalizedTemporaryImpactReconciler = new double[] {</span>
 			22,
 			15,
 			8
 		};
 
-<span class="fc" id="L148">		double[] adblRealizedImpactReconciler = new double[] {</span>
+<span class="fc" id="L186">		double[] adblRealizedImpactReconciler = new double[] {</span>
 			32,
 			25,
 			18
 		};
 
-<span class="fc" id="L154">		AssetFlowSettings afs = new AssetFlowSettings (</span>
+<span class="fc" id="L192">		AssetFlowSettings afs = new AssetFlowSettings (</span>
 			strAssetName,
 			dblAverageDailyVolume,
 			dblSharesOutstanding,
 			dblDailyVolatility
 		);
 
-<span class="fc" id="L161">		TemporaryImpact ti = new TemporaryImpact (afs);</span>
+<span class="fc" id="L199">		TemporaryImpact ti = new TemporaryImpact (afs);</span>
 
-<span class="fc" id="L163">		PermanentImpactNoArbitrage pina = new PermanentImpactNoArbitrage (afs);</span>
+<span class="fc" id="L201">		PermanentImpactNoArbitrage pina = new PermanentImpactNoArbitrage (afs);</span>
 
-<span class="fc" id="L165">		double dblDenormalizedPermanentImpact = pina.evaluate (</span>
+<span class="fc" id="L203">		double dblDenormalizedPermanentImpact = pina.evaluate (</span>
 			dblTradeSize,
 			dblTradeTime
 		);
 
-<span class="fc" id="L170">		double dblNormalizedPermanentImpact = pina.evaluate (dblTradeSize / (afs.averageDailyVolume() * dblTradeTime));</span>
+<span class="fc" id="L208">		double dblNormalizedPermanentImpact = pina.evaluate (dblTradeSize / (afs.averageDailyVolume() * dblTradeTime));</span>
 
-<span class="fc" id="L172">		System.out.println();</span>
+<span class="fc" id="L210">		System.out.println();</span>
 
-<span class="fc" id="L174">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L176">		System.out.println (&quot;\t|  Asset                   =&gt;  &quot; + strAssetName);</span>
+<span class="fc" id="L214">		System.out.println (&quot;\t|  Asset                   =&gt;  &quot; + strAssetName);</span>
 
-<span class="fc" id="L178">		System.out.println (&quot;\t|  Average Daily Volume    =&gt; &quot; + FormatUtil.FormatDouble (dblAverageDailyVolume, 1, 0, 1.));</span>
+<span class="fc" id="L216">		System.out.println (&quot;\t|  Average Daily Volume    =&gt; &quot; + FormatUtil.FormatDouble (dblAverageDailyVolume, 1, 0, 1.));</span>
 
-<span class="fc" id="L180">		System.out.println (&quot;\t|  Shares Outstanding      =&gt; &quot; + FormatUtil.FormatDouble (dblSharesOutstanding, 1, 0, 1.));</span>
+<span class="fc" id="L218">		System.out.println (&quot;\t|  Shares Outstanding      =&gt; &quot; + FormatUtil.FormatDouble (dblSharesOutstanding, 1, 0, 1.));</span>
 
-<span class="fc" id="L182">		System.out.println (&quot;\t|  Daily Volatility        =&gt; &quot; + FormatUtil.FormatDouble (dblDailyVolatility, 1, 2, 1.) + &quot;%&quot;);</span>
+<span class="fc" id="L220">		System.out.println (&quot;\t|  Daily Volatility        =&gt; &quot; + FormatUtil.FormatDouble (dblDailyVolatility, 1, 2, 1.) + &quot;%&quot;);</span>
 
-<span class="fc" id="L184">		System.out.println (&quot;\t|  Trade Size              =&gt; &quot; + FormatUtil.FormatDouble (dblTradeSize, 1, 0, 1.));</span>
+<span class="fc" id="L222">		System.out.println (&quot;\t|  Trade Size              =&gt; &quot; + FormatUtil.FormatDouble (dblTradeSize, 1, 0, 1.));</span>
 
-<span class="fc" id="L186">		System.out.println (&quot;\t|-------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L224">		System.out.println (&quot;\t|-------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L188">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L226">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L190">		System.out.println (&quot;\t|  ALMGREN, THUM, HAUPTMANN, and LI (2005) PERM. RECON   ||&quot;);</span>
+<span class="fc" id="L228">		System.out.println (&quot;\t|  ALMGREN, THUM, HAUPTMANN, and LI (2005) PERM. RECON   ||&quot;);</span>
 
-<span class="fc" id="L192">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\t|--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L194">		System.out.println (</span>
+<span class="fc" id="L232">		System.out.println (</span>
 			&quot;\t|  Inverse Turn-over              =&gt; &quot; +
-<span class="fc" id="L196">			FormatUtil.FormatDouble (afs.inverseTurnover(), 3, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L197">			FormatUtil.FormatDouble (dblInverseTurnoverReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L234">			FormatUtil.FormatDouble (afs.inverseTurnover(), 3, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L235">			FormatUtil.FormatDouble (dblInverseTurnoverReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L200">		System.out.println (</span>
+<span class="fc" id="L238">		System.out.println (</span>
 			&quot;\t|  Normalized Trade Size          =&gt; &quot; +
-<span class="fc" id="L202">			FormatUtil.FormatDouble (afs.normalizeTradeSize (dblTradeSize, dblTradeTime), 3, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L203">			FormatUtil.FormatDouble (dblNormalizedTradeSizeReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L240">			FormatUtil.FormatDouble (afs.normalizeTradeSize (dblTradeSize, dblTradeTime), 3, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L241">			FormatUtil.FormatDouble (dblNormalizedTradeSizeReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L206">		System.out.println (</span>
+<span class="fc" id="L244">		System.out.println (</span>
 			&quot;\t|  Normalized Permanent Impact    =&gt; &quot; +
-<span class="fc" id="L208">			FormatUtil.FormatDouble (2. * dblNormalizedPermanentImpact, 3, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L209">			FormatUtil.FormatDouble (dblNormalizedPermanentImpactReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L246">			FormatUtil.FormatDouble (2. * dblNormalizedPermanentImpact, 3, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L247">			FormatUtil.FormatDouble (dblNormalizedPermanentImpactReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L212">		System.out.println (</span>
+<span class="fc" id="L250">		System.out.println (</span>
 			&quot;\t|  De-normalized Permanent Impact =&gt; &quot; +
-<span class="fc" id="L214">			FormatUtil.FormatDouble (2. * dblDenormalizedPermanentImpact, 3, 3, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L215">			FormatUtil.FormatDouble (dblDenormalizedPermanentImpactReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L252">			FormatUtil.FormatDouble (2. * dblDenormalizedPermanentImpact, 3, 3, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L253">			FormatUtil.FormatDouble (dblDenormalizedPermanentImpactReconciler, 3, 3, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L218">		System.out.println (&quot;\t|--------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L256">		System.out.println (&quot;\t|--------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L220">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L258">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L222">		System.out.println (&quot;\t|    TEMPORARY IMPACT PARAMETERS RECONCILIATION   ||&quot;);</span>
+<span class="fc" id="L260">		System.out.println (&quot;\t|    TEMPORARY IMPACT PARAMETERS RECONCILIATION   ||&quot;);</span>
 
-<span class="fc" id="L224">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L262">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L226">		System.out.println (&quot;\t|        L -&gt; R:                                  ||&quot;);</span>
+<span class="fc" id="L264">		System.out.println (&quot;\t|        L -&gt; R:                                  ||&quot;);</span>
 
-<span class="fc" id="L228">		System.out.println (&quot;\t|                - Time                           ||&quot;);</span>
+<span class="fc" id="L266">		System.out.println (&quot;\t|                - Time                           ||&quot;);</span>
 
-<span class="fc" id="L230">		System.out.println (&quot;\t|                - Normalized K (Computed)        ||&quot;);</span>
+<span class="fc" id="L268">		System.out.println (&quot;\t|                - Normalized K (Computed)        ||&quot;);</span>
 
-<span class="fc" id="L232">		System.out.println (&quot;\t|                - Normalized K (Reconciler)      ||&quot;);</span>
+<span class="fc" id="L270">		System.out.println (&quot;\t|                - Normalized K (Reconciler)      ||&quot;);</span>
 
-<span class="fc" id="L234">		System.out.println (&quot;\t|                - De-normalized K (Computed)     ||&quot;);</span>
+<span class="fc" id="L272">		System.out.println (&quot;\t|                - De-normalized K (Computed)     ||&quot;);</span>
 
-<span class="fc" id="L236">		System.out.println (&quot;\t|                - De-normalized K (Reconciler)   ||&quot;);</span>
+<span class="fc" id="L274">		System.out.println (&quot;\t|                - De-normalized K (Reconciler)   ||&quot;);</span>
 
-<span class="fc" id="L238">		System.out.println (&quot;\t|                - De-normalized J (Computed)     ||&quot;);</span>
+<span class="fc" id="L276">		System.out.println (&quot;\t|                - De-normalized J (Computed)     ||&quot;);</span>
 
-<span class="fc" id="L240">		System.out.println (&quot;\t|                - De-normalized J (Reconciler)   ||&quot;);</span>
+<span class="fc" id="L278">		System.out.println (&quot;\t|                - De-normalized J (Reconciler)   ||&quot;);</span>
 
-<span class="fc" id="L242">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L280">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L244" title="All 2 branches covered.">		for (int i = 0; i &lt; adblTime.length; ++i)</span>
-<span class="fc" id="L245">			TemporaryImpactReconciler (</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">		for (int i = 0; i &lt; adblTime.length; ++i)</span>
+<span class="fc" id="L283">			TemporaryImpactReconciler (</span>
 				ti,
 				dblTradeSize,
 				adblTime[i],
@@ -252,9 +290,9 @@ import org.drip.service.env.EnvManager;
 				adblRealizedImpactReconciler[i]
 			);
 
-<span class="fc" id="L255">		System.out.println (&quot;\t|-------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L293">		System.out.println (&quot;\t|-------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L257">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L258">	}</span>
+<span class="fc" id="L295">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L296">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -10,12 +10,12 @@ package org.drip.exposure.regression;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -32,16 +32,17 @@ package org.drip.exposure.regression;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,8 +99,8 @@ package org.drip.exposure.regression;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression/README.md&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,10 +108,10 @@ package org.drip.exposure.regression;
 
 public class AndersenPykhtinSokolStretch
 {
-<span class="nc" id="L110">	private int[] _sparseDateArray = null;</span>
-<span class="nc" id="L111">	private double[] _sparseExposureArray = null;</span>
-<span class="nc" id="L112">	private org.drip.exposure.mpor.TradePayment[] _denseTradePaymentArray = null;</span>
-<span class="nc" id="L113">	private org.drip.function.definition.R1ToR1[] _sparseLocalVolatilityArray = null;</span>
+<span class="nc" id="L111">	private int[] _sparseDateArray = null;</span>
+<span class="nc" id="L112">	private double[] _sparseExposureArray = null;</span>
+<span class="nc" id="L113">	private org.drip.exposure.mpor.TradePayment[] _denseTradePaymentArray = null;</span>
+<span class="nc" id="L114">	private org.drip.function.definition.R1ToR1[] _sparseLocalVolatilityArray = null;</span>
 
 	/**
 	 * AndersenPykhtinSokolStretch Constructor
@@ -129,47 +130,47 @@ public class AndersenPykhtinSokolStretch
 		final org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray,
 		final org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray)
 		throws java.lang.Exception
-<span class="nc" id="L132">	{</span>
-<span class="nc bnc" id="L133" title="All 8 branches missed.">		if (null == (_sparseDateArray = sparseDateArray) ||</span>
+<span class="nc" id="L133">	{</span>
+<span class="nc bnc" id="L134" title="All 8 branches missed.">		if (null == (_sparseDateArray = sparseDateArray) ||</span>
 			null == (_sparseExposureArray = sparseExposureArray) ||
 			null == (_sparseLocalVolatilityArray = sparseLocalVolatilityArray) ||
 			null == (_denseTradePaymentArray = denseTradePaymentArray))
 		{
-<span class="nc" id="L138">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L141">		int sparseExposureDateCount = _sparseDateArray.length;</span>
-<span class="nc" id="L142">		int denseExposureDateCount = _denseTradePaymentArray.length;</span>
+<span class="nc" id="L142">		int sparseExposureDateCount = _sparseDateArray.length;</span>
+<span class="nc" id="L143">		int denseExposureDateCount = _denseTradePaymentArray.length;</span>
 
-<span class="nc bnc" id="L144" title="All 4 branches missed.">		if (0 == sparseExposureDateCount ||</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (0 == sparseExposureDateCount ||</span>
 			sparseExposureDateCount != _sparseExposureArray.length ||
-<span class="nc bnc" id="L146" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sparseExposureArray) ||</span>
+<span class="nc bnc" id="L147" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_sparseExposureArray) ||</span>
 			sparseExposureDateCount != _sparseLocalVolatilityArray.length ||
 			sparseExposureDateCount &gt; denseExposureDateCount)
 		{
-<span class="nc" id="L150">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L153">		for (int sparseExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
-<span class="nc" id="L155">			++sparseExposureDateIndex)</span>
+<span class="nc" id="L154">		for (int sparseExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
+<span class="nc" id="L156">			++sparseExposureDateIndex)</span>
 		{
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (null == _sparseLocalVolatilityArray[sparseExposureDateIndex])</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			if (null == _sparseLocalVolatilityArray[sparseExposureDateIndex])</span>
 			{
-<span class="nc" id="L159">				throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L160">				throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
 
-<span class="nc" id="L163">		for (int denseExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			denseExposureDateIndex &lt; denseExposureDateCount;</span>
-<span class="nc" id="L165">			++denseExposureDateIndex)</span>
+<span class="nc" id="L164">		for (int denseExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			denseExposureDateIndex &lt; denseExposureDateCount;</span>
+<span class="nc" id="L166">			++denseExposureDateIndex)</span>
 		{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">			if (null == _denseTradePaymentArray[denseExposureDateIndex])</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			if (null == _denseTradePaymentArray[denseExposureDateIndex])</span>
 			{
-<span class="nc" id="L169">				throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L170">				throw new java.lang.Exception (&quot;AndersenPykhtinSokolStretch Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="nc" id="L172">	}</span>
+<span class="nc" id="L173">	}</span>
 
 	/**
 	 * Retrieve the Sparse Exposure Date Array
@@ -179,7 +180,7 @@ public class AndersenPykhtinSokolStretch
 
 	public int[] sparseDateArray()
 	{
-<span class="nc" id="L182">		return _sparseDateArray;</span>
+<span class="nc" id="L183">		return _sparseDateArray;</span>
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class AndersenPykhtinSokolStretch
 
 	public double[] sparseExposureArray()
 	{
-<span class="nc" id="L193">		return _sparseExposureArray;</span>
+<span class="nc" id="L194">		return _sparseExposureArray;</span>
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class AndersenPykhtinSokolStretch
 
 	public org.drip.function.definition.R1ToR1[] sparseLocalVolatilityArray()
 	{
-<span class="nc" id="L204">		return _sparseLocalVolatilityArray;</span>
+<span class="nc" id="L205">		return _sparseLocalVolatilityArray;</span>
 	}
 
 	/**
@@ -212,7 +213,7 @@ public class AndersenPykhtinSokolStretch
 
 	public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray()
 	{
-<span class="nc" id="L215">		return _denseTradePaymentArray;</span>
+<span class="nc" id="L216">		return _denseTradePaymentArray;</span>
 	}
 
 	/**
@@ -226,18 +227,18 @@ public class AndersenPykhtinSokolStretch
 	public double[] denseExposure (
 		final double[] wanderTrajectory)
 	{
-<span class="nc" id="L229">		int epochDate = _sparseDateArray[0];</span>
-<span class="nc" id="L230">		int sparseExposureDateCount = _sparseDateArray.length;</span>
-<span class="nc" id="L231">		int denseExposureDateCount = _denseTradePaymentArray.length;</span>
-<span class="nc" id="L232">		double[] denseExposureTrajectory = new double[denseExposureDateCount];</span>
+<span class="nc" id="L230">		int epochDate = _sparseDateArray[0];</span>
+<span class="nc" id="L231">		int sparseExposureDateCount = _sparseDateArray.length;</span>
+<span class="nc" id="L232">		int denseExposureDateCount = _denseTradePaymentArray.length;</span>
+<span class="nc" id="L233">		double[] denseExposureTrajectory = new double[denseExposureDateCount];</span>
 
-<span class="nc" id="L234">		for (int sparseExposureDateIndex = 1;</span>
-<span class="nc bnc" id="L235" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
-<span class="nc" id="L236">			++sparseExposureDateIndex)</span>
+<span class="nc" id="L235">		for (int sparseExposureDateIndex = 1;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			sparseExposureDateIndex &lt; sparseExposureDateCount;</span>
+<span class="nc" id="L237">			++sparseExposureDateIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L240">				new AndersenPykhtinSokolSegment (</span>
+<span class="nc" id="L241">				new AndersenPykhtinSokolSegment (</span>
 					epochDate,
 					new org.drip.exposure.regression.PillarVertex (
 						_sparseDateArray[sparseExposureDateIndex - 1],
@@ -248,31 +249,31 @@ public class AndersenPykhtinSokolStretch
 						_sparseExposureArray[sparseExposureDateIndex]
 					),
 					_sparseLocalVolatilityArray[sparseExposureDateIndex]
-<span class="nc" id="L251">				).denseExposureTrajectoryUpdate (</span>
+<span class="nc" id="L252">				).denseExposureTrajectoryUpdate (</span>
 					denseExposureTrajectory,
 					wanderTrajectory
 				);
 			}
-<span class="nc" id="L256">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L257">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L258">				e.printStackTrace();</span>
+<span class="nc" id="L259">				e.printStackTrace();</span>
 
-<span class="nc" id="L260">				return null;</span>
-<span class="nc" id="L261">			}</span>
+<span class="nc" id="L261">				return null;</span>
+<span class="nc" id="L262">			}</span>
 		}
 
-<span class="nc" id="L264">		for (int denseExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L265" title="All 2 branches missed.">			denseExposureDateIndex &lt; denseExposureDateCount;</span>
-<span class="nc" id="L266">			++denseExposureDateIndex)</span>
+<span class="nc" id="L265">		for (int denseExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">			denseExposureDateIndex &lt; denseExposureDateCount;</span>
+<span class="nc" id="L267">			++denseExposureDateIndex)</span>
 		{
-<span class="nc" id="L268">			org.drip.exposure.mpor.TradePayment tradePayment =</span>
+<span class="nc" id="L269">			org.drip.exposure.mpor.TradePayment tradePayment =</span>
 				_denseTradePaymentArray[denseExposureDateIndex];
 
-<span class="nc" id="L271">			denseExposureTrajectory[denseExposureDateIndex] = denseExposureTrajectory[denseExposureDateIndex]</span>
-<span class="nc" id="L272">				+ tradePayment.dealer() - tradePayment.client();</span>
+<span class="nc" id="L272">			denseExposureTrajectory[denseExposureDateIndex] = denseExposureTrajectory[denseExposureDateIndex]</span>
+<span class="nc" id="L273">				+ tradePayment.dealer() - tradePayment.client();</span>
 		}
 
-<span class="nc" id="L275">		return denseExposureTrajectory;</span>
+<span class="nc" id="L276">		return denseExposureTrajectory;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

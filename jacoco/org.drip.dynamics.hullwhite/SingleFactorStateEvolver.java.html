@@ -13,12 +13,12 @@ package org.drip.dynamics.hullwhite;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -45,6 +45,7 @@ package org.drip.dynamics.hullwhite;
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,19 +76,19 @@ package org.drip.dynamics.hullwhite;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hullwhite/README.md&quot;&gt;Hull White&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.PointStateEvolver {
-<span class="fc" id="L86">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblSigma = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;</span>
-<span class="fc" id="L89">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
-<span class="fc" id="L90">	private org.drip.sequence.random.UnivariateSequenceGenerator _usg = null;</span>
+<span class="fc" id="L87">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L88">	private double _dblSigma = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;</span>
+<span class="fc" id="L90">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="fc" id="L91">	private org.drip.sequence.random.UnivariateSequenceGenerator _usg = null;</span>
 
 	/**
 	 * SingleFactorStateEvolver Constructor
@@ -108,12 +109,12 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final org.drip.function.definition.R1ToR1 auIFRInitial,
 		final org.drip.sequence.random.UnivariateSequenceGenerator usg)
 		throws java.lang.Exception
-<span class="fc" id="L111">	{</span>
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid (_dblSigma =</span>
-<span class="pc bpc" id="L113" title="3 of 6 branches missed.">			dblSigma) || !org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) || null == (_auIFRInitial =</span>
+<span class="fc" id="L112">	{</span>
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid (_dblSigma =</span>
+<span class="pc bpc" id="L114" title="3 of 6 branches missed.">			dblSigma) || !org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) || null == (_auIFRInitial =</span>
 				auIFRInitial) || null == (_usg = usg))
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L116">	}</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L117">	}</span>
 
 	/**
 	 * Retrieve the Funding Label
@@ -123,7 +124,7 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L126">		return _lslFunding;</span>
+<span class="nc" id="L127">		return _lslFunding;</span>
 	}
 
 	/**
@@ -134,7 +135,7 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 
 	public double sigma()
 	{
-<span class="nc" id="L137">		return _dblSigma;</span>
+<span class="nc" id="L138">		return _dblSigma;</span>
 	}
 
 	/**
@@ -145,7 +146,7 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 
 	public double a()
 	{
-<span class="nc" id="L148">		return _dblA;</span>
+<span class="nc" id="L149">		return _dblA;</span>
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 
 	public org.drip.function.definition.R1ToR1 ifrInitialTermStructure()
 	{
-<span class="nc" id="L159">		return _auIFRInitial;</span>
+<span class="nc" id="L160">		return _auIFRInitial;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 
 	public org.drip.sequence.random.UnivariateSequenceGenerator rsg()
 	{
-<span class="nc" id="L170">		return _usg;</span>
+<span class="nc" id="L171">		return _usg;</span>
 	}
 
 	/**
@@ -186,13 +187,13 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iViewDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate)</span>
-<span class="nc" id="L190">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver::alpha =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate)</span>
+<span class="nc" id="L191">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver::alpha =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L192">		double dblAlphaVol = _dblSigma * (1. - java.lang.Math.exp (_dblA * (iViewDate - iSpotDate) / 365.25))</span>
+<span class="fc" id="L193">		double dblAlphaVol = _dblSigma * (1. - java.lang.Math.exp (_dblA * (iViewDate - iSpotDate) / 365.25))</span>
 			/ _dblA;
 
-<span class="fc" id="L195">		return _auIFRInitial.evaluate (iViewDate) + 0.5 * dblAlphaVol * dblAlphaVol;</span>
+<span class="fc" id="L196">		return _auIFRInitial.evaluate (iViewDate) + 0.5 * dblAlphaVol * dblAlphaVol;</span>
 	}
 
 	/**
@@ -211,11 +212,11 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iViewDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate)</span>
-<span class="nc" id="L215">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver::theta =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate)</span>
+<span class="nc" id="L216">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver::theta =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L217">		return _auIFRInitial.derivative (iViewDate, 1) + _dblA * _auIFRInitial.evaluate (iViewDate) +</span>
-<span class="fc" id="L218">			_dblSigma * _dblSigma / (2. * _dblA) * (1. - java.lang.Math.exp (-2. * _dblA * (iViewDate -</span>
+<span class="fc" id="L218">		return _auIFRInitial.derivative (iViewDate, 1) + _dblA * _auIFRInitial.evaluate (iViewDate) +</span>
+<span class="fc" id="L219">			_dblSigma * _dblSigma / (2. * _dblA) * (1. - java.lang.Math.exp (-2. * _dblA * (iViewDate -</span>
 				iSpotDate) / 365.25));
 	}
 
@@ -239,13 +240,13 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L242" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblShortRate))</span>
-<span class="nc" id="L243">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver::shortRateIncrement =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L243" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblShortRate))</span>
+<span class="nc" id="L244">			throw new java.lang.Exception (&quot;SingleFactorStateEvolver::shortRateIncrement =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L245">		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;</span>
+<span class="fc" id="L246">		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L247">		return (theta (iSpotDate, iViewDate) - _dblA * dblShortRate) * dblAnnualizedIncrement + _dblSigma *</span>
-<span class="fc" id="L248">			java.lang.Math.sqrt (dblAnnualizedIncrement) * _usg.random();</span>
+<span class="fc" id="L248">		return (theta (iSpotDate, iViewDate) - _dblA * dblShortRate) * dblAnnualizedIncrement + _dblSigma *</span>
+<span class="fc" id="L249">			java.lang.Math.sqrt (dblAnnualizedIncrement) * _usg.random();</span>
 	}
 
 	@Override public org.drip.dynamics.evolution.LSQMPointUpdate evolve (
@@ -254,55 +255,55 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
-<span class="pc bpc" id="L257" title="3 of 6 branches missed.">		if (iViewDate &lt; iSpotDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
+<span class="pc bpc" id="L258" title="3 of 6 branches missed.">		if (iViewDate &lt; iSpotDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
 			org.drip.dynamics.hullwhite.ShortRateUpdate))
-<span class="nc" id="L259">			return null;</span>
+<span class="nc" id="L260">			return null;</span>
 
-<span class="fc" id="L261">		int iDate = iSpotDate;</span>
-<span class="fc" id="L262">		int iTimeIncrement = 1;</span>
-<span class="fc" id="L263">		int iFinalDate = iSpotDate + iSpotTimeIncrement;</span>
-<span class="fc" id="L264">		double dblInitialShortRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L262">		int iDate = iSpotDate;</span>
+<span class="fc" id="L263">		int iTimeIncrement = 1;</span>
+<span class="fc" id="L264">		int iFinalDate = iSpotDate + iSpotTimeIncrement;</span>
+<span class="fc" id="L265">		double dblInitialShortRate = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L267">			dblInitialShortRate = ((org.drip.dynamics.hullwhite.ShortRateUpdate)</span>
-<span class="fc" id="L268">				lsqmPrev).realizedFinalShortRate();</span>
-<span class="nc" id="L269">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L270">			e.printStackTrace();</span>
+<span class="fc" id="L268">			dblInitialShortRate = ((org.drip.dynamics.hullwhite.ShortRateUpdate)</span>
+<span class="fc" id="L269">				lsqmPrev).realizedFinalShortRate();</span>
+<span class="nc" id="L270">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L271">			e.printStackTrace();</span>
 
-<span class="nc" id="L272">			return null;</span>
-<span class="fc" id="L273">		}</span>
+<span class="nc" id="L273">			return null;</span>
+<span class="fc" id="L274">		}</span>
 
-<span class="fc" id="L275">		double dblShortRate = dblInitialShortRate;</span>
+<span class="fc" id="L276">		double dblShortRate = dblInitialShortRate;</span>
 
-<span class="fc bfc" id="L277" title="All 2 branches covered.">		while (iDate &lt; iFinalDate) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		while (iDate &lt; iFinalDate) {</span>
 			try {
-<span class="fc" id="L279">				dblShortRate += shortRateIncrement (iSpotDate, iDate, dblShortRate, iTimeIncrement);</span>
-<span class="nc" id="L280">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L281">				e.printStackTrace();</span>
+<span class="fc" id="L280">				dblShortRate += shortRateIncrement (iSpotDate, iDate, dblShortRate, iTimeIncrement);</span>
+<span class="nc" id="L281">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L282">				e.printStackTrace();</span>
 
-<span class="nc" id="L283">				return null;</span>
-<span class="fc" id="L284">			}</span>
+<span class="nc" id="L284">				return null;</span>
+<span class="fc" id="L285">			}</span>
 
-<span class="fc" id="L286">			++iDate;</span>
+<span class="fc" id="L287">			++iDate;</span>
 		}
 
-<span class="fc" id="L289">		double dblADF = java.lang.Math.exp (-1. * _dblA * iSpotTimeIncrement);</span>
+<span class="fc" id="L290">		double dblADF = java.lang.Math.exp (-1. * _dblA * iSpotTimeIncrement);</span>
 
-<span class="fc" id="L291">		double dblB = (1. - dblADF) / _dblA;</span>
+<span class="fc" id="L292">		double dblB = (1. - dblADF) / _dblA;</span>
 
 		try {
-<span class="fc" id="L294">			return org.drip.dynamics.hullwhite.ShortRateUpdate.Create (_lslFunding, iSpotDate, iFinalDate,</span>
+<span class="fc" id="L295">			return org.drip.dynamics.hullwhite.ShortRateUpdate.Create (_lslFunding, iSpotDate, iFinalDate,</span>
 				iViewDate, dblInitialShortRate, dblShortRate, dblInitialShortRate * dblADF + alpha
-<span class="fc" id="L296">					(iSpotDate, iFinalDate) - alpha (iSpotDate, iViewDate) * dblADF, 0.5 * _dblSigma *</span>
-<span class="fc" id="L297">						_dblSigma * (1. - dblADF * dblADF) / _dblA, java.lang.Math.exp (dblB *</span>
-<span class="fc" id="L298">							_auIFRInitial.evaluate (iViewDate) - 0.25 * _dblSigma * _dblSigma * (1. -</span>
-<span class="fc" id="L299">								java.lang.Math.exp (-2. * _dblA * (iViewDate - iSpotDate) / 365.25)) * dblB *</span>
+<span class="fc" id="L297">					(iSpotDate, iFinalDate) - alpha (iSpotDate, iViewDate) * dblADF, 0.5 * _dblSigma *</span>
+<span class="fc" id="L298">						_dblSigma * (1. - dblADF * dblADF) / _dblA, java.lang.Math.exp (dblB *</span>
+<span class="fc" id="L299">							_auIFRInitial.evaluate (iViewDate) - 0.25 * _dblSigma * _dblSigma * (1. -</span>
+<span class="fc" id="L300">								java.lang.Math.exp (-2. * _dblA * (iViewDate - iSpotDate) / 365.25)) * dblB *</span>
 									dblB / _dblA));
-<span class="nc" id="L301">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L302">			e.printStackTrace();</span>
+<span class="nc" id="L302">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L303">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L305">		return null;</span>
+<span class="nc" id="L306">		return null;</span>
 	}
 
 	/**
@@ -323,32 +324,32 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iTerminalDate,
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmInitial)
 	{
-<span class="pc bpc" id="L326" title="2 of 4 branches missed.">		if (iInitialDate &lt; iSpotDate || iTerminalDate &lt;= iInitialDate) return null;</span>
+<span class="pc bpc" id="L327" title="2 of 4 branches missed.">		if (iInitialDate &lt; iSpotDate || iTerminalDate &lt;= iInitialDate) return null;</span>
 
-<span class="fc" id="L328">		long lTreeTimeIndex = 0L;</span>
-<span class="fc" id="L329">		double dblExpectedTerminalX = 0.;</span>
-<span class="fc" id="L330">		long lTreeStochasticBaseIndex = 0L;</span>
+<span class="fc" id="L329">		long lTreeTimeIndex = 0L;</span>
+<span class="fc" id="L330">		double dblExpectedTerminalX = 0.;</span>
+<span class="fc" id="L331">		long lTreeStochasticBaseIndex = 0L;</span>
 
-<span class="fc bfc" id="L332" title="All 2 branches covered.">		if (null != hwnmInitial) {</span>
-<span class="fc" id="L333">			dblExpectedTerminalX = hwnmInitial.x();</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">		if (null != hwnmInitial) {</span>
+<span class="fc" id="L334">			dblExpectedTerminalX = hwnmInitial.x();</span>
 
-<span class="fc" id="L335">			lTreeTimeIndex = hwnmInitial.timeIndex() + 1;</span>
+<span class="fc" id="L336">			lTreeTimeIndex = hwnmInitial.timeIndex() + 1;</span>
 
-<span class="fc" id="L337">			lTreeStochasticBaseIndex = hwnmInitial.xStochasticIndex();</span>
+<span class="fc" id="L338">			lTreeStochasticBaseIndex = hwnmInitial.xStochasticIndex();</span>
 		}
 
-<span class="fc" id="L340">		double dblADF = java.lang.Math.exp (-1. * _dblA * (iTerminalDate - iInitialDate) / 365.25);</span>
+<span class="fc" id="L341">		double dblADF = java.lang.Math.exp (-1. * _dblA * (iTerminalDate - iInitialDate) / 365.25);</span>
 
 		try {
-<span class="fc" id="L343">			return new org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics (iInitialDate,</span>
+<span class="fc" id="L344">			return new org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics (iInitialDate,</span>
 				iTerminalDate, lTreeTimeIndex, lTreeStochasticBaseIndex, dblExpectedTerminalX * dblADF, 0.5 *
-<span class="fc" id="L345">					_dblSigma * _dblSigma * (1. - dblADF * dblADF) / _dblA, alpha (iSpotDate,</span>
+<span class="fc" id="L346">					_dblSigma * _dblSigma * (1. - dblADF * dblADF) / _dblA, alpha (iSpotDate,</span>
 						iTerminalDate));
-<span class="nc" id="L347">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L348">			e.printStackTrace();</span>
+<span class="nc" id="L348">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L349">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L351">		return null;</span>
+<span class="nc" id="L352">		return null;</span>
 	}
 
 	/**
@@ -372,37 +373,37 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnm,
 		final org.drip.dynamics.hullwhite.TrinomialTreeSequenceMetrics hwsm)
 	{
-<span class="pc bpc" id="L375" title="3 of 6 branches missed.">		if (iInitialDate &lt; iSpotDate || 0 &gt;= iDayIncrement || null == hwsm) return false;</span>
+<span class="pc bpc" id="L376" title="3 of 6 branches missed.">		if (iInitialDate &lt; iSpotDate || 0 &gt;= iDayIncrement || null == hwsm) return false;</span>
 
-<span class="fc bfc" id="L377" title="All 2 branches covered.">		if (0 == iNumIncrement) return true;</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">		if (0 == iNumIncrement) return true;</span>
 
-<span class="fc" id="L379">		org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics hwtm = evolveTrinomialTree (iSpotDate,</span>
+<span class="fc" id="L380">		org.drip.dynamics.hullwhite.TrinomialTreeTransitionMetrics hwtm = evolveTrinomialTree (iSpotDate,</span>
 			iInitialDate, iInitialDate + iDayIncrement, hwnm);
 
-<span class="pc bpc" id="L382" title="1 of 2 branches missed.">		if (!hwsm.addTransitionMetrics (hwtm)) return false;</span>
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">		if (!hwsm.addTransitionMetrics (hwtm)) return false;</span>
 
-<span class="fc" id="L384">		org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmUp = hwtm.upNodeMetrics();</span>
+<span class="fc" id="L385">		org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmUp = hwtm.upNodeMetrics();</span>
 
-<span class="pc bpc" id="L386" title="2 of 6 branches missed.">		if (!hwsm.addNodeMetrics (hwnmUp) || (null != hwnm &amp;&amp; !hwsm.setTransitionProbability (hwnm, hwnmUp,</span>
-<span class="pc bpc" id="L387" title="1 of 2 branches missed.">			hwtm.probabilityUp())) || !evolveTrinomialTreeSequence (iSpotDate, iInitialDate + iDayIncrement,</span>
+<span class="pc bpc" id="L387" title="2 of 6 branches missed.">		if (!hwsm.addNodeMetrics (hwnmUp) || (null != hwnm &amp;&amp; !hwsm.setTransitionProbability (hwnm, hwnmUp,</span>
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">			hwtm.probabilityUp())) || !evolveTrinomialTreeSequence (iSpotDate, iInitialDate + iDayIncrement,</span>
 				iDayIncrement, iNumIncrement - 1, hwnmUp, hwsm))
-<span class="nc" id="L389">			return false;</span>
+<span class="nc" id="L390">			return false;</span>
 
-<span class="fc" id="L391">		org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmDown = hwtm.downNodeMetrics();</span>
+<span class="fc" id="L392">		org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmDown = hwtm.downNodeMetrics();</span>
 
-<span class="pc bpc" id="L393" title="2 of 6 branches missed.">		if (!hwsm.addNodeMetrics (hwnmDown) || (null != hwnm &amp;&amp; !hwsm.setTransitionProbability (hwnm,</span>
-<span class="pc bpc" id="L394" title="1 of 2 branches missed.">			hwnmDown, hwtm.probabilityDown())) || !evolveTrinomialTreeSequence (iSpotDate, iInitialDate +</span>
+<span class="pc bpc" id="L394" title="2 of 6 branches missed.">		if (!hwsm.addNodeMetrics (hwnmDown) || (null != hwnm &amp;&amp; !hwsm.setTransitionProbability (hwnm,</span>
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">			hwnmDown, hwtm.probabilityDown())) || !evolveTrinomialTreeSequence (iSpotDate, iInitialDate +</span>
 				iDayIncrement, iDayIncrement, iNumIncrement - 1, hwnmDown, hwsm))
-<span class="nc" id="L396">			return false;</span>
+<span class="nc" id="L397">			return false;</span>
 
-<span class="fc" id="L398">		org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmStay = hwtm.stayNodeMetrics();</span>
+<span class="fc" id="L399">		org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmStay = hwtm.stayNodeMetrics();</span>
 
-<span class="pc bpc" id="L400" title="2 of 6 branches missed.">		if (!hwsm.addNodeMetrics (hwnmStay) || (null != hwnm &amp;&amp; !hwsm.setTransitionProbability (hwnm,</span>
-<span class="pc bpc" id="L401" title="1 of 2 branches missed.">			hwnmStay, hwtm.probabilityStay())) || !evolveTrinomialTreeSequence (iSpotDate, iInitialDate +</span>
+<span class="pc bpc" id="L401" title="2 of 6 branches missed.">		if (!hwsm.addNodeMetrics (hwnmStay) || (null != hwnm &amp;&amp; !hwsm.setTransitionProbability (hwnm,</span>
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">			hwnmStay, hwtm.probabilityStay())) || !evolveTrinomialTreeSequence (iSpotDate, iInitialDate +</span>
 				iDayIncrement, iDayIncrement, iNumIncrement - 1, hwnmStay, hwsm))
-<span class="nc" id="L403">			return false;</span>
+<span class="nc" id="L404">			return false;</span>
 
-<span class="fc" id="L405">		return true;</span>
+<span class="fc" id="L406">		return true;</span>
 	}
 
 	/**
@@ -420,10 +421,10 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iDayIncrement,
 		final int iNumIncrement)
 	{
-<span class="fc" id="L423">		org.drip.dynamics.hullwhite.TrinomialTreeSequenceMetrics hwsm = new</span>
+<span class="fc" id="L424">		org.drip.dynamics.hullwhite.TrinomialTreeSequenceMetrics hwsm = new</span>
 			org.drip.dynamics.hullwhite.TrinomialTreeSequenceMetrics();
 
-<span class="pc bpc" id="L426" title="1 of 2 branches missed.">		return evolveTrinomialTreeSequence (iSpotDate, iSpotDate, iDayIncrement, iNumIncrement, null, hwsm) ?</span>
+<span class="pc bpc" id="L427" title="1 of 2 branches missed.">		return evolveTrinomialTreeSequence (iSpotDate, iSpotDate, iDayIncrement, iNumIncrement, null, hwsm) ?</span>
 			hwsm : null;
 	}
 }

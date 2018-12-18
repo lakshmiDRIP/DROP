@@ -95,9 +95,10 @@ package org.drip.xva.settings;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/settings&quot;&gt;Settings&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/settings&quot;&gt;Settings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -113,11 +114,11 @@ public class StandardizedExposureGeneratorScheme
 
 	public static final int BASEL_STANDARD_TIME_INTEGRAND = 365;
 
-<span class="nc" id="L116">	private int _timeIntegrand = -1;</span>
-<span class="nc" id="L117">	private double _eadMultiplier = java.lang.Double.NaN;</span>
-<span class="nc" id="L118">	private org.drip.spline.params.SegmentCustomBuilderControl _collateralizedExposureSegmentBuilderControl =</span>
+<span class="nc" id="L117">	private int _timeIntegrand = -1;</span>
+<span class="nc" id="L118">	private double _eadMultiplier = java.lang.Double.NaN;</span>
+<span class="nc" id="L119">	private org.drip.spline.params.SegmentCustomBuilderControl _collateralizedExposureSegmentBuilderControl =</span>
 		null;
-<span class="nc" id="L120">	private org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="nc" id="L121">	private org.drip.spline.params.SegmentCustomBuilderControl</span>
 		_collateralizedPositiveExposureSegmentBuilderControl = null;
 
 	/**
@@ -133,11 +134,11 @@ public class StandardizedExposureGeneratorScheme
 	{
 		try
 		{
-<span class="nc" id="L136">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
+<span class="nc" id="L137">			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl (
 					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
-<span class="nc" id="L140">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
+<span class="nc" id="L141">					org.drip.spline.params.SegmentInelasticDesignControl.Create (</span>
 						0,
 						2
 					),
@@ -148,19 +149,19 @@ public class StandardizedExposureGeneratorScheme
 					null
 				);
 
-<span class="nc" id="L151">			return new StandardizedExposureGeneratorScheme (</span>
+<span class="nc" id="L152">			return new StandardizedExposureGeneratorScheme (</span>
 				eadMultiplier,
 				BASEL_STANDARD_TIME_INTEGRAND,
 				segmentCustomBuilderControl,
 				segmentCustomBuilderControl
 			);
 		}
-<span class="nc" id="L158">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L159">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L160">			e.printStackTrace();</span>
+<span class="nc" id="L161">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L163">		return null;</span>
+<span class="nc" id="L164">		return null;</span>
 	}
 
 	/**
@@ -182,18 +183,18 @@ public class StandardizedExposureGeneratorScheme
 		final org.drip.spline.params.SegmentCustomBuilderControl
 			collateralizedPositiveExposureSegmentBuilderControl)
 		throws java.lang.Exception
-<span class="nc" id="L185">	{</span>
-<span class="nc bnc" id="L186" title="All 10 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||0. &gt;= _eadMultiplier</span>
+<span class="nc" id="L186">	{</span>
+<span class="nc bnc" id="L187" title="All 10 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||0. &gt;= _eadMultiplier</span>
 			|| 0 &gt;= (_timeIntegrand = timeIntegrand) ||
 			null == (_collateralizedExposureSegmentBuilderControl =
 				collateralizedExposureSegmentBuilderControl) ||
 			null == (_collateralizedPositiveExposureSegmentBuilderControl =
 				collateralizedPositiveExposureSegmentBuilderControl))
 		{
-<span class="nc" id="L193">			throw new java.lang.Exception</span>
+<span class="nc" id="L194">			throw new java.lang.Exception</span>
 				(&quot;StandardizedExposureGeneratorScheme Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L196">	}</span>
+<span class="nc" id="L197">	}</span>
 
 	/**
 	 * Retrieve the EAD Multiplier
@@ -203,7 +204,7 @@ public class StandardizedExposureGeneratorScheme
 
 	public double eadMultiplier()
 	{
-<span class="nc" id="L206">		return _eadMultiplier;</span>
+<span class="nc" id="L207">		return _eadMultiplier;</span>
 	}
 
 	/**
@@ -214,7 +215,7 @@ public class StandardizedExposureGeneratorScheme
 
 	public int timeIntegrand()
 	{
-<span class="nc" id="L217">		return _timeIntegrand;</span>
+<span class="nc" id="L218">		return _timeIntegrand;</span>
 	}
 
 	/**
@@ -225,7 +226,7 @@ public class StandardizedExposureGeneratorScheme
 
 	public org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl()
 	{
-<span class="nc" id="L228">		return _collateralizedExposureSegmentBuilderControl;</span>
+<span class="nc" id="L229">		return _collateralizedExposureSegmentBuilderControl;</span>
 	}
 
 	/**
@@ -237,7 +238,7 @@ public class StandardizedExposureGeneratorScheme
 	public org.drip.spline.params.SegmentCustomBuilderControl
 		collateralizedPositiveExposureSegmentBuilderControl()
 	{
-<span class="nc" id="L240">		return _collateralizedPositiveExposureSegmentBuilderControl;</span>
+<span class="nc" id="L241">		return _collateralizedPositiveExposureSegmentBuilderControl;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

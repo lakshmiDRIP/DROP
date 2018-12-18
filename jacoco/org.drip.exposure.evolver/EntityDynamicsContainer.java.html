@@ -10,12 +10,12 @@ package org.drip.exposure.evolver;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -32,16 +32,17 @@ package org.drip.exposure.evolver;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,8 +97,8 @@ package org.drip.exposure.evolver;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver/README.md&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *  
  * @author Lakshmi Krishnamurthy
@@ -105,11 +106,11 @@ package org.drip.exposure.evolver;
 
 public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsContainer
 {
-<span class="fc" id="L108">	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;</span>
-<span class="fc" id="L109">	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;</span>
-<span class="fc" id="L110">	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;</span>
-<span class="fc" id="L111">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;</span>
-<span class="fc" id="L112">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;</span>
+<span class="fc" id="L109">	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;</span>
+<span class="fc" id="L110">	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;</span>
+<span class="fc" id="L111">	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;</span>
+<span class="fc" id="L112">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;</span>
+<span class="fc" id="L113">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;</span>
 
 	/**
 	 * EntityDynamicsContainer Constructor
@@ -130,57 +131,57 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 		final org.drip.exposure.evolver.TerminalLatentState clientHazardLatentState,
 		final org.drip.exposure.evolver.TerminalLatentState clientRecoveryLatentState)
 		throws java.lang.Exception
-<span class="fc" id="L133">	{</span>
-<span class="pc bpc" id="L134" title="4 of 8 branches missed.">		if (null == dealerHazardLatentState ||</span>
+<span class="fc" id="L134">	{</span>
+<span class="pc bpc" id="L135" title="4 of 8 branches missed.">		if (null == dealerHazardLatentState ||</span>
 			null == dealerSeniorRecoveryLatentState ||
 			null == clientHazardLatentState ||
 			null == clientRecoveryLatentState)
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L142">		org.drip.state.identifier.LatentStateLabel dealerHazardLabel = dealerHazardLatentState.label();</span>
+<span class="fc" id="L143">		org.drip.state.identifier.LatentStateLabel dealerHazardLabel = dealerHazardLatentState.label();</span>
 
-<span class="fc" id="L144">		org.drip.state.identifier.LatentStateLabel dealerSeniorRecoveryLabel =</span>
-<span class="fc" id="L145">			dealerSeniorRecoveryLatentState.label();</span>
+<span class="fc" id="L145">		org.drip.state.identifier.LatentStateLabel dealerSeniorRecoveryLabel =</span>
+<span class="fc" id="L146">			dealerSeniorRecoveryLatentState.label();</span>
 
-<span class="fc" id="L147">		org.drip.state.identifier.LatentStateLabel clientHazardLabel = clientHazardLatentState.label();</span>
+<span class="fc" id="L148">		org.drip.state.identifier.LatentStateLabel clientHazardLabel = clientHazardLatentState.label();</span>
 
-<span class="fc" id="L149">		org.drip.state.identifier.LatentStateLabel clientRecoveryLabel = clientRecoveryLatentState.label();</span>
+<span class="fc" id="L150">		org.drip.state.identifier.LatentStateLabel clientRecoveryLabel = clientRecoveryLatentState.label();</span>
 
-<span class="pc bpc" id="L151" title="4 of 8 branches missed.">		if (!(dealerHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||</span>
+<span class="pc bpc" id="L152" title="4 of 8 branches missed.">		if (!(dealerHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||</span>
 			!(dealerSeniorRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
 			!(clientHazardLabel instanceof org.drip.state.identifier.EntityHazardLabel) ||
 			!(clientRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">			!addTerminalLatentState (dealerHazardLatentState) ||</span>
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			!addTerminalLatentState (dealerSeniorRecoveryLatentState) ||</span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			!addTerminalLatentState (clientHazardLatentState) ||</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">			!addTerminalLatentState (clientRecoveryLatentState))</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			!addTerminalLatentState (dealerHazardLatentState) ||</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			!addTerminalLatentState (dealerSeniorRecoveryLatentState) ||</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">			!addTerminalLatentState (clientHazardLatentState) ||</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">			!addTerminalLatentState (clientRecoveryLatentState))</span>
 		{
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L161">			throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L163">		_dealerHazardLabel = (org.drip.state.identifier.EntityHazardLabel) dealerHazardLabel;</span>
-<span class="fc" id="L164">		_clientHazardLabel = (org.drip.state.identifier.EntityHazardLabel) clientHazardLabel;</span>
-<span class="fc" id="L165">		_dealerSeniorRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)</span>
+<span class="fc" id="L164">		_dealerHazardLabel = (org.drip.state.identifier.EntityHazardLabel) dealerHazardLabel;</span>
+<span class="fc" id="L165">		_clientHazardLabel = (org.drip.state.identifier.EntityHazardLabel) clientHazardLabel;</span>
+<span class="fc" id="L166">		_dealerSeniorRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)</span>
 			dealerSeniorRecoveryLabel;
-<span class="fc" id="L167">		_clientRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) clientRecoveryLabel;</span>
+<span class="fc" id="L168">		_clientRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel) clientRecoveryLabel;</span>
 
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (null != dealerSubordinateRecoveryLatentState)</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (null != dealerSubordinateRecoveryLatentState)</span>
 		{
-<span class="nc" id="L171">			org.drip.state.identifier.LatentStateLabel dealerSubordinateRecoveryLabel =</span>
-<span class="nc" id="L172">				dealerSubordinateRecoveryLatentState.label();</span>
+<span class="nc" id="L172">			org.drip.state.identifier.LatentStateLabel dealerSubordinateRecoveryLabel =</span>
+<span class="nc" id="L173">				dealerSubordinateRecoveryLatentState.label();</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">			if (!(dealerSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">				!addTerminalLatentState (dealerSubordinateRecoveryLatentState))</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (!(dealerSubordinateRecoveryLabel instanceof org.drip.state.identifier.EntityRecoveryLabel) ||</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">				!addTerminalLatentState (dealerSubordinateRecoveryLatentState))</span>
 			{
-<span class="nc" id="L177">				throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L178">				throw new java.lang.Exception (&quot;EntityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 
-<span class="nc" id="L180">			_dealerSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)</span>
+<span class="nc" id="L181">			_dealerSubordinateRecoveryLabel = (org.drip.state.identifier.EntityRecoveryLabel)</span>
 				dealerSubordinateRecoveryLabel;
 		}
-<span class="fc" id="L183">	}</span>
+<span class="fc" id="L184">	}</span>
 
 	/**
 	 * Retrieve the Dealer Hazard Rate Evolver
@@ -190,7 +191,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.measure.process.DiffusionEvolver dealerHazardRateEvolver()
 	{
-<span class="fc" id="L193">		return terminalLatentStateContainer().entityHazard (_dealerHazardLabel).evolver();</span>
+<span class="fc" id="L194">		return terminalLatentStateContainer().entityHazard (_dealerHazardLabel).evolver();</span>
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.measure.process.DiffusionEvolver dealerSeniorRecoveryRateEvolver()
 	{
-<span class="fc" id="L204">		return terminalLatentStateContainer().entityRecovery (_dealerSeniorRecoveryLabel).evolver();</span>
+<span class="fc" id="L205">		return terminalLatentStateContainer().entityRecovery (_dealerSeniorRecoveryLabel).evolver();</span>
 	}
 
 	/**
@@ -212,11 +213,11 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver()
 	{
-<span class="fc" id="L215">		org.drip.exposure.evolver.TerminalLatentState terminalLatentStateDealerSubordinateRecovery =</span>
-<span class="fc" id="L216">			terminalLatentStateContainer().entityRecovery (_dealerSubordinateRecoveryLabel);</span>
+<span class="fc" id="L216">		org.drip.exposure.evolver.TerminalLatentState terminalLatentStateDealerSubordinateRecovery =</span>
+<span class="fc" id="L217">			terminalLatentStateContainer().entityRecovery (_dealerSubordinateRecoveryLabel);</span>
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		return null == terminalLatentStateDealerSubordinateRecovery ? null :</span>
-<span class="nc" id="L219">			terminalLatentStateDealerSubordinateRecovery.evolver();</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		return null == terminalLatentStateDealerSubordinateRecovery ? null :</span>
+<span class="nc" id="L220">			terminalLatentStateDealerSubordinateRecovery.evolver();</span>
 	}
 
 	/**
@@ -227,7 +228,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.measure.process.DiffusionEvolver clientHazardRateEvolver()
 	{
-<span class="fc" id="L230">		return terminalLatentStateContainer().entityHazard (_clientHazardLabel).evolver();</span>
+<span class="fc" id="L231">		return terminalLatentStateContainer().entityHazard (_clientHazardLabel).evolver();</span>
 	}
 
 	/**
@@ -238,7 +239,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.measure.process.DiffusionEvolver clientRecoveryRateEvolver()
 	{
-<span class="fc" id="L241">		return terminalLatentStateContainer().entityRecovery (_clientRecoveryLabel).evolver();</span>
+<span class="fc" id="L242">		return terminalLatentStateContainer().entityRecovery (_clientRecoveryLabel).evolver();</span>
 	}
 
 	/**
@@ -249,7 +250,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.state.identifier.EntityHazardLabel clientHazardLabel()
 	{
-<span class="fc" id="L252">		return _clientHazardLabel;</span>
+<span class="fc" id="L253">		return _clientHazardLabel;</span>
 	}
 
 	/**
@@ -260,7 +261,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel()
 	{
-<span class="fc" id="L263">		return _clientRecoveryLabel;</span>
+<span class="fc" id="L264">		return _clientRecoveryLabel;</span>
 	}
 
 	/**
@@ -271,7 +272,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.state.identifier.EntityHazardLabel dealerHazardLabel()
 	{
-<span class="fc" id="L274">		return _dealerHazardLabel;</span>
+<span class="fc" id="L275">		return _dealerHazardLabel;</span>
 	}
 
 	/**
@@ -282,7 +283,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel()
 	{
-<span class="fc" id="L285">		return _dealerSeniorRecoveryLabel;</span>
+<span class="fc" id="L286">		return _dealerSeniorRecoveryLabel;</span>
 	}
 
 	/**
@@ -293,7 +294,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 
 	public org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel()
 	{
-<span class="nc" id="L296">		return _dealerSubordinateRecoveryLabel;</span>
+<span class="nc" id="L297">		return _dealerSubordinateRecoveryLabel;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

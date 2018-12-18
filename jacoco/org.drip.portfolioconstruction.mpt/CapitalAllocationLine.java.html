@@ -69,12 +69,13 @@ package org.drip.portfolioconstruction.mpt;
 /**
  * &lt;i&gt;CapitalAllocationLine&lt;/i&gt; implements the Efficient Half-line created from the Combination of the Risk
  * Free Asset and the Tangency Point of the CAPM Market Portfolio.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/mpt&quot;&gt;Modern Portfolio Theory&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/mpt&quot;&gt;Modern Portfolio Theory&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,8 +83,8 @@ package org.drip.portfolioconstruction.mpt;
  */
 
 public class CapitalAllocationLine {
-<span class="nc" id="L85">	private double _dblRiskFreeRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmTangency = null;</span>
+<span class="nc" id="L86">	private double _dblRiskFreeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmTangency = null;</span>
 
 	/**
 	 * CapitalAllocationLine Constructor
@@ -98,11 +99,11 @@ public class CapitalAllocationLine {
 		final double dblRiskFreeRate,
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmTangency)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) || null ==</span>
+<span class="nc" id="L102">	{</span>
+<span class="nc bnc" id="L103" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) || null ==</span>
 			(_pmTangency = pmTangency))
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;CapitalAllocationLine Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L105">	}</span>
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;CapitalAllocationLine Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Risk-Free Rate
@@ -112,7 +113,7 @@ public class CapitalAllocationLine {
 
 	public double riskFreeRate()
 	{
-<span class="nc" id="L115">		return _dblRiskFreeRate;</span>
+<span class="nc" id="L116">		return _dblRiskFreeRate;</span>
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class CapitalAllocationLine {
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics tangencyPortfolioMetrics()
 	{
-<span class="nc" id="L126">		return _pmTangency;</span>
+<span class="nc" id="L127">		return _pmTangency;</span>
 	}
 
 	/**
@@ -140,12 +141,12 @@ public class CapitalAllocationLine {
 		final double dblCombinationPortfolioStandardDeviation)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCombinationPortfolioStandardDeviation))</span>
-<span class="nc" id="L144">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCombinationPortfolioStandardDeviation))</span>
+<span class="nc" id="L145">			throw new java.lang.Exception</span>
 				(&quot;CapitalAllocationLine::combinationPortfolioExpectedReturn =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L147">		return _dblRiskFreeRate + dblCombinationPortfolioStandardDeviation * (_pmTangency.excessReturnsMean()</span>
-<span class="nc" id="L148">			- _dblRiskFreeRate) / _pmTangency.excessReturnsStandardDeviation();</span>
+<span class="nc" id="L148">		return _dblRiskFreeRate + dblCombinationPortfolioStandardDeviation * (_pmTangency.excessReturnsMean()</span>
+<span class="nc" id="L149">			- _dblRiskFreeRate) / _pmTangency.excessReturnsStandardDeviation();</span>
 	}
 
 	/**
@@ -162,12 +163,12 @@ public class CapitalAllocationLine {
 		final double dblCombinationPortfolioExpectedReturn)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCombinationPortfolioExpectedReturn))</span>
-<span class="nc" id="L166">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCombinationPortfolioExpectedReturn))</span>
+<span class="nc" id="L167">			throw new java.lang.Exception</span>
 				(&quot;CapitalAllocationLine::combinationPortfolioStandardDeviation =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L169">		return (dblCombinationPortfolioExpectedReturn - _dblRiskFreeRate) / (_pmTangency.excessReturnsMean()</span>
-<span class="nc" id="L170">			- _dblRiskFreeRate) * _pmTangency.excessReturnsStandardDeviation();</span>
+<span class="nc" id="L170">		return (dblCombinationPortfolioExpectedReturn - _dblRiskFreeRate) / (_pmTangency.excessReturnsMean()</span>
+<span class="nc" id="L171">			- _dblRiskFreeRate) * _pmTangency.excessReturnsStandardDeviation();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

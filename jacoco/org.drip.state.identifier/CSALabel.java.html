@@ -96,9 +96,10 @@ package org.drip.state.identifier;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,8 +108,8 @@ package org.drip.state.identifier;
 
 public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 {
-<span class="fc" id="L110">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L111">	private java.lang.String _strAssociation = &quot;&quot;;</span>
+<span class="fc" id="L111">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L112">	private java.lang.String _strAssociation = &quot;&quot;;</span>
 
 	/**
 	 * Generate the ISDA CSA
@@ -122,15 +123,15 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 		final java.lang.String strCurrency)
 	{
 		try {
-<span class="fc" id="L125">			return new CSALabel (</span>
+<span class="fc" id="L126">			return new CSALabel (</span>
 				strCurrency,
 				&quot;ISDA&quot;
 			);
-<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L130">			e.printStackTrace();</span>
+<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L133">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	/**
@@ -146,13 +147,13 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 		final java.lang.String strCurrency,
 		final java.lang.String strAssociation)
 		throws java.lang.Exception
-<span class="fc" id="L149">	{</span>
-<span class="pc bpc" id="L150" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() ||</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">			null == (_strAssociation = strAssociation) || _strAssociation.isEmpty())</span>
+<span class="fc" id="L150">	{</span>
+<span class="pc bpc" id="L151" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() ||</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			null == (_strAssociation = strAssociation) || _strAssociation.isEmpty())</span>
 		{
-<span class="nc" id="L153">			throw new java.lang.Exception (&quot;CSALabel Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L154">			throw new java.lang.Exception (&quot;CSALabel Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L155">	}</span>
+<span class="fc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the CSA Currency
@@ -162,7 +163,7 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L165">		return _strCurrency;</span>
+<span class="nc" id="L166">		return _strCurrency;</span>
 	}
 
 	/**
@@ -173,19 +174,19 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 
 	public java.lang.String association()
 	{
-<span class="nc" id="L176">		return _strAssociation;</span>
+<span class="nc" id="L177">		return _strAssociation;</span>
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-<span class="fc" id="L181">		return _strCurrency + &quot;::&quot; + _strAssociation;</span>
+<span class="fc" id="L182">		return _strCurrency + &quot;::&quot; + _strAssociation;</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-<span class="nc bnc" id="L187" title="All 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CSALabel) ? false :</span>
-<span class="nc" id="L188">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CSALabel) ? false :</span>
+<span class="nc" id="L189">			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

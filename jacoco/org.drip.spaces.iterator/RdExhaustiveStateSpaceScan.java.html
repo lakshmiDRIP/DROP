@@ -73,9 +73,10 @@ package org.drip.spaces.iterator;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator&quot;&gt;Iterator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator&quot;&gt;Iterator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -98,46 +99,46 @@ public class RdExhaustiveStateSpaceScan extends org.drip.spaces.iterator.RdSpann
 		final boolean bCyclicalScan)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L101">		super (aiTerminalStateIndex, bCyclicalScan);</span>
-<span class="fc" id="L102">	}</span>
+<span class="fc" id="L102">		super (aiTerminalStateIndex, bCyclicalScan);</span>
+<span class="fc" id="L103">	}</span>
 
 	@Override public int[] resetStateIndexCursor()
 	{
-<span class="nc" id="L106">		int iDimension = dimension();</span>
+<span class="nc" id="L107">		int iDimension = dimension();</span>
 
-<span class="nc" id="L108">		int[] aiStateIndexCursor = stateIndexCursor();</span>
+<span class="nc" id="L109">		int[] aiStateIndexCursor = stateIndexCursor();</span>
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L111">			aiStateIndexCursor[i] = 0;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L112">			aiStateIndexCursor[i] = 0;</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;</span>
 	}
 
 	@Override public int[] nextStateIndexCursor()
 	{
-<span class="fc" id="L118">		int iDimension = dimension();</span>
+<span class="fc" id="L119">		int iDimension = dimension();</span>
 
-<span class="fc" id="L120">		int iStateIndexToUpdate = -1;</span>
+<span class="fc" id="L121">		int iStateIndexToUpdate = -1;</span>
 
-<span class="fc" id="L122">		int[] aiStateIndexCursor = stateIndexCursor();</span>
+<span class="fc" id="L123">		int[] aiStateIndexCursor = stateIndexCursor();</span>
 
-<span class="fc" id="L124">		int[] aiTerminalStateIndex = terminalStateIndex();</span>
+<span class="fc" id="L125">		int[] aiTerminalStateIndex = terminalStateIndex();</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = iDimension - 1; i &gt;= 0; --i) {</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">			if (aiStateIndexCursor[i] != aiTerminalStateIndex[i] - 1) {</span>
-<span class="fc" id="L128">				iStateIndexToUpdate = i;</span>
-<span class="fc" id="L129">				break;</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = iDimension - 1; i &gt;= 0; --i) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">			if (aiStateIndexCursor[i] != aiTerminalStateIndex[i] - 1) {</span>
+<span class="fc" id="L129">				iStateIndexToUpdate = i;</span>
+<span class="fc" id="L130">				break;</span>
 			}
 		}
 
-<span class="pc bpc" id="L133" title="1 of 4 branches missed.">		if (-1 == iStateIndexToUpdate) return cyclicalScan() ? resetStateIndexCursor() : null;</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">		if (-1 == iStateIndexToUpdate) return cyclicalScan() ? resetStateIndexCursor() : null;</span>
 
-<span class="fc" id="L135">		aiStateIndexCursor[iStateIndexToUpdate] = aiStateIndexCursor[iStateIndexToUpdate] + 1;</span>
+<span class="fc" id="L136">		aiStateIndexCursor[iStateIndexToUpdate] = aiStateIndexCursor[iStateIndexToUpdate] + 1;</span>
 
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = iStateIndexToUpdate + 1; i &lt; iDimension; ++i)</span>
-<span class="fc" id="L138">			aiStateIndexCursor[i] = 0;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = iStateIndexToUpdate + 1; i &lt; iDimension; ++i)</span>
+<span class="fc" id="L139">			aiStateIndexCursor[i] = 0;</span>
 
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

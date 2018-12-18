@@ -12,12 +12,12 @@ package org.drip.feed.transformer;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.feed.transformer;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,37 +75,37 @@ package org.drip.feed.transformer;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class CreditCDSIndexMarksReconstitutor {</span>
+<span class="nc" id="L85">public class CreditCDSIndexMarksReconstitutor {</span>
 
 	private static final double[] FundingFixingMarksIndex (
 		final org.drip.feed.loader.CSVGrid csvGridFundingFixingMarks,
 		final org.drip.analytics.date.JulianDate[] adtFundingFixingSpot,
 		final org.drip.analytics.date.JulianDate dtCreditIndexSpot)
 	{
-<span class="nc" id="L91">		int iNumFundingFixingSpot = adtFundingFixingSpot.length;</span>
-<span class="nc" id="L92">		int iNumFundingFixingMaturityTenor =</span>
+<span class="nc" id="L92">		int iNumFundingFixingSpot = adtFundingFixingSpot.length;</span>
+<span class="nc" id="L93">		int iNumFundingFixingMaturityTenor =</span>
 			org.drip.feed.transformer.FundingFixFloatMarksReconstitutor.s_astrFixFloatTenor.length;
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFundingFixingSpot; ++i) {</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (dtCreditIndexSpot.julian() == adtFundingFixingSpot[i].julian()) {</span>
-<span class="nc" id="L97">				double[] adblFundingFixingFixFloatQuote = new double[iNumFundingFixingMaturityTenor];</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFundingFixingSpot; ++i) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			if (dtCreditIndexSpot.julian() == adtFundingFixingSpot[i].julian()) {</span>
+<span class="nc" id="L98">				double[] adblFundingFixingFixFloatQuote = new double[iNumFundingFixingMaturityTenor];</span>
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumFundingFixingMaturityTenor; ++j)</span>
-<span class="nc" id="L100">					adblFundingFixingFixFloatQuote[j] = csvGridFundingFixingMarks.doubleArrayAtColumn</span>
-<span class="nc" id="L101">						(j + 1)[i];</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumFundingFixingMaturityTenor; ++j)</span>
+<span class="nc" id="L101">					adblFundingFixingFixFloatQuote[j] = csvGridFundingFixingMarks.doubleArrayAtColumn</span>
+<span class="nc" id="L102">						(j + 1)[i];</span>
 
-<span class="nc" id="L103">				return adblFundingFixingFixFloatQuote;</span>
+<span class="nc" id="L104">				return adblFundingFixingFixFloatQuote;</span>
 			}
 		}
 
-<span class="nc" id="L107">		return null;</span>
+<span class="nc" id="L108">		return null;</span>
 	}
 
 	/**
@@ -126,60 +127,60 @@ package org.drip.feed.transformer;
 		final int iSpotDateIndex,
 		final int iQuotedSpreadIndex)
 	{
-<span class="nc" id="L129">		org.drip.feed.loader.CSVGrid csvGridFundingFixingMarks = org.drip.feed.loader.CSVParser.StringGrid</span>
-<span class="nc" id="L130">			(strFundingFixingMarksLocation, true);</span>
+<span class="nc" id="L130">		org.drip.feed.loader.CSVGrid csvGridFundingFixingMarks = org.drip.feed.loader.CSVParser.StringGrid</span>
+<span class="nc" id="L131">			(strFundingFixingMarksLocation, true);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == csvGridFundingFixingMarks) return false;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (null == csvGridFundingFixingMarks) return false;</span>
 
-<span class="nc" id="L134">		org.drip.analytics.date.JulianDate[] adtFundingFixingMarksSpot =</span>
-<span class="nc" id="L135">			csvGridFundingFixingMarks.dateArrayAtColumn (0);</span>
+<span class="nc" id="L135">		org.drip.analytics.date.JulianDate[] adtFundingFixingMarksSpot =</span>
+<span class="nc" id="L136">			csvGridFundingFixingMarks.dateArrayAtColumn (0);</span>
 
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (null == adtFundingFixingMarksSpot || 0 == adtFundingFixingMarksSpot.length) return false;</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == adtFundingFixingMarksSpot || 0 == adtFundingFixingMarksSpot.length) return false;</span>
 
-<span class="nc" id="L139">		org.drip.feed.loader.CSVGrid csvGridCreditIndexMarks = org.drip.feed.loader.CSVParser.StringGrid</span>
-<span class="nc" id="L140">			(strCreditIndexMarksLocation, true);</span>
+<span class="nc" id="L140">		org.drip.feed.loader.CSVGrid csvGridCreditIndexMarks = org.drip.feed.loader.CSVParser.StringGrid</span>
+<span class="nc" id="L141">			(strCreditIndexMarksLocation, true);</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == csvGridCreditIndexMarks) return false;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (null == csvGridCreditIndexMarks) return false;</span>
 
-<span class="nc" id="L144">		org.drip.analytics.date.JulianDate[] adtCreditIndexMarksSpot =</span>
-<span class="nc" id="L145">			csvGridCreditIndexMarks.dateArrayAtColumn (iSpotDateIndex);</span>
+<span class="nc" id="L145">		org.drip.analytics.date.JulianDate[] adtCreditIndexMarksSpot =</span>
+<span class="nc" id="L146">			csvGridCreditIndexMarks.dateArrayAtColumn (iSpotDateIndex);</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (null == adtCreditIndexMarksSpot) return false;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (null == adtCreditIndexMarksSpot) return false;</span>
 
-<span class="nc" id="L149">		int iNumClose = adtCreditIndexMarksSpot.length;</span>
-<span class="nc" id="L150">		int iNumFundingFixingMaturityTenor =</span>
+<span class="nc" id="L150">		int iNumClose = adtCreditIndexMarksSpot.length;</span>
+<span class="nc" id="L151">		int iNumFundingFixingMaturityTenor =</span>
 			org.drip.feed.transformer.FundingFixFloatMarksReconstitutor.s_astrFixFloatTenor.length;
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
 
-<span class="nc" id="L155">		double[] adblQuotedSpread = csvGridCreditIndexMarks.doubleArrayAtColumn (iQuotedSpreadIndex);</span>
+<span class="nc" id="L156">		double[] adblQuotedSpread = csvGridCreditIndexMarks.doubleArrayAtColumn (iQuotedSpreadIndex);</span>
 
-<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (null == adblQuotedSpread || iNumClose != adblQuotedSpread.length) return false;</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">		if (null == adblQuotedSpread || iNumClose != adblQuotedSpread.length) return false;</span>
 
-<span class="nc" id="L159">		java.lang.String strDump = &quot;CloseDate&quot;;</span>
+<span class="nc" id="L160">		java.lang.String strDump = &quot;CloseDate&quot;;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumFundingFixingMaturityTenor; ++j)</span>
-<span class="nc" id="L162">			strDump += &quot;,&quot; +</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumFundingFixingMaturityTenor; ++j)</span>
+<span class="nc" id="L163">			strDump += &quot;,&quot; +</span>
 				org.drip.feed.transformer.FundingFixFloatMarksReconstitutor.s_astrFixFloatTenor[j];
 
-<span class="nc" id="L165">		System.out.println (strDump + &quot;,CreditIndexName,QuotedSpread&quot;);</span>
+<span class="nc" id="L166">		System.out.println (strDump + &quot;,CreditIndexName,QuotedSpread&quot;);</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L168">			double[] adblFundingFixingFixFloatQuote = FundingFixingMarksIndex (csvGridFundingFixingMarks,</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L169">			double[] adblFundingFixingFixFloatQuote = FundingFixingMarksIndex (csvGridFundingFixingMarks,</span>
 				adtFundingFixingMarksSpot, adtCreditIndexMarksSpot[i]);
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (null == adblFundingFixingFixFloatQuote) continue;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			if (null == adblFundingFixingFixFloatQuote) continue;</span>
 
-<span class="nc" id="L173">			strDump = &quot;&quot;;</span>
+<span class="nc" id="L174">			strDump = &quot;&quot;;</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumFundingFixingMaturityTenor; ++j)</span>
-<span class="nc" id="L176">				strDump += &quot;,&quot; + adblFundingFixingFixFloatQuote[j];</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumFundingFixingMaturityTenor; ++j)</span>
+<span class="nc" id="L177">				strDump += &quot;,&quot; + adblFundingFixingFixFloatQuote[j];</span>
 
-<span class="nc" id="L178">			System.out.println (adtCreditIndexMarksSpot[i] + strDump + &quot;,&quot; + strIndexFullName + &quot;,&quot; + (0.0001</span>
+<span class="nc" id="L179">			System.out.println (adtCreditIndexMarksSpot[i] + strDump + &quot;,&quot; + strIndexFullName + &quot;,&quot; + (0.0001</span>
 				* adblQuotedSpread[i]));
 		}
 
-<span class="nc" id="L182">		return true;</span>
+<span class="nc" id="L183">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

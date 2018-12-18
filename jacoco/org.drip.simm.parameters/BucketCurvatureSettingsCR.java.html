@@ -96,9 +96,10 @@ package org.drip.simm.parameters;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,51 +108,51 @@ package org.drip.simm.parameters;
 
 public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVegaSettingsCR
 {
-<span class="nc" id="L110">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorScalingFactorMap = null;</span>
+<span class="nc" id="L111">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _tenorScalingFactorMap = null;</span>
 
 	private static final java.util.Map&lt;java.lang.String, java.lang.Double&gt; TenorScalingFactorMap()
 	{
-<span class="nc" id="L114">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap = new</span>
+<span class="nc" id="L115">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
-<span class="nc" id="L118">			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();</span>
+<span class="nc" id="L119">			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();</span>
 
 		try
 		{
-<span class="nc" id="L122">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L123">			tenorScalingFactorMap.put (</span>
 				&quot;1Y&quot;,
-<span class="nc" id="L124">				r1ToR1CurvatureTenorScaler.evaluate (365.)</span>
+<span class="nc" id="L125">				r1ToR1CurvatureTenorScaler.evaluate (365.)</span>
 			);
 
-<span class="nc" id="L127">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L128">			tenorScalingFactorMap.put (</span>
 				&quot;2Y&quot;,
-<span class="nc" id="L129">				r1ToR1CurvatureTenorScaler.evaluate (731.)</span>
+<span class="nc" id="L130">				r1ToR1CurvatureTenorScaler.evaluate (731.)</span>
 			);
 
-<span class="nc" id="L132">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L133">			tenorScalingFactorMap.put (</span>
 				&quot;3Y&quot;,
-<span class="nc" id="L134">				r1ToR1CurvatureTenorScaler.evaluate (1096.)</span>
+<span class="nc" id="L135">				r1ToR1CurvatureTenorScaler.evaluate (1096.)</span>
 			);
 
-<span class="nc" id="L137">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L138">			tenorScalingFactorMap.put (</span>
 				&quot;5Y&quot;,
-<span class="nc" id="L139">				r1ToR1CurvatureTenorScaler.evaluate (1826.)</span>
+<span class="nc" id="L140">				r1ToR1CurvatureTenorScaler.evaluate (1826.)</span>
 			);
 
-<span class="nc" id="L142">			tenorScalingFactorMap.put (</span>
+<span class="nc" id="L143">			tenorScalingFactorMap.put (</span>
 				&quot;10Y&quot;,
-<span class="nc" id="L144">				r1ToR1CurvatureTenorScaler.evaluate (3652.)</span>
+<span class="nc" id="L145">				r1ToR1CurvatureTenorScaler.evaluate (3652.)</span>
 			);
 
-<span class="nc" id="L147">			return tenorScalingFactorMap;</span>
+<span class="nc" id="L148">			return tenorScalingFactorMap;</span>
 		}
-<span class="nc" id="L149">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L151">			e.printStackTrace();</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L154">		return null;</span>
+<span class="nc" id="L155">		return null;</span>
 	}
 
 	/**
@@ -165,32 +166,32 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRQ_20 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L168">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
-<span class="nc" id="L169">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_20 (bucketNumber);</span>
+<span class="nc" id="L169">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
+<span class="nc" id="L170">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_20 (bucketNumber);</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
 		{
-<span class="nc" id="L173">			return null;</span>
+<span class="nc" id="L174">			return null;</span>
 		}
 		try
 		{
-<span class="nc" id="L177">			return new BucketCurvatureSettingsCR (</span>
-<span class="nc" id="L178">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
-<span class="nc" id="L179">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L180">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L181">				bucketVegaSettingsCR.concentrationThreshold(),</span>
-<span class="nc" id="L182">				bucketVegaSettingsCR.vegaScaler(),</span>
-<span class="nc" id="L183">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
-<span class="nc" id="L184">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
-<span class="nc" id="L185">				TenorScalingFactorMap()</span>
+<span class="nc" id="L178">			return new BucketCurvatureSettingsCR (</span>
+<span class="nc" id="L179">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
+<span class="nc" id="L180">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L181">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L182">				bucketVegaSettingsCR.concentrationThreshold(),</span>
+<span class="nc" id="L183">				bucketVegaSettingsCR.vegaScaler(),</span>
+<span class="nc" id="L184">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
+<span class="nc" id="L185">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
+<span class="nc" id="L186">				TenorScalingFactorMap()</span>
 			);
 		}
-<span class="nc" id="L188">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L189">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L190">			e.printStackTrace();</span>
+<span class="nc" id="L191">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L193">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	/**
@@ -204,32 +205,32 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRQ_21 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L207">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
-<span class="nc" id="L208">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_21 (bucketNumber);</span>
+<span class="nc" id="L208">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
+<span class="nc" id="L209">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_21 (bucketNumber);</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
 		{
-<span class="nc" id="L212">			return null;</span>
+<span class="nc" id="L213">			return null;</span>
 		}
 		try
 		{
-<span class="nc" id="L216">			return new BucketCurvatureSettingsCR (</span>
-<span class="nc" id="L217">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
-<span class="nc" id="L218">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L219">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L220">				bucketVegaSettingsCR.concentrationThreshold(),</span>
-<span class="nc" id="L221">				bucketVegaSettingsCR.vegaScaler(),</span>
-<span class="nc" id="L222">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
-<span class="nc" id="L223">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
-<span class="nc" id="L224">				TenorScalingFactorMap()</span>
+<span class="nc" id="L217">			return new BucketCurvatureSettingsCR (</span>
+<span class="nc" id="L218">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
+<span class="nc" id="L219">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L220">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L221">				bucketVegaSettingsCR.concentrationThreshold(),</span>
+<span class="nc" id="L222">				bucketVegaSettingsCR.vegaScaler(),</span>
+<span class="nc" id="L223">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
+<span class="nc" id="L224">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
+<span class="nc" id="L225">				TenorScalingFactorMap()</span>
 			);
 		}
-<span class="nc" id="L227">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L228">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L229">			e.printStackTrace();</span>
+<span class="nc" id="L230">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L232">		return null;</span>
+<span class="nc" id="L233">		return null;</span>
 	}
 
 	/**
@@ -243,32 +244,32 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRNQ_20 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L246">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
-<span class="nc" id="L247">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketNumber);</span>
+<span class="nc" id="L247">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
+<span class="nc" id="L248">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketNumber);</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
 		{
-<span class="nc" id="L251">			return null;</span>
+<span class="nc" id="L252">			return null;</span>
 		}
 		try
 		{
-<span class="nc" id="L255">			return new BucketCurvatureSettingsCR (</span>
-<span class="nc" id="L256">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
-<span class="nc" id="L257">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L258">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L259">				bucketVegaSettingsCR.concentrationThreshold(),</span>
-<span class="nc" id="L260">				bucketVegaSettingsCR.vegaScaler(),</span>
-<span class="nc" id="L261">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
-<span class="nc" id="L262">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
-<span class="nc" id="L263">				TenorScalingFactorMap()</span>
+<span class="nc" id="L256">			return new BucketCurvatureSettingsCR (</span>
+<span class="nc" id="L257">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
+<span class="nc" id="L258">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L259">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L260">				bucketVegaSettingsCR.concentrationThreshold(),</span>
+<span class="nc" id="L261">				bucketVegaSettingsCR.vegaScaler(),</span>
+<span class="nc" id="L262">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
+<span class="nc" id="L263">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
+<span class="nc" id="L264">				TenorScalingFactorMap()</span>
 			);
 		}
-<span class="nc" id="L266">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L268">			e.printStackTrace();</span>
+<span class="nc" id="L269">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L271">		return null;</span>
+<span class="nc" id="L272">		return null;</span>
 	}
 
 	/**
@@ -282,32 +283,32 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRNQ_21 (
 		final int bucketNumber)
 	{
-<span class="nc" id="L285">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
-<span class="nc" id="L286">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_21 (bucketNumber);</span>
+<span class="nc" id="L286">		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =</span>
+<span class="nc" id="L287">			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_21 (bucketNumber);</span>
 
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">		if (null == bucketVegaSettingsCR)</span>
 		{
-<span class="nc" id="L290">			return null;</span>
+<span class="nc" id="L291">			return null;</span>
 		}
 		try
 		{
-<span class="nc" id="L294">			return new BucketCurvatureSettingsCR (</span>
-<span class="nc" id="L295">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
-<span class="nc" id="L296">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L297">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
-<span class="nc" id="L298">				bucketVegaSettingsCR.concentrationThreshold(),</span>
-<span class="nc" id="L299">				bucketVegaSettingsCR.vegaScaler(),</span>
-<span class="nc" id="L300">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
-<span class="nc" id="L301">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
-<span class="nc" id="L302">				TenorScalingFactorMap()</span>
+<span class="nc" id="L295">			return new BucketCurvatureSettingsCR (</span>
+<span class="nc" id="L296">				bucketVegaSettingsCR.tenorVegaRiskWeight(),</span>
+<span class="nc" id="L297">				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L298">				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),</span>
+<span class="nc" id="L299">				bucketVegaSettingsCR.concentrationThreshold(),</span>
+<span class="nc" id="L300">				bucketVegaSettingsCR.vegaScaler(),</span>
+<span class="nc" id="L301">				bucketVegaSettingsCR.historicalVolatilityRatio(),</span>
+<span class="nc" id="L302">				bucketVegaSettingsCR.tenorDeltaRiskWeight(),</span>
+<span class="nc" id="L303">				TenorScalingFactorMap()</span>
 			);
 		}
-<span class="nc" id="L305">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L306">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L307">			e.printStackTrace();</span>
+<span class="nc" id="L308">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L310">		return null;</span>
+<span class="nc" id="L311">		return null;</span>
 	}
 
 	/**
@@ -336,7 +337,7 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L339">		super (</span>
+<span class="nc" id="L340">		super (</span>
 			tenorVegaRiskWeight,
 			sameIssuerSeniorityCorrelation,
 			differentIssuerSeniorityCorrelation,
@@ -346,11 +347,11 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 			tenorDeltaRiskWeight
 		);
 
-<span class="nc bnc" id="L349" title="All 4 branches missed.">		if (null == (_tenorScalingFactorMap = tenorScalingFactorMap) || 0 == _tenorScalingFactorMap.size())</span>
+<span class="nc bnc" id="L350" title="All 4 branches missed.">		if (null == (_tenorScalingFactorMap = tenorScalingFactorMap) || 0 == _tenorScalingFactorMap.size())</span>
 		{
-<span class="nc" id="L351">			throw new java.lang.Exception (&quot;BucketVegaSettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L352">			throw new java.lang.Exception (&quot;BucketVegaSettingsIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L353">	}</span>
+<span class="nc" id="L354">	}</span>
 
 	/**
 	 * Retrieve the Tenor Scaling Factor Map
@@ -360,33 +361,33 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorScalingFactorMap()
 	{
-<span class="nc" id="L363">		return _tenorScalingFactorMap;</span>
+<span class="nc" id="L364">		return _tenorScalingFactorMap;</span>
 	}
 
 	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight()
 	{
-<span class="nc" id="L368">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeight = super.tenorRiskWeight();</span>
+<span class="nc" id="L369">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeight = super.tenorRiskWeight();</span>
 
-<span class="nc" id="L370">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight = new</span>
+<span class="nc" id="L371">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; tenorRiskWeight = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; tenorVegaRiskWeightEntry :
-<span class="nc bnc" id="L374" title="All 2 branches missed.">			tenorVegaRiskWeight.entrySet())</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">			tenorVegaRiskWeight.entrySet())</span>
 		{
-<span class="nc" id="L376">			java.lang.String tenor = tenorVegaRiskWeightEntry.getKey();</span>
+<span class="nc" id="L377">			java.lang.String tenor = tenorVegaRiskWeightEntry.getKey();</span>
 
-<span class="nc bnc" id="L378" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">			if (!_tenorScalingFactorMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L380">				return null;</span>
+<span class="nc" id="L381">				return null;</span>
 			}
 
-<span class="nc" id="L383">			tenorRiskWeight.put (</span>
+<span class="nc" id="L384">			tenorRiskWeight.put (</span>
 				tenor,
-<span class="nc" id="L385">				tenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
+<span class="nc" id="L386">				tenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)</span>
 			);
-<span class="nc" id="L387">		}</span>
+<span class="nc" id="L388">		}</span>
 
-<span class="nc" id="L389">		return tenorRiskWeight;</span>
+<span class="nc" id="L390">		return tenorRiskWeight;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

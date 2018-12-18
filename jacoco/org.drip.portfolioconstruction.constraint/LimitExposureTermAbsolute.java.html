@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.constraint;
 
 /**
  * &lt;i&gt;LimitExposureTermAbsolute&lt;/i&gt; holds the Details of a Limit Absolute Exposure Constraint Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -104,7 +105,7 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 		final double[] adblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L107">		super (</span>
+<span class="nc" id="L108">		super (</span>
 			strName,
 			&quot;CT_LIMIT_ABSOLUTE_EXPOSURE&quot;,
 			&quot;Constrains the Absolute Exposure&quot;,
@@ -114,35 +115,35 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 			dblMaximum,
 			adblPrice
 		);
-<span class="nc" id="L117">	}</span>
+<span class="nc" id="L118">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L121">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L122">		{</span>
+<span class="nc" id="L122">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L123">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L125">				return price().length;</span>
+<span class="nc" id="L126">				return price().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L132">				double[] adblPrice = price();</span>
+<span class="nc" id="L133">				double[] adblPrice = price();</span>
 
-<span class="nc" id="L134">				double dblConstraintValue = 0.;</span>
-<span class="nc" id="L135">				int iNumAsset = adblPrice.length;</span>
+<span class="nc" id="L135">				double dblConstraintValue = 0.;</span>
+<span class="nc" id="L136">				int iNumAsset = adblPrice.length;</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L138" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L139">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
+<span class="nc" id="L140">					throw new java.lang.Exception</span>
 						(&quot;LimitExposureTermAbsolute::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L143">					dblConstraintValue += java.lang.Math.abs (adblPrice[i] * adblFinalHoldings[i]);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc" id="L144">					dblConstraintValue += java.lang.Math.abs (adblPrice[i] * adblFinalHoldings[i]);</span>
 
-<span class="nc" id="L145">				return dblConstraintValue;</span>
+<span class="nc" id="L146">				return dblConstraintValue;</span>
 			}
 		};
 	}

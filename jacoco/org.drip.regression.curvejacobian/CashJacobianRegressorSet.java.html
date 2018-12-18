@@ -75,133 +75,134 @@ package org.drip.regression.curvejacobian;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/curvejacobian&quot;&gt;Curve Jacobian&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/curvejacobian&quot;&gt;Curve Jacobian&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L87">public class CashJacobianRegressorSet implements org.drip.regression.core.RegressorSet {</span>
-<span class="fc" id="L88">	private java.lang.String _strRegressionScenario =</span>
+<span class="fc" id="L88">public class CashJacobianRegressorSet implements org.drip.regression.core.RegressorSet {</span>
+<span class="fc" id="L89">	private java.lang.String _strRegressionScenario =</span>
 		&quot;org.drip.analytics.definition.CashDiscountCurve.CompPVDFJacobian&quot;;
 
-<span class="fc" id="L91">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
+<span class="fc" id="L92">	private java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; _setRegressors = new</span>
 		java.util.ArrayList&lt;org.drip.regression.core.UnitRegressor&gt;();
 
 	@Override public java.util.List&lt;org.drip.regression.core.UnitRegressor&gt; getRegressorSet()
 	{
-<span class="fc" id="L96">		return _setRegressors;</span>
+<span class="fc" id="L97">		return _setRegressors;</span>
 	}
 
 	@Override public boolean setupRegressors()
 	{
 		try {
-<span class="fc" id="L102">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;CashJacobian&quot;,</span>
-<span class="fc" id="L103">				_strRegressionScenario) {</span>
-<span class="fc" id="L104">				org.drip.analytics.date.JulianDate dtStart = null;</span>
-<span class="fc" id="L105">				org.drip.state.discount.MergedDiscountForwardCurve dcCash = null;</span>
-<span class="fc" id="L106">				org.drip.quant.calculus.WengertJacobian wjPVDF = null;</span>
-<span class="fc" id="L107">				org.drip.quant.calculus.WengertJacobian aWJComp[] = null;</span>
-<span class="fc" id="L108">				org.drip.product.definition.CalibratableComponent aCompCalib[] = null;</span>
+<span class="fc" id="L103">			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor (&quot;CashJacobian&quot;,</span>
+<span class="fc" id="L104">				_strRegressionScenario) {</span>
+<span class="fc" id="L105">				org.drip.analytics.date.JulianDate dtStart = null;</span>
+<span class="fc" id="L106">				org.drip.state.discount.MergedDiscountForwardCurve dcCash = null;</span>
+<span class="fc" id="L107">				org.drip.quant.calculus.WengertJacobian wjPVDF = null;</span>
+<span class="fc" id="L108">				org.drip.quant.calculus.WengertJacobian aWJComp[] = null;</span>
+<span class="fc" id="L109">				org.drip.product.definition.CalibratableComponent aCompCalib[] = null;</span>
 
 				@Override public boolean preRegression() {
-<span class="fc" id="L111">					int NUM_CASH_INSTR = 7;</span>
-<span class="fc" id="L112">					int aiDate[] = new int[NUM_CASH_INSTR];</span>
-<span class="fc" id="L113">					double adblRate[] = new double[NUM_CASH_INSTR];</span>
-<span class="fc" id="L114">					double adblCompCalibValue[] = new double[NUM_CASH_INSTR];</span>
-<span class="fc" id="L115">					aWJComp = new org.drip.quant.calculus.WengertJacobian[NUM_CASH_INSTR];</span>
-<span class="fc" id="L116">					java.lang.String astrCalibMeasure[] = new java.lang.String[NUM_CASH_INSTR];</span>
-<span class="fc" id="L117">					aCompCalib = new</span>
+<span class="fc" id="L112">					int NUM_CASH_INSTR = 7;</span>
+<span class="fc" id="L113">					int aiDate[] = new int[NUM_CASH_INSTR];</span>
+<span class="fc" id="L114">					double adblRate[] = new double[NUM_CASH_INSTR];</span>
+<span class="fc" id="L115">					double adblCompCalibValue[] = new double[NUM_CASH_INSTR];</span>
+<span class="fc" id="L116">					aWJComp = new org.drip.quant.calculus.WengertJacobian[NUM_CASH_INSTR];</span>
+<span class="fc" id="L117">					java.lang.String astrCalibMeasure[] = new java.lang.String[NUM_CASH_INSTR];</span>
+<span class="fc" id="L118">					aCompCalib = new</span>
 						org.drip.product.definition.CalibratableComponent[NUM_CASH_INSTR];
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">					if (null == (dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2011, 4, 6)))</span>
-<span class="nc" id="L121">						return false;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">					if (null == (dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2011, 4, 6)))</span>
+<span class="nc" id="L122">						return false;</span>
 
-<span class="fc" id="L123">					aiDate[0] = dtStart.addDays (3).julian(); // ON</span>
+<span class="fc" id="L124">					aiDate[0] = dtStart.addDays (3).julian(); // ON</span>
 
-<span class="fc" id="L125">					aiDate[1] = dtStart.addDays (4).julian(); // 1D (TN)</span>
+<span class="fc" id="L126">					aiDate[1] = dtStart.addDays (4).julian(); // 1D (TN)</span>
 
-<span class="fc" id="L127">					aiDate[2] = dtStart.addDays (9).julian(); // 1W</span>
+<span class="fc" id="L128">					aiDate[2] = dtStart.addDays (9).julian(); // 1W</span>
 
-<span class="fc" id="L129">					aiDate[3] = dtStart.addDays (16).julian(); // 2W</span>
+<span class="fc" id="L130">					aiDate[3] = dtStart.addDays (16).julian(); // 2W</span>
 
-<span class="fc" id="L131">					aiDate[4] = dtStart.addDays (32).julian(); // 1M</span>
+<span class="fc" id="L132">					aiDate[4] = dtStart.addDays (32).julian(); // 1M</span>
 
-<span class="fc" id="L133">					aiDate[5] = dtStart.addDays (62).julian(); // 2M</span>
+<span class="fc" id="L134">					aiDate[5] = dtStart.addDays (62).julian(); // 2M</span>
 
-<span class="fc" id="L135">					aiDate[6] = dtStart.addDays (92).julian(); // 3M</span>
+<span class="fc" id="L136">					aiDate[6] = dtStart.addDays (92).julian(); // 3M</span>
 
-<span class="fc" id="L137">					adblCompCalibValue[0] = .0013;</span>
-<span class="fc" id="L138">					adblCompCalibValue[1] = .0017;</span>
-<span class="fc" id="L139">					adblCompCalibValue[2] = .0017;</span>
-<span class="fc" id="L140">					adblCompCalibValue[3] = .0018;</span>
-<span class="fc" id="L141">					adblCompCalibValue[4] = .0020;</span>
-<span class="fc" id="L142">					adblCompCalibValue[5] = .0023;</span>
-<span class="fc" id="L143">					adblCompCalibValue[6] = .0026;</span>
+<span class="fc" id="L138">					adblCompCalibValue[0] = .0013;</span>
+<span class="fc" id="L139">					adblCompCalibValue[1] = .0017;</span>
+<span class="fc" id="L140">					adblCompCalibValue[2] = .0017;</span>
+<span class="fc" id="L141">					adblCompCalibValue[3] = .0018;</span>
+<span class="fc" id="L142">					adblCompCalibValue[4] = .0020;</span>
+<span class="fc" id="L143">					adblCompCalibValue[5] = .0023;</span>
+<span class="fc" id="L144">					adblCompCalibValue[6] = .0026;</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_CASH_INSTR; ++i) {</span>
-<span class="fc" id="L146">						adblRate[i] = 0.01;</span>
-<span class="fc" id="L147">						astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">					for (int i = 0; i &lt; NUM_CASH_INSTR; ++i) {</span>
+<span class="fc" id="L147">						adblRate[i] = 0.01;</span>
+<span class="fc" id="L148">						astrCalibMeasure[i] = &quot;Rate&quot;;</span>
 
 						try {
-<span class="fc" id="L150">							aCompCalib[i] = org.drip.product.creator.SingleStreamComponentBuilder.Deposit</span>
-<span class="fc" id="L151">								(dtStart.addDays (2), new org.drip.analytics.date.JulianDate (aiDate[i]),</span>
-<span class="fc" id="L152">									org.drip.state.identifier.ForwardLabel.Create (&quot;USD&quot;, &quot;3M&quot;));</span>
-<span class="nc" id="L153">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L154">							e.printStackTrace();</span>
+<span class="fc" id="L151">							aCompCalib[i] = org.drip.product.creator.SingleStreamComponentBuilder.Deposit</span>
+<span class="fc" id="L152">								(dtStart.addDays (2), new org.drip.analytics.date.JulianDate (aiDate[i]),</span>
+<span class="fc" id="L153">									org.drip.state.identifier.ForwardLabel.Create (&quot;USD&quot;, &quot;3M&quot;));</span>
+<span class="nc" id="L154">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L155">							e.printStackTrace();</span>
 
-<span class="nc" id="L156">							return false;</span>
-<span class="fc" id="L157">						}</span>
+<span class="nc" id="L157">							return false;</span>
+<span class="fc" id="L158">						}</span>
 					}
 
-<span class="fc" id="L160">					return null != (dcCash =</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioDiscountCurveBuilder.NonlinearBuild (dtStart, &quot;USD&quot;,</span>
+<span class="fc" id="L161">					return null != (dcCash =</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">						org.drip.state.creator.ScenarioDiscountCurveBuilder.NonlinearBuild (dtStart, &quot;USD&quot;,</span>
 							aCompCalib, adblCompCalibValue, astrCalibMeasure, null));
 				}
 
 				@Override public boolean execRegression()
 				{
-<span class="fc bfc" id="L167" title="All 2 branches covered.">					for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">					for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
 						try {
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">							if (null == (aWJComp[i] = aCompCalib[i].jackDDirtyPVDManifestMeasure (new</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">							if (null == (aWJComp[i] = aCompCalib[i].jackDDirtyPVDManifestMeasure (new</span>
 								org.drip.param.valuation.ValuationParams (dtStart, dtStart, &quot;USD&quot;), null,
-<span class="fc" id="L171">									org.drip.param.creator.MarketParamsBuilder.Create (dcCash, null,</span>
+<span class="fc" id="L172">									org.drip.param.creator.MarketParamsBuilder.Create (dcCash, null,</span>
 										null, null, null, null, null), null)))
-<span class="nc" id="L173">								return false;</span>
-<span class="nc" id="L174">						} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L175">							e.printStackTrace();</span>
+<span class="nc" id="L174">								return false;</span>
+<span class="nc" id="L175">						} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L176">							e.printStackTrace();</span>
 
-<span class="nc" id="L177">							return false;</span>
-<span class="fc" id="L178">						}</span>
+<span class="nc" id="L178">							return false;</span>
+<span class="fc" id="L179">						}</span>
 					}
 
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">					return null != (wjPVDF = dcCash.compJackDPVDManifestMeasure (dtStart));</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">					return null != (wjPVDF = dcCash.compJackDPVDManifestMeasure (dtStart));</span>
 				}
 
 				@Override public boolean postRegression (
 					final org.drip.regression.core.RegressionRunDetail rnvd)
 				{
-<span class="fc bfc" id="L187" title="All 2 branches covered.">					for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">						if (!rnvd.set (&quot;PVDFMicroJack_&quot; + aCompCalib[i].name(), aWJComp[i].displayString()))</span>
-<span class="nc" id="L189">							return false;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">					for (int i = 0; i &lt; aCompCalib.length; ++i) {</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">						if (!rnvd.set (&quot;PVDFMicroJack_&quot; + aCompCalib[i].name(), aWJComp[i].displayString()))</span>
+<span class="nc" id="L190">							return false;</span>
 					}
 
-<span class="fc" id="L192">					return rnvd.set (&quot;CompPVDFJacobian&quot;, wjPVDF.displayString());</span>
+<span class="fc" id="L193">					return rnvd.set (&quot;CompPVDFJacobian&quot;, wjPVDF.displayString());</span>
 				}
 			});
-<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L196">			e.printStackTrace();</span>
-<span class="fc" id="L197">		}</span>
+<span class="nc" id="L196">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="fc" id="L198">		}</span>
 
-<span class="fc" id="L199">		return true;</span>
+<span class="fc" id="L200">		return true;</span>
 	}
 
 	@Override public java.lang.String getSetName()
 	{
-<span class="fc" id="L204">		return _strRegressionScenario;</span>
+<span class="fc" id="L205">		return _strRegressionScenario;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

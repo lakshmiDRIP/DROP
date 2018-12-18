@@ -98,9 +98,10 @@ package org.drip.xva.pde;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/pde&quot;&gt;PDE&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/pde&quot;&gt;PDE&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -109,8 +110,8 @@ package org.drip.xva.pde;
 
 public class BurgardKjaerOperator
 {
-<span class="fc" id="L112">	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;</span>
-<span class="fc" id="L113">	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;</span>
+<span class="fc" id="L113">	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;</span>
+<span class="fc" id="L114">	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;</span>
 
 	/**
 	 * BurgardKjaerOperator Constructor
@@ -125,13 +126,13 @@ public class BurgardKjaerOperator
 		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
 		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
-<span class="fc" id="L128">	{</span>
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (null == (_tradeablesContainer = tradeablesContainer) ||</span>
+<span class="fc" id="L129">	{</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == (_tradeablesContainer = tradeablesContainer) ||</span>
 			null == (_pdeEvolutionControl = pdeEvolutionControl))
 		{
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;BurgardKjaerOperator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;BurgardKjaerOperator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Universe of Trade-able Assets
@@ -141,7 +142,7 @@ public class BurgardKjaerOperator
 
 	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
 	{
-<span class="nc" id="L144">		return _tradeablesContainer;</span>
+<span class="nc" id="L145">		return _tradeablesContainer;</span>
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class BurgardKjaerOperator
 
 	public org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl()
 	{
-<span class="nc" id="L155">		return _pdeEvolutionControl;</span>
+<span class="nc" id="L156">		return _pdeEvolutionControl;</span>
 	}
 
 	/**
@@ -170,72 +171,72 @@ public class BurgardKjaerOperator
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-<span class="pc bpc" id="L173" title="2 of 4 branches missed.">		if (null == marketEdge ||</span>
+<span class="pc bpc" id="L174" title="2 of 4 branches missed.">		if (null == marketEdge ||</span>
 			null == initialTrajectoryVertex ||
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateral))</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (collateral))</span>
 		{
-<span class="nc" id="L177">			return null;</span>
+<span class="nc" id="L178">			return null;</span>
 		}
 
-<span class="fc" id="L180">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
+<span class="fc" id="L181">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
 
-<span class="fc" id="L182">		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();</span>
+<span class="fc" id="L183">		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();</span>
 
-<span class="fc" id="L184">		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();</span>
+<span class="fc" id="L185">		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();</span>
 
-<span class="fc" id="L186">		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =</span>
-<span class="fc" id="L187">			initialTrajectoryVertex.positionGreekVertex();</span>
+<span class="fc" id="L187">		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =</span>
+<span class="fc" id="L188">			initialTrajectoryVertex.positionGreekVertex();</span>
 
-<span class="fc" id="L189">		double initialDerivativeXVAValue = initialPositionGreekVertex.derivativeXVAValue();</span>
+<span class="fc" id="L190">		double initialDerivativeXVAValue = initialPositionGreekVertex.derivativeXVAValue();</span>
 
-<span class="fc" id="L191">		double gainOnDealerDefault = initialTrajectoryVertex.gainOnDealerDefault();</span>
+<span class="fc" id="L192">		double gainOnDealerDefault = initialTrajectoryVertex.gainOnDealerDefault();</span>
 
-<span class="fc" id="L193">		double dealerSeniorDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
+<span class="fc" id="L194">		double dealerSeniorDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L195">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
+<span class="fc" id="L196">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L197">		double dealerGainOnClientDefault = initialTrajectoryVertex.gainOnClientDefault();</span>
+<span class="fc" id="L198">		double dealerGainOnClientDefault = initialTrajectoryVertex.gainOnClientDefault();</span>
 
-<span class="fc" id="L199">		double gainOnClientDefault = clientDefaultIntensity * dealerGainOnClientDefault;</span>
+<span class="fc" id="L200">		double gainOnClientDefault = clientDefaultIntensity * dealerGainOnClientDefault;</span>
 
 		try
 		{
-<span class="fc" id="L203">			double initialPortfolioValue = finalMarketVertex.latentStateValue</span>
-<span class="fc" id="L204">				(_tradeablesContainer.assetList().get (0).label());</span>
+<span class="fc" id="L204">			double initialPortfolioValue = finalMarketVertex.latentStateValue</span>
+<span class="fc" id="L205">				(_tradeablesContainer.assetList().get (0).label());</span>
 
-<span class="fc" id="L206">			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *</span>
+<span class="fc" id="L207">			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *</span>
 				initialPortfolioValue;
 
-<span class="fc" id="L209">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
-<span class="fc" id="L210">				(_tradeablesContainer.assetList().get (0)).thetaUpDown (</span>
+<span class="fc" id="L210">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="fc" id="L211">				(_tradeablesContainer.assetList().get (0)).thetaUpDown (</span>
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
 				);
 
-<span class="pc bpc" id="L216" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
 			{
-<span class="nc" id="L218">				return null;</span>
+<span class="nc" id="L219">				return null;</span>
 			}
 
-<span class="fc" id="L221">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
+<span class="fc" id="L222">			return new org.drip.xva.pde.BurgardKjaerEdgeRun (</span>
 				portfolioValueBump,
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-<span class="fc" id="L226">				finalMarketVertex.csaReplicator() * collateral,</span>
+<span class="fc" id="L227">				finalMarketVertex.csaReplicator() * collateral,</span>
 				(dealerSeniorDefaultIntensity + clientDefaultIntensity) * initialDerivativeXVAValue,
 				-1. * dealerSeniorDefaultIntensity * gainOnDealerDefault,
 				-1. * gainOnClientDefault,
 				0.
 			);
 		}
-<span class="nc" id="L233">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L234">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L235">			e.printStackTrace();</span>
+<span class="nc" id="L236">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L238">		return null;</span>
+<span class="nc" id="L239">		return null;</span>
 	}
 
 	/**
@@ -253,76 +254,76 @@ public class BurgardKjaerOperator
 		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-<span class="pc bpc" id="L256" title="2 of 4 branches missed.">		if (null == marketEdge ||</span>
+<span class="pc bpc" id="L257" title="2 of 4 branches missed.">		if (null == marketEdge ||</span>
 			null == initialTrajectoryVertex)
 		{
-<span class="nc" id="L259">			return null;</span>
+<span class="nc" id="L260">			return null;</span>
 		}
 
-<span class="fc" id="L262">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
+<span class="fc" id="L263">		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();</span>
 
-<span class="fc" id="L264">		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();</span>
+<span class="fc" id="L265">		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();</span>
 
-<span class="fc" id="L266">		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();</span>
+<span class="fc" id="L267">		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();</span>
 
-<span class="fc" id="L268">		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();</span>
+<span class="fc" id="L269">		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();</span>
 
-<span class="fc" id="L270">		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();</span>
+<span class="fc" id="L271">		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();</span>
 
-<span class="fc" id="L272">		double dealerDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
+<span class="fc" id="L273">		double dealerDefaultIntensity = finalDealerMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L274">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
+<span class="fc" id="L275">		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();</span>
 
-<span class="fc" id="L276">		double closeOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
-<span class="pc bpc" id="L277" title="1 of 2 branches missed.">			_pdeEvolutionControl.closeOutScheme() ? derivativeXVAValue : derivativeXVAValue;</span>
+<span class="fc" id="L277">		double closeOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">			_pdeEvolutionControl.closeOutScheme() ? derivativeXVAValue : derivativeXVAValue;</span>
 
-<span class="pc bpc" id="L279" title="1 of 2 branches missed.">		double dealerExposure = closeOutMTM &gt; 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">		double dealerExposure = closeOutMTM &gt; 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()</span>
 			* closeOutMTM;
 
-<span class="pc bpc" id="L282" title="1 of 2 branches missed.">		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *</span>
 			(closeOutMTM &lt; 0. ? closeOutMTM : clientRecoveryRate * closeOutMTM);
 
-<span class="fc" id="L285">		double dealerSeniorFundingSpread = finalDealerMarketVertex.seniorFundingSpread() /</span>
-<span class="fc" id="L286">			marketEdge.vertexIncrement();</span>
+<span class="fc" id="L286">		double dealerSeniorFundingSpread = finalDealerMarketVertex.seniorFundingSpread() /</span>
+<span class="fc" id="L287">			marketEdge.vertexIncrement();</span>
 
 		try
 		{
-<span class="fc" id="L290">			double initialPortfolioValue = finalMarketVertex.latentStateValue</span>
-<span class="fc" id="L291">				(_tradeablesContainer.assetList().get (0).label());</span>
+<span class="fc" id="L291">			double initialPortfolioValue = finalMarketVertex.latentStateValue</span>
+<span class="fc" id="L292">				(_tradeablesContainer.assetList().get (0).label());</span>
 
-<span class="fc" id="L293">			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *</span>
+<span class="fc" id="L294">			double portfolioValueBump = _pdeEvolutionControl.sensitivityShiftFactor() *</span>
 				initialPortfolioValue;
 
-<span class="fc" id="L296">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
-<span class="fc" id="L297">				(_tradeablesContainer.assetList().get (0)).thetaUpDown (</span>
+<span class="fc" id="L297">			double[] bumpedThetaArray = new org.drip.xva.pde.ParabolicDifferentialOperator</span>
+<span class="fc" id="L298">				(_tradeablesContainer.assetList().get (0)).thetaUpDown (</span>
 					initialTrajectoryVertex,
 					initialPortfolioValue,
 					portfolioValueBump
 				);
 
-<span class="pc bpc" id="L303" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
+<span class="pc bpc" id="L304" title="2 of 4 branches missed.">			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)</span>
 			{
-<span class="nc" id="L305">				return null;</span>
+<span class="nc" id="L306">				return null;</span>
 			}
 
-<span class="fc" id="L308">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
+<span class="fc" id="L309">			return new org.drip.xva.pde.BurgardKjaerEdgeAttribution (</span>
 				portfolioValueBump,
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
 				-1. * bumpedThetaArray[2],
-<span class="fc" id="L313">				finalMarketVertex.csaReplicator() * collateral,</span>
+<span class="fc" id="L314">				finalMarketVertex.csaReplicator() * collateral,</span>
 				(dealerDefaultIntensity + clientDefaultIntensity) * derivativeXVAValue,
 				dealerSeniorFundingSpread * dealerExposure,
 				-1. * dealerDefaultIntensity * dealerExposure,
 				derivativeXVAClientDefaultGrowth
 			);
 		}
-<span class="nc" id="L320">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L321">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L322">			e.printStackTrace();</span>
+<span class="nc" id="L323">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L325">		return null;</span>
+<span class="nc" id="L326">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

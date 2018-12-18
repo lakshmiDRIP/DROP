@@ -68,12 +68,13 @@ package org.drip.portfolioconstruction.objective;
 /**
  * &lt;i&gt;TransactionChargeTerm&lt;/i&gt; implements the Objective Term that models the Charge associated with a
  * Portfolio Transaction.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,7 +83,7 @@ package org.drip.portfolioconstruction.objective;
 
 public abstract class TransactionChargeTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;</span>
 
 	protected TransactionChargeTerm (
 		final java.lang.String strName,
@@ -92,7 +93,7 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L95">		super (</span>
+<span class="nc" id="L96">		super (</span>
 			strName,
 			strID,
 			strDescription,
@@ -100,17 +101,17 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 			adblInitialHoldings
 		);
 
-<span class="nc" id="L103">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L104">		int iNumAsset = adblInitialHoldings.length;</span>
 
-<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length)</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length)</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
 		{
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			if (null == _aTransactionCharge[i])</span>
-<span class="nc" id="L111">				throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">			if (null == _aTransactionCharge[i])</span>
+<span class="nc" id="L112">				throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Array of Transaction Charges
@@ -120,45 +121,45 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
 	{
-<span class="nc" id="L123">		return _aTransactionCharge;</span>
+<span class="nc" id="L124">		return _aTransactionCharge;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L128">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L129">		{</span>
+<span class="nc" id="L129">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L130">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L132">				return initialHoldings().length;</span>
+<span class="nc" id="L133">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L139" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L140">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L141">					throw new java.lang.Exception</span>
 						(&quot;TransactionChargeTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);
 
-<span class="nc" id="L143">				org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge =</span>
-<span class="nc" id="L144">					transactionCharge();</span>
+<span class="nc" id="L144">				org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge =</span>
+<span class="nc" id="L145">					transactionCharge();</span>
 
-<span class="nc" id="L146">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L147">				double[] adblInitialHoldings = initialHoldings();</span>
 
-<span class="nc" id="L148">				int iNumAsset = aTransactionCharge.length;</span>
-<span class="nc" id="L149">				double dblFixedChargeTerm = 0.;</span>
+<span class="nc" id="L149">				int iNumAsset = aTransactionCharge.length;</span>
+<span class="nc" id="L150">				double dblFixedChargeTerm = 0.;</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L152">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
+<span class="nc" id="L153">					throw new java.lang.Exception</span>
 						(&quot;TransactionChargeTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L156">					dblFixedChargeTerm += aTransactionCharge[i].estimate (</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc" id="L157">					dblFixedChargeTerm += aTransactionCharge[i].estimate (</span>
 						adblInitialHoldings[i],
 						adblVariate[i]
 					);
 
-<span class="nc" id="L161">				return dblFixedChargeTerm;</span>
+<span class="nc" id="L162">				return dblFixedChargeTerm;</span>
 			}
 		};
 	}

@@ -73,9 +73,10 @@ package org.drip.spaces.big;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,9 +84,9 @@ package org.drip.spaces.big;
  */
 
 public abstract class BigR2Array {
-<span class="fc" id="L86">	private int _iXLength = -1;</span>
-<span class="fc" id="L87">	private int _iYLength = -1;</span>
-<span class="fc" id="L88">	private double[][] _aadblR2 = null;</span>
+<span class="fc" id="L87">	private int _iXLength = -1;</span>
+<span class="fc" id="L88">	private int _iYLength = -1;</span>
+<span class="fc" id="L89">	private double[][] _aadblR2 = null;</span>
 
 	/**
 	 * BigR2Array Constructor
@@ -98,13 +99,13 @@ public abstract class BigR2Array {
 	public BigR2Array (
 		final double[][] aadblR2)
 		throws java.lang.Exception
-<span class="fc" id="L101">	{</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == (_aadblR2 = aadblR2))</span>
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;BigR2Array Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L102">	{</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (null == (_aadblR2 = aadblR2))</span>
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;BigR2Array Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (0 == (_iXLength = _aadblR2.length) || 0 == (_iYLength = _aadblR2[0].length))</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;BigR2Array Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">		if (0 == (_iXLength = _aadblR2.length) || 0 == (_iYLength = _aadblR2[0].length))</span>
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;BigR2Array Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L108">	}</span>
 
 	/**
 	 * Compute the Path Response Associated with all the Nodes in the Path up to the Current One.
@@ -145,7 +146,7 @@ public abstract class BigR2Array {
 
 	public int xLength()
 	{
-<span class="nc" id="L148">		return _iXLength;</span>
+<span class="nc" id="L149">		return _iXLength;</span>
 	}
 
 	/**
@@ -156,7 +157,7 @@ public abstract class BigR2Array {
 
 	public int yLength()
 	{
-<span class="nc" id="L159">		return _iYLength;</span>
+<span class="nc" id="L160">		return _iYLength;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public abstract class BigR2Array {
 
 	public double[][] instance()
 	{
-<span class="nc" id="L170">		return _aadblR2;</span>
+<span class="nc" id="L171">		return _aadblR2;</span>
 	}
 
 	/**
@@ -183,7 +184,7 @@ public abstract class BigR2Array {
 		final int iX,
 		final int iY)
 	{
-<span class="nc bnc" id="L186" title="All 8 branches missed.">		return iX &lt; 0 || iX &gt;= _iXLength || iY &lt; 0 || iY &gt;= _iYLength ? false : true;</span>
+<span class="nc bnc" id="L187" title="All 8 branches missed.">		return iX &lt; 0 || iX &gt;= _iXLength || iY &lt; 0 || iY &gt;= _iYLength ? false : true;</span>
 	}
 
 	/**
@@ -206,24 +207,24 @@ public abstract class BigR2Array {
 		final double dblPriorPathResponse)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L209">		double dblCurrentPathResponse = pathResponse (iX, iY, dblPriorPathResponse);</span>
+<span class="fc" id="L210">		double dblCurrentPathResponse = pathResponse (iX, iY, dblPriorPathResponse);</span>
 
-<span class="fc bfc" id="L211" title="All 4 branches covered.">		if (iY == _iYLength - 1 &amp;&amp; iX == _iXLength - 1) return dblCurrentPathResponse;</span>
+<span class="fc bfc" id="L212" title="All 4 branches covered.">		if (iY == _iYLength - 1 &amp;&amp; iX == _iXLength - 1) return dblCurrentPathResponse;</span>
 
-<span class="fc" id="L213">		double dblXShiftMaxPathResponse = java.lang.Double.NaN;</span>
-<span class="fc" id="L214">		double dblYShiftMaxPathResponse = java.lang.Double.NaN;</span>
+<span class="fc" id="L214">		double dblXShiftMaxPathResponse = java.lang.Double.NaN;</span>
+<span class="fc" id="L215">		double dblYShiftMaxPathResponse = java.lang.Double.NaN;</span>
 
-<span class="fc bfc" id="L216" title="All 2 branches covered.">		if (iX &lt; _iXLength - 1)</span>
-<span class="fc" id="L217">			dblXShiftMaxPathResponse = maxPathResponse (iX + 1, iY, dblCurrentPathResponse);</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		if (iX &lt; _iXLength - 1)</span>
+<span class="fc" id="L218">			dblXShiftMaxPathResponse = maxPathResponse (iX + 1, iY, dblCurrentPathResponse);</span>
 
-<span class="fc bfc" id="L219" title="All 2 branches covered.">		if (iY &lt; _iYLength - 1)</span>
-<span class="fc" id="L220">			dblYShiftMaxPathResponse = maxPathResponse (iX, iY + 1, dblCurrentPathResponse);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		if (iY &lt; _iYLength - 1)</span>
+<span class="fc" id="L221">			dblYShiftMaxPathResponse = maxPathResponse (iX, iY + 1, dblCurrentPathResponse);</span>
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">		if (iY == _iYLength - 1) return dblXShiftMaxPathResponse;</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		if (iY == _iYLength - 1) return dblXShiftMaxPathResponse;</span>
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">		if (iX == _iXLength - 1) return dblYShiftMaxPathResponse;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		if (iX == _iXLength - 1) return dblYShiftMaxPathResponse;</span>
 
-<span class="fc bfc" id="L226" title="All 2 branches covered.">		return dblXShiftMaxPathResponse &gt; dblYShiftMaxPathResponse ? dblXShiftMaxPathResponse :</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		return dblXShiftMaxPathResponse &gt; dblYShiftMaxPathResponse ? dblXShiftMaxPathResponse :</span>
 			dblYShiftMaxPathResponse;
 	}
 }

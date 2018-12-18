@@ -75,16 +75,17 @@ package org.drip.state.discount;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount&quot;&gt;Discount&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount&quot;&gt;Discount&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L87">public abstract class DiscountCurve implements org.drip.analytics.definition.Curve,</span>
+<span class="fc" id="L88">public abstract class DiscountCurve implements org.drip.analytics.definition.Curve,</span>
 	org.drip.state.discount.DiscountFactorEstimator {
 
 	/**
@@ -102,36 +103,36 @@ package org.drip.state.discount;
 		final int iFreq,
 		final int[] aiDate)
 	{
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (null == aiDate) return null;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (null == aiDate) return null;</span>
 
-<span class="fc" id="L107">		int iNumNode = aiDate.length;</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
+<span class="fc" id="L108">		int iNumNode = aiDate.length;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
 
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (0 == iNumNode) return null;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (0 == iNumNode) return null;</span>
 
-<span class="fc" id="L112">		java.lang.String strCurrency = currency();</span>
+<span class="fc" id="L113">		java.lang.String strCurrency = currency();</span>
 
-<span class="fc" id="L114">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
+<span class="fc" id="L115">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
 
-<span class="fc" id="L116">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L117">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="fc" id="L117">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L118">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
 		try {
-<span class="fc bfc" id="L120" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
 
-<span class="fc" id="L123">				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /</span>
-<span class="fc" id="L124">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
+<span class="fc" id="L124">				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /</span>
+<span class="fc" id="L125">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
 						false, aap, strCurrency);
 			}
 
-<span class="fc" id="L128">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
+<span class="fc" id="L129">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
 				adblForwardRate, true, strDayCount, iFreq);
-<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L131">			e.printStackTrace();</span>
+<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L132">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L134">		return null;</span>
+<span class="nc" id="L135">		return null;</span>
 	}
 
 	/**
@@ -147,64 +148,64 @@ package org.drip.state.discount;
 		final int[] aiDate,
 		final double dblBump)
 	{
-<span class="pc bpc" id="L150" title="2 of 4 branches missed.">		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+<span class="pc bpc" id="L151" title="2 of 4 branches missed.">		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
 
-<span class="fc" id="L152">		int iNumNode = aiDate.length;</span>
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
+<span class="fc" id="L153">		int iNumNode = aiDate.length;</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
 
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (0 == iNumNode) return null;</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (0 == iNumNode) return null;</span>
 
-<span class="fc" id="L157">		java.lang.String strCurrency = currency();</span>
+<span class="fc" id="L158">		java.lang.String strCurrency = currency();</span>
 
-<span class="fc" id="L159">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
-<span class="fc" id="L160">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L160">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
+<span class="fc" id="L161">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (null == ffsc) return null;</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (null == ffsc) return null;</span>
 
-<span class="fc" id="L164">		org.drip.param.period.UnitCouponAccrualSetting ucas =</span>
-<span class="fc" id="L165">			ffsc.floatStreamConvention().floaterIndex().ucas();</span>
+<span class="fc" id="L165">		org.drip.param.period.UnitCouponAccrualSetting ucas =</span>
+<span class="fc" id="L166">			ffsc.floatStreamConvention().floaterIndex().ucas();</span>
 
-<span class="fc" id="L167">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
+<span class="fc" id="L168">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
 
-<span class="fc" id="L169">		int iSpotDate = dtStart.julian();</span>
+<span class="fc" id="L170">		int iSpotDate = dtStart.julian();</span>
 
-<span class="fc" id="L171">		int iFreq = ucas.freq();</span>
+<span class="fc" id="L172">		int iFreq = ucas.freq();</span>
 
-<span class="fc" id="L173">		java.lang.String strDayCount = ucas.couponDC();</span>
+<span class="fc" id="L174">		java.lang.String strDayCount = ucas.couponDC();</span>
 
-<span class="fc" id="L175">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L176">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="fc" id="L176">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L177">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
-<span class="fc" id="L178">		org.drip.product.definition.CalibratableComponent[] aCalibComp = calibComp();</span>
+<span class="fc" id="L179">		org.drip.product.definition.CalibratableComponent[] aCalibComp = calibComp();</span>
 
-<span class="fc" id="L180">		int iNumComp = aCalibComp.length;</span>
-<span class="fc" id="L181">		double[] adblCompCalibValue = new double[iNumComp];</span>
-<span class="fc" id="L182">		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];</span>
+<span class="fc" id="L181">		int iNumComp = aCalibComp.length;</span>
+<span class="fc" id="L182">		double[] adblCompCalibValue = new double[iNumComp];</span>
+<span class="fc" id="L183">		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];</span>
 
-<span class="fc" id="L184">		org.drip.param.market.CurveSurfaceQuoteContainer csqcNative =</span>
+<span class="fc" id="L185">		org.drip.param.market.CurveSurfaceQuoteContainer csqcNative =</span>
 			org.drip.param.creator.MarketParamsBuilder.Create
-<span class="fc" id="L186">				((org.drip.state.discount.MergedDiscountForwardCurve) this, null, null, null, null, null,</span>
+<span class="fc" id="L187">				((org.drip.state.discount.MergedDiscountForwardCurve) this, null, null, null, null, null,</span>
 					null);
 
-<span class="fc" id="L189">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="fc" id="L190">			(iSpotDate);</span>
+<span class="fc" id="L190">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="fc" id="L191">			(iSpotDate);</span>
 
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i)</span>
 		{
-<span class="fc" id="L194">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
+<span class="fc" id="L195">			astrCalibMeasure[i] = &quot;Rate&quot;;</span>
 
 			try {
-<span class="fc" id="L197">				adblCompCalibValue[i] = aCalibComp[i].measureValue (valParams, null, csqcNative, null,</span>
+<span class="fc" id="L198">				adblCompCalibValue[i] = aCalibComp[i].measureValue (valParams, null, csqcNative, null,</span>
 					astrCalibMeasure[i]);
-<span class="nc" id="L199">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L200">				e.printStackTrace();</span>
+<span class="nc" id="L200">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L201">				e.printStackTrace();</span>
 
-<span class="nc" id="L202">				return null;</span>
-<span class="fc" id="L203">			}</span>
+<span class="nc" id="L203">				return null;</span>
+<span class="fc" id="L204">			}</span>
 		}
 
-<span class="fc" id="L206">		org.drip.state.discount.MergedDiscountForwardCurve mdfcNonlinear =</span>
-<span class="fc" id="L207">			org.drip.state.creator.ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
+<span class="fc" id="L207">		org.drip.state.discount.MergedDiscountForwardCurve mdfcNonlinear =</span>
+<span class="fc" id="L208">			org.drip.state.creator.ScenarioDiscountCurveBuilder.NonlinearBuild (</span>
 				dtStart,
 				strCurrency,
 				aCalibComp,
@@ -214,21 +215,21 @@ package org.drip.state.discount;
 			);
 
 		try {
-<span class="fc bfc" id="L217" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="fc bfc" id="L218" title="All 2 branches covered.">				int iStartDate = 0 == i ? iSpotDate : aiDate[i - 1];</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">				int iStartDate = 0 == i ? iSpotDate : aiDate[i - 1];</span>
 
-<span class="fc" id="L220">				adblForwardRate[i] = ((mdfcNonlinear.df (iStartDate) / mdfcNonlinear.df (aiDate[i])) - 1.) /</span>
-<span class="fc" id="L221">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
+<span class="fc" id="L221">				adblForwardRate[i] = ((mdfcNonlinear.df (iStartDate) / mdfcNonlinear.df (aiDate[i])) - 1.) /</span>
+<span class="fc" id="L222">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
 						false, aap, strCurrency) + dblBump;
 			}
 
-<span class="fc" id="L225">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
+<span class="fc" id="L226">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
 				adblForwardRate, true, strDayCount, iFreq);
-<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L228">			e.printStackTrace();</span>
+<span class="nc" id="L228">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L229">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L231">		return null;</span>
+<span class="nc" id="L232">		return null;</span>
 	}
 
 	/**
@@ -244,56 +245,56 @@ package org.drip.state.discount;
 		final java.lang.String[] astrTenor,
 		final double dblBump)
 	{
-<span class="nc bnc" id="L247" title="All 4 branches missed.">		if (null == astrTenor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+<span class="nc bnc" id="L248" title="All 4 branches missed.">		if (null == astrTenor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
 
-<span class="nc" id="L249">		int iNumNode = astrTenor.length;</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
+<span class="nc" id="L250">		int iNumNode = astrTenor.length;</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (0 == iNumNode) return null;</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (0 == iNumNode) return null;</span>
 
-<span class="nc" id="L254">		java.lang.String strCurrency = currency();</span>
+<span class="nc" id="L255">		java.lang.String strCurrency = currency();</span>
 
-<span class="nc" id="L256">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
-<span class="nc" id="L257">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="nc" id="L257">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
+<span class="nc" id="L258">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		if (null == ffsc) return null;</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (null == ffsc) return null;</span>
 
-<span class="nc" id="L261">		org.drip.param.period.UnitCouponAccrualSetting ucas =</span>
-<span class="nc" id="L262">			ffsc.floatStreamConvention().floaterIndex().ucas();</span>
+<span class="nc" id="L262">		org.drip.param.period.UnitCouponAccrualSetting ucas =</span>
+<span class="nc" id="L263">			ffsc.floatStreamConvention().floaterIndex().ucas();</span>
 
-<span class="nc" id="L264">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
+<span class="nc" id="L265">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
 
-<span class="nc" id="L266">		int iFreq = ucas.freq();</span>
+<span class="nc" id="L267">		int iFreq = ucas.freq();</span>
 
-<span class="nc" id="L268">		java.lang.String strDayCount = ucas.couponDC();</span>
+<span class="nc" id="L269">		java.lang.String strDayCount = ucas.couponDC();</span>
 
-<span class="nc" id="L270">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="nc" id="L271">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="nc" id="L271">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="nc" id="L272">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
-<span class="nc" id="L273">		int[] aiDate = new int[iNumNode];</span>
+<span class="nc" id="L274">		int[] aiDate = new int[iNumNode];</span>
 
 		try {
-<span class="nc bnc" id="L276" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="nc" id="L277">				org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrTenor[i]);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="nc" id="L278">				org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrTenor[i]);</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">				if (null == dtTenor) return null;</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">				if (null == dtTenor) return null;</span>
 
-<span class="nc" id="L281">				aiDate[i] = dtTenor.julian();</span>
+<span class="nc" id="L282">				aiDate[i] = dtTenor.julian();</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
 
-<span class="nc" id="L285">				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /</span>
-<span class="nc" id="L286">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
+<span class="nc" id="L286">				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /</span>
+<span class="nc" id="L287">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
 						false, aap, strCurrency) + dblBump;
 			}
 
-<span class="nc" id="L290">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
+<span class="nc" id="L291">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
 				adblForwardRate, true, strDayCount, iFreq);
-<span class="nc" id="L292">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L293">			e.printStackTrace();</span>
+<span class="nc" id="L293">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L294">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L296">		return null;</span>
+<span class="nc" id="L297">		return null;</span>
 	}
 
 	/**
@@ -312,48 +313,48 @@ package org.drip.state.discount;
 		final int iBumpNode,
 		final double dblBump)
 	{
-<span class="pc bpc" id="L315" title="2 of 4 branches missed.">		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+<span class="pc bpc" id="L316" title="2 of 4 branches missed.">		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
 
-<span class="fc" id="L317">		int iNumNode = aiDate.length;</span>
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
+<span class="fc" id="L318">		int iNumNode = aiDate.length;</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];</span>
 
-<span class="pc bpc" id="L320" title="1 of 2 branches missed.">		if (0 == iNumNode) return null;</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (0 == iNumNode) return null;</span>
 
-<span class="fc" id="L322">		java.lang.String strCurrency = currency();</span>
+<span class="fc" id="L323">		java.lang.String strCurrency = currency();</span>
 
-<span class="fc" id="L324">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
-<span class="fc" id="L325">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L325">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
+<span class="fc" id="L326">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="pc bpc" id="L327" title="1 of 2 branches missed.">		if (null == ffsc) return null;</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">		if (null == ffsc) return null;</span>
 
-<span class="fc" id="L329">		org.drip.param.period.UnitCouponAccrualSetting ucas =</span>
-<span class="fc" id="L330">			ffsc.floatStreamConvention().floaterIndex().ucas();</span>
+<span class="fc" id="L330">		org.drip.param.period.UnitCouponAccrualSetting ucas =</span>
+<span class="fc" id="L331">			ffsc.floatStreamConvention().floaterIndex().ucas();</span>
 
-<span class="fc" id="L332">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
+<span class="fc" id="L333">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
 
-<span class="fc" id="L334">		int iFreq = ucas.freq();</span>
+<span class="fc" id="L335">		int iFreq = ucas.freq();</span>
 
-<span class="fc" id="L336">		java.lang.String strDayCount = ucas.couponDC();</span>
+<span class="fc" id="L337">		java.lang.String strDayCount = ucas.couponDC();</span>
 
-<span class="fc" id="L338">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L339">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="fc" id="L339">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L340">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
 		try {
-<span class="fc bfc" id="L342" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="fc bfc" id="L343" title="All 2 branches covered.">				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];</span>
 
-<span class="fc" id="L345">				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /</span>
-<span class="fc bfc" id="L346" title="All 2 branches covered.">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
+<span class="fc" id="L346">				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,</span>
 						false, aap, strCurrency) + (i == iBumpNode ? dblBump : 0.);
 			}
 
-<span class="fc" id="L350">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
+<span class="fc" id="L351">			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,</span>
 				adblForwardRate, true, strDayCount, iFreq);
-<span class="nc" id="L352">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L353">			e.printStackTrace();</span>
+<span class="nc" id="L353">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L354">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L356">		return null;</span>
+<span class="nc" id="L357">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

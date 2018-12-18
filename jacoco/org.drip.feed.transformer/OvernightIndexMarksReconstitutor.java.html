@@ -12,12 +12,12 @@ package org.drip.feed.transformer;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.feed.transformer;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,14 +76,14 @@ package org.drip.feed.transformer;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class OvernightIndexMarksReconstitutor {</span>
+<span class="nc" id="L86">public class OvernightIndexMarksReconstitutor {</span>
 
 	/**
 	 * The Standard Overnight Input Calibration Manifest Measure Scaler
@@ -94,7 +95,7 @@ package org.drip.feed.transformer;
 	 * The Standard Overnight Swap Maturity Tenors
 	 */
 
-<span class="nc" id="L97">	public static final java.lang.String[] s_astrMaturityTenor = new java.lang.String[] {&quot;1W&quot;, &quot;2W&quot;, &quot;3W&quot;,</span>
+<span class="nc" id="L98">	public static final java.lang.String[] s_astrMaturityTenor = new java.lang.String[] {&quot;1W&quot;, &quot;2W&quot;, &quot;3W&quot;,</span>
 		&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;, &quot;4M&quot;, &quot;5M&quot;, &quot;6M&quot;, &quot;9M&quot;, &quot;1Y&quot;, &quot;18M&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;};
 
 	/**
@@ -113,79 +114,79 @@ package org.drip.feed.transformer;
 			mapISTQ,
 		final int iLatentStateType)
 	{
-<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (null == mapISTQ || 0 == mapISTQ.size()) return false;</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null == mapISTQ || 0 == mapISTQ.size()) return false;</span>
 
-<span class="nc" id="L118">		java.lang.String strHeader = &quot;Date,&quot;;</span>
+<span class="nc" id="L119">		java.lang.String strHeader = &quot;Date,&quot;;</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrMaturityTenor)</span>
-<span class="nc" id="L121">			strHeader += &quot;OISPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrMaturityTenor)</span>
+<span class="nc" id="L122">			strHeader += &quot;OISPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrMaturityTenor)</span>
-<span class="nc" id="L124">			strHeader += &quot;&lt;&lt;OISRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrMaturityTenor)</span>
+<span class="nc" id="L125">			strHeader += &quot;&lt;&lt;OISRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
 
-<span class="nc" id="L126">		System.out.println (strHeader);</span>
+<span class="nc" id="L127">		System.out.println (strHeader);</span>
 
 		for (java.util.Map.Entry&lt;org.drip.analytics.date.JulianDate,
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			org.drip.feed.loader.InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			org.drip.feed.loader.InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
 
-<span class="nc" id="L132">			org.drip.analytics.date.JulianDate dtSpot = meISTQ.getKey();</span>
+<span class="nc" id="L133">			org.drip.analytics.date.JulianDate dtSpot = meISTQ.getKey();</span>
 
-<span class="nc" id="L134">			org.drip.feed.loader.InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
+<span class="nc" id="L135">			org.drip.feed.loader.InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
 
-<span class="nc bnc" id="L136" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
 
-<span class="nc" id="L138">			java.lang.String strDump = dtSpot.toString() + &quot;,&quot;;</span>
+<span class="nc" id="L139">			java.lang.String strDump = dtSpot.toString() + &quot;,&quot;;</span>
 
-<span class="nc" id="L140">			double[] adblOISQuote = istq.instrumentQuote (&quot;OIS&quot;);</span>
+<span class="nc" id="L141">			double[] adblOISQuote = istq.instrumentQuote (&quot;OIS&quot;);</span>
 
-<span class="nc" id="L142">			java.lang.String[] astrOISMaturityTenor = istq.instrumentTenor (&quot;OIS&quot;);</span>
+<span class="nc" id="L143">			java.lang.String[] astrOISMaturityTenor = istq.instrumentTenor (&quot;OIS&quot;);</span>
 
-<span class="nc" id="L144">			int iNumRegularizedTenor = s_astrMaturityTenor.length;</span>
-<span class="nc" id="L145">			double[] adblRegularizedOISQuote = new double[iNumRegularizedTenor];</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			int iNumOISQuote = null == adblOISQuote ? 0 : adblOISQuote.length;</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">			int iNumOISTenor = null == astrOISMaturityTenor ? 0 : astrOISMaturityTenor.length;</span>
+<span class="nc" id="L145">			int iNumRegularizedTenor = s_astrMaturityTenor.length;</span>
+<span class="nc" id="L146">			double[] adblRegularizedOISQuote = new double[iNumRegularizedTenor];</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">			int iNumOISQuote = null == adblOISQuote ? 0 : adblOISQuote.length;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			int iNumOISTenor = null == astrOISMaturityTenor ? 0 : astrOISMaturityTenor.length;</span>
 
-<span class="nc bnc" id="L149" title="All 4 branches missed.">			if (0 == iNumOISQuote || iNumOISQuote != iNumOISTenor) continue;</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">			if (0 == iNumOISQuote || iNumOISQuote != iNumOISTenor) continue;</span>
 
-<span class="nc" id="L151">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
-<span class="nc" id="L152">				org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (dtSpot, strCurrency, null,</span>
+<span class="nc" id="L152">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
+<span class="nc" id="L153">				org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (dtSpot, strCurrency, null,</span>
 					null, null, null, null, null, null, null, null, null, astrOISMaturityTenor, adblOISQuote,
 						&quot;SwapRate&quot;, iLatentStateType);
 
-<span class="nc" id="L156">			org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="nc" id="L157">			org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 				org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (!csqc.setFundingState (dcOvernight)) continue;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			if (!csqc.setFundingState (dcOvernight)) continue;</span>
 
-<span class="nc" id="L161">			org.drip.param.valuation.ValuationParams valParams =</span>
-<span class="nc" id="L162">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
+<span class="nc" id="L162">			org.drip.param.valuation.ValuationParams valParams =</span>
+<span class="nc" id="L163">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumRegularizedTenor; ++i)</span>
-<span class="nc" id="L165">				adblRegularizedOISQuote[i] = 0.;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumRegularizedTenor; ++i)</span>
+<span class="nc" id="L166">				adblRegularizedOISQuote[i] = 0.;</span>
 
-<span class="nc" id="L167">			org.drip.product.rates.FixFloatComponent[] aOIS =</span>
-<span class="nc" id="L168">				org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strCurrency,</span>
+<span class="nc" id="L168">			org.drip.product.rates.FixFloatComponent[] aOIS =</span>
+<span class="nc" id="L169">				org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strCurrency,</span>
 					s_astrMaturityTenor, adblRegularizedOISQuote, false);
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			for (org.drip.product.rates.FixFloatComponent ffc : aOIS) {</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (org.drip.product.rates.FixFloatComponent ffc : aOIS) {</span>
 				try {
-<span class="nc" id="L173">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,</span>
+<span class="nc" id="L174">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,</span>
 						null, csqc, null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot;,&quot;;
-<span class="nc" id="L175">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L176">					e.printStackTrace();</span>
+<span class="nc" id="L176">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L177">					e.printStackTrace();</span>
 
-<span class="nc" id="L178">					continue;</span>
-<span class="nc" id="L179">				}</span>
+<span class="nc" id="L179">					continue;</span>
+<span class="nc" id="L180">				}</span>
 			}
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumOISQuote; ++i)</span>
-<span class="nc" id="L183">				strDump += org.drip.quant.common.FormatUtil.FormatDouble (adblOISQuote[i], 1, 6, 1.) + &quot;,&quot;;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumOISQuote; ++i)</span>
+<span class="nc" id="L184">				strDump += org.drip.quant.common.FormatUtil.FormatDouble (adblOISQuote[i], 1, 6, 1.) + &quot;,&quot;;</span>
 
-<span class="nc" id="L185">			System.out.println (strDump);</span>
-<span class="nc" id="L186">		}</span>
+<span class="nc" id="L186">			System.out.println (strDump);</span>
+<span class="nc" id="L187">		}</span>
 
-<span class="nc" id="L188">		return true;</span>
+<span class="nc" id="L189">		return true;</span>
 	}
 
 	/**
@@ -201,11 +202,11 @@ package org.drip.feed.transformer;
 		final java.lang.String strCurrency,
 		final java.lang.String strMarksLocation)
 	{
-<span class="nc" id="L204">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+<span class="nc" id="L205">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
 			false);
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
-<span class="nc" id="L208">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
+<span class="nc" id="L209">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);</span>
 	}
 
 	/**
@@ -221,11 +222,11 @@ package org.drip.feed.transformer;
 		final java.lang.String strCurrency,
 		final java.lang.String strMarksLocation)
 	{
-<span class="nc" id="L224">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+<span class="nc" id="L225">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
 			false);
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
-<span class="nc" id="L228">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SMOOTH);</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
+<span class="nc" id="L229">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SMOOTH);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

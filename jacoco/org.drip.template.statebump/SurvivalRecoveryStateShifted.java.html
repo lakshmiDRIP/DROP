@@ -84,49 +84,50 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L96">public class SurvivalRecoveryStateShifted {</span>
+<span class="nc" id="L97">public class SurvivalRecoveryStateShifted {</span>
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
 		final JulianDate dtSpot,
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L103">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L104">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			// &quot;2D&quot;,
 			&quot;3D&quot;
 		};
 
-<span class="fc" id="L109">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L110">		double[] adblDepositQuote = new double[] {</span>
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-<span class="fc" id="L115">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L116">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
 			&quot;1W&quot;,
 			&quot;2W&quot;,
 			&quot;3W&quot;,
 			&quot;1M&quot;
 		};
 
-<span class="fc" id="L122">		double[] adblShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L123">		double[] adblShortEndOISQuote = new double[] {</span>
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-<span class="fc" id="L129">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
+<span class="fc" id="L130">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;2M&quot;,
 			&quot;3M&quot;,
@@ -134,7 +135,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;5M&quot;
 		};
 
-<span class="fc" id="L137">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
+<span class="fc" id="L138">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;1M&quot;,
 			&quot;1M&quot;,
@@ -142,7 +143,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;1M&quot;
 		};
 
-<span class="fc" id="L145">		double[] adblOISFuturesQuote = new double[] {</span>
+<span class="fc" id="L146">		double[] adblOISFuturesQuote = new double[] {</span>
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -150,7 +151,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			-0.00014     //   5M x 1M
 		};
 
-<span class="fc" id="L153">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L154">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
 			&quot;15M&quot;,
 			&quot;18M&quot;,
 			&quot;21M&quot;,
@@ -171,7 +172,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L174">		double[] adblLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L175">		double[] adblLongEndOISQuote = new double[] {</span>
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -192,7 +193,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.02038     //  30Y
 		};
 
-<span class="fc" id="L195">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
+<span class="fc" id="L196">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -219,24 +220,24 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L222">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L223">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L224">		String strCurrency = &quot;EUR&quot;;</span>
-<span class="fc" id="L225">		double dblBump = 1.0;</span>
-<span class="fc" id="L226">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L225">		String strCurrency = &quot;EUR&quot;;</span>
+<span class="fc" id="L226">		double dblBump = 1.0;</span>
+<span class="fc" id="L227">		boolean bIsBumpProportional = false;</span>
 
-<span class="fc" id="L228">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L229">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-<span class="fc" id="L234">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
+<span class="fc" id="L235">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="fc" id="L239">		String[] astrCDSMaturityTenor = new String[] {</span>
+<span class="fc" id="L240">		String[] astrCDSMaturityTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -247,7 +248,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L250">		double[] adblCDSParSpread = new double[] {</span>
+<span class="fc" id="L251">		double[] adblCDSParSpread = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -258,7 +259,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			188.	// 10Y
 		};
 
-<span class="fc" id="L261">		Map&lt;String, CreditCurve&gt; mapBumpedCreditCurve = LatentMarketStateBuilder.BumpedCreditCurve (</span>
+<span class="fc" id="L262">		Map&lt;String, CreditCurve&gt; mapBumpedCreditCurve = LatentMarketStateBuilder.BumpedCreditCurve (</span>
 			dtSpot,
 			&quot;QTX&quot;,
 			astrCDSMaturityTenor,
@@ -270,7 +271,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			bIsBumpProportional
 		);
 
-<span class="fc" id="L273">		Component[] aCDS = OTCInstrumentBuilder.CDS (</span>
+<span class="fc" id="L274">		Component[] aCDS = OTCInstrumentBuilder.CDS (</span>
 			dtSpot,
 			astrCDSMaturityTenor,
 			adblCDSParSpread,
@@ -278,25 +279,25 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;QTX&quot;
 		);
 
-<span class="fc" id="L281">		System.out.println (&quot;\n\t|----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L282">		System.out.println (&quot;\n\t|----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L283">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L284">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc bfc" id="L285" title="All 2 branches covered.">		for (Map.Entry&lt;String, CreditCurve&gt; meCredit : mapBumpedCreditCurve.entrySet()) {</span>
-<span class="fc" id="L286">			String strKey = meCredit.getKey();</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">		for (Map.Entry&lt;String, CreditCurve&gt; meCredit : mapBumpedCreditCurve.entrySet()) {</span>
+<span class="fc" id="L287">			String strKey = meCredit.getKey();</span>
 
-<span class="fc bfc" id="L288" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;cds&quot;)) continue;</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;cds&quot;)) continue;</span>
 
-<span class="fc" id="L290">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L291">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L292">			csqc.setFundingState (dcOvernight);</span>
+<span class="fc" id="L293">			csqc.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L294">			csqc.setCreditState (meCredit.getValue());</span>
+<span class="fc" id="L295">			csqc.setCreditState (meCredit.getValue());</span>
 
-<span class="fc" id="L296">			System.out.print (&quot;\t|  [&quot; + meCredit.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L297">			System.out.print (&quot;\t|  [&quot; + meCredit.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L298" title="All 2 branches covered.">			for (Component comp : aCDS)</span>
-<span class="fc" id="L299">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">			for (Component comp : aCDS)</span>
+<span class="fc" id="L300">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -304,37 +305,37 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 					&quot;FairPremium&quot;
 				), 1, 1, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L307">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L308">		}</span>
+<span class="fc" id="L308">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L309">		}</span>
 
-<span class="fc" id="L310">		System.out.println (&quot;\t|----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L311">		System.out.println (&quot;\t|----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L312">		System.out.println (&quot;\n\t|--------------------------------------------||&quot;);</span>
+<span class="fc" id="L313">		System.out.println (&quot;\n\t|--------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L314">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L315">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L316">		csqcBase.setFundingState (dcOvernight);</span>
+<span class="fc" id="L317">		csqcBase.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L318">		csqcBase.setCreditState (mapBumpedCreditCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L319">		csqcBase.setCreditState (mapBumpedCreditCurve.get (&quot;Base&quot;));</span>
 
-<span class="fc" id="L320">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L321">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L322">		csqcBump.setFundingState (dcOvernight);</span>
+<span class="fc" id="L323">		csqcBump.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L324">		csqcBump.setCreditState (mapBumpedCreditCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L325">		csqcBump.setCreditState (mapBumpedCreditCurve.get (&quot;Bump&quot;));</span>
 
-<span class="fc bfc" id="L326" title="All 2 branches covered.">		for (Component comp : aCDS)</span>
-<span class="fc" id="L327">			System.out.println (</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">		for (Component comp : aCDS)</span>
+<span class="fc" id="L328">			System.out.println (</span>
 				&quot;\t| FAIR PREMIUM =&gt; &quot; +
-<span class="fc" id="L329">				comp.maturityDate() + &quot; |&quot; +</span>
-<span class="fc" id="L330">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L330">				comp.maturityDate() + &quot; |&quot; +</span>
+<span class="fc" id="L331">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;FairPremium&quot;
 				), 3, 1, 1.) + &quot; |&quot; +
-<span class="fc" id="L337">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L338">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -343,7 +344,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 				), 3, 1, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc" id="L346">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
-<span class="fc" id="L347">	}</span>
+<span class="fc" id="L347">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+<span class="fc" id="L348">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

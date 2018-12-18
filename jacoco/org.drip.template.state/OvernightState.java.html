@@ -79,58 +79,59 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class OvernightState {</span>
+<span class="nc" id="L92">public class OvernightState {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L97">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L98">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L99">		String strCurrency = &quot;EUR&quot;;</span>
+<span class="fc" id="L100">		String strCurrency = &quot;EUR&quot;;</span>
 
-<span class="fc" id="L101">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L102">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-<span class="fc" id="L107">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L108">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			// &quot;2D&quot;,
 			&quot;3D&quot;
 		};
 
-<span class="fc" id="L113">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L114">		double[] adblDepositQuote = new double[] {</span>
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-<span class="fc" id="L119">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L120">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
 			&quot;1W&quot;,
 			&quot;2W&quot;,
 			&quot;3W&quot;,
 			&quot;1M&quot;
 		};
 
-<span class="fc" id="L126">		double[] adblShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L127">		double[] adblShortEndOISQuote = new double[] {</span>
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-<span class="fc" id="L133">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
+<span class="fc" id="L134">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;2M&quot;,
 			&quot;3M&quot;,
@@ -138,7 +139,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;5M&quot;
 		};
 
-<span class="fc" id="L141">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
+<span class="fc" id="L142">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;1M&quot;,
 			&quot;1M&quot;,
@@ -146,7 +147,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;1M&quot;
 		};
 
-<span class="fc" id="L149">		double[] adblOISFuturesQuote = new double[] {</span>
+<span class="fc" id="L150">		double[] adblOISFuturesQuote = new double[] {</span>
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -154,7 +155,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			-0.00014     //   5M x 1M
 		};
 
-<span class="fc" id="L157">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L158">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
 			&quot;15M&quot;,
 			&quot;18M&quot;,
 			&quot;21M&quot;,
@@ -175,7 +176,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L178">		double[] adblLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L179">		double[] adblLongEndOISQuote = new double[] {</span>
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -196,7 +197,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.02038     //  30Y
 		};
 
-<span class="fc" id="L199">		MergedDiscountForwardCurve dcOvernight = LatentMarketStateBuilder.SmoothOvernightCurve (</span>
+<span class="fc" id="L200">		MergedDiscountForwardCurve dcOvernight = LatentMarketStateBuilder.SmoothOvernightCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -214,63 +215,63 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L217">		String strLatentStateLabel = dcOvernight.label().fullyQualifiedName();</span>
+<span class="fc" id="L218">		String strLatentStateLabel = dcOvernight.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L219">		System.out.println (&quot;\n\n\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L220">		System.out.println (&quot;\n\n\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L221" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
-<span class="fc" id="L222">			System.out.println (</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
+<span class="fc" id="L223">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel +
 				&quot; |  DEPOSIT  | &quot; + astrDepositMaturityTenor[i] + &quot;  | &quot; +
-<span class="fc" id="L225">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +</span>
+<span class="fc" id="L226">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +</span>
 				&quot; | Forward Rate | &quot; +
-<span class="fc" id="L227">				FormatUtil.FormatDouble (dcOvernight.df (astrDepositMaturityTenor[i]), 1, 10, 1.) +</span>
+<span class="fc" id="L228">				FormatUtil.FormatDouble (dcOvernight.df (astrDepositMaturityTenor[i]), 1, 10, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L231">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L232">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L233">		System.out.println (&quot;\n\n\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L234">		System.out.println (&quot;\n\n\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; adblShortEndOISQuote.length; ++i)</span>
-<span class="fc" id="L236">			System.out.println (</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (int i = 0; i &lt; adblShortEndOISQuote.length; ++i)</span>
+<span class="fc" id="L237">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  SHORT END OIS  | &quot; +
-<span class="fc" id="L238">				astrShortEndOISMaturityTenor[i] + &quot;  | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 5, 1.) +</span>
+<span class="fc" id="L239">				astrShortEndOISMaturityTenor[i] + &quot;  | &quot; + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 5, 1.) +</span>
 				&quot; | Swap Rate | &quot; +
-<span class="fc" id="L240">				FormatUtil.FormatDouble (dcOvernight.df (astrShortEndOISMaturityTenor[i]), 1, 6, 1.) +</span>
+<span class="fc" id="L241">				FormatUtil.FormatDouble (dcOvernight.df (astrShortEndOISMaturityTenor[i]), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L244">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L245">		System.out.println (&quot;\t||------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L246">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L247">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L248" title="All 2 branches covered.">		for (int i = 0; i &lt; adblOISFuturesQuote.length; ++i)</span>
-<span class="fc" id="L249">			System.out.println (</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">		for (int i = 0; i &lt; adblOISFuturesQuote.length; ++i)</span>
+<span class="fc" id="L250">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  OIS FUTURES  | &quot; +
-<span class="fc" id="L251">				FormatUtil.FormatDouble (adblOISFuturesQuote[i], 1, 6, 1.) +</span>
+<span class="fc" id="L252">				FormatUtil.FormatDouble (adblOISFuturesQuote[i], 1, 6, 1.) +</span>
 				&quot; | &quot; + astrOISFuturesEffectiveTenor[i] + &quot; x &quot; + astrOISFuturesMaturityTenor[i] +
 				&quot; | Swap Rate | &quot; +
-<span class="fc" id="L254">				FormatUtil.FormatDouble (</span>
-<span class="fc" id="L255">					dcOvernight.df (dtSpot.addTenor (astrOISFuturesEffectiveTenor[i]).addTenor (astrOISFuturesMaturityTenor[i])</span>
+<span class="fc" id="L255">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L256">					dcOvernight.df (dtSpot.addTenor (astrOISFuturesEffectiveTenor[i]).addTenor (astrOISFuturesMaturityTenor[i])</span>
 				), 1, 6, 1.) +
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L260">		System.out.println (&quot;\t||---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L261">		System.out.println (&quot;\t||---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L262">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L263">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L264" title="All 2 branches covered.">		for (int i = 0; i &lt; adblLongEndOISQuote.length; ++i)</span>
-<span class="fc" id="L265">			System.out.println (</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">		for (int i = 0; i &lt; adblLongEndOISQuote.length; ++i)</span>
+<span class="fc" id="L266">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  LONG END OIS  | &quot; +
-<span class="fc" id="L267">				astrLongEndOISMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 5, 1.) +</span>
+<span class="fc" id="L268">				astrLongEndOISMaturityTenor[i] + &quot; | &quot; + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 5, 1.) +</span>
 				&quot; | Swap Rate | &quot; +
-<span class="fc" id="L269">				FormatUtil.FormatDouble (dcOvernight.df (astrLongEndOISMaturityTenor[i]), 1, 4, 1.) +</span>
+<span class="fc" id="L270">				FormatUtil.FormatDouble (dcOvernight.df (astrLongEndOISMaturityTenor[i]), 1, 4, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L273">		System.out.println (&quot;\t||---------------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L274">	}</span>
+<span class="fc" id="L274">		System.out.println (&quot;\t||---------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L275">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -57,7 +57,11 @@ package org.drip.spaces.iterator;
  *   	you may not use this file except in compliance with the License.
  *   
  *  You may obtain a copy of the License at
- *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  	http://www.apache.org/licenses/LICENSE-2.0 *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator&quot;&gt;Iterator&lt;/a&gt;&lt;/li&gt;
+
  *  
  *  Unless required by applicable law or agreed to in writing, software
  *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
@@ -84,7 +88,7 @@ package org.drip.spaces.iterator;
 
 public class RdSpanningCombinatorialIterator extends
 	org.drip.spaces.iterator.RdExhaustiveStateSpaceScan {
-<span class="nc" id="L87">	private org.drip.spaces.tensor.R1CombinatorialVector[] _aR1CV = null;</span>
+<span class="nc" id="L91">	private org.drip.spaces.tensor.R1CombinatorialVector[] _aR1CV = null;</span>
 
 	/**
 	 * Retrieve the RdSpanningCombinatorialIterator Instance associated with the Underlying Vector Space
@@ -97,23 +101,23 @@ public class RdSpanningCombinatorialIterator extends
 	public static final RdSpanningCombinatorialIterator Standard (
 		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV)
 	{
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (null == aR1CV) return null;</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (null == aR1CV) return null;</span>
 
-<span class="nc" id="L102">		int iDimension = aR1CV.length;</span>
-<span class="nc" id="L103">		int[] aiMax = new int[iDimension];</span>
+<span class="nc" id="L106">		int iDimension = aR1CV.length;</span>
+<span class="nc" id="L107">		int[] aiMax = new int[iDimension];</span>
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (0 == iDimension) return null;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (0 == iDimension) return null;</span>
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L108">			aiMax[i] = (int) aR1CV[i].cardinality().number();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L112">			aiMax[i] = (int) aR1CV[i].cardinality().number();</span>
 
 		try {
-<span class="nc" id="L111">			return new RdSpanningCombinatorialIterator (aR1CV, aiMax);</span>
-<span class="nc" id="L112">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L113">			e.printStackTrace();</span>
+<span class="nc" id="L115">			return new RdSpanningCombinatorialIterator (aR1CV, aiMax);</span>
+<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L117">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L116">		return null;</span>
+<span class="nc" id="L120">		return null;</span>
 	}
 
 	/**
@@ -130,11 +134,11 @@ public class RdSpanningCombinatorialIterator extends
 		final int[] aiMax)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L133">		super (aiMax, false);</span>
+<span class="nc" id="L137">		super (aiMax, false);</span>
 
-<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (null == (_aR1CV = aR1CV) || _aR1CV.length != aiMax.length)</span>
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;RdCombinatorialIterator ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L137">	}</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == (_aR1CV = aR1CV) || _aR1CV.length != aiMax.length)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;RdCombinatorialIterator ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Array of the R^1 Combinatorial Vectors
@@ -144,7 +148,7 @@ public class RdSpanningCombinatorialIterator extends
 
 	public org.drip.spaces.tensor.R1CombinatorialVector[] r1()
 	{
-<span class="nc" id="L147">		return _aR1CV;</span>
+<span class="nc" id="L151">		return _aR1CV;</span>
 	}
 
 	/**
@@ -158,17 +162,17 @@ public class RdSpanningCombinatorialIterator extends
 	public double[] vectorSpaceIndexToVariate (
 		final int[] aiIndex)
 	{
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == aiIndex) return null;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (null == aiIndex) return null;</span>
 
-<span class="nc" id="L163">		int iDimension = _aR1CV.length;</span>
-<span class="nc" id="L164">		double[] adblVariate = new double[iDimension];</span>
+<span class="nc" id="L167">		int iDimension = _aR1CV.length;</span>
+<span class="nc" id="L168">		double[] adblVariate = new double[iDimension];</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (iDimension != aiIndex.length) return null;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (iDimension != aiIndex.length) return null;</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L169">			adblVariate[i] = _aR1CV[i].elementSpace().get (aiIndex[i]);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L173">			adblVariate[i] = _aR1CV[i].elementSpace().get (aiIndex[i]);</span>
 
-<span class="nc" id="L171">		return adblVariate;</span>
+<span class="nc" id="L175">		return adblVariate;</span>
 	}
 
 	/**
@@ -179,7 +183,7 @@ public class RdSpanningCombinatorialIterator extends
 
 	public double[] cursorVariates()
 	{
-<span class="nc" id="L182">		return vectorSpaceIndexToVariate (stateIndexCursor());</span>
+<span class="nc" id="L186">		return vectorSpaceIndexToVariate (stateIndexCursor());</span>
 	}
 
 	/**
@@ -190,7 +194,7 @@ public class RdSpanningCombinatorialIterator extends
 
 	public double[] nextVariates()
 	{
-<span class="nc" id="L193">		return vectorSpaceIndexToVariate (nextStateIndexCursor());</span>
+<span class="nc" id="L197">		return vectorSpaceIndexToVariate (nextStateIndexCursor());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

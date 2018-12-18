@@ -76,9 +76,10 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -105,29 +106,29 @@ public class RightHatShapeControl extends org.drip.spline.bspline.BasisHatShapeC
 		final double dblTension)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L108">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, strShapeControlType, dblTension);</span>
-<span class="fc" id="L109">	}</span>
+<span class="fc" id="L109">		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, strShapeControlType, dblTension);</span>
+<span class="fc" id="L110">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="fc" id="L117">		double dblWidth = right() - left();</span>
+<span class="fc" id="L118">		double dblWidth = right() - left();</span>
 
-<span class="fc" id="L119">		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *</span>
+<span class="fc" id="L120">		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *</span>
 			dblWidth));
 
-<span class="fc bfc" id="L122" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="fc" id="L123">			return dblScale / (1. + tension() * (dblPredictorOrdinate - left()));</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="fc" id="L124">			return dblScale / (1. + tension() * (dblPredictorOrdinate - left()));</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (shapeControlType()))</span>
-<span class="fc" id="L126">			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate) * (dblPredictorOrdinate -</span>
-<span class="fc" id="L127">				left()) / dblWidth);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (shapeControlType()))</span>
+<span class="fc" id="L127">			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate) * (dblPredictorOrdinate -</span>
+<span class="fc" id="L128">				left()) / dblWidth);</span>
 
-<span class="fc" id="L129">		return (java.lang.Math.exp (-tension() * (dblPredictorOrdinate - left()))) / (dblWidth * (6. + 6. *</span>
-<span class="fc" id="L130">			tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
+<span class="fc" id="L130">		return (java.lang.Math.exp (-tension() * (dblPredictorOrdinate - left()))) / (dblWidth * (6. + 6. *</span>
+<span class="fc" id="L131">			tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
 	}
 
 	@Override public double derivative (
@@ -135,24 +136,24 @@ public class RightHatShapeControl extends org.drip.spline.bspline.BasisHatShapeC
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (0 &gt;= iOrder)</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;RightHatShapeControl::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (0 &gt;= iOrder)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;RightHatShapeControl::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (!in (dblPredictorOrdinate) || 0. == tension()) return 0.;</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">		if (!in (dblPredictorOrdinate) || 0. == tension()) return 0.;</span>
 
-<span class="nc" id="L143">		double dblWidth = right() - left();</span>
+<span class="nc" id="L144">		double dblWidth = right() - left();</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L146">			return (org.drip.quant.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow (-tension(),</span>
-<span class="nc" id="L147">				iOrder) * java.lang.Math.pow (1. + tension() * (dblPredictorOrdinate - left()), -iOrder - 1))</span>
-<span class="nc" id="L148">					/ (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L147">			return (org.drip.quant.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow (-tension(),</span>
+<span class="nc" id="L148">				iOrder) * java.lang.Math.pow (1. + tension() * (dblPredictorOrdinate - left()), -iOrder - 1))</span>
+<span class="nc" id="L149">					/ (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L151">			return (java.lang.Math.pow (-tension(), iOrder) * java.lang.Math.exp (-tension() *</span>
-<span class="nc" id="L152">				(dblPredictorOrdinate - left()))) / (dblWidth * (6. + 6. * tension() * dblWidth + tension() *</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L152">			return (java.lang.Math.pow (-tension(), iOrder) * java.lang.Math.exp (-tension() *</span>
+<span class="nc" id="L153">				(dblPredictorOrdinate - left()))) / (dblWidth * (6. + 6. * tension() * dblWidth + tension() *</span>
 					dblWidth * dblWidth));
 
-<span class="nc" id="L155">		return super.derivative (dblPredictorOrdinate, iOrder);</span>
+<span class="nc" id="L156">		return super.derivative (dblPredictorOrdinate, iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -160,49 +161,49 @@ public class RightHatShapeControl extends org.drip.spline.bspline.BasisHatShapeC
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L165">			throw new java.lang.Exception (&quot;RightHatShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;RightHatShapeControl::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L167">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
+<span class="nc" id="L168">		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());</span>
 
-<span class="nc" id="L169">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
+<span class="nc" id="L170">		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;</span>
 
-<span class="nc" id="L175">		double dblWidth = right() - left();</span>
+<span class="nc" id="L176">		double dblWidth = right() - left();</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L178">			return (java.lang.Math.log ((1. + tension() * (dblBoundedEnd - left())) / (1. + tension() *</span>
-<span class="nc" id="L179">				(dblBoundedBegin - left())))) / tension() / (dblWidth * (6. + 6. * tension() * dblWidth + 2.</span>
-<span class="nc" id="L180">					* tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L179">			return (java.lang.Math.log ((1. + tension() * (dblBoundedEnd - left())) / (1. + tension() *</span>
+<span class="nc" id="L180">				(dblBoundedBegin - left())))) / tension() / (dblWidth * (6. + 6. * tension() * dblWidth + 2.</span>
+<span class="nc" id="L181">					* tension() * dblWidth * dblWidth));</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L183">			return (java.lang.Math.exp (-tension() * (dblBoundedBegin - left())) - java.lang.Math.exp</span>
-<span class="nc" id="L184">				(-tension() * (dblBoundedEnd - left()))) / tension() / (dblWidth * (6. + 6. * tension() *</span>
-<span class="nc" id="L185">					dblWidth + tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L184">			return (java.lang.Math.exp (-tension() * (dblBoundedBegin - left())) - java.lang.Math.exp</span>
+<span class="nc" id="L185">				(-tension() * (dblBoundedEnd - left()))) / tension() / (dblWidth * (6. + 6. * tension() *</span>
+<span class="nc" id="L186">					dblWidth + tension() * dblWidth * dblWidth));</span>
 
-<span class="nc" id="L187">		return super.integrate (dblBoundedBegin, dblBoundedEnd);</span>
+<span class="nc" id="L188">		return super.integrate (dblBoundedBegin, dblBoundedEnd);</span>
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L193">		double dblWidth = right() - left();</span>
+<span class="nc" id="L194">		double dblWidth = right() - left();</span>
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (0. == tension()) return dblWidth;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (0. == tension()) return dblWidth;</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L198">			return (java.lang.Math.log ((1. + tension() * dblWidth))) / tension() / (dblWidth * (6. + 6. *</span>
-<span class="nc" id="L199">				tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L199">			return (java.lang.Math.log ((1. + tension() * dblWidth))) / tension() / (dblWidth * (6. + 6. *</span>
+<span class="nc" id="L200">				tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
-<span class="nc" id="L202">			return (1. - java.lang.Math.exp (-tension() * dblWidth)) / tension() / (dblWidth * (6. + 6. *</span>
-<span class="nc" id="L203">				tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))</span>
+<span class="nc" id="L203">			return (1. - java.lang.Math.exp (-tension() * dblWidth)) / tension() / (dblWidth * (6. + 6. *</span>
+<span class="nc" id="L204">				tension() * dblWidth + tension() * dblWidth * dblWidth));</span>
 
-<span class="nc" id="L205">		return super.integrate (left(), right());</span>
+<span class="nc" id="L206">		return super.integrate (left(), right());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

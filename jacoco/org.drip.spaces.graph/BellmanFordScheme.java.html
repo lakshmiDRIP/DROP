@@ -92,9 +92,10 @@ package org.drip.spaces.graph;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -103,31 +104,31 @@ package org.drip.spaces.graph;
 
 public class BellmanFordScheme
 {
-<span class="nc" id="L106">	private org.drip.spaces.graph.Topography _topography = null;</span>
+<span class="nc" id="L107">	private org.drip.spaces.graph.Topography _topography = null;</span>
 
 	private void visitEdge (
 		final org.drip.spaces.graph.Edge edge,
 		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
 	{
-<span class="nc" id="L112">		java.lang.String leftVertex = edge.source();</span>
+<span class="nc" id="L113">		java.lang.String leftVertex = edge.source();</span>
 
-<span class="nc" id="L114">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
+<span class="nc" id="L115">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
 
-<span class="nc" id="L116">		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryLeft = vertexPeripheryMap.shortestPathVertex</span>
-<span class="nc" id="L117">			(leftVertex);</span>
+<span class="nc" id="L117">		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryLeft = vertexPeripheryMap.shortestPathVertex</span>
+<span class="nc" id="L118">			(leftVertex);</span>
 
-<span class="nc" id="L119">		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryRight = vertexPeripheryMap.shortestPathVertex</span>
-<span class="nc" id="L120">			(edge.destination());</span>
+<span class="nc" id="L120">		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryRight = vertexPeripheryMap.shortestPathVertex</span>
+<span class="nc" id="L121">			(edge.destination());</span>
 
-<span class="nc" id="L122">		double sourceToRightThroughLeft = vertexPeripheryLeft.weightFromSource() + edge.weight();</span>
+<span class="nc" id="L123">		double sourceToRightThroughLeft = vertexPeripheryLeft.weightFromSource() + edge.weight();</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (sourceToRightThroughLeft &lt; vertexPeripheryRight.weightFromSource())</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (sourceToRightThroughLeft &lt; vertexPeripheryRight.weightFromSource())</span>
 		{
-<span class="nc" id="L126">			vertexPeripheryRight.setWeightFromSource (sourceToRightThroughLeft);</span>
+<span class="nc" id="L127">			vertexPeripheryRight.setWeightFromSource (sourceToRightThroughLeft);</span>
 
-<span class="nc" id="L128">			vertexPeripheryRight.setPreceeding (leftVertex);</span>
+<span class="nc" id="L129">			vertexPeripheryRight.setPreceeding (leftVertex);</span>
 		}
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L131">	}</span>
 
 	/**
 	 * BellmanFordScheme Constructor
@@ -140,12 +141,12 @@ public class BellmanFordScheme
 	public BellmanFordScheme (
 		final org.drip.spaces.graph.Topography topography)
 		throws java.lang.Exception
-<span class="nc" id="L143">	{</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == (_topography = topography))</span>
+<span class="nc" id="L144">	{</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == (_topography = topography))</span>
 		{
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;BellmanFordScheme Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;BellmanFordScheme Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L148">	}</span>
+<span class="nc" id="L149">	}</span>
 
 	/**
 	 * Retrieve the Topography Map
@@ -155,7 +156,7 @@ public class BellmanFordScheme
 
 	public org.drip.spaces.graph.Topography topography()
 	{
-<span class="nc" id="L158">		return _topography;</span>
+<span class="nc" id="L159">		return _topography;</span>
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class BellmanFordScheme
 	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
 		final java.lang.String source)
 	{
-<span class="nc" id="L172">		return org.drip.spaces.graph.ShortestPathFirstWengert.BellmanFord (</span>
+<span class="nc" id="L173">		return org.drip.spaces.graph.ShortestPathFirstWengert.BellmanFord (</span>
 			_topography,
 			source
 		);
@@ -186,31 +187,31 @@ public class BellmanFordScheme
 	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
 		final java.lang.String source)
 	{
-<span class="nc" id="L189">		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);</span>
+<span class="nc" id="L190">		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (null == spfWengert)</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (null == spfWengert)</span>
 		{
-<span class="nc" id="L193">			return null;</span>
+<span class="nc" id="L194">			return null;</span>
 		}
 
-<span class="nc" id="L196">		int vertexCount = _topography.vertexNameSet().size();</span>
+<span class="nc" id="L197">		int vertexCount = _topography.vertexNameSet().size();</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L200">			java.util.Map&lt;java.lang.String, org.drip.spaces.graph.Edge&gt; edgeMap =</span>
-<span class="nc" id="L201">				_topography.topographyEdgeMap().edgeMap();</span>
+<span class="nc" id="L201">			java.util.Map&lt;java.lang.String, org.drip.spaces.graph.Edge&gt; edgeMap =</span>
+<span class="nc" id="L202">				_topography.topographyEdgeMap().edgeMap();</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.spaces.graph.Edge&gt; edgeEntry :
-<span class="nc bnc" id="L204" title="All 2 branches missed.">				edgeMap.entrySet())</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">				edgeMap.entrySet())</span>
 			{
-<span class="nc" id="L206">				visitEdge (</span>
-<span class="nc" id="L207">					edgeEntry.getValue(),</span>
+<span class="nc" id="L207">				visitEdge (</span>
+<span class="nc" id="L208">					edgeEntry.getValue(),</span>
 					spfWengert
 				);
-<span class="nc" id="L210">			}</span>
+<span class="nc" id="L211">			}</span>
 		}
 
-<span class="nc" id="L213">		return spfWengert;</span>
+<span class="nc" id="L214">		return spfWengert;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.constraint;
 
 /**
  * &lt;i&gt;LimitTradesTermIssuerBuy&lt;/i&gt; abstracts the Issuer Targets the Count of Total Buy Portfolio Trades.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -106,7 +107,7 @@ public class LimitTradesTermIssuerBuy extends org.drip.portfolioconstruction.con
 		final double[] adblInitialHoldings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L109">		super (</span>
+<span class="nc" id="L110">		super (</span>
 			strName,
 			&quot;CT_LIMIT_NUMBER_OF_BUY_TRADES&quot;,
 			&quot;Constrains the Total Count of Buy Trades&quot;,
@@ -117,40 +118,40 @@ public class LimitTradesTermIssuerBuy extends org.drip.portfolioconstruction.con
 			adblIssuerSelection,
 			adblInitialHoldings
 		);
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L121">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L124">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L125">		{</span>
+<span class="nc" id="L125">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L126">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L128">				return issuerSelection().length;</span>
+<span class="nc" id="L129">				return issuerSelection().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblFinalHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L135">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L136">				double[] adblInitialHoldings = initialHoldings();</span>
 
-<span class="nc" id="L137">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L138">				double[] adblIssuerSelection = issuerSelection();</span>
 
-<span class="nc" id="L139">				int iNumAsset = adblIssuerSelection.length;</span>
-<span class="nc" id="L140">				double dblTradeCount = 0;</span>
+<span class="nc" id="L140">				int iNumAsset = adblIssuerSelection.length;</span>
+<span class="nc" id="L141">				double dblTradeCount = 0;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L143" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L144">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
+<span class="nc" id="L145">					throw new java.lang.Exception</span>
 						(&quot;LimitTradesTermIssuerBuy::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
 				{
-<span class="nc bnc" id="L149" title="All 2 branches missed.">					if (adblInitialHoldings[i] &lt; adblFinalHoldings[i])</span>
-<span class="nc" id="L150">						dblTradeCount += adblIssuerSelection[i];</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">					if (adblInitialHoldings[i] &lt; adblFinalHoldings[i])</span>
+<span class="nc" id="L151">						dblTradeCount += adblIssuerSelection[i];</span>
 				}
 
-<span class="nc" id="L153">				return dblTradeCount;</span>
+<span class="nc" id="L154">				return dblTradeCount;</span>
 			}
 		};
 	}

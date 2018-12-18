@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.optimizer;
 
 /**
  * &lt;i&gt;ObjectiveFunction&lt;/i&gt; holds the Terms composing the Objective Function and their Weights.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -80,9 +81,9 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
-<span class="nc" id="L83">	private int _iDimension = -1;</span>
+<span class="nc" id="L84">	private int _iDimension = -1;</span>
 
-<span class="nc" id="L85">	private java.util.List&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt; _lsOTU = new</span>
+<span class="nc" id="L86">	private java.util.List&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt; _lsOTU = new</span>
 		java.util.ArrayList&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt;();
 
 	/**
@@ -91,8 +92,8 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 
 	public ObjectiveFunction()
 	{
-<span class="nc" id="L94">		super (null);</span>
-<span class="nc" id="L95">	}</span>
+<span class="nc" id="L95">		super (null);</span>
+<span class="nc" id="L96">	}</span>
 
 	/**
 	 * Add the Objective Term Unit Instance
@@ -105,11 +106,11 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 	public boolean addObjectiveTermUnit (
 		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu)
 	{
-<span class="nc bnc" id="L108" title="All 4 branches missed.">		if (null == otu || _lsOTU.contains (otu)) return false;</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == otu || _lsOTU.contains (otu)) return false;</span>
 
-<span class="nc" id="L110">		_lsOTU.add (otu);</span>
+<span class="nc" id="L111">		_lsOTU.add (otu);</span>
 
-<span class="nc" id="L112">		return true;</span>
+<span class="nc" id="L113">		return true;</span>
 	}
 
 	/**
@@ -120,25 +121,25 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 
 	public java.util.List&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt; list()
 	{
-<span class="nc" id="L123">		return _lsOTU;</span>
+<span class="nc" id="L124">		return _lsOTU;</span>
 	}
 
 	@Override public int dimension()
 	{
-<span class="nc" id="L128">		return _iDimension;</span>
+<span class="nc" id="L129">		return _iDimension;</span>
 	}
 
 	@Override public double evaluate (
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L135">		double dblValue = 0.;</span>
+<span class="nc" id="L136">		double dblValue = 0.;</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (otu.isActive()) dblValue += otu.weight() * otu.term().rdtoR1().evaluate (adblVariate);</span>
-<span class="nc" id="L139">		}</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			if (otu.isActive()) dblValue += otu.weight() * otu.term().rdtoR1().evaluate (adblVariate);</span>
+<span class="nc" id="L140">		}</span>
 
-<span class="nc" id="L141">		return dblValue;</span>
+<span class="nc" id="L142">		return dblValue;</span>
 	}
 
 	@Override public double derivative (
@@ -147,18 +148,18 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L150">		double dblValue = 0.;</span>
+<span class="nc" id="L151">		double dblValue = 0.;</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (otu.isActive())</span>
-<span class="nc" id="L154">				dblValue += otu.weight() * otu.term().rdtoR1().derivative (</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			if (otu.isActive())</span>
+<span class="nc" id="L155">				dblValue += otu.weight() * otu.term().rdtoR1().derivative (</span>
 					adblVariate,
 					iVariateIndex,
 					iOrder
 				);
-<span class="nc" id="L159">		}</span>
+<span class="nc" id="L160">		}</span>
 
-<span class="nc" id="L161">		return dblValue;</span>
+<span class="nc" id="L162">		return dblValue;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

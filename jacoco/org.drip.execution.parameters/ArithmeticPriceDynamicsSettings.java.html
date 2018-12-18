@@ -12,12 +12,12 @@ package org.drip.execution.parameters;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.parameters;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,17 +99,17 @@ package org.drip.execution.parameters;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters/README.md&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ArithmeticPriceDynamicsSettings {
-<span class="fc" id="L109">	private double _dblDrift = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _dblSerialCorrelation = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private org.drip.function.definition.R1ToR1 _r1ToR1Volatility = null;</span>
+<span class="fc" id="L110">	private double _dblDrift = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _dblSerialCorrelation = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private org.drip.function.definition.R1ToR1 _r1ToR1Volatility = null;</span>
 
 	/**
 	 * Construct the Asset Dynamics Settings from the Annual Returns Parameters
@@ -127,20 +128,20 @@ public class ArithmeticPriceDynamicsSettings {
 		final double dblSerialCorrelation,
 		final double dblPrice)
 	{
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAnnualReturnsExpectation) ||</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblAnnualReturnsVolatility) ||</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
-<span class="nc" id="L133">			return null;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblAnnualReturnsExpectation) ||</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblAnnualReturnsVolatility) ||</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="nc" id="L134">			return null;</span>
 
 		try {
-<span class="fc" id="L136">			return new ArithmeticPriceDynamicsSettings (dblPrice * dblAnnualReturnsExpectation / 250., new</span>
+<span class="fc" id="L137">			return new ArithmeticPriceDynamicsSettings (dblPrice * dblAnnualReturnsExpectation / 250., new</span>
 				org.drip.function.r1tor1.FlatUnivariate (dblPrice * dblAnnualReturnsVolatility /
-<span class="fc" id="L138">					java.lang.Math.sqrt (250.)), dblSerialCorrelation);</span>
-<span class="nc" id="L139">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L140">			e.printStackTrace();</span>
+<span class="fc" id="L139">					java.lang.Math.sqrt (250.)), dblSerialCorrelation);</span>
+<span class="nc" id="L140">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L141">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L143">		return null;</span>
+<span class="nc" id="L144">		return null;</span>
 	}
 
 	/**
@@ -158,12 +159,12 @@ public class ArithmeticPriceDynamicsSettings {
 		final org.drip.function.definition.R1ToR1 r1ToR1Volatility,
 		final double dblSerialCorrelation)
 		throws java.lang.Exception
-<span class="fc" id="L161">	{</span>
-<span class="pc bpc" id="L162" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) || null == (_r1ToR1Volatility =</span>
-<span class="pc bpc" id="L163" title="3 of 6 branches missed.">			r1ToR1Volatility)|| !org.drip.quant.common.NumberUtil.IsValid (_dblSerialCorrelation =</span>
+<span class="fc" id="L162">	{</span>
+<span class="pc bpc" id="L163" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) || null == (_r1ToR1Volatility =</span>
+<span class="pc bpc" id="L164" title="3 of 6 branches missed.">			r1ToR1Volatility)|| !org.drip.quant.common.NumberUtil.IsValid (_dblSerialCorrelation =</span>
 				dblSerialCorrelation) || 1. &lt; _dblSerialCorrelation || -1. &gt; _dblSerialCorrelation)
-<span class="nc" id="L165">			throw new java.lang.Exception (&quot;ArithmeticPriceDynamicsSettings Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L166">	}</span>
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;ArithmeticPriceDynamicsSettings Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L167">	}</span>
 
 	/**
 	 * Retrieve the Asset Annual Logarithmic Drift
@@ -173,7 +174,7 @@ public class ArithmeticPriceDynamicsSettings {
 
 	public double drift()
 	{
-<span class="fc" id="L176">		return _dblDrift;</span>
+<span class="fc" id="L177">		return _dblDrift;</span>
 	}
 
 	/**
@@ -187,7 +188,7 @@ public class ArithmeticPriceDynamicsSettings {
 	public double epochVolatility()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L190">		return _r1ToR1Volatility.evaluate (0.);</span>
+<span class="fc" id="L191">		return _r1ToR1Volatility.evaluate (0.);</span>
 	}
 
 	/**
@@ -198,7 +199,7 @@ public class ArithmeticPriceDynamicsSettings {
 
 	public org.drip.function.definition.R1ToR1 volatilityFunction()
 	{
-<span class="nc" id="L201">		return _r1ToR1Volatility;</span>
+<span class="nc" id="L202">		return _r1ToR1Volatility;</span>
 	}
 
 	/**
@@ -209,7 +210,7 @@ public class ArithmeticPriceDynamicsSettings {
 
 	public double serialCorrelation()
 	{
-<span class="fc" id="L212">		return _dblSerialCorrelation;</span>
+<span class="fc" id="L213">		return _dblSerialCorrelation;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

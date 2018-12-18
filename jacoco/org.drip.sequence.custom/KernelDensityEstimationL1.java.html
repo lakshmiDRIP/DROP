@@ -73,9 +73,10 @@ package org.drip.sequence.custom;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/custom&quot;&gt;Custom&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/custom&quot;&gt;Custom&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,10 +84,10 @@ package org.drip.sequence.custom;
  */
 
 public class KernelDensityEstimationL1 extends org.drip.sequence.functional.BoundedMultivariateRandom {
-<span class="fc" id="L86">	private int _iSampleSize = -1;</span>
-<span class="fc" id="L87">	private double _dblSmoothingParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private org.drip.function.definition.R1ToR1 _auKernel = null;</span>
-<span class="fc" id="L89">	private org.drip.function.definition.R1ToR1 _auResponse = null;</span>
+<span class="fc" id="L87">	private int _iSampleSize = -1;</span>
+<span class="fc" id="L88">	private double _dblSmoothingParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private org.drip.function.definition.R1ToR1 _auKernel = null;</span>
+<span class="fc" id="L90">	private org.drip.function.definition.R1ToR1 _auResponse = null;</span>
 
 	/**
 	 * KernelDensityEstimationL1 Constructor
@@ -105,12 +106,12 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 		final int iSampleSize,
 		final org.drip.function.definition.R1ToR1 auResponse)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (null == (_auKernel = auKernel) || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L110" title="3 of 6 branches missed.">			(_dblSmoothingParameter = dblSmoothingParameter) || 0 &gt;= (_iSampleSize = iSampleSize) || null ==</span>
+<span class="fc" id="L109">	{</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (null == (_auKernel = auKernel) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L111" title="3 of 6 branches missed.">			(_dblSmoothingParameter = dblSmoothingParameter) || 0 &gt;= (_iSampleSize = iSampleSize) || null ==</span>
 				(_auResponse = auResponse))
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;KernelDensityEstimationL1 Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L113">	}</span>
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;KernelDensityEstimationL1 Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Kernel Function
@@ -120,7 +121,7 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 
 	public org.drip.function.definition.R1ToR1 kernelFunction()
 	{
-<span class="nc" id="L123">		return _auKernel;</span>
+<span class="nc" id="L124">		return _auKernel;</span>
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 
 	public double smoothingParameter()
 	{
-<span class="nc" id="L134">		return _dblSmoothingParameter;</span>
+<span class="nc" id="L135">		return _dblSmoothingParameter;</span>
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 
 	public int sampleSize()
 	{
-<span class="nc" id="L145">		return _iSampleSize;</span>
+<span class="nc" id="L146">		return _iSampleSize;</span>
 	}
 
 	/**
@@ -153,38 +154,38 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 
 	public org.drip.function.definition.R1ToR1 responseFunction()
 	{
-<span class="nc" id="L156">		return _auResponse;</span>
+<span class="nc" id="L157">		return _auResponse;</span>
 	}
 
 	@Override public int dimension()
 	{
-<span class="nc" id="L161">		return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
+<span class="nc" id="L162">		return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;</span>
 	}
 
 	@Override public double evaluate (
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L168">		double dblMinVariate = org.drip.quant.common.NumberUtil.Minimum (adblVariate);</span>
+<span class="fc" id="L169">		double dblMinVariate = org.drip.quant.common.NumberUtil.Minimum (adblVariate);</span>
 
-<span class="fc" id="L170">		double dblMaxVariate = org.drip.quant.common.NumberUtil.Maximum (adblVariate);</span>
+<span class="fc" id="L171">		double dblMaxVariate = org.drip.quant.common.NumberUtil.Maximum (adblVariate);</span>
 
-<span class="fc" id="L172">		double dblKernelIntegral = 0.;</span>
-<span class="fc" id="L173">		int iNumVariate = adblVariate.length;</span>
+<span class="fc" id="L173">		double dblKernelIntegral = 0.;</span>
+<span class="fc" id="L174">		int iNumVariate = adblVariate.length;</span>
 
-<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L176">			dblKernelIntegral += _auKernel.integrate ((dblMinVariate - adblVariate[i]) /</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L177">			dblKernelIntegral += _auKernel.integrate ((dblMinVariate - adblVariate[i]) /</span>
 				_dblSmoothingParameter, (dblMaxVariate - adblVariate[i]) / _dblSmoothingParameter);
 
-<span class="fc" id="L179">		return dblKernelIntegral / (_iSampleSize * _dblSmoothingParameter) - _auResponse.integrate</span>
-<span class="fc" id="L180">			(dblMinVariate, dblMaxVariate);</span>
+<span class="fc" id="L180">		return dblKernelIntegral / (_iSampleSize * _dblSmoothingParameter) - _auResponse.integrate</span>
+<span class="fc" id="L181">			(dblMinVariate, dblMaxVariate);</span>
 	}
 
 	@Override public double targetVariateVarianceBound (
 		final int iTargetVariateIndex)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L187">		return 4. / (_iSampleSize * _iSampleSize);</span>
+<span class="nc" id="L188">		return 4. / (_iSampleSize * _iSampleSize);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

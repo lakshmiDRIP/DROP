@@ -10,12 +10,12 @@ package org.drip.exposure.regression;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -32,16 +32,17 @@ package org.drip.exposure.regression;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,8 +99,8 @@ package org.drip.exposure.regression;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression/README.md&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,11 +108,11 @@ package org.drip.exposure.regression;
 
 public class PykhtinPillar
 {
-<span class="nc" id="L110">	private int _order = -1;</span>
-<span class="nc" id="L111">	private double _cdf = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _variate = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private double _exposure = java.lang.Double.NaN;</span>
-<span class="nc" id="L114">	private double _localVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private int _order = -1;</span>
+<span class="nc" id="L112">	private double _cdf = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _variate = java.lang.Double.NaN;</span>
+<span class="nc" id="L114">	private double _exposure = java.lang.Double.NaN;</span>
+<span class="nc" id="L115">	private double _localVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * PykhtinPillar Constructor
@@ -132,16 +133,16 @@ public class PykhtinPillar
 		final double variate,
 		final double localVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L135">	{</span>
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||</span>
+<span class="nc" id="L136">	{</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||</span>
 			0 &gt; (_order = order) ||
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))</span>
 		{
-<span class="nc" id="L142">			throw new java.lang.Exception (&quot;PykhtinPillar Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;PykhtinPillar Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L144">	}</span>
+<span class="nc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Point Exposure
@@ -151,7 +152,7 @@ public class PykhtinPillar
 
 	public double exposure()
 	{
-<span class="nc" id="L154">		return _exposure;</span>
+<span class="nc" id="L155">		return _exposure;</span>
 	}
 
 	/**
@@ -162,7 +163,7 @@ public class PykhtinPillar
 
 	public int order()
 	{
-<span class="nc" id="L165">		return _order;</span>
+<span class="nc" id="L166">		return _order;</span>
 	}
 
 	/**
@@ -173,7 +174,7 @@ public class PykhtinPillar
 
 	public double cdf()
 	{
-<span class="nc" id="L176">		return _cdf;</span>
+<span class="nc" id="L177">		return _cdf;</span>
 	}
 
 	/**
@@ -184,7 +185,7 @@ public class PykhtinPillar
 
 	public double variate()
 	{
-<span class="nc" id="L187">		return _variate;</span>
+<span class="nc" id="L188">		return _variate;</span>
 	}
 
 	/**
@@ -195,7 +196,7 @@ public class PykhtinPillar
 
 	public double localVolatility()
 	{
-<span class="nc" id="L198">		return _localVolatility;</span>
+<span class="nc" id="L199">		return _localVolatility;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

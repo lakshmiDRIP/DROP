@@ -75,9 +75,10 @@ package org.drip.quant.fourier;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/fourier&quot;&gt;Fourier&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant&quot;&gt;Quant&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/fourier&quot;&gt;Fourier Analysis&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -104,17 +105,17 @@ public class RotationCountPhaseTracker {
 
 	public static final int APPLY_FORWARD = 2;
 
-<span class="fc" id="L107">	private int _iRotationDirection = APPLY_NONE;</span>
-<span class="fc" id="L108">	private double _dblPreviousPhase = java.lang.Double.NaN;</span>
+<span class="fc" id="L108">	private int _iRotationDirection = APPLY_NONE;</span>
+<span class="fc" id="L109">	private double _dblPreviousPhase = java.lang.Double.NaN;</span>
 
 	/**
 	 * Empty RotationCountPhaseTracker constructor - Initialize to &quot;NO ROTATION COUNT&quot;
 	 */
 
 	public RotationCountPhaseTracker()
-<span class="fc" id="L115">	{</span>
-<span class="fc" id="L116">		_iRotationDirection = APPLY_NONE;</span>
-<span class="fc" id="L117">	}</span>
+<span class="fc" id="L116">	{</span>
+<span class="fc" id="L117">		_iRotationDirection = APPLY_NONE;</span>
+<span class="fc" id="L118">	}</span>
 
 	/**
 	 * Set the Direction on which the rotation count is to be applied
@@ -127,8 +128,8 @@ public class RotationCountPhaseTracker {
 	public boolean setDirection (
 		final int iRotationDirection)
 	{
-<span class="fc" id="L130">		_iRotationDirection = iRotationDirection;</span>
-<span class="fc" id="L131">		return true;</span>
+<span class="fc" id="L131">		_iRotationDirection = iRotationDirection;</span>
+<span class="fc" id="L132">		return true;</span>
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class RotationCountPhaseTracker {
 
 	public int getDirection()
 	{
-<span class="nc" id="L142">		return _iRotationDirection;</span>
+<span class="nc" id="L143">		return _iRotationDirection;</span>
 	}
 
 	/**
@@ -153,10 +154,10 @@ public class RotationCountPhaseTracker {
 	public boolean setPreviousPhase (
 		final double dblPreviousPhase)
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPreviousPhase)) return false;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPreviousPhase)) return false;</span>
 
-<span class="nc" id="L158">		_dblPreviousPhase = dblPreviousPhase;</span>
-<span class="nc" id="L159">		return true;</span>
+<span class="nc" id="L159">		_dblPreviousPhase = dblPreviousPhase;</span>
+<span class="nc" id="L160">		return true;</span>
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class RotationCountPhaseTracker {
 
 	public double getPreviousPhase()
 	{
-<span class="fc" id="L170">		return _dblPreviousPhase;</span>
+<span class="fc" id="L171">		return _dblPreviousPhase;</span>
 	}
 
 	/**
@@ -187,23 +188,23 @@ public class RotationCountPhaseTracker {
 		final boolean bApply)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCurrentPhase))</span>
-<span class="nc" id="L191">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCurrentPhase))</span>
+<span class="nc" id="L192">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L193">		double dblUpdatedPhase = dblCurrentPhase;</span>
+<span class="fc" id="L194">		double dblUpdatedPhase = dblCurrentPhase;</span>
 
-<span class="fc bfc" id="L195" title="All 2 branches covered.">		if (APPLY_FORWARD == _iRotationDirection) {</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			while (dblUpdatedPhase &lt; _dblPreviousPhase)</span>
-<span class="fc" id="L197">				dblUpdatedPhase += 2. * java.lang.Math.PI;</span>
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">		} else if (APPLY_BACKWARD == _iRotationDirection) {</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			while (dblUpdatedPhase &gt; _dblPreviousPhase)</span>
-<span class="nc" id="L200">				dblUpdatedPhase -= 2. * java.lang.Math.PI;</span>
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		} else if (APPLY_NONE != _iRotationDirection)</span>
-<span class="nc" id="L202">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid State&quot;);</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		if (APPLY_FORWARD == _iRotationDirection) {</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			while (dblUpdatedPhase &lt; _dblPreviousPhase)</span>
+<span class="fc" id="L198">				dblUpdatedPhase += 2. * java.lang.Math.PI;</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		} else if (APPLY_BACKWARD == _iRotationDirection) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			while (dblUpdatedPhase &gt; _dblPreviousPhase)</span>
+<span class="nc" id="L201">				dblUpdatedPhase -= 2. * java.lang.Math.PI;</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		} else if (APPLY_NONE != _iRotationDirection)</span>
+<span class="nc" id="L203">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid State&quot;);</span>
 
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (bApply) _dblPreviousPhase = dblUpdatedPhase;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (bApply) _dblPreviousPhase = dblUpdatedPhase;</span>
 
-<span class="fc" id="L206">		return dblUpdatedPhase;</span>
+<span class="fc" id="L207">		return dblUpdatedPhase;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

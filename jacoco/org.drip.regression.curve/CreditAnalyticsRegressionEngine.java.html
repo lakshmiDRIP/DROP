@@ -77,9 +77,10 @@ package org.drip.regression.curve;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,38 +103,38 @@ public class CreditAnalyticsRegressionEngine extends org.drip.regression.core.Re
 		final int iRegressionDetail)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L105">		super (iNumRuns, iRegressionDetail);</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L106">		super (iNumRuns, iRegressionDetail);</span>
+<span class="fc" id="L107">	}</span>
 
 	@Override public boolean initRegressionEnv()
 	{
-<span class="fc" id="L110">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L111">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L112">		return super.initRegressionEnv();</span>
+<span class="fc" id="L113">		return super.initRegressionEnv();</span>
 	}
 
 	public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L119">		CreditAnalyticsRegressionEngine care = new CreditAnalyticsRegressionEngine (10,</span>
+<span class="fc" id="L120">		CreditAnalyticsRegressionEngine care = new CreditAnalyticsRegressionEngine (10,</span>
 			org.drip.regression.core.RegressionEngine.REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED);
 
 		/*
 		 * Add the regressor sets: Refer to the implementation of the corresponding regressors
 		 */
 
-<span class="fc" id="L126">		care.addRegressorSet (new CreditCurveRegressor());</span>
+<span class="fc" id="L127">		care.addRegressorSet (new CreditCurveRegressor());</span>
 
-<span class="fc" id="L128">		care.addRegressorSet (new DiscountCurveRegressor());</span>
+<span class="fc" id="L129">		care.addRegressorSet (new DiscountCurveRegressor());</span>
 
-<span class="fc" id="L130">		care.addRegressorSet (new ZeroCurveRegressor());</span>
+<span class="fc" id="L131">		care.addRegressorSet (new ZeroCurveRegressor());</span>
 
 		/*
 		 * Launch regression - and that's it!
 		 */
 
-<span class="fc" id="L136">		care.launch();</span>
-<span class="fc" id="L137">	}</span>
+<span class="fc" id="L137">		care.launch();</span>
+<span class="fc" id="L138">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

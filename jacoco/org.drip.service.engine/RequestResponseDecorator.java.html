@@ -73,16 +73,17 @@ package org.drip.service.engine;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class RequestResponseDecorator {</span>
+<span class="nc" id="L86">public class RequestResponseDecorator {</span>
 
 	/**
 	 * Affix the Headers on the JSON Request
@@ -95,15 +96,15 @@ package org.drip.service.engine;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final boolean AffixRequestHeaders (
 		final org.drip.json.simple.JSONObject jsonRequest)
 	{
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (null == jsonRequest) return false;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == jsonRequest) return false;</span>
 
-<span class="nc" id="L100">		jsonRequest.put (&quot;APITYPE&quot;, &quot;REQUEST&quot;);</span>
+<span class="nc" id="L101">		jsonRequest.put (&quot;APITYPE&quot;, &quot;REQUEST&quot;);</span>
 
-<span class="nc" id="L102">		jsonRequest.put (&quot;REQUESTTIMESTAMP&quot;, new java.util.Date().toString());</span>
+<span class="nc" id="L103">		jsonRequest.put (&quot;REQUESTTIMESTAMP&quot;, new java.util.Date().toString());</span>
 
-<span class="nc" id="L104">		jsonRequest.put (&quot;REQUESTID&quot;, org.drip.quant.common.StringUtil.GUID());</span>
+<span class="nc" id="L105">		jsonRequest.put (&quot;REQUESTID&quot;, org.drip.quant.common.StringUtil.GUID());</span>
 
-<span class="nc" id="L106">		return true;</span>
+<span class="nc" id="L107">		return true;</span>
 	}
 
 	/**
@@ -119,21 +120,21 @@ package org.drip.service.engine;
 		final org.drip.json.simple.JSONObject jsonResponse,
 		final org.drip.json.simple.JSONObject jsonRequest)
 	{
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == jsonResponse || null == jsonRequest) return false;</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == jsonResponse || null == jsonRequest) return false;</span>
 
-<span class="nc" id="L124">    	jsonResponse.put (&quot;APITYPE&quot;, &quot;RESPONSE&quot;);</span>
+<span class="nc" id="L125">    	jsonResponse.put (&quot;APITYPE&quot;, &quot;RESPONSE&quot;);</span>
 
-<span class="nc" id="L126">    	jsonResponse.put (&quot;REQUESTTIMESTAMP&quot;, org.drip.json.parser.Converter.StringEntry</span>
-<span class="nc" id="L127">    		(jsonRequest, &quot;REQUESTTIMESTAMP&quot;));</span>
+<span class="nc" id="L127">    	jsonResponse.put (&quot;REQUESTTIMESTAMP&quot;, org.drip.json.parser.Converter.StringEntry</span>
+<span class="nc" id="L128">    		(jsonRequest, &quot;REQUESTTIMESTAMP&quot;));</span>
 
-<span class="nc" id="L129">    	jsonResponse.put (&quot;REQUESTID&quot;, org.drip.json.parser.Converter.StringEntry (jsonRequest,</span>
+<span class="nc" id="L130">    	jsonResponse.put (&quot;REQUESTID&quot;, org.drip.json.parser.Converter.StringEntry (jsonRequest,</span>
     		&quot;REQUESTID&quot;));
 
-<span class="nc" id="L132">    	jsonResponse.put (&quot;RESPONSETIMESTAMP&quot;, new java.util.Date().toString());</span>
+<span class="nc" id="L133">    	jsonResponse.put (&quot;RESPONSETIMESTAMP&quot;, new java.util.Date().toString());</span>
 
-<span class="nc" id="L134">    	jsonResponse.put (&quot;RESPONSEID&quot;, org.drip.quant.common.StringUtil.GUID());</span>
+<span class="nc" id="L135">    	jsonResponse.put (&quot;RESPONSEID&quot;, org.drip.quant.common.StringUtil.GUID());</span>
 
-<span class="nc" id="L136">		return true;</span>
+<span class="nc" id="L137">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -75,16 +75,17 @@ package org.drip.state.creator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L87">public class ScenarioCreditCurveBuilder {</span>
+<span class="nc" id="L88">public class ScenarioCreditCurveBuilder {</span>
 
 	/**
 	 * Create CreditScenarioCurve from the array of calibration instruments
@@ -98,12 +99,12 @@ package org.drip.state.creator;
 		final org.drip.product.definition.CalibratableComponent[] aCalibInst)
 	{
 		try {
-<span class="nc" id="L101">			return new org.drip.param.market.CreditCurveScenarioContainer (aCalibInst, 0.0001, 0.01);</span>
-<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L103">			e.printStackTrace();</span>
+<span class="nc" id="L102">			return new org.drip.param.market.CreditCurveScenarioContainer (aCalibInst, 0.0001, 0.01);</span>
+<span class="nc" id="L103">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L104">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L106">		return null;</span>
+<span class="nc" id="L107">		return null;</span>
 	}
 
 	/**
@@ -133,8 +134,8 @@ package org.drip.state.creator;
 		final boolean bFlat,
 		final org.drip.param.definition.CalibrationParams cp)
 	{
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		return null == dtSpot ? null : org.drip.state.boot.CreditCurveScenario.Standard (strName,</span>
-<span class="fc" id="L137">			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), aCalibInst, adblCalibQuote,</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		return null == dtSpot ? null : org.drip.state.boot.CreditCurveScenario.Standard (strName,</span>
+<span class="fc" id="L138">			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), aCalibInst, adblCalibQuote,</span>
 				astrCalibMeasure, dblRecovery, bFlat, dc, null, null, null, cp);
 	}
 
@@ -163,7 +164,7 @@ package org.drip.state.creator;
 		final double dblRecovery,
 		final boolean bFlat)
 	{
-<span class="fc" id="L166">		return Custom (strName, dtSpot, aCalibInst, dc, adblCalibQuote, astrCalibMeasure, dblRecovery, bFlat,</span>
+<span class="fc" id="L167">		return Custom (strName, dtSpot, aCalibInst, dc, adblCalibQuote, astrCalibMeasure, dblRecovery, bFlat,</span>
 			null);
 	}
 
@@ -187,15 +188,15 @@ package org.drip.state.creator;
 		final double dblRecovery)
 	{
 		try {
-<span class="fc" id="L190">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
-<span class="fc" id="L191">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency, new</span>
+<span class="fc" id="L191">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
+<span class="fc" id="L192">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency, new</span>
 					double[] {dblHazardRate}, new int[] {iStartDate}, new double[] {dblRecovery}, new int[]
 						{iStartDate}, java.lang.Integer.MIN_VALUE);
-<span class="nc" id="L194">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">			e.printStackTrace();</span>
+<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L198">		return null;</span>
+<span class="nc" id="L199">		return null;</span>
 	}
 
 	/**
@@ -219,37 +220,37 @@ package org.drip.state.creator;
 		final double[] adblSurvivalProbability,
 		final double dblRecovery)
 	{
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblRecovery)) return null;</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblRecovery)) return null;</span>
 
 		try {
-<span class="fc" id="L225">			double dblSurvivalBegin = 1.;</span>
-<span class="fc" id="L226">			int iPeriodBegin = iStartDate;</span>
-<span class="fc" id="L227">			double[] adblHazard = new double[adblSurvivalProbability.length];</span>
-<span class="fc" id="L228">			double[] adblRecovery = new double[1];</span>
-<span class="fc" id="L229">			int[] aiRecoveryDate = new int[1];</span>
-<span class="fc" id="L230">			adblRecovery[0] = dblRecovery;</span>
-<span class="fc" id="L231">			aiRecoveryDate[0] = iStartDate;</span>
+<span class="fc" id="L226">			double dblSurvivalBegin = 1.;</span>
+<span class="fc" id="L227">			int iPeriodBegin = iStartDate;</span>
+<span class="fc" id="L228">			double[] adblHazard = new double[adblSurvivalProbability.length];</span>
+<span class="fc" id="L229">			double[] adblRecovery = new double[1];</span>
+<span class="fc" id="L230">			int[] aiRecoveryDate = new int[1];</span>
+<span class="fc" id="L231">			adblRecovery[0] = dblRecovery;</span>
+<span class="fc" id="L232">			aiRecoveryDate[0] = iStartDate;</span>
 
-<span class="fc bfc" id="L233" title="All 2 branches covered.">			for (int i = 0; i &lt; adblSurvivalProbability.length; ++i) {</span>
-<span class="pc bpc" id="L234" title="3 of 6 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalProbability[i]) ||</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">			for (int i = 0; i &lt; adblSurvivalProbability.length; ++i) {</span>
+<span class="pc bpc" id="L235" title="3 of 6 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalProbability[i]) ||</span>
 					aiSurvivalDate[i] &lt;= iPeriodBegin || dblSurvivalBegin &lt; adblSurvivalProbability[i])
-<span class="nc" id="L236">					return null;</span>
+<span class="nc" id="L237">					return null;</span>
 
-<span class="fc" id="L238">				adblHazard[i] = 365.25 / (aiSurvivalDate[i] - iPeriodBegin) * java.lang.Math.log</span>
-<span class="fc" id="L239">					(dblSurvivalBegin / adblSurvivalProbability[i]);</span>
+<span class="fc" id="L239">				adblHazard[i] = 365.25 / (aiSurvivalDate[i] - iPeriodBegin) * java.lang.Math.log</span>
+<span class="fc" id="L240">					(dblSurvivalBegin / adblSurvivalProbability[i]);</span>
 
-<span class="fc" id="L241">				iPeriodBegin = aiSurvivalDate[i];</span>
-<span class="fc" id="L242">				dblSurvivalBegin = adblSurvivalProbability[i];</span>
+<span class="fc" id="L242">				iPeriodBegin = aiSurvivalDate[i];</span>
+<span class="fc" id="L243">				dblSurvivalBegin = adblSurvivalProbability[i];</span>
 			}
 
-<span class="fc" id="L245">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
-<span class="fc" id="L246">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
+<span class="fc" id="L246">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
+<span class="fc" id="L247">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
 					adblHazard, aiSurvivalDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
-<span class="nc" id="L248">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L249">			e.printStackTrace();</span>
+<span class="nc" id="L249">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L250">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L252">		return null;</span>
+<span class="nc" id="L253">		return null;</span>
 	}
 
 	/**
@@ -273,22 +274,22 @@ package org.drip.state.creator;
 		final double[] adblSurvivalProbability,
 		final double dblRecovery)
 	{
-<span class="nc bnc" id="L276" title="All 2 branches missed.">		if (null == astrSurvivalTenor) return null;</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (null == astrSurvivalTenor) return null;</span>
 
-<span class="nc" id="L278">		org.drip.analytics.date.JulianDate dtStart = new org.drip.analytics.date.JulianDate (iStartDate);</span>
+<span class="nc" id="L279">		org.drip.analytics.date.JulianDate dtStart = new org.drip.analytics.date.JulianDate (iStartDate);</span>
 
-<span class="nc" id="L280">		int iNumSurvivalTenor = astrSurvivalTenor.length;</span>
-<span class="nc" id="L281">		int[] aiSurvivalDate = new int[iNumSurvivalTenor];</span>
+<span class="nc" id="L281">		int iNumSurvivalTenor = astrSurvivalTenor.length;</span>
+<span class="nc" id="L282">		int[] aiSurvivalDate = new int[iNumSurvivalTenor];</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSurvivalTenor; ++i) {</span>
-<span class="nc" id="L284">			org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrSurvivalTenor[i]);</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSurvivalTenor; ++i) {</span>
+<span class="nc" id="L285">			org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrSurvivalTenor[i]);</span>
 
-<span class="nc bnc" id="L286" title="All 2 branches missed.">			if (null == dtTenor) return null;</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">			if (null == dtTenor) return null;</span>
 
-<span class="nc" id="L288">			aiSurvivalDate[i] = dtTenor.julian();</span>
+<span class="nc" id="L289">			aiSurvivalDate[i] = dtTenor.julian();</span>
 		}
 
-<span class="nc" id="L291">		return Survival (iStartDate, strName, strCurrency, aiSurvivalDate, adblSurvivalProbability,</span>
+<span class="nc" id="L292">		return Survival (iStartDate, strName, strCurrency, aiSurvivalDate, adblSurvivalProbability,</span>
 			dblRecovery);
 	}
 
@@ -313,29 +314,29 @@ package org.drip.state.creator;
 		final int iHazardDate,
 		final double dblRecovery)
 	{
-<span class="nc bnc" id="L316" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iStartDate) ||</span>
-<span class="nc bnc" id="L317" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblHazardRate) ||</span>
-<span class="nc bnc" id="L318" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRecovery))</span>
-<span class="nc" id="L319">			return null;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iStartDate) ||</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblHazardRate) ||</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRecovery))</span>
+<span class="nc" id="L320">			return null;</span>
 
-<span class="nc" id="L321">		double[] adblHazard = new double[1];</span>
-<span class="nc" id="L322">		double[] adblRecovery = new double[1];</span>
-<span class="nc" id="L323">		int[] aiHazardDate = new int[1];</span>
-<span class="nc" id="L324">		int[] aiRecoveryDate = new int[1];</span>
-<span class="nc" id="L325">		adblHazard[0] = dblHazardRate;</span>
-<span class="nc" id="L326">		adblRecovery[0] = dblRecovery;</span>
-<span class="nc" id="L327">		aiHazardDate[0] = iHazardDate;</span>
-<span class="nc" id="L328">		aiRecoveryDate[0] = iStartDate;</span>
+<span class="nc" id="L322">		double[] adblHazard = new double[1];</span>
+<span class="nc" id="L323">		double[] adblRecovery = new double[1];</span>
+<span class="nc" id="L324">		int[] aiHazardDate = new int[1];</span>
+<span class="nc" id="L325">		int[] aiRecoveryDate = new int[1];</span>
+<span class="nc" id="L326">		adblHazard[0] = dblHazardRate;</span>
+<span class="nc" id="L327">		adblRecovery[0] = dblRecovery;</span>
+<span class="nc" id="L328">		aiHazardDate[0] = iHazardDate;</span>
+<span class="nc" id="L329">		aiRecoveryDate[0] = iStartDate;</span>
 
 		try {
-<span class="nc" id="L331">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
-<span class="nc" id="L332">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
+<span class="nc" id="L332">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
+<span class="nc" id="L333">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
 					adblHazard, aiHazardDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
-<span class="nc" id="L334">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L335">			e.printStackTrace();</span>
+<span class="nc" id="L335">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L336">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L338">		return null;</span>
+<span class="nc" id="L339">		return null;</span>
 	}
 
 	/**
@@ -359,25 +360,25 @@ package org.drip.state.creator;
 		final double[] adblHazardRate,
 		final double dblRecovery)
 	{
-<span class="pc bpc" id="L362" title="4 of 8 branches missed.">		if (null == dtStart || null == adblHazardRate || null == aiDate || adblHazardRate.length !=</span>
-<span class="pc bpc" id="L363" title="1 of 2 branches missed.">			aiDate.length || !org.drip.quant.common.NumberUtil.IsValid (dblRecovery))</span>
-<span class="nc" id="L364">			return null;</span>
+<span class="pc bpc" id="L363" title="4 of 8 branches missed.">		if (null == dtStart || null == adblHazardRate || null == aiDate || adblHazardRate.length !=</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">			aiDate.length || !org.drip.quant.common.NumberUtil.IsValid (dblRecovery))</span>
+<span class="nc" id="L365">			return null;</span>
 
 		try {
-<span class="fc" id="L367">			double[] adblRecovery = new double[1];</span>
-<span class="fc" id="L368">			int[] aiRecoveryDate = new int[1];</span>
-<span class="fc" id="L369">			adblRecovery[0] = dblRecovery;</span>
+<span class="fc" id="L368">			double[] adblRecovery = new double[1];</span>
+<span class="fc" id="L369">			int[] aiRecoveryDate = new int[1];</span>
+<span class="fc" id="L370">			adblRecovery[0] = dblRecovery;</span>
 
-<span class="fc" id="L371">			aiRecoveryDate[0] = dtStart.julian();</span>
+<span class="fc" id="L372">			aiRecoveryDate[0] = dtStart.julian();</span>
 
-<span class="fc" id="L373">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (dtStart.julian(),</span>
-<span class="fc" id="L374">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
+<span class="fc" id="L374">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (dtStart.julian(),</span>
+<span class="fc" id="L375">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
 					adblHazardRate, aiDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
-<span class="nc" id="L376">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L377">			e.printStackTrace();</span>
+<span class="nc" id="L377">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L378">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L380">		return null;</span>
+<span class="nc" id="L381">		return null;</span>
 	}
 
 	/**
@@ -406,14 +407,14 @@ package org.drip.state.creator;
 		final int iSpecificDefaultDate)
 	{
 		try {
-<span class="nc" id="L409">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
-<span class="nc" id="L410">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
+<span class="nc" id="L410">			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,</span>
+<span class="nc" id="L411">				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,</span>
 					adblHazardRate, aiHazardDate, adblRecoveryRate, aiRecoveryDate, iSpecificDefaultDate);
-<span class="nc" id="L412">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L413">			e.printStackTrace();</span>
+<span class="nc" id="L413">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L414">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L416">		return null;</span>
+<span class="nc" id="L417">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

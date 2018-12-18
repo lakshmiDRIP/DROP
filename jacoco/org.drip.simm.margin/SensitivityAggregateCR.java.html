@@ -78,9 +78,10 @@ package org.drip.simm.margin;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -89,8 +90,8 @@ package org.drip.simm.margin;
 
 public class SensitivityAggregateCR
 {
-<span class="nc" id="L92">	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;</span>
-<span class="nc" id="L93">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _componentMarginCovarianceMap = null;</span>
+<span class="nc" id="L93">	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;</span>
+<span class="nc" id="L94">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _componentMarginCovarianceMap = null;</span>
 
 	/**
 	 * SensitivityAggregateCR Constructor
@@ -105,15 +106,15 @@ public class SensitivityAggregateCR
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceMap,
 		final double cumulativeMarginSensitivity)
 		throws java.lang.Exception
-<span class="nc" id="L108">	{</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (null == (_componentMarginCovarianceMap = componentMarginCovarianceMap) ||</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">				0 == _componentMarginCovarianceMap.size() ||</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =</span>
+<span class="nc" id="L109">	{</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (null == (_componentMarginCovarianceMap = componentMarginCovarianceMap) ||</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">				0 == _componentMarginCovarianceMap.size() ||</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =</span>
 				cumulativeMarginSensitivity))
 		{
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;SensitivityAggregateCR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;SensitivityAggregateCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Retrieve the Component Margin Covariance Map
@@ -123,7 +124,7 @@ public class SensitivityAggregateCR
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceMap()
 	{
-<span class="nc" id="L126">		return _componentMarginCovarianceMap;</span>
+<span class="nc" id="L127">		return _componentMarginCovarianceMap;</span>
 	}
 
 	/**
@@ -134,16 +135,16 @@ public class SensitivityAggregateCR
 
 	public double cumulativeMarginCovariance()
 	{
-<span class="nc" id="L137">		double cumulativeMarginCovariance = 0.;</span>
+<span class="nc" id="L138">		double cumulativeMarginCovariance = 0.;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceEntry :
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			_componentMarginCovarianceMap.entrySet())</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			_componentMarginCovarianceMap.entrySet())</span>
 		{
-<span class="nc" id="L142">			cumulativeMarginCovariance = cumulativeMarginCovariance +</span>
-<span class="nc" id="L143">				componentMarginCovarianceEntry.getValue();</span>
-<span class="nc" id="L144">		}</span>
+<span class="nc" id="L143">			cumulativeMarginCovariance = cumulativeMarginCovariance +</span>
+<span class="nc" id="L144">				componentMarginCovarianceEntry.getValue();</span>
+<span class="nc" id="L145">		}</span>
 
-<span class="nc" id="L146">		return cumulativeMarginCovariance;</span>
+<span class="nc" id="L147">		return cumulativeMarginCovariance;</span>
 	}
 
 	/**
@@ -154,7 +155,7 @@ public class SensitivityAggregateCR
 
 	public double cumulativeMargin()
 	{
-<span class="nc" id="L157">		return java.lang.Math.sqrt (cumulativeMarginCovariance());</span>
+<span class="nc" id="L158">		return java.lang.Math.sqrt (cumulativeMarginCovariance());</span>
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class SensitivityAggregateCR
 
 	public double cumulativeMarginSensitivity()
 	{
-<span class="nc" id="L168">		return _cumulativeMarginSensitivity;</span>
+<span class="nc" id="L169">		return _cumulativeMarginSensitivity;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

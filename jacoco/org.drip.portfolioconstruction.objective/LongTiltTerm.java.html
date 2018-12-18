@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.objective;
 
 /**
  * &lt;i&gt;LongTiltTerm&lt;/i&gt; holds the Details of Long Tilt Unit Objective Term.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -99,7 +100,7 @@ public class LongTiltTerm extends org.drip.portfolioconstruction.objective.TiltT
 		final double[] adblMembership)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (</span>
+<span class="nc" id="L103">		super (</span>
 			strName,
 			&quot;OBJECTIVE_TERM_LONG_TILT&quot;,
 			&quot;Long Tilt Objective Term&quot;,
@@ -107,40 +108,40 @@ public class LongTiltTerm extends org.drip.portfolioconstruction.objective.TiltT
 			adblMagnitude,
 			adblMembership
 		);
-<span class="nc" id="L110">	}</span>
+<span class="nc" id="L111">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L114">		return new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L115">		return new org.drip.function.definition.RdToR1 (null) {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L117">				return initialHoldings().length;</span>
+<span class="nc" id="L118">				return initialHoldings().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L124" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L125">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))</span>
+<span class="nc" id="L126">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L127">				double dblValue = 0.;</span>
-<span class="nc" id="L128">				int iDimension = adblVariate.length;</span>
+<span class="nc" id="L128">				double dblValue = 0.;</span>
+<span class="nc" id="L129">				int iDimension = adblVariate.length;</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">				if (iDimension != dimension())</span>
-<span class="nc" id="L131">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">				if (iDimension != dimension())</span>
+<span class="nc" id="L132">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L133">				double[] adblMagnitude = magnitude();</span>
+<span class="nc" id="L134">				double[] adblMagnitude = magnitude();</span>
 
-<span class="nc" id="L135">				double[] adblMembership = membership();</span>
+<span class="nc" id="L136">				double[] adblMembership = membership();</span>
 
-<span class="nc" id="L137">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L138">				double[] adblInitialHoldings = initialHoldings();</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L140">					dblValue += adblMagnitude[i] * adblMembership[i] * (java.lang.Math.abs (adblVariate[i]) -</span>
-<span class="nc" id="L141">						java.lang.Math.abs (adblInitialHoldings[i]));</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L141">					dblValue += adblMagnitude[i] * adblMembership[i] * (java.lang.Math.abs (adblVariate[i]) -</span>
+<span class="nc" id="L142">						java.lang.Math.abs (adblInitialHoldings[i]));</span>
 
-<span class="nc" id="L143">				return dblValue;</span>
+<span class="nc" id="L144">				return dblValue;</span>
 			}
 
 			@Override public double derivative (
@@ -149,19 +150,19 @@ public class LongTiltTerm extends org.drip.portfolioconstruction.objective.TiltT
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L152" title="All 4 branches missed.">				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">					(adblVariate))</span>
-<span class="nc" id="L154">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L153" title="All 4 branches missed.">				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">					(adblVariate))</span>
+<span class="nc" id="L155">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L156">				int iDimension = adblVariate.length;</span>
+<span class="nc" id="L157">				int iDimension = adblVariate.length;</span>
 
-<span class="nc bnc" id="L158" title="All 4 branches missed.">				if (iDimension != dimension() || iVariateIndex &gt;= iDimension)</span>
-<span class="nc" id="L159">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">				if (iDimension != dimension() || iVariateIndex &gt;= iDimension)</span>
+<span class="nc" id="L160">					throw new java.lang.Exception (&quot;LongTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">				if (2 &lt;= iOrder) return 0.;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">				if (2 &lt;= iOrder) return 0.;</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">				return (adblVariate[iVariateIndex] &gt; initialHoldings()[iVariateIndex] ? 1. : -1.) *</span>
-<span class="nc" id="L164">					magnitude()[iVariateIndex] * membership()[iVariateIndex];</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">				return (adblVariate[iVariateIndex] &gt; initialHoldings()[iVariateIndex] ? 1. : -1.) *</span>
+<span class="nc" id="L165">					magnitude()[iVariateIndex] * membership()[iVariateIndex];</span>
 			}
 		};
 	}

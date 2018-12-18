@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.risk;
 
 /**
  * &lt;i&gt;AssetCovarianceDense&lt;/i&gt; contains the Joint Dense Covariance for the Pair of the Set of Assets.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/risk&quot;&gt;Risk&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/risk&quot;&gt;Risk&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -98,38 +99,38 @@ public class AssetCovarianceDense extends org.drip.portfolioconstruction.risk.At
 		final java.lang.String strDescription)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L101">		super (strName, strID, strDescription);</span>
-<span class="nc" id="L102">	}</span>
+<span class="nc" id="L102">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L103">	}</span>
 
 	@Override public double[][] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == holdings) return null;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == holdings) return null;</span>
 
-<span class="nc" id="L109">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
+<span class="nc" id="L110">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
 
-<span class="nc" id="L111">		int iSize = setAsset.size();</span>
+<span class="nc" id="L112">		int iSize = setAsset.size();</span>
 
-<span class="nc" id="L113">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCovariance = attribute();</span>
+<span class="nc" id="L114">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCovariance = attribute();</span>
 
-<span class="nc" id="L115">		int i = 0;</span>
-<span class="nc" id="L116">		double[][] aadblAssetCovariance = new double[iSize][iSize];</span>
+<span class="nc" id="L116">		int i = 0;</span>
+<span class="nc" id="L117">		double[][] aadblAssetCovariance = new double[iSize][iSize];</span>
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (java.lang.String strAsset1 : setAsset) {</span>
-<span class="nc" id="L119">			int j = 0;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (java.lang.String strAsset1 : setAsset) {</span>
+<span class="nc" id="L120">			int j = 0;</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">			for (java.lang.String strAsset2 : setAsset) {</span>
-<span class="nc" id="L122">				java.lang.String strKey = strAsset1 + &quot;::&quot; + strAsset2;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">			for (java.lang.String strAsset2 : setAsset) {</span>
+<span class="nc" id="L123">				java.lang.String strKey = strAsset1 + &quot;::&quot; + strAsset2;</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">				if (!mapCovariance.containsKey (strKey)) return null;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">				if (!mapCovariance.containsKey (strKey)) return null;</span>
 
-<span class="nc" id="L126">				aadblAssetCovariance[i][j++] = mapCovariance.get (strKey);</span>
-<span class="nc" id="L127">			}</span>
+<span class="nc" id="L127">				aadblAssetCovariance[i][j++] = mapCovariance.get (strKey);</span>
+<span class="nc" id="L128">			}</span>
 
-<span class="nc" id="L129">			++i;</span>
-<span class="nc" id="L130">		}</span>
+<span class="nc" id="L130">			++i;</span>
+<span class="nc" id="L131">		}</span>
 
-<span class="nc" id="L132">		return aadblAssetCovariance;</span>
+<span class="nc" id="L133">		return aadblAssetCovariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

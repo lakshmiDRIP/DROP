@@ -81,9 +81,10 @@ package org.drip.spaces.metric;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -92,8 +93,8 @@ package org.drip.spaces.metric;
 
 public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVector implements
 	org.drip.spaces.metric.R1Normed {
-<span class="nc" id="L95">	private int _iPNorm = -1;</span>
-<span class="nc" id="L96">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
+<span class="nc" id="L96">	private int _iPNorm = -1;</span>
+<span class="nc" id="L97">	private org.drip.measure.continuous.R1 _distR1 = null;</span>
 
 	/**
 	 * Construct the Standard l^p R^1 Combinatorial Space Instance
@@ -111,12 +112,12 @@ public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVecto
 		final int iPNorm)
 	{
 		try {
-<span class="nc" id="L114">			return new R1Combinatorial (lsElementSpace, distR1, iPNorm);</span>
-<span class="nc" id="L115">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L116">			e.printStackTrace();</span>
+<span class="nc" id="L115">			return new R1Combinatorial (lsElementSpace, distR1, iPNorm);</span>
+<span class="nc" id="L116">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L117">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L119">		return null;</span>
+<span class="nc" id="L120">		return null;</span>
 	}
 
 	/**
@@ -133,12 +134,12 @@ public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVecto
 		final org.drip.measure.continuous.R1 distR1)
 	{
 		try {
-<span class="nc" id="L136">			return new R1Combinatorial (lsElementSpace, distR1, java.lang.Integer.MAX_VALUE);</span>
-<span class="nc" id="L137">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L137">			return new R1Combinatorial (lsElementSpace, distR1, java.lang.Integer.MAX_VALUE);</span>
+<span class="nc" id="L138">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L139">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L141">		return null;</span>
+<span class="nc" id="L142">		return null;</span>
 	}
 
 	/**
@@ -157,99 +158,99 @@ public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVecto
 		final int iPNorm)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L160">		super (lsElementSpace);</span>
+<span class="nc" id="L161">		super (lsElementSpace);</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;R1Combinatorial Constructor: Invalid p-norm&quot;);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
+<span class="nc" id="L164">			throw new java.lang.Exception (&quot;R1Combinatorial Constructor: Invalid p-norm&quot;);</span>
 
-<span class="nc" id="L165">		_distR1 = distR1;</span>
-<span class="nc" id="L166">	}</span>
+<span class="nc" id="L166">		_distR1 = distR1;</span>
+<span class="nc" id="L167">	}</span>
 
 	@Override public int pNorm()
 	{
-<span class="nc" id="L170">		return _iPNorm;</span>
+<span class="nc" id="L171">		return _iPNorm;</span>
 	}
 
 	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
-<span class="nc" id="L175">		return _distR1;</span>
+<span class="nc" id="L176">		return _distR1;</span>
 	}
 
 	@Override public double sampleMetricNorm (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
-<span class="nc" id="L183">			throw new java.lang.Exception (&quot;R1Combinatorial::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;R1Combinatorial::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L185">		return java.lang.Math.abs (dblX);</span>
+<span class="nc" id="L186">		return java.lang.Math.abs (dblX);</span>
 	}
 
 	@Override public double populationMode()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L192">			throw new java.lang.Exception (&quot;R1Combinatorial::populationMode =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L193">			throw new java.lang.Exception (&quot;R1Combinatorial::populationMode =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L194">		double dblMode = java.lang.Double.NaN;</span>
-<span class="nc" id="L195">		double dblModeProbability = java.lang.Double.NaN;</span>
+<span class="nc" id="L195">		double dblMode = java.lang.Double.NaN;</span>
+<span class="nc" id="L196">		double dblModeProbability = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMode))</span>
-<span class="nc" id="L199">				dblModeProbability = _distR1.density (dblMode = dblElement);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMode))</span>
+<span class="nc" id="L200">				dblModeProbability = _distR1.density (dblMode = dblElement);</span>
 			else {
-<span class="nc" id="L201">				double dblElementProbability = _distR1.density (dblElement);</span>
+<span class="nc" id="L202">				double dblElementProbability = _distR1.density (dblElement);</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">				if (dblElementProbability &gt; dblModeProbability) {</span>
-<span class="nc" id="L204">					dblMode = dblElement;</span>
-<span class="nc" id="L205">					dblModeProbability = dblElementProbability;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">				if (dblElementProbability &gt; dblModeProbability) {</span>
+<span class="nc" id="L205">					dblMode = dblElement;</span>
+<span class="nc" id="L206">					dblModeProbability = dblElementProbability;</span>
 				}
 			}
-<span class="nc" id="L208">		}</span>
+<span class="nc" id="L209">		}</span>
 
-<span class="nc" id="L210">		return dblMode;</span>
+<span class="nc" id="L211">		return dblMode;</span>
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L217">			throw new java.lang.Exception (&quot;R1Combinatorial::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L218">			throw new java.lang.Exception (&quot;R1Combinatorial::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L219">		double dblNorm = 0.;</span>
-<span class="nc" id="L220">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L220">		double dblNorm = 0.;</span>
+<span class="nc" id="L221">		double dblNormalizer = 0.;</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
-<span class="nc" id="L223">			double dblElementProbability = _distR1.density (dblElement);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
+<span class="nc" id="L224">			double dblElementProbability = _distR1.density (dblElement);</span>
 
-<span class="nc" id="L225">			dblNormalizer += dblElementProbability;</span>
+<span class="nc" id="L226">			dblNormalizer += dblElementProbability;</span>
 
-<span class="nc" id="L227">			dblNorm += sampleMetricNorm (dblElement) * dblElementProbability;</span>
-<span class="nc" id="L228">		}</span>
+<span class="nc" id="L228">			dblNorm += sampleMetricNorm (dblElement) * dblElementProbability;</span>
+<span class="nc" id="L229">		}</span>
 
-<span class="nc" id="L230">		return dblNorm / dblNormalizer;</span>
+<span class="nc" id="L231">		return dblNorm / dblNormalizer;</span>
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L237" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
-<span class="nc" id="L238">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
+<span class="nc" id="L239">			throw new java.lang.Exception</span>
 				(&quot;R1Combinatorial::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L241">		double dblNormalizer = 0.;</span>
-<span class="nc" id="L242">		double dblBorelMeasureSpaceExpectation = 0.;</span>
+<span class="nc" id="L242">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L243">		double dblBorelMeasureSpaceExpectation = 0.;</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
-<span class="nc" id="L245">			double dblElementProbability = _distR1.density (dblElement);</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (double dblElement : elementSpace()) {</span>
+<span class="nc" id="L246">			double dblElementProbability = _distR1.density (dblElement);</span>
 
-<span class="nc" id="L247">			dblNormalizer += dblElementProbability;</span>
+<span class="nc" id="L248">			dblNormalizer += dblElementProbability;</span>
 
-<span class="nc" id="L249">			dblBorelMeasureSpaceExpectation += funcR1ToR1.evaluate (dblElement) * dblElementProbability;</span>
-<span class="nc" id="L250">		}</span>
+<span class="nc" id="L250">			dblBorelMeasureSpaceExpectation += funcR1ToR1.evaluate (dblElement) * dblElementProbability;</span>
+<span class="nc" id="L251">		}</span>
 
-<span class="nc" id="L252">		return dblBorelMeasureSpaceExpectation / dblNormalizer;</span>
+<span class="nc" id="L253">		return dblBorelMeasureSpaceExpectation / dblNormalizer;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

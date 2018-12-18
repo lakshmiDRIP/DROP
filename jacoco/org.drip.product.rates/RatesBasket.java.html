@@ -109,9 +109,10 @@ package org.drip.product.rates;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -119,9 +120,9 @@ package org.drip.product.rates;
  */
 
 public class RatesBasket extends org.drip.product.definition.CalibratableComponent {
-<span class="fc" id="L122">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L123">	private org.drip.product.rates.Stream[] _aCompFixedStream = null;</span>
-<span class="fc" id="L124">	private org.drip.product.rates.Stream[] _aCompFloatStream = null;</span>
+<span class="fc" id="L123">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L124">	private org.drip.product.rates.Stream[] _aCompFixedStream = null;</span>
+<span class="fc" id="L125">	private org.drip.product.rates.Stream[] _aCompFloatStream = null;</span>
 
 	/**
 	 * RatesBasket constructor
@@ -138,21 +139,21 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.product.rates.Stream[] aCompFixedStream,
 		final org.drip.product.rates.Stream[] aCompFloatStream)
 		throws java.lang.Exception
-<span class="fc" id="L141">	{</span>
-<span class="pc bpc" id="L142" title="6 of 12 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_aCompFixedStream =</span>
+<span class="fc" id="L142">	{</span>
+<span class="pc bpc" id="L143" title="6 of 12 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_aCompFixedStream =</span>
 			aCompFixedStream) || 0 == _aCompFixedStream.length || null == (_aCompFloatStream =
 				aCompFloatStream) || 0 == _aCompFloatStream.length)
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;RatesBasket ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L146">	}</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;RatesBasket ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L147">	}</span>
 
 	@Override public java.lang.String name()
 	{
-<span class="nc" id="L150">		return _strName;</span>
+<span class="nc" id="L151">		return _strName;</span>
 	}
 
 	@Override public java.lang.String primaryCode()
 	{
-<span class="nc" id="L155">		return _strName;</span>
+<span class="nc" id="L156">		return _strName;</span>
 	}
 
 
@@ -164,7 +165,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 
 	public org.drip.product.rates.Stream[] getFixedStreamComponents()
 	{
-<span class="nc" id="L167">		return _aCompFixedStream;</span>
+<span class="nc" id="L168">		return _aCompFixedStream;</span>
 	}
 
 	/**
@@ -175,155 +176,155 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 
 	public org.drip.product.rates.Stream[] getFloatStreamComponents()
 	{
-<span class="nc" id="L178">		return _aCompFloatStream;</span>
+<span class="nc" id="L179">		return _aCompFloatStream;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; couponCurrency()
 	{
-<span class="nc" id="L183">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCouponCurrency = new</span>
+<span class="nc" id="L184">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; mapCouponCurrency = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (null != _aCompFixedStream) {</span>
-<span class="nc" id="L187">			int iFixedStreamLength = _aCompFixedStream.length;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		if (null != _aCompFixedStream) {</span>
+<span class="nc" id="L188">			int iFixedStreamLength = _aCompFixedStream.length;</span>
 
-<span class="nc bnc" id="L189" title="All 2 branches missed.">			if (0 != iFixedStreamLength) {</span>
-<span class="nc bnc" id="L190" title="All 2 branches missed.">				for (int i = 0; i &lt; iFixedStreamLength; ++i)</span>
-<span class="nc" id="L191">					mapCouponCurrency.put (&quot;FIXED&quot; + i, _aCompFixedStream[i].couponCurrency());</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (0 != iFixedStreamLength) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">				for (int i = 0; i &lt; iFixedStreamLength; ++i)</span>
+<span class="nc" id="L192">					mapCouponCurrency.put (&quot;FIXED&quot; + i, _aCompFixedStream[i].couponCurrency());</span>
 			}
 		}
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null != _aCompFloatStream) {</span>
-<span class="nc" id="L196">			int iFloatStreamLength = _aCompFloatStream.length;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (null != _aCompFloatStream) {</span>
+<span class="nc" id="L197">			int iFloatStreamLength = _aCompFloatStream.length;</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (0 != iFloatStreamLength) {</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">				for (int i = 0; i &lt; iFloatStreamLength; ++i)</span>
-<span class="nc" id="L200">					mapCouponCurrency.put (&quot;FLOAT&quot; + i, _aCompFloatStream[i].couponCurrency());</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (0 != iFloatStreamLength) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">				for (int i = 0; i &lt; iFloatStreamLength; ++i)</span>
+<span class="nc" id="L201">					mapCouponCurrency.put (&quot;FLOAT&quot; + i, _aCompFloatStream[i].couponCurrency());</span>
 			}
 		}
 
-<span class="nc" id="L204">		return mapCouponCurrency;</span>
+<span class="nc" id="L205">		return mapCouponCurrency;</span>
 	}
 
 	@Override public java.lang.String payCurrency()
 	{
-<span class="nc bnc" id="L209" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length)</span>
-<span class="nc" id="L210">			return _aCompFixedStream[0].payCurrency();</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length)</span>
+<span class="nc" id="L211">			return _aCompFixedStream[0].payCurrency();</span>
 
-<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length)</span>
-<span class="nc" id="L213">			return _aCompFloatStream[0].payCurrency();</span>
+<span class="nc bnc" id="L213" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length)</span>
+<span class="nc" id="L214">			return _aCompFloatStream[0].payCurrency();</span>
 
-<span class="nc" id="L215">		return null;</span>
+<span class="nc" id="L216">		return null;</span>
 	}
 
 	@Override public java.lang.String principalCurrency()
 	{
-<span class="nc" id="L220">		return null;</span>
+<span class="nc" id="L221">		return null;</span>
 	}
 
 	@Override public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
-<span class="nc bnc" id="L225" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
-<span class="nc bnc" id="L226" title="All 2 branches missed.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream) {</span>
-<span class="nc" id="L227">				org.drip.state.identifier.EntityCDSLabel creditLabel = fixedStream.creditLabel();</span>
+<span class="nc bnc" id="L226" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream) {</span>
+<span class="nc" id="L228">				org.drip.state.identifier.EntityCDSLabel creditLabel = fixedStream.creditLabel();</span>
 
-<span class="nc bnc" id="L229" title="All 2 branches missed.">				if (null != creditLabel) return creditLabel;</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">				if (null != creditLabel) return creditLabel;</span>
 			}
 		}
 
-<span class="nc bnc" id="L233" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream) {</span>
-<span class="nc" id="L235">				org.drip.state.identifier.EntityCDSLabel creditLabel = floatStream.creditLabel();</span>
+<span class="nc bnc" id="L234" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream) {</span>
+<span class="nc" id="L236">				org.drip.state.identifier.EntityCDSLabel creditLabel = floatStream.creditLabel();</span>
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">				if (null != creditLabel) return creditLabel;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">				if (null != creditLabel) return creditLabel;</span>
 			}
 		}
 
-<span class="nc" id="L241">		return null;</span>
+<span class="nc" id="L242">		return null;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
 			forwardLabel()
 	{
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;</span>
 
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (0 == iNumFloatStream) return null;</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (0 == iNumFloatStream) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;
-<span class="nc" id="L253">			mapForwardLabel = new</span>
+<span class="nc" id="L254">			mapForwardLabel = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.ForwardLabel&gt;();
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFloatStream; ++i)</span>
-<span class="nc" id="L257">			mapForwardLabel.put (&quot;FLOAT&quot; + i, _aCompFloatStream[i].forwardLabel());</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFloatStream; ++i)</span>
+<span class="nc" id="L258">			mapForwardLabel.put (&quot;FLOAT&quot; + i, _aCompFloatStream[i].forwardLabel());</span>
 
-<span class="nc" id="L259">		return mapForwardLabel;</span>
+<span class="nc" id="L260">		return mapForwardLabel;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.OTCFixFloatLabel&gt;
 			otcFixFloatLabel()
 	{
-<span class="nc bnc" id="L266" title="All 2 branches missed.">		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (0 == iNumFloatStream) return null;</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (0 == iNumFloatStream) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.OTCFixFloatLabel&gt;
-<span class="nc" id="L271">			mapOTCFixFloatLabel = new</span>
+<span class="nc" id="L272">			mapOTCFixFloatLabel = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.OTCFixFloatLabel&gt;();
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFloatStream; ++i)</span>
-<span class="nc" id="L275">			mapOTCFixFloatLabel.put (&quot;FLOAT&quot; + i, _aCompFloatStream[i].otcFixFloatLabel());</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFloatStream; ++i)</span>
+<span class="nc" id="L276">			mapOTCFixFloatLabel.put (&quot;FLOAT&quot; + i, _aCompFloatStream[i].otcFixFloatLabel());</span>
 
-<span class="nc" id="L277">		return mapOTCFixFloatLabel;</span>
+<span class="nc" id="L278">		return mapOTCFixFloatLabel;</span>
 	}
 
 	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L282">		return org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
+<span class="nc" id="L283">		return org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
 	}
 
 	@Override public org.drip.state.identifier.GovvieLabel govvieLabel()
 	{
-<span class="nc" id="L287">		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());</span>
+<span class="nc" id="L288">		return org.drip.state.identifier.GovvieLabel.Standard (payCurrency());</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;
 		fxLabel()
 	{
-<span class="nc bnc" id="L293" title="All 2 branches missed.">		int iNumFixedStream = null == _aCompFixedStream ? 0 : _aCompFixedStream.length;</span>
-<span class="nc bnc" id="L294" title="All 2 branches missed.">		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		int iNumFixedStream = null == _aCompFixedStream ? 0 : _aCompFixedStream.length;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		int iNumFloatStream = null == _aCompFloatStream ? 0 : _aCompFloatStream.length;</span>
 
-<span class="nc bnc" id="L296" title="All 4 branches missed.">		if (0 == iNumFixedStream &amp;&amp; 0 == iNumFloatStream) return null;</span>
+<span class="nc bnc" id="L297" title="All 4 branches missed.">		if (0 == iNumFixedStream &amp;&amp; 0 == iNumFloatStream) return null;</span>
 
-<span class="nc" id="L298">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; mapFXLabel = new</span>
+<span class="nc" id="L299">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt; mapFXLabel = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.FXLabel&gt;();
 
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFixedStream; ++i) {</span>
-<span class="nc" id="L302">			org.drip.state.identifier.FXLabel fxLabel = _aCompFixedStream[i].fxLabel();</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFixedStream; ++i) {</span>
+<span class="nc" id="L303">			org.drip.state.identifier.FXLabel fxLabel = _aCompFixedStream[i].fxLabel();</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">			if (null != fxLabel) mapFXLabel.put (&quot;FIXED&quot; + i, fxLabel);</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">			if (null != fxLabel) mapFXLabel.put (&quot;FIXED&quot; + i, fxLabel);</span>
 		}
 
-<span class="nc bnc" id="L307" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFloatStream; ++i) {</span>
-<span class="nc" id="L308">			org.drip.state.identifier.FXLabel fxLabel = _aCompFloatStream[i].fxLabel();</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFloatStream; ++i) {</span>
+<span class="nc" id="L309">			org.drip.state.identifier.FXLabel fxLabel = _aCompFloatStream[i].fxLabel();</span>
 
-<span class="nc bnc" id="L310" title="All 2 branches missed.">			if (null != fxLabel) mapFXLabel.put (&quot;FLOAT&quot; + i, fxLabel);</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">			if (null != fxLabel) mapFXLabel.put (&quot;FLOAT&quot; + i, fxLabel);</span>
 		}
 
-<span class="nc" id="L313">		return mapFXLabel;</span>
+<span class="nc" id="L314">		return mapFXLabel;</span>
 	}
 
 	@Override public
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.identifier.VolatilityLabel&gt;
 			volatilityLabel()
 	{
-<span class="nc" id="L320">		return null;</span>
+<span class="nc" id="L321">		return null;</span>
 	}
 
 	@Override public void setPrimaryCode (
 		final java.lang.String strCode)
 	{
-<span class="nc" id="L326">	}</span>
+<span class="nc" id="L327">	}</span>
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
@@ -331,7 +332,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L334">		return null;</span>
+<span class="nc" id="L335">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
@@ -341,13 +342,13 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L344">		return null;</span>
+<span class="nc" id="L345">		return null;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
-<span class="nc" id="L350">		return null;</span>
+<span class="nc" id="L351">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
@@ -357,7 +358,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L360">		return null;</span>
+<span class="nc" id="L361">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
@@ -367,7 +368,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L370">		return null;</span>
+<span class="nc" id="L371">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
@@ -377,7 +378,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L380">		return null;</span>
+<span class="nc" id="L381">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fxPRWC (
@@ -387,7 +388,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L390">		return null;</span>
+<span class="nc" id="L391">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint govviePRWC (
@@ -397,7 +398,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L400">		return null;</span>
+<span class="nc" id="L401">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -407,20 +408,20 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L410">		return null;</span>
+<span class="nc" id="L411">		return null;</span>
 	}
 
 	@Override public double initialNotional()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L416">		return 0;</span>
+<span class="nc" id="L417">		return 0;</span>
 	}
 
 	@Override public double notional (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L423">		return 0;</span>
+<span class="nc" id="L424">		return 0;</span>
 	}
 
 	@Override public double notional (
@@ -428,7 +429,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L431">		return 0;</span>
+<span class="nc" id="L432">		return 0;</span>
 	}
 
 	@Override public org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
@@ -436,50 +437,50 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc" id="L439">		return null;</span>
+<span class="nc" id="L440">		return null;</span>
 	}
 
 	@Override public int freq()
 	{
-<span class="nc" id="L444">		return 0;</span>
+<span class="nc" id="L445">		return 0;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate effectiveDate()
 	{
-<span class="nc" id="L449">		return null;</span>
+<span class="nc" id="L450">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate maturityDate()
 	{
-<span class="nc" id="L454">		return null;</span>
+<span class="nc" id="L455">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
 	{
-<span class="nc" id="L459">		return null;</span>
+<span class="nc" id="L460">		return null;</span>
 	}
 
 	@Override public java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; couponPeriods()
 	{
-<span class="nc" id="L464">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCP = new</span>
+<span class="nc" id="L465">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="nc bnc" id="L467" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
-<span class="nc bnc" id="L468" title="All 2 branches missed.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream)</span>
-<span class="nc" id="L469">				lsCP.addAll (fixedStream.cashFlowPeriod());</span>
+<span class="nc bnc" id="L468" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream)</span>
+<span class="nc" id="L470">				lsCP.addAll (fixedStream.cashFlowPeriod());</span>
 		}
 
-<span class="nc bnc" id="L472" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
-<span class="nc bnc" id="L473" title="All 2 branches missed.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream)</span>
-<span class="nc" id="L474">				lsCP.addAll (floatStream.cashFlowPeriod());</span>
+<span class="nc bnc" id="L473" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream)</span>
+<span class="nc" id="L475">				lsCP.addAll (floatStream.cashFlowPeriod());</span>
 		}
 
-<span class="nc" id="L477">		return lsCP;</span>
+<span class="nc" id="L478">		return lsCP;</span>
 	}
 
 	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
 	{
-<span class="nc" id="L482">		return null;</span>
+<span class="nc" id="L483">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -488,41 +489,41 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="fc" id="L491">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L492">		long lStart = System.nanoTime();</span>
 
-<span class="fc" id="L493">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L494">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="pc bpc" id="L496" title="2 of 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
-<span class="fc bfc" id="L497" title="All 2 branches covered.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream) {</span>
+<span class="pc bpc" id="L497" title="2 of 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream) {</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
-<span class="fc" id="L499">					mapFixedStreamResult = fixedStream.value (valParams, pricerParams, csqs, quotingParams);</span>
+<span class="fc" id="L500">					mapFixedStreamResult = fixedStream.value (valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="pc bpc" id="L501" title="1 of 2 branches missed.">				if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult,</span>
-<span class="fc" id="L502">					fixedStream.name(), mapFixedStreamResult))</span>
-<span class="nc" id="L503">					return null;</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">				if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult,</span>
+<span class="fc" id="L503">					fixedStream.name(), mapFixedStreamResult))</span>
+<span class="nc" id="L504">					return null;</span>
 			}
 		}
 
-<span class="pc bpc" id="L507" title="2 of 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
-<span class="fc bfc" id="L508" title="All 2 branches covered.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream) {</span>
+<span class="pc bpc" id="L508" title="2 of 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
+<span class="fc bfc" id="L509" title="All 2 branches covered.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream) {</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;
-<span class="fc" id="L510">					mapFixedStreamResult = floatStream.value (valParams, pricerParams, csqs, quotingParams);</span>
+<span class="fc" id="L511">					mapFixedStreamResult = floatStream.value (valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="pc bpc" id="L512" title="1 of 2 branches missed.">				if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult,</span>
-<span class="fc" id="L513">					floatStream.name(), mapFixedStreamResult))</span>
-<span class="nc" id="L514">					return null;</span>
+<span class="pc bpc" id="L513" title="1 of 2 branches missed.">				if (!org.drip.analytics.support.Helper.AccumulateMeasures (mapResult,</span>
+<span class="fc" id="L514">					floatStream.name(), mapFixedStreamResult))</span>
+<span class="nc" id="L515">					return null;</span>
 			}
 		}
 
-<span class="fc" id="L518">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L519">		mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L520">		return mapResult;</span>
+<span class="fc" id="L521">		return mapResult;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L525">		return null;</span>
+<span class="nc" id="L526">		return null;</span>
 	}
 
 	@Override public double pv (
@@ -532,19 +533,19 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L535">		double dblDirtyPV = 0.;</span>
+<span class="nc" id="L536">		double dblDirtyPV = 0.;</span>
 
-<span class="nc bnc" id="L537" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
-<span class="nc bnc" id="L538" title="All 2 branches missed.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream)</span>
-<span class="nc" id="L539">				dblDirtyPV += fixedStream.pv (valParams, pricerParams, csqc, vcp);</span>
+<span class="nc bnc" id="L538" title="All 4 branches missed.">		if (null != _aCompFixedStream &amp;&amp; 0 != _aCompFixedStream.length) {</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">			for (org.drip.product.rates.Stream fixedStream : _aCompFixedStream)</span>
+<span class="nc" id="L540">				dblDirtyPV += fixedStream.pv (valParams, pricerParams, csqc, vcp);</span>
 		}
 
-<span class="nc bnc" id="L542" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
-<span class="nc bnc" id="L543" title="All 2 branches missed.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream)</span>
-<span class="nc" id="L544">				dblDirtyPV += floatStream.pv (valParams, pricerParams, csqc, vcp);</span>
+<span class="nc bnc" id="L543" title="All 4 branches missed.">		if (null != _aCompFloatStream &amp;&amp; 0 != _aCompFloatStream.length) {</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">			for (org.drip.product.rates.Stream floatStream : _aCompFloatStream)</span>
+<span class="nc" id="L545">				dblDirtyPV += floatStream.pv (valParams, pricerParams, csqc, vcp);</span>
 		}
 
-<span class="nc" id="L547">		return dblDirtyPV;</span>
+<span class="nc" id="L548">		return dblDirtyPV;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; calibMeasures (
@@ -553,7 +554,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L556">		return null;</span>
+<span class="nc" id="L557">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

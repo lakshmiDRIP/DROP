@@ -67,12 +67,13 @@ package org.drip.portfolioconstruction.cost;
 
 /**
  * &lt;i&gt;TransactionChargeLinear&lt;/i&gt; contains the Parameters for the Linear Transaction Charge Scheme.
- * 
- * &lt;br&gt;&lt;br&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module&lt;/b&gt;        = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/cost&quot;&gt;Cost&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/AssetAllocation&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/cost&quot;&gt;Cost&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -81,7 +82,7 @@ package org.drip.portfolioconstruction.cost;
 
 public class TransactionChargeLinear extends org.drip.portfolioconstruction.cost.TransactionCharge
 {
-<span class="nc" id="L84">	private double _dblLinearCharge = java.lang.Double.NaN;</span>
+<span class="nc" id="L85">	private double _dblLinearCharge = java.lang.Double.NaN;</span>
 
 	/**
 	 * TransactionChargeLinear Constructor
@@ -101,16 +102,16 @@ public class TransactionChargeLinear extends org.drip.portfolioconstruction.cost
 		final double dblLinearCharge)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L104">		super (</span>
+<span class="nc" id="L105">		super (</span>
 			strName,
 			strID,
 			strDescription
 		);
 
-<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLinearCharge = dblLinearCharge) || 0. &gt;</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLinearCharge = dblLinearCharge) || 0. &gt;</span>
 			_dblLinearCharge)
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;TransactionChargeLinear Constuctor =&gt; Invalid Linear Charge&quot;);</span>
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;TransactionChargeLinear Constuctor =&gt; Invalid Linear Charge&quot;);</span>
+<span class="nc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Linear Transaction Charge
@@ -120,7 +121,7 @@ public class TransactionChargeLinear extends org.drip.portfolioconstruction.cost
 
 	public double linearCharge()
 	{
-<span class="nc" id="L123">		return _dblLinearCharge;</span>
+<span class="nc" id="L124">		return _dblLinearCharge;</span>
 	}
 
 	@Override public double estimate (
@@ -128,11 +129,11 @@ public class TransactionChargeLinear extends org.drip.portfolioconstruction.cost
 		final double dblFinal)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))</span>
-<span class="nc" id="L133">			throw new java.lang.Exception (&quot;TransactionChargeLinear::estimate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;TransactionChargeLinear::estimate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L135">		return _dblLinearCharge * java.lang.Math.abs (dblFinal - dblInitial);</span>
+<span class="nc" id="L136">		return _dblLinearCharge * java.lang.Math.abs (dblFinal - dblInitial);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

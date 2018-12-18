@@ -104,9 +104,10 @@ package org.drip.state.credit;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -116,27 +117,27 @@ package org.drip.state.credit;
 public abstract class CreditCurve implements org.drip.analytics.definition.Curve {
 	private static final int NUM_DF_QUADRATURES = 5;
 
-<span class="fc" id="L119">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L120">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L121">	protected org.drip.state.identifier.EntityCDSLabel _label = null;</span>
-<span class="fc" id="L122">	protected int _iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L120">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L121">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L122">	protected org.drip.state.identifier.EntityCDSLabel _label = null;</span>
+<span class="fc" id="L123">	protected int _iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;</span>
 
 	/*
 	 * Manifest Measure Inputs that go into building the Curve Span
 	 */
 
-<span class="fc" id="L128">	protected boolean _bFlat = false;</span>
-<span class="fc" id="L129">	protected double[] _adblCalibQuote = null;</span>
-<span class="fc" id="L130">	protected java.lang.String[] _astrCalibMeasure = null;</span>
-<span class="fc" id="L131">	protected org.drip.state.govvie.GovvieCurve _gc = null;</span>
-<span class="fc" id="L132">	protected org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
-<span class="fc" id="L133">	protected org.drip.param.valuation.ValuationParams _valParam = null;</span>
-<span class="fc" id="L134">	protected org.drip.param.pricer.CreditPricerParams _pricerParam = null;</span>
-<span class="fc" id="L135">	protected org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
-<span class="fc" id="L136">	protected org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;</span>
-<span class="fc" id="L137">	protected org.drip.param.valuation.ValuationCustomizationParams _quotingParams = null;</span>
-<span class="fc" id="L138">	protected org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; _mapMeasure = null;</span>
-<span class="fc" id="L139">	protected org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;</span>
+<span class="fc" id="L129">	protected boolean _bFlat = false;</span>
+<span class="fc" id="L130">	protected double[] _adblCalibQuote = null;</span>
+<span class="fc" id="L131">	protected java.lang.String[] _astrCalibMeasure = null;</span>
+<span class="fc" id="L132">	protected org.drip.state.govvie.GovvieCurve _gc = null;</span>
+<span class="fc" id="L133">	protected org.drip.state.discount.MergedDiscountForwardCurve _dc = null;</span>
+<span class="fc" id="L134">	protected org.drip.param.valuation.ValuationParams _valParam = null;</span>
+<span class="fc" id="L135">	protected org.drip.param.pricer.CreditPricerParams _pricerParam = null;</span>
+<span class="fc" id="L136">	protected org.drip.param.market.LatentStateFixingsContainer _lsfc = null;</span>
+<span class="fc" id="L137">	protected org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;</span>
+<span class="fc" id="L138">	protected org.drip.param.valuation.ValuationCustomizationParams _quotingParams = null;</span>
+<span class="fc" id="L139">	protected org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; _mapMeasure = null;</span>
+<span class="fc" id="L140">	protected org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;</span>
 		_mapQuote = null;
 
 	protected CreditCurve (
@@ -144,31 +145,31 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.state.identifier.EntityCDSLabel label,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
-<span class="fc" id="L147">	{</span>
-<span class="pc bpc" id="L148" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_iEpochDate = iEpochDate) || null == (_label =</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			label) || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
-<span class="nc" id="L150">			throw new java.lang.Exception (&quot;CreditCurve ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L151">	}</span>
+<span class="fc" id="L148">	{</span>
+<span class="pc bpc" id="L149" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_iEpochDate = iEpochDate) || null == (_label =</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			label) || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;CreditCurve ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L152">	}</span>
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="fc" id="L155">		return _label;</span>
+<span class="fc" id="L156">		return _label;</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="nc" id="L160">		return _strCurrency;</span>
+<span class="nc" id="L161">		return _strCurrency;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
 		try {
-<span class="nc" id="L166">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
-<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L167">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L172">		return null;</span>
 	}
 
 	/**
@@ -182,8 +183,8 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 	public boolean setSpecificDefault (
 		final int iSpecificDefaultDate)
 	{
-<span class="nc" id="L185">		_iSpecificDefaultDate = iSpecificDefaultDate;</span>
-<span class="nc" id="L186">		return true;</span>
+<span class="nc" id="L186">		_iSpecificDefaultDate = iSpecificDefaultDate;</span>
+<span class="nc" id="L187">		return true;</span>
 	}
 
 	/**
@@ -194,8 +195,8 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 
 	public boolean unsetSpecificDefault()
 	{
-<span class="nc" id="L197">		_iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L198">		return true;</span>
+<span class="nc" id="L198">		_iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L199">		return true;</span>
 	}
 
 	/**
@@ -226,9 +227,9 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;CreditCurve::survival =&gt; Invalid Date&quot;);</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;CreditCurve::survival =&gt; Invalid Date&quot;);</span>
 
-<span class="fc" id="L231">		return survival (dt.julian());</span>
+<span class="fc" id="L232">		return survival (dt.julian());</span>
 	}
 
 	/**
@@ -245,10 +246,10 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L248" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L249">			throw new java.lang.Exception (&quot;CreditCurve::survival =&gt; Bad tenor&quot;);</span>
+<span class="pc bpc" id="L249" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L250">			throw new java.lang.Exception (&quot;CreditCurve::survival =&gt; Bad tenor&quot;);</span>
 
-<span class="fc" id="L251">		return survival (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
+<span class="fc" id="L252">		return survival (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
 	}
 
 	/**
@@ -267,19 +268,19 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">		if (iDate1 == iDate2) return survival (iDate1);</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">		if (iDate1 == iDate2) return survival (iDate1);</span>
 
-<span class="fc" id="L272">		int iNumQuadratures = 0;</span>
-<span class="fc" id="L273">		double dblEffectiveSurvival = 0.;</span>
-<span class="fc" id="L274">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
+<span class="fc" id="L273">		int iNumQuadratures = 0;</span>
+<span class="fc" id="L274">		double dblEffectiveSurvival = 0.;</span>
+<span class="fc" id="L275">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
 
-<span class="fc bfc" id="L276" title="All 2 branches covered.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
-<span class="fc" id="L277">			++iNumQuadratures;</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
+<span class="fc" id="L278">			++iNumQuadratures;</span>
 
-<span class="fc" id="L279">			dblEffectiveSurvival += (survival (iDate) + survival (iDate + iQuadratureWidth));</span>
+<span class="fc" id="L280">			dblEffectiveSurvival += (survival (iDate) + survival (iDate + iQuadratureWidth));</span>
 		}
 
-<span class="fc" id="L282">		return dblEffectiveSurvival / (2. * iNumQuadratures);</span>
+<span class="fc" id="L283">		return dblEffectiveSurvival / (2. * iNumQuadratures);</span>
 	}
 
 	/**
@@ -298,10 +299,10 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L301" title="2 of 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L302">			throw new java.lang.Exception (&quot;CreditCurve::effectiveSurvival =&gt; Invalid date&quot;);</span>
+<span class="pc bpc" id="L302" title="2 of 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L303">			throw new java.lang.Exception (&quot;CreditCurve::effectiveSurvival =&gt; Invalid date&quot;);</span>
 
-<span class="fc" id="L304">		return effectiveSurvival (dt1.julian(), dt2.julian());</span>
+<span class="fc" id="L305">		return effectiveSurvival (dt1.julian(), dt2.julian());</span>
 	}
 
 	/**
@@ -320,11 +321,11 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L323" title="4 of 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
-<span class="nc" id="L324">			throw new java.lang.Exception (&quot;CreditCurve::effectiveSurvival =&gt; bad tenor&quot;);</span>
+<span class="pc bpc" id="L324" title="4 of 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
+<span class="nc" id="L325">			throw new java.lang.Exception (&quot;CreditCurve::effectiveSurvival =&gt; bad tenor&quot;);</span>
 
-<span class="fc" id="L326">		return effectiveSurvival (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor</span>
-<span class="fc" id="L327">			(strTenor1), new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor2));</span>
+<span class="fc" id="L327">		return effectiveSurvival (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor</span>
+<span class="fc" id="L328">			(strTenor1), new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor2));</span>
 	}
 
 	/**
@@ -355,9 +356,9 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L358" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;CreditCurve::recovery =&gt; Invalid Date&quot;);</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;CreditCurve::recovery =&gt; Invalid Date&quot;);</span>
 
-<span class="fc" id="L360">		return recovery (dt.julian());</span>
+<span class="fc" id="L361">		return recovery (dt.julian());</span>
 	}
 
 	/**
@@ -374,10 +375,10 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L377" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L378">			throw new java.lang.Exception (&quot;CreditCurve::recovery =&gt; Invalid Tenor&quot;);</span>
+<span class="pc bpc" id="L378" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L379">			throw new java.lang.Exception (&quot;CreditCurve::recovery =&gt; Invalid Tenor&quot;);</span>
 
-<span class="fc" id="L380">		return recovery (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
+<span class="fc" id="L381">		return recovery (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
 	}
 
 	/**
@@ -396,21 +397,21 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L399" title="All 2 branches covered.">		if (iDate1 == iDate2) return recovery (iDate1);</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">		if (iDate1 == iDate2) return recovery (iDate1);</span>
 
-<span class="fc" id="L401">		int iNumQuadratures = 0;</span>
-<span class="fc" id="L402">		double dblEffectiveRecovery = 0.;</span>
-<span class="fc" id="L403">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
+<span class="fc" id="L402">		int iNumQuadratures = 0;</span>
+<span class="fc" id="L403">		double dblEffectiveRecovery = 0.;</span>
+<span class="fc" id="L404">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
 
-<span class="fc bfc" id="L405" title="All 2 branches covered.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
+<span class="fc bfc" id="L406" title="All 2 branches covered.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
 
-<span class="fc bfc" id="L407" title="All 2 branches covered.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
-<span class="fc" id="L408">			++iNumQuadratures;</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
+<span class="fc" id="L409">			++iNumQuadratures;</span>
 
-<span class="fc" id="L410">			dblEffectiveRecovery += (recovery (iDate) + recovery (iDate + iQuadratureWidth));</span>
+<span class="fc" id="L411">			dblEffectiveRecovery += (recovery (iDate) + recovery (iDate + iQuadratureWidth));</span>
 		}
 
-<span class="fc" id="L413">		return dblEffectiveRecovery / (2. * iNumQuadratures);</span>
+<span class="fc" id="L414">		return dblEffectiveRecovery / (2. * iNumQuadratures);</span>
 	}
 
 	/**
@@ -429,10 +430,10 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L432" title="2 of 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L433">			throw new java.lang.Exception (&quot;CreditCurve::effectiveRecovery =&gt; Invalid date&quot;);</span>
+<span class="pc bpc" id="L433" title="2 of 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L434">			throw new java.lang.Exception (&quot;CreditCurve::effectiveRecovery =&gt; Invalid date&quot;);</span>
 
-<span class="fc" id="L435">		return effectiveRecovery (dt1.julian(), dt2.julian());</span>
+<span class="fc" id="L436">		return effectiveRecovery (dt1.julian(), dt2.julian());</span>
 	}
 
 	/**
@@ -451,11 +452,11 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L454" title="4 of 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
-<span class="nc" id="L455">			throw new java.lang.Exception (&quot;CreditCurve::effectiveRecovery =&gt; Invalid tenor&quot;);</span>
+<span class="pc bpc" id="L455" title="4 of 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
+<span class="nc" id="L456">			throw new java.lang.Exception (&quot;CreditCurve::effectiveRecovery =&gt; Invalid tenor&quot;);</span>
 
-<span class="fc" id="L457">		return effectiveRecovery (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor</span>
-<span class="fc" id="L458">			(strTenor1), new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor2));</span>
+<span class="fc" id="L458">		return effectiveRecovery (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor</span>
+<span class="fc" id="L459">			(strTenor1), new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor2));</span>
 	}
 
 	/**
@@ -474,12 +475,12 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L477" title="2 of 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L478">			throw new java.lang.Exception (&quot;CreditCurve::hazard =&gt; Invalid dates&quot;);</span>
+<span class="pc bpc" id="L478" title="2 of 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L479">			throw new java.lang.Exception (&quot;CreditCurve::hazard =&gt; Invalid dates&quot;);</span>
 
-<span class="pc bpc" id="L480" title="2 of 4 branches missed.">		if (dt1.julian() &lt; _iEpochDate || dt2.julian() &lt; _iEpochDate) return 0.;</span>
+<span class="pc bpc" id="L481" title="2 of 4 branches missed.">		if (dt1.julian() &lt; _iEpochDate || dt2.julian() &lt; _iEpochDate) return 0.;</span>
 
-<span class="fc" id="L482">		return 365.25 / (dt2.julian() - dt1.julian()) * java.lang.Math.log (survival (dt1) / survival (dt2));</span>
+<span class="fc" id="L483">		return 365.25 / (dt2.julian() - dt1.julian()) * java.lang.Math.log (survival (dt1) / survival (dt2));</span>
 	}
 
 	/**
@@ -496,7 +497,7 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L499">		return hazard (dt, new org.drip.analytics.date.JulianDate (_iEpochDate));</span>
+<span class="fc" id="L500">		return hazard (dt, new org.drip.analytics.date.JulianDate (_iEpochDate));</span>
 	}
 
 	/**
@@ -513,10 +514,10 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L516" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L517">			throw new java.lang.Exception (&quot;CreditCurve::hazard =&gt; Bad Tenor&quot;);</span>
+<span class="pc bpc" id="L517" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L518">			throw new java.lang.Exception (&quot;CreditCurve::hazard =&gt; Bad Tenor&quot;);</span>
 
-<span class="fc" id="L519">		return hazard (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
+<span class="fc" id="L520">		return hazard (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));</span>
 	}
 
 	/**
@@ -561,60 +562,60 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="fc" id="L564">		_dc = dc;</span>
-<span class="fc" id="L565">		_gc = gc;</span>
-<span class="fc" id="L566">		_lsfc = lsfc;</span>
-<span class="fc" id="L567">		_bFlat = bFlat;</span>
-<span class="fc" id="L568">		_valParam = valParam;</span>
-<span class="fc" id="L569">		_aCalibInst = aCalibInst;</span>
-<span class="fc" id="L570">		_pricerParam = pricerParam;</span>
-<span class="fc" id="L571">		_quotingParams = quotingParams;</span>
-<span class="fc" id="L572">		_adblCalibQuote = adblCalibQuote;</span>
-<span class="fc" id="L573">		_astrCalibMeasure = astrCalibMeasure;</span>
+<span class="fc" id="L565">		_dc = dc;</span>
+<span class="fc" id="L566">		_gc = gc;</span>
+<span class="fc" id="L567">		_lsfc = lsfc;</span>
+<span class="fc" id="L568">		_bFlat = bFlat;</span>
+<span class="fc" id="L569">		_valParam = valParam;</span>
+<span class="fc" id="L570">		_aCalibInst = aCalibInst;</span>
+<span class="fc" id="L571">		_pricerParam = pricerParam;</span>
+<span class="fc" id="L572">		_quotingParams = quotingParams;</span>
+<span class="fc" id="L573">		_adblCalibQuote = adblCalibQuote;</span>
+<span class="fc" id="L574">		_astrCalibMeasure = astrCalibMeasure;</span>
 
-<span class="fc" id="L575">		_mapQuote = new</span>
+<span class="fc" id="L576">		_mapQuote = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
 
-<span class="fc" id="L578">		_mapMeasure = new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L579">		_mapMeasure = new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();</span>
 
-<span class="fc bfc" id="L580" title="All 2 branches covered.">		for (int i = 0; i &lt; aCalibInst.length; ++i) {</span>
-<span class="fc" id="L581">			_mapMeasure.put (_aCalibInst[i].primaryCode(), astrCalibMeasure[i]);</span>
+<span class="fc bfc" id="L581" title="All 2 branches covered.">		for (int i = 0; i &lt; aCalibInst.length; ++i) {</span>
+<span class="fc" id="L582">			_mapMeasure.put (_aCalibInst[i].primaryCode(), astrCalibMeasure[i]);</span>
 
-<span class="fc" id="L583">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapManifestMeasureCalibQuote</span>
+<span class="fc" id="L584">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapManifestMeasureCalibQuote</span>
 				= new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L586">			mapManifestMeasureCalibQuote.put (_astrCalibMeasure[i], adblCalibQuote[i]);</span>
+<span class="fc" id="L587">			mapManifestMeasureCalibQuote.put (_astrCalibMeasure[i], adblCalibQuote[i]);</span>
 
-<span class="fc" id="L588">			_mapQuote.put (_aCalibInst[i].primaryCode(), mapManifestMeasureCalibQuote);</span>
+<span class="fc" id="L589">			_mapQuote.put (_aCalibInst[i].primaryCode(), mapManifestMeasureCalibQuote);</span>
 
-<span class="fc" id="L590">			java.lang.String[] astrSecCode = _aCalibInst[i].secondaryCode();</span>
+<span class="fc" id="L591">			java.lang.String[] astrSecCode = _aCalibInst[i].secondaryCode();</span>
 
-<span class="pc bpc" id="L592" title="1 of 2 branches missed.">			if (null != astrSecCode) {</span>
-<span class="fc bfc" id="L593" title="All 2 branches covered.">				for (int j = 0; j &lt; astrSecCode.length; ++j)</span>
-<span class="fc" id="L594">					_mapQuote.put (astrSecCode[j], mapManifestMeasureCalibQuote);</span>
+<span class="pc bpc" id="L593" title="1 of 2 branches missed.">			if (null != astrSecCode) {</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">				for (int j = 0; j &lt; astrSecCode.length; ++j)</span>
+<span class="fc" id="L595">					_mapQuote.put (astrSecCode[j], mapManifestMeasureCalibQuote);</span>
 			}
 		}
-<span class="fc" id="L597">	}</span>
+<span class="fc" id="L598">	}</span>
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L602">		return false;</span>
+<span class="nc" id="L603">		return false;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="fc" id="L607">		return _aCalibInst;</span>
+<span class="fc" id="L608">		return _aCalibInst;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="pc bpc" id="L613" title="4 of 8 branches missed.">		if (null == _mapQuote || 0 == _mapQuote.size() || null == strInstr || strInstr.isEmpty() ||</span>
-<span class="pc bpc" id="L614" title="1 of 2 branches missed.">			!_mapQuote.containsKey (strInstr))</span>
-<span class="nc" id="L615">			return null;</span>
+<span class="pc bpc" id="L614" title="4 of 8 branches missed.">		if (null == _mapQuote || 0 == _mapQuote.size() || null == strInstr || strInstr.isEmpty() ||</span>
+<span class="pc bpc" id="L615" title="1 of 2 branches missed.">			!_mapQuote.containsKey (strInstr))</span>
+<span class="nc" id="L616">			return null;</span>
 
-<span class="fc" id="L617">		return _mapQuote.get (strInstr);</span>
+<span class="fc" id="L618">		return _mapQuote.get (strInstr);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

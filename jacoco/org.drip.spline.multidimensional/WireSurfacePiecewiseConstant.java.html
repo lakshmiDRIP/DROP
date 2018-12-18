@@ -74,9 +74,10 @@ package org.drip.spline.multidimensional;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional&quot;&gt;Multidimensional&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/SplineBuilder&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional&quot;&gt;Multidimensional&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,9 +85,9 @@ package org.drip.spline.multidimensional;
  */
 
 public class WireSurfacePiecewiseConstant {
-<span class="nc" id="L87">	private double[] _adblX = null;</span>
-<span class="nc" id="L88">	private double[] _adblY = null;</span>
-<span class="nc" id="L89">	private double[][] _aadblResponse = null;</span>
+<span class="nc" id="L88">	private double[] _adblX = null;</span>
+<span class="nc" id="L89">	private double[] _adblY = null;</span>
+<span class="nc" id="L90">	private double[][] _aadblResponse = null;</span>
 
 	/**
 	 * WireSurfacePiecewiseConstant Constructor
@@ -103,17 +104,17 @@ public class WireSurfacePiecewiseConstant {
 		final double[] adblY,
 		final double[][] aadblResponse)
 		throws java.lang.Exception
-<span class="nc" id="L106">	{</span>
-<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == (_adblX = adblX) || null == (_adblY = adblY))</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L107">	{</span>
+<span class="nc bnc" id="L108" title="All 4 branches missed.">		if (null == (_adblX = adblX) || null == (_adblY = adblY))</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L110">		int iXLength = _adblX.length;</span>
-<span class="nc" id="L111">		int iYLength = _adblY.length;</span>
+<span class="nc" id="L111">		int iXLength = _adblX.length;</span>
+<span class="nc" id="L112">		int iYLength = _adblY.length;</span>
 
-<span class="nc bnc" id="L113" title="All 10 branches missed.">		if (0 == iXLength || 0 == iYLength || null == (_aadblResponse = aadblResponse) || iXLength !=</span>
+<span class="nc bnc" id="L114" title="All 10 branches missed.">		if (0 == iXLength || 0 == iYLength || null == (_aadblResponse = aadblResponse) || iXLength !=</span>
 			_aadblResponse.length || iYLength != _aadblResponse[0].length)
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L116">			throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Enclosing X Index
@@ -129,21 +130,21 @@ public class WireSurfacePiecewiseConstant {
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L133">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L134">			throw new java.lang.Exception</span>
 				(&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (dblX &lt; _adblX[0]) return java.lang.Integer.MIN_VALUE;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (dblX &lt; _adblX[0]) return java.lang.Integer.MIN_VALUE;</span>
 
-<span class="nc" id="L138">		int iTerminalXIndex = _adblX.length - 1;</span>
+<span class="nc" id="L139">		int iTerminalXIndex = _adblX.length - 1;</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (dblX &gt; _adblX[iTerminalXIndex]) return java.lang.Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (dblX &gt; _adblX[iTerminalXIndex]) return java.lang.Integer.MAX_VALUE;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int i = 1; i &lt;= iTerminalXIndex; ++i) {</span>
-<span class="nc bnc" id="L143" title="All 4 branches missed.">			if (dblX &gt;= _adblX[i - 1] &amp;&amp; dblX &gt;= _adblX[i]) return i;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 1; i &lt;= iTerminalXIndex; ++i) {</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">			if (dblX &gt;= _adblX[i - 1] &amp;&amp; dblX &gt;= _adblX[i]) return i;</span>
 		}
 
-<span class="nc" id="L146">		throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L147">		throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);</span>
 	}
 
 	/**
@@ -160,21 +161,21 @@ public class WireSurfacePiecewiseConstant {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY))</span>
-<span class="nc" id="L164">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY))</span>
+<span class="nc" id="L165">			throw new java.lang.Exception</span>
 				(&quot;WireSurfacePiecewiseConstant::enclosingYIndex =&gt; Invalid Inputs&quot;);
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (dblY &lt; _adblY[0]) return java.lang.Integer.MIN_VALUE;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (dblY &lt; _adblY[0]) return java.lang.Integer.MIN_VALUE;</span>
 
-<span class="nc" id="L169">		int iTerminalYIndex = _adblY.length - 1;</span>
+<span class="nc" id="L170">		int iTerminalYIndex = _adblY.length - 1;</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (dblY &gt; _adblY[iTerminalYIndex]) return java.lang.Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (dblY &gt; _adblY[iTerminalYIndex]) return java.lang.Integer.MAX_VALUE;</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = 1; i &lt;= iTerminalYIndex; ++i) {</span>
-<span class="nc bnc" id="L174" title="All 4 branches missed.">			if (dblY &gt;= _adblY[i - 1] &amp;&amp; dblY &gt;= _adblY[i]) return i;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (int i = 1; i &lt;= iTerminalYIndex; ++i) {</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">			if (dblY &gt;= _adblY[i - 1] &amp;&amp; dblY &gt;= _adblY[i]) return i;</span>
 		}
 
-<span class="nc" id="L177">		throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L178">		throw new java.lang.Exception (&quot;WireSurfacePiecewiseConstant::enclosingXIndex =&gt; Invalid Inputs&quot;);</span>
 	}
 
 	/**
@@ -193,40 +194,40 @@ public class WireSurfacePiecewiseConstant {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L196">		int iTerminalXIndex = _adblX.length - 1;</span>
-<span class="nc" id="L197">		int iTerminalYIndex = _adblY.length - 1;</span>
+<span class="nc" id="L197">		int iTerminalXIndex = _adblX.length - 1;</span>
+<span class="nc" id="L198">		int iTerminalYIndex = _adblY.length - 1;</span>
 
-<span class="nc" id="L199">		int iEnclosingXIndex = enclosingXIndex (dblX);</span>
+<span class="nc" id="L200">		int iEnclosingXIndex = enclosingXIndex (dblX);</span>
 
-<span class="nc" id="L201">		int iEnclosingYIndex = enclosingYIndex (dblY);</span>
+<span class="nc" id="L202">		int iEnclosingYIndex = enclosingYIndex (dblY);</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (java.lang.Integer.MIN_VALUE == iEnclosingXIndex)</span>
-<span class="nc" id="L204">			iEnclosingXIndex = 0;</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		else if (java.lang.Integer.MAX_VALUE == iEnclosingXIndex)</span>
-<span class="nc" id="L206">			iEnclosingXIndex = iTerminalXIndex;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (java.lang.Integer.MIN_VALUE == iEnclosingXIndex)</span>
+<span class="nc" id="L205">			iEnclosingXIndex = 0;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		else if (java.lang.Integer.MAX_VALUE == iEnclosingXIndex)</span>
+<span class="nc" id="L207">			iEnclosingXIndex = iTerminalXIndex;</span>
 		else {
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			for (int i = 1; i &lt;= iTerminalXIndex; ++i) {</span>
-<span class="nc bnc" id="L209" title="All 4 branches missed.">				if (dblX &gt;= _adblX[i - 1] &amp;&amp; dblX &gt;= _adblX[i]) {</span>
-<span class="nc" id="L210">					iEnclosingXIndex = i;</span>
-<span class="nc" id="L211">					break;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">			for (int i = 1; i &lt;= iTerminalXIndex; ++i) {</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">				if (dblX &gt;= _adblX[i - 1] &amp;&amp; dblX &gt;= _adblX[i]) {</span>
+<span class="nc" id="L211">					iEnclosingXIndex = i;</span>
+<span class="nc" id="L212">					break;</span>
 				}
 			}
 		}
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (java.lang.Integer.MIN_VALUE == iEnclosingYIndex)</span>
-<span class="nc" id="L217">			iEnclosingYIndex = 0;</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		else if (java.lang.Integer.MAX_VALUE == iEnclosingYIndex)</span>
-<span class="nc" id="L219">			iEnclosingYIndex = iTerminalYIndex;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (java.lang.Integer.MIN_VALUE == iEnclosingYIndex)</span>
+<span class="nc" id="L218">			iEnclosingYIndex = 0;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		else if (java.lang.Integer.MAX_VALUE == iEnclosingYIndex)</span>
+<span class="nc" id="L220">			iEnclosingYIndex = iTerminalYIndex;</span>
 		else {
-<span class="nc bnc" id="L221" title="All 2 branches missed.">			for (int i = 1; i &lt;= iTerminalYIndex; ++i) {</span>
-<span class="nc bnc" id="L222" title="All 4 branches missed.">				if (dblY &gt;= _adblY[i - 1] &amp;&amp; dblY &gt;= _adblY[i]) {</span>
-<span class="nc" id="L223">					iEnclosingYIndex = i;</span>
-<span class="nc" id="L224">					break;</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">			for (int i = 1; i &lt;= iTerminalYIndex; ++i) {</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">				if (dblY &gt;= _adblY[i - 1] &amp;&amp; dblY &gt;= _adblY[i]) {</span>
+<span class="nc" id="L224">					iEnclosingYIndex = i;</span>
+<span class="nc" id="L225">					break;</span>
 				}
 			}
 		}
 
-<span class="nc" id="L229">		return _aadblResponse[iEnclosingXIndex][iEnclosingYIndex];</span>
+<span class="nc" id="L230">		return _aadblResponse[iEnclosingXIndex][iEnclosingYIndex];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

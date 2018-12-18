@@ -71,16 +71,17 @@ package org.drip.service.state;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state&quot;&gt;Latent State API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L83">public class OvernightCurveAPI {</span>
+<span class="nc" id="L84">public class OvernightCurveAPI {</span>
 
 	/**
 	 * Generate the Overnight Curve Horizon Metrics for the Specified Date
@@ -105,58 +106,58 @@ package org.drip.service.state;
 		final java.lang.String strCurrency,
 		final int iLatentStateType)
 	{
-<span class="nc bnc" id="L108" title="All 10 branches missed.">		if (null == dtSpot || null == astrOvernightCurveOISTenor || null == adblOvernightCurveOISQuote ||</span>
+<span class="nc bnc" id="L109" title="All 10 branches missed.">		if (null == dtSpot || null == astrOvernightCurveOISTenor || null == adblOvernightCurveOISQuote ||</span>
 			null == astrInTenor || null == astrForTenor)
-<span class="nc" id="L110">			return null;</span>
+<span class="nc" id="L111">			return null;</span>
 
-<span class="nc" id="L112">		int iNumInTenor = astrInTenor.length;</span>
-<span class="nc" id="L113">		int iNumForTenor = astrForTenor.length;</span>
-<span class="nc" id="L114">		double[] adblForTenorDCF = new double[iNumForTenor];</span>
-<span class="nc" id="L115">		int iNumCalibrationInstrument = astrOvernightCurveOISTenor.length;</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		int iNumOISQuote = null == adblOvernightCurveOISQuote ? 0 : adblOvernightCurveOISQuote.length;</span>
+<span class="nc" id="L113">		int iNumInTenor = astrInTenor.length;</span>
+<span class="nc" id="L114">		int iNumForTenor = astrForTenor.length;</span>
+<span class="nc" id="L115">		double[] adblForTenorDCF = new double[iNumForTenor];</span>
+<span class="nc" id="L116">		int iNumCalibrationInstrument = astrOvernightCurveOISTenor.length;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		int iNumOISQuote = null == adblOvernightCurveOISQuote ? 0 : adblOvernightCurveOISQuote.length;</span>
 
-<span class="nc bnc" id="L118" title="All 8 branches missed.">		if (0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor || iNumOISQuote !=</span>
+<span class="nc bnc" id="L119" title="All 8 branches missed.">		if (0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor || iNumOISQuote !=</span>
 			iNumCalibrationInstrument)
-<span class="nc" id="L120">			return null;</span>
+<span class="nc" id="L121">			return null;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForTenor; ++i) {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForTenor; ++i) {</span>
 			try {
-<span class="nc" id="L124">				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);</span>
-<span class="nc" id="L125">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L126">				e.printStackTrace();</span>
+<span class="nc" id="L125">				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);</span>
+<span class="nc" id="L126">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L127">				e.printStackTrace();</span>
 
-<span class="nc" id="L128">				return null;</span>
-<span class="nc" id="L129">			}</span>
+<span class="nc" id="L129">				return null;</span>
+<span class="nc" id="L130">			}</span>
 		}
 
-<span class="nc" id="L132">		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
-<span class="nc" id="L133">			org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (dtSpot, strCurrency, null,</span>
+<span class="nc" id="L133">		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
+<span class="nc" id="L134">			org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (dtSpot, strCurrency, null,</span>
 				null, &quot;Rate&quot;, astrOvernightCurveOISTenor, adblOvernightCurveOISQuote, &quot;SwapRate&quot;, null, null,
 					null, &quot;SwapRate&quot;, null, null, &quot;SwapRate&quot;, iLatentStateType);
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (null == dcOvernight) return null;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (null == dcOvernight) return null;</span>
 
 		try {
-<span class="nc" id="L140">			org.drip.historical.state.FundingCurveMetrics fcm = new</span>
+<span class="nc" id="L141">			org.drip.historical.state.FundingCurveMetrics fcm = new</span>
 				org.drip.historical.state.FundingCurveMetrics (dtSpot);
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">			for (java.lang.String strInTenor : astrInTenor) {</span>
-<span class="nc" id="L144">				org.drip.analytics.date.JulianDate dtIn = dtSpot.addTenor (strInTenor);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			for (java.lang.String strInTenor : astrInTenor) {</span>
+<span class="nc" id="L145">				org.drip.analytics.date.JulianDate dtIn = dtSpot.addTenor (strInTenor);</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">					if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow</span>
-<span class="nc" id="L148">						(dcOvernight.df (dtIn) / dcOvernight.df (dtIn.addTenor (astrForTenor[j])), 1. /</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">					if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow</span>
+<span class="nc" id="L149">						(dcOvernight.df (dtIn) / dcOvernight.df (dtIn.addTenor (astrForTenor[j])), 1. /</span>
 							adblForTenorDCF[j]) - 1.))
-<span class="nc" id="L150">						return null;</span>
+<span class="nc" id="L151">						return null;</span>
 				}
 			}
 
-<span class="nc" id="L154">			return fcm;</span>
-<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="nc" id="L155">			return fcm;</span>
+<span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L157">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L159">		return null;</span>
+<span class="nc" id="L160">		return null;</span>
 	}
 
 	/**
@@ -183,70 +184,70 @@ package org.drip.service.state;
 			final java.lang.String strCurrency,
 			final int iLatentStateType)
 	{
-<span class="nc bnc" id="L186" title="All 10 branches missed.">		if (null == adtSpot || null == astrOvernightCurveOISTenor || null == aadblOvernightCurveOISQuote ||</span>
+<span class="nc bnc" id="L187" title="All 10 branches missed.">		if (null == adtSpot || null == astrOvernightCurveOISTenor || null == aadblOvernightCurveOISQuote ||</span>
 			null == astrInTenor || null == astrForTenor)
-<span class="nc" id="L188">			return null;</span>
+<span class="nc" id="L189">			return null;</span>
 
-<span class="nc" id="L190">		int iNumClose = adtSpot.length;</span>
-<span class="nc" id="L191">		int iNumInTenor = astrInTenor.length;</span>
-<span class="nc" id="L192">		int iNumForTenor = astrForTenor.length;</span>
-<span class="nc" id="L193">		double[] adblForTenorDCF = new double[iNumForTenor];</span>
-<span class="nc" id="L194">		int iNumCalibrationInstrument = astrOvernightCurveOISTenor.length;</span>
+<span class="nc" id="L191">		int iNumClose = adtSpot.length;</span>
+<span class="nc" id="L192">		int iNumInTenor = astrInTenor.length;</span>
+<span class="nc" id="L193">		int iNumForTenor = astrForTenor.length;</span>
+<span class="nc" id="L194">		double[] adblForTenorDCF = new double[iNumForTenor];</span>
+<span class="nc" id="L195">		int iNumCalibrationInstrument = astrOvernightCurveOISTenor.length;</span>
 
-<span class="nc bnc" id="L196" title="All 8 branches missed.">		if (0 == iNumClose || 0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor)</span>
-<span class="nc" id="L197">			return null;</span>
+<span class="nc bnc" id="L197" title="All 8 branches missed.">		if (0 == iNumClose || 0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor)</span>
+<span class="nc" id="L198">			return null;</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForTenor; ++i) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumForTenor; ++i) {</span>
 			try {
-<span class="nc" id="L201">				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);</span>
-<span class="nc" id="L202">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L203">				e.printStackTrace();</span>
+<span class="nc" id="L202">				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);</span>
+<span class="nc" id="L203">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L204">				e.printStackTrace();</span>
 
-<span class="nc" id="L205">				return null;</span>
-<span class="nc" id="L206">			}</span>
+<span class="nc" id="L206">				return null;</span>
+<span class="nc" id="L207">			}</span>
 		}
 
 		java.util.Map&lt;org.drip.analytics.date.JulianDate, org.drip.historical.state.FundingCurveMetrics&gt;
-<span class="nc" id="L210">			mapFCM = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
+<span class="nc" id="L211">			mapFCM = new java.util.TreeMap&lt;org.drip.analytics.date.JulianDate,</span>
 				org.drip.historical.state.FundingCurveMetrics&gt;();
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L214">			org.drip.historical.state.FundingCurveMetrics fcm = null;</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">			int iNumOISQuote = null == aadblOvernightCurveOISQuote[i] ? 0 :</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L215">			org.drip.historical.state.FundingCurveMetrics fcm = null;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			int iNumOISQuote = null == aadblOvernightCurveOISQuote[i] ? 0 :</span>
 				aadblOvernightCurveOISQuote[i].length;
 
-<span class="nc bnc" id="L218" title="All 4 branches missed.">			if (0 == iNumOISQuote || iNumOISQuote != iNumCalibrationInstrument) continue;</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">			if (0 == iNumOISQuote || iNumOISQuote != iNumCalibrationInstrument) continue;</span>
 
-<span class="nc" id="L220">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
-<span class="nc" id="L221">				org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (adtSpot[i], strCurrency,</span>
+<span class="nc" id="L221">			org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =</span>
+<span class="nc" id="L222">				org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (adtSpot[i], strCurrency,</span>
 					null, null, &quot;Rate&quot;, astrOvernightCurveOISTenor, aadblOvernightCurveOISQuote[i],
 						&quot;SwapRate&quot;, null, null, null, &quot;SwapRate&quot;, null, null, &quot;SwapRate&quot;, iLatentStateType);
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">			if (null == dcOvernight) continue;</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (null == dcOvernight) continue;</span>
 
 			try {
-<span class="nc" id="L228">				fcm = new org.drip.historical.state.FundingCurveMetrics (adtSpot[i]);</span>
+<span class="nc" id="L229">				fcm = new org.drip.historical.state.FundingCurveMetrics (adtSpot[i]);</span>
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">				for (java.lang.String strInTenor : astrInTenor) {</span>
-<span class="nc" id="L231">					org.drip.analytics.date.JulianDate dtIn = adtSpot[i].addTenor (strInTenor);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">				for (java.lang.String strInTenor : astrInTenor) {</span>
+<span class="nc" id="L232">					org.drip.analytics.date.JulianDate dtIn = adtSpot[i].addTenor (strInTenor);</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">						if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow</span>
-<span class="nc" id="L235">							(dcOvernight.df (dtIn) / dcOvernight.df (dtIn.addTenor (astrForTenor[j])), 1. /</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumForTenor; ++j) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">						if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow</span>
+<span class="nc" id="L236">							(dcOvernight.df (dtIn) / dcOvernight.df (dtIn.addTenor (astrForTenor[j])), 1. /</span>
 								adblForTenorDCF[j]) - 1.))
 							continue;
 					}
 				}
-<span class="nc" id="L240">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L241">				e.printStackTrace();</span>
+<span class="nc" id="L241">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L242">				e.printStackTrace();</span>
 
-<span class="nc" id="L243">				continue;</span>
-<span class="nc" id="L244">			}</span>
+<span class="nc" id="L244">				continue;</span>
+<span class="nc" id="L245">			}</span>
 
-<span class="nc" id="L246">			mapFCM.put (adtSpot[i], fcm);</span>
+<span class="nc" id="L247">			mapFCM.put (adtSpot[i], fcm);</span>
 		}
 
-<span class="nc" id="L249">		return mapFCM;</span>
+<span class="nc" id="L250">		return mapFCM;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

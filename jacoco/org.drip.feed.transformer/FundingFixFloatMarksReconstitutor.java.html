@@ -12,12 +12,12 @@ package org.drip.feed.transformer;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.feed.transformer;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,14 +76,14 @@ package org.drip.feed.transformer;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class FundingFixFloatMarksReconstitutor {</span>
+<span class="nc" id="L86">public class FundingFixFloatMarksReconstitutor {</span>
 
 	/**
 	 * The Standard Funding Input Calibration Manifest Measure Scaler
@@ -94,14 +95,14 @@ package org.drip.feed.transformer;
 	 * The Standard Deposit Maturity Tenors
 	 */
 
-<span class="nc" id="L97">	public static final java.lang.String[] s_astrDepositTenor = new java.lang.String[] {&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;,</span>
+<span class="nc" id="L98">	public static final java.lang.String[] s_astrDepositTenor = new java.lang.String[] {&quot;1M&quot;, &quot;2M&quot;, &quot;3M&quot;,</span>
 		&quot;4M&quot;, &quot;5M&quot;, &quot;6M&quot;};
 
 	/**
 	 * The Standard Fix Float Maturity Tenors
 	 */
 
-<span class="nc" id="L104">	public static final java.lang.String[] s_astrFixFloatTenor = new java.lang.String[] {&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;,</span>
+<span class="nc" id="L105">	public static final java.lang.String[] s_astrFixFloatTenor = new java.lang.String[] {&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;,</span>
 		&quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;, &quot;9Y&quot;, &quot;10Y&quot;, &quot;11Y&quot;, &quot;12Y&quot;, &quot;15Y&quot;, &quot;20Y&quot;, &quot;25Y&quot;, &quot;30Y&quot;, &quot;40Y&quot;, &quot;50Y&quot;};
 
 	/**
@@ -120,104 +121,104 @@ package org.drip.feed.transformer;
 			mapISTQ,
 		final int iLatentStateType)
 	{
-<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == mapISTQ || 0 == mapISTQ.size()) return false;</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == mapISTQ || 0 == mapISTQ.size()) return false;</span>
 
-<span class="nc" id="L125">		java.lang.String strHeader = &quot;Date,&quot;;</span>
+<span class="nc" id="L126">		java.lang.String strHeader = &quot;Date,&quot;;</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrDepositTenor)</span>
-<span class="nc" id="L128">			strHeader += &quot;DEPOSITPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrDepositTenor)</span>
+<span class="nc" id="L129">			strHeader += &quot;DEPOSITPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrFixFloatTenor)</span>
-<span class="nc" id="L131">			strHeader += &quot;FIXFLOATPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrFixFloatTenor)</span>
+<span class="nc" id="L132">			strHeader += &quot;FIXFLOATPROC:&quot; + strMaturityTenor + &quot;,&quot;;</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrDepositTenor)</span>
-<span class="nc" id="L134">			strHeader += &quot;&lt;&lt;DEPOSITRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrDepositTenor)</span>
+<span class="nc" id="L135">			strHeader += &quot;&lt;&lt;DEPOSITRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrFixFloatTenor)</span>
-<span class="nc" id="L137">			strHeader += &quot;&lt;&lt;FIXFLOATRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (java.lang.String strMaturityTenor : s_astrFixFloatTenor)</span>
+<span class="nc" id="L138">			strHeader += &quot;&lt;&lt;FIXFLOATRAW:&quot; + strMaturityTenor + &quot;&gt;&gt;,&quot;;</span>
 
-<span class="nc" id="L139">		System.out.println (strHeader);</span>
+<span class="nc" id="L140">		System.out.println (strHeader);</span>
 
 		for (java.util.Map.Entry&lt;org.drip.analytics.date.JulianDate,
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			org.drip.feed.loader.InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			org.drip.feed.loader.InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
 
-<span class="nc" id="L145">			org.drip.analytics.date.JulianDate dtSpot = meISTQ.getKey();</span>
+<span class="nc" id="L146">			org.drip.analytics.date.JulianDate dtSpot = meISTQ.getKey();</span>
 
-<span class="nc" id="L147">			org.drip.feed.loader.InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
+<span class="nc" id="L148">			org.drip.feed.loader.InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
 
-<span class="nc bnc" id="L149" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
 
-<span class="nc" id="L151">			java.lang.String strDump = dtSpot.toString() + &quot;,&quot;;</span>
+<span class="nc" id="L152">			java.lang.String strDump = dtSpot.toString() + &quot;,&quot;;</span>
 
-<span class="nc" id="L153">			double[] adblDepositQuote = istq.instrumentQuote (&quot;DEPOSIT&quot;);</span>
+<span class="nc" id="L154">			double[] adblDepositQuote = istq.instrumentQuote (&quot;DEPOSIT&quot;);</span>
 
-<span class="nc" id="L155">			java.lang.String[] astrDepositMaturityTenor = istq.instrumentTenor (&quot;DEPOSIT&quot;);</span>
+<span class="nc" id="L156">			java.lang.String[] astrDepositMaturityTenor = istq.instrumentTenor (&quot;DEPOSIT&quot;);</span>
 
-<span class="nc" id="L157">			double[] adblFixFloatQuote = istq.instrumentQuote (&quot;FIXFLOAT&quot;);</span>
+<span class="nc" id="L158">			double[] adblFixFloatQuote = istq.instrumentQuote (&quot;FIXFLOAT&quot;);</span>
 
-<span class="nc" id="L159">			java.lang.String[] astrFixFloatMaturityTenor = istq.instrumentTenor (&quot;FIXFLOAT&quot;);</span>
+<span class="nc" id="L160">			java.lang.String[] astrFixFloatMaturityTenor = istq.instrumentTenor (&quot;FIXFLOAT&quot;);</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">			int iNumDepositTenor = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			int iNumFixFloatTenor = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">			int iNumDepositTenor = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			int iNumFixFloatTenor = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
 
-<span class="nc bnc" id="L166" title="All 6 branches missed.">			if (0 == iNumFixFloatQuote || iNumDepositQuote != iNumDepositTenor || iNumFixFloatQuote !=</span>
+<span class="nc bnc" id="L167" title="All 6 branches missed.">			if (0 == iNumFixFloatQuote || iNumDepositQuote != iNumDepositTenor || iNumFixFloatQuote !=</span>
 				iNumFixFloatTenor)
-<span class="nc" id="L168">				continue;</span>
+<span class="nc" id="L169">				continue;</span>
 
-<span class="nc" id="L170">			org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="nc" id="L171">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, strCurrency,</span>
+<span class="nc" id="L171">			org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="nc" id="L172">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, strCurrency,</span>
 					astrDepositMaturityTenor, adblDepositQuote, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;,
 						astrFixFloatMaturityTenor, adblFixFloatQuote, &quot;SwapRate&quot;, iLatentStateType);
 
-<span class="nc" id="L175">			org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="nc" id="L176">			org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 				org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (!csqc.setFundingState (dcFunding)) continue;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			if (!csqc.setFundingState (dcFunding)) continue;</span>
 
-<span class="nc" id="L180">			org.drip.param.valuation.ValuationParams valParams =</span>
-<span class="nc" id="L181">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
+<span class="nc" id="L181">			org.drip.param.valuation.ValuationParams valParams =</span>
+<span class="nc" id="L182">				org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L183">			org.drip.product.rates.SingleStreamComponent[] aSSCDeposit =</span>
-<span class="nc" id="L184">				org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtSpot, strCurrency,</span>
+<span class="nc" id="L184">			org.drip.product.rates.SingleStreamComponent[] aSSCDeposit =</span>
+<span class="nc" id="L185">				org.drip.service.template.OTCInstrumentBuilder.FundingDeposit (dtSpot, strCurrency,</span>
 					s_astrDepositTenor);
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">			for (org.drip.product.rates.SingleStreamComponent sscDeposit : aSSCDeposit) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			for (org.drip.product.rates.SingleStreamComponent sscDeposit : aSSCDeposit) {</span>
 				try {
-<span class="nc" id="L189">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (sscDeposit.measureValue</span>
-<span class="nc" id="L190">						(valParams, null, csqc, null, &quot;ForwardRate&quot;), 1, 6, 1.) + &quot;,&quot;;</span>
-<span class="nc" id="L191">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L192">					e.printStackTrace();</span>
+<span class="nc" id="L190">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (sscDeposit.measureValue</span>
+<span class="nc" id="L191">						(valParams, null, csqc, null, &quot;ForwardRate&quot;), 1, 6, 1.) + &quot;,&quot;;</span>
+<span class="nc" id="L192">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L193">					e.printStackTrace();</span>
 
-<span class="nc" id="L194">					continue;</span>
-<span class="nc" id="L195">				}</span>
+<span class="nc" id="L195">					continue;</span>
+<span class="nc" id="L196">				}</span>
 			}
 
-<span class="nc" id="L198">			org.drip.product.rates.FixFloatComponent[] aFixFloat =</span>
-<span class="nc" id="L199">				org.drip.service.template.OTCInstrumentBuilder.FixFloatStandard (dtSpot, strCurrency, &quot;ALL&quot;,</span>
+<span class="nc" id="L199">			org.drip.product.rates.FixFloatComponent[] aFixFloat =</span>
+<span class="nc" id="L200">				org.drip.service.template.OTCInstrumentBuilder.FixFloatStandard (dtSpot, strCurrency, &quot;ALL&quot;,</span>
 					s_astrFixFloatTenor, &quot;MAIN&quot;, 0.);
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">			for (org.drip.product.rates.FixFloatComponent ffc : aFixFloat) {</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			for (org.drip.product.rates.FixFloatComponent ffc : aFixFloat) {</span>
 				try {
-<span class="nc" id="L204">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,</span>
+<span class="nc" id="L205">					strDump += org.drip.quant.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,</span>
 						null, csqc, null, &quot;SwapRate&quot;), 1, 6, 1.) + &quot;,&quot;;
-<span class="nc" id="L206">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L207">					e.printStackTrace();</span>
+<span class="nc" id="L207">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L208">					e.printStackTrace();</span>
 
-<span class="nc" id="L209">					continue;</span>
-<span class="nc" id="L210">				}</span>
+<span class="nc" id="L210">					continue;</span>
+<span class="nc" id="L211">				}</span>
 			}
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFixFloatQuote; ++i)</span>
-<span class="nc" id="L214">				strDump += org.drip.quant.common.FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) +</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumFixFloatQuote; ++i)</span>
+<span class="nc" id="L215">				strDump += org.drip.quant.common.FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) +</span>
 					&quot;,&quot;;
 
-<span class="nc" id="L217">			System.out.println (strDump);</span>
-<span class="nc" id="L218">		}</span>
+<span class="nc" id="L218">			System.out.println (strDump);</span>
+<span class="nc" id="L219">		}</span>
 
-<span class="nc" id="L220">		return true;</span>
+<span class="nc" id="L221">		return true;</span>
 	}
 
 	/**
@@ -233,11 +234,11 @@ package org.drip.feed.transformer;
 		final java.lang.String strCurrency,
 		final java.lang.String strMarksLocation)
 	{
-<span class="nc" id="L236">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+<span class="nc" id="L237">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
 			false);
 
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
-<span class="nc" id="L240">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
+<span class="nc" id="L241">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);</span>
 	}
 
 	/**
@@ -253,11 +254,11 @@ package org.drip.feed.transformer;
 		final java.lang.String strCurrency,
 		final java.lang.String strMarksLocation)
 	{
-<span class="nc" id="L256">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
+<span class="nc" id="L257">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strMarksLocation,</span>
 			false);
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
-<span class="nc" id="L260">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SMOOTH);</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		return null == csvGrid ? false : RegularizeMarks (strCurrency, csvGrid.groupedOrderedDouble</span>
+<span class="nc" id="L261">			(s_dblScaler), org.drip.service.template.LatentMarketStateBuilder.SMOOTH);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

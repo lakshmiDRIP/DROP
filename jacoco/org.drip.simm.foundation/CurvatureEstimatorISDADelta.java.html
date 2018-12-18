@@ -96,9 +96,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -116,7 +117,7 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 
 	public static final CurvatureEstimatorISDADelta Standard()
 	{
-<span class="nc" id="L119">		return new CurvatureEstimatorISDADelta();</span>
+<span class="nc" id="L120">		return new CurvatureEstimatorISDADelta();</span>
 	}
 
 	/**
@@ -124,8 +125,8 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 	 */
 
 	public CurvatureEstimatorISDADelta()
-<span class="nc" id="L127">	{</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc" id="L129">	}</span>
 
 	@Override public double margin (
 		final double cumulativeRiskFactorSensitivity,
@@ -133,25 +134,25 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
 			0. &gt; riskFactorSensitivityVariance)
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L142">		double curvatureMarginVariance = cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance;</span>
+<span class="nc" id="L143">		double curvatureMarginVariance = cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (0. &gt; curvatureMarginVariance)</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (0. &gt; curvatureMarginVariance)</span>
 		{
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Margin Variance&quot;);</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Margin Variance&quot;);</span>
 		}
 
-<span class="nc" id="L149">		return java.lang.Math.sqrt (curvatureMarginVariance);</span>
+<span class="nc" id="L150">		return java.lang.Math.sqrt (curvatureMarginVariance);</span>
 	}
 
 	@Override public boolean isCorrelatorQuadratric()
 	{
-<span class="nc" id="L154">		return false;</span>
+<span class="nc" id="L155">		return false;</span>
 	}
 
 	@Override public double varianceModulator (
@@ -161,7 +162,7 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 		final double bucketVariance2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L164">		return 1.;</span>
+<span class="nc" id="L165">		return 1.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

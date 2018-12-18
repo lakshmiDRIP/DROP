@@ -69,9 +69,10 @@ package org.drip.state.csa;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa&quot;&gt;CSA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa&quot;&gt;CSA Numeraire&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -106,7 +107,7 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final int iCompoundingFreq)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L109">		super (</span>
+<span class="nc" id="L110">		super (</span>
 			dtEpoch,
 			strCurrency,
 			aiDate,
@@ -115,24 +116,24 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 			strCompoundingDayCount,
 			iCompoundingFreq
 		);
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L119">	}</span>
 
 	@Override public double rate (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L124">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L125">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFract (</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFract (</span>
 			iEpochDate,
 			iDate
-<span class="nc" id="L132">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
-<span class="nc" id="L133">			compoundingFrequency(),</span>
-<span class="nc" id="L134">			df (iDate),</span>
-<span class="nc" id="L135">			yearFract (</span>
+<span class="nc" id="L133">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
+<span class="nc" id="L134">			compoundingFrequency(),</span>
+<span class="nc" id="L135">			df (iDate),</span>
+<span class="nc" id="L136">			yearFract (</span>
 				iEpochDate,
 				iDate
 			)
@@ -143,17 +144,17 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == dt)</span>
-<span class="nc" id="L147">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (null == dt)</span>
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L149">		return rate (dt.julian());</span>
+<span class="nc" id="L150">		return rate (dt.julian());</span>
 	}
 
 	@Override public double rate (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L156">		return rate (epoch().addTenor (strTenor));</span>
+<span class="nc" id="L157">		return rate (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public double rate (
@@ -161,18 +162,18 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L164">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L165">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
+<span class="nc" id="L168">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFract (</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFract (</span>
 			iDate1,
 			iDate2
-<span class="nc" id="L172">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
-<span class="nc" id="L173">			compoundingFrequency(),</span>
-<span class="nc" id="L174">			df (iDate1) / df (iDate2),</span>
-<span class="nc" id="L175">			yearFract (</span>
+<span class="nc" id="L173">		) : org.drip.analytics.support.Helper.DF2Yield (</span>
+<span class="nc" id="L174">			compoundingFrequency(),</span>
+<span class="nc" id="L175">			df (iDate1) / df (iDate2),</span>
+<span class="nc" id="L176">			yearFract (</span>
 				iDate1,
 				iDate2
 			)
@@ -184,12 +185,12 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L187" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L188">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L189">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L190">		return rate (</span>
-<span class="nc" id="L191">			dt1.julian(),</span>
-<span class="nc" id="L192">			dt2.julian()</span>
+<span class="nc" id="L191">		return rate (</span>
+<span class="nc" id="L192">			dt1.julian(),</span>
+<span class="nc" id="L193">			dt2.julian()</span>
 		);
 	}
 
@@ -198,11 +199,11 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L201">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+<span class="nc" id="L202">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
 
-<span class="nc" id="L203">		return rate (</span>
-<span class="nc" id="L204">			dtEpoch.addTenor (strTenor1),</span>
-<span class="nc" id="L205">			dtEpoch.addTenor (strTenor2)</span>
+<span class="nc" id="L204">		return rate (</span>
+<span class="nc" id="L205">			dtEpoch.addTenor (strTenor1),</span>
+<span class="nc" id="L206">			dtEpoch.addTenor (strTenor2)</span>
 		);
 	}
 }

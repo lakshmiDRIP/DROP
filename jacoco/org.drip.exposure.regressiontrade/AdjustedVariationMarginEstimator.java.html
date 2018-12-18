@@ -10,12 +10,12 @@ package org.drip.exposure.regressiontrade;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -32,16 +32,17 @@ package org.drip.exposure.regressiontrade;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,8 +98,8 @@ package org.drip.exposure.regressiontrade;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade&quot;&gt;Regression Trade&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade/README.md&quot;&gt;Regression Trade&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -106,23 +107,23 @@ package org.drip.exposure.regressiontrade;
 
 public class AdjustedVariationMarginEstimator
 {
-<span class="nc" id="L109">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
-<span class="nc" id="L110">	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _marginTradePaymentGenerator = null;</span>
+<span class="nc" id="L110">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
+<span class="nc" id="L111">	private org.drip.exposure.mpor.VariationMarginTradePaymentVertex _marginTradePaymentGenerator = null;</span>
 
 	private static final double CumulativeTradePayment (
 		final org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray,
 		final int startIndex,
 		final int endIndex)
 	{
-<span class="nc" id="L117">		double cumulativeTradePayment = 0.;</span>
+<span class="nc" id="L118">		double cumulativeTradePayment = 0.;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (int index = startIndex + 1; index &lt;= endIndex; ++index)</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (int index = startIndex + 1; index &lt;= endIndex; ++index)</span>
 		{
-<span class="nc" id="L121">			cumulativeTradePayment += (denseTradePaymentArray[index].dealer() +</span>
-<span class="nc" id="L122">				denseTradePaymentArray[index].client());</span>
+<span class="nc" id="L122">			cumulativeTradePayment += (denseTradePaymentArray[index].dealer() +</span>
+<span class="nc" id="L123">				denseTradePaymentArray[index].client());</span>
 		}
 
-<span class="nc" id="L125">		return cumulativeTradePayment;</span>
+<span class="nc" id="L126">		return cumulativeTradePayment;</span>
 	}
 
 	/**
@@ -138,13 +139,13 @@ public class AdjustedVariationMarginEstimator
 		final org.drip.exposure.mpor.VariationMarginTradePaymentVertex marginTradePaymentGenerator,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
-<span class="nc" id="L141">	{</span>
-<span class="nc bnc" id="L142" title="All 4 branches missed.">		if (null == (_marginTradePaymentGenerator = marginTradePaymentGenerator) ||</span>
+<span class="nc" id="L142">	{</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (null == (_marginTradePaymentGenerator = marginTradePaymentGenerator) ||</span>
 			null == (_marketPath = marketPath))
 		{
-<span class="nc" id="L145">			throw new java.lang.Exception (&quot;AdjustedVariationMarginEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;AdjustedVariationMarginEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L147">	}</span>
+<span class="nc" id="L148">	}</span>
 
 	/**
 	 * Retrieve the Path-wise Variation Margin/Trade Payment Generator
@@ -154,7 +155,7 @@ public class AdjustedVariationMarginEstimator
 
 	public org.drip.exposure.mpor.VariationMarginTradePaymentVertex marginTradePaymentGenerator()
 	{
-<span class="nc" id="L157">		return _marginTradePaymentGenerator;</span>
+<span class="nc" id="L158">		return _marginTradePaymentGenerator;</span>
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class AdjustedVariationMarginEstimator
 
 	public org.drip.exposure.universe.MarketPath marketPath()
 	{
-<span class="nc" id="L168">		return _marketPath;</span>
+<span class="nc" id="L169">		return _marketPath;</span>
 	}
 
 	/**
@@ -179,38 +180,38 @@ public class AdjustedVariationMarginEstimator
 	public double[] variationMarginEstimate (
 		final int[] exposureDateArray)
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == exposureDateArray)</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == exposureDateArray)</span>
 		{
-<span class="nc" id="L184">			return null;</span>
+<span class="nc" id="L185">			return null;</span>
 		}
 
-<span class="nc" id="L187">		int exposureDateCount = exposureDateArray.length;</span>
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		double[] variationMarginEstimateArray = 0 == exposureDateCount ? null : new double[exposureDateCount];</span>
+<span class="nc" id="L188">		int exposureDateCount = exposureDateArray.length;</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		double[] variationMarginEstimateArray = 0 == exposureDateCount ? null : new double[exposureDateCount];</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (0 == exposureDateCount)</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (0 == exposureDateCount)</span>
 		{
-<span class="nc" id="L192">			return null;</span>
+<span class="nc" id="L193">			return null;</span>
 		}
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L199">				variationMarginEstimateArray[exposureDateIndex] =</span>
-<span class="nc" id="L200">					_marginTradePaymentGenerator.variationMarginEstimate (</span>
+<span class="nc" id="L200">				variationMarginEstimateArray[exposureDateIndex] =</span>
+<span class="nc" id="L201">					_marginTradePaymentGenerator.variationMarginEstimate (</span>
 						exposureDateArray[exposureDateIndex],
 						_marketPath
 					);
 			}
-<span class="nc" id="L205">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L206">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L207">				e.printStackTrace();</span>
+<span class="nc" id="L208">				e.printStackTrace();</span>
 
-<span class="nc" id="L209">				return null;</span>
-<span class="nc" id="L210">			}</span>
+<span class="nc" id="L210">				return null;</span>
+<span class="nc" id="L211">			}</span>
 		}
 
-<span class="nc" id="L213">		return variationMarginEstimateArray;</span>
+<span class="nc" id="L214">		return variationMarginEstimateArray;</span>
 	}
 
 	/**
@@ -226,7 +227,7 @@ public class AdjustedVariationMarginEstimator
 		final int startDate,
 		final int endDate)
 	{
-<span class="nc" id="L229">		return _marginTradePaymentGenerator.denseTradePaymentArray (</span>
+<span class="nc" id="L230">		return _marginTradePaymentGenerator.denseTradePaymentArray (</span>
 			startDate,
 			endDate,
 			_marketPath
@@ -244,52 +245,52 @@ public class AdjustedVariationMarginEstimator
 	public org.drip.exposure.regressiontrade.AndersenPykhtinSokolPath andersenPykhtinSokolPath (
 		final int[] exposureDateArray)
 	{
-<span class="nc" id="L247">		double[] variationMarginEstimateArray = variationMarginEstimate (exposureDateArray);</span>
+<span class="nc" id="L248">		double[] variationMarginEstimateArray = variationMarginEstimate (exposureDateArray);</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null == variationMarginEstimateArray)</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (null == variationMarginEstimateArray)</span>
 		{
-<span class="nc" id="L251">			return null;</span>
+<span class="nc" id="L252">			return null;</span>
 		}
 
-<span class="nc" id="L254">		int exposureDateCount = variationMarginEstimateArray.length;</span>
-<span class="nc" id="L255">		org.drip.exposure.regressiontrade.AndersenPykhtinSokolPath andersenPykhtinSokolPath = null;</span>
+<span class="nc" id="L255">		int exposureDateCount = variationMarginEstimateArray.length;</span>
+<span class="nc" id="L256">		org.drip.exposure.regressiontrade.AndersenPykhtinSokolPath andersenPykhtinSokolPath = null;</span>
 
-<span class="nc" id="L257">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = denseTradePayment (</span>
+<span class="nc" id="L258">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = denseTradePayment (</span>
 			exposureDateArray[0],
 			exposureDateArray[exposureDateArray.length - 1]
 		);
 
 		try
 		{
-<span class="nc" id="L264">			andersenPykhtinSokolPath = new org.drip.exposure.regressiontrade.AndersenPykhtinSokolPath</span>
+<span class="nc" id="L265">			andersenPykhtinSokolPath = new org.drip.exposure.regressiontrade.AndersenPykhtinSokolPath</span>
 				(denseTradePaymentArray);
 		}
-<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L268">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L269">			e.printStackTrace();</span>
+<span class="nc" id="L270">			e.printStackTrace();</span>
 
-<span class="nc" id="L271">			return null;</span>
-<span class="nc" id="L272">		}</span>
+<span class="nc" id="L272">			return null;</span>
+<span class="nc" id="L273">		}</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 		{
-<span class="nc bnc" id="L276" title="All 2 branches missed.">			double periodCumulativeTradePayment = 0 == exposureDateIndex ? 0. : CumulativeTradePayment (</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			double periodCumulativeTradePayment = 0 == exposureDateIndex ? 0. : CumulativeTradePayment (</span>
 				denseTradePaymentArray,
 				exposureDateArray[exposureDateIndex - 1] - exposureDateArray[0],
 				exposureDateArray[exposureDateIndex] - exposureDateArray[0]
 			);
 
-<span class="nc bnc" id="L282" title="All 2 branches missed.">			if (!andersenPykhtinSokolPath.addVariationMarginEstimateVertex (</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">			if (!andersenPykhtinSokolPath.addVariationMarginEstimateVertex (</span>
 				exposureDateArray[exposureDateIndex],
 				variationMarginEstimateArray[exposureDateIndex],
 				variationMarginEstimateArray[exposureDateIndex] - periodCumulativeTradePayment
 			))
 			{
-<span class="nc" id="L288">				return null;</span>
+<span class="nc" id="L289">				return null;</span>
 			}
 		}
 
-<span class="nc" id="L292">		return andersenPykhtinSokolPath;</span>
+<span class="nc" id="L293">		return andersenPykhtinSokolPath;</span>
 	}
 
 	/**
@@ -303,31 +304,31 @@ public class AdjustedVariationMarginEstimator
 	public org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate adjustedVariationMarginEstimate (
 		final int[] exposureDateArray)
 	{
-<span class="nc" id="L306">		double[] variationMarginEstimateArray = variationMarginEstimate (exposureDateArray);</span>
+<span class="nc" id="L307">		double[] variationMarginEstimateArray = variationMarginEstimate (exposureDateArray);</span>
 
-<span class="nc bnc" id="L308" title="All 2 branches missed.">		if (null == variationMarginEstimateArray)</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">		if (null == variationMarginEstimateArray)</span>
 		{
-<span class="nc" id="L310">			return null;</span>
+<span class="nc" id="L311">			return null;</span>
 		}
 
-<span class="nc" id="L313">		int exposureDateCount = variationMarginEstimateArray.length;</span>
-<span class="nc" id="L314">		double[] adjustedVariationMarginEstimateArray = new double[exposureDateCount];</span>
+<span class="nc" id="L314">		int exposureDateCount = variationMarginEstimateArray.length;</span>
+<span class="nc" id="L315">		double[] adjustedVariationMarginEstimateArray = new double[exposureDateCount];</span>
 
-<span class="nc" id="L316">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = denseTradePayment (</span>
+<span class="nc" id="L317">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = denseTradePayment (</span>
 			exposureDateArray[0],
 			exposureDateArray[exposureDateArray.length - 1]
 		);
 
-<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (null == denseTradePaymentArray)</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		if (null == denseTradePaymentArray)</span>
 		{
-<span class="nc" id="L323">			return null;</span>
+<span class="nc" id="L324">			return null;</span>
 		}
 
-<span class="nc bnc" id="L326" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		for (int exposureDateIndex = 0; exposureDateIndex &lt; exposureDateCount; ++exposureDateIndex)</span>
 		{
-<span class="nc bnc" id="L328" title="All 2 branches missed.">			adjustedVariationMarginEstimateArray[exposureDateIndex] =</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">			adjustedVariationMarginEstimateArray[exposureDateIndex] =</span>
 				variationMarginEstimateArray[exposureDateIndex] - (0 == exposureDateIndex ? 0. :
-<span class="nc" id="L330">					CumulativeTradePayment (</span>
+<span class="nc" id="L331">					CumulativeTradePayment (</span>
 						denseTradePaymentArray,
 						exposureDateArray[exposureDateIndex - 1] - exposureDateArray[0],
 						exposureDateArray[exposureDateIndex] - exposureDateArray[0]
@@ -337,17 +338,17 @@ public class AdjustedVariationMarginEstimator
 
 		try
 		{
-<span class="nc" id="L340">			return new org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate (</span>
+<span class="nc" id="L341">			return new org.drip.exposure.regressiontrade.AdjustedVariationMarginEstimate (</span>
 				adjustedVariationMarginEstimateArray,
 				denseTradePaymentArray
 			);
 		}
-<span class="nc" id="L345">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L346">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L347">			e.printStackTrace();</span>
+<span class="nc" id="L348">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L350">		return null;</span>
+<span class="nc" id="L351">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

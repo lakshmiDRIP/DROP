@@ -73,9 +73,10 @@ package org.drip.sequence.random;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random&quot;&gt;Random&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +84,8 @@ package org.drip.sequence.random;
  */
 
 public class BoundedGaussian extends org.drip.sequence.random.BoxMullerGaussian {
-<span class="nc" id="L86">	private double _dblLowerBound = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private double _dblUpperBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L87">	private double _dblLowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L88">	private double _dblUpperBound = java.lang.Double.NaN;</span>
 
 	/**
 	 * BoundedGaussian Constructor
@@ -104,22 +105,22 @@ public class BoundedGaussian extends org.drip.sequence.random.BoxMullerGaussian 
 		final double dblUpperBound)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L107">		super (dblMean, dblVariance);</span>
+<span class="nc" id="L108">		super (dblMean, dblVariance);</span>
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||</span>
-<span class="nc bnc" id="L110" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound &lt;=</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound &lt;=</span>
 				dblLowerBound)
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;BoundedGaussian ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;BoundedGaussian ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L114">	}</span>
 
 	@Override public double random()
 	{
-<span class="nc" id="L117">		double dblGaussian = super.random();</span>
+<span class="nc" id="L118">		double dblGaussian = super.random();</span>
 
-<span class="nc bnc" id="L119" title="All 4 branches missed.">		while (dblGaussian &lt; _dblLowerBound || dblGaussian &gt; _dblUpperBound)</span>
-<span class="nc" id="L120">			dblGaussian = super.random();</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">		while (dblGaussian &lt; _dblLowerBound || dblGaussian &gt; _dblUpperBound)</span>
+<span class="nc" id="L121">			dblGaussian = super.random();</span>
 
-<span class="nc" id="L122">		return dblGaussian;</span>
+<span class="nc" id="L123">		return dblGaussian;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

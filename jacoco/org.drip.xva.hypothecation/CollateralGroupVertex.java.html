@@ -95,9 +95,10 @@ package org.drip.xva.hypothecation;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation&quot;&gt;Hypothecation&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation&quot;&gt;Hypothecation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,8 +109,8 @@ public abstract class CollateralGroupVertex
 	extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
 	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
-<span class="fc" id="L111">	private org.drip.analytics.date.JulianDate _vertexDate = null;</span>
-<span class="fc" id="L112">	private double _variationMarginPosting = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private org.drip.analytics.date.JulianDate _vertexDate = null;</span>
+<span class="fc" id="L113">	private double _variationMarginPosting = java.lang.Double.NaN;</span>
 
 	protected CollateralGroupVertex (
 		final org.drip.analytics.date.JulianDate vertexDate,
@@ -118,17 +119,17 @@ public abstract class CollateralGroupVertex
 		final double variationMarginPosting)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L121">		super (</span>
+<span class="fc" id="L122">		super (</span>
 			variationMarginEstimate,
 			tradePayment
 		);
 
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == (_vertexDate = vertexDate) ||</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == (_vertexDate = vertexDate) ||</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))</span>
 		{
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;CollateralGroupVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;CollateralGroupVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L131">	}</span>
+<span class="fc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Vertex Date
@@ -138,7 +139,7 @@ public abstract class CollateralGroupVertex
 
 	public org.drip.analytics.date.JulianDate vertexDate()
 	{
-<span class="fc" id="L141">		return _vertexDate;</span>
+<span class="fc" id="L142">		return _vertexDate;</span>
 	}
 
 	/**
@@ -149,7 +150,7 @@ public abstract class CollateralGroupVertex
 
 	public double variationMarginPosting()
 	{
-<span class="fc" id="L152">		return _variationMarginPosting;</span>
+<span class="fc" id="L153">		return _variationMarginPosting;</span>
 	}
 
 	/**
@@ -160,7 +161,7 @@ public abstract class CollateralGroupVertex
 
 	public double collateralized()
 	{
-<span class="fc" id="L163">		return variationMarginEstimate() + tradePayment() - _variationMarginPosting;</span>
+<span class="fc" id="L164">		return variationMarginEstimate() + tradePayment() - _variationMarginPosting;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

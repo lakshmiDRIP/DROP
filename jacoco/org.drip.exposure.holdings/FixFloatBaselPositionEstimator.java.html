@@ -10,12 +10,12 @@ package org.drip.exposure.holdings;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -32,16 +32,17 @@ package org.drip.exposure.holdings;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,8 +97,8 @@ package org.drip.exposure.holdings;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/holdings&quot;&gt;Holdings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/holdings/README.md&quot;&gt;Holdings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -105,8 +106,8 @@ package org.drip.exposure.holdings;
 
 public class FixFloatBaselPositionEstimator extends org.drip.exposure.holdings.PositionGroupEstimator
 {
-<span class="nc" id="L108">	private int _maturityDate = -1;</span>
-<span class="nc" id="L109">	private org.drip.state.identifier.OTCFixFloatLabel _otcFixFloatLabel = null;</span>
+<span class="nc" id="L109">	private int _maturityDate = -1;</span>
+<span class="nc" id="L110">	private org.drip.state.identifier.OTCFixFloatLabel _otcFixFloatLabel = null;</span>
 
 	/**
 	 * FixFloatBaselPositionEstimator Constructor
@@ -121,13 +122,13 @@ public class FixFloatBaselPositionEstimator extends org.drip.exposure.holdings.P
 		final int maturityDate,
 		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel)
 		throws java.lang.Exception
-<span class="nc" id="L124">	{</span>
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (0 &gt;= (_maturityDate = maturityDate) ||</span>
+<span class="nc" id="L125">	{</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (0 &gt;= (_maturityDate = maturityDate) ||</span>
 			null == (_otcFixFloatLabel = otcFixFloatLabel))
 		{
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;FixFloatBaselPositionEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;FixFloatBaselPositionEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Maturity Date
@@ -137,7 +138,7 @@ public class FixFloatBaselPositionEstimator extends org.drip.exposure.holdings.P
 
 	public int maturityDate()
 	{
-<span class="nc" id="L140">		return _maturityDate;</span>
+<span class="nc" id="L141">		return _maturityDate;</span>
 	}
 
 	/**
@@ -148,7 +149,7 @@ public class FixFloatBaselPositionEstimator extends org.drip.exposure.holdings.P
 
 	public org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel()
 	{
-<span class="nc" id="L151">		return _otcFixFloatLabel;</span>
+<span class="nc" id="L152">		return _otcFixFloatLabel;</span>
 	}
 
 	@Override public double variationMarginEstimate (
@@ -156,15 +157,15 @@ public class FixFloatBaselPositionEstimator extends org.drip.exposure.holdings.P
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L161">			throw new java.lang.Exception (&quot;FixFloatBaselPositionEstimator::value =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;FixFloatBaselPositionEstimator::value =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L164">		double dblTimeToHorizon = 1. * (_maturityDate - vertexDate) / 365.25;</span>
+<span class="nc" id="L165">		double dblTimeToHorizon = 1. * (_maturityDate - vertexDate) / 365.25;</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		return dblTimeToHorizon &gt; 0. ? dblTimeToHorizon *</span>
-<span class="nc" id="L167">			marketPath.marketVertex (vertexDate).latentStateValue (_otcFixFloatLabel) : 0.;</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		return dblTimeToHorizon &gt; 0. ? dblTimeToHorizon *</span>
+<span class="nc" id="L168">			marketPath.marketVertex (vertexDate).latentStateValue (_otcFixFloatLabel) : 0.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

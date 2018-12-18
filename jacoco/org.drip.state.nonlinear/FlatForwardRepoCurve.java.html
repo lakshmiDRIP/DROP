@@ -73,9 +73,10 @@ package org.drip.state.nonlinear;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non Linear&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non-Linear&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +84,8 @@ package org.drip.state.nonlinear;
  */
 
 public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCurve {
-<span class="fc" id="L86">	private int[] _aiPillarDate = null;</span>
-<span class="fc" id="L87">	private double[] _adblRepoForward = null;</span>
+<span class="fc" id="L87">	private int[] _aiPillarDate = null;</span>
+<span class="fc" id="L88">	private double[] _adblRepoForward = null;</span>
 
 	/**
 	 * FlatForwardRepoCurve Constructor
@@ -104,75 +105,75 @@ public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCu
 		final double[] adblRepoForward)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L107">		super (iEpochDate, comp);</span>
+<span class="fc" id="L108">		super (iEpochDate, comp);</span>
 
-<span class="pc bpc" id="L109" title="3 of 6 branches missed.">		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblRepoForward = adblRepoForward) ||</span>
+<span class="pc bpc" id="L110" title="3 of 6 branches missed.">		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblRepoForward = adblRepoForward) ||</span>
 			_aiPillarDate.length != _adblRepoForward.length)
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;FlatForwardRepoCurve ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;FlatForwardRepoCurve ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L113">		int iNumPillar = _aiPillarDate.length;</span>
+<span class="fc" id="L114">		int iNumPillar = _aiPillarDate.length;</span>
 
-<span class="fc bfc" id="L115" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPillar; ++i) {</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_aiPillarDate[i]) ||</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblRepoForward[i]))</span>
-<span class="nc" id="L118">				throw new java.lang.Exception (&quot;FlatForwardRepoCurve ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPillar; ++i) {</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_aiPillarDate[i]) ||</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_adblRepoForward[i]))</span>
+<span class="nc" id="L119">				throw new java.lang.Exception (&quot;FlatForwardRepoCurve ctr =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L121">	}</span>
 
 	@Override public double repo (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (iDate &gt;= component().maturityDate().julian())</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;FlatForwardRepoCurve::repo =&gt; Invalid Input&quot;);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (iDate &gt;= component().maturityDate().julian())</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;FlatForwardRepoCurve::repo =&gt; Invalid Input&quot;);</span>
 
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (iDate &lt;= epoch().julian()) return _adblRepoForward[0];</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (iDate &lt;= epoch().julian()) return _adblRepoForward[0];</span>
 
-<span class="fc" id="L131">		int iNumPillar = _adblRepoForward.length;</span>
+<span class="fc" id="L132">		int iNumPillar = _adblRepoForward.length;</span>
 
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
-<span class="nc bnc" id="L134" title="All 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt; iDate)</span>
-<span class="nc" id="L135">				return _adblRepoForward[i];</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt; iDate)</span>
+<span class="nc" id="L136">				return _adblRepoForward[i];</span>
 		}
 
-<span class="fc" id="L138">		return _adblRepoForward[iNumPillar - 1];</span>
+<span class="fc" id="L139">		return _adblRepoForward[iNumPillar - 1];</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblRepoForward.length)</span>
-<span class="nc" id="L146">			return false;</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblRepoForward.length)</span>
+<span class="nc" id="L147">			return false;</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblRepoForward.length; ++i)</span>
-<span class="nc" id="L149">			_adblRepoForward[i] = dblValue;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblRepoForward.length; ++i)</span>
+<span class="nc" id="L150">			_adblRepoForward[i] = dblValue;</span>
 
-<span class="nc" id="L151">		return true;</span>
+<span class="nc" id="L152">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L158" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblRepoForward.length)</span>
-<span class="nc" id="L159">			return false;</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblRepoForward.length)</span>
+<span class="nc" id="L160">			return false;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblRepoForward.length; ++i)</span>
-<span class="nc" id="L162">			_adblRepoForward[i] += dblValue;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblRepoForward.length; ++i)</span>
+<span class="nc" id="L163">			_adblRepoForward[i] += dblValue;</span>
 
-<span class="nc" id="L164">		return true;</span>
+<span class="nc" id="L165">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblRepoForward.length; ++i)</span>
-<span class="nc" id="L173">			_adblRepoForward[i] = dblValue;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblRepoForward.length; ++i)</span>
+<span class="nc" id="L174">			_adblRepoForward[i] = dblValue;</span>
 
-<span class="nc" id="L175">		return true;</span>
+<span class="nc" id="L176">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

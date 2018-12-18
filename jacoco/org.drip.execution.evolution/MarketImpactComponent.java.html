@@ -12,12 +12,12 @@ package org.drip.execution.evolution;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.evolution;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,18 +99,18 @@ package org.drip.execution.evolution;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/evolution&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/evolution/README.md&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class MarketImpactComponent {
-<span class="nc" id="L109">	private double _dblCurrentStep = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dblPreviousStep = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _dblPermanentImpact = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _dblTemporaryImpact = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _dblCurrentStep = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _dblPreviousStep = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _dblPermanentImpact = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _dblTemporaryImpact = java.lang.Double.NaN;</span>
 
 	/**
 	 * MarketImpactComponent Constructor
@@ -128,13 +129,13 @@ public class MarketImpactComponent {
 		final double dblPermanentImpact,
 		final double dblTemporaryImpact)
 		throws java.lang.Exception
-<span class="nc" id="L131">	{</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))</span>
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;MarketImpactComponent Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L137">	}</span>
+<span class="nc" id="L132">	{</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;MarketImpactComponent Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Previous Step Contribution
@@ -144,7 +145,7 @@ public class MarketImpactComponent {
 
 	public double previousStep()
 	{
-<span class="nc" id="L147">		return _dblPreviousStep;</span>
+<span class="nc" id="L148">		return _dblPreviousStep;</span>
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class MarketImpactComponent {
 
 	public double currentStep()
 	{
-<span class="nc" id="L158">		return _dblCurrentStep;</span>
+<span class="nc" id="L159">		return _dblCurrentStep;</span>
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class MarketImpactComponent {
 
 	public double permanentImpact()
 	{
-<span class="nc" id="L169">		return _dblPermanentImpact;</span>
+<span class="nc" id="L170">		return _dblPermanentImpact;</span>
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class MarketImpactComponent {
 
 	public double temporaryImpact()
 	{
-<span class="nc" id="L180">		return _dblTemporaryImpact;</span>
+<span class="nc" id="L181">		return _dblTemporaryImpact;</span>
 	}
 
 	/**
@@ -188,7 +189,7 @@ public class MarketImpactComponent {
 
 	public double total()
 	{
-<span class="nc" id="L191">		return previousStep() + currentStep() + permanentImpact() + temporaryImpact();</span>
+<span class="nc" id="L192">		return previousStep() + currentStep() + permanentImpact() + temporaryImpact();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

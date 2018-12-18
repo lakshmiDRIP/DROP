@@ -73,9 +73,10 @@ package org.drip.state.basis;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/basis&quot;&gt;Basis&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/basis&quot;&gt;Basis&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -98,10 +99,10 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 	public static final java.lang.String QUANTIFICATION_METRIC_FORWARD_RATE =
 		&quot;QUANTIFICATION_METRIC_FORWARD_RATE&quot;;
 
-<span class="fc" id="L101">	private boolean _bBasisOnReference = false;</span>
-<span class="fc" id="L102">	private int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L103">	private org.drip.state.identifier.ForwardLabel _friDerived = null;</span>
-<span class="fc" id="L104">	private org.drip.state.identifier.ForwardLabel _friReference = null;</span>
+<span class="fc" id="L102">	private boolean _bBasisOnReference = false;</span>
+<span class="fc" id="L103">	private int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L104">	private org.drip.state.identifier.ForwardLabel _friDerived = null;</span>
+<span class="fc" id="L105">	private org.drip.state.identifier.ForwardLabel _friReference = null;</span>
 
 	protected BasisCurve (
 		final int iEpochDate,
@@ -109,88 +110,88 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 		final org.drip.state.identifier.ForwardLabel friDerived,
 		final boolean bBasisOnReference)
 		throws java.lang.Exception
-<span class="fc" id="L112">	{</span>
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (null == (_friDerived = friDerived) || null == (_friReference = friReference))</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;BasisCurve ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L113">	{</span>
+<span class="pc bpc" id="L114" title="2 of 4 branches missed.">		if (null == (_friDerived = friDerived) || null == (_friReference = friReference))</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;BasisCurve ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L116">		_iEpochDate = iEpochDate;</span>
-<span class="fc" id="L117">		_bBasisOnReference = bBasisOnReference;</span>
-<span class="fc" id="L118">	}</span>
+<span class="fc" id="L117">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L118">		_bBasisOnReference = bBasisOnReference;</span>
+<span class="fc" id="L119">	}</span>
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		return org.drip.state.identifier.CustomLabel.Standard (_bBasisOnReference ?</span>
-<span class="nc" id="L123">			_friReference.fullyQualifiedName() + &quot;::&quot; + _friDerived.fullyQualifiedName() :</span>
-<span class="nc" id="L124">				_friDerived.fullyQualifiedName() + &quot;::&quot; + _friReference.fullyQualifiedName());</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		return org.drip.state.identifier.CustomLabel.Standard (_bBasisOnReference ?</span>
+<span class="nc" id="L124">			_friReference.fullyQualifiedName() + &quot;::&quot; + _friDerived.fullyQualifiedName() :</span>
+<span class="nc" id="L125">				_friDerived.fullyQualifiedName() + &quot;::&quot; + _friReference.fullyQualifiedName());</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		return _bBasisOnReference ? _friReference.currency() : _friDerived.currency();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		return _bBasisOnReference ? _friReference.currency() : _friDerived.currency();</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
 		try {
-<span class="fc" id="L135">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
-<span class="nc" id="L136">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L137">			e.printStackTrace();</span>
+<span class="fc" id="L136">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="nc" id="L137">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L138">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L140">		return null;</span>
+<span class="nc" id="L141">		return null;</span>
 	}
 
 	@Override public org.drip.state.identifier.ForwardLabel referenceIndex()
 	{
-<span class="nc" id="L145">		return _friReference;</span>
+<span class="nc" id="L146">		return _friReference;</span>
 	}
 
 	@Override public org.drip.state.identifier.ForwardLabel derivedIndex()
 	{
-<span class="nc" id="L150">		return _friDerived;</span>
+<span class="nc" id="L151">		return _friDerived;</span>
 	}
 
 	@Override public double basis (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;BasisCurve::basis got null for date&quot;);</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;BasisCurve::basis got null for date&quot;);</span>
 
-<span class="fc" id="L159">		return basis (dt.julian());</span>
+<span class="fc" id="L160">		return basis (dt.julian());</span>
 	}
 
 	@Override public double basis (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L166" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;BasisCurve::basis got bad tenor&quot;);</span>
+<span class="pc bpc" id="L167" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L168">			throw new java.lang.Exception (&quot;BasisCurve::basis got bad tenor&quot;);</span>
 
-<span class="fc" id="L169">		return basis (epoch().addTenor (strTenor));</span>
+<span class="fc" id="L170">		return basis (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L175">		return true;</span>
+<span class="nc" id="L176">		return true;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L180">		return null;</span>
+<span class="nc" id="L181">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L186">		return null;</span>
+<span class="nc" id="L187">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L193">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
@@ -198,26 +199,26 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L201">		return null;</span>
+<span class="nc" id="L202">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L208">		return null;</span>
+<span class="nc" id="L209">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L215">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L220">		return null;</span>
+<span class="nc" id="L221">		return null;</span>
 	}
 
 	/**
@@ -246,9 +247,9 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 		final java.lang.String strManifestMeasure,
 		final org.drip.analytics.date.JulianDate dt)
 	{
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="nc" id="L251">		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());</span>
+<span class="nc" id="L252">		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());</span>
 	}
 
 	/**
@@ -264,15 +265,15 @@ public abstract class BasisCurve implements org.drip.state.basis.BasisEstimator,
 		final java.lang.String strManifestMeasure,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L267" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L268" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty()) return null;</span>
 
 		try {
-<span class="nc" id="L270">			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));</span>
-<span class="nc" id="L271">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L272">			e.printStackTrace();</span>
+<span class="nc" id="L271">			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));</span>
+<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L275">		return null;</span>
+<span class="nc" id="L276">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

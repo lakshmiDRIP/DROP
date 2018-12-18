@@ -72,9 +72,10 @@ package org.drip.service.api;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -82,12 +83,12 @@ package org.drip.service.api;
  */
 
 public class FixFloatFundingInstrument {
-<span class="nc" id="L85">	private int _iLatentStateType = -1;</span>
-<span class="nc" id="L86">	private double[] _adblQuote = null;</span>
-<span class="nc" id="L87">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="nc" id="L88">	private java.lang.String[] _astrMaturityTenor = null;</span>
-<span class="nc" id="L89">	private org.drip.state.discount.DiscountCurve _dc = null;</span>
-<span class="nc" id="L90">	private org.drip.analytics.date.JulianDate _dtSpot = null;</span>
+<span class="nc" id="L86">	private int _iLatentStateType = -1;</span>
+<span class="nc" id="L87">	private double[] _adblQuote = null;</span>
+<span class="nc" id="L88">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="nc" id="L89">	private java.lang.String[] _astrMaturityTenor = null;</span>
+<span class="nc" id="L90">	private org.drip.state.discount.DiscountCurve _dc = null;</span>
+<span class="nc" id="L91">	private org.drip.analytics.date.JulianDate _dtSpot = null;</span>
 
 	/**
 	 * FixFloatFundingInstrument Constructor
@@ -108,13 +109,13 @@ public class FixFloatFundingInstrument {
 		final double[] adblQuote,
 		final int iLatentStateType)
 		throws java.lang.Exception
-<span class="nc" id="L111">	{</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (null == (_dc = org.drip.service.template.LatentMarketStateBuilder.FundingCurve (_dtSpot = dtSpot,</span>
+<span class="nc" id="L112">	{</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == (_dc = org.drip.service.template.LatentMarketStateBuilder.FundingCurve (_dtSpot = dtSpot,</span>
 			_strCurrency = strCurrency, null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;, _astrMaturityTenor =
 				astrMaturityTenor, _adblQuote = adblQuote, &quot;SwapRate&quot;, _iLatentStateType =
 					iLatentStateType)))
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;FixFloatFundingInstrument Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L117">	}</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;FixFloatFundingInstrument Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L118">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -124,7 +125,7 @@ public class FixFloatFundingInstrument {
 
 	public org.drip.analytics.date.JulianDate spotDate()
 	{
-<span class="nc" id="L127">		return _dtSpot;</span>
+<span class="nc" id="L128">		return _dtSpot;</span>
 	}
 
 	/**
@@ -135,7 +136,7 @@ public class FixFloatFundingInstrument {
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L138">		return _strCurrency;</span>
+<span class="nc" id="L139">		return _strCurrency;</span>
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class FixFloatFundingInstrument {
 
 	public int latentStateType()
 	{
-<span class="nc" id="L149">		return _iLatentStateType;</span>
+<span class="nc" id="L150">		return _iLatentStateType;</span>
 	}
 
 	/**
@@ -157,7 +158,7 @@ public class FixFloatFundingInstrument {
 
 	public java.lang.String[] maturityTenors()
 	{
-<span class="nc" id="L160">		return _astrMaturityTenor;</span>
+<span class="nc" id="L161">		return _astrMaturityTenor;</span>
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class FixFloatFundingInstrument {
 
 	public double[] quotes()
 	{
-<span class="nc" id="L171">		return _adblQuote;</span>
+<span class="nc" id="L172">		return _adblQuote;</span>
 	}
 
 	/**
@@ -179,7 +180,7 @@ public class FixFloatFundingInstrument {
 
 	public org.drip.state.discount.DiscountCurve fundingState()
 	{
-<span class="nc" id="L182">		return _dc;</span>
+<span class="nc" id="L183">		return _dc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

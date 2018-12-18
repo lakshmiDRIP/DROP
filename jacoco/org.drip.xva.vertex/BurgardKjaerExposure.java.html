@@ -96,9 +96,10 @@ package org.drip.xva.vertex;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/vertex&quot;&gt;Vertex&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/vertex&quot;&gt;Vertex&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,10 +108,10 @@ package org.drip.xva.vertex;
 
 public class BurgardKjaerExposure implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
-<span class="fc" id="L110">	private double _debt = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _credit = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _funding = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	private double _collateralBalance = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private double _debt = java.lang.Double.NaN;</span>
+<span class="fc" id="L112">	private double _credit = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _funding = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _collateralBalance = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate an Initial Instance of Burgard Kjaer Vertex Exposure
@@ -125,27 +126,27 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double uncollateralizedExposure,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
 			null == collateralGroupVertexCloseOut)
 		{
-<span class="nc" id="L131">			return null;</span>
+<span class="nc" id="L132">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L136">			return new BurgardKjaerExposure (</span>
-<span class="fc" id="L137">				uncollateralizedExposure - collateralGroupVertexCloseOut.client(),</span>
-<span class="fc" id="L138">				uncollateralizedExposure - collateralGroupVertexCloseOut.dealer(),</span>
+<span class="fc" id="L137">			return new BurgardKjaerExposure (</span>
+<span class="fc" id="L138">				uncollateralizedExposure - collateralGroupVertexCloseOut.client(),</span>
+<span class="fc" id="L139">				uncollateralizedExposure - collateralGroupVertexCloseOut.dealer(),</span>
 				0.,
 				0.
 			);
 		}
-<span class="nc" id="L143">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L144">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L145">			e.printStackTrace();</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L148">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -165,34 +166,34 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double funding,
 		final double collateralBalance)
 		throws java.lang.Exception
-<span class="fc" id="L168">	{</span>
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) ||</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_debt = debt) ||</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_funding = funding) ||</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))</span>
+<span class="fc" id="L169">	{</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) ||</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_debt = debt) ||</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_funding = funding) ||</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))</span>
 		{
-<span class="nc" id="L174">			throw new java.lang.Exception (&quot;BurgardKjaerExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;BurgardKjaerExposure Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L176">	}</span>
+<span class="fc" id="L177">	}</span>
 
 	@Override public double credit()
 	{
-<span class="fc" id="L180">		return _credit;</span>
+<span class="fc" id="L181">		return _credit;</span>
 	}
 
 	@Override public double debt()
 	{
-<span class="fc" id="L185">		return _debt;</span>
+<span class="fc" id="L186">		return _debt;</span>
 	}
 
 	@Override public double funding()
 	{
-<span class="fc" id="L190">		return _funding;</span>
+<span class="fc" id="L191">		return _funding;</span>
 	}
 
 	@Override public double variationMarginPosting()
 	{
-<span class="fc" id="L195">		return _collateralBalance;</span>
+<span class="fc" id="L196">		return _collateralBalance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

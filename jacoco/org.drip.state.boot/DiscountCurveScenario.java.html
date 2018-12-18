@@ -80,16 +80,17 @@ package org.drip.state.boot;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot&quot;&gt;Boot&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/FixedIncome&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot&quot;&gt;Boot&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L92">public class DiscountCurveScenario {</span>
+<span class="nc" id="L93">public class DiscountCurveScenario {</span>
 
 	/**
 	 * Calibrate a discount curve
@@ -116,39 +117,39 @@ package org.drip.state.boot;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L119" title="4 of 8 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure)</span>
-<span class="nc" id="L120">			return null;</span>
+<span class="pc bpc" id="L120" title="4 of 8 branches missed.">		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure)</span>
+<span class="nc" id="L121">			return null;</span>
 
-<span class="fc" id="L122">		int iNumComp = aCalibInst.length;</span>
-<span class="fc" id="L123">		int aiDate[] = new int[iNumComp];</span>
-<span class="fc" id="L124">		double adblRate[] = new double[iNumComp];</span>
+<span class="fc" id="L123">		int iNumComp = aCalibInst.length;</span>
+<span class="fc" id="L124">		int aiDate[] = new int[iNumComp];</span>
+<span class="fc" id="L125">		double adblRate[] = new double[iNumComp];</span>
 
-<span class="pc bpc" id="L126" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
-<span class="nc" id="L127">			return null;</span>
+<span class="pc bpc" id="L127" title="3 of 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="nc" id="L128">			return null;</span>
 
-<span class="fc" id="L129">		java.lang.String strCurrency = aCalibInst[0].payCurrency();</span>
+<span class="fc" id="L130">		java.lang.String strCurrency = aCalibInst[0].payCurrency();</span>
 
-<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">			if (null == aCalibInst[i] || !strCurrency.equalsIgnoreCase (aCalibInst[i].payCurrency()))</span>
-<span class="nc" id="L133">				return null;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">			if (null == aCalibInst[i] || !strCurrency.equalsIgnoreCase (aCalibInst[i].payCurrency()))</span>
+<span class="nc" id="L134">				return null;</span>
 
-<span class="fc" id="L135">			adblRate[i] = 0.02;</span>
+<span class="fc" id="L136">			adblRate[i] = 0.02;</span>
 
-<span class="fc" id="L137">			aiDate[i] = aCalibInst[i].maturityDate().julian();</span>
+<span class="fc" id="L138">			aiDate[i] = aCalibInst[i].maturityDate().julian();</span>
 		}
 
-<span class="fc" id="L140">		org.drip.state.discount.ExplicitBootDiscountCurve ebdc =</span>
-<span class="fc" id="L141">			org.drip.state.creator.ScenarioDiscountCurveBuilder.PiecewiseForward (new</span>
-<span class="fc" id="L142">				org.drip.analytics.date.JulianDate (valParams.valueDate()), strCurrency, aiDate, adblRate);</span>
+<span class="fc" id="L141">		org.drip.state.discount.ExplicitBootDiscountCurve ebdc =</span>
+<span class="fc" id="L142">			org.drip.state.creator.ScenarioDiscountCurveBuilder.PiecewiseForward (new</span>
+<span class="fc" id="L143">				org.drip.analytics.date.JulianDate (valParams.valueDate()), strCurrency, aiDate, adblRate);</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.state.nonlinear.NonlinearCurveBuilder.DiscountCurve (valParams, aCalibInst,</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (!org.drip.state.nonlinear.NonlinearCurveBuilder.DiscountCurve (valParams, aCalibInst,</span>
 			adblCalibQuote, astrCalibMeasure, dblBump, false, ebdc, gc, lsfc, vcp))
-<span class="nc" id="L146">			return null;</span>
+<span class="nc" id="L147">			return null;</span>
 
-<span class="fc" id="L148">		ebdc.setCCIS (org.drip.analytics.input.BootCurveConstructionInput.Create (valParams, vcp, aCalibInst,</span>
+<span class="fc" id="L149">		ebdc.setCCIS (org.drip.analytics.input.BootCurveConstructionInput.Create (valParams, vcp, aCalibInst,</span>
 			adblCalibQuote, astrCalibMeasure, lsfc));
 
-<span class="fc" id="L151">		return ebdc;</span>
+<span class="fc" id="L152">		return ebdc;</span>
 	}
 
 	/**
@@ -176,27 +177,27 @@ package org.drip.state.boot;
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (null == aCalibInst || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
+<span class="nc bnc" id="L180" title="All 4 branches missed.">		if (null == aCalibInst || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;</span>
 
-<span class="nc" id="L181">		int iNumComp = aCalibInst.length;</span>
-<span class="nc" id="L182">		org.drip.state.discount.MergedDiscountForwardCurve[] aDiscountCurve = new</span>
+<span class="nc" id="L182">		int iNumComp = aCalibInst.length;</span>
+<span class="nc" id="L183">		org.drip.state.discount.MergedDiscountForwardCurve[] aDiscountCurve = new</span>
 			org.drip.state.discount.MergedDiscountForwardCurve[iNumComp];
 
-<span class="nc bnc" id="L185" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
-<span class="nc" id="L186">			return null;</span>
+<span class="nc bnc" id="L186" title="All 6 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)</span>
+<span class="nc" id="L187">			return null;</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L189">			double[] adblTenorQuote = new double [iNumComp];</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L190">			double[] adblTenorQuote = new double [iNumComp];</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
-<span class="nc bnc" id="L192" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">			if (null == (aDiscountCurve[i] = Standard (valParams, aCalibInst, adblTenorQuote,</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">			if (null == (aDiscountCurve[i] = Standard (valParams, aCalibInst, adblTenorQuote,</span>
 				astrCalibMeasure, 0., gc, lsfc, vcp)))
-<span class="nc" id="L196">				return null;</span>
+<span class="nc" id="L197">				return null;</span>
 		}
 
-<span class="nc" id="L199">		return aDiscountCurve;</span>
+<span class="nc" id="L200">		return aDiscountCurve;</span>
 	}
 
 	/**
@@ -225,30 +226,30 @@ package org.drip.state.boot;
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc bnc" id="L228" title="All 4 branches missed.">		if (null == aCalibInst || null == adblCalibQuote || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L229" title="All 2 branches missed.">			(dblBump))</span>
-<span class="nc" id="L230">			return null;</span>
+<span class="nc bnc" id="L229" title="All 4 branches missed.">		if (null == aCalibInst || null == adblCalibQuote || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			(dblBump))</span>
+<span class="nc" id="L231">			return null;</span>
 
-<span class="nc" id="L232">		int iNumComp = aCalibInst.length;</span>
+<span class="nc" id="L233">		int iNumComp = aCalibInst.length;</span>
 
-<span class="nc bnc" id="L234" title="All 4 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp) return null;</span>
+<span class="nc bnc" id="L235" title="All 4 branches missed.">		if (0 == iNumComp || adblCalibQuote.length != iNumComp) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="nc" id="L237">			mapTenorDiscountCurve = new</span>
+<span class="nc" id="L238">			mapTenorDiscountCurve = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;();
 
-<span class="nc bnc" id="L240" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc" id="L241">			double[] adblTenorQuote = new double [iNumComp];</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc" id="L242">			double[] adblTenorQuote = new double [iNumComp];</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
-<span class="nc bnc" id="L244" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumComp; ++j)</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);</span>
 
-<span class="nc" id="L246">			mapTenorDiscountCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD</span>
-<span class="nc" id="L247">				(aCalibInst[i].maturityDate().julian()), Standard (valParams, aCalibInst, adblTenorQuote,</span>
+<span class="nc" id="L247">			mapTenorDiscountCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD</span>
+<span class="nc" id="L248">				(aCalibInst[i].maturityDate().julian()), Standard (valParams, aCalibInst, adblTenorQuote,</span>
 					astrCalibMeasure, 0., gc, lsfc, vcp));
 		}
 
-<span class="nc" id="L251">		return mapTenorDiscountCurve;</span>
+<span class="nc" id="L252">		return mapTenorDiscountCurve;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

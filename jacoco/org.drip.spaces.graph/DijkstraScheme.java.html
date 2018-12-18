@@ -92,9 +92,10 @@ package org.drip.spaces.graph;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -103,41 +104,41 @@ package org.drip.spaces.graph;
 
 public class DijkstraScheme
 {
-<span class="nc" id="L106">	private org.drip.spaces.graph.Topography _topography = null;</span>
+<span class="nc" id="L107">	private org.drip.spaces.graph.Topography _topography = null;</span>
 
 	private void visitVertex (
 		final org.drip.spaces.graph.ShortestPathVertex currentVertexPeriphery,
 		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
 	{
-<span class="nc" id="L112">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
+<span class="nc" id="L113">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
 
-<span class="nc" id="L114">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap = _topography.connectionMap();</span>
+<span class="nc" id="L115">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap = _topography.connectionMap();</span>
 
-<span class="nc" id="L116">		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();</span>
+<span class="nc" id="L117">		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();</span>
 
-<span class="nc" id="L118">		java.lang.String currentVertex = currentVertexPeriphery.current();</span>
+<span class="nc" id="L119">		java.lang.String currentVertex = currentVertexPeriphery.current();</span>
 
-<span class="nc" id="L120">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; egressMap = _topography.vertex</span>
-<span class="nc" id="L121">			(currentVertex).egressMap();</span>
+<span class="nc" id="L121">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; egressMap = _topography.vertex</span>
+<span class="nc" id="L122">			(currentVertex).egressMap();</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; egressEntry : egressMap.entrySet())</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; egressEntry : egressMap.entrySet())</span>
 		{
-<span class="nc" id="L125">			java.lang.String egressVertex = egressEntry.getKey();</span>
+<span class="nc" id="L126">			java.lang.String egressVertex = egressEntry.getKey();</span>
 
-<span class="nc" id="L127">			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get</span>
-<span class="nc" id="L128">				(currentVertex + &quot;_&quot; + egressVertex);</span>
+<span class="nc" id="L128">			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get</span>
+<span class="nc" id="L129">				(currentVertex + &quot;_&quot; + egressVertex);</span>
 
-<span class="nc" id="L130">			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =</span>
-<span class="nc" id="L131">				vertexPeripheryMap.shortestPathVertex (egressVertex);</span>
+<span class="nc" id="L131">			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =</span>
+<span class="nc" id="L132">				vertexPeripheryMap.shortestPathVertex (egressVertex);</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (egressVertexPeriphery.weightFromSource() &gt; weightFromSourceThroughCurrent)</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			if (egressVertexPeriphery.weightFromSource() &gt; weightFromSourceThroughCurrent)</span>
 			{
-<span class="nc" id="L135">				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);</span>
+<span class="nc" id="L136">				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);</span>
 
-<span class="nc" id="L137">				egressVertexPeriphery.setPreceeding (currentVertex);</span>
+<span class="nc" id="L138">				egressVertexPeriphery.setPreceeding (currentVertex);</span>
 			}
-<span class="nc" id="L139">		}</span>
-<span class="nc" id="L140">	}</span>
+<span class="nc" id="L140">		}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * DijkstraScheme Constructor
@@ -150,12 +151,12 @@ public class DijkstraScheme
 	public DijkstraScheme (
 		final org.drip.spaces.graph.Topography topography)
 		throws java.lang.Exception
-<span class="nc" id="L153">	{</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (null == (_topography = topography))</span>
+<span class="nc" id="L154">	{</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (null == (_topography = topography))</span>
 		{
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;DijkstraScheme Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;DijkstraScheme Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L158">	}</span>
+<span class="nc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Topography Map
@@ -165,7 +166,7 @@ public class DijkstraScheme
 
 	public org.drip.spaces.graph.Topography topography()
 	{
-<span class="nc" id="L168">		return _topography;</span>
+<span class="nc" id="L169">		return _topography;</span>
 	}
 
 	/**
@@ -179,7 +180,7 @@ public class DijkstraScheme
 	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
 		final java.lang.String source)
 	{
-<span class="nc" id="L182">		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (</span>
+<span class="nc" id="L183">		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (</span>
 			_topography,
 			source
 		);
@@ -196,29 +197,29 @@ public class DijkstraScheme
 	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
 		final java.lang.String source)
 	{
-<span class="nc" id="L199">		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);</span>
+<span class="nc" id="L200">		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (null == spfWengert)</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == spfWengert)</span>
 		{
-<span class="nc" id="L203">			return null;</span>
+<span class="nc" id="L204">			return null;</span>
 		}
 
-<span class="nc" id="L206">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
+<span class="nc" id="L207">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
 
-<span class="nc" id="L208">		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =</span>
-<span class="nc" id="L209">			vertexPeripheryMap.greedyShortestPathVertex();</span>
+<span class="nc" id="L209">		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =</span>
+<span class="nc" id="L210">			vertexPeripheryMap.greedyShortestPathVertex();</span>
 
-<span class="nc bnc" id="L211" title="All 2 branches missed.">		while (null != vertexPeriphery)</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		while (null != vertexPeriphery)</span>
 		{
-<span class="nc" id="L213">			visitVertex (</span>
+<span class="nc" id="L214">			visitVertex (</span>
 				vertexPeriphery,
 				spfWengert
 			);
 
-<span class="nc" id="L218">			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();</span>
+<span class="nc" id="L219">			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();</span>
 		}
 
-<span class="nc" id="L221">		return spfWengert;</span>
+<span class="nc" id="L222">		return spfWengert;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

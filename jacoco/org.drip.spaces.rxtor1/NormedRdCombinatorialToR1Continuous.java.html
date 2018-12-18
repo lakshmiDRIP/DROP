@@ -81,9 +81,10 @@ package org.drip.spaces.rxtor1;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -108,46 +109,46 @@ public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.rxtor1.
 		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (rdCombinatorialInput, r1ContinuousOutput, funcRdToR1);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc" id="L112">		super (rdCombinatorialInput, r1ContinuousOutput, funcRdToR1);</span>
+<span class="nc" id="L113">	}</span>
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L117">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L118">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();</span>
 
-<span class="nc" id="L121">		org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput =</span>
-<span class="nc" id="L122">			(org.drip.spaces.metric.RdCombinatorialBanach) inputMetricVectorSpace();</span>
+<span class="nc" id="L122">		org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput =</span>
+<span class="nc" id="L123">			(org.drip.spaces.metric.RdCombinatorialBanach) inputMetricVectorSpace();</span>
 
-<span class="nc" id="L124">		org.drip.measure.continuous.Rd distRd = rdCombinatorialInput.borelSigmaMeasure();</span>
+<span class="nc" id="L125">		org.drip.measure.continuous.Rd distRd = rdCombinatorialInput.borelSigmaMeasure();</span>
 
-<span class="nc" id="L126">		org.drip.function.definition.RdToR1 funcRdToR1 = function();</span>
+<span class="nc" id="L127">		org.drip.function.definition.RdToR1 funcRdToR1 = function();</span>
 
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == distRd || null == funcRdToR1)</span>
-<span class="nc" id="L129">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == distRd || null == funcRdToR1)</span>
+<span class="nc" id="L130">			throw new java.lang.Exception</span>
 				(&quot;NormedRdCombinatorialToR1Continuous::populationMetricNorm =&gt; No Multivariate Distribution/Function&quot;);
 
-<span class="nc" id="L132">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator ciRd = rdCombinatorialInput.iterator();</span>
+<span class="nc" id="L133">		org.drip.spaces.iterator.RdSpanningCombinatorialIterator ciRd = rdCombinatorialInput.iterator();</span>
 
-<span class="nc" id="L134">		double[] adblVariate = ciRd.cursorVariates();</span>
+<span class="nc" id="L135">		double[] adblVariate = ciRd.cursorVariates();</span>
 
-<span class="nc" id="L136">		double dblPopulationMetricNorm  = 0.;</span>
-<span class="nc" id="L137">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L137">		double dblPopulationMetricNorm  = 0.;</span>
+<span class="nc" id="L138">		double dblNormalizer = 0.;</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		while (null != adblVariate) {</span>
-<span class="nc" id="L140">			double dblProbabilityDensity = distRd.density (adblVariate);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		while (null != adblVariate) {</span>
+<span class="nc" id="L141">			double dblProbabilityDensity = distRd.density (adblVariate);</span>
 
-<span class="nc" id="L142">			dblNormalizer += dblProbabilityDensity;</span>
+<span class="nc" id="L143">			dblNormalizer += dblProbabilityDensity;</span>
 
-<span class="nc" id="L144">			dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L145">				(funcRdToR1.evaluate (adblVariate)), iPNorm);</span>
+<span class="nc" id="L145">			dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L146">				(funcRdToR1.evaluate (adblVariate)), iPNorm);</span>
 
-<span class="nc" id="L147">			adblVariate = ciRd.nextVariates();</span>
-<span class="nc" id="L148">		}</span>
+<span class="nc" id="L148">			adblVariate = ciRd.nextVariates();</span>
+<span class="nc" id="L149">		}</span>
 
-<span class="nc" id="L150">		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / iPNorm);</span>
+<span class="nc" id="L151">		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / iPNorm);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

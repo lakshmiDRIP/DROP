@@ -14,12 +14,12 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -36,16 +36,17 @@ package org.drip.function.r1tor1;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -82,16 +83,16 @@ package org.drip.function.r1tor1;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AndersenPiterbargMeanReverter extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L93">	private org.drip.function.r1tor1.ExponentialDecay _auExpDecay = null;</span>
-<span class="fc" id="L94">	private org.drip.function.definition.R1ToR1 _auSteadyState = null;</span>
+<span class="fc" id="L94">	private org.drip.function.r1tor1.ExponentialDecay _auExpDecay = null;</span>
+<span class="fc" id="L95">	private org.drip.function.definition.R1ToR1 _auSteadyState = null;</span>
 
 	/**
 	 * AndersenPiterbargMeanReverter constructor
@@ -107,20 +108,20 @@ public class AndersenPiterbargMeanReverter extends org.drip.function.definition.
 		final org.drip.function.definition.R1ToR1 auSteadyState)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		super (null);</span>
+<span class="fc" id="L111">		super (null);</span>
 
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_auExpDecay = auExpDecay) || null == (_auSteadyState = auSteadyState))</span>
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L114">	}</span>
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (null == (_auExpDecay = auExpDecay) || null == (_auSteadyState = auSteadyState))</span>
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L115">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;AndersenPiterbargMeanReverter::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L123">		return (1. - _auExpDecay.evaluate (dblVariate)) * _auSteadyState.evaluate (dblVariate);</span>
+<span class="fc" id="L124">		return (1. - _auExpDecay.evaluate (dblVariate)) * _auSteadyState.evaluate (dblVariate);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

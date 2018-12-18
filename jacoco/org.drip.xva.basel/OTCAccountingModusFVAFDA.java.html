@@ -96,9 +96,10 @@ package org.drip.xva.basel;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -120,61 +121,61 @@ public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingMo
 		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L123">		super (exposureAdjustmentAggregator);</span>
-<span class="nc" id="L124">	}</span>
+<span class="nc" id="L124">		super (exposureAdjustmentAggregator);</span>
+<span class="nc" id="L125">	}</span>
 
 	@Override public double contraAssetAdjustment()
 	{
-<span class="nc" id="L128">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+<span class="nc" id="L129">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
 
-<span class="nc" id="L130">		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();</span>
+<span class="nc" id="L131">		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();</span>
 	}
 
 	@Override public double contraLiabilityAdjustment()
 	{
-<span class="nc" id="L135">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+<span class="nc" id="L136">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
 
-<span class="nc" id="L137">		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.ftddva().amount()</span>
-<span class="nc" id="L138">			+ exposureAdjustmentAggregator.fda().amount();</span>
+<span class="nc" id="L138">		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.ftddva().amount()</span>
+<span class="nc" id="L139">			+ exposureAdjustmentAggregator.fda().amount();</span>
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
 		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
 	{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == exposureAdjustmentAggregatorNext)</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == exposureAdjustmentAggregatorNext)</span>
 		{
-<span class="nc" id="L146">			return null;</span>
+<span class="nc" id="L147">			return null;</span>
 		}
 
-<span class="nc" id="L149">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+<span class="nc" id="L150">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
 
-<span class="nc" id="L151">		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -</span>
-<span class="nc" id="L152">			exposureAdjustmentAggregator.colva().amount();</span>
+<span class="nc" id="L152">		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -</span>
+<span class="nc" id="L153">			exposureAdjustmentAggregator.colva().amount();</span>
 
-<span class="nc" id="L154">		double contraLiabilityChange = exposureAdjustmentAggregatorNext.ftddva().amount() +</span>
-<span class="nc" id="L155">			exposureAdjustmentAggregatorNext.fda().amount() +</span>
-<span class="nc" id="L156">			exposureAdjustmentAggregatorNext.cvacl().amount() -</span>
-<span class="nc" id="L157">			exposureAdjustmentAggregator.ftddva().amount() - exposureAdjustmentAggregator.fda().amount() -</span>
-<span class="nc" id="L158">			exposureAdjustmentAggregator.cvacl().amount();</span>
+<span class="nc" id="L155">		double contraLiabilityChange = exposureAdjustmentAggregatorNext.ftddva().amount() +</span>
+<span class="nc" id="L156">			exposureAdjustmentAggregatorNext.fda().amount() +</span>
+<span class="nc" id="L157">			exposureAdjustmentAggregatorNext.cvacl().amount() -</span>
+<span class="nc" id="L158">			exposureAdjustmentAggregator.ftddva().amount() - exposureAdjustmentAggregator.fda().amount() -</span>
+<span class="nc" id="L159">			exposureAdjustmentAggregator.cvacl().amount();</span>
 
 		try
 		{
-<span class="nc" id="L162">			return new org.drip.xva.basel.OTCAccountingPolicy (</span>
-<span class="nc" id="L163">				exposureAdjustmentAggregatorNext.ucva().amount() +</span>
-<span class="nc" id="L164">				exposureAdjustmentAggregatorNext.fva().amount() -</span>
-<span class="nc" id="L165">				exposureAdjustmentAggregator.ucva().amount() -</span>
-<span class="nc" id="L166">				exposureAdjustmentAggregator.fva().amount() + collateralVAChange,</span>
+<span class="nc" id="L163">			return new org.drip.xva.basel.OTCAccountingPolicy (</span>
+<span class="nc" id="L164">				exposureAdjustmentAggregatorNext.ucva().amount() +</span>
+<span class="nc" id="L165">				exposureAdjustmentAggregatorNext.fva().amount() -</span>
+<span class="nc" id="L166">				exposureAdjustmentAggregator.ucva().amount() -</span>
+<span class="nc" id="L167">				exposureAdjustmentAggregator.fva().amount() + collateralVAChange,</span>
 				0.,
 				contraLiabilityChange,
 				contraLiabilityChange
 			);
 		}
-<span class="nc" id="L172">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L173">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L174">			e.printStackTrace();</span>
+<span class="nc" id="L175">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L177">		return null;</span>
+<span class="nc" id="L178">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

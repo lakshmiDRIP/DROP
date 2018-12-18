@@ -97,9 +97,10 @@ package org.drip.xva.definition;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/definiton&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/XVA&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,8 +109,8 @@ package org.drip.xva.definition;
 
 public class SimpleBalanceSheet
 {
-<span class="nc" id="L111">	private double _asset = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _liability = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _asset = java.lang.Double.NaN;</span>
+<span class="nc" id="L113">	private double _liability = java.lang.Double.NaN;</span>
 
 	/**
 	 * SimpleBalanceSheet Constructor
@@ -124,13 +125,13 @@ public class SimpleBalanceSheet
 		final double asset,
 		final double liability)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))</span>
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))</span>
 		{
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;SimpleBalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;SimpleBalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L133">	}</span>
+<span class="nc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the Balance Sheet Asset
@@ -140,7 +141,7 @@ public class SimpleBalanceSheet
 
 	public double asset()
 	{
-<span class="nc" id="L143">		return _asset;</span>
+<span class="nc" id="L144">		return _asset;</span>
 	}
 
 	/**
@@ -151,7 +152,7 @@ public class SimpleBalanceSheet
 
 	public double _liability()
 	{
-<span class="nc" id="L154">		return _liability;</span>
+<span class="nc" id="L155">		return _liability;</span>
 	}
 
 	/**
@@ -162,7 +163,7 @@ public class SimpleBalanceSheet
 
 	public double impliedRecovery()
 	{
-<span class="nc" id="L165">		return _asset / _liability;</span>
+<span class="nc" id="L166">		return _asset / _liability;</span>
 	}
 
 	/**
@@ -176,24 +177,24 @@ public class SimpleBalanceSheet
 	public SimpleBalanceSheet derivativeInfusion (
 		final double dblDerivativeValue)
 	{
-<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. &gt; dblDerivativeValue)</span>
+<span class="nc bnc" id="L180" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. &gt; dblDerivativeValue)</span>
 		{
-<span class="nc" id="L181">			return null;</span>
+<span class="nc" id="L182">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L186">			return new SimpleBalanceSheet (</span>
+<span class="nc" id="L187">			return new SimpleBalanceSheet (</span>
 				_asset + dblDerivativeValue,
 				_liability + dblDerivativeValue
 			);
 		}
-<span class="nc" id="L191">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L192">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L193">			e.printStackTrace();</span>
+<span class="nc" id="L194">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L196">		return null;</span>
+<span class="nc" id="L197">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

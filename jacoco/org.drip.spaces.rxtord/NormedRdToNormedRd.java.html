@@ -81,9 +81,10 @@ package org.drip.spaces.rxtord;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -91,21 +92,21 @@ package org.drip.spaces.rxtord;
  */
 
 public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRxToNormedRd {
-<span class="nc" id="L94">	private org.drip.spaces.metric.RdNormed _rdInput = null;</span>
-<span class="nc" id="L95">	private org.drip.spaces.metric.RdNormed _rdOutput = null;</span>
-<span class="nc" id="L96">	private org.drip.function.definition.RdToRd _funcRdToRd = null;</span>
+<span class="nc" id="L95">	private org.drip.spaces.metric.RdNormed _rdInput = null;</span>
+<span class="nc" id="L96">	private org.drip.spaces.metric.RdNormed _rdOutput = null;</span>
+<span class="nc" id="L97">	private org.drip.function.definition.RdToRd _funcRdToRd = null;</span>
 
 	protected NormedRdToNormedRd (
 		final org.drip.spaces.metric.RdNormed rdInput,
 		final org.drip.spaces.metric.RdNormed rdOutput,
 		final org.drip.function.definition.RdToRd funcRdToRd)
 		throws java.lang.Exception
-<span class="nc" id="L103">	{</span>
-<span class="nc bnc" id="L104" title="All 4 branches missed.">		if (null == (_rdInput = rdInput) || null == (_rdOutput = rdOutput))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;NormedRdToNormedRd ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L104">	{</span>
+<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == (_rdInput = rdInput) || null == (_rdOutput = rdOutput))</span>
+<span class="nc" id="L106">			throw new java.lang.Exception (&quot;NormedRdToNormedRd ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L107">		_funcRdToRd = funcRdToRd;</span>
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L108">		_funcRdToRd = funcRdToRd;</span>
+<span class="nc" id="L109">	}</span>
 
 	/**
 	 * Retrieve the Underlying RdToRd Function
@@ -115,7 +116,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 	public org.drip.function.definition.RdToRd function()
 	{
-<span class="nc" id="L118">		return _funcRdToRd;</span>
+<span class="nc" id="L119">		return _funcRdToRd;</span>
 	}
 
 	/**
@@ -126,7 +127,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 	public double[] populationRdESS()
 	{
-<span class="nc" id="L129">		return _funcRdToRd.evaluate (_rdInput.populationMode());</span>
+<span class="nc" id="L130">		return _funcRdToRd.evaluate (_rdInput.populationMode());</span>
 	}
 
 	/**
@@ -137,105 +138,105 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 	public double[] populationRdSupremumNorm()
 	{
-<span class="nc" id="L140">		return populationRdESS();</span>
+<span class="nc" id="L141">		return populationRdESS();</span>
 	}
 
 	@Override public org.drip.spaces.metric.RdNormed inputMetricVectorSpace()
 	{
-<span class="nc" id="L145">		return _rdInput;</span>
+<span class="nc" id="L146">		return _rdInput;</span>
 	}
 
 	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
 	{
-<span class="nc" id="L150">		return _rdOutput;</span>
+<span class="nc" id="L151">		return _rdOutput;</span>
 	}
 
 	@Override public double[] sampleSupremumNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
-<span class="nc bnc" id="L156" title="All 8 branches missed.">		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi</span>
+<span class="nc bnc" id="L157" title="All 8 branches missed.">		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi</span>
 			instanceof org.drip.spaces.instance.ValidatedRd))
-<span class="nc" id="L158">			return null;</span>
+<span class="nc" id="L159">			return null;</span>
 
-<span class="nc" id="L160">		org.drip.spaces.instance.ValidatedRd vrdInstance = (org.drip.spaces.instance.ValidatedRd) gvvi;</span>
+<span class="nc" id="L161">		org.drip.spaces.instance.ValidatedRd vrdInstance = (org.drip.spaces.instance.ValidatedRd) gvvi;</span>
 
-<span class="nc" id="L162">		double[][] aadblInstance = vrdInstance.instance();</span>
+<span class="nc" id="L163">		double[][] aadblInstance = vrdInstance.instance();</span>
 
-<span class="nc" id="L164">		int iNumSample = aadblInstance.length;</span>
+<span class="nc" id="L165">		int iNumSample = aadblInstance.length;</span>
 
-<span class="nc" id="L166">		int iOutputDimension = _rdOutput.dimension();</span>
+<span class="nc" id="L167">		int iOutputDimension = _rdOutput.dimension();</span>
 
-<span class="nc" id="L168">		double[] adblSupremumNorm = _funcRdToRd.evaluate (aadblInstance[0]);</span>
+<span class="nc" id="L169">		double[] adblSupremumNorm = _funcRdToRd.evaluate (aadblInstance[0]);</span>
 
-<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (null == adblSupremumNorm || iOutputDimension != adblSupremumNorm.length ||</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblSupremumNorm))</span>
-<span class="nc" id="L172">			return null;</span>
+<span class="nc bnc" id="L171" title="All 4 branches missed.">		if (null == adblSupremumNorm || iOutputDimension != adblSupremumNorm.length ||</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblSupremumNorm))</span>
+<span class="nc" id="L173">			return null;</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimension; ++i)</span>
-<span class="nc" id="L175">			adblSupremumNorm[i] = java.lang.Math.abs (adblSupremumNorm[i]);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimension; ++i)</span>
+<span class="nc" id="L176">			adblSupremumNorm[i] = java.lang.Math.abs (adblSupremumNorm[i]);</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L178">			double[] adblSampleNorm = _funcRdToRd.evaluate (aadblInstance[i]);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L179">			double[] adblSampleNorm = _funcRdToRd.evaluate (aadblInstance[i]);</span>
 
-<span class="nc bnc" id="L180" title="All 4 branches missed.">			if (null == adblSampleNorm || iOutputDimension != adblSampleNorm.length) return null;</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">			if (null == adblSampleNorm || iOutputDimension != adblSampleNorm.length) return null;</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			for (int j = 0; j &lt; iOutputDimension; ++j) {</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleNorm[j])) return null;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			for (int j = 0; j &lt; iOutputDimension; ++j) {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleNorm[j])) return null;</span>
 
-<span class="nc bnc" id="L185" title="All 2 branches missed.">				if (adblSampleNorm[j] &gt; adblSupremumNorm[j]) adblSupremumNorm[j] = adblSampleNorm[j];</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">				if (adblSampleNorm[j] &gt; adblSupremumNorm[j]) adblSupremumNorm[j] = adblSampleNorm[j];</span>
 			}
 		}
 
-<span class="nc" id="L189">		return adblSupremumNorm;</span>
+<span class="nc" id="L190">		return adblSupremumNorm;</span>
 	}
 
 	@Override public double[] sampleMetricNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
-<span class="nc" id="L195">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L196">		int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return sampleSupremumNorm (gvvi);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == iPNorm) return sampleSupremumNorm (gvvi);</span>
 
-<span class="nc bnc" id="L199" title="All 8 branches missed.">		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi</span>
+<span class="nc bnc" id="L200" title="All 8 branches missed.">		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi</span>
 			instanceof org.drip.spaces.instance.ValidatedRd))
-<span class="nc" id="L201">			return null;</span>
+<span class="nc" id="L202">			return null;</span>
 
-<span class="nc" id="L203">		int iOutputDimension = _rdOutput.dimension();</span>
+<span class="nc" id="L204">		int iOutputDimension = _rdOutput.dimension();</span>
 
-<span class="nc" id="L205">		double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();</span>
+<span class="nc" id="L206">		double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();</span>
 
-<span class="nc" id="L207">		double[] adblMetricNorm = new double[iOutputDimension];</span>
-<span class="nc" id="L208">		int iNumSample = aadblInstance.length;</span>
+<span class="nc" id="L208">		double[] adblMetricNorm = new double[iOutputDimension];</span>
+<span class="nc" id="L209">		int iNumSample = aadblInstance.length;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L211">			adblMetricNorm[i] = 0.;</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="nc" id="L212">			adblMetricNorm[i] = 0.;</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L214">			double[] adblPointValue = _funcRdToRd.evaluate (aadblInstance[i]);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L215">			double[] adblPointValue = _funcRdToRd.evaluate (aadblInstance[i]);</span>
 
-<span class="nc bnc" id="L216" title="All 4 branches missed.">			if (null == adblPointValue || iOutputDimension != adblPointValue.length) return null;</span>
+<span class="nc bnc" id="L217" title="All 4 branches missed.">			if (null == adblPointValue || iOutputDimension != adblPointValue.length) return null;</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">			for (int j = 0; j &lt; iOutputDimension; ++j) {</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblPointValue[j])) return null;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			for (int j = 0; j &lt; iOutputDimension; ++j) {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (adblPointValue[j])) return null;</span>
 
-<span class="nc" id="L221">				adblMetricNorm[j] += java.lang.Math.pow (java.lang.Math.abs (adblPointValue[j]), iPNorm);</span>
+<span class="nc" id="L222">				adblMetricNorm[j] += java.lang.Math.pow (java.lang.Math.abs (adblPointValue[j]), iPNorm);</span>
 			}
 		}
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L226">			adblMetricNorm[i] = java.lang.Math.pow (adblMetricNorm[i], 1. / iPNorm);</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="nc" id="L227">			adblMetricNorm[i] = java.lang.Math.pow (adblMetricNorm[i], 1. / iPNorm);</span>
 
-<span class="nc" id="L228">		return adblMetricNorm;</span>
+<span class="nc" id="L229">		return adblMetricNorm;</span>
 	}
 
 	@Override public double[] populationESS()
 	{
-<span class="nc" id="L233">		return _funcRdToRd.evaluate (_rdInput.populationMode());</span>
+<span class="nc" id="L234">		return _funcRdToRd.evaluate (_rdInput.populationMode());</span>
 	}
 
 	@Override public double[] populationSupremumNorm()
 	{
-<span class="nc" id="L238">		return populationESS();</span>
+<span class="nc" id="L239">		return populationESS();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

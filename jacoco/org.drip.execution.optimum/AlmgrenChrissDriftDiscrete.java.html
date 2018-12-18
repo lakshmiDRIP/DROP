@@ -12,12 +12,12 @@ package org.drip.execution.optimum;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -34,16 +34,17 @@ package org.drip.execution.optimum;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,18 +99,18 @@ package org.drip.execution.optimum;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/optimum&quot;&gt;Optimum&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/optimum/README.md&quot;&gt;Optimum&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.AlmgrenChrissDiscrete {
-<span class="fc" id="L109">	private double[] _adblHoldingsDriftAdjustment = null;</span>
-<span class="fc" id="L110">	private double[] _adblTradeListDriftAdjustment = null;</span>
-<span class="fc" id="L111">	private double _dblResidualHolding = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _dblDriftGainUpperBound = java.lang.Double.NaN;</span>
+<span class="fc" id="L110">	private double[] _adblHoldingsDriftAdjustment = null;</span>
+<span class="fc" id="L111">	private double[] _adblTradeListDriftAdjustment = null;</span>
+<span class="fc" id="L112">	private double _dblResidualHolding = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _dblDriftGainUpperBound = java.lang.Double.NaN;</span>
 
 	/**
 	 * AlmgrenChrissDriftDiscrete Constructor
@@ -145,32 +146,32 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 		final double dblMarketPower)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L148">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblKappaTilda, dblKappa,</span>
+<span class="fc" id="L149">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblKappaTilda, dblKappa,</span>
 			dblTransactionCostExpectation, dblTransactionCostVariance, dblMarketPower);
 
-<span class="pc bpc" id="L151" title="2 of 4 branches missed.">		if (null == (_adblHoldingsDriftAdjustment = adblHoldingsDriftAdjustment) || null ==</span>
+<span class="pc bpc" id="L152" title="2 of 4 branches missed.">		if (null == (_adblHoldingsDriftAdjustment = adblHoldingsDriftAdjustment) || null ==</span>
 			(_adblTradeListDriftAdjustment = adblTradeListDriftAdjustment) ||
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblResidualHolding = dblResidualHolding) ||</span>
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblDriftGainUpperBound =</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblResidualHolding = dblResidualHolding) ||</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblDriftGainUpperBound =</span>
 						dblDriftGainUpperBound))
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L158">		int iNumNode = _adblHoldingsDriftAdjustment.length;</span>
+<span class="fc" id="L159">		int iNumNode = _adblHoldingsDriftAdjustment.length;</span>
 
-<span class="pc bpc" id="L160" title="2 of 4 branches missed.">		if (0 == iNumNode || iNumNode != _adblTradeListDriftAdjustment.length + 1)</span>
-<span class="nc" id="L161">			throw new java.lang.Exception (&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (0 == iNumNode || iNumNode != _adblTradeListDriftAdjustment.length + 1)</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblHoldingsDriftAdjustment[i]))</span>
-<span class="nc" id="L165">				throw new java.lang.Exception (&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblHoldingsDriftAdjustment[i]))</span>
+<span class="nc" id="L166">				throw new java.lang.Exception (&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L167" title="All 2 branches covered.">			if (0 != i) {</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (_adblTradeListDriftAdjustment[i - 1]))</span>
-<span class="nc" id="L169">					throw new java.lang.Exception</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">			if (0 != i) {</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (_adblTradeListDriftAdjustment[i - 1]))</span>
+<span class="nc" id="L170">					throw new java.lang.Exception</span>
 						(&quot;AlmgrenChrissDriftDiscrete Constructor =&gt; Invalid Inputs&quot;);
 			}
 		}
-<span class="fc" id="L173">	}</span>
+<span class="fc" id="L174">	}</span>
 
 	/**
 	 * Retrieve the Array of the Holdings Drift Adjustment
@@ -180,7 +181,7 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 
 	public double[] holdingsDriftAdjustment()
 	{
-<span class="fc" id="L183">		return _adblHoldingsDriftAdjustment;</span>
+<span class="fc" id="L184">		return _adblHoldingsDriftAdjustment;</span>
 	}
 
 	/**
@@ -191,7 +192,7 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 
 	public double[] tradeListDriftAdjustment()
 	{
-<span class="fc" id="L194">		return _adblTradeListDriftAdjustment;</span>
+<span class="fc" id="L195">		return _adblTradeListDriftAdjustment;</span>
 	}
 
 	/**
@@ -202,7 +203,7 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 
 	public double residualHolding()
 	{
-<span class="fc" id="L205">		return _dblResidualHolding;</span>
+<span class="fc" id="L206">		return _dblResidualHolding;</span>
 	}
 
 	/**
@@ -213,7 +214,7 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 
 	public double driftGainUpperBound()
 	{
-<span class="fc" id="L216">		return _dblDriftGainUpperBound;</span>
+<span class="fc" id="L217">		return _dblDriftGainUpperBound;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

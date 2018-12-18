@@ -73,9 +73,10 @@ package org.drip.sequence.functional;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/functional&quot;&gt;Functional&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/StatisticalLearning&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/functional&quot;&gt;Functional&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,24 +84,24 @@ package org.drip.sequence.functional;
  */
 
 public class EfronSteinMetrics {
-<span class="fc" id="L86">	private org.drip.sequence.functional.MultivariateRandom _func = null;</span>
-<span class="fc" id="L87">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] _aSSAM = null;</span>
+<span class="fc" id="L87">	private org.drip.sequence.functional.MultivariateRandom _func = null;</span>
+<span class="fc" id="L88">	private org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] _aSSAM = null;</span>
 
 	private double[] demotedSequence (
 		final double[] adblSequence,
 		final int iDemoteIndex)
 	{
-<span class="fc" id="L93">		int iSequenceLength = adblSequence.length;</span>
-<span class="fc" id="L94">		double[] adblDemotedSequence = new double[iSequenceLength - 1];</span>
+<span class="fc" id="L94">		int iSequenceLength = adblSequence.length;</span>
+<span class="fc" id="L95">		double[] adblDemotedSequence = new double[iSequenceLength - 1];</span>
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceLength; ++i) {</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">			if (i &lt; iDemoteIndex)</span>
-<span class="fc" id="L98">				adblDemotedSequence[i] = adblSequence[i];</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">			else if (i &gt; iDemoteIndex)</span>
-<span class="fc" id="L100">				adblDemotedSequence[i - 1] = adblSequence[i];</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		for (int i = 0; i &lt; iSequenceLength; ++i) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">			if (i &lt; iDemoteIndex)</span>
+<span class="fc" id="L99">				adblDemotedSequence[i] = adblSequence[i];</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">			else if (i &gt; iDemoteIndex)</span>
+<span class="fc" id="L101">				adblDemotedSequence[i - 1] = adblSequence[i];</span>
 		}
 
-<span class="fc" id="L103">		return adblDemotedSequence;</span>
+<span class="fc" id="L104">		return adblDemotedSequence;</span>
 	}
 
 	/**
@@ -116,22 +117,22 @@ public class EfronSteinMetrics {
 		final org.drip.sequence.functional.MultivariateRandom func,
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (null == (_func = func) || null == (_aSSAM = aSSAM))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (null == (_func = func) || null == (_aSSAM = aSSAM))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L123">		int iNumVariable = _aSSAM.length;</span>
+<span class="fc" id="L124">		int iNumVariable = _aSSAM.length;</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (0 == iNumVariable)</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (0 == iNumVariable)</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L128">		int iSequenceLength = _aSSAM[0].sequence().length;</span>
+<span class="fc" id="L129">		int iSequenceLength = _aSSAM[0].sequence().length;</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumVariable; ++i) {</span>
-<span class="pc bpc" id="L131" title="2 of 4 branches missed.">			if (null == _aSSAM[i] || _aSSAM[i].sequence().length != iSequenceLength)</span>
-<span class="nc" id="L132">				throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumVariable; ++i) {</span>
+<span class="pc bpc" id="L132" title="2 of 4 branches missed.">			if (null == _aSSAM[i] || _aSSAM[i].sequence().length != iSequenceLength)</span>
+<span class="nc" id="L133">				throw new java.lang.Exception (&quot;EfronSteinMetrics ctr: Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Multivariate Objective Function
@@ -141,7 +142,7 @@ public class EfronSteinMetrics {
 
 	public org.drip.function.definition.RdToR1 function()
 	{
-<span class="nc" id="L144">		return _func;</span>
+<span class="nc" id="L145">		return _func;</span>
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class EfronSteinMetrics {
 
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] sequenceMetrics()
 	{
-<span class="nc" id="L155">		return _aSSAM;</span>
+<span class="nc" id="L156">		return _aSSAM;</span>
 	}
 
 	/**
@@ -166,22 +167,22 @@ public class EfronSteinMetrics {
 	public double[][] variateSequence (
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
 	{
-<span class="fc" id="L169">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L170">		int iNumVariate = _aSSAM.length;</span>
 
-<span class="pc bpc" id="L171" title="2 of 4 branches missed.">		if (null == aSSAM || aSSAM.length != iNumVariate) return null;</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if (null == aSSAM || aSSAM.length != iNumVariate) return null;</span>
 
-<span class="fc" id="L173">		int iSequenceSize = aSSAM[0].sequence().length;</span>
+<span class="fc" id="L174">		int iSequenceSize = aSSAM[0].sequence().length;</span>
 
-<span class="fc" id="L175">		double[][] aadblVariateSequence = new double[iSequenceSize][iNumVariate];</span>
+<span class="fc" id="L176">		double[][] aadblVariateSequence = new double[iSequenceSize][iNumVariate];</span>
 
-<span class="fc bfc" id="L177" title="All 2 branches covered.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
-<span class="fc" id="L178">			double[] adblVariate = aSSAM[iVariateIndex].sequence();</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc" id="L179">			double[] adblVariate = aSSAM[iVariateIndex].sequence();</span>
 
-<span class="fc bfc" id="L180" title="All 2 branches covered.">			for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex)</span>
-<span class="fc" id="L181">				aadblVariateSequence[iSequenceIndex][iVariateIndex] = adblVariate[iSequenceIndex];</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">			for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex)</span>
+<span class="fc" id="L182">				aadblVariateSequence[iSequenceIndex][iVariateIndex] = adblVariate[iSequenceIndex];</span>
 		}
 
-<span class="fc" id="L184">		return aadblVariateSequence;</span>
+<span class="fc" id="L185">		return aadblVariateSequence;</span>
 	}
 
 	/**
@@ -192,15 +193,15 @@ public class EfronSteinMetrics {
 
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] variateFunctionVarianceMetrics()
 	{
-<span class="fc" id="L195">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L196">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = new</span>
+<span class="fc" id="L196">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L197">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = new</span>
 			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
 
-<span class="fc bfc" id="L199" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">			if (null == (aSSAM[i] = _func.unconditionalTargetVariateMetrics (_aSSAM, i))) return null;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">			if (null == (aSSAM[i] = _func.unconditionalTargetVariateMetrics (_aSSAM, i))) return null;</span>
 		}
 
-<span class="fc" id="L203">		return aSSAM;</span>
+<span class="fc" id="L204">		return aSSAM;</span>
 	}
 
 	/**
@@ -215,19 +216,19 @@ public class EfronSteinMetrics {
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] ghostVariateVarianceMetrics (
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
 	{
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (null == aSSAMGhost) return null;</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		if (null == aSSAMGhost) return null;</span>
 
-<span class="fc" id="L220">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L221">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = new</span>
+<span class="fc" id="L221">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L222">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = new</span>
 			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="pc bpc" id="L225" title="2 of 4 branches missed.">			if (null == aSSAMGhost[i] || null == (aSSAM[i] = _func.ghostTargetVariateMetrics (_aSSAM, i,</span>
-<span class="fc" id="L226">				aSSAMGhost[i].sequence())))</span>
-<span class="nc" id="L227">				return null;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">			if (null == aSSAMGhost[i] || null == (aSSAM[i] = _func.ghostTargetVariateMetrics (_aSSAM, i,</span>
+<span class="fc" id="L227">				aSSAMGhost[i].sequence())))</span>
+<span class="nc" id="L228">				return null;</span>
 		}
 
-<span class="fc" id="L230">		return aSSAM;</span>
+<span class="fc" id="L231">		return aSSAM;</span>
 	}
 
 	/**
@@ -242,48 +243,48 @@ public class EfronSteinMetrics {
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] symmetrizedDifferenceSequenceMetrics (
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
 	{
-<span class="fc" id="L245">		double[][] aadblSequenceVariate = variateSequence (_aSSAM);</span>
+<span class="fc" id="L246">		double[][] aadblSequenceVariate = variateSequence (_aSSAM);</span>
 
-<span class="fc" id="L247">		double[][] aadblGhostSequenceVariate = variateSequence (aSSAMGhost);</span>
+<span class="fc" id="L248">		double[][] aadblGhostSequenceVariate = variateSequence (aSSAMGhost);</span>
 
-<span class="pc bpc" id="L249" title="3 of 6 branches missed.">		if (null == aadblGhostSequenceVariate || aadblSequenceVariate.length !=</span>
+<span class="pc bpc" id="L250" title="3 of 6 branches missed.">		if (null == aadblGhostSequenceVariate || aadblSequenceVariate.length !=</span>
 			aadblGhostSequenceVariate.length || aadblSequenceVariate[0].length !=
 				aadblGhostSequenceVariate[0].length)
-<span class="nc" id="L252">			return null;</span>
+<span class="nc" id="L253">			return null;</span>
 
-<span class="fc" id="L254">		int iSequenceSize = _aSSAM[0].sequence().length;</span>
+<span class="fc" id="L255">		int iSequenceSize = _aSSAM[0].sequence().length;</span>
 
-<span class="fc" id="L256">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L257">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMFunction = new</span>
+<span class="fc" id="L257">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L258">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMFunction = new</span>
 			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
 
 		try {
-<span class="fc bfc" id="L261" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
-<span class="fc" id="L262">				double[] adblSymmetrizedFunctionDifference = new double[iSequenceSize];</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc" id="L263">				double[] adblSymmetrizedFunctionDifference = new double[iSequenceSize];</span>
 
-<span class="fc bfc" id="L264" title="All 2 branches covered.">				for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex) {</span>
-<span class="fc" id="L265">					double[] adblVariate = aadblSequenceVariate[iSequenceIndex];</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">				for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex) {</span>
+<span class="fc" id="L266">					double[] adblVariate = aadblSequenceVariate[iSequenceIndex];</span>
 
-<span class="fc" id="L267">					adblSymmetrizedFunctionDifference[iSequenceIndex] = _func.evaluate (adblVariate);</span>
+<span class="fc" id="L268">					adblSymmetrizedFunctionDifference[iSequenceIndex] = _func.evaluate (adblVariate);</span>
 
-<span class="fc" id="L269">					double dblVariateOrig = adblVariate[iVariateIndex];</span>
-<span class="fc" id="L270">					adblVariate[iVariateIndex] = aadblGhostSequenceVariate[iSequenceIndex][iVariateIndex];</span>
+<span class="fc" id="L270">					double dblVariateOrig = adblVariate[iVariateIndex];</span>
+<span class="fc" id="L271">					adblVariate[iVariateIndex] = aadblGhostSequenceVariate[iSequenceIndex][iVariateIndex];</span>
 
-<span class="fc" id="L272">					adblSymmetrizedFunctionDifference[iSequenceIndex] -= _func.evaluate (adblVariate);</span>
+<span class="fc" id="L273">					adblSymmetrizedFunctionDifference[iSequenceIndex] -= _func.evaluate (adblVariate);</span>
 
-<span class="fc" id="L274">					adblVariate[iVariateIndex] = dblVariateOrig;</span>
+<span class="fc" id="L275">					adblVariate[iVariateIndex] = dblVariateOrig;</span>
 				}
 
-<span class="fc" id="L277">				aSSAMFunction[iVariateIndex] = new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics</span>
+<span class="fc" id="L278">				aSSAMFunction[iVariateIndex] = new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics</span>
 					(adblSymmetrizedFunctionDifference, null);
 			}
 
-<span class="fc" id="L281">			return aSSAMFunction;</span>
-<span class="nc" id="L282">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L283">			e.printStackTrace();</span>
+<span class="fc" id="L282">			return aSSAMFunction;</span>
+<span class="nc" id="L283">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L284">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L286">		return null;</span>
+<span class="nc" id="L287">		return null;</span>
 	}
 
 	/**
@@ -298,37 +299,37 @@ public class EfronSteinMetrics {
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] pivotedDifferenceSequenceMetrics (
 		final org.drip.sequence.functional.MultivariateRandom funcPivot)
 	{
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (null == funcPivot) return null;</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		if (null == funcPivot) return null;</span>
 
-<span class="fc" id="L303">		double[][] aadblSequenceVariate = variateSequence (_aSSAM);</span>
+<span class="fc" id="L304">		double[][] aadblSequenceVariate = variateSequence (_aSSAM);</span>
 
-<span class="fc" id="L305">		int iSequenceSize = _aSSAM[0].sequence().length;</span>
+<span class="fc" id="L306">		int iSequenceSize = _aSSAM[0].sequence().length;</span>
 
-<span class="fc" id="L307">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L308">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMFunction = new</span>
+<span class="fc" id="L308">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L309">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMFunction = new</span>
 			org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[iNumVariate];
 
 		try {
-<span class="fc bfc" id="L312" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
-<span class="fc" id="L313">				double[] adblSymmetrizedFunctionDifference = new double[iSequenceSize];</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">			for (int iVariateIndex = 0; iVariateIndex &lt; iNumVariate; ++iVariateIndex) {</span>
+<span class="fc" id="L314">				double[] adblSymmetrizedFunctionDifference = new double[iSequenceSize];</span>
 
-<span class="fc bfc" id="L315" title="All 2 branches covered.">				for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex) {</span>
-<span class="fc" id="L316">					double[] adblVariate = aadblSequenceVariate[iSequenceIndex];</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">				for (int iSequenceIndex = 0; iSequenceIndex &lt; iSequenceSize; ++iSequenceIndex) {</span>
+<span class="fc" id="L317">					double[] adblVariate = aadblSequenceVariate[iSequenceIndex];</span>
 
-<span class="fc" id="L318">					adblSymmetrizedFunctionDifference[iSequenceIndex] = _func.evaluate (adblVariate) -</span>
-<span class="fc" id="L319">						funcPivot.evaluate (demotedSequence (adblVariate, iVariateIndex));</span>
+<span class="fc" id="L319">					adblSymmetrizedFunctionDifference[iSequenceIndex] = _func.evaluate (adblVariate) -</span>
+<span class="fc" id="L320">						funcPivot.evaluate (demotedSequence (adblVariate, iVariateIndex));</span>
 				}
 
-<span class="fc" id="L322">				aSSAMFunction[iVariateIndex] = new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics</span>
+<span class="fc" id="L323">				aSSAMFunction[iVariateIndex] = new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics</span>
 					(adblSymmetrizedFunctionDifference, null);
 			}
 
-<span class="fc" id="L326">			return aSSAMFunction;</span>
-<span class="nc" id="L327">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L328">			e.printStackTrace();</span>
+<span class="fc" id="L327">			return aSSAMFunction;</span>
+<span class="nc" id="L328">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L329">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L331">		return null;</span>
+<span class="nc" id="L332">		return null;</span>
 	}
 
 	/**
@@ -342,19 +343,19 @@ public class EfronSteinMetrics {
 	public double martingaleVarianceUpperBound()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L345">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L346">		double dblVarianceUpperBound = 0.;</span>
+<span class="fc" id="L346">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L347">		double dblVarianceUpperBound = 0.;</span>
 
-<span class="fc" id="L348">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = variateFunctionVarianceMetrics();</span>
+<span class="fc" id="L349">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = variateFunctionVarianceMetrics();</span>
 
-<span class="pc bpc" id="L350" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
-<span class="nc" id="L351">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L351" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L352">			throw new java.lang.Exception</span>
 				(&quot;EfronSteinMetrics::martingaleVarianceUpperBound =&gt; Cannot compute Univariate Variance Metrics&quot;);
 
-<span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L355">			dblVarianceUpperBound += aSSAM[i].empiricalExpectation();</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L356">			dblVarianceUpperBound += aSSAM[i].empiricalExpectation();</span>
 
-<span class="fc" id="L357">		return dblVarianceUpperBound;</span>
+<span class="fc" id="L358">		return dblVarianceUpperBound;</span>
 	}
 
 	/**
@@ -371,20 +372,20 @@ public class EfronSteinMetrics {
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L374">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L375">		double dblVarianceUpperBound = 0.;</span>
+<span class="fc" id="L375">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L376">		double dblVarianceUpperBound = 0.;</span>
 
-<span class="fc" id="L377">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = ghostVariateVarianceMetrics</span>
-<span class="fc" id="L378">			(aSSAMGhost);</span>
+<span class="fc" id="L378">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = ghostVariateVarianceMetrics</span>
+<span class="fc" id="L379">			(aSSAMGhost);</span>
 
-<span class="pc bpc" id="L380" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
-<span class="nc" id="L381">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L381" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L382">			throw new java.lang.Exception</span>
 				(&quot;EfronSteinMetrics::ghostVarianceUpperBound =&gt; Cannot compute Target Ghost Variance Metrics&quot;);
 
-<span class="fc bfc" id="L384" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L385">			dblVarianceUpperBound += aSSAM[i].empiricalExpectation();</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L386">			dblVarianceUpperBound += aSSAM[i].empiricalExpectation();</span>
 
-<span class="fc" id="L387">		return dblVarianceUpperBound;</span>
+<span class="fc" id="L388">		return dblVarianceUpperBound;</span>
 	}
 
 	/**
@@ -401,20 +402,20 @@ public class EfronSteinMetrics {
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAMGhost)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L404">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L405">		double dblVarianceUpperBound = 0.;</span>
+<span class="fc" id="L405">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L406">		double dblVarianceUpperBound = 0.;</span>
 
-<span class="fc" id="L407">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM =</span>
-<span class="fc" id="L408">			symmetrizedDifferenceSequenceMetrics (aSSAMGhost);</span>
+<span class="fc" id="L408">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM =</span>
+<span class="fc" id="L409">			symmetrizedDifferenceSequenceMetrics (aSSAMGhost);</span>
 
-<span class="pc bpc" id="L410" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
-<span class="nc" id="L411">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L411" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L412">			throw new java.lang.Exception</span>
 				(&quot;EfronSteinMetrics::efronSteinSteeleBound =&gt; Cannot compute Symmetrized Difference Metrics&quot;);
 
-<span class="fc bfc" id="L414" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L415">			dblVarianceUpperBound += aSSAM[i].empiricalRawMoment (2, false);</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L416">			dblVarianceUpperBound += aSSAM[i].empiricalRawMoment (2, false);</span>
 
-<span class="fc" id="L417">		return 0.5 * dblVarianceUpperBound;</span>
+<span class="fc" id="L418">		return 0.5 * dblVarianceUpperBound;</span>
 	}
 
 	/**
@@ -431,20 +432,20 @@ public class EfronSteinMetrics {
 		final org.drip.sequence.functional.MultivariateRandom funcPivot)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L434">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L435">		double dblVarianceUpperBound = 0.;</span>
+<span class="fc" id="L435">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L436">		double dblVarianceUpperBound = 0.;</span>
 
-<span class="fc" id="L437">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = pivotedDifferenceSequenceMetrics</span>
-<span class="fc" id="L438">			(funcPivot);</span>
+<span class="fc" id="L438">		org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM = pivotedDifferenceSequenceMetrics</span>
+<span class="fc" id="L439">			(funcPivot);</span>
 
-<span class="pc bpc" id="L440" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
-<span class="nc" id="L441">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L441" title="2 of 4 branches missed.">		if (null == aSSAM || iNumVariate != aSSAM.length)</span>
+<span class="nc" id="L442">			throw new java.lang.Exception</span>
 				(&quot;EfronSteinMetrics::pivotVarianceUpperBound =&gt; Cannot compute Pivoted Difference Metrics&quot;);
 
-<span class="fc bfc" id="L444" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L445">			dblVarianceUpperBound += aSSAM[i].empiricalRawMoment (2, false);</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L446">			dblVarianceUpperBound += aSSAM[i].empiricalRawMoment (2, false);</span>
 
-<span class="fc" id="L447">		return 0.5 * dblVarianceUpperBound;</span>
+<span class="fc" id="L448">		return 0.5 * dblVarianceUpperBound;</span>
 	}
 
 	/**
@@ -458,19 +459,19 @@ public class EfronSteinMetrics {
 	public double boundedVarianceUpperBound()
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		if (!(_func instanceof org.drip.sequence.functional.BoundedMultivariateRandom))</span>
-<span class="nc" id="L462">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L462" title="1 of 2 branches missed.">		if (!(_func instanceof org.drip.sequence.functional.BoundedMultivariateRandom))</span>
+<span class="nc" id="L463">			throw new java.lang.Exception</span>
 				(&quot;EfronSteinMetrics::boundedVarianceUpperBound =&gt; Invalid Bounded Metrics&quot;);
 
-<span class="fc" id="L465">		int iNumVariate = _aSSAM.length;</span>
-<span class="fc" id="L466">		double dblVarianceUpperBound = 0.;</span>
-<span class="fc" id="L467">		org.drip.sequence.functional.BoundedMultivariateRandom boundedFunc =</span>
+<span class="fc" id="L466">		int iNumVariate = _aSSAM.length;</span>
+<span class="fc" id="L467">		double dblVarianceUpperBound = 0.;</span>
+<span class="fc" id="L468">		org.drip.sequence.functional.BoundedMultivariateRandom boundedFunc =</span>
 			(org.drip.sequence.functional.BoundedMultivariateRandom) _func;
 
-<span class="fc bfc" id="L470" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L471">			dblVarianceUpperBound += boundedFunc.targetVariateVarianceBound (i);</span>
+<span class="fc bfc" id="L471" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L472">			dblVarianceUpperBound += boundedFunc.targetVariateVarianceBound (i);</span>
 
-<span class="fc" id="L473">		return 0.5 * dblVarianceUpperBound;</span>
+<span class="fc" id="L474">		return 0.5 * dblVarianceUpperBound;</span>
 	}
 
 	/**
@@ -484,19 +485,19 @@ public class EfronSteinMetrics {
 	public double separableVarianceUpperBound()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L487" title="All 2 branches missed.">		if (!(_func instanceof org.drip.sequence.functional.SeparableMultivariateRandom))</span>
-<span class="nc" id="L488">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L488" title="All 2 branches missed.">		if (!(_func instanceof org.drip.sequence.functional.SeparableMultivariateRandom))</span>
+<span class="nc" id="L489">			throw new java.lang.Exception</span>
 				(&quot;EfronSteinMetrics::separableVarianceUpperBound =&gt; Invalid Bounded Metrics&quot;);
 
-<span class="nc" id="L491">		int iNumVariate = _aSSAM.length;</span>
-<span class="nc" id="L492">		double dblVarianceUpperBound = 0.;</span>
-<span class="nc" id="L493">		org.drip.sequence.functional.SeparableMultivariateRandom separableFunc =</span>
+<span class="nc" id="L492">		int iNumVariate = _aSSAM.length;</span>
+<span class="nc" id="L493">		double dblVarianceUpperBound = 0.;</span>
+<span class="nc" id="L494">		org.drip.sequence.functional.SeparableMultivariateRandom separableFunc =</span>
 			(org.drip.sequence.functional.SeparableMultivariateRandom) _func;
 
-<span class="nc bnc" id="L496" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L497">			dblVarianceUpperBound += separableFunc.targetVariateVariance (i);</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L498">			dblVarianceUpperBound += separableFunc.targetVariateVariance (i);</span>
 
-<span class="nc" id="L499">		return 0.5 * dblVarianceUpperBound;</span>
+<span class="nc" id="L500">		return 0.5 * dblVarianceUpperBound;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

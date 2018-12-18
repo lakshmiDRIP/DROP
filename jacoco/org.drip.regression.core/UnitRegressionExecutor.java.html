@@ -77,9 +77,10 @@ package org.drip.regression.core;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt;       = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Specification&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal/NumericalOptimizer&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -89,8 +90,8 @@ package org.drip.regression.core;
 public abstract class UnitRegressionExecutor implements org.drip.regression.core.UnitRegressor {
 	private static final boolean _bDisplayStatus = false;
 
-<span class="fc" id="L92">	private java.lang.String _strRegressorSet = &quot;&quot;;</span>
-<span class="fc" id="L93">	private java.lang.String _strRegressorName = &quot;&quot;;</span>
+<span class="fc" id="L93">	private java.lang.String _strRegressorSet = &quot;&quot;;</span>
+<span class="fc" id="L94">	private java.lang.String _strRegressorName = &quot;&quot;;</span>
 
 	/**
 	 * Constructor for the unit regression executor
@@ -105,11 +106,11 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 		final java.lang.String strRegressorName,
 		final java.lang.String strRegressorSet)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="3 of 6 branches missed.">		if (null == (_strRegressorName = strRegressorName) || strRegressorName.isEmpty() || null ==</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			(_strRegressorSet = strRegressorSet) || _strRegressorSet.isEmpty())</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;UnitRegressionExecutor ctr: Invalid inputs&quot;);</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L109">	{</span>
+<span class="pc bpc" id="L110" title="3 of 6 branches missed.">		if (null == (_strRegressorName = strRegressorName) || strRegressorName.isEmpty() || null ==</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			(_strRegressorSet = strRegressorSet) || _strRegressorSet.isEmpty())</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;UnitRegressionExecutor ctr: Invalid inputs&quot;);</span>
+<span class="fc" id="L113">	}</span>
 
 	/**
 	 * One-time initialization to set up the objects needed for the regression
@@ -119,7 +120,7 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 
 	public boolean preRegression()
 	{
-<span class="fc" id="L122">		return true;</span>
+<span class="fc" id="L123">		return true;</span>
 	}
 
 	/**
@@ -141,61 +142,61 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 	public boolean postRegression (
 		final org.drip.regression.core.RegressionRunDetail rnvd)
 	{
-<span class="fc" id="L144">		return true;</span>
+<span class="fc" id="L145">		return true;</span>
 	}
 
 	@Override public org.drip.regression.core.RegressionRunOutput regress()
 	{
-<span class="fc" id="L149">		org.drip.regression.core.RegressionRunOutput ro = null;</span>
+<span class="fc" id="L150">		org.drip.regression.core.RegressionRunOutput ro = null;</span>
 
 		try {
-<span class="fc" id="L152">			ro = new org.drip.regression.core.RegressionRunOutput (_strRegressorSet + &quot;.&quot; +</span>
+<span class="fc" id="L153">			ro = new org.drip.regression.core.RegressionRunOutput (_strRegressorSet + &quot;.&quot; +</span>
 				_strRegressorName);
-<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
 
-<span class="nc" id="L157">			return null;</span>
-<span class="fc" id="L158">		}</span>
+<span class="nc" id="L158">			return null;</span>
+<span class="fc" id="L159">		}</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">		if (!preRegression()) {</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (!preRegression()) {</span>
 			if (_bDisplayStatus)
 				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName +
 					&quot;: Cannot set-up the regressor!&quot;);
 
-<span class="fc" id="L165">			return null;</span>
+<span class="fc" id="L166">			return null;</span>
 		}
 
-<span class="fc" id="L168">		long lStartTime = System.nanoTime();</span>
+<span class="fc" id="L169">		long lStartTime = System.nanoTime();</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">		if (!execRegression()) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (!execRegression()) {</span>
 			if (_bDisplayStatus)
 				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName + &quot;: failed&quot;);
 
-<span class="fc" id="L174">			ro.setTerminationStatus (false);</span>
+<span class="fc" id="L175">			ro.setTerminationStatus (false);</span>
 
-<span class="fc" id="L176">			return ro;</span>
+<span class="fc" id="L177">			return ro;</span>
 		}
 
-<span class="fc" id="L179">		ro._lExecTime = (long) (1.e-03 * (System.nanoTime() - lStartTime));</span>
+<span class="fc" id="L180">		ro._lExecTime = (long) (1.e-03 * (System.nanoTime() - lStartTime));</span>
 
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (!postRegression (ro.getRegressionDetail())) {</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!postRegression (ro.getRegressionDetail())) {</span>
 			if (_bDisplayStatus)
 				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName +
 					&quot;: Regressor clean-up unsuccessful!&quot;);
 
-<span class="nc" id="L186">			return null;</span>
+<span class="nc" id="L187">			return null;</span>
 		}
 
 		if (_bDisplayStatus) System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName + &quot;: succeeded&quot;);
 
-<span class="fc" id="L191">		ro.setTerminationStatus (true);</span>
+<span class="fc" id="L192">		ro.setTerminationStatus (true);</span>
 
-<span class="fc" id="L193">		return ro;</span>
+<span class="fc" id="L194">		return ro;</span>
 	}
 
 	@Override public java.lang.String getName()
 	{
-<span class="fc" id="L198">		return _strRegressorName;</span>
+<span class="fc" id="L199">		return _strRegressorName;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
