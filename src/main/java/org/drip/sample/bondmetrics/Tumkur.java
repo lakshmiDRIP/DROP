@@ -74,7 +74,7 @@ import org.drip.service.scenario.*;
  */
 
 /**
- * </i>Tumkur</i> generates the Full Suite of Replication Metrics for Bond Tumkur.
+ * <i>Tumkur</i> generates the Full Suite of Replication Metrics for Bond Tumkur.
  *  
  * <br><br>
  *  <ul>

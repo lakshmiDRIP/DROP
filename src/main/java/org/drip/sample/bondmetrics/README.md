@@ -218,7 +218,7 @@ DROP Sample Bond Metrics illustrates Bond Relative Value Replication Analytics.
  <i>Tirunelveli</i> generates the Full Suite of Replication Metrics for Bond Tirunelveli.
 
  * [***Tumkur***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondmetrics/Tumkur.java)
- </i>Tumkur</i> generates the Full Suite of Replication Metrics for Bond Tumkur.
+ <i>Tumkur</i> generates the Full Suite of Replication Metrics for Bond Tumkur.
 
  * [***Udaipur***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondmetrics/Udaipur.java)
  <i>Udaipur</i> demonstrates the Analytics Calculation/Reconciliation for the Bond Udaipur.
