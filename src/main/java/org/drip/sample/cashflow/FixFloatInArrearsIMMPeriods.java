@@ -631,5 +631,7 @@ public class FixFloatInArrearsIMMPeriods {
 		System.out.println ("\t||--------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

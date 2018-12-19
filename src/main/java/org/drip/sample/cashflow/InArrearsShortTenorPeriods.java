@@ -633,5 +633,7 @@ public class InArrearsShortTenorPeriods {
 		System.out.println ("\t||--------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }

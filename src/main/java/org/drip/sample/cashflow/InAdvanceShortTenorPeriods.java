@@ -633,5 +633,7 @@ public class InAdvanceShortTenorPeriods {
 		System.out.println ("\t||--------------------------------------------------------------------------------------------------------------------||");
 
 		System.out.println();
+
+		EnvManager.TerminateEnv();
 	}
 }
