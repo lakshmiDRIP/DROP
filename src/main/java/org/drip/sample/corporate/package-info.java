@@ -1,6 +1,6 @@
 
 /**
- * Corporate Bond RV Analytics Demonstration Sample
+ * Corporate Bond Relative Value Analytics
  *
  * @author Lakshmi Krishnamurthy
  */
