@@ -20,32 +20,51 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -62,37 +81,46 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * Gopalpur generates the Full Suite of Replication Metrics for a Sample Bond.
+ * &lt;i&gt;Gopalpur&lt;/i&gt; generates the Full Suite of Replication Metrics for a Sample Bond.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondmetrics/README.md&quot;&gt;Bond Analytics Metrics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L70">public class Gopalpur {</span>
+<span class="nc" id="L98">public class Gopalpur {</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L76">		EnvManager.InitEnv (</span>
+<span class="fc" id="L104">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L81">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L109">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.SEPTEMBER,
 			20
 		);
 
-<span class="fc" id="L87">		String[] astrDepositTenor = new String[] {</span>
+<span class="fc" id="L115">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="fc" id="L91">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L119">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="fc" id="L95">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L123">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -101,7 +129,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.01845     // 98.155
 		};
 
-<span class="fc" id="L104">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="fc" id="L132">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -121,7 +149,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L124">		String[] astrGovvieTenor = new String[] {</span>
+<span class="fc" id="L152">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -132,7 +160,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L135">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L163">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -152,7 +180,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.025560  // 50Y
 		};
 
-<span class="fc" id="L155">		double[] adblGovvieYield = new double[] {</span>
+<span class="fc" id="L183">		double[] adblGovvieYield = new double[] {</span>
 			0.01219, //  1Y
 			0.01391, //  2Y
 			0.01590, //  3Y
@@ -163,7 +191,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.02927  // 30Y
 		};
 
-<span class="fc" id="L166">		String[] astrCreditTenor = new String[] {</span>
+<span class="fc" id="L194">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -174,7 +202,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L177">		double[] adblCreditQuote = new double[] {</span>
+<span class="fc" id="L205">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -185,33 +213,33 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			188.	// 10Y
 		};
 
-<span class="fc" id="L188">		double dblFX = 1.;</span>
-<span class="fc" id="L189">		int iSettleLag = 3;</span>
-<span class="fc" id="L190">		int iCouponFreq = 2;</span>
-<span class="fc" id="L191">		String strName = &quot;Gopalpur&quot;;</span>
-<span class="fc" id="L192">		double dblCleanPrice = 1.0;</span>
-<span class="fc" id="L193">		double dblIssuePrice = 1.0;</span>
-<span class="fc" id="L194">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L195">		double dblSpreadBump = 20.;</span>
-<span class="fc" id="L196">		double dblCouponRate = 0.06875;</span>
-<span class="fc" id="L197">		double dblIssueAmount = 5.25e08;</span>
-<span class="fc" id="L198">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="fc" id="L199">		String strCouponDayCount = &quot;30/360&quot;;</span>
-<span class="fc" id="L200">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="fc" id="L216">		double dblFX = 1.;</span>
+<span class="fc" id="L217">		int iSettleLag = 3;</span>
+<span class="fc" id="L218">		int iCouponFreq = 2;</span>
+<span class="fc" id="L219">		String strName = &quot;Gopalpur&quot;;</span>
+<span class="fc" id="L220">		double dblCleanPrice = 1.0;</span>
+<span class="fc" id="L221">		double dblIssuePrice = 1.0;</span>
+<span class="fc" id="L222">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L223">		double dblSpreadBump = 20.;</span>
+<span class="fc" id="L224">		double dblCouponRate = 0.06875;</span>
+<span class="fc" id="L225">		double dblIssueAmount = 5.25e08;</span>
+<span class="fc" id="L226">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L227">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L228">		double dblSpreadDurationMultiplier = 5.;</span>
 
-<span class="fc" id="L202">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L230">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2017,
 			2,
 			16
 		);
 
-<span class="fc" id="L208">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L236">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2025,
 			2,
 			15
 		);
 
-<span class="fc" id="L214">		BondComponent bond = BondBuilder.CreateSimpleFixedFP (</span>
+<span class="fc" id="L242">		BondComponent bond = BondBuilder.CreateSimpleFixedFP (</span>
 			strName,
 			strCurrency,
 			strName,
@@ -220,16 +248,16 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			strCouponDayCount,
 			dtEffective,
 			dtMaturity,
-<span class="fc" id="L223">			DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L251">			DateUtil.CreateFromYMD (</span>
 				2017,
 				8,
 				15
-<span class="fc" id="L227">			).julian(),</span>
-<span class="fc" id="L228">			DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L255">			).julian(),</span>
+<span class="fc" id="L256">			DateUtil.CreateFromYMD (</span>
 				2024,
 				8,
 				15
-<span class="fc" id="L232">			).julian(),</span>
+<span class="fc" id="L260">			).julian(),</span>
 			new DateAdjustParams (
 				Convention.DATE_ROLL_FOLLOWING,
 				0,
@@ -246,7 +274,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			null
 		);
 
-<span class="fc" id="L249">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
+<span class="fc" id="L277">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -269,11 +297,11 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			bond
 		);
 
-<span class="fc" id="L272">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="fc" id="L300">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="fc" id="L274">		System.out.println (abrr.display());</span>
+<span class="fc" id="L302">		System.out.println (abrr.display());</span>
 
-<span class="fc" id="L276">		MergedDiscountForwardCurve mdfc = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L304">		MergedDiscountForwardCurve mdfc = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositTenor,
@@ -286,7 +314,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L289">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L317">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
 			mdfc,
 			null,
 			null,
@@ -296,91 +324,91 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			null
 		);
 
-<span class="fc" id="L299">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L327">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc" id="L301">		System.out.println();</span>
+<span class="fc" id="L329">		System.out.println();</span>
 
-<span class="fc" id="L303">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L331">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L305">		System.out.println (&quot;\t||                                           PERIOD LABELS AND CURVE FACTORS                                          ||&quot;);</span>
+<span class="fc" id="L333">		System.out.println (&quot;\t||                                           PERIOD LABELS AND CURVE FACTORS                                          ||&quot;);</span>
 
-<span class="fc" id="L307">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L335">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L309">		System.out.println (&quot;\t||   L -&gt; R:                                                                                                          ||&quot;);</span>
+<span class="fc" id="L337">		System.out.println (&quot;\t||   L -&gt; R:                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L311">		System.out.println (&quot;\t||           - Period Start Date                                                                                      ||&quot;);</span>
+<span class="fc" id="L339">		System.out.println (&quot;\t||           - Period Start Date                                                                                      ||&quot;);</span>
 
-<span class="fc" id="L313">		System.out.println (&quot;\t||           - Period End Date                                                                                        ||&quot;);</span>
+<span class="fc" id="L341">		System.out.println (&quot;\t||           - Period End Date                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L315">		System.out.println (&quot;\t||           - Period Pay Date                                                                                        ||&quot;);</span>
+<span class="fc" id="L343">		System.out.println (&quot;\t||           - Period Pay Date                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L317">		System.out.println (&quot;\t||           - Period Credit Label                                                                                    ||&quot;);</span>
+<span class="fc" id="L345">		System.out.println (&quot;\t||           - Period Credit Label                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L319">		System.out.println (&quot;\t||           - Period Funding Label                                                                                   ||&quot;);</span>
+<span class="fc" id="L347">		System.out.println (&quot;\t||           - Period Funding Label                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L321">		System.out.println (&quot;\t||           - Period Forward Label                                                                                   ||&quot;);</span>
+<span class="fc" id="L349">		System.out.println (&quot;\t||           - Period Forward Label                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L323">		System.out.println (&quot;\t||           - Period Coupon Rate (%)                                                                                 ||&quot;);</span>
+<span class="fc" id="L351">		System.out.println (&quot;\t||           - Period Coupon Rate (%)                                                                                 ||&quot;);</span>
 
-<span class="fc" id="L325">		System.out.println (&quot;\t||           - Period Coupon Year Fraction                                                                            ||&quot;);</span>
+<span class="fc" id="L353">		System.out.println (&quot;\t||           - Period Coupon Year Fraction                                                                            ||&quot;);</span>
 
-<span class="fc" id="L327">		System.out.println (&quot;\t||           - Period Coupon Amount                                                                                   ||&quot;);</span>
+<span class="fc" id="L355">		System.out.println (&quot;\t||           - Period Coupon Amount                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L329">		System.out.println (&quot;\t||           - Period Principal Amount                                                                                ||&quot;);</span>
+<span class="fc" id="L357">		System.out.println (&quot;\t||           - Period Principal Amount                                                                                ||&quot;);</span>
 
-<span class="fc" id="L331">		System.out.println (&quot;\t||           - Period Discount Factor                                                                                 ||&quot;);</span>
+<span class="fc" id="L359">		System.out.println (&quot;\t||           - Period Discount Factor                                                                                 ||&quot;);</span>
 
-<span class="fc" id="L333">		System.out.println (&quot;\t||           - Period Survival Probability                                                                            ||&quot;);</span>
+<span class="fc" id="L361">		System.out.println (&quot;\t||           - Period Survival Probability                                                                            ||&quot;);</span>
 
-<span class="fc" id="L335">		System.out.println (&quot;\t||           - Period Recovery                                                                                        ||&quot;);</span>
+<span class="fc" id="L363">		System.out.println (&quot;\t||           - Period Recovery                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L337">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L365">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L339" title="All 2 branches covered.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
-<span class="fc" id="L340">			int iEndDate = p.endDate();</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (CompositePeriod p : bond.couponPeriods()) {</span>
+<span class="fc" id="L368">			int iEndDate = p.endDate();</span>
 
-<span class="fc" id="L342">			int iPayDate = p.payDate();</span>
+<span class="fc" id="L370">			int iPayDate = p.payDate();</span>
 
-<span class="fc" id="L344">			int iStartDate = p.startDate();</span>
+<span class="fc" id="L372">			int iStartDate = p.startDate();</span>
 
-<span class="fc" id="L346">			dblCouponRate = bond.couponMetrics (</span>
+<span class="fc" id="L374">			dblCouponRate = bond.couponMetrics (</span>
 				iEndDate,
 				valParams,
 				csqc
-<span class="fc" id="L350">			).rate();</span>
+<span class="fc" id="L378">			).rate();</span>
 
-<span class="fc" id="L352">			double dblCouponDCF = p.couponDCF();</span>
+<span class="fc" id="L380">			double dblCouponDCF = p.couponDCF();</span>
 
-<span class="fc" id="L354">			System.out.println (&quot;\t|| &quot; +</span>
-<span class="fc" id="L355">				DateUtil.YYYYMMDD (iStartDate) + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L356">				DateUtil.YYYYMMDD (iEndDate) + &quot; | &quot; +</span>
-<span class="fc" id="L357">				DateUtil.YYYYMMDD (iPayDate) + &quot; | ? | &quot; +</span>
-<span class="fc" id="L358">				p.fundingLabel().fullyQualifiedName() + &quot; | ? | &quot; +</span>
-<span class="fc" id="L359">				FormatUtil.FormatDouble (dblCouponRate, 1, 3, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L360">				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L361">				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L362">				FormatUtil.FormatDouble (p.notional (iStartDate) - p.notional (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L363">				FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L364">				FormatUtil.FormatDouble (1., 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L382">			System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L383">				DateUtil.YYYYMMDD (iStartDate) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L384">				DateUtil.YYYYMMDD (iEndDate) + &quot; | &quot; +</span>
+<span class="fc" id="L385">				DateUtil.YYYYMMDD (iPayDate) + &quot; | ? | &quot; +</span>
+<span class="fc" id="L386">				p.fundingLabel().fullyQualifiedName() + &quot; | ? | &quot; +</span>
+<span class="fc" id="L387">				FormatUtil.FormatDouble (dblCouponRate, 1, 3, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L388">				FormatUtil.FormatDouble (dblCouponDCF, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L389">				FormatUtil.FormatDouble (dblCouponRate * dblCouponDCF * p.notional (iEndDate) * p.couponFactor (iEndDate), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L390">				FormatUtil.FormatDouble (p.notional (iStartDate) - p.notional (iEndDate), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L391">				FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L392">				FormatUtil.FormatDouble (1., 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
-<span class="fc" id="L366">		}</span>
+<span class="fc" id="L394">		}</span>
 
-<span class="fc" id="L368">		System.out.println (&quot;\t|| &quot; +</span>
-<span class="fc" id="L369">			DateUtil.YYYYMMDD (dtEffective.julian()) + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L370">			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + &quot; | &quot; +</span>
-<span class="fc" id="L371">			DateUtil.YYYYMMDD (bond.maturityPayDate().julian()) + &quot; | ? | &quot; +</span>
-<span class="fc" id="L372">			bond.fundingLabel().fullyQualifiedName() + &quot; | ? | &quot; +</span>
-<span class="fc" id="L373">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L374">			FormatUtil.FormatDouble (0., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L375">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L376">			FormatUtil.FormatDouble (bond.notional (bond.maturityDate().julian()), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L377">			FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L378">			FormatUtil.FormatDouble (1., 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L396">		System.out.println (&quot;\t|| &quot; +</span>
+<span class="fc" id="L397">			DateUtil.YYYYMMDD (dtEffective.julian()) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L398">			DateUtil.YYYYMMDD (bond.maturityDate().julian()) + &quot; | &quot; +</span>
+<span class="fc" id="L399">			DateUtil.YYYYMMDD (bond.maturityPayDate().julian()) + &quot; | ? | &quot; +</span>
+<span class="fc" id="L400">			bond.fundingLabel().fullyQualifiedName() + &quot; | ? | &quot; +</span>
+<span class="fc" id="L401">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L402">			FormatUtil.FormatDouble (0., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L403">			FormatUtil.FormatDouble (0., 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L404">			FormatUtil.FormatDouble (bond.notional (bond.maturityDate().julian()), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L405">			FormatUtil.FormatDouble (1., 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L406">			FormatUtil.FormatDouble (1., 2, 2, 100.) + &quot;% ||&quot;</span>
 		);
 
-<span class="fc" id="L381">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L409">		System.out.println (&quot;\t||--------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L383">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L384">	}</span>
+<span class="fc" id="L411">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L412">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

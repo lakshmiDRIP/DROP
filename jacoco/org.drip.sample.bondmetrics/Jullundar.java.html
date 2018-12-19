@@ -13,32 +13,51 @@ import org.drip.service.scenario.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -55,12 +74,21 @@ import org.drip.service.scenario.*;
  */
 
 /**
- * Jullundar generates the Full Suite of Replication Metrics for Bond Jullundar.
+ * &lt;i&gt;Jullundar&lt;/i&gt; generates the Full Suite of Replication Metrics for Bond Jullundar.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondmetrics/README.md&quot;&gt;Bond Analytics Metrics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L63">public class Jullundar {</span>
+<span class="nc" id="L91">public class Jullundar {</span>
 
 	private static final void SetEOS (
 		final BondComponent bond,
@@ -68,35 +96,35 @@ import org.drip.service.scenario.*;
 		final EmbeddedOptionSchedule eosPut)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if (null != eosPut) bond.setEmbeddedPutSchedule (eosPut);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (null != eosPut) bond.setEmbeddedPutSchedule (eosPut);</span>
 
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (null != eosCall) bond.setEmbeddedCallSchedule (eosCall);</span>
-<span class="fc" id="L74">	}</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (null != eosCall) bond.setEmbeddedCallSchedule (eosCall);</span>
+<span class="fc" id="L102">	}</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L80">		EnvManager.InitEnv (</span>
+<span class="fc" id="L108">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L85">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L113">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.JULY,
 			10
 		);
 
-<span class="fc" id="L91">		String[] astrDepositTenor = new String[] {</span>
+<span class="fc" id="L119">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="fc" id="L95">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L123">		double[] adblDepositQuote = new double[] {</span>
 			0.0130411 // 2D
 		};
 
-<span class="fc" id="L99">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L127">		double[] adblFuturesQuote = new double[] {</span>
 			0.01345,	// 98.655
 			0.01470,	// 98.530
 			0.01575,	// 98.425
@@ -105,7 +133,7 @@ import org.drip.service.scenario.*;
 			0.01845     // 98.155
 		};
 
-<span class="fc" id="L108">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="fc" id="L136">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -125,7 +153,7 @@ import org.drip.service.scenario.*;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L128">		String[] astrGovvieTenor = new String[] {</span>
+<span class="fc" id="L156">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -136,7 +164,7 @@ import org.drip.service.scenario.*;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L139">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L167">		double[] adblFixFloatQuote = new double[] {</span>
 			0.016410, //  2Y
 			0.017863, //  3Y
 			0.019030, //  4Y
@@ -156,7 +184,7 @@ import org.drip.service.scenario.*;
 			0.025560  // 50Y
 		};
 
-<span class="fc" id="L159">		double[] adblGovvieYield = new double[] {</span>
+<span class="fc" id="L187">		double[] adblGovvieYield = new double[] {</span>
 			0.01219, //  1Y
 			0.01391, //  2Y
 			0.01590, //  3Y
@@ -167,7 +195,7 @@ import org.drip.service.scenario.*;
 			0.02927  // 30Y
 		};
 
-<span class="fc" id="L170">		String[] astrCreditTenor = new String[] {</span>
+<span class="fc" id="L198">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -178,7 +206,7 @@ import org.drip.service.scenario.*;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L181">		double[] adblCreditQuote = new double[] {</span>
+<span class="fc" id="L209">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -189,33 +217,33 @@ import org.drip.service.scenario.*;
 			188.	// 10Y
 		};
 
-<span class="fc" id="L192">		double dblFX = 1.;</span>
-<span class="fc" id="L193">		int iSettleLag = 3;</span>
-<span class="fc" id="L194">		int iCouponFreq = 2;</span>
-<span class="fc" id="L195">		String strName = &quot;Jullundar&quot;;</span>
-<span class="fc" id="L196">		double dblCleanPrice = 0.40;</span>
-<span class="fc" id="L197">		double dblIssuePrice = 0.40;</span>
-<span class="fc" id="L198">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L199">		double dblSpreadBump = 20.;</span>
-<span class="fc" id="L200">		double dblCouponRate = 0.000;</span>
-<span class="fc" id="L201">		double dblIssueAmount = 7.50e8;</span>
-<span class="fc" id="L202">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="fc" id="L203">		String strCouponDayCount = &quot;30/360&quot;;</span>
-<span class="fc" id="L204">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="fc" id="L220">		double dblFX = 1.;</span>
+<span class="fc" id="L221">		int iSettleLag = 3;</span>
+<span class="fc" id="L222">		int iCouponFreq = 2;</span>
+<span class="fc" id="L223">		String strName = &quot;Jullundar&quot;;</span>
+<span class="fc" id="L224">		double dblCleanPrice = 0.40;</span>
+<span class="fc" id="L225">		double dblIssuePrice = 0.40;</span>
+<span class="fc" id="L226">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L227">		double dblSpreadBump = 20.;</span>
+<span class="fc" id="L228">		double dblCouponRate = 0.000;</span>
+<span class="fc" id="L229">		double dblIssueAmount = 7.50e8;</span>
+<span class="fc" id="L230">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L231">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L232">		double dblSpreadDurationMultiplier = 5.;</span>
 
-<span class="fc" id="L206">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L234">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2016,
 			11,
 			2
 		);
 
-<span class="fc" id="L212">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L240">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2043,
 			8,
 			16
 		);
 
-<span class="fc" id="L218">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="fc" id="L246">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strName,
 			strCurrency,
 			strName,
@@ -228,27 +256,27 @@ import org.drip.service.scenario.*;
 			null
 		);
 
-<span class="fc" id="L231">		SetEOS (</span>
+<span class="fc" id="L259">		SetEOS (</span>
 			bond,
 			new EmbeddedOptionSchedule (
 				new int[] {
-<span class="fc" id="L235">					DateUtil.CreateFromYMD (2026, 8, 16).julian(),</span>
-<span class="fc" id="L236">					DateUtil.CreateFromYMD (2027, 8, 16).julian(),</span>
-<span class="fc" id="L237">					DateUtil.CreateFromYMD (2028, 8, 16).julian(),</span>
-<span class="fc" id="L238">					DateUtil.CreateFromYMD (2029, 8, 16).julian(),</span>
-<span class="fc" id="L239">					DateUtil.CreateFromYMD (2030, 8, 16).julian(),</span>
-<span class="fc" id="L240">					DateUtil.CreateFromYMD (2031, 8, 16).julian(),</span>
-<span class="fc" id="L241">					DateUtil.CreateFromYMD (2032, 8, 16).julian(),</span>
-<span class="fc" id="L242">					DateUtil.CreateFromYMD (2033, 8, 16).julian(),</span>
-<span class="fc" id="L243">					DateUtil.CreateFromYMD (2034, 8, 16).julian(),</span>
-<span class="fc" id="L244">					DateUtil.CreateFromYMD (2035, 8, 16).julian(),</span>
-<span class="fc" id="L245">					DateUtil.CreateFromYMD (2036, 8, 16).julian(),</span>
-<span class="fc" id="L246">					DateUtil.CreateFromYMD (2037, 8, 16).julian(),</span>
-<span class="fc" id="L247">					DateUtil.CreateFromYMD (2038, 8, 16).julian(),</span>
-<span class="fc" id="L248">					DateUtil.CreateFromYMD (2039, 8, 16).julian(),</span>
-<span class="fc" id="L249">					DateUtil.CreateFromYMD (2040, 8, 16).julian(),</span>
-<span class="fc" id="L250">					DateUtil.CreateFromYMD (2041, 8, 16).julian(),</span>
-<span class="fc" id="L251">					DateUtil.CreateFromYMD (2042, 8, 16).julian(),</span>
+<span class="fc" id="L263">					DateUtil.CreateFromYMD (2026, 8, 16).julian(),</span>
+<span class="fc" id="L264">					DateUtil.CreateFromYMD (2027, 8, 16).julian(),</span>
+<span class="fc" id="L265">					DateUtil.CreateFromYMD (2028, 8, 16).julian(),</span>
+<span class="fc" id="L266">					DateUtil.CreateFromYMD (2029, 8, 16).julian(),</span>
+<span class="fc" id="L267">					DateUtil.CreateFromYMD (2030, 8, 16).julian(),</span>
+<span class="fc" id="L268">					DateUtil.CreateFromYMD (2031, 8, 16).julian(),</span>
+<span class="fc" id="L269">					DateUtil.CreateFromYMD (2032, 8, 16).julian(),</span>
+<span class="fc" id="L270">					DateUtil.CreateFromYMD (2033, 8, 16).julian(),</span>
+<span class="fc" id="L271">					DateUtil.CreateFromYMD (2034, 8, 16).julian(),</span>
+<span class="fc" id="L272">					DateUtil.CreateFromYMD (2035, 8, 16).julian(),</span>
+<span class="fc" id="L273">					DateUtil.CreateFromYMD (2036, 8, 16).julian(),</span>
+<span class="fc" id="L274">					DateUtil.CreateFromYMD (2037, 8, 16).julian(),</span>
+<span class="fc" id="L275">					DateUtil.CreateFromYMD (2038, 8, 16).julian(),</span>
+<span class="fc" id="L276">					DateUtil.CreateFromYMD (2039, 8, 16).julian(),</span>
+<span class="fc" id="L277">					DateUtil.CreateFromYMD (2040, 8, 16).julian(),</span>
+<span class="fc" id="L278">					DateUtil.CreateFromYMD (2041, 8, 16).julian(),</span>
+<span class="fc" id="L279">					DateUtil.CreateFromYMD (2042, 8, 16).julian(),</span>
 				},
 				new double[] {
 					0.50579,
@@ -279,7 +307,7 @@ import org.drip.service.scenario.*;
 			null
 		);
 
-<span class="fc" id="L282">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
+<span class="fc" id="L310">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -302,11 +330,11 @@ import org.drip.service.scenario.*;
 			bond
 		);
 
-<span class="fc" id="L305">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="fc" id="L333">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="fc" id="L307">		System.out.println (abrr.display());</span>
+<span class="fc" id="L335">		System.out.println (abrr.display());</span>
 
-<span class="fc" id="L309">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L310">	}</span>
+<span class="fc" id="L337">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L338">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
