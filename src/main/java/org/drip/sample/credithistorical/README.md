@@ -8,52 +8,52 @@ DROP Sample Credit Historical illustrates CDX NA IG Historical Metrics Generatio
 ## Class Components
 
  * [***CDXNAIGS155YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS155YMetrics.java)
- <i>CDXNAIGS155YMetrics</i> cleanses the Input CDX.NA.IG S15 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS155YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S15 5Y.
 
  * [***CDXNAIGS165YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS165YMetrics.java)
- <i>CDXNAIGS165YMetrics</i> cleanses the Input CDX.NA.IG S16 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS165YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S16 5Y.
 
  * [***CDXNAIGS175YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS175YMetrics.java)
- <i>CDXNAIGS175YMetrics</i> cleanses the Input CDX.NA.IG S17 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS175YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S17 5Y.
 
  * [***CDXNAIGS185YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS185YMetrics.java)
- <i>CDXNAIGS185YMetrics</i> cleanses the Input CDX.NA.IG S18 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS185YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S18 5Y.
 
  * [***CDXNAIGS195YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS195YMetrics.java)
- <i>CDXNAIGS195YMetrics</i> cleanses the Input CDX.NA.IG S19 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS195YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S19 5Y.
 
  * [***CDXNAIGS205YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS205YMetrics.java)
- <i>CDXNAIGS205YMetrics</i> cleanses the Input CDX.NA.IG S20 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS205YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S20 5Y.
 
  * [***CDXNAIGS215YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS215YMetrics.java)
- <i>CDXNAIGS215YMetrics</i> cleanses the Input CDX.NA.IG S21 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS215YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S21 5Y.
 
  * [***CDXNAIGS225YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS225YMetrics.java)
- <i>CDXNAIGS225YMetrics</i> cleanses the Input CDX.NA.IG S22 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS225YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S22 5Y.
 
  * [***CDXNAIGS235YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS235YMetrics.java)
- <i>CDXNAIGS235YMetrics</i> cleanses the Input CDX.NA.IG S23 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS235YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S23 5Y.
 
  * [***CDXNAIGS245YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS245YMetrics.java)
- <i>CDXNAIGS245YMetrics</i> cleanses the Input CDX.NA.IG S24 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS245YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S24 5Y.
 
  * [***CDXNAIGS255YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS255YMetrics.java)
- <i>CDXNAIGS255YMetrics</i> cleanses the Input CDX.NA.IG S25 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS255YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S25 5Y.
 
  * [***CDXNAIGS265YMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/CDXNAIGS265YMetrics.java)
- <i>CDXNAIGS265YMetrics</i> cleanses the Input CDX.NA.IG S26 5Y CDS Price Marks and saves them into a usable
- and Process-able Format.
+ <i>CDXNAIGS265YMetrics</i> generates the Historical Credit Survival/Recovery Metrics for the Index Contract
+ CDX NA IG S26 5Y.
  
 
 ## DROP Specifications
