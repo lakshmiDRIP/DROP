@@ -98,8 +98,8 @@ public class CDXNAIGS165YReconstitutor {
 		int iQuotedSpreadIndex = 1;
 		String strCurrency = "USD";
 		String strFullCreditIndexName = "CDX.NA.IG.S16.5Y";
-		String strCreditIndexMarksLocation = "C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\CreditMarks\\" + strFullCreditIndexName + ".Formatted.csv";
-		String strFundingFixingMarksLocation = "C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\FundingStateMarks\\" + strCurrency + "CreditFixingReconstitutor.csv";
+		String strCreditIndexMarksLocation = "C:\\DROP\\Daemons\\Feeds\\CreditMarks\\" + strFullCreditIndexName + ".Formatted.csv";
+		String strFundingFixingMarksLocation = "C:\\DROP\\Daemons\\Transforms\\FundingStateMarks\\" + strCurrency + "CreditFixingReconstitutor.csv";
 
 		CreditCDSIndexMarksReconstitutor.RegularizeCloses (
 			strFundingFixingMarksLocation,
@@ -108,5 +108,7 @@ public class CDXNAIGS165YReconstitutor {
 			iSpotDateIndex,
 			iQuotedSpreadIndex
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

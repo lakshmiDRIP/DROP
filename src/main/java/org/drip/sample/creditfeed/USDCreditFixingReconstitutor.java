@@ -94,11 +94,13 @@ public class USDCreditFixingReconstitutor {
 		EnvManager.InitEnv ("");
 
 		String strCurrency = "USD";
-		String strFundingMarksLocation = "C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\CreditMarks\\" + strCurrency + "_Fixing_Formatted.csv";
+		String strFundingMarksLocation = "C:\\DROP\\Daemons\\Feeds\\CreditMarks\\" + strCurrency + "_Fixing_Formatted.csv";
 
 		FundingFixFloatMarksReconstitutor.ShapePreservingRegularization (
 			strCurrency,
 			strFundingMarksLocation
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }
