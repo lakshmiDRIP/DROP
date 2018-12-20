@@ -109,6 +109,7 @@ Analytics Core Module contains libraries the implement Fixed Income Analytics, A
 
  * Modeling Counterparty Credit Exposure in the Presence of Margin Agreements
  * Estimation of Margin Period of Risk
+ * Regression Sensitivities in Margin Calculations
  * Principles Behind ISDA SIMM Specification
  * ISDA SIMM Methodology
  * Dynamic Initial Margin Impact on Exposure
