@@ -390,5 +390,7 @@ public class CDSCashFlowMeasures {
 		CreateCreditCurveFromCDSInstruments();
 
 		CDSAPISample();
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -440,5 +440,7 @@ public class CDSBasketMeasures {
 		EnvManager.InitEnv (strConfig);
 
 		BasketBondAPISample();
+
+		EnvManager.TerminateEnv();
 	}
 }

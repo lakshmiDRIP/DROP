@@ -224,5 +224,7 @@ public class BuiltInCDSPortfolioDefinitions {
 		EnvManager.InitEnv (strConfig);
 
 		BasketCDSAPISample();
+
+		EnvManager.TerminateEnv();
 	}
 }

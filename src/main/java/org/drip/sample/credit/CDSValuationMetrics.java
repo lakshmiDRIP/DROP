@@ -457,5 +457,7 @@ public class CDSValuationMetrics {
 
 		for (Map.Entry<String, Double> me : mapCDSForward.entrySet())
 			System.out.println (me.getKey() + " => " + me.getValue());
+
+		EnvManager.TerminateEnv();
 	}
 }

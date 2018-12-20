@@ -183,5 +183,7 @@ public class CreditIndexDefinitions {
 		System.out.println ("\t|----------------------------------------------------------------------------------------------------------||");
 
 		System.out.println ("\n");
+
+		EnvManager.TerminateEnv();
 	}
 }
