@@ -139,5 +139,7 @@ public class BoundedFunction {
 			);
 
 		System.out.println ("\t||------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -147,5 +147,7 @@ public class ScaleSensitiveFunction {
 			);
 
 		System.out.println ("\t||------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
