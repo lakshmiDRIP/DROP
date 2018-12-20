@@ -27,32 +27,51 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -69,37 +88,69 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
  */
 
 /**
- * BilateralCSACollateralizedFundingStochastic examines the Basel BCBS 2012 OTC Accounting Impact to a
- *  Portfolio of 10 Swaps resulting from the Addition of a New Swap - Comparison via both FVA/FDA and FCA/FBA
- *  Schemes. Simulation is carried out under the following Criteria using one of the Generalized Burgard
- *  Kjaer (2013) Scheme.
+ * &lt;i&gt;BilateralCSACollateralizedFundingStochastic&lt;/i&gt; examines the Basel BCBS 2012 OTC Accounting Impact to a
+ * Portfolio of 10 Swaps resulting from the Addition of a New Swap - Comparison via both FVA/FDA and FCA/FBA
+ * Schemes. Simulation is carried out under the following Criteria using one of the Generalized Burgard Kjaer
+ * (2013) Scheme.
  *  
- *    - Collateralization Status - Collateralized
- *    - Aggregation Unit         - Funding Group
- *    - Added Swap Type          - Zero Upfront Par Swap (Neutral)
- *    - Market Dynamics          - Stochastic (Dynamic Market Evolution)
- *    - Funding Strategy         - Gold Plated Two Way CSA
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *    		Collateralization Status - Collateralized
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *    		Aggregation Unit         - Funding Group
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *    		Added Swap Type          - Zero Upfront Par Swap (Neutral)
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *    		Market Dynamics          - Stochastic (Dynamic Market Evolution)
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *    		Funding Strategy         - Gold Plated Two Way CSA
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  *  
  * The References are:
  *  
- *  - Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party Risk
- *  	and Funding Costs, Journal of Credit Risk, 7 (3) 1-19.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter-party
+ *  			Risk and Funding Costs &lt;i&gt;Journal of Credit Risk&lt;/i&gt; &lt;b&gt;7 (3)&lt;/b&gt; 1-19
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Burgard, C., and M. Kjaer (2014): In the Balance &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;24 (11)&lt;/b&gt; 72-75
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;20 (2)&lt;/b&gt;
+ *  			86-90
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Li, B., and Y. Tang (2007): &lt;i&gt;Quantitative Analysis, Derivatives Modeling, and Trading
+ *  			Strategies in the Presence of Counter-party Credit Risk for the Fixed Income Market&lt;/i&gt;
+ *  			&lt;b&gt;World Scientific Publishing&lt;/b&gt; Singapore
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing
+ *  			&lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;21 (2)&lt;/b&gt; 97-102
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  *  
- *  - Burgard, C., and M. Kjaer (2014): In the Balance, Risk, 24 (11) 72-75.
- *  
- *  - Gregory, J. (2009): Being Two-faced over Counter-party Credit Risk, Risk 20 (2) 86-90.
- *  
- *  - Li, B., and Y. Tang (2007): Quantitative Analysis, Derivatives Modeling, and Trading Strategies in the
- *  	Presence of Counter-party Credit Risk for the Fixed Income Market, World Scientific Publishing,
- *  	Singapore.
- * 
- *  - Piterbarg, V. (2010): Funding Beyond Discounting: Collateral Agreements and Derivatives Pricing, Risk
- *  	21 (2) 97-102.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/burgard2013/README.md&quot;&gt;Burgard and Kjaer (2013) Scheme&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L102">public class BilateralCSACollateralizedFundingStochastic {</span>
+<span class="nc" id="L153">public class BilateralCSACollateralizedFundingStochastic {</span>
 
 	private static final double[] NumeraireValueRealization (
 		final DiffusionEvolver deNumeraireValue,
@@ -110,31 +161,31 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final int iNumStep)
 		throws Exception
 	{
-<span class="nc" id="L113">		double[] adblNumeraireValue = new double[iNumStep + 1];</span>
-<span class="nc" id="L114">		adblNumeraireValue[0] = dblNumeraireValueInitial;</span>
-<span class="nc" id="L115">		double[] adblTimeWidth = new double[iNumStep];</span>
+<span class="nc" id="L164">		double[] adblNumeraireValue = new double[iNumStep + 1];</span>
+<span class="nc" id="L165">		adblNumeraireValue[0] = dblNumeraireValueInitial;</span>
+<span class="nc" id="L166">		double[] adblTimeWidth = new double[iNumStep];</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="nc" id="L118">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="nc" id="L169">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="nc" id="L120">		JumpDiffusionEdge[] aJDE = deNumeraireValue.incrementSequence (</span>
+<span class="nc" id="L171">		JumpDiffusionEdge[] aJDE = deNumeraireValue.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblNumeraireValueInitial,
 				0.,
 				false
 			),
-<span class="nc" id="L127">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="nc" id="L178">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				adblRandom
 			),
 			dblTimeWidth
 		);
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
-<span class="nc" id="L135">			adblNumeraireValue[j] = aJDE[j - 1].finish();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
+<span class="nc" id="L186">			adblNumeraireValue[j] = aJDE[j - 1].finish();</span>
 
-<span class="nc" id="L137">		return adblNumeraireValue;</span>
+<span class="nc" id="L188">		return adblNumeraireValue;</span>
 	}
 
 	private static final double[] VertexNumeraireRealization (
@@ -146,30 +197,30 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final int iNumStep)
 		throws Exception
 	{
-<span class="nc" id="L149">		double[] adblNumeraireValue = new double[iNumStep + 1];</span>
-<span class="nc" id="L150">		double[] adblTimeWidth = new double[iNumStep];</span>
+<span class="nc" id="L200">		double[] adblNumeraireValue = new double[iNumStep + 1];</span>
+<span class="nc" id="L201">		double[] adblTimeWidth = new double[iNumStep];</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="nc" id="L153">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="nc" id="L204">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="nc" id="L155">		JumpDiffusionVertex[] aJDV = deNumeraireValue.vertexSequenceReverse (</span>
+<span class="nc" id="L206">		JumpDiffusionVertex[] aJDV = deNumeraireValue.vertexSequenceReverse (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblNumeraireValueInitial,
 				0.,
 				false
 			),
-<span class="nc" id="L162">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="nc" id="L213">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				adblRandom
 			),
 			adblTimeWidth
 		);
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumStep; ++j)</span>
-<span class="nc" id="L170">			adblNumeraireValue[j] = aJDV[j].value();</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="nc" id="L221">			adblNumeraireValue[j] = aJDV[j].value();</span>
 
-<span class="nc" id="L172">		return adblNumeraireValue;</span>
+<span class="nc" id="L223">		return adblNumeraireValue;</span>
 	}
 
 	private static final double[] ATMSwapRateOffsetRealization (
@@ -181,31 +232,31 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final int iNumStep)
 		throws Exception
 	{
-<span class="nc" id="L184">		double[] adblATMSwapRateOffset = new double[iNumStep + 1];</span>
-<span class="nc" id="L185">		adblATMSwapRateOffset[0] = dblATMSwapRateOffsetInitial;</span>
-<span class="nc" id="L186">		double[] adblTimeWidth = new double[iNumStep];</span>
+<span class="nc" id="L235">		double[] adblATMSwapRateOffset = new double[iNumStep + 1];</span>
+<span class="nc" id="L236">		adblATMSwapRateOffset[0] = dblATMSwapRateOffsetInitial;</span>
+<span class="nc" id="L237">		double[] adblTimeWidth = new double[iNumStep];</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="nc" id="L189">			adblTimeWidth[i] = dblTimeWidth;</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="nc" id="L240">			adblTimeWidth[i] = dblTimeWidth;</span>
 
-<span class="nc" id="L191">		JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
+<span class="nc" id="L242">		JumpDiffusionEdge[] aJDE = deATMSwapRateOffset.incrementSequence (</span>
 			new JumpDiffusionVertex (
 				dblTime,
 				dblATMSwapRateOffsetInitial,
 				0.,
 				false
 			),
-<span class="nc" id="L198">			JumpDiffusionEdgeUnit.Diffusion (</span>
+<span class="nc" id="L249">			JumpDiffusionEdgeUnit.Diffusion (</span>
 				adblTimeWidth,
 				adblRandom
 			),
 			dblTimeWidth
 		);
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
-<span class="nc" id="L206">			adblATMSwapRateOffset[j] = aJDE[j - 1].finish();</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (int j = 1; j &lt;= iNumStep; ++j)</span>
+<span class="nc" id="L257">			adblATMSwapRateOffset[j] = aJDE[j - 1].finish();</span>
 
-<span class="nc" id="L208">		return adblATMSwapRateOffset;</span>
+<span class="nc" id="L259">		return adblATMSwapRateOffset;</span>
 	}
 
 	private static final double[] SwapPortfolioValueRealization (
@@ -219,13 +270,13 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final double dblSwapNotional)
 		throws Exception
 	{
-<span class="nc" id="L222">		double[] adblSwapPortfolioValueRealization = new double[iNumStep + 1];</span>
-<span class="nc" id="L223">		int iMaturityStep = (int) (dblTimeMaturity / dblTimeWidth);</span>
+<span class="nc" id="L273">		double[] adblSwapPortfolioValueRealization = new double[iNumStep + 1];</span>
+<span class="nc" id="L274">		int iMaturityStep = (int) (dblTimeMaturity / dblTimeWidth);</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
-<span class="nc" id="L226">			adblSwapPortfolioValueRealization[i] = 0.;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStep; ++i)</span>
+<span class="nc" id="L277">			adblSwapPortfolioValueRealization[i] = 0.;</span>
 
-<span class="nc" id="L228">		double[] adblATMSwapRateOffsetRealization = ATMSwapRateOffsetRealization (</span>
+<span class="nc" id="L279">		double[] adblATMSwapRateOffsetRealization = ATMSwapRateOffsetRealization (</span>
 			deATMSwapRate,
 			dblATMSwapRateStart,
 			adblRandom,
@@ -234,11 +285,11 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 			iNumStep
 		);
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumStep; ++j)</span>
-<span class="nc bnc" id="L238" title="All 2 branches missed.">			adblSwapPortfolioValueRealization[j] = j &gt; iMaturityStep ? 0. :</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">			adblSwapPortfolioValueRealization[j] = j &gt; iMaturityStep ? 0. :</span>
 				dblSwapNotional * dblTimeWidth * (iMaturityStep - j) * adblATMSwapRateOffsetRealization[j];
 
-<span class="nc" id="L241">		return adblSwapPortfolioValueRealization;</span>
+<span class="nc" id="L292">		return adblSwapPortfolioValueRealization;</span>
 	}
 
 	private static final double[][] Path (
@@ -246,7 +297,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final int iNumVertex)
 		throws Exception
 	{
-<span class="nc" id="L249">		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (</span>
+<span class="nc" id="L300">		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (</span>
 			new RandomNumberGenerator(),
 			aadblCorrelation,
 			iNumVertex,
@@ -255,7 +306,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 			null
 		);
 
-<span class="nc" id="L258">		return cpvd.multiPathVertexRd()[0].flatform();</span>
+<span class="nc" id="L309">		return cpvd.multiPathVertexRd()[0].flatform();</span>
 	}
 
 	private static final ExposureAdjustmentAggregator[] Mix (
@@ -267,41 +318,41 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final double dblSwapNotional2)
 		throws Exception
 	{
-<span class="nc" id="L270">		int iNumStep = 10;</span>
-<span class="nc" id="L271">		int iNumPath = 60000;</span>
-<span class="nc" id="L272">		int iNumVertex = 10;</span>
-<span class="nc" id="L273">		double dblTime = 5.;</span>
-<span class="nc" id="L274">		double dblATMSwapRateOffsetDrift = 0.0;</span>
-<span class="nc" id="L275">		double dblATMSwapRateOffsetVolatility = 0.25;</span>
-<span class="nc" id="L276">		double dblOvernightNumeraireDrift = 0.004;</span>
-<span class="nc" id="L277">		double dblOvernightNumeraireVolatility = 0.02;</span>
-<span class="nc" id="L278">		double dblOvernightNumeraireInitial = 1.;</span>
-<span class="nc" id="L279">		double dblCSADrift = 0.01;</span>
-<span class="nc" id="L280">		double dblCSAVolatility = 0.05;</span>
-<span class="nc" id="L281">		double dblCSAInitial = 1.;</span>
-<span class="nc" id="L282">		double dblBankHazardRateDrift = 0.002;</span>
-<span class="nc" id="L283">		double dblBankHazardRateVolatility = 0.20;</span>
-<span class="nc" id="L284">		double dblBankHazardRateInitial = 0.015;</span>
-<span class="nc" id="L285">		double dblBankSeniorRecoveryRateDrift = 0.002;</span>
-<span class="nc" id="L286">		double dblBankSeniorRecoveryRateVolatility = 0.02;</span>
-<span class="nc" id="L287">		double dblBankSeniorRecoveryRateInitial = 0.40;</span>
-<span class="nc" id="L288">		double dblBankSubordinateRecoveryRateDrift = 0.001;</span>
-<span class="nc" id="L289">		double dblBankSubordinateRecoveryRateVolatility = 0.01;</span>
-<span class="nc" id="L290">		double dblBankSubordinateRecoveryRateInitial = 0.15;</span>
-<span class="nc" id="L291">		double dblCounterPartyHazardRateDrift = 0.002;</span>
-<span class="nc" id="L292">		double dblCounterPartyHazardRateVolatility = 0.30;</span>
-<span class="nc" id="L293">		double dblCounterPartyHazardRateInitial = 0.030;</span>
-<span class="nc" id="L294">		double dblCounterPartyRecoveryRateDrift = 0.002;</span>
-<span class="nc" id="L295">		double dblCounterPartyRecoveryRateVolatility = 0.02;</span>
-<span class="nc" id="L296">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
-<span class="nc" id="L297">		double dblBankSeniorFundingSpreadDrift = 0.00002;</span>
-<span class="nc" id="L298">		double dblBankSeniorFundingSpreadVolatility = 0.002;</span>
-<span class="nc" id="L299">		double dblBankSubordinateFundingSpreadDrift = 0.00001;</span>
-<span class="nc" id="L300">		double dblBankSubordinateFundingSpreadVolatility = 0.001;</span>
-<span class="nc" id="L301">		double dblCounterPartyFundingSpreadDrift = 0.000022;</span>
-<span class="nc" id="L302">		double dblCounterPartyFundingSpreadVolatility = 0.0022;</span>
+<span class="nc" id="L321">		int iNumStep = 10;</span>
+<span class="nc" id="L322">		int iNumPath = 60000;</span>
+<span class="nc" id="L323">		int iNumVertex = 10;</span>
+<span class="nc" id="L324">		double dblTime = 5.;</span>
+<span class="nc" id="L325">		double dblATMSwapRateOffsetDrift = 0.0;</span>
+<span class="nc" id="L326">		double dblATMSwapRateOffsetVolatility = 0.25;</span>
+<span class="nc" id="L327">		double dblOvernightNumeraireDrift = 0.004;</span>
+<span class="nc" id="L328">		double dblOvernightNumeraireVolatility = 0.02;</span>
+<span class="nc" id="L329">		double dblOvernightNumeraireInitial = 1.;</span>
+<span class="nc" id="L330">		double dblCSADrift = 0.01;</span>
+<span class="nc" id="L331">		double dblCSAVolatility = 0.05;</span>
+<span class="nc" id="L332">		double dblCSAInitial = 1.;</span>
+<span class="nc" id="L333">		double dblBankHazardRateDrift = 0.002;</span>
+<span class="nc" id="L334">		double dblBankHazardRateVolatility = 0.20;</span>
+<span class="nc" id="L335">		double dblBankHazardRateInitial = 0.015;</span>
+<span class="nc" id="L336">		double dblBankSeniorRecoveryRateDrift = 0.002;</span>
+<span class="nc" id="L337">		double dblBankSeniorRecoveryRateVolatility = 0.02;</span>
+<span class="nc" id="L338">		double dblBankSeniorRecoveryRateInitial = 0.40;</span>
+<span class="nc" id="L339">		double dblBankSubordinateRecoveryRateDrift = 0.001;</span>
+<span class="nc" id="L340">		double dblBankSubordinateRecoveryRateVolatility = 0.01;</span>
+<span class="nc" id="L341">		double dblBankSubordinateRecoveryRateInitial = 0.15;</span>
+<span class="nc" id="L342">		double dblCounterPartyHazardRateDrift = 0.002;</span>
+<span class="nc" id="L343">		double dblCounterPartyHazardRateVolatility = 0.30;</span>
+<span class="nc" id="L344">		double dblCounterPartyHazardRateInitial = 0.030;</span>
+<span class="nc" id="L345">		double dblCounterPartyRecoveryRateDrift = 0.002;</span>
+<span class="nc" id="L346">		double dblCounterPartyRecoveryRateVolatility = 0.02;</span>
+<span class="nc" id="L347">		double dblCounterPartyRecoveryRateInitial = 0.30;</span>
+<span class="nc" id="L348">		double dblBankSeniorFundingSpreadDrift = 0.00002;</span>
+<span class="nc" id="L349">		double dblBankSeniorFundingSpreadVolatility = 0.002;</span>
+<span class="nc" id="L350">		double dblBankSubordinateFundingSpreadDrift = 0.00001;</span>
+<span class="nc" id="L351">		double dblBankSubordinateFundingSpreadVolatility = 0.001;</span>
+<span class="nc" id="L352">		double dblCounterPartyFundingSpreadDrift = 0.000022;</span>
+<span class="nc" id="L353">		double dblCounterPartyFundingSpreadVolatility = 0.0022;</span>
 
-<span class="nc" id="L304">		double[][] aadblCorrelation = new double[][] {</span>
+<span class="nc" id="L355">		double[][] aadblCorrelation = new double[][] {</span>
 			{1.00,  0.00,  0.03,  0.07,  0.04,  0.05,  0.00,  0.08,  0.00,  0.00,  0.00},  // PORTFOLIO
 			{0.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},  // OVERNIGHT
 			{0.03,  0.00,  1.00,  0.26,  0.33,  0.21,  0.00,  0.35,  0.13,  0.00,  0.00},  // CSA
@@ -315,104 +366,104 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 			{0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00}   // COUNTER PARTY FUNDING SPREAD
 		};
 
-<span class="nc" id="L318">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="nc" id="L369">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="nc" id="L320">		double dblTimeWidth = dblTime / iNumStep;</span>
-<span class="nc" id="L321">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
-<span class="nc" id="L322">		double[][] aadblPortfolio1Value = new double[iNumPath][iNumStep + 1];</span>
-<span class="nc" id="L323">		double[][] aadblPortfolio2Value = new double[iNumPath][iNumStep + 1];</span>
-<span class="nc" id="L324">		MonoPathExposureAdjustment[] aMPEAGround = new MonoPathExposureAdjustment[iNumPath];</span>
-<span class="nc" id="L325">		MonoPathExposureAdjustment[] aMPEAExtended = new MonoPathExposureAdjustment[iNumPath];</span>
-<span class="nc" id="L326">		double dblBankSeniorFundingSpreadInitial = dblBankHazardRateInitial / (1. - dblBankSeniorRecoveryRateInitial);</span>
-<span class="nc" id="L327">		double dblBankSubordinateFundingSpreadInitial = dblBankHazardRateInitial / (1. - dblBankSubordinateRecoveryRateInitial);</span>
-<span class="nc" id="L328">		double dblCounterPartyFundingSpreadInitial = dblCounterPartyHazardRateInitial / (1. - dblCounterPartyRecoveryRateInitial);</span>
+<span class="nc" id="L371">		double dblTimeWidth = dblTime / iNumStep;</span>
+<span class="nc" id="L372">		JulianDate[] adtVertex = new JulianDate[iNumStep + 1];</span>
+<span class="nc" id="L373">		double[][] aadblPortfolio1Value = new double[iNumPath][iNumStep + 1];</span>
+<span class="nc" id="L374">		double[][] aadblPortfolio2Value = new double[iNumPath][iNumStep + 1];</span>
+<span class="nc" id="L375">		MonoPathExposureAdjustment[] aMPEAGround = new MonoPathExposureAdjustment[iNumPath];</span>
+<span class="nc" id="L376">		MonoPathExposureAdjustment[] aMPEAExtended = new MonoPathExposureAdjustment[iNumPath];</span>
+<span class="nc" id="L377">		double dblBankSeniorFundingSpreadInitial = dblBankHazardRateInitial / (1. - dblBankSeniorRecoveryRateInitial);</span>
+<span class="nc" id="L378">		double dblBankSubordinateFundingSpreadInitial = dblBankHazardRateInitial / (1. - dblBankSubordinateRecoveryRateInitial);</span>
+<span class="nc" id="L379">		double dblCounterPartyFundingSpreadInitial = dblCounterPartyHazardRateInitial / (1. - dblCounterPartyRecoveryRateInitial);</span>
 
-<span class="nc" id="L330">		DiffusionEvolver deATMSwapRateOffset = new DiffusionEvolver (</span>
-<span class="nc" id="L331">			DiffusionEvaluatorLinear.Standard (</span>
+<span class="nc" id="L381">		DiffusionEvolver deATMSwapRateOffset = new DiffusionEvolver (</span>
+<span class="nc" id="L382">			DiffusionEvaluatorLinear.Standard (</span>
 				dblATMSwapRateOffsetDrift,
 				dblATMSwapRateOffsetVolatility
 			)
 		);
 
-<span class="nc" id="L337">		DiffusionEvolver deOvernightNumeraire = new DiffusionEvolver (</span>
-<span class="nc" id="L338">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L388">		DiffusionEvolver deOvernightNumeraire = new DiffusionEvolver (</span>
+<span class="nc" id="L389">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblOvernightNumeraireDrift,
 				dblOvernightNumeraireVolatility
 			)
 		);
 
-<span class="nc" id="L344">		DiffusionEvolver deCSA = new DiffusionEvolver (</span>
-<span class="nc" id="L345">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L395">		DiffusionEvolver deCSA = new DiffusionEvolver (</span>
+<span class="nc" id="L396">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblCSADrift,
 				dblCSAVolatility
 			)
 		);
 
-<span class="nc" id="L351">		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (</span>
-<span class="nc" id="L352">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L402">		DiffusionEvolver deBankHazardRate = new DiffusionEvolver (</span>
+<span class="nc" id="L403">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblBankHazardRateDrift,
 				dblBankHazardRateVolatility
 			)
 		);
 
-<span class="nc" id="L358">		DiffusionEvolver deBankSeniorRecoveryRate = new DiffusionEvolver (</span>
-<span class="nc" id="L359">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L409">		DiffusionEvolver deBankSeniorRecoveryRate = new DiffusionEvolver (</span>
+<span class="nc" id="L410">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblBankSeniorRecoveryRateDrift,
 				dblBankSeniorRecoveryRateVolatility
 			)
 		);
 
-<span class="nc" id="L365">		DiffusionEvolver deBankSubordinateRecoveryRate = new DiffusionEvolver (</span>
-<span class="nc" id="L366">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L416">		DiffusionEvolver deBankSubordinateRecoveryRate = new DiffusionEvolver (</span>
+<span class="nc" id="L417">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblBankSubordinateRecoveryRateDrift,
 				dblBankSubordinateRecoveryRateVolatility
 			)
 		);
 
-<span class="nc" id="L372">		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (</span>
-<span class="nc" id="L373">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L423">		DiffusionEvolver deCounterPartyHazardRate = new DiffusionEvolver (</span>
+<span class="nc" id="L424">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblCounterPartyHazardRateDrift,
 				dblCounterPartyHazardRateVolatility
 			)
 		);
 
-<span class="nc" id="L379">		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (</span>
-<span class="nc" id="L380">			DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L430">		DiffusionEvolver deCounterPartyRecoveryRate = new DiffusionEvolver (</span>
+<span class="nc" id="L431">			DiffusionEvaluatorLogarithmic.Standard (</span>
 				dblCounterPartyRecoveryRateDrift,
 				dblCounterPartyRecoveryRateVolatility
 			)
 		);
 
-<span class="nc" id="L386">		DiffusionEvolver deBankSeniorFundingSpread = new DiffusionEvolver (</span>
-<span class="nc" id="L387">			DiffusionEvaluatorLinear.Standard (</span>
+<span class="nc" id="L437">		DiffusionEvolver deBankSeniorFundingSpread = new DiffusionEvolver (</span>
+<span class="nc" id="L438">			DiffusionEvaluatorLinear.Standard (</span>
 				dblBankSeniorFundingSpreadDrift,
 				dblBankSeniorFundingSpreadVolatility
 			)
 		);
 
-<span class="nc" id="L393">		DiffusionEvolver deBankSubordinateFundingSpread = new DiffusionEvolver (</span>
-<span class="nc" id="L394">			DiffusionEvaluatorLinear.Standard (</span>
+<span class="nc" id="L444">		DiffusionEvolver deBankSubordinateFundingSpread = new DiffusionEvolver (</span>
+<span class="nc" id="L445">			DiffusionEvaluatorLinear.Standard (</span>
 				dblBankSubordinateFundingSpreadDrift,
 				dblBankSubordinateFundingSpreadVolatility
 			)
 		);
 
-<span class="nc" id="L400">		DiffusionEvolver deCounterPartyFundingSpread = new DiffusionEvolver (</span>
-<span class="nc" id="L401">			DiffusionEvaluatorLinear.Standard (</span>
+<span class="nc" id="L451">		DiffusionEvolver deCounterPartyFundingSpread = new DiffusionEvolver (</span>
+<span class="nc" id="L452">			DiffusionEvaluatorLinear.Standard (</span>
 				dblCounterPartyFundingSpreadDrift,
 				dblCounterPartyFundingSpreadVolatility
 			)
 		);
 
-<span class="nc bnc" id="L407" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
-<span class="nc" id="L408">			double[][] aadblNumeraire = Matrix.Transpose (</span>
-<span class="nc" id="L409">				Path (</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPath; ++i) {</span>
+<span class="nc" id="L459">			double[][] aadblNumeraire = Matrix.Transpose (</span>
+<span class="nc" id="L460">				Path (</span>
 					aadblCorrelation,
 					iNumVertex
 				)
 			);
 
-<span class="nc" id="L415">			aadblPortfolio1Value[i] = SwapPortfolioValueRealization (</span>
+<span class="nc" id="L466">			aadblPortfolio1Value[i] = SwapPortfolioValueRealization (</span>
 				deATMSwapRateOffset,
 				dblATMSwapRateOffsetStart1,
 				aadblNumeraire[0],
@@ -423,7 +474,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				dblSwapNotional1
 			);
 
-<span class="nc" id="L426">			aadblPortfolio2Value[i] = SwapPortfolioValueRealization (</span>
+<span class="nc" id="L477">			aadblPortfolio2Value[i] = SwapPortfolioValueRealization (</span>
 				deATMSwapRateOffset,
 				dblATMSwapRateOffsetStart2,
 				aadblNumeraire[0],
@@ -434,7 +485,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				dblSwapNotional2
 			);
 
-<span class="nc" id="L437">			double[] adblOvernightNumeraire = VertexNumeraireRealization (</span>
+<span class="nc" id="L488">			double[] adblOvernightNumeraire = VertexNumeraireRealization (</span>
 				deOvernightNumeraire,
 				dblOvernightNumeraireInitial,
 				dblTime,
@@ -443,7 +494,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L446">			double[] adblCSA = VertexNumeraireRealization (</span>
+<span class="nc" id="L497">			double[] adblCSA = VertexNumeraireRealization (</span>
 				deCSA,
 				dblCSAInitial,
 				dblTime,
@@ -452,7 +503,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L455">			double[] adblBankHazardRate = NumeraireValueRealization (</span>
+<span class="nc" id="L506">			double[] adblBankHazardRate = NumeraireValueRealization (</span>
 				deBankHazardRate,
 				dblBankHazardRateInitial,
 				dblTime,
@@ -461,7 +512,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L464">			double[] adblCounterPartyHazardRate = NumeraireValueRealization (</span>
+<span class="nc" id="L515">			double[] adblCounterPartyHazardRate = NumeraireValueRealization (</span>
 				deCounterPartyHazardRate,
 				dblCounterPartyHazardRateInitial,
 				dblTime,
@@ -470,7 +521,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L473">			double[] adblBankSeniorRecoveryRate = NumeraireValueRealization (</span>
+<span class="nc" id="L524">			double[] adblBankSeniorRecoveryRate = NumeraireValueRealization (</span>
 				deBankSeniorRecoveryRate,
 				dblBankSeniorRecoveryRateInitial,
 				dblTime,
@@ -479,7 +530,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L482">			double[] adblBankSubordinateRecoveryRate = NumeraireValueRealization (</span>
+<span class="nc" id="L533">			double[] adblBankSubordinateRecoveryRate = NumeraireValueRealization (</span>
 				deBankSubordinateRecoveryRate,
 				dblBankSubordinateRecoveryRateInitial,
 				dblTime,
@@ -488,7 +539,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L491">			double[] adblCounterPartyRecoveryRate = NumeraireValueRealization (</span>
+<span class="nc" id="L542">			double[] adblCounterPartyRecoveryRate = NumeraireValueRealization (</span>
 				deCounterPartyRecoveryRate,
 				dblCounterPartyRecoveryRateInitial,
 				dblTime,
@@ -497,7 +548,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L500">			double[] adblBankSeniorFundingSpread = NumeraireValueRealization (</span>
+<span class="nc" id="L551">			double[] adblBankSeniorFundingSpread = NumeraireValueRealization (</span>
 				deBankSeniorFundingSpread,
 				dblBankSeniorFundingSpreadInitial,
 				dblTime,
@@ -506,7 +557,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L509">			double[] adblBankSubordinateFundingSpread = NumeraireValueRealization (</span>
+<span class="nc" id="L560">			double[] adblBankSubordinateFundingSpread = NumeraireValueRealization (</span>
 				deBankSubordinateFundingSpread,
 				dblBankSubordinateFundingSpreadInitial,
 				dblTime,
@@ -515,7 +566,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L518">			double[] adblCounterPartyFundingSpread = NumeraireValueRealization (</span>
+<span class="nc" id="L569">			double[] adblCounterPartyFundingSpread = NumeraireValueRealization (</span>
 				deCounterPartyFundingSpread,
 				dblCounterPartyFundingSpreadInitial,
 				dblTime,
@@ -524,48 +575,48 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				iNumStep
 			);
 
-<span class="nc" id="L527">			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];</span>
-<span class="nc" id="L528">			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];</span>
-<span class="nc" id="L529">			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];</span>
+<span class="nc" id="L578">			MarketVertex[] aMV = new MarketVertex [iNumStep + 1];</span>
+<span class="nc" id="L579">			CollateralGroupVertex[] aCGV1 = new CollateralGroupVertex[iNumStep + 1];</span>
+<span class="nc" id="L580">			CollateralGroupVertex[] aCGV2 = new CollateralGroupVertex[iNumStep + 1];</span>
 
-<span class="nc bnc" id="L531" title="All 2 branches missed.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
+<span class="nc bnc" id="L582" title="All 2 branches missed.">			for (int j = 0; j &lt;= iNumStep; ++j)</span>
 			{
-<span class="nc" id="L533">				adtVertex[j] = dtSpot.addMonths (6 * j + 6);</span>
+<span class="nc" id="L584">				adtVertex[j] = dtSpot.addMonths (6 * j + 6);</span>
 
-<span class="nc" id="L535">				CloseOut cog = new CloseOutBilateral (</span>
+<span class="nc" id="L586">				CloseOut cog = new CloseOutBilateral (</span>
 					adblBankSeniorRecoveryRate[j],
 					adblCounterPartyRecoveryRate[j]
 				);
 
-<span class="nc" id="L540">				LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
+<span class="nc" id="L591">				LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
 
-<span class="nc" id="L542">				latentStateVertexContainer.add (</span>
-<span class="nc" id="L543">					OTCFixFloatLabel.Standard (&quot;USD-3M-10Y&quot;),</span>
+<span class="nc" id="L593">				latentStateVertexContainer.add (</span>
+<span class="nc" id="L594">					OTCFixFloatLabel.Standard (&quot;USD-3M-10Y&quot;),</span>
 					Double.NaN
 				);
 
-<span class="nc" id="L547">				aMV[j] = MarketVertex.Nodal (</span>
-<span class="nc" id="L548">					adtVertex[j] = dtSpot.addMonths (6 * j),</span>
+<span class="nc" id="L598">				aMV[j] = MarketVertex.Nodal (</span>
+<span class="nc" id="L599">					adtVertex[j] = dtSpot.addMonths (6 * j),</span>
 					dblOvernightNumeraireDrift,
 					adblOvernightNumeraire[j],
 					dblCSADrift,
 					adblCSA[j],
 					new MarketVertexEntity (
-<span class="nc" id="L554">						Math.exp (-0.5 * adblBankHazardRate[j] * j),</span>
+<span class="nc" id="L605">						Math.exp (-0.5 * adblBankHazardRate[j] * j),</span>
 						adblBankHazardRate[j],
 						adblBankSeniorRecoveryRate[j],
 						adblBankSeniorFundingSpread[j],
-<span class="nc" id="L558">						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankSeniorRecoveryRate[j]) * iNumStep),</span>
+<span class="nc" id="L609">						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankSeniorRecoveryRate[j]) * iNumStep),</span>
 						adblBankSubordinateRecoveryRate[j],
 						adblBankSubordinateFundingSpread[j],
-<span class="nc" id="L561">						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankSubordinateRecoveryRate[j]) * iNumStep)</span>
+<span class="nc" id="L612">						Math.exp (-0.5 * adblBankHazardRate[j] * (1. - adblBankSubordinateRecoveryRate[j]) * iNumStep)</span>
 					),
 					new MarketVertexEntity (
-<span class="nc" id="L564">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),</span>
+<span class="nc" id="L615">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * j),</span>
 						adblCounterPartyHazardRate[j],
 						adblCounterPartyRecoveryRate[j],
 						adblCounterPartyFundingSpread[j],
-<span class="nc" id="L568">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),</span>
+<span class="nc" id="L619">						Math.exp (-0.5 * adblCounterPartyHazardRate[j] * (1. - adblCounterPartyRecoveryRate[j]) * iNumStep),</span>
 						Double.NaN,
 						Double.NaN,
 						Double.NaN
@@ -573,8 +624,8 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 					latentStateVertexContainer
 				);
 
-<span class="nc bnc" id="L576" title="All 2 branches missed.">				if (0 != j) {</span>
-<span class="nc" id="L577">					aCGV1[j] = BurgardKjaerBuilder.GoldPlatedTwoWayCSA (</span>
+<span class="nc bnc" id="L627" title="All 2 branches missed.">				if (0 != j) {</span>
+<span class="nc" id="L628">					aCGV1[j] = BurgardKjaerBuilder.GoldPlatedTwoWayCSA (</span>
 						adtVertex[j],
 						aadblPortfolio1Value[i][j],
 						0.,
@@ -585,7 +636,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 						cog
 					);
 
-<span class="nc" id="L588">					aCGV2[j] = BurgardKjaerBuilder.GoldPlatedTwoWayCSA (</span>
+<span class="nc" id="L639">					aCGV2[j] = BurgardKjaerBuilder.GoldPlatedTwoWayCSA (</span>
 						adtVertex[j],
 						aadblPortfolio2Value[i][j],
 						0.,
@@ -596,14 +647,14 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 						cog
 					);
 				} else {
-<span class="nc" id="L599">					aCGV1[j] = BurgardKjaerBuilder.Initial (</span>
+<span class="nc" id="L650">					aCGV1[j] = BurgardKjaerBuilder.Initial (</span>
 						adtVertex[j],
 						aadblPortfolio1Value[i][0],
 						aMV[j],
 						cog
 					);
 
-<span class="nc" id="L606">					aCGV2[j] = BurgardKjaerBuilder.Initial (</span>
+<span class="nc" id="L657">					aCGV2[j] = BurgardKjaerBuilder.Initial (</span>
 						adtVertex[j],
 						aadblPortfolio2Value[i][0],
 						aMV[j],
@@ -612,16 +663,16 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				}
 			}
 
-<span class="nc" id="L615">			MarketPath mp = MarketPath.FromMarketVertexArray (aMV);</span>
+<span class="nc" id="L666">			MarketPath mp = MarketPath.FromMarketVertexArray (aMV);</span>
 
-<span class="nc" id="L617">			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {</span>
+<span class="nc" id="L668">			CollateralGroupPath[] aHGPGround = new CollateralGroupPath[] {</span>
 				new CollateralGroupPath (
 					aCGV1,
 					mp
 				)
 			};
 
-<span class="nc" id="L624">			aMPEAGround[i] = new MonoPathExposureAdjustment (</span>
+<span class="nc" id="L675">			aMPEAGround[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
 						new AlbaneseAndersenNettingGroupPath[] {
@@ -635,7 +686,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				}
 			);
 
-<span class="nc" id="L638">			CollateralGroupPath[] aHGPExtended = new CollateralGroupPath[] {</span>
+<span class="nc" id="L689">			CollateralGroupPath[] aHGPExtended = new CollateralGroupPath[] {</span>
 				new CollateralGroupPath (
 					aCGV1,
 					mp
@@ -646,7 +697,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 				)
 			};
 
-<span class="nc" id="L649">			aMPEAExtended[i] = new MonoPathExposureAdjustment (</span>
+<span class="nc" id="L700">			aMPEAExtended[i] = new MonoPathExposureAdjustment (</span>
 				new AlbaneseAndersenFundingGroupPath[] {
 					new AlbaneseAndersenFundingGroupPath (
 						new AlbaneseAndersenNettingGroupPath[] {
@@ -661,7 +712,7 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 			);
 		}
 
-<span class="nc" id="L664">		return new ExposureAdjustmentAggregator[] {</span>
+<span class="nc" id="L715">		return new ExposureAdjustmentAggregator[] {</span>
 			new ExposureAdjustmentAggregator (aMPEAGround),
 			new ExposureAdjustmentAggregator (aMPEAExtended)
 		};
@@ -672,118 +723,118 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final ExposureAdjustmentDigest ead)
 		throws Exception
 	{
-<span class="nc" id="L675">		System.out.println();</span>
+<span class="nc" id="L726">		System.out.println();</span>
 
-<span class="nc" id="L677">		UnivariateDiscreteThin udtUCOLVA = ead.ucolva();</span>
+<span class="nc" id="L728">		UnivariateDiscreteThin udtUCOLVA = ead.ucolva();</span>
 
-<span class="nc" id="L679">		UnivariateDiscreteThin udtFTDCOLVA = ead.ftdcolva();</span>
+<span class="nc" id="L730">		UnivariateDiscreteThin udtFTDCOLVA = ead.ftdcolva();</span>
 
-<span class="nc" id="L681">		UnivariateDiscreteThin udtUCVA = ead.ucva();</span>
+<span class="nc" id="L732">		UnivariateDiscreteThin udtUCVA = ead.ucva();</span>
 
-<span class="nc" id="L683">		UnivariateDiscreteThin udtFTDCVA = ead.ftdcva();</span>
+<span class="nc" id="L734">		UnivariateDiscreteThin udtFTDCVA = ead.ftdcva();</span>
 
-<span class="nc" id="L685">		UnivariateDiscreteThin udtCVACL = ead.cvacl();</span>
+<span class="nc" id="L736">		UnivariateDiscreteThin udtCVACL = ead.cvacl();</span>
 
-<span class="nc" id="L687">		UnivariateDiscreteThin udtCVA = ead.cva();</span>
+<span class="nc" id="L738">		UnivariateDiscreteThin udtCVA = ead.cva();</span>
 
-<span class="nc" id="L689">		UnivariateDiscreteThin udtDVA = ead.dva();</span>
+<span class="nc" id="L740">		UnivariateDiscreteThin udtDVA = ead.dva();</span>
 
-<span class="nc" id="L691">		UnivariateDiscreteThin udtFVA = ead.fva();</span>
+<span class="nc" id="L742">		UnivariateDiscreteThin udtFVA = ead.fva();</span>
 
-<span class="nc" id="L693">		UnivariateDiscreteThin udtFDA = ead.fda();</span>
+<span class="nc" id="L744">		UnivariateDiscreteThin udtFDA = ead.fda();</span>
 
-<span class="nc" id="L695">		UnivariateDiscreteThin udtFCA = ead.fca();</span>
+<span class="nc" id="L746">		UnivariateDiscreteThin udtFCA = ead.fca();</span>
 
-<span class="nc" id="L697">		UnivariateDiscreteThin udtFBA = ead.fba();</span>
+<span class="nc" id="L748">		UnivariateDiscreteThin udtFBA = ead.fba();</span>
 
-<span class="nc" id="L699">		UnivariateDiscreteThin udtSFVA = ead.sfva();</span>
+<span class="nc" id="L750">		UnivariateDiscreteThin udtSFVA = ead.sfva();</span>
 
-<span class="nc" id="L701">		System.out.println (</span>
+<span class="nc" id="L752">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L705">		System.out.println (strHeader);</span>
+<span class="nc" id="L756">		System.out.println (strHeader);</span>
 
-<span class="nc" id="L707">		System.out.println (</span>
+<span class="nc" id="L758">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L711">		System.out.println (</span>
+<span class="nc" id="L762">		System.out.println (</span>
 			&quot;\t||  OODLE  =&gt; UCOLVA  | FTDCOLVA |  UCVA   | FTDCVA  |  CVACL  |   CVA   |   DVA   |   FVA   |   FDA   |   FCA   |   FBA   |   SFVA  ||&quot;
 		);
 
-<span class="nc" id="L715">		System.out.println (</span>
+<span class="nc" id="L766">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L719">		System.out.println (</span>
+<span class="nc" id="L770">		System.out.println (</span>
 			&quot;\t|| Average =&gt; &quot; +
-<span class="nc" id="L721">			FormatUtil.FormatDouble (udtUCOLVA.average(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L722">			FormatUtil.FormatDouble (udtFTDCOLVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L723">			FormatUtil.FormatDouble (udtUCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L724">			FormatUtil.FormatDouble (udtFTDCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L725">			FormatUtil.FormatDouble (udtCVACL.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L726">			FormatUtil.FormatDouble (udtCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L727">			FormatUtil.FormatDouble (udtDVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L728">			FormatUtil.FormatDouble (udtFVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L729">			FormatUtil.FormatDouble (udtFDA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L730">			FormatUtil.FormatDouble (udtFCA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L731">			FormatUtil.FormatDouble (udtFBA.average(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="nc" id="L732">			FormatUtil.FormatDouble (udtSFVA.average(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="nc" id="L772">			FormatUtil.FormatDouble (udtUCOLVA.average(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="nc" id="L773">			FormatUtil.FormatDouble (udtFTDCOLVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L774">			FormatUtil.FormatDouble (udtUCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L775">			FormatUtil.FormatDouble (udtFTDCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L776">			FormatUtil.FormatDouble (udtCVACL.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L777">			FormatUtil.FormatDouble (udtCVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L778">			FormatUtil.FormatDouble (udtDVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L779">			FormatUtil.FormatDouble (udtFVA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L780">			FormatUtil.FormatDouble (udtFDA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L781">			FormatUtil.FormatDouble (udtFCA.average(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L782">			FormatUtil.FormatDouble (udtFBA.average(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="nc" id="L783">			FormatUtil.FormatDouble (udtSFVA.average(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="nc" id="L735">		System.out.println (</span>
+<span class="nc" id="L786">		System.out.println (</span>
 			&quot;\t|| Minimum =&gt; &quot; +
-<span class="nc" id="L737">			FormatUtil.FormatDouble (udtUCOLVA.minimum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L738">			FormatUtil.FormatDouble (udtFTDCOLVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L739">			FormatUtil.FormatDouble (udtUCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L740">			FormatUtil.FormatDouble (udtFTDCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L741">			FormatUtil.FormatDouble (udtCVACL.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L742">			FormatUtil.FormatDouble (udtCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L743">			FormatUtil.FormatDouble (udtDVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L744">			FormatUtil.FormatDouble (udtFVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L745">			FormatUtil.FormatDouble (udtFDA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L746">			FormatUtil.FormatDouble (udtFCA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L747">			FormatUtil.FormatDouble (udtFBA.minimum(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="nc" id="L748">			FormatUtil.FormatDouble (udtSFVA.minimum(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="nc" id="L788">			FormatUtil.FormatDouble (udtUCOLVA.minimum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="nc" id="L789">			FormatUtil.FormatDouble (udtFTDCOLVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L790">			FormatUtil.FormatDouble (udtUCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L791">			FormatUtil.FormatDouble (udtFTDCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L792">			FormatUtil.FormatDouble (udtCVACL.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L793">			FormatUtil.FormatDouble (udtCVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L794">			FormatUtil.FormatDouble (udtDVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L795">			FormatUtil.FormatDouble (udtFVA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L796">			FormatUtil.FormatDouble (udtFDA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L797">			FormatUtil.FormatDouble (udtFCA.minimum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L798">			FormatUtil.FormatDouble (udtFBA.minimum(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="nc" id="L799">			FormatUtil.FormatDouble (udtSFVA.minimum(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="nc" id="L751">		System.out.println (</span>
+<span class="nc" id="L802">		System.out.println (</span>
 			&quot;\t|| Maximum =&gt; &quot; +
-<span class="nc" id="L753">			FormatUtil.FormatDouble (udtUCOLVA.maximum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L754">			FormatUtil.FormatDouble (udtFTDCOLVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L755">			FormatUtil.FormatDouble (udtUCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L756">			FormatUtil.FormatDouble (udtFTDCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L757">			FormatUtil.FormatDouble (udtCVACL.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L758">			FormatUtil.FormatDouble (udtCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L759">			FormatUtil.FormatDouble (udtDVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L760">			FormatUtil.FormatDouble (udtFVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L761">			FormatUtil.FormatDouble (udtFDA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L762">			FormatUtil.FormatDouble (udtFCA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L763">			FormatUtil.FormatDouble (udtFBA.maximum(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="nc" id="L764">			FormatUtil.FormatDouble (udtSFVA.maximum(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="nc" id="L804">			FormatUtil.FormatDouble (udtUCOLVA.maximum(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="nc" id="L805">			FormatUtil.FormatDouble (udtFTDCOLVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L806">			FormatUtil.FormatDouble (udtUCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L807">			FormatUtil.FormatDouble (udtFTDCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L808">			FormatUtil.FormatDouble (udtCVACL.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L809">			FormatUtil.FormatDouble (udtCVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L810">			FormatUtil.FormatDouble (udtDVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L811">			FormatUtil.FormatDouble (udtFVA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L812">			FormatUtil.FormatDouble (udtFDA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L813">			FormatUtil.FormatDouble (udtFCA.maximum(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L814">			FormatUtil.FormatDouble (udtFBA.maximum(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="nc" id="L815">			FormatUtil.FormatDouble (udtSFVA.maximum(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="nc" id="L767">		System.out.println (</span>
+<span class="nc" id="L818">		System.out.println (</span>
 			&quot;\t||  Error  =&gt; &quot; +
-<span class="nc" id="L769">			FormatUtil.FormatDouble (udtUCOLVA.error(), 2, 2, 1.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L770">			FormatUtil.FormatDouble (udtFTDCOLVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L771">			FormatUtil.FormatDouble (udtUCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L772">			FormatUtil.FormatDouble (udtFTDCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L773">			FormatUtil.FormatDouble (udtCVACL.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L774">			FormatUtil.FormatDouble (udtCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L775">			FormatUtil.FormatDouble (udtDVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L776">			FormatUtil.FormatDouble (udtFVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L777">			FormatUtil.FormatDouble (udtFDA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L778">			FormatUtil.FormatDouble (udtFCA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
-<span class="nc" id="L779">			FormatUtil.FormatDouble (udtFBA.error(), 2, 2, 1.) + &quot;  | &quot; + </span>
-<span class="nc" id="L780">			FormatUtil.FormatDouble (udtSFVA.error(), 2, 2, 1.) + &quot;  ||&quot;</span>
+<span class="nc" id="L820">			FormatUtil.FormatDouble (udtUCOLVA.error(), 2, 2, 1.) + &quot;  |  &quot; +</span>
+<span class="nc" id="L821">			FormatUtil.FormatDouble (udtFTDCOLVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L822">			FormatUtil.FormatDouble (udtUCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L823">			FormatUtil.FormatDouble (udtFTDCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L824">			FormatUtil.FormatDouble (udtCVACL.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L825">			FormatUtil.FormatDouble (udtCVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L826">			FormatUtil.FormatDouble (udtDVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L827">			FormatUtil.FormatDouble (udtFVA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L828">			FormatUtil.FormatDouble (udtFDA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L829">			FormatUtil.FormatDouble (udtFCA.error(), 2, 2, 1.) + &quot;  | &quot; +</span>
+<span class="nc" id="L830">			FormatUtil.FormatDouble (udtFBA.error(), 2, 2, 1.) + &quot;  | &quot; + </span>
+<span class="nc" id="L831">			FormatUtil.FormatDouble (udtSFVA.error(), 2, 2, 1.) + &quot;  ||&quot;</span>
 		);
 
-<span class="nc" id="L783">		System.out.println (</span>
+<span class="nc" id="L834">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
-<span class="nc" id="L786">	}</span>
+<span class="nc" id="L837">	}</span>
 
 	private static final void CPGDDiffDump (
 		final String strHeader,
@@ -791,46 +842,46 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final ExposureAdjustmentDigest eadExpanded)
 		throws Exception
 	{
-<span class="nc" id="L794">		System.out.println();</span>
+<span class="nc" id="L845">		System.out.println();</span>
 
-<span class="nc" id="L796">		System.out.println (</span>
+<span class="nc" id="L847">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L800">		System.out.println (strHeader);</span>
+<span class="nc" id="L851">		System.out.println (strHeader);</span>
 
-<span class="nc" id="L802">		System.out.println (</span>
+<span class="nc" id="L853">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L806">		System.out.println (</span>
+<span class="nc" id="L857">		System.out.println (</span>
 			&quot;\t||  OODLE  =&gt; UCOLVA  | FTDCOLVA |  UCVA   | FTDCVA  |  CVACL  |   CVA   |   DVA   |   FVA   |   FDA   |   FCA   |   FBA   |   SFVA  ||&quot;
 		);
 
-<span class="nc" id="L810">		System.out.println (</span>
+<span class="nc" id="L861">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L814">		System.out.println (</span>
+<span class="nc" id="L865">		System.out.println (</span>
 			&quot;\t|| Average =&gt; &quot; +
-<span class="nc" id="L816">			FormatUtil.FormatDouble (eadExpanded.ucolva().average() - eadGround.ucolva().average(), 3, 1, 10000.) + &quot;  |  &quot; +</span>
-<span class="nc" id="L817">			FormatUtil.FormatDouble (eadExpanded.ftdcolva().average() - eadGround.ftdcolva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L818">			FormatUtil.FormatDouble (eadExpanded.ucva().average() - eadGround.ucva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L819">			FormatUtil.FormatDouble (eadExpanded.ftdcva().average() - eadGround.ftdcva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L820">			FormatUtil.FormatDouble (eadExpanded.cvacl().average() - eadGround.cvacl().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L821">			FormatUtil.FormatDouble (eadExpanded.cva().average() - eadGround.cva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L822">			FormatUtil.FormatDouble (eadExpanded.dva().average() - eadGround.dva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L823">			FormatUtil.FormatDouble (eadExpanded.fva().average() - eadGround.fva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L824">			FormatUtil.FormatDouble (eadExpanded.fda().average() - eadGround.fda().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L825">			FormatUtil.FormatDouble (eadExpanded.fca().average() - eadGround.fca().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
-<span class="nc" id="L826">			FormatUtil.FormatDouble (eadExpanded.fba().average() - eadGround.fba().average(), 3, 1, 10000.) + &quot;  | &quot; + </span>
-<span class="nc" id="L827">			FormatUtil.FormatDouble (eadExpanded.sfva().average() - eadGround.sfva().average(), 3, 1, 10000.) + &quot;  ||&quot;</span>
+<span class="nc" id="L867">			FormatUtil.FormatDouble (eadExpanded.ucolva().average() - eadGround.ucolva().average(), 3, 1, 10000.) + &quot;  |  &quot; +</span>
+<span class="nc" id="L868">			FormatUtil.FormatDouble (eadExpanded.ftdcolva().average() - eadGround.ftdcolva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L869">			FormatUtil.FormatDouble (eadExpanded.ucva().average() - eadGround.ucva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L870">			FormatUtil.FormatDouble (eadExpanded.ftdcva().average() - eadGround.ftdcva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L871">			FormatUtil.FormatDouble (eadExpanded.cvacl().average() - eadGround.cvacl().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L872">			FormatUtil.FormatDouble (eadExpanded.cva().average() - eadGround.cva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L873">			FormatUtil.FormatDouble (eadExpanded.dva().average() - eadGround.dva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L874">			FormatUtil.FormatDouble (eadExpanded.fva().average() - eadGround.fva().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L875">			FormatUtil.FormatDouble (eadExpanded.fda().average() - eadGround.fda().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L876">			FormatUtil.FormatDouble (eadExpanded.fca().average() - eadGround.fca().average(), 3, 1, 10000.) + &quot;  | &quot; +</span>
+<span class="nc" id="L877">			FormatUtil.FormatDouble (eadExpanded.fba().average() - eadGround.fba().average(), 3, 1, 10000.) + &quot;  | &quot; + </span>
+<span class="nc" id="L878">			FormatUtil.FormatDouble (eadExpanded.sfva().average() - eadGround.sfva().average(), 3, 1, 10000.) + &quot;  ||&quot;</span>
 		);
 
-<span class="nc" id="L830">		System.out.println (</span>
+<span class="nc" id="L881">		System.out.println (</span>
 			&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------||&quot;
 		);
-<span class="nc" id="L833">	}</span>
+<span class="nc" id="L884">	}</span>
 
 	private static final void BaselAccountingMetrics (
 		final String strHeader,
@@ -838,94 +889,94 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 		final ExposureAdjustmentAggregator eaaExpanded)
 		throws Exception
 	{
-<span class="nc" id="L841">		OTCAccountingModus oasFCAFBA = new OTCAccountingModusFCAFBA (eaaGround);</span>
+<span class="nc" id="L892">		OTCAccountingModus oasFCAFBA = new OTCAccountingModusFCAFBA (eaaGround);</span>
 
-<span class="nc" id="L843">		OTCAccountingModus oasFVAFDA = new OTCAccountingModusFVAFDA (eaaGround);</span>
+<span class="nc" id="L894">		OTCAccountingModus oasFVAFDA = new OTCAccountingModusFVAFDA (eaaGround);</span>
 
-<span class="nc" id="L845">		OTCAccountingPolicy oapFCAFBA = oasFCAFBA.feePolicy (eaaExpanded);</span>
+<span class="nc" id="L896">		OTCAccountingPolicy oapFCAFBA = oasFCAFBA.feePolicy (eaaExpanded);</span>
 
-<span class="nc" id="L847">		OTCAccountingPolicy oapFVAFDA = oasFVAFDA.feePolicy (eaaExpanded);</span>
+<span class="nc" id="L898">		OTCAccountingPolicy oapFVAFDA = oasFVAFDA.feePolicy (eaaExpanded);</span>
 
-<span class="nc" id="L849">		System.out.println();</span>
+<span class="nc" id="L900">		System.out.println();</span>
 
-<span class="nc" id="L851">		System.out.println (</span>
+<span class="nc" id="L902">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L855">		System.out.println (strHeader);</span>
+<span class="nc" id="L906">		System.out.println (strHeader);</span>
 
-<span class="nc" id="L857">		System.out.println (</span>
+<span class="nc" id="L908">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L861">		System.out.println (</span>
+<span class="nc" id="L912">		System.out.println (</span>
 			&quot;\t|| L -&gt; R:                                                             ||&quot;
 		);
 
-<span class="nc" id="L865">		System.out.println (</span>
+<span class="nc" id="L916">		System.out.println (</span>
 			&quot;\t||         - Accounting Type (FCA/FBA vs. FVA/FDA)                     ||&quot;
 		);
 
-<span class="nc" id="L869">		System.out.println (</span>
+<span class="nc" id="L920">		System.out.println (</span>
 			&quot;\t||         - Contra Asset Adjustment                                   ||&quot;
 		);
 
-<span class="nc" id="L873">		System.out.println (</span>
+<span class="nc" id="L924">		System.out.println (</span>
 			&quot;\t||         - Contra Liability Adjustment                               ||&quot;
 		);
 
-<span class="nc" id="L877">		System.out.println (</span>
+<span class="nc" id="L928">		System.out.println (</span>
 			&quot;\t||         - FTP (Funding Transfer Pricing) (bp)                       ||&quot;
 		);
 
-<span class="nc" id="L881">		System.out.println (</span>
+<span class="nc" id="L932">		System.out.println (</span>
 			&quot;\t||         - CET1 (Common Equity Tier I) Change (bp)                   ||&quot;
 		);
 
-<span class="nc" id="L885">		System.out.println (</span>
+<span class="nc" id="L936">		System.out.println (</span>
 			&quot;\t||         - CL (Contra Liability) Change (bp)                         ||&quot;
 		);
 
-<span class="nc" id="L889">		System.out.println (</span>
+<span class="nc" id="L940">		System.out.println (</span>
 			&quot;\t||         - PFV (Porfolio Value) Change (Income) (bp)                 ||&quot;
 		);
 
-<span class="nc" id="L893">		System.out.println (</span>
+<span class="nc" id="L944">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L897">		System.out.println (&quot;\t|| FCA/FBA Accounting =&gt; &quot; +</span>
-<span class="nc" id="L898">			FormatUtil.FormatDouble (oasFCAFBA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L899">			FormatUtil.FormatDouble (oasFCAFBA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L900">			FormatUtil.FormatDouble (oapFCAFBA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L901">			FormatUtil.FormatDouble (oapFCAFBA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L902">			FormatUtil.FormatDouble (oapFCAFBA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L903">			FormatUtil.FormatDouble (oapFCAFBA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
+<span class="nc" id="L948">		System.out.println (&quot;\t|| FCA/FBA Accounting =&gt; &quot; +</span>
+<span class="nc" id="L949">			FormatUtil.FormatDouble (oasFCAFBA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L950">			FormatUtil.FormatDouble (oasFCAFBA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L951">			FormatUtil.FormatDouble (oapFCAFBA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L952">			FormatUtil.FormatDouble (oapFCAFBA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L953">			FormatUtil.FormatDouble (oapFCAFBA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L954">			FormatUtil.FormatDouble (oapFCAFBA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
 		);
 
-<span class="nc" id="L906">		System.out.println (&quot;\t|| FVA/FDA Accounting =&gt; &quot; +</span>
-<span class="nc" id="L907">			FormatUtil.FormatDouble (oasFVAFDA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L908">			FormatUtil.FormatDouble (oasFVAFDA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L909">			FormatUtil.FormatDouble (oapFVAFDA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L910">			FormatUtil.FormatDouble (oapFVAFDA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L911">			FormatUtil.FormatDouble (oapFVAFDA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L912">			FormatUtil.FormatDouble (oapFVAFDA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
+<span class="nc" id="L957">		System.out.println (&quot;\t|| FVA/FDA Accounting =&gt; &quot; +</span>
+<span class="nc" id="L958">			FormatUtil.FormatDouble (oasFVAFDA.contraAssetAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L959">			FormatUtil.FormatDouble (oasFVAFDA.contraLiabilityAdjustment(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L960">			FormatUtil.FormatDouble (oapFVAFDA.fundingTransferPricing(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L961">			FormatUtil.FormatDouble (oapFVAFDA.cet1Change(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L962">			FormatUtil.FormatDouble (oapFVAFDA.contraLiabilityChange(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L963">			FormatUtil.FormatDouble (oapFVAFDA.portfolioValueChange(), 3, 0, 10000.) + &quot; || &quot;</span>
 		);
 
-<span class="nc" id="L915">		System.out.println (</span>
+<span class="nc" id="L966">		System.out.println (</span>
 			&quot;\t||---------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L919">		System.out.println();</span>
-<span class="nc" id="L920">	}</span>
+<span class="nc" id="L970">		System.out.println();</span>
+<span class="nc" id="L971">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L926">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L977">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L928">		ExposureAdjustmentAggregator[] aCPGA = Mix (</span>
+<span class="nc" id="L979">		ExposureAdjustmentAggregator[] aCPGA = Mix (</span>
 			5.,
 			0.,
 			100.,
@@ -934,36 +985,36 @@ import org.drip.xva.vertex.BurgardKjaerBuilder;
 			1.
 		);
 
-<span class="nc" id="L937">		ExposureAdjustmentAggregator eaaGround = aCPGA[0];</span>
-<span class="nc" id="L938">		ExposureAdjustmentAggregator eaaExtended = aCPGA[1];</span>
+<span class="nc" id="L988">		ExposureAdjustmentAggregator eaaGround = aCPGA[0];</span>
+<span class="nc" id="L989">		ExposureAdjustmentAggregator eaaExtended = aCPGA[1];</span>
 
-<span class="nc" id="L940">		ExposureAdjustmentDigest eadGround = eaaGround.digest();</span>
+<span class="nc" id="L991">		ExposureAdjustmentDigest eadGround = eaaGround.digest();</span>
 
-<span class="nc" id="L942">		ExposureAdjustmentDigest eadExtended = eaaExtended.digest();</span>
+<span class="nc" id="L993">		ExposureAdjustmentDigest eadExtended = eaaExtended.digest();</span>
 
-<span class="nc" id="L944">		CPGDDump (</span>
+<span class="nc" id="L995">		CPGDDump (</span>
 			&quot;\t||                                                  GROUND BOOK ADJUSTMENT METRICS                                                   ||&quot;,
 			eadGround
 		);
 
-<span class="nc" id="L949">		CPGDDump (</span>
+<span class="nc" id="L1000">		CPGDDump (</span>
 			&quot;\t||                                                 EXTENDED BOOK ADJUSTMENT METRICS                                                  ||&quot;,
 			eadExtended
 		);
 
-<span class="nc" id="L954">		CPGDDiffDump (</span>
+<span class="nc" id="L1005">		CPGDDiffDump (</span>
 			&quot;\t||                                             TRADE INCREMENT ADJUSTMENT METRICS (bp)                                               ||&quot;,
 			eadGround,
 			eadExtended
 		);
 
-<span class="nc" id="L960">		BaselAccountingMetrics (</span>
+<span class="nc" id="L1011">		BaselAccountingMetrics (</span>
 			&quot;\t||           ALBANESE &amp; ANDERSEN (2015) BCBS OTC ACCOUNTING            ||&quot;,
 			eaaGround,
 			eaaExtended
 		);
 
-<span class="nc" id="L966">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L967">	}</span>
+<span class="nc" id="L1017">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L1018">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
