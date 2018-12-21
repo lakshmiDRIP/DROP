@@ -178,5 +178,7 @@ public class CalendarAPI {
 		EnvManager.InitEnv (strConfig);
 
 		CalenderAPISample();
+
+		EnvManager.TerminateEnv();
 	}
 }

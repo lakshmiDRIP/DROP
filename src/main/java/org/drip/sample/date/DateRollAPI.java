@@ -144,5 +144,7 @@ public class DateRollAPI {
 				)
 			)
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

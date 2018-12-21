@@ -90,5 +90,7 @@ public class FliegelvanFlandernJulian {
 		);
 
 		System.out.println ("\tJulian: " + iJulian + "; Gregorian: [" + DateUtil.YYYYMMDD (iJulian) + "]");
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -172,5 +172,7 @@ public class DayCountAPI {
 			DateUtil.CreateFromYMD (2010, 12, 30),
 			DateUtil.CreateFromYMD (2012, 12, 30)
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }

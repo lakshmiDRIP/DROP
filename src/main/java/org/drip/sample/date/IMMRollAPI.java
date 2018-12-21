@@ -91,5 +91,7 @@ public class IMMRollAPI {
 		}
 
 		System.out.println ("\t|--------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
