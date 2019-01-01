@@ -113,9 +113,10 @@ Analytics Core Module contains libraries the implement Fixed Income Analytics, A
  * Principles Behind ISDA SIMM Specification
  * ISDA SIMM Methodology
  * Dynamic Initial Margin Impact on Exposure
+ * CCP and SIMM Initial Margin
+ * Basel III
  * Basel III Framework for Backtesting Exposure Models
  * Initial Margin Backtesting Framework
- * CCP and SIMM Initial Margin
 
 
 ## DROP Specifications

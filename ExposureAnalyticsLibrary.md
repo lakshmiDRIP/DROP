@@ -11,7 +11,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v3.96.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v3.99.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -138,6 +138,26 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Numerical Example
 	* Conclusion
 	* References
+ * CCP and SIMM Initial Margin
+	* Initial Margin
+	* CCP IM
+	* Interest Rate Swap Methodology
+	* Interest Rate Swap Calculation
+	* Credit Default Swap Methodology
+	* SIMM
+	* MVA
+	* Summary
+ * Basel III
+	* Overview
+	* Key Principles - Capital Requirements
+	* Key Principles - Leverage Ratio
+	* Liquidity Requirements
+	* US Version of the Basel Liquidity Coverage Ratio Requirements
+	* Summary of Originally Proposed Changes (2010) in the Basel Committee Language
+	* US Implementation
+	* Europe Implementation
+	* Key Milestones
+	* References
  * Basel III Framework for Backtesting Exposure Models
 	* Abstract
 	* Introduction
@@ -160,15 +180,6 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Backtesting the IMRD for MVA and LCR/NSFR
 	* Conclusion
 	* References
- * CCP and SIMM Initial Margin
-	* Initial Margin
-	* CCP IM
-	* Interest Rate Swap Methodology
-	* Interest Rate Swap Calculation
-	* Credit Default Swap Methodology
-	* SIMM
-	* MVA
-	* Summary
 
 
 ## DROP Specifications
