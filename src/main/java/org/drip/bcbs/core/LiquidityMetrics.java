@@ -108,6 +108,121 @@ public class LiquidityMetrics
 	private double _liquidityCoverageRatio = java.lang.Double.NaN;
 
 	/**
+	 * Construct the Basel III 2015 Version of the Liquidity Metrics Standard
+	 * 
+	 * @return The Basel III 2015 Version of the Liquidity Metrics Standard
+	 */
+
+	public static final LiquidityMetrics Basel_III_2015()
+	{
+		try
+		{
+			return new LiquidityMetrics (
+				0.60,
+				0.00
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Basel III 2016 Version of the Liquidity Metrics Standard
+	 * 
+	 * @return The Basel III 2016 Version of the Liquidity Metrics Standard
+	 */
+
+	public static final LiquidityMetrics Basel_III_2016()
+	{
+		try
+		{
+			return new LiquidityMetrics (
+				0.70,
+				0.00
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Basel III 2017 Version of the Liquidity Metrics Standard
+	 * 
+	 * @return The Basel III 2017 Version of the Liquidity Metrics Standard
+	 */
+
+	public static final LiquidityMetrics Basel_III_2017()
+	{
+		try
+		{
+			return new LiquidityMetrics (
+				0.80,
+				0.00
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Basel III 2018 Version of the Liquidity Metrics Standard
+	 * 
+	 * @return The Basel III 2018 Version of the Liquidity Metrics Standard
+	 */
+
+	public static final LiquidityMetrics Basel_III_2018()
+	{
+		try
+		{
+			return new LiquidityMetrics (
+				0.90,
+				1.00
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Basel III 2019 Version of the Liquidity Metrics Standard
+	 * 
+	 * @return The Basel III 2019 Version of the Liquidity Metrics Standard
+	 */
+
+	public static final LiquidityMetrics Basel_III_2019()
+	{
+		try
+		{
+			return new LiquidityMetrics (
+				1.00,
+				1.00
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * LiquidityMetrics Constructor
 	 * 
 	 * @param liquidityCoverageRatio The Liquidity Coverage Ratio
@@ -150,5 +265,25 @@ public class LiquidityMetrics
 	public double netStableFundingRatio()
 	{
 		return _netStableFundingRatio;
+	}
+
+	/**
+	 * Verify if the Liquidity Metrics are Compliant with the Standard
+	 * 
+	 * @param liquidityMetricsStandard The Liquidity Metrics Standard
+	 * 
+	 * @return TRUE - The Liquidity Metrics are Compliant with the Standard
+	 */
+
+	public boolean isCompliant (
+		final org.drip.bcbs.core.LiquidityMetrics liquidityMetricsStandard)
+	{
+		if (null == liquidityMetricsStandard)
+		{
+			return false;
+		}
+
+		return _liquidityCoverageRatio >= liquidityMetricsStandard.liquidityCoverageRatio() &&
+			_netStableFundingRatio >= liquidityMetricsStandard.netStableFundingRatio();
 	}
 }

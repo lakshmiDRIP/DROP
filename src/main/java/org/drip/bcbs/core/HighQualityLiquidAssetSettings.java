@@ -65,7 +65,8 @@ package org.drip.bcbs.core;
  */
 
 /**
- * <i>CapitalMetrics</i> holds the Realized Capital Metrics. The References are:
+ * <i>HighQualityLiquidAssetSettings</i> holds the Risk-Weights and the Haircuts associated with Levels 1,
+ * 2A, and 2B. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,148 +103,144 @@ package org.drip.bcbs.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalMetrics
+public class HighQualityLiquidAssetSettings
 {
-	private double _tier1Ratio = java.lang.Double.NaN;
-	private double _totalRatio = java.lang.Double.NaN;
-	private double _leverageRatio = java.lang.Double.NaN;
-	private double _commonEquityRatio = java.lang.Double.NaN;
-	private double _totalPlusConservationBufferRatio = java.lang.Double.NaN;
-	private double _commonEquityPlusConservationBufferRatio = java.lang.Double.NaN;
+	private double _level1Haircut = java.lang.Double.NaN;
+	private double _level2AHaircut = java.lang.Double.NaN;
+	private double _level2BHaircut = java.lang.Double.NaN;
+	private double _level1RiskWeight = java.lang.Double.NaN;
+	private double _level2ARiskWeight = java.lang.Double.NaN;
+	private double _level2BRiskWeight = java.lang.Double.NaN;
 
 	/**
-	 * CapitalMetrics Constructor
+	 * Retrieve the Federal Reserve Version of the HQLA Settings Standard
 	 * 
-	 * @param leverageRatio Leverage Ratio
-	 * @param commonEquityRatio Common Equity Capital Ratio
-	 * @param commonEquityPlusConservationBufferRatio Common Equity Capital Plus Capital Conservation Buffer
-	 * 		Ratio
-	 * @param tier1Ratio Tier 1 Capital Ratio
-	 * @param totalRatio Total Capital Ratio
-	 * @param totalPlusConservationBufferRatio Total Capital Plus Conservation Buffer Ratio
+	 * @return The Federal Reserve Version of the HQLA Settings Standard
+	 */
+
+	public static final HighQualityLiquidAssetSettings FederalReserveStandard()
+	{
+		try
+		{
+			return new HighQualityLiquidAssetSettings (
+				0.00,
+				0.00,
+				0.15,
+				0.20,
+				0.50,
+				0.50
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * HighQualityLiquidAssetSettings Constructor
+	 * 
+	 * @param level1Haircut Level 1 HQLA Haircut
+	 * @param level1RiskWeight Level 1 HQLA Risk-Weight
+	 * @param level2AHaircut Level 2A HQLA Haircut
+	 * @param level2ARiskWeight Level 2A HQLA Risk-Weight
+	 * @param level2BHaircut Level 2B HQLA Haircut
+	 * @param level2BRiskWeight Level 2B HQLA Risk-Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CapitalMetrics (
-		final double leverageRatio,
-		final double commonEquityRatio,
-		final double commonEquityPlusConservationBufferRatio,
-		final double tier1Ratio,
-		final double totalRatio,
-		final double totalPlusConservationBufferRatio)
+	public HighQualityLiquidAssetSettings (
+		final double level1Haircut,
+		final double level1RiskWeight,
+		final double level2AHaircut,
+		final double level2ARiskWeight,
+		final double level2BHaircut,
+		final double level2BRiskWeight)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_leverageRatio = leverageRatio) ||
-				0. > _leverageRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commonEquityRatio = commonEquityRatio) ||
-				0. > _commonEquityRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commonEquityPlusConservationBufferRatio =
-				commonEquityPlusConservationBufferRatio) || 0. > _commonEquityPlusConservationBufferRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tier1Ratio = tier1Ratio) || 0. > _tier1Ratio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalRatio = totalRatio) || 0. > _totalRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalPlusConservationBufferRatio =
-				totalPlusConservationBufferRatio) || 0. > _totalPlusConservationBufferRatio)
+		if (!org.drip.quant.common.NumberUtil.IsValid (_level1Haircut = level1Haircut) ||
+				0. > _level1Haircut || 1. < _level1Haircut ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level1RiskWeight = level1RiskWeight) ||
+				0. > _level1RiskWeight ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2AHaircut = level2AHaircut) ||
+				0. > _level2AHaircut || 1. < _level2AHaircut ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2ARiskWeight = level2ARiskWeight) ||
+				0. > _level2ARiskWeight ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2BHaircut = level2BHaircut) ||
+				0. > _level2BHaircut || 1. < _level2BHaircut ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2BRiskWeight = level2BRiskWeight) ||
+				0. > _level2BRiskWeight)
 		{
-			throw new java.lang.Exception ("CapitalMetrics Contructor => Invalid Inputs");
+			throw new java.lang.Exception ("HighQualityLiquidAssetSettings Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Leverage Ratio
+	 * Retrieve the Level 1 Risk Weight
 	 * 
-	 * @return The Leverage Ratio
+	 * @return The Level 1 Risk Weight
 	 */
 
-	public double leverageRatio()
+	public double level1RiskWeight()
 	{
-		return _leverageRatio;
+		return _level1RiskWeight;
 	}
 
 	/**
-	 * Retrieve the Common Equity Capital Ratio
+	 * Retrieve the Level 1 Haircut
 	 * 
-	 * @return The Common Equity Capital Ratio
+	 * @return The Level 1 Haircut
 	 */
 
-	public double commonEquityRatio()
+	public double level1Haircut()
 	{
-		return _commonEquityRatio;
+		return _level1Haircut;
 	}
 
 	/**
-	 * Retrieve the Capital Conservation Buffer Ratio
+	 * Retrieve the Level 2A Risk Weight
 	 * 
-	 * @return The Capital Conservation Buffer Ratio
+	 * @return The Level 2A Risk Weight
 	 */
 
-	public double conservationBufferRatio()
+	public double level2ARiskWeight()
 	{
-		return _commonEquityPlusConservationBufferRatio - _commonEquityRatio;
+		return _level2ARiskWeight;
 	}
 
 	/**
-	 * Retrieve the Common Equity Capital Plus Capital Conservation Buffer Ratio
+	 * Retrieve the Level 2A Haircut
 	 * 
-	 * @return The Common Equity Capital Plus Capital Conservation Buffer Ratio
+	 * @return The Level 2A Haircut
 	 */
 
-	public double commonEquityPlusConservationBufferRatio()
+	public double level2AHaircut()
 	{
-		return _commonEquityPlusConservationBufferRatio;
+		return _level2AHaircut;
 	}
 
 	/**
-	 * Retrieve the Tier 1 Capital Ratio
+	 * Retrieve the Level 2B Risk Weight
 	 * 
-	 * @return The Tier 1 Capital Ratio
+	 * @return The Level 2B Risk Weight
 	 */
 
-	public double tier1Ratio()
+	public double level2BRiskWeight()
 	{
-		return _tier1Ratio;
+		return _level2BRiskWeight;
 	}
 
 	/**
-	 * Retrieve the Total Capital Ratio
+	 * Retrieve the Level 2B Haircut
 	 * 
-	 * @return The Total Capital Ratio
+	 * @return The Level 2B Haircut
 	 */
 
-	public double totalRatio()
+	public double level2BHaircut()
 	{
-		return _totalRatio;
-	}
-
-	/**
-	 * Retrieve the Total Capital Plus Conservation Buffer Ratio
-	 * 
-	 * @return The Total Capital Plus Conservation Buffer Ratio
-	 */
-
-	public double totalPlusConservationBufferRatio()
-	{
-		return _totalPlusConservationBufferRatio;
-	}
-
-	/**
-	 * Verify if the Capital Metrics are Compliant with the Standard
-	 * 
-	 * @param capitalMetricsStandard The Capital Metrics Standard
-	 * 
-	 * @return TRUE - The Capital Metrics are Compliant with the Standard
-	 */
-
-	public boolean isCompliant (
-		final org.drip.bcbs.core.CapitalMetrics capitalMetricsStandard)
-	{
-		return null == capitalMetricsStandard ? false :
-			_leverageRatio >= capitalMetricsStandard.leverageRatio() &&
-			_commonEquityRatio >= capitalMetricsStandard.commonEquityRatio() &&
-			_commonEquityPlusConservationBufferRatio >=
-				capitalMetricsStandard.commonEquityPlusConservationBufferRatio() &&
-			_tier1Ratio >= capitalMetricsStandard.tier1Ratio() &&
-			_totalRatio >= capitalMetricsStandard.totalRatio() &&
-			_totalPlusConservationBufferRatio >= capitalMetricsStandard.totalPlusConservationBufferRatio();
+		return _level2BHaircut;
 	}
 }

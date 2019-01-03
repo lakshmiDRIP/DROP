@@ -65,7 +65,8 @@ package org.drip.bcbs.core;
  */
 
 /**
- * <i>CapitalMetrics</i> holds the Realized Capital Metrics. The References are:
+ * <i>HighQualityLiquidAsset</i> contains the Amounts and the Settings associated with Levels 1, 2A, and 2B.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,148 +103,98 @@ package org.drip.bcbs.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalMetrics
+public class HighQualityLiquidAsset
 {
-	private double _tier1Ratio = java.lang.Double.NaN;
-	private double _totalRatio = java.lang.Double.NaN;
-	private double _leverageRatio = java.lang.Double.NaN;
-	private double _commonEquityRatio = java.lang.Double.NaN;
-	private double _totalPlusConservationBufferRatio = java.lang.Double.NaN;
-	private double _commonEquityPlusConservationBufferRatio = java.lang.Double.NaN;
+	private double _level1 = java.lang.Double.NaN;
+	private double _level2A = java.lang.Double.NaN;
+	private double _level2B = java.lang.Double.NaN;
 
 	/**
-	 * CapitalMetrics Constructor
+	 * HighQualityLiquidAsset Constructor
 	 * 
-	 * @param leverageRatio Leverage Ratio
-	 * @param commonEquityRatio Common Equity Capital Ratio
-	 * @param commonEquityPlusConservationBufferRatio Common Equity Capital Plus Capital Conservation Buffer
-	 * 		Ratio
-	 * @param tier1Ratio Tier 1 Capital Ratio
-	 * @param totalRatio Total Capital Ratio
-	 * @param totalPlusConservationBufferRatio Total Capital Plus Conservation Buffer Ratio
+	 * @param level1 Level 1 HQLA
+	 * @param level2A Level 2A HQLA
+	 * @param level2B Level 2B HQLA
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CapitalMetrics (
-		final double leverageRatio,
-		final double commonEquityRatio,
-		final double commonEquityPlusConservationBufferRatio,
-		final double tier1Ratio,
-		final double totalRatio,
-		final double totalPlusConservationBufferRatio)
+	public HighQualityLiquidAsset (
+		final double level1,
+		final double level2A,
+		final double level2B)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_leverageRatio = leverageRatio) ||
-				0. > _leverageRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commonEquityRatio = commonEquityRatio) ||
-				0. > _commonEquityRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commonEquityPlusConservationBufferRatio =
-				commonEquityPlusConservationBufferRatio) || 0. > _commonEquityPlusConservationBufferRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tier1Ratio = tier1Ratio) || 0. > _tier1Ratio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalRatio = totalRatio) || 0. > _totalRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalPlusConservationBufferRatio =
-				totalPlusConservationBufferRatio) || 0. > _totalPlusConservationBufferRatio)
+		if (!org.drip.quant.common.NumberUtil.IsValid (_level1 = level1) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2A = level2A) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2B = level2B))
 		{
-			throw new java.lang.Exception ("CapitalMetrics Contructor => Invalid Inputs");
+			throw new java.lang.Exception ("HighQualityLiquidAsset Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Leverage Ratio
+	 * Retrieve the Amount of Level 1 Assets
 	 * 
-	 * @return The Leverage Ratio
+	 * @return The Amount of Level 1 Assets
 	 */
 
-	public double leverageRatio()
+	public double level1()
 	{
-		return _leverageRatio;
+		return _level1;
 	}
 
 	/**
-	 * Retrieve the Common Equity Capital Ratio
+	 * Retrieve the Amount of Level 2A Assets
 	 * 
-	 * @return The Common Equity Capital Ratio
+	 * @return The Amount of Level 2A Assets
 	 */
 
-	public double commonEquityRatio()
+	public double level2A()
 	{
-		return _commonEquityRatio;
+		return _level2A;
 	}
 
 	/**
-	 * Retrieve the Capital Conservation Buffer Ratio
+	 * Retrieve the Amount of Level 2B Assets
 	 * 
-	 * @return The Capital Conservation Buffer Ratio
+	 * @return The Amount of Level 2B Assets
 	 */
 
-	public double conservationBufferRatio()
+	public double level2B()
 	{
-		return _commonEquityPlusConservationBufferRatio - _commonEquityRatio;
+		return _level2B;
 	}
 
 	/**
-	 * Retrieve the Common Equity Capital Plus Capital Conservation Buffer Ratio
+	 * Apply the appropriate Risk Weight and Hair cut to each of the Level x Assets
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
 	 * 
-	 * @return The Common Equity Capital Plus Capital Conservation Buffer Ratio
+	 * @return The Risk Weight and Hair cut to each of the Level x Assets
 	 */
 
-	public double commonEquityPlusConservationBufferRatio()
+	public HighQualityLiquidAsset applyRiskWeightAndHaircut (
+		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
 	{
-		return _commonEquityPlusConservationBufferRatio;
-	}
+		if (null == hqlaSettings)
+		{
+			return null;
+		}
 
-	/**
-	 * Retrieve the Tier 1 Capital Ratio
-	 * 
-	 * @return The Tier 1 Capital Ratio
-	 */
+		try
+		{
+			return new HighQualityLiquidAsset (
+				_level1,
+				_level2A * (1. - hqlaSettings.level2AHaircut()) / (1. + hqlaSettings.level2ARiskWeight()),
+				_level2B * (1. - hqlaSettings.level2BHaircut()) / (1. + hqlaSettings.level2BRiskWeight())
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-	public double tier1Ratio()
-	{
-		return _tier1Ratio;
-	}
-
-	/**
-	 * Retrieve the Total Capital Ratio
-	 * 
-	 * @return The Total Capital Ratio
-	 */
-
-	public double totalRatio()
-	{
-		return _totalRatio;
-	}
-
-	/**
-	 * Retrieve the Total Capital Plus Conservation Buffer Ratio
-	 * 
-	 * @return The Total Capital Plus Conservation Buffer Ratio
-	 */
-
-	public double totalPlusConservationBufferRatio()
-	{
-		return _totalPlusConservationBufferRatio;
-	}
-
-	/**
-	 * Verify if the Capital Metrics are Compliant with the Standard
-	 * 
-	 * @param capitalMetricsStandard The Capital Metrics Standard
-	 * 
-	 * @return TRUE - The Capital Metrics are Compliant with the Standard
-	 */
-
-	public boolean isCompliant (
-		final org.drip.bcbs.core.CapitalMetrics capitalMetricsStandard)
-	{
-		return null == capitalMetricsStandard ? false :
-			_leverageRatio >= capitalMetricsStandard.leverageRatio() &&
-			_commonEquityRatio >= capitalMetricsStandard.commonEquityRatio() &&
-			_commonEquityPlusConservationBufferRatio >=
-				capitalMetricsStandard.commonEquityPlusConservationBufferRatio() &&
-			_tier1Ratio >= capitalMetricsStandard.tier1Ratio() &&
-			_totalRatio >= capitalMetricsStandard.totalRatio() &&
-			_totalPlusConservationBufferRatio >= capitalMetricsStandard.totalPlusConservationBufferRatio();
+		return null;
 	}
 }
