@@ -105,113 +105,65 @@ package org.drip.bcbs.core;
 
 public class BalanceSheet
 {
-	private double _at1 = java.lang.Double.NaN;
-	private double _rwa = java.lang.Double.NaN;
-	private double _cet1 = java.lang.Double.NaN;
-	private double _hqla = java.lang.Double.NaN;
-	private double _totalExposure = java.lang.Double.NaN;
-	private double _additionalCapital = java.lang.Double.NaN;
-	private double _stableFundingAmount = java.lang.Double.NaN;
-	private double _netLiquidityOutflow30D = java.lang.Double.NaN;
-	private double _extendedStressFundingAmount = java.lang.Double.NaN;
+	private org.drip.bcbs.core.BalanceSheetCapital _balanceSheetCapital = null;
+	private org.drip.bcbs.core.BalanceSheetFunding _balanceSheetFunding = null;
+	private org.drip.bcbs.core.BalanceSheetLiquidity _balanceSheetLiquidity = null;
 
 	/**
-	 * Retrieve the Common Equity Tier 1 Capital
+	 * BalanceSheet Constructor
 	 * 
-	 * @return The Common Equity Tier 1 Capital
+	 * @param balanceSheetCapital Balance Sheet Capital Composite
+	 * @param balanceSheetLiquidity Balance Sheet Liquidity Composite
+	 * @param balanceSheetFunding Balance Sheet Funding Composite
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double commonEquityTier1()
+	public BalanceSheet (
+		final org.drip.bcbs.core.BalanceSheetCapital balanceSheetCapital,
+		final org.drip.bcbs.core.BalanceSheetLiquidity balanceSheetLiquidity,
+		final org.drip.bcbs.core.BalanceSheetFunding balanceSheetFunding)
+		throws java.lang.Exception
 	{
-		return _cet1;
+		if (null == (_balanceSheetCapital = balanceSheetCapital) ||
+			null == (_balanceSheetLiquidity = balanceSheetLiquidity) ||
+			null == (_balanceSheetFunding = balanceSheetFunding))
+		{
+			throw new java.lang.Exception ("BalanceSheet Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Additional Tier 1 Capital
+	 * Retrieve the Balance Sheet Capital Composite
 	 * 
-	 * @return The Additional Tier 1 Capital
+	 * @return The Balance Sheet Capital Composite
 	 */
 
-	public double additionalTier1()
+	public org.drip.bcbs.core.BalanceSheetCapital balanceSheetCapital()
 	{
-		return _at1;
+		return _balanceSheetCapital;
 	}
 
 	/**
-	 * Retrieve the Risk Weighted Assets
+	 * Retrieve the Balance Sheet Liquidity Composite
 	 * 
-	 * @return The Risk Weighted Assets
+	 * @return The Balance Sheet Liquidity Composite
 	 */
 
-	public double riskWeightedAssets()
+	public org.drip.bcbs.core.BalanceSheetLiquidity balanceSheetLiquidity()
 	{
-		return _rwa;
+		return _balanceSheetLiquidity;
 	}
 
 	/**
-	 * Retrieve the Total Exposure
+	 * Retrieve the Balance Sheet Funding Composite
 	 * 
-	 * @return The Total Exposure
+	 * @return The Balance Sheet Funding Composite
 	 */
 
-	public double totalExposure()
+	public org.drip.bcbs.core.BalanceSheetFunding balanceSheetFunding()
 	{
-		return _totalExposure;
-	}
-
-	/**
-	 * Retrieve the High Quality Liquid Assets
-	 * 
-	 * @return The High Quality Liquid Assets
-	 */
-
-	public double hqla()
-	{
-		return _hqla;
-	}
-
-	/**
-	 * Retrieve the Total Net Liquidity Outflows Over 30D
-	 * 
-	 * @return The Total Net Liquidity Outflows Over 30D
-	 */
-
-	public double netLiquidityOutflow30D()
-	{
-		return _netLiquidityOutflow30D;
-	}
-
-	/**
-	 * Retrieve the Stable Funding Amount
-	 * 
-	 * @return The Stable Funding Amount
-	 */
-
-	public double stableFundingAmount()
-	{
-		return _stableFundingAmount;
-	}
-
-	/**
-	 * Retrieve the Funding Amount Required Over 1Y Period of Extended Stress
-	 * 
-	 * @return The Funding Amount Required Over 1Y Period of Extended Stress
-	 */
-
-	public double extendedStressFundingAmount()
-	{
-		return _extendedStressFundingAmount;
-	}
-
-	/**
-	 * Retrieve the Additional Capital
-	 * 
-	 * @return The Additional Capital
-	 */
-
-	public double additionalCapital()
-	{
-		return _additionalCapital;
+		return _balanceSheetFunding;
 	}
 
 	/**
@@ -222,7 +174,7 @@ public class BalanceSheet
 
 	public double tier1()
 	{
-		return _cet1 + _at1;
+		return _balanceSheetCapital.tier1();
 	}
 
 	/**
@@ -233,7 +185,7 @@ public class BalanceSheet
 
 	public double totalCapital()
 	{
-		return _cet1 + _at1 + _additionalCapital;
+		return _balanceSheetCapital.totalCapital();
 	}
 
 	/**
@@ -244,7 +196,7 @@ public class BalanceSheet
 
 	public double cet1Ratio()
 	{
-		return _cet1 / _rwa;
+		return _balanceSheetCapital.cet1Ratio();
 	}
 
 	/**
@@ -255,7 +207,7 @@ public class BalanceSheet
 
 	public double totalCapitalRatio()
 	{
-		return (_cet1 + _at1 + _additionalCapital) / _rwa;
+		return _balanceSheetCapital.totalCapitalRatio();
 	}
 
 	/**
@@ -266,18 +218,24 @@ public class BalanceSheet
 
 	public double leverageRatio()
 	{
-		return (_cet1 + _at1) / _totalExposure;
+		return _balanceSheetCapital.leverageRatio();
 	}
 
 	/**
 	 * Retrieve the Liquidity Coverage Ratio
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
 	 * 
 	 * @return The Liquidity Coverage Ratio
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double liquidityCoverageRatio()
+	public double liquidityCoverageRatio (
+		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
+		throws java.lang.Exception
 	{
-		return _hqla / _netLiquidityOutflow30D;
+		return _balanceSheetLiquidity.liquidityCoverageRatio (hqlaSettings);
 	}
 
 	/**
@@ -288,7 +246,7 @@ public class BalanceSheet
 
 	public double netStableFundingRatio()
 	{
-		return _stableFundingAmount / _extendedStressFundingAmount;
+		return _balanceSheetFunding.netStableFundingRatio();
 	}
 
 	/**
@@ -299,41 +257,25 @@ public class BalanceSheet
 
 	public org.drip.bcbs.core.CapitalMetrics capitalMetrics()
 	{
-		double commonEquityCapitalRatio = _cet1 / _rwa;
-		double totalCapitalRatio = (_cet1 + _at1 + _additionalCapital) / _rwa;
-
-		try
-		{
-			return new org.drip.bcbs.core.CapitalMetrics (
-				(_cet1 + _at1) / _totalExposure,
-				commonEquityCapitalRatio,
-				commonEquityCapitalRatio,
-				(_cet1 + _at1) / _rwa,
-				totalCapitalRatio,
-				totalCapitalRatio
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _balanceSheetCapital.capitalMetrics();
 	}
 
 	/**
 	 * Generate the Balance Sheet Liquidity Metrics
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
 	 * 
 	 * @return The Balance Sheet Liquidity Metrics
 	 */
 
-	public org.drip.bcbs.core.LiquidityMetrics liquidityMetrics()
+	public org.drip.bcbs.core.LiquidityMetrics liquidityMetrics (
+		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
 	{
 		try
 		{
 			return new org.drip.bcbs.core.LiquidityMetrics (
-				_hqla / _netLiquidityOutflow30D,
-				_stableFundingAmount / _extendedStressFundingAmount
+				_balanceSheetLiquidity.liquidityCoverageRatio (hqlaSettings),
+				_balanceSheetFunding.netStableFundingRatio()
 			);
 		}
 		catch (java.lang.Exception e)

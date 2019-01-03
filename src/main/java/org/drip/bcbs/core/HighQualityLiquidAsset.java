@@ -167,6 +167,39 @@ public class HighQualityLiquidAsset
 	}
 
 	/**
+	 * Retrieve the Total HQLA
+	 * 
+	 * @return The Total HQLA
+	 */
+
+	public double total()
+	{
+		return _level1 + _level2A + _level2B;
+	}
+
+	/**
+	 * Retrieve the Level 2 Shares to the Total HQLA
+	 * 
+	 * @return The Level 2 Shares to the Total HQLA
+	 */
+
+	public double level2Ratio()
+	{
+		return (_level2A + _level2B) / (_level1 + _level2A + _level2B);
+	}
+
+	/**
+	 * Retrieve the Level 2B Share to the Total HQLA
+	 * 
+	 * @return The Level 2B Shares to the Total HQLA
+	 */
+
+	public double level2BRatio()
+	{
+		return _level2B / (_level1 + _level2A + _level2B);
+	}
+
+	/**
 	 * Apply the appropriate Risk Weight and Hair cut to each of the Level x Assets
 	 *  
 	 * @param hqlaSettings THe HQLA Settings
@@ -196,5 +229,46 @@ public class HighQualityLiquidAsset
 		}
 
 		return null;
+	}
+
+	/**
+	 * Verify if the HQLA is Compliant with the Level 2 and 2B Standards
+	 * 
+	 * @param hqlaStandard The HQLA Standard
+	 * 
+	 * @return TRUE - The HQLA is Compliant with the Level 2 and 2B Standards
+	 */
+
+	public boolean isCompliant (
+		final org.drip.bcbs.core.HighQualityLiquidAssetStandard hqlaStandard)
+	{
+		return null == hqlaStandard ? false :
+			level2Ratio() <= hqlaStandard.level2Ratio() &&
+			level2BRatio() <= hqlaStandard.level2BRatio();
+	}
+
+	/**
+	 * Compute the Risk Weight and Hair cut HQLA Total
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
+	 * 
+	 * @return The Risk Weight and Hair cut HQLA Total
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double totalRiskWeightAndHaircut (
+		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
+		throws java.lang.Exception
+	{
+		HighQualityLiquidAsset hqla = applyRiskWeightAndHaircut (hqlaSettings);
+
+		if (null == hqla)
+		{
+			throw new java.lang.Exception
+				("HighQualityLiquidAsset::totalRiskWeightAndHaircut => Invalid Inputs");
+		}
+
+		return hqla.total();
 	}
 }

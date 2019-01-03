@@ -109,6 +109,50 @@ public class HighQualityLiquidAssetStandard
 	private double _level2BRatio = java.lang.Double.NaN;
 
 	/**
+	 * Generate an Instance of the Fed's HQLA Standard
+	 * 
+	 * @return The Fed's HQLA Standard
+	 */
+
+	public static final HighQualityLiquidAssetStandard FederalReserve()
+	{
+		try
+		{
+			return new HighQualityLiquidAssetStandard (
+				0.40,
+				0.15
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * HighQualityLiquidAssetStandard Constructor
+	 * 
+	 * @param level2Ratio Level 2 Ratio
+	 * @param level2BRatio Level 2B Ratio
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public HighQualityLiquidAssetStandard (
+		final double level2Ratio,
+		final double level2BRatio)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_level2Ratio = level2Ratio) || 0. > _level2Ratio ||
+			!org.drip.quant.common.NumberUtil.IsValid (_level2BRatio = level2BRatio) || 0. > _level2BRatio)
+		{
+			throw new java.lang.Exception ("HighQualityLiquidAssetStandard Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
 	 * Retrieve the Level 2 share to the Total HQLA
 	 * 
 	 * @return The Level 2 share to the Total HQLA
