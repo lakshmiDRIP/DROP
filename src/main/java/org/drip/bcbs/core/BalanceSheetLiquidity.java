@@ -111,6 +111,88 @@ public class BalanceSheetLiquidity
 	private org.drip.bcbs.core.HighQualityLiquidAsset _highQualityLiquidAsset = null;
 
 	/**
+	 * Construct the Basel III Standard Version of Balance Sheet Liquidity
+	 * 
+	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
+	 * @param netCashOutflowAmount Net Cash Outflow Amount
+	 * @param usePeakCumulative TRUE - The Net Outflow is to be determined off of the Peak Cumulative Period
+	 * 
+	 * @return Basel III Standard Version of Balance Sheet Liquidity
+	 */
+
+	public static final BalanceSheetLiquidity Basel_III (
+		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
+		final double netCashOutflowAmount,
+		final boolean usePeakCumulative)
+	{
+		try
+		{
+			return new BalanceSheetLiquidity (
+				highQualityLiquidAsset,
+				netCashOutflowAmount,
+				"30D",
+				usePeakCumulative
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Basel III Standard Version of Balance Sheet Liquidity for Large BHC's
+	 * 
+	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
+	 * @param netCashOutflowAmount Net Cash Outflow Amount
+	 * 
+	 * @return Basel III Standard Version of Balance Sheet Liquidity for Large BHC's
+	 */
+
+	public static final BalanceSheetLiquidity Large_BHC (
+		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
+		final double netCashOutflowAmount)
+	{
+		return Basel_III (
+			highQualityLiquidAsset,
+			netCashOutflowAmount,
+			true
+		);
+	}
+
+	/**
+	 * Construct the Basel III Standard Version of Balance Sheet Liquidity for Regional BHC's
+	 * 
+	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
+	 * @param netCashOutflowAmount Net Cash Outflow Amount
+	 * 
+	 * @return Basel III Standard Version of Balance Sheet Liquidity for Regional BHC's
+	 */
+
+	public static final BalanceSheetLiquidity Regional_BHC (
+		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
+		final double netCashOutflowAmount)
+	{
+		try
+		{
+			return new BalanceSheetLiquidity (
+				highQualityLiquidAsset,
+				netCashOutflowAmount,
+				"21D",
+				false
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BalanceSheetLiquidity Constructor
 	 * 
 	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance

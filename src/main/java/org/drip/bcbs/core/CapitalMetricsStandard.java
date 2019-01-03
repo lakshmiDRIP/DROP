@@ -118,7 +118,7 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		{
 			return new CapitalMetricsStandard (
 				0.030,
-				0.000,
+				0.035,
 				0.035,
 				0.045,
 				0.045,
@@ -145,8 +145,8 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		try
 		{
 			return new CapitalMetricsStandard (
+				0.030,
 				0.040,
-				0.000,
 				0.040,
 				0.055,
 				0.080,
@@ -173,8 +173,8 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		try
 		{
 			return new CapitalMetricsStandard (
+				0.030,
 				0.045,
-				0.000,
 				0.045,
 				0.060,
 				0.080,
@@ -201,8 +201,8 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		try
 		{
 			return new CapitalMetricsStandard (
+				0.03000,
 				0.04500,
-				0.00625,
 				0.05125,
 				0.06000,
 				0.08000,
@@ -229,8 +229,8 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		try
 		{
 			return new CapitalMetricsStandard (
+				0.03000,
 				0.04500,
-				0.01250,
 				0.05750,
 				0.06000,
 				0.08000,
@@ -257,8 +257,8 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		try
 		{
 			return new CapitalMetricsStandard (
+				0.03000,
 				0.04500,
-				0.01875,
 				0.06375,
 				0.06000,
 				0.08000,
@@ -285,8 +285,8 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		try
 		{
 			return new CapitalMetricsStandard (
+				0.03000,
 				0.04500,
-				0.02500,
 				0.07000,
 				0.06000,
 				0.08000,
@@ -316,7 +316,7 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		{
 			return new CapitalMetricsStandard (
 				0.06000,
-				0.02500,
+				0.04500,
 				0.07000,
 				0.06000,
 				0.08000,
@@ -346,7 +346,7 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 		{
 			return new CapitalMetricsStandard (
 				0.05000,
-				0.02500,
+				0.04500,
 				0.07000,
 				0.06000,
 				0.08000,
