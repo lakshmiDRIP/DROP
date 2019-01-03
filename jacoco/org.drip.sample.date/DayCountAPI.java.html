@@ -15,6 +15,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -23,29 +24,47 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -62,15 +81,32 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * DayCountAPI demonstrates Day-count API Functionality. It does the following:
- * - Get all the holiday locations in CreditAnalytics, and all the holidays in the year according the
- * 		calendar set.
- * - Calculate year fraction between 2 dates according to semi-annual, Act/360, and USD calendar.
+ * &lt;i&gt;DayCountAPI&lt;/i&gt; demonstrates Day-count API Functionality. It does the following:
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Get all the holiday locations in CreditAnalytics, and all the holidays in the year according the
+ * 				calendar set.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Calculate year fraction between 2 dates according to semi-annual, Act/360, and USD calendar.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/date/README.md&quot;&gt;Date Management API&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L73">public class DayCountAPI {</span>
+<span class="nc" id="L109">public class DayCountAPI {</span>
 
 	/**
 	 * Sample API demonstrating the day count functionality
@@ -88,60 +124,60 @@ import org.drip.service.env.EnvManager;
 		 * Calculate year fraction between 2 dates according to semi-annual, Act/360, and USD calendar
 		 */
 
-<span class="fc" id="L91">		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (</span>
-<span class="fc" id="L92">			dtStart.julian(),</span>
-<span class="fc" id="L93">			dtEnd.julian(),</span>
+<span class="fc" id="L127">		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc" id="L128">			dtStart.julian(),</span>
+<span class="fc" id="L129">			dtEnd.julian(),</span>
 			strDayCount,
 			false,
 			null,
 			&quot;USD&quot;
 		);
 
-<span class="fc" id="L100">		int iDaysAccrued = org.drip.analytics.daycount.Convention.DaysAccrued (</span>
-<span class="fc" id="L101">			dtStart.julian(),</span>
-<span class="fc" id="L102">			dtEnd.julian(),</span>
+<span class="fc" id="L136">		int iDaysAccrued = org.drip.analytics.daycount.Convention.DaysAccrued (</span>
+<span class="fc" id="L137">			dtStart.julian(),</span>
+<span class="fc" id="L138">			dtEnd.julian(),</span>
 			strDayCount,
 			false,
 			null,
 			&quot;USD&quot;
 		);
 
-<span class="fc" id="L109">		System.out.println (</span>
-<span class="fc" id="L110">			&quot;\t[&quot; + dtStart + &quot; -&gt; &quot; + dtEnd + &quot;] =&gt; &quot; + FormatUtil.FormatDouble (dblYearFraction, 1, 4, 1.) + &quot; | &quot; + iDaysAccrued + &quot; | &quot; + strDayCount</span>
+<span class="fc" id="L145">		System.out.println (</span>
+<span class="fc" id="L146">			&quot;\t[&quot; + dtStart + &quot; -&gt; &quot; + dtEnd + &quot;] =&gt; &quot; + FormatUtil.FormatDouble (dblYearFraction, 1, 4, 1.) + &quot; | &quot; + iDaysAccrued + &quot; | &quot; + strDayCount</span>
 		);
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L148">	}</span>
 
 	private static final void DayCountSequence (
 		final JulianDate dtStart,
 		final JulianDate dtEnd)
 		throws Exception
 	{
-<span class="fc" id="L119">		DayCountAPISample (dtStart, dtEnd, &quot;28/360&quot;);</span>
+<span class="fc" id="L155">		DayCountAPISample (dtStart, dtEnd, &quot;28/360&quot;);</span>
 
-<span class="fc" id="L121">		DayCountAPISample (dtStart, dtEnd, &quot;30/365&quot;);</span>
+<span class="fc" id="L157">		DayCountAPISample (dtStart, dtEnd, &quot;30/365&quot;);</span>
 
-<span class="fc" id="L123">		DayCountAPISample (dtStart, dtEnd, &quot;30/360&quot;);</span>
+<span class="fc" id="L159">		DayCountAPISample (dtStart, dtEnd, &quot;30/360&quot;);</span>
 
-<span class="fc" id="L125">		DayCountAPISample (dtStart, dtEnd, &quot;30E/360 ISDA&quot;);</span>
+<span class="fc" id="L161">		DayCountAPISample (dtStart, dtEnd, &quot;30E/360 ISDA&quot;);</span>
 
-<span class="fc" id="L127">		DayCountAPISample (dtStart, dtEnd, &quot;30E/360&quot;);</span>
+<span class="fc" id="L163">		DayCountAPISample (dtStart, dtEnd, &quot;30E/360&quot;);</span>
 
-<span class="fc" id="L129">		DayCountAPISample (dtStart, dtEnd, &quot;30E+/360&quot;);</span>
+<span class="fc" id="L165">		DayCountAPISample (dtStart, dtEnd, &quot;30E+/360&quot;);</span>
 
-<span class="fc" id="L131">		DayCountAPISample (dtStart, dtEnd, &quot;Act/360&quot;);</span>
+<span class="fc" id="L167">		DayCountAPISample (dtStart, dtEnd, &quot;Act/360&quot;);</span>
 
-<span class="fc" id="L133">		DayCountAPISample (dtStart, dtEnd, &quot;Act/364&quot;);</span>
+<span class="fc" id="L169">		DayCountAPISample (dtStart, dtEnd, &quot;Act/364&quot;);</span>
 
-<span class="fc" id="L135">		DayCountAPISample (dtStart, dtEnd, &quot;Act/365&quot;);</span>
+<span class="fc" id="L171">		DayCountAPISample (dtStart, dtEnd, &quot;Act/365&quot;);</span>
 
-<span class="fc" id="L137">		DayCountAPISample (dtStart, dtEnd, &quot;Act/Act ISDA&quot;);</span>
+<span class="fc" id="L173">		DayCountAPISample (dtStart, dtEnd, &quot;Act/Act ISDA&quot;);</span>
 
-<span class="fc" id="L139">		DayCountAPISample (dtStart, dtEnd, &quot;Act/Act&quot;);</span>
+<span class="fc" id="L175">		DayCountAPISample (dtStart, dtEnd, &quot;Act/Act&quot;);</span>
 
-<span class="fc" id="L141">		DayCountAPISample (dtStart, dtEnd, &quot;NL/360&quot;);</span>
+<span class="fc" id="L177">		DayCountAPISample (dtStart, dtEnd, &quot;NL/360&quot;);</span>
 
-<span class="fc" id="L143">		DayCountAPISample (dtStart, dtEnd, &quot;NL/365&quot;);</span>
-<span class="fc" id="L144">	}</span>
+<span class="fc" id="L179">		DayCountAPISample (dtStart, dtEnd, &quot;NL/365&quot;);</span>
+<span class="fc" id="L180">	}</span>
 
 	public static final void main (
 		final String astrArgs[])
@@ -149,29 +185,31 @@ import org.drip.service.env.EnvManager;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="fc" id="L152">		String strConfig = &quot;&quot;;</span>
+<span class="fc" id="L188">		String strConfig = &quot;&quot;;</span>
 
-<span class="fc" id="L154">		EnvManager.InitEnv (strConfig);</span>
+<span class="fc" id="L190">		EnvManager.InitEnv (strConfig);</span>
 
 		/*
 		 * List available day count
 		 */
 
-<span class="fc" id="L160">		String strDCList = Convention.AvailableDC();</span>
+<span class="fc" id="L196">		String strDCList = Convention.AvailableDC();</span>
 
-<span class="fc" id="L162">		System.out.println (strDCList + &quot;\n--------------------\n&quot;);</span>
+<span class="fc" id="L198">		System.out.println (strDCList + &quot;\n--------------------\n&quot;);</span>
 
-<span class="fc" id="L164">		DayCountSequence (</span>
-<span class="fc" id="L165">			DateUtil.CreateFromYMD (2013, 5, 30),</span>
-<span class="fc" id="L166">			DateUtil.CreateFromYMD (2013, 6, 24)</span>
+<span class="fc" id="L200">		DayCountSequence (</span>
+<span class="fc" id="L201">			DateUtil.CreateFromYMD (2013, 5, 30),</span>
+<span class="fc" id="L202">			DateUtil.CreateFromYMD (2013, 6, 24)</span>
 		);
 
-<span class="fc" id="L169">		System.out.println (&quot;\n--------------------\n&quot;);</span>
+<span class="fc" id="L205">		System.out.println (&quot;\n--------------------\n&quot;);</span>
 
-<span class="fc" id="L171">		DayCountSequence (</span>
-<span class="fc" id="L172">			DateUtil.CreateFromYMD (2010, 12, 30),</span>
-<span class="fc" id="L173">			DateUtil.CreateFromYMD (2012, 12, 30)</span>
+<span class="fc" id="L207">		DayCountSequence (</span>
+<span class="fc" id="L208">			DateUtil.CreateFromYMD (2010, 12, 30),</span>
+<span class="fc" id="L209">			DateUtil.CreateFromYMD (2012, 12, 30)</span>
 		);
-<span class="fc" id="L175">	}</span>
+
+<span class="fc" id="L212">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L213">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

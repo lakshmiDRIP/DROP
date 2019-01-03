@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BalanceSheetCapital.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.bcbs.core</a> &gt; <span class="el_source">BalanceSheetCapital.java</span></div><h1>BalanceSheetCapital.java</h1><pre class="source lang-java linenums">
+package org.drip.bcbs.core;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;BalanceSheetCapital&lt;/i&gt; holds the Quantities used to compute the Capital Compliance Ratios in the BCBS
+ * Standards. The References are:
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure
+ * 				Requirements https://www.bis.org/publ/bcbs270.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Central Banking (2013): Fed and FDIC agree 6% Leverage Ratio for US SIFIs
+ * 				https://www.centralbanking.com/central-banking/news/2280726/fed-and-fdic-agree-6-leverage-ratio-for-us-sifis
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package
+ * 				https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and
+ * 				Monitoring
+ * 				https://web.archive.org/web/20131102074614/http:/www.federalreserve.gov/FR_notice_lcr_20131024.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/README.md&quot;&gt;BCBS&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/core/README.md&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BalanceSheetCapital
+{
+<span class="nc" id="L108">	private double _at1 = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	private double _rwa = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _cet1 = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _totalExposure = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private double _additionalCapital = java.lang.Double.NaN;</span>
+
+	/**
+	 * BalanceSheetCapital Constructor
+	 * 
+	 * @param cet1 Common Equity Tier 1 Capital
+	 * @param at1 Additional Tier 1 Capital
+	 * @param additionalCapital Additional Capital
+	 * @param rwa Risk Weighted Assets
+	 * @param totalExposure Total Exposure
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BalanceSheetCapital (
+		final double cet1,
+		final double at1,
+		final double additionalCapital,
+		final double rwa,
+		final double totalExposure)
+		throws java.lang.Exception
+<span class="nc" id="L133">	{</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_cet1 = cet1) || 0. &gt; _cet1 ||</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_at1 = at1) || 0. &gt; _at1 ||</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_additionalCapital = additionalCapital) ||</span>
+				0. &gt; _additionalCapital ||
+<span class="nc bnc" id="L138" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_rwa = rwa) || 0. &gt; _rwa ||</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_totalExposure = totalExposure) ||</span>
+				0. &gt; _totalExposure)
+		{
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;BalanceSheetCapital Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L144">	}</span>
+
+	/**
+	 * Retrieve the Common Equity Tier 1 Capital
+	 * 
+	 * @return The Common Equity Tier 1 Capital
+	 */
+
+	public double commonEquityTier1()
+	{
+<span class="nc" id="L154">		return _cet1;</span>
+	}
+
+	/**
+	 * Retrieve the Additional Tier 1 Capital
+	 * 
+	 * @return The Additional Tier 1 Capital
+	 */
+
+	public double additionalTier1()
+	{
+<span class="nc" id="L165">		return _at1;</span>
+	}
+
+	/**
+	 * Retrieve the Additional Capital
+	 * 
+	 * @return The Additional Capital
+	 */
+
+	public double additionalCapital()
+	{
+<span class="nc" id="L176">		return _additionalCapital;</span>
+	}
+
+	/**
+	 * Retrieve the Risk Weighted Assets
+	 * 
+	 * @return The Risk Weighted Assets
+	 */
+
+	public double riskWeightedAssets()
+	{
+<span class="nc" id="L187">		return _rwa;</span>
+	}
+
+	/**
+	 * Retrieve the Total Exposure
+	 * 
+	 * @return The Total Exposure
+	 */
+
+	public double totalExposure()
+	{
+<span class="nc" id="L198">		return _totalExposure;</span>
+	}
+
+	/**
+	 * Retrieve the Tier 1 Capital
+	 * 
+	 * @return The Tier 1 Capital
+	 */
+
+	public double tier1()
+	{
+<span class="nc" id="L209">		return _cet1 + _at1;</span>
+	}
+
+	/**
+	 * Retrieve the Total Capital
+	 * 
+	 * @return The Total Capital
+	 */
+
+	public double totalCapital()
+	{
+<span class="nc" id="L220">		return _cet1 + _at1 + _additionalCapital;</span>
+	}
+
+	/**
+	 * Retrieve the CET 1 Ratio
+	 * 
+	 * @return The CET 1 Ratio
+	 */
+
+	public double cet1Ratio()
+	{
+<span class="nc" id="L231">		return _cet1 / _rwa;</span>
+	}
+
+	/**
+	 * Retrieve the Total Capital Ratio
+	 * 
+	 * @return The Total Capital Ratio
+	 */
+
+	public double totalCapitalRatio()
+	{
+<span class="nc" id="L242">		return (_cet1 + _at1 + _additionalCapital) / _rwa;</span>
+	}
+
+	/**
+	 * Retrieve the Leverage Ratio
+	 * 
+	 * @return The Leverage Ratio
+	 */
+
+	public double leverageRatio()
+	{
+<span class="nc" id="L253">		return (_cet1 + _at1) / _totalExposure;</span>
+	}
+
+	/**
+	 * Generate the Balance Sheet Capital Metrics
+	 * 
+	 * @return The Balance Sheet Capital Metrics
+	 */
+
+	public org.drip.bcbs.core.CapitalMetrics capitalMetrics()
+	{
+<span class="nc" id="L264">		double commonEquityCapitalRatio = _cet1 / _rwa;</span>
+<span class="nc" id="L265">		double totalCapitalRatio = (_cet1 + _at1 + _additionalCapital) / _rwa;</span>
+
+		try
+		{
+<span class="nc" id="L269">			return new org.drip.bcbs.core.CapitalMetrics (</span>
+				(_cet1 + _at1) / _totalExposure,
+				commonEquityCapitalRatio,
+				commonEquityCapitalRatio,
+				(_cet1 + _at1) / _rwa,
+				totalCapitalRatio,
+				totalCapitalRatio
+			);
+		}
+<span class="nc" id="L278">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L280">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L283">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
