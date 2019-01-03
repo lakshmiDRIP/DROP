@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HighQualityLiquidAssetCompliance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bcbs</a> &gt; <span class="el_source">HighQualityLiquidAssetCompliance.java</span></div><h1>HighQualityLiquidAssetCompliance.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bcbs;
+
+import org.drip.bcbs.core.HighQualityLiquidAsset;
+import org.drip.bcbs.core.HighQualityLiquidAssetSettings;
+import org.drip.bcbs.core.HighQualityLiquidAssetStandard;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;HighQualityLiquidAssetCompliance&lt;/i&gt; illustrates the Basel III/Jurisdictional Compliance Checks
+ * associated with High Quality Liquid Assets. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure
+ * 				Requirements https://www.bis.org/publ/bcbs270.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Central Banking (2013): Fed and FDIC agree 6% Leverage Ratio for US SIFIs
+ * 				https://www.centralbanking.com/central-banking/news/2280726/fed-and-fdic-agree-6-leverage-ratio-for-us-sifis
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package
+ * 				https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and
+ * 				Monitoring
+ * 				https://web.archive.org/web/20131102074614/http:/www.federalreserve.gov/FR_notice_lcr_20131024.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/README.md&quot;&gt;BCBS&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/core/README.md&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L112">public class HighQualityLiquidAssetCompliance</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L121">		HighQualityLiquidAssetStandard hqlaStandardFed = HighQualityLiquidAssetStandard.FederalReserve();</span>
+
+		HighQualityLiquidAssetSettings hqlaSettings =
+<span class="nc" id="L124">			HighQualityLiquidAssetSettings.FederalReserveStandard();</span>
+
+<span class="nc" id="L126">		double level1 = 60.;</span>
+<span class="nc" id="L127">		double level2A = 25.;</span>
+<span class="nc" id="L128">		double level2B = 15.;</span>
+
+<span class="nc" id="L130">		HighQualityLiquidAsset hqla = new HighQualityLiquidAsset (</span>
+			level1,
+			level2A,
+			level2B
+		);
+
+<span class="nc" id="L136">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
+
+<span class="nc" id="L138">		System.out.println (&quot;\t| HQLA Compliance Ratios  |&quot;);</span>
+
+<span class="nc" id="L140">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
+
+<span class="nc" id="L142">		System.out.println (&quot;\t| Level 2 Ratio  =&gt; &quot; +</span>
+<span class="nc" id="L143">			FormatUtil.FormatDouble (hqlaStandardFed.level2Ratio(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L146">		System.out.println (&quot;\t| Level 2B Ratio =&gt; &quot; +</span>
+<span class="nc" id="L147">			FormatUtil.FormatDouble (hqlaStandardFed.level2BRatio(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L150">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
+
+<span class="nc" id="L152">		System.out.println();</span>
+
+<span class="nc" id="L154">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+
+<span class="nc" id="L156">		System.out.println (&quot;\t|       HQLA Fed Settings       |&quot;);</span>
+
+<span class="nc" id="L158">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+
+<span class="nc" id="L160">		System.out.println (&quot;\t| Level 1 Hair Cut     =&gt; &quot; +</span>
+<span class="nc" id="L161">			FormatUtil.FormatDouble (hqlaSettings.level1Haircut(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L164">		System.out.println (&quot;\t| Level 1 Risk Weight  =&gt; &quot; +</span>
+<span class="nc" id="L165">			FormatUtil.FormatDouble (hqlaSettings.level1RiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L168">		System.out.println (&quot;\t| Level 2A Hair Cut    =&gt; &quot; +</span>
+<span class="nc" id="L169">			FormatUtil.FormatDouble (hqlaSettings.level2AHaircut(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L172">		System.out.println (&quot;\t| Level 2A Risk Weight =&gt; &quot; +</span>
+<span class="nc" id="L173">			FormatUtil.FormatDouble (hqlaSettings.level2ARiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L176">		System.out.println (&quot;\t| Level 2B Hair Cut    =&gt; &quot; +</span>
+<span class="nc" id="L177">			FormatUtil.FormatDouble (hqlaSettings.level2BHaircut(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L180">		System.out.println (&quot;\t| Level 2B Risk Weight =&gt; &quot; +</span>
+<span class="nc" id="L181">			FormatUtil.FormatDouble (hqlaSettings.level2BRiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L184">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+
+<span class="nc" id="L186">		System.out.println();</span>
+
+<span class="nc" id="L188">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+
+<span class="nc" id="L190">		System.out.println (&quot;\t|    HQLA Composite Metrics     |&quot;);</span>
+
+<span class="nc" id="L192">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+
+<span class="nc" id="L194">		System.out.println (&quot;\t| Level 1             =&gt; &quot; +</span>
+<span class="nc" id="L195">			FormatUtil.FormatDouble (hqla.level1(), 3, 1, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L198">		System.out.println (&quot;\t| Level 2A            =&gt; &quot; +</span>
+<span class="nc" id="L199">			FormatUtil.FormatDouble (hqla.level2A(), 3, 1, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L202">		System.out.println (&quot;\t| Level 2B            =&gt; &quot; +</span>
+<span class="nc" id="L203">			FormatUtil.FormatDouble (hqla.level2B(), 3, 1, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L206">		System.out.println (&quot;\t| Total               =&gt; &quot; +</span>
+<span class="nc" id="L207">			FormatUtil.FormatDouble (hqla.total(), 3, 1, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L210">		System.out.println (&quot;\t| Level 2 Ratio       =&gt; &quot; +</span>
+<span class="nc" id="L211">			FormatUtil.FormatDouble (hqla.level2Ratio(), 1, 2, 1.) + &quot;  |&quot;</span>
+		);
+
+<span class="nc" id="L214">		System.out.println (&quot;\t| Level 2B Ratio      =&gt; &quot; +</span>
+<span class="nc" id="L215">			FormatUtil.FormatDouble (hqla.level2BRatio(), 1, 2, 1.) + &quot;  |&quot;</span>
+		);
+
+<span class="nc" id="L218">		System.out.println (&quot;\t| Fed HQLA Compliant  =&gt;  &quot; + hqla.isCompliant (hqlaStandardFed) + &quot;  |&quot;);</span>
+
+<span class="nc" id="L220">		System.out.println (&quot;\t| HQLA Adjusted Total =&gt; &quot; +</span>
+<span class="nc" id="L221">			FormatUtil.FormatDouble (hqla.totalRiskWeightAndHaircut (hqlaSettings), 3, 1, 1.) + &quot; |&quot;</span>
+		);
+
+<span class="nc" id="L224">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+
+<span class="nc" id="L226">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L227">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

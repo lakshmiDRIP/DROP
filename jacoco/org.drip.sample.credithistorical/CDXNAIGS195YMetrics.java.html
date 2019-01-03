@@ -14,33 +14,52 @@ import org.drip.service.state.CreditCurveAPI;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -57,23 +76,32 @@ import org.drip.service.state.CreditCurveAPI;
  */
 
 /**
- * CDXNAIGS195YMetrics generates the Historical Credit Survival/Recovery Metrics for the Index Contract CDX
- *  NA IG S19 5Y.
+ * &lt;i&gt;CDXNAIGS195YMetrics&lt;/i&gt; generates the Historical Credit Survival/Recovery Metrics for the Index
+ * Contract CDX NA IG S19 5Y.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credithistorical/README.md&quot;&gt;Credit Historical Metrics Generator&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L66">public class CDXNAIGS195YMetrics {</span>
+<span class="nc" id="L94">public class CDXNAIGS195YMetrics {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L72">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L100">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L74">		int iSeries = 19;</span>
-<span class="nc" id="L75">		String strClosesLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\CreditCDXMarks\\CDXNAIGS&quot; + iSeries + &quot;5YReconstitutor.csv&quot;;</span>
-<span class="nc" id="L76">		String[] astrForTenor = new String[] {</span>
+<span class="nc" id="L102">		int iSeries = 19;</span>
+<span class="nc" id="L103">		String strClosesLocation = &quot;C:\\DROP\\Daemons\\Transforms\\CreditCDXMarks\\CDXNAIGS&quot; + iSeries + &quot;5YReconstitutor.csv&quot;;</span>
+<span class="nc" id="L104">		String[] astrForTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -90,7 +118,7 @@ import org.drip.service.state.CreditCurveAPI;
 			&quot;20Y&quot;,
 			&quot;25Y&quot;,
 		};
-<span class="nc" id="L93">		String[] astrFundingFixingMaturityTenor = new String[] {</span>
+<span class="nc" id="L121">		String[] astrFundingFixingMaturityTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -111,89 +139,89 @@ import org.drip.service.state.CreditCurveAPI;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L114">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
+<span class="nc" id="L142">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
 			strClosesLocation,
 			true
 		);
 
-<span class="nc" id="L119">		JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
+<span class="nc" id="L147">		JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
 
-<span class="nc" id="L121">		double[] adblFundingFixingQuote1Y = csvGrid.doubleArrayAtColumn (1);</span>
+<span class="nc" id="L149">		double[] adblFundingFixingQuote1Y = csvGrid.doubleArrayAtColumn (1);</span>
 
-<span class="nc" id="L123">		double[] adblFundingFixingQuote2Y = csvGrid.doubleArrayAtColumn (2);</span>
+<span class="nc" id="L151">		double[] adblFundingFixingQuote2Y = csvGrid.doubleArrayAtColumn (2);</span>
 
-<span class="nc" id="L125">		double[] adblFundingFixingQuote3Y = csvGrid.doubleArrayAtColumn (3);</span>
+<span class="nc" id="L153">		double[] adblFundingFixingQuote3Y = csvGrid.doubleArrayAtColumn (3);</span>
 
-<span class="nc" id="L127">		double[] adblFundingFixingQuote4Y = csvGrid.doubleArrayAtColumn (4);</span>
+<span class="nc" id="L155">		double[] adblFundingFixingQuote4Y = csvGrid.doubleArrayAtColumn (4);</span>
 
-<span class="nc" id="L129">		double[] adblFundingFixingQuote5Y = csvGrid.doubleArrayAtColumn (5);</span>
+<span class="nc" id="L157">		double[] adblFundingFixingQuote5Y = csvGrid.doubleArrayAtColumn (5);</span>
 
-<span class="nc" id="L131">		double[] adblFundingFixingQuote6Y = csvGrid.doubleArrayAtColumn (6);</span>
+<span class="nc" id="L159">		double[] adblFundingFixingQuote6Y = csvGrid.doubleArrayAtColumn (6);</span>
 
-<span class="nc" id="L133">		double[] adblFundingFixingQuote7Y = csvGrid.doubleArrayAtColumn (7);</span>
+<span class="nc" id="L161">		double[] adblFundingFixingQuote7Y = csvGrid.doubleArrayAtColumn (7);</span>
 
-<span class="nc" id="L135">		double[] adblFundingFixingQuote8Y = csvGrid.doubleArrayAtColumn (8);</span>
+<span class="nc" id="L163">		double[] adblFundingFixingQuote8Y = csvGrid.doubleArrayAtColumn (8);</span>
 
-<span class="nc" id="L137">		double[] adblFundingFixingQuote9Y = csvGrid.doubleArrayAtColumn (9);</span>
+<span class="nc" id="L165">		double[] adblFundingFixingQuote9Y = csvGrid.doubleArrayAtColumn (9);</span>
 
-<span class="nc" id="L139">		double[] adblFundingFixingQuote10Y = csvGrid.doubleArrayAtColumn (10);</span>
+<span class="nc" id="L167">		double[] adblFundingFixingQuote10Y = csvGrid.doubleArrayAtColumn (10);</span>
 
-<span class="nc" id="L141">		double[] adblFundingFixingQuote11Y = csvGrid.doubleArrayAtColumn (11);</span>
+<span class="nc" id="L169">		double[] adblFundingFixingQuote11Y = csvGrid.doubleArrayAtColumn (11);</span>
 
-<span class="nc" id="L143">		double[] adblFundingFixingQuote12Y = csvGrid.doubleArrayAtColumn (12);</span>
+<span class="nc" id="L171">		double[] adblFundingFixingQuote12Y = csvGrid.doubleArrayAtColumn (12);</span>
 
-<span class="nc" id="L145">		double[] adblFundingFixingQuote15Y = csvGrid.doubleArrayAtColumn (13);</span>
+<span class="nc" id="L173">		double[] adblFundingFixingQuote15Y = csvGrid.doubleArrayAtColumn (13);</span>
 
-<span class="nc" id="L147">		double[] adblFundingFixingQuote20Y = csvGrid.doubleArrayAtColumn (14);</span>
+<span class="nc" id="L175">		double[] adblFundingFixingQuote20Y = csvGrid.doubleArrayAtColumn (14);</span>
 
-<span class="nc" id="L149">		double[] adblFundingFixingQuote25Y = csvGrid.doubleArrayAtColumn (15);</span>
+<span class="nc" id="L177">		double[] adblFundingFixingQuote25Y = csvGrid.doubleArrayAtColumn (15);</span>
 
-<span class="nc" id="L151">		double[] adblFundingFixingQuote30Y = csvGrid.doubleArrayAtColumn (16);</span>
+<span class="nc" id="L179">		double[] adblFundingFixingQuote30Y = csvGrid.doubleArrayAtColumn (16);</span>
 
-<span class="nc" id="L153">		double[] adblFundingFixingQuote40Y = csvGrid.doubleArrayAtColumn (17);</span>
+<span class="nc" id="L181">		double[] adblFundingFixingQuote40Y = csvGrid.doubleArrayAtColumn (17);</span>
 
-<span class="nc" id="L155">		double[] adblFundingFixingQuote50Y = csvGrid.doubleArrayAtColumn (18);</span>
+<span class="nc" id="L183">		double[] adblFundingFixingQuote50Y = csvGrid.doubleArrayAtColumn (18);</span>
 
-<span class="nc" id="L157">		String[] astrFullCreditIndexName = csvGrid.stringArrayAtColumn (19);</span>
+<span class="nc" id="L185">		String[] astrFullCreditIndexName = csvGrid.stringArrayAtColumn (19);</span>
 
-<span class="nc" id="L159">		double[] adblCreditIndexQuotedSpread = csvGrid.doubleArrayAtColumn (20);</span>
+<span class="nc" id="L187">		double[] adblCreditIndexQuotedSpread = csvGrid.doubleArrayAtColumn (20);</span>
 
-<span class="nc" id="L161">		int iNumClose = adtClose.length;</span>
-<span class="nc" id="L162">		JulianDate[] adtSpot = new JulianDate[iNumClose];</span>
-<span class="nc" id="L163">		double[][] aadblFundingFixingQuote = new double[iNumClose][18];</span>
+<span class="nc" id="L189">		int iNumClose = adtClose.length;</span>
+<span class="nc" id="L190">		JulianDate[] adtSpot = new JulianDate[iNumClose];</span>
+<span class="nc" id="L191">		double[][] aadblFundingFixingQuote = new double[iNumClose][18];</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L166">			adtSpot[i] = adtClose[i];</span>
-<span class="nc" id="L167">			aadblFundingFixingQuote[i][0] = adblFundingFixingQuote1Y[i];</span>
-<span class="nc" id="L168">			aadblFundingFixingQuote[i][1] = adblFundingFixingQuote2Y[i];</span>
-<span class="nc" id="L169">			aadblFundingFixingQuote[i][2] = adblFundingFixingQuote3Y[i];</span>
-<span class="nc" id="L170">			aadblFundingFixingQuote[i][3] = adblFundingFixingQuote4Y[i];</span>
-<span class="nc" id="L171">			aadblFundingFixingQuote[i][4] = adblFundingFixingQuote5Y[i];</span>
-<span class="nc" id="L172">			aadblFundingFixingQuote[i][5] = adblFundingFixingQuote6Y[i];</span>
-<span class="nc" id="L173">			aadblFundingFixingQuote[i][6] = adblFundingFixingQuote7Y[i];</span>
-<span class="nc" id="L174">			aadblFundingFixingQuote[i][7] = adblFundingFixingQuote8Y[i];</span>
-<span class="nc" id="L175">			aadblFundingFixingQuote[i][8] = adblFundingFixingQuote9Y[i];</span>
-<span class="nc" id="L176">			aadblFundingFixingQuote[i][9] = adblFundingFixingQuote10Y[i];</span>
-<span class="nc" id="L177">			aadblFundingFixingQuote[i][10] = adblFundingFixingQuote11Y[i];</span>
-<span class="nc" id="L178">			aadblFundingFixingQuote[i][11] = adblFundingFixingQuote12Y[i];</span>
-<span class="nc" id="L179">			aadblFundingFixingQuote[i][12] = adblFundingFixingQuote15Y[i];</span>
-<span class="nc" id="L180">			aadblFundingFixingQuote[i][13] = adblFundingFixingQuote20Y[i];</span>
-<span class="nc" id="L181">			aadblFundingFixingQuote[i][14] = adblFundingFixingQuote25Y[i];</span>
-<span class="nc" id="L182">			aadblFundingFixingQuote[i][15] = adblFundingFixingQuote30Y[i];</span>
-<span class="nc" id="L183">			aadblFundingFixingQuote[i][16] = adblFundingFixingQuote40Y[i];</span>
-<span class="nc" id="L184">			aadblFundingFixingQuote[i][17] = adblFundingFixingQuote50Y[i];</span>
-<span class="nc" id="L185">			adblCreditIndexQuotedSpread[i] *= 10000.;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L194">			adtSpot[i] = adtClose[i];</span>
+<span class="nc" id="L195">			aadblFundingFixingQuote[i][0] = adblFundingFixingQuote1Y[i];</span>
+<span class="nc" id="L196">			aadblFundingFixingQuote[i][1] = adblFundingFixingQuote2Y[i];</span>
+<span class="nc" id="L197">			aadblFundingFixingQuote[i][2] = adblFundingFixingQuote3Y[i];</span>
+<span class="nc" id="L198">			aadblFundingFixingQuote[i][3] = adblFundingFixingQuote4Y[i];</span>
+<span class="nc" id="L199">			aadblFundingFixingQuote[i][4] = adblFundingFixingQuote5Y[i];</span>
+<span class="nc" id="L200">			aadblFundingFixingQuote[i][5] = adblFundingFixingQuote6Y[i];</span>
+<span class="nc" id="L201">			aadblFundingFixingQuote[i][6] = adblFundingFixingQuote7Y[i];</span>
+<span class="nc" id="L202">			aadblFundingFixingQuote[i][7] = adblFundingFixingQuote8Y[i];</span>
+<span class="nc" id="L203">			aadblFundingFixingQuote[i][8] = adblFundingFixingQuote9Y[i];</span>
+<span class="nc" id="L204">			aadblFundingFixingQuote[i][9] = adblFundingFixingQuote10Y[i];</span>
+<span class="nc" id="L205">			aadblFundingFixingQuote[i][10] = adblFundingFixingQuote11Y[i];</span>
+<span class="nc" id="L206">			aadblFundingFixingQuote[i][11] = adblFundingFixingQuote12Y[i];</span>
+<span class="nc" id="L207">			aadblFundingFixingQuote[i][12] = adblFundingFixingQuote15Y[i];</span>
+<span class="nc" id="L208">			aadblFundingFixingQuote[i][13] = adblFundingFixingQuote20Y[i];</span>
+<span class="nc" id="L209">			aadblFundingFixingQuote[i][14] = adblFundingFixingQuote25Y[i];</span>
+<span class="nc" id="L210">			aadblFundingFixingQuote[i][15] = adblFundingFixingQuote30Y[i];</span>
+<span class="nc" id="L211">			aadblFundingFixingQuote[i][16] = adblFundingFixingQuote40Y[i];</span>
+<span class="nc" id="L212">			aadblFundingFixingQuote[i][17] = adblFundingFixingQuote50Y[i];</span>
+<span class="nc" id="L213">			adblCreditIndexQuotedSpread[i] *= 10000.;</span>
 		}
 
-<span class="nc" id="L188">		int i = 0;</span>
-<span class="nc" id="L189">		String strDump = &quot;Date,QuotedSpread&quot;;</span>
+<span class="nc" id="L216">		int i = 0;</span>
+<span class="nc" id="L217">		String strDump = &quot;Date,QuotedSpread&quot;;</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (String strForTenor : astrForTenor)</span>
-<span class="nc" id="L192">			strDump += &quot;,SURVIVAL::&quot; + strForTenor + &quot;,RECOVERY::&quot; + strForTenor;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L220">			strDump += &quot;,SURVIVAL::&quot; + strForTenor + &quot;,RECOVERY::&quot; + strForTenor;</span>
 
-<span class="nc" id="L194">		System.out.println (strDump);</span>
+<span class="nc" id="L222">		System.out.println (strDump);</span>
 
-<span class="nc" id="L196">		TreeMap&lt;JulianDate, CreditCurveMetrics&gt; mapCCM = CreditCurveAPI.HorizonMetrics (</span>
+<span class="nc" id="L224">		TreeMap&lt;JulianDate, CreditCurveMetrics&gt; mapCCM = CreditCurveAPI.HorizonMetrics (</span>
 			adtSpot,
 			astrFundingFixingMaturityTenor,
 			aadblFundingFixingQuote,
@@ -202,21 +230,23 @@ import org.drip.service.state.CreditCurveAPI;
 			astrForTenor
 		);
 
-<span class="nc" id="L205">		Set&lt;JulianDate&gt; setSpotDate = mapCCM.keySet();</span>
+<span class="nc" id="L233">		Set&lt;JulianDate&gt; setSpotDate = mapCCM.keySet();</span>
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		for (JulianDate dtSpot : setSpotDate) {</span>
-<span class="nc" id="L208">			strDump = dtSpot.toString() + &quot;,&quot; + adblCreditIndexQuotedSpread[i++];</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (JulianDate dtSpot : setSpotDate) {</span>
+<span class="nc" id="L236">			strDump = dtSpot.toString() + &quot;,&quot; + adblCreditIndexQuotedSpread[i++];</span>
 
-<span class="nc" id="L210">			CreditCurveMetrics ccmSpot = mapCCM.get (dtSpot);</span>
+<span class="nc" id="L238">			CreditCurveMetrics ccmSpot = mapCCM.get (dtSpot);</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">			for (String strForTenor : astrForTenor) {</span>
-<span class="nc" id="L213">				JulianDate dtFor = dtSpot.addTenor (strForTenor);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			for (String strForTenor : astrForTenor) {</span>
+<span class="nc" id="L241">				JulianDate dtFor = dtSpot.addTenor (strForTenor);</span>
 
-<span class="nc" id="L215">				strDump += &quot;,&quot; + ccmSpot.survivalProbability (dtFor) + &quot;,&quot; + ccmSpot.recoveryRate (dtFor);</span>
+<span class="nc" id="L243">				strDump += &quot;,&quot; + ccmSpot.survivalProbability (dtFor) + &quot;,&quot; + ccmSpot.recoveryRate (dtFor);</span>
 			}
 
-<span class="nc" id="L218">			System.out.println (strDump);</span>
-<span class="nc" id="L219">		}</span>
-<span class="nc" id="L220">	}</span>
+<span class="nc" id="L246">			System.out.println (strDump);</span>
+<span class="nc" id="L247">		}</span>
+
+<span class="nc" id="L249">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L250">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

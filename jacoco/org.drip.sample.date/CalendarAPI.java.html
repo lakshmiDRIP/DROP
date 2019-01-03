@@ -12,6 +12,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -20,29 +21,47 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -59,12 +78,21 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * CalendarAPI demonstrates Calendar API Functionality.
+ * &lt;i&gt;CalendarAPI&lt;/i&gt; demonstrates Calendar API Functionality.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/date/README.md&quot;&gt;Date Management API&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L67">public class CalendarAPI {</span>
+<span class="nc" id="L95">public class CalendarAPI {</span>
 
 	/**
 	 * Sample demonstrating the calendar API
@@ -154,18 +182,18 @@ import org.drip.service.env.EnvManager;
 
 		System.out.println (DateUtil.CreateFromYMD (2011, 12, 28) + &quot; is a USD,GBP holiday? &quot; + bIsHoliday); */
 
-<span class="fc" id="L157">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L185">		JulianDate dtToday = DateUtil.Today();</span>
 
 		/*
 		 * List all the holidays between the specified days according to the calendar set
 		 */
 
-<span class="fc" id="L163">		List&lt;Integer&gt; lsHols = Convention.HolidaySet</span>
-<span class="fc" id="L164">			(dtToday.julian(), dtToday.addYears (1).julian(), &quot;USD,GBP&quot;);</span>
+<span class="fc" id="L191">		List&lt;Integer&gt; lsHols = Convention.HolidaySet</span>
+<span class="fc" id="L192">			(dtToday.julian(), dtToday.addYears (1).julian(), &quot;USD,GBP&quot;);</span>
 
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (int iDate : lsHols)</span>
-<span class="fc" id="L167">			System.out.println (new JulianDate (iDate).toOracleDate());</span>
-<span class="fc" id="L168">	}</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for (int iDate : lsHols)</span>
+<span class="fc" id="L195">			System.out.println (new JulianDate (iDate).toOracleDate());</span>
+<span class="fc" id="L196">	}</span>
 
 	public static final void main (
 		final String astrArgs[])
@@ -173,11 +201,13 @@ import org.drip.service.env.EnvManager;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="fc" id="L176">		String strConfig = &quot;&quot;;</span>
+<span class="fc" id="L204">		String strConfig = &quot;&quot;;</span>
 
-<span class="fc" id="L178">		EnvManager.InitEnv (strConfig);</span>
+<span class="fc" id="L206">		EnvManager.InitEnv (strConfig);</span>
 
-<span class="fc" id="L180">		CalenderAPISample();</span>
-<span class="fc" id="L181">	}</span>
+<span class="fc" id="L208">		CalenderAPISample();</span>
+
+<span class="fc" id="L210">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L211">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
