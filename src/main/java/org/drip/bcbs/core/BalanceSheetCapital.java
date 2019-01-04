@@ -232,6 +232,17 @@ public class BalanceSheetCapital
 	}
 
 	/**
+	 * Retrieve the Tier 1 Ratio
+	 * 
+	 * @return The Tier 1 Ratio
+	 */
+
+	public double tier1Ratio()
+	{
+		return (_cet1 + _at1) / _rwa;
+	}
+
+	/**
 	 * Retrieve the Total Capital Ratio
 	 * 
 	 * @return The Total Capital Ratio

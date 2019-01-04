@@ -151,7 +151,7 @@ public class BalanceSheetLiquidity
 	 * @return Basel III Standard Version of Balance Sheet Liquidity for Large BHC's
 	 */
 
-	public static final BalanceSheetLiquidity Large_BHC (
+	public static final BalanceSheetLiquidity LargeBHC (
 		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
 		final double netCashOutflowAmount)
 	{
@@ -171,7 +171,7 @@ public class BalanceSheetLiquidity
 	 * @return Basel III Standard Version of Balance Sheet Liquidity for Regional BHC's
 	 */
 
-	public static final BalanceSheetLiquidity Regional_BHC (
+	public static final BalanceSheetLiquidity RegionalBHC (
 		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
 		final double netCashOutflowAmount)
 	{

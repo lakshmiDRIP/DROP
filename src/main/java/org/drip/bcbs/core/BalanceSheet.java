@@ -200,6 +200,17 @@ public class BalanceSheet
 	}
 
 	/**
+	 * Retrieve the Tier 1 Ratio
+	 * 
+	 * @return The Tier 1 Ratio
+	 */
+
+	public double tier1Ratio()
+	{
+		return _balanceSheetCapital.tier1Ratio();
+	}
+
+	/**
 	 * Retrieve the Total Capital Ratio
 	 * 
 	 * @return The Total Capital Ratio
@@ -263,7 +274,7 @@ public class BalanceSheet
 	/**
 	 * Generate the Balance Sheet Liquidity Metrics
 	 *  
-	 * @param hqlaSettings THe HQLA Settings
+	 * @param hqlaSettings The HQLA Settings
 	 * 
 	 * @return The Balance Sheet Liquidity Metrics
 	 */

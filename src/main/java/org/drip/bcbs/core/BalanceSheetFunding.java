@@ -110,6 +110,36 @@ public class BalanceSheetFunding
 	private double _extendedStressFundingAmount = java.lang.Double.NaN;
 
 	/**
+	 * Construct the Basel III Version of BalanceSheetFunding
+	 * 
+	 * @param stableFundingAmount Stable Funding Amount
+	 * @param extendedStressFundingAmount Funding Amount Required Over the Specified Period of Extended
+	 * 		Stress
+	 * 
+	 * @return The Basel III Version of BalanceSheetFunding
+	 */
+
+	public static final BalanceSheetFunding Basel_III (
+		final double stableFundingAmount,
+		final double extendedStressFundingAmount)
+	{
+		try
+		{
+			return new BalanceSheetFunding (
+				stableFundingAmount,
+				extendedStressFundingAmount,
+				"1Y"
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * BalanceSheetFunding Constructor
 	 * 
 	 * @param stableFundingAmount Stable Funding Amount

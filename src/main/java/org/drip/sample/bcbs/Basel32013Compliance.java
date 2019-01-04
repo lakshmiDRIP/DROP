@@ -76,9 +76,9 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>USSIFICompliance</i> illustrates the US SIFI Capital Metrics Compliance Checks along with Liquidity
- * Compliance Checks for several Liquidity Metrics Standards. Liquidity Criteria correspond to Large BHC's.
- * The References are:
+ * <i>Basel32013Compliance</i> illustrates the Basel III 2013 Capital Metrics Compliance Checks along with
+ * Liquidity Compliance Checks for several Liquidity Metrics Standards. Liquidity Criteria correspond to
+ * Large BHC's. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,7 +115,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class USSIFICompliance
+public class Basel32013Compliance
 {
 
 	public static final void main (
@@ -158,7 +158,7 @@ public class USSIFICompliance
 		double stableFundingAmount = 500.;
 		double extendedStressFundingAmount = 400.;
 
-		CapitalMetricsStandard capitalMetricsStandard = CapitalMetricsStandard.US_SIFI();
+		CapitalMetricsStandard capitalMetricsStandard = CapitalMetricsStandard.Basel_III_2013();
 
 		BalanceSheet balanceSheet = new BalanceSheet (
 			new BalanceSheetCapital (
@@ -185,7 +185,7 @@ public class USSIFICompliance
 
 		System.out.println ("\t|-------------------------------------------------------------------||");
 
-		System.out.println ("\t|               US SIFI Liquidity Standards Compliance              ||");
+		System.out.println ("\t|           Basel III 2013 Liquidity Standards Compliance           ||");
 
 		System.out.println ("\t|-------------------------------------------------------------------||");
 
