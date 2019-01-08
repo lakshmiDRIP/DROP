@@ -73,7 +73,7 @@ DROP is composed of three modules.
 
 ## Documentation
 
- [**Javadoc API**](https://lakshmidrip.github.io/DROP/Javadoc/index.html) | [**DROP Specifications**](https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal) | [**Reference Specifications**](https://github.com/lakshmiDRIP/DROP/tree/master/Docs/External) | [**Release Notes**](https://github.com/lakshmiDRIP/DROP/tree/master/ReleaseNotes) | User guide is a work in progress!
+ [**Javadoc API**](https://lakshmidrip.github.io/DROP/Javadoc/index.html) | [**DROP Specifications**](https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal) | [**Release Notes**](https://github.com/lakshmiDRIP/DROP/tree/master/ReleaseNotes) | User guide is a work in progress!
 
 ## Misc
 
